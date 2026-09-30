@@ -1,0 +1,826 @@
+{
+  "upstream": "2.35.0",
+  "normalization": "Remove timestamps and sort keys inside each dimension set only.",
+  "cases": {
+    "dimensions_and_flush": [
+      {
+        "_aws": {
+          "CloudWatchMetrics": [
+            {
+              "Namespace": "Example",
+              "Dimensions": [
+                [
+                  "environment",
+                  "region",
+                  "service"
+                ],
+                [
+                  "environment",
+                  "service",
+                  "stage"
+                ]
+              ],
+              "Metrics": [
+                {
+                  "Name": "Requests",
+                  "Unit": "Count"
+                },
+                {
+                  "Name": "Latency",
+                  "Unit": "Milliseconds",
+                  "StorageResolution": 1
+                }
+              ]
+            }
+          ]
+        },
+        "request_id": "request-1",
+        "service": "orders",
+        "environment": "test",
+        "region": "hk",
+        "stage": "prod",
+        "Requests": 1,
+        "Latency": [
+          10,
+          20
+        ]
+      },
+      {
+        "_aws": {
+          "CloudWatchMetrics": [
+            {
+              "Namespace": "Example",
+              "Dimensions": [
+                [
+                  "environment",
+                  "service"
+                ]
+              ],
+              "Metrics": [
+                {
+                  "Name": "Next",
+                  "Unit": "Count"
+                }
+              ]
+            }
+          ]
+        },
+        "service": "orders",
+        "environment": "test",
+        "Next": 2
+      }
+    ],
+    "metric_limit": [
+      {
+        "_aws": {
+          "CloudWatchMetrics": [
+            {
+              "Namespace": "Example",
+              "Dimensions": [
+                [
+                  "environment",
+                  "request",
+                  "service"
+                ]
+              ],
+              "Metrics": [
+                {
+                  "Name": "Metric0",
+                  "Unit": "Count"
+                },
+                {
+                  "Name": "Metric1",
+                  "Unit": "Count"
+                },
+                {
+                  "Name": "Metric2",
+                  "Unit": "Count"
+                },
+                {
+                  "Name": "Metric3",
+                  "Unit": "Count"
+                },
+                {
+                  "Name": "Metric4",
+                  "Unit": "Count"
+                },
+                {
+                  "Name": "Metric5",
+                  "Unit": "Count"
+                },
+                {
+                  "Name": "Metric6",
+                  "Unit": "Count"
+                },
+                {
+                  "Name": "Metric7",
+                  "Unit": "Count"
+                },
+                {
+                  "Name": "Metric8",
+                  "Unit": "Count"
+                },
+                {
+                  "Name": "Metric9",
+                  "Unit": "Count"
+                },
+                {
+                  "Name": "Metric10",
+                  "Unit": "Count"
+                },
+                {
+                  "Name": "Metric11",
+                  "Unit": "Count"
+                },
+                {
+                  "Name": "Metric12",
+                  "Unit": "Count"
+                },
+                {
+                  "Name": "Metric13",
+                  "Unit": "Count"
+                },
+                {
+                  "Name": "Metric14",
+                  "Unit": "Count"
+                },
+                {
+                  "Name": "Metric15",
+                  "Unit": "Count"
+                },
+                {
+                  "Name": "Metric16",
+                  "Unit": "Count"
+                },
+                {
+                  "Name": "Metric17",
+                  "Unit": "Count"
+                },
+                {
+                  "Name": "Metric18",
+                  "Unit": "Count"
+                },
+                {
+                  "Name": "Metric19",
+                  "Unit": "Count"
+                },
+                {
+                  "Name": "Metric20",
+                  "Unit": "Count"
+                },
+                {
+                  "Name": "Metric21",
+                  "Unit": "Count"
+                },
+                {
+                  "Name": "Metric22",
+                  "Unit": "Count"
+                },
+                {
+                  "Name": "Metric23",
+                  "Unit": "Count"
+                },
+                {
+                  "Name": "Metric24",
+                  "Unit": "Count"
+                },
+                {
+                  "Name": "Metric25",
+                  "Unit": "Count"
+                },
+                {
+                  "Name": "Metric26",
+                  "Unit": "Count"
+                },
+                {
+                  "Name": "Metric27",
+                  "Unit": "Count"
+                },
+                {
+                  "Name": "Metric28",
+                  "Unit": "Count"
+                },
+                {
+                  "Name": "Metric29",
+                  "Unit": "Count"
+                },
+                {
+                  "Name": "Metric30",
+                  "Unit": "Count"
+                },
+                {
+                  "Name": "Metric31",
+                  "Unit": "Count"
+                },
+                {
+                  "Name": "Metric32",
+                  "Unit": "Count"
+                },
+                {
+                  "Name": "Metric33",
+                  "Unit": "Count"
+                },
+                {
+                  "Name": "Metric34",
+                  "Unit": "Count"
+                },
+                {
+                  "Name": "Metric35",
+                  "Unit": "Count"
+                },
+                {
+                  "Name": "Metric36",
+                  "Unit": "Count"
+                },
+                {
+                  "Name": "Metric37",
+                  "Unit": "Count"
+                },
+                {
+                  "Name": "Metric38",
+                  "Unit": "Count"
+                },
+                {
+                  "Name": "Metric39",
+                  "Unit": "Count"
+                },
+                {
+                  "Name": "Metric40",
+                  "Unit": "Count"
+                },
+                {
+                  "Name": "Metric41",
+                  "Unit": "Count"
+                },
+                {
+                  "Name": "Metric42",
+                  "Unit": "Count"
+                },
+                {
+                  "Name": "Metric43",
+                  "Unit": "Count"
+                },
+                {
+                  "Name": "Metric44",
+                  "Unit": "Count"
+                },
+                {
+                  "Name": "Metric45",
+                  "Unit": "Count"
+                },
+                {
+                  "Name": "Metric46",
+                  "Unit": "Count"
+                },
+                {
+                  "Name": "Metric47",
+                  "Unit": "Count"
+                },
+                {
+                  "Name": "Metric48",
+                  "Unit": "Count"
+                },
+                {
+                  "Name": "Metric49",
+                  "Unit": "Count"
+                },
+                {
+                  "Name": "Metric50",
+                  "Unit": "Count"
+                },
+                {
+                  "Name": "Metric51",
+                  "Unit": "Count"
+                },
+                {
+                  "Name": "Metric52",
+                  "Unit": "Count"
+                },
+                {
+                  "Name": "Metric53",
+                  "Unit": "Count"
+                },
+                {
+                  "Name": "Metric54",
+                  "Unit": "Count"
+                },
+                {
+                  "Name": "Metric55",
+                  "Unit": "Count"
+                },
+                {
+                  "Name": "Metric56",
+                  "Unit": "Count"
+                },
+                {
+                  "Name": "Metric57",
+                  "Unit": "Count"
+                },
+                {
+                  "Name": "Metric58",
+                  "Unit": "Count"
+                },
+                {
+                  "Name": "Metric59",
+                  "Unit": "Count"
+                },
+                {
+                  "Name": "Metric60",
+                  "Unit": "Count"
+                },
+                {
+                  "Name": "Metric61",
+                  "Unit": "Count"
+                },
+                {
+                  "Name": "Metric62",
+                  "Unit": "Count"
+                },
+                {
+                  "Name": "Metric63",
+                  "Unit": "Count"
+                },
+                {
+                  "Name": "Metric64",
+                  "Unit": "Count"
+                },
+                {
+                  "Name": "Metric65",
+                  "Unit": "Count"
+                },
+                {
+                  "Name": "Metric66",
+                  "Unit": "Count"
+                },
+                {
+                  "Name": "Metric67",
+                  "Unit": "Count"
+                },
+                {
+                  "Name": "Metric68",
+                  "Unit": "Count"
+                },
+                {
+                  "Name": "Metric69",
+                  "Unit": "Count"
+                },
+                {
+                  "Name": "Metric70",
+                  "Unit": "Count"
+                },
+                {
+                  "Name": "Metric71",
+                  "Unit": "Count"
+                },
+                {
+                  "Name": "Metric72",
+                  "Unit": "Count"
+                },
+                {
+                  "Name": "Metric73",
+                  "Unit": "Count"
+                },
+                {
+                  "Name": "Metric74",
+                  "Unit": "Count"
+                },
+                {
+                  "Name": "Metric75",
+                  "Unit": "Count"
+                },
+                {
+                  "Name": "Metric76",
+                  "Unit": "Count"
+                },
+                {
+                  "Name": "Metric77",
+                  "Unit": "Count"
+                },
+                {
+                  "Name": "Metric78",
+                  "Unit": "Count"
+                },
+                {
+                  "Name": "Metric79",
+                  "Unit": "Count"
+                },
+                {
+                  "Name": "Metric80",
+                  "Unit": "Count"
+                },
+                {
+                  "Name": "Metric81",
+                  "Unit": "Count"
+                },
+                {
+                  "Name": "Metric82",
+                  "Unit": "Count"
+                },
+                {
+                  "Name": "Metric83",
+                  "Unit": "Count"
+                },
+                {
+                  "Name": "Metric84",
+                  "Unit": "Count"
+                },
+                {
+                  "Name": "Metric85",
+                  "Unit": "Count"
+                },
+                {
+                  "Name": "Metric86",
+                  "Unit": "Count"
+                },
+                {
+                  "Name": "Metric87",
+                  "Unit": "Count"
+                },
+                {
+                  "Name": "Metric88",
+                  "Unit": "Count"
+                },
+                {
+                  "Name": "Metric89",
+                  "Unit": "Count"
+                },
+                {
+                  "Name": "Metric90",
+                  "Unit": "Count"
+                },
+                {
+                  "Name": "Metric91",
+                  "Unit": "Count"
+                },
+                {
+                  "Name": "Metric92",
+                  "Unit": "Count"
+                },
+                {
+                  "Name": "Metric93",
+                  "Unit": "Count"
+                },
+                {
+                  "Name": "Metric94",
+                  "Unit": "Count"
+                },
+                {
+                  "Name": "Metric95",
+                  "Unit": "Count"
+                },
+                {
+                  "Name": "Metric96",
+                  "Unit": "Count"
+                },
+                {
+                  "Name": "Metric97",
+                  "Unit": "Count"
+                },
+                {
+                  "Name": "Metric98",
+                  "Unit": "Count"
+                },
+                {
+                  "Name": "Metric99",
+                  "Unit": "Count"
+                }
+              ]
+            }
+          ]
+        },
+        "service": "orders",
+        "environment": "test",
+        "request": "first",
+        "Metric0": 0,
+        "Metric1": 1,
+        "Metric2": 2,
+        "Metric3": 3,
+        "Metric4": 4,
+        "Metric5": 5,
+        "Metric6": 6,
+        "Metric7": 7,
+        "Metric8": 8,
+        "Metric9": 9,
+        "Metric10": 10,
+        "Metric11": 11,
+        "Metric12": 12,
+        "Metric13": 13,
+        "Metric14": 14,
+        "Metric15": 15,
+        "Metric16": 16,
+        "Metric17": 17,
+        "Metric18": 18,
+        "Metric19": 19,
+        "Metric20": 20,
+        "Metric21": 21,
+        "Metric22": 22,
+        "Metric23": 23,
+        "Metric24": 24,
+        "Metric25": 25,
+        "Metric26": 26,
+        "Metric27": 27,
+        "Metric28": 28,
+        "Metric29": 29,
+        "Metric30": 30,
+        "Metric31": 31,
+        "Metric32": 32,
+        "Metric33": 33,
+        "Metric34": 34,
+        "Metric35": 35,
+        "Metric36": 36,
+        "Metric37": 37,
+        "Metric38": 38,
+        "Metric39": 39,
+        "Metric40": 40,
+        "Metric41": 41,
+        "Metric42": 42,
+        "Metric43": 43,
+        "Metric44": 44,
+        "Metric45": 45,
+        "Metric46": 46,
+        "Metric47": 47,
+        "Metric48": 48,
+        "Metric49": 49,
+        "Metric50": 50,
+        "Metric51": 51,
+        "Metric52": 52,
+        "Metric53": 53,
+        "Metric54": 54,
+        "Metric55": 55,
+        "Metric56": 56,
+        "Metric57": 57,
+        "Metric58": 58,
+        "Metric59": 59,
+        "Metric60": 60,
+        "Metric61": 61,
+        "Metric62": 62,
+        "Metric63": 63,
+        "Metric64": 64,
+        "Metric65": 65,
+        "Metric66": 66,
+        "Metric67": 67,
+        "Metric68": 68,
+        "Metric69": 69,
+        "Metric70": 70,
+        "Metric71": 71,
+        "Metric72": 72,
+        "Metric73": 73,
+        "Metric74": 74,
+        "Metric75": 75,
+        "Metric76": 76,
+        "Metric77": 77,
+        "Metric78": 78,
+        "Metric79": 79,
+        "Metric80": 80,
+        "Metric81": 81,
+        "Metric82": 82,
+        "Metric83": 83,
+        "Metric84": 84,
+        "Metric85": 85,
+        "Metric86": 86,
+        "Metric87": 87,
+        "Metric88": 88,
+        "Metric89": 89,
+        "Metric90": 90,
+        "Metric91": 91,
+        "Metric92": 92,
+        "Metric93": 93,
+        "Metric94": 94,
+        "Metric95": 95,
+        "Metric96": 96,
+        "Metric97": 97,
+        "Metric98": 98,
+        "Metric99": 99
+      },
+      {
+        "_aws": {
+          "CloudWatchMetrics": [
+            {
+              "Namespace": "Example",
+              "Dimensions": [
+                [
+                  "environment",
+                  "service"
+                ]
+              ],
+              "Metrics": [
+                {
+                  "Name": "Metric100",
+                  "Unit": "Count"
+                }
+              ]
+            }
+          ]
+        },
+        "service": "orders",
+        "environment": "test",
+        "Metric100": 100
+      }
+    ],
+    "value_limit": [
+      {
+        "_aws": {
+          "CloudWatchMetrics": [
+            {
+              "Namespace": "Example",
+              "Dimensions": [
+                [
+                  "environment",
+                  "request",
+                  "service"
+                ]
+              ],
+              "Metrics": [
+                {
+                  "Name": "Value",
+                  "Unit": "Count"
+                }
+              ]
+            }
+          ]
+        },
+        "service": "orders",
+        "environment": "test",
+        "request": "first",
+        "Value": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25,
+          26,
+          27,
+          28,
+          29,
+          30,
+          31,
+          32,
+          33,
+          34,
+          35,
+          36,
+          37,
+          38,
+          39,
+          40,
+          41,
+          42,
+          43,
+          44,
+          45,
+          46,
+          47,
+          48,
+          49,
+          50,
+          51,
+          52,
+          53,
+          54,
+          55,
+          56,
+          57,
+          58,
+          59,
+          60,
+          61,
+          62,
+          63,
+          64,
+          65,
+          66,
+          67,
+          68,
+          69,
+          70,
+          71,
+          72,
+          73,
+          74,
+          75,
+          76,
+          77,
+          78,
+          79,
+          80,
+          81,
+          82,
+          83,
+          84,
+          85,
+          86,
+          87,
+          88,
+          89,
+          90,
+          91,
+          92,
+          93,
+          94,
+          95,
+          96,
+          97,
+          98,
+          99
+        ]
+      },
+      {
+        "_aws": {
+          "CloudWatchMetrics": [
+            {
+              "Namespace": "Example",
+              "Dimensions": [
+                [
+                  "environment",
+                  "service"
+                ]
+              ],
+              "Metrics": [
+                {
+                  "Name": "Value",
+                  "Unit": "Count"
+                }
+              ]
+            }
+          ]
+        },
+        "service": "orders",
+        "environment": "test",
+        "Value": 100
+      }
+    ],
+    "single_metric": [
+      {
+        "_aws": {
+          "CloudWatchMetrics": [
+            {
+              "Namespace": "Example",
+              "Dimensions": [
+                [
+                  "environment",
+                  "service"
+                ]
+              ],
+              "Metrics": [
+                {
+                  "Name": "Child",
+                  "Unit": "Count"
+                }
+              ]
+            }
+          ]
+        },
+        "service": "orders",
+        "environment": "test",
+        "Child": 2
+      },
+      {
+        "_aws": {
+          "CloudWatchMetrics": [
+            {
+              "Namespace": "Example",
+              "Dimensions": [
+                [
+                  "environment",
+                  "request",
+                  "service"
+                ]
+              ],
+              "Metrics": [
+                {
+                  "Name": "Parent",
+                  "Unit": "Count"
+                }
+              ]
+            }
+          ]
+        },
+        "service": "orders",
+        "environment": "test",
+        "request": "parent",
+        "Parent": 1
+      }
+    ]
+  }
+}

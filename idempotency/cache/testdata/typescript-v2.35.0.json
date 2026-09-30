@@ -1,0 +1,648 @@
+{
+  "version": "2.35.0",
+  "now": 1800000000250,
+  "scenarios": [
+    {
+      "name": "fresh",
+      "operation": "put",
+      "record": {
+        "id": "operation#key",
+        "status": "INPROGRESS",
+        "expiration": 1800003600,
+        "in_progress_expiration": 1800000005250,
+        "validation": "validation-hash"
+      },
+      "calls": [
+        {
+          "operation": "set",
+          "key": "operation#key",
+          "value": {
+            "status": "INPROGRESS",
+            "expiration": 1800003600,
+            "in_progress_expiration": 1800000005250,
+            "validation": "validation-hash"
+          },
+          "ttl": 3600,
+          "nx": true
+        }
+      ],
+      "final": {
+        "operation#key": {
+          "status": "INPROGRESS",
+          "expiration": 1800003600,
+          "in_progress_expiration": 1800000005250,
+          "validation": "validation-hash"
+        }
+      }
+    },
+    {
+      "name": "completed-conflict",
+      "operation": "put",
+      "seed": "{\"status\":\"COMPLETED\",\"expiration\":1800003600,\"data\":{\"ok\":true},\"validation\":\"validation-hash\"}",
+      "record": {
+        "id": "operation#key",
+        "status": "INPROGRESS",
+        "expiration": 1800003600,
+        "in_progress_expiration": 1800000005250,
+        "validation": "validation-hash"
+      },
+      "error": "IdempotencyItemAlreadyExistsError",
+      "calls": [
+        {
+          "operation": "set",
+          "key": "operation#key",
+          "value": {
+            "status": "INPROGRESS",
+            "expiration": 1800003600,
+            "in_progress_expiration": 1800000005250,
+            "validation": "validation-hash"
+          },
+          "ttl": 3600,
+          "nx": true
+        },
+        {
+          "operation": "get",
+          "key": "operation#key"
+        }
+      ],
+      "final": {
+        "operation#key": {
+          "status": "COMPLETED",
+          "expiration": 1800003600,
+          "data": {
+            "ok": true
+          },
+          "validation": "validation-hash"
+        }
+      }
+    },
+    {
+      "name": "active-conflict",
+      "operation": "put",
+      "seed": "{\"status\":\"INPROGRESS\",\"expiration\":1800003600,\"in_progress_expiration\":1800000005250}",
+      "record": {
+        "id": "operation#key",
+        "status": "INPROGRESS",
+        "expiration": 1800003600,
+        "in_progress_expiration": 1800000005250,
+        "validation": "validation-hash"
+      },
+      "error": "IdempotencyItemAlreadyExistsError",
+      "calls": [
+        {
+          "operation": "set",
+          "key": "operation#key",
+          "value": {
+            "status": "INPROGRESS",
+            "expiration": 1800003600,
+            "in_progress_expiration": 1800000005250,
+            "validation": "validation-hash"
+          },
+          "ttl": 3600,
+          "nx": true
+        },
+        {
+          "operation": "get",
+          "key": "operation#key"
+        }
+      ],
+      "final": {
+        "operation#key": {
+          "status": "INPROGRESS",
+          "expiration": 1800003600,
+          "in_progress_expiration": 1800000005250
+        }
+      }
+    },
+    {
+      "name": "expired-lease",
+      "operation": "put",
+      "seed": "{\"status\":\"INPROGRESS\",\"expiration\":1800003600,\"in_progress_expiration\":1800000000249}",
+      "record": {
+        "id": "operation#key",
+        "status": "INPROGRESS",
+        "expiration": 1800003600,
+        "in_progress_expiration": 1800000005250,
+        "validation": "validation-hash"
+      },
+      "calls": [
+        {
+          "operation": "set",
+          "key": "operation#key",
+          "value": {
+            "status": "INPROGRESS",
+            "expiration": 1800003600,
+            "in_progress_expiration": 1800000005250,
+            "validation": "validation-hash"
+          },
+          "ttl": 3600,
+          "nx": true
+        },
+        {
+          "operation": "get",
+          "key": "operation#key"
+        },
+        {
+          "operation": "set",
+          "key": "operation#key:lock",
+          "value": true,
+          "ttl": 10,
+          "nx": true
+        },
+        {
+          "operation": "set",
+          "key": "operation#key",
+          "value": {
+            "status": "INPROGRESS",
+            "expiration": 1800003600,
+            "in_progress_expiration": 1800000005250,
+            "validation": "validation-hash"
+          },
+          "ttl": 3600,
+          "nx": false
+        }
+      ],
+      "final": {
+        "operation#key": {
+          "status": "INPROGRESS",
+          "expiration": 1800003600,
+          "in_progress_expiration": 1800000005250,
+          "validation": "validation-hash"
+        },
+        "operation#key:lock": true
+      }
+    },
+    {
+      "name": "missing-lease",
+      "operation": "put",
+      "seed": "{\"status\":\"INPROGRESS\",\"expiration\":1800003600}",
+      "record": {
+        "id": "operation#key",
+        "status": "INPROGRESS",
+        "expiration": 1800003600,
+        "in_progress_expiration": 1800000005250,
+        "validation": "validation-hash"
+      },
+      "calls": [
+        {
+          "operation": "set",
+          "key": "operation#key",
+          "value": {
+            "status": "INPROGRESS",
+            "expiration": 1800003600,
+            "in_progress_expiration": 1800000005250,
+            "validation": "validation-hash"
+          },
+          "ttl": 3600,
+          "nx": true
+        },
+        {
+          "operation": "get",
+          "key": "operation#key"
+        },
+        {
+          "operation": "set",
+          "key": "operation#key:lock",
+          "value": true,
+          "ttl": 10,
+          "nx": true
+        },
+        {
+          "operation": "set",
+          "key": "operation#key",
+          "value": {
+            "status": "INPROGRESS",
+            "expiration": 1800003600,
+            "in_progress_expiration": 1800000005250,
+            "validation": "validation-hash"
+          },
+          "ttl": 3600,
+          "nx": false
+        }
+      ],
+      "final": {
+        "operation#key": {
+          "status": "INPROGRESS",
+          "expiration": 1800003600,
+          "in_progress_expiration": 1800000005250,
+          "validation": "validation-hash"
+        },
+        "operation#key:lock": true
+      }
+    },
+    {
+      "name": "expired-record",
+      "operation": "put",
+      "seed": "{\"status\":\"COMPLETED\",\"expiration\":1799999999,\"data\":1}",
+      "record": {
+        "id": "operation#key",
+        "status": "INPROGRESS",
+        "expiration": 1800003600,
+        "in_progress_expiration": 1800000005250,
+        "validation": "validation-hash"
+      },
+      "calls": [
+        {
+          "operation": "set",
+          "key": "operation#key",
+          "value": {
+            "status": "INPROGRESS",
+            "expiration": 1800003600,
+            "in_progress_expiration": 1800000005250,
+            "validation": "validation-hash"
+          },
+          "ttl": 3600,
+          "nx": true
+        },
+        {
+          "operation": "get",
+          "key": "operation#key"
+        },
+        {
+          "operation": "set",
+          "key": "operation#key:lock",
+          "value": true,
+          "ttl": 10,
+          "nx": true
+        },
+        {
+          "operation": "set",
+          "key": "operation#key",
+          "value": {
+            "status": "INPROGRESS",
+            "expiration": 1800003600,
+            "in_progress_expiration": 1800000005250,
+            "validation": "validation-hash"
+          },
+          "ttl": 3600,
+          "nx": false
+        }
+      ],
+      "final": {
+        "operation#key": {
+          "status": "INPROGRESS",
+          "expiration": 1800003600,
+          "in_progress_expiration": 1800000005250,
+          "validation": "validation-hash"
+        },
+        "operation#key:lock": true
+      }
+    },
+    {
+      "name": "malformed-json",
+      "operation": "put",
+      "seed": "{broken",
+      "record": {
+        "id": "operation#key",
+        "status": "INPROGRESS",
+        "expiration": 1800003600,
+        "in_progress_expiration": 1800000005250,
+        "validation": "validation-hash"
+      },
+      "calls": [
+        {
+          "operation": "set",
+          "key": "operation#key",
+          "value": {
+            "status": "INPROGRESS",
+            "expiration": 1800003600,
+            "in_progress_expiration": 1800000005250,
+            "validation": "validation-hash"
+          },
+          "ttl": 3600,
+          "nx": true
+        },
+        {
+          "operation": "get",
+          "key": "operation#key"
+        },
+        {
+          "operation": "set",
+          "key": "operation#key:lock",
+          "value": true,
+          "ttl": 10,
+          "nx": true
+        },
+        {
+          "operation": "set",
+          "key": "operation#key",
+          "value": {
+            "status": "INPROGRESS",
+            "expiration": 1800003600,
+            "in_progress_expiration": 1800000005250,
+            "validation": "validation-hash"
+          },
+          "ttl": 3600,
+          "nx": false
+        }
+      ],
+      "final": {
+        "operation#key": {
+          "status": "INPROGRESS",
+          "expiration": 1800003600,
+          "in_progress_expiration": 1800000005250,
+          "validation": "validation-hash"
+        },
+        "operation#key:lock": true
+      }
+    },
+    {
+      "name": "locked-orphan",
+      "operation": "put",
+      "seed": "{\"status\":\"INPROGRESS\",\"expiration\":1800003600,\"in_progress_expiration\":1800000000249}",
+      "locked": true,
+      "record": {
+        "id": "operation#key",
+        "status": "INPROGRESS",
+        "expiration": 1800003600,
+        "in_progress_expiration": 1800000005250,
+        "validation": "validation-hash"
+      },
+      "error": "IdempotencyItemAlreadyExistsError",
+      "calls": [
+        {
+          "operation": "set",
+          "key": "operation#key",
+          "value": {
+            "status": "INPROGRESS",
+            "expiration": 1800003600,
+            "in_progress_expiration": 1800000005250,
+            "validation": "validation-hash"
+          },
+          "ttl": 3600,
+          "nx": true
+        },
+        {
+          "operation": "get",
+          "key": "operation#key"
+        },
+        {
+          "operation": "set",
+          "key": "operation#key:lock",
+          "value": true,
+          "ttl": 10,
+          "nx": true
+        }
+      ],
+      "final": {
+        "operation#key": {
+          "status": "INPROGRESS",
+          "expiration": 1800003600,
+          "in_progress_expiration": 1800000000249
+        },
+        "operation#key:lock": true
+      }
+    },
+    {
+      "name": "unknown-status",
+      "operation": "put",
+      "seed": "{\"status\":\"UNKNOWN\",\"expiration\":1800003600}",
+      "record": {
+        "id": "operation#key",
+        "status": "INPROGRESS",
+        "expiration": 1800003600,
+        "in_progress_expiration": 1800000005250,
+        "validation": "validation-hash"
+      },
+      "error": "IdempotencyInvalidStatusError",
+      "calls": [
+        {
+          "operation": "set",
+          "key": "operation#key",
+          "value": {
+            "status": "INPROGRESS",
+            "expiration": 1800003600,
+            "in_progress_expiration": 1800000005250,
+            "validation": "validation-hash"
+          },
+          "ttl": 3600,
+          "nx": true
+        },
+        {
+          "operation": "get",
+          "key": "operation#key"
+        }
+      ],
+      "final": {
+        "operation#key": {
+          "status": "UNKNOWN",
+          "expiration": 1800003600
+        }
+      }
+    },
+    {
+      "name": "disappeared",
+      "operation": "put",
+      "seed": "{\"status\":\"COMPLETED\",\"expiration\":1800003600,\"data\":{\"ok\":true},\"validation\":\"validation-hash\"}",
+      "disappear": true,
+      "record": {
+        "id": "operation#key",
+        "status": "INPROGRESS",
+        "expiration": 1800003600,
+        "in_progress_expiration": 1800000005250,
+        "validation": "validation-hash"
+      },
+      "error": "IdempotencyItemNotFoundError",
+      "calls": [
+        {
+          "operation": "set",
+          "key": "operation#key",
+          "value": {
+            "status": "INPROGRESS",
+            "expiration": 1800003600,
+            "in_progress_expiration": 1800000005250,
+            "validation": "validation-hash"
+          },
+          "ttl": 3600,
+          "nx": true
+        },
+        {
+          "operation": "get",
+          "key": "operation#key"
+        }
+      ],
+      "final": {}
+    },
+    {
+      "name": "completion-omits-validation",
+      "operation": "update",
+      "record": {
+        "id": "operation#key",
+        "status": "COMPLETED",
+        "expiration": 1800003600,
+        "in_progress_expiration": 1800000005250,
+        "validation": "validation-hash",
+        "data": {
+          "ok": true,
+          "nested": [
+            null,
+            1.5
+          ]
+        }
+      },
+      "calls": [
+        {
+          "operation": "set",
+          "key": "operation#key",
+          "value": {
+            "status": "COMPLETED",
+            "expiration": 1800003600,
+            "data": {
+              "ok": true,
+              "nested": [
+                null,
+                1.5
+              ]
+            }
+          },
+          "ttl": 3600,
+          "nx": false
+        }
+      ],
+      "final": {
+        "operation#key": {
+          "status": "COMPLETED",
+          "expiration": 1800003600,
+          "data": {
+            "ok": true,
+            "nested": [
+              null,
+              1.5
+            ]
+          }
+        }
+      }
+    },
+    {
+      "name": "read-completed",
+      "operation": "get",
+      "seed": "{\"status\":\"COMPLETED\",\"expiration\":1800003600,\"data\":{\"ok\":true},\"validation\":\"validation-hash\"}",
+      "record": {
+        "id": "operation#key",
+        "status": "INPROGRESS",
+        "expiration": 1800003600,
+        "in_progress_expiration": 1800000005250,
+        "validation": "validation-hash"
+      },
+      "response": {
+        "id": "operation#key",
+        "status": "COMPLETED",
+        "expiration": 1800003600,
+        "data": {
+          "ok": true
+        },
+        "validation": "validation-hash"
+      },
+      "calls": [
+        {
+          "operation": "get",
+          "key": "operation#key"
+        }
+      ],
+      "final": {
+        "operation#key": {
+          "status": "COMPLETED",
+          "expiration": 1800003600,
+          "data": {
+            "ok": true
+          },
+          "validation": "validation-hash"
+        }
+      }
+    },
+    {
+      "name": "read-missing",
+      "operation": "get",
+      "record": {
+        "id": "operation#key",
+        "status": "INPROGRESS",
+        "expiration": 1800003600,
+        "in_progress_expiration": 1800000005250,
+        "validation": "validation-hash"
+      },
+      "error": "IdempotencyItemNotFoundError",
+      "calls": [
+        {
+          "operation": "get",
+          "key": "operation#key"
+        }
+      ],
+      "final": {}
+    },
+    {
+      "name": "read-malformed",
+      "operation": "get",
+      "seed": "{broken",
+      "record": {
+        "id": "operation#key",
+        "status": "INPROGRESS",
+        "expiration": 1800003600,
+        "in_progress_expiration": 1800000005250,
+        "validation": "validation-hash"
+      },
+      "error": "IdempotencyPersistenceConsistencyError",
+      "calls": [
+        {
+          "operation": "get",
+          "key": "operation#key"
+        }
+      ],
+      "final": {
+        "operation#key": "{broken"
+      }
+    },
+    {
+      "name": "delete",
+      "operation": "delete",
+      "seed": "{\"status\":\"COMPLETED\",\"expiration\":1800003600,\"data\":{\"ok\":true},\"validation\":\"validation-hash\"}",
+      "record": {
+        "id": "operation#key",
+        "status": "INPROGRESS",
+        "expiration": 1800003600,
+        "in_progress_expiration": 1800000005250,
+        "validation": "validation-hash"
+      },
+      "calls": [
+        {
+          "operation": "delete",
+          "key": "operation#key"
+        }
+      ],
+      "final": {}
+    },
+    {
+      "name": "custom-attributes",
+      "operation": "put",
+      "custom": true,
+      "record": {
+        "id": "operation#key",
+        "status": "INPROGRESS",
+        "expiration": 1800003600,
+        "in_progress_expiration": 1800000005250,
+        "validation": "validation-hash"
+      },
+      "calls": [
+        {
+          "operation": "set",
+          "key": "operation#key",
+          "value": {
+            "s": "INPROGRESS",
+            "e": 1800003600,
+            "ip": 1800000005250,
+            "v": "validation-hash"
+          },
+          "ttl": 3600,
+          "nx": true
+        }
+      ],
+      "final": {
+        "operation#key": {
+          "s": "INPROGRESS",
+          "e": 1800003600,
+          "ip": 1800000005250,
+          "v": "validation-hash"
+        }
+      }
+    }
+  ]
+}

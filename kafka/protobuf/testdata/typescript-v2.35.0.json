@@ -1,0 +1,5457 @@
+{
+  "version": "2.35.0",
+  "protobufVersion": "7.5.4",
+  "cases": [
+    {
+      "name": "prefix-0",
+      "data": "",
+      "metadata": {
+        "$": "undefined"
+      },
+      "mode": "inspect",
+      "calls": [],
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Protobuf message: TypeError: Cannot read properties of undefined (reading 'schemaId'), message: , messageType: {}"
+      }
+    },
+    {
+      "name": "prefix-1",
+      "data": "AA==",
+      "metadata": {
+        "$": "undefined"
+      },
+      "mode": "inspect",
+      "calls": [],
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Protobuf message: TypeError: Cannot read properties of undefined (reading 'schemaId'), message: AA==, messageType: {}"
+      }
+    },
+    {
+      "name": "prefix-2",
+      "data": "ACo=",
+      "metadata": {
+        "$": "undefined"
+      },
+      "mode": "inspect",
+      "calls": [],
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Protobuf message: TypeError: Cannot read properties of undefined (reading 'schemaId'), message: ACo=, messageType: {}"
+      }
+    },
+    {
+      "name": "prefix-3",
+      "data": "AQAq",
+      "metadata": {
+        "$": "undefined"
+      },
+      "mode": "inspect",
+      "calls": [],
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Protobuf message: TypeError: Cannot read properties of undefined (reading 'schemaId'), message: AQAq, messageType: {}"
+      }
+    },
+    {
+      "name": "prefix-4",
+      "data": "AgAq",
+      "metadata": {
+        "$": "undefined"
+      },
+      "mode": "inspect",
+      "calls": [],
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Protobuf message: TypeError: Cannot read properties of undefined (reading 'schemaId'), message: AgAq, messageType: {}"
+      }
+    },
+    {
+      "name": "prefix-5",
+      "data": "gA==",
+      "metadata": {
+        "$": "undefined"
+      },
+      "mode": "inspect",
+      "calls": [],
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Protobuf message: TypeError: Cannot read properties of undefined (reading 'schemaId'), message: gA==, messageType: {}"
+      }
+    },
+    {
+      "name": "prefix-6",
+      "data": "/////w8q",
+      "metadata": {
+        "$": "undefined"
+      },
+      "mode": "inspect",
+      "calls": [],
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Protobuf message: TypeError: Cannot read properties of undefined (reading 'schemaId'), message: /////w8q, messageType: {}"
+      }
+    },
+    {
+      "name": "prefix-7",
+      "data": "////////////ASo=",
+      "metadata": {
+        "$": "undefined"
+      },
+      "mode": "inspect",
+      "calls": [],
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Protobuf message: TypeError: Cannot read properties of undefined (reading 'schemaId'), message: ////////////ASo=, messageType: {}"
+      }
+    },
+    {
+      "name": "prefix-8",
+      "data": "",
+      "metadata": null,
+      "mode": "inspect",
+      "calls": [],
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Protobuf message: TypeError: Cannot read properties of null (reading 'schemaId'), message: , messageType: {}"
+      }
+    },
+    {
+      "name": "prefix-9",
+      "data": "AA==",
+      "metadata": null,
+      "mode": "inspect",
+      "calls": [],
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Protobuf message: TypeError: Cannot read properties of null (reading 'schemaId'), message: AA==, messageType: {}"
+      }
+    },
+    {
+      "name": "prefix-10",
+      "data": "ACo=",
+      "metadata": null,
+      "mode": "inspect",
+      "calls": [],
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Protobuf message: TypeError: Cannot read properties of null (reading 'schemaId'), message: ACo=, messageType: {}"
+      }
+    },
+    {
+      "name": "prefix-11",
+      "data": "AQAq",
+      "metadata": null,
+      "mode": "inspect",
+      "calls": [],
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Protobuf message: TypeError: Cannot read properties of null (reading 'schemaId'), message: AQAq, messageType: {}"
+      }
+    },
+    {
+      "name": "prefix-12",
+      "data": "AgAq",
+      "metadata": null,
+      "mode": "inspect",
+      "calls": [],
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Protobuf message: TypeError: Cannot read properties of null (reading 'schemaId'), message: AgAq, messageType: {}"
+      }
+    },
+    {
+      "name": "prefix-13",
+      "data": "gA==",
+      "metadata": null,
+      "mode": "inspect",
+      "calls": [],
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Protobuf message: TypeError: Cannot read properties of null (reading 'schemaId'), message: gA==, messageType: {}"
+      }
+    },
+    {
+      "name": "prefix-14",
+      "data": "/////w8q",
+      "metadata": null,
+      "mode": "inspect",
+      "calls": [],
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Protobuf message: TypeError: Cannot read properties of null (reading 'schemaId'), message: /////w8q, messageType: {}"
+      }
+    },
+    {
+      "name": "prefix-15",
+      "data": "////////////ASo=",
+      "metadata": null,
+      "mode": "inspect",
+      "calls": [],
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Protobuf message: TypeError: Cannot read properties of null (reading 'schemaId'), message: ////////////ASo=, messageType: {}"
+      }
+    },
+    {
+      "name": "prefix-16",
+      "data": "",
+      "metadata": {},
+      "mode": "inspect",
+      "calls": [
+        {
+          "position": 0,
+          "explicitLength": true,
+          "buffer": []
+        }
+      ],
+      "value": {
+        "position": 0,
+        "length": 0,
+        "bytes": []
+      },
+      "error": null
+    },
+    {
+      "name": "prefix-17",
+      "data": "AA==",
+      "metadata": {},
+      "mode": "inspect",
+      "calls": [
+        {
+          "position": 0,
+          "explicitLength": true,
+          "buffer": [
+            0
+          ]
+        }
+      ],
+      "value": {
+        "position": 0,
+        "length": 1,
+        "bytes": [
+          0
+        ]
+      },
+      "error": null
+    },
+    {
+      "name": "prefix-18",
+      "data": "ACo=",
+      "metadata": {},
+      "mode": "inspect",
+      "calls": [
+        {
+          "position": 0,
+          "explicitLength": true,
+          "buffer": [
+            0,
+            42
+          ]
+        }
+      ],
+      "value": {
+        "position": 0,
+        "length": 2,
+        "bytes": [
+          0,
+          42
+        ]
+      },
+      "error": null
+    },
+    {
+      "name": "prefix-19",
+      "data": "AQAq",
+      "metadata": {},
+      "mode": "inspect",
+      "calls": [
+        {
+          "position": 0,
+          "explicitLength": true,
+          "buffer": [
+            1,
+            0,
+            42
+          ]
+        }
+      ],
+      "value": {
+        "position": 0,
+        "length": 3,
+        "bytes": [
+          1,
+          0,
+          42
+        ]
+      },
+      "error": null
+    },
+    {
+      "name": "prefix-20",
+      "data": "AgAq",
+      "metadata": {},
+      "mode": "inspect",
+      "calls": [
+        {
+          "position": 0,
+          "explicitLength": true,
+          "buffer": [
+            2,
+            0,
+            42
+          ]
+        }
+      ],
+      "value": {
+        "position": 0,
+        "length": 3,
+        "bytes": [
+          2,
+          0,
+          42
+        ]
+      },
+      "error": null
+    },
+    {
+      "name": "prefix-21",
+      "data": "gA==",
+      "metadata": {},
+      "mode": "inspect",
+      "calls": [
+        {
+          "position": 0,
+          "explicitLength": true,
+          "buffer": [
+            128
+          ]
+        }
+      ],
+      "value": {
+        "position": 0,
+        "length": 1,
+        "bytes": [
+          128
+        ]
+      },
+      "error": null
+    },
+    {
+      "name": "prefix-22",
+      "data": "/////w8q",
+      "metadata": {},
+      "mode": "inspect",
+      "calls": [
+        {
+          "position": 0,
+          "explicitLength": true,
+          "buffer": [
+            255,
+            255,
+            255,
+            255,
+            15,
+            42
+          ]
+        }
+      ],
+      "value": {
+        "position": 0,
+        "length": 6,
+        "bytes": [
+          255,
+          255,
+          255,
+          255,
+          15,
+          42
+        ]
+      },
+      "error": null
+    },
+    {
+      "name": "prefix-23",
+      "data": "////////////ASo=",
+      "metadata": {},
+      "mode": "inspect",
+      "calls": [
+        {
+          "position": 0,
+          "explicitLength": true,
+          "buffer": [
+            255,
+            255,
+            255,
+            255,
+            255,
+            255,
+            255,
+            255,
+            255,
+            1,
+            42
+          ]
+        }
+      ],
+      "value": {
+        "position": 0,
+        "length": 11,
+        "bytes": [
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          1,
+          42
+        ]
+      },
+      "error": null
+    },
+    {
+      "name": "prefix-24",
+      "data": "",
+      "metadata": {},
+      "mode": "inspect",
+      "calls": [
+        {
+          "position": 0,
+          "explicitLength": true,
+          "buffer": []
+        }
+      ],
+      "value": {
+        "position": 0,
+        "length": 0,
+        "bytes": []
+      },
+      "error": null
+    },
+    {
+      "name": "prefix-25",
+      "data": "AA==",
+      "metadata": {},
+      "mode": "inspect",
+      "calls": [
+        {
+          "position": 0,
+          "explicitLength": true,
+          "buffer": [
+            0
+          ]
+        }
+      ],
+      "value": {
+        "position": 0,
+        "length": 1,
+        "bytes": [
+          0
+        ]
+      },
+      "error": null
+    },
+    {
+      "name": "prefix-26",
+      "data": "ACo=",
+      "metadata": {},
+      "mode": "inspect",
+      "calls": [
+        {
+          "position": 0,
+          "explicitLength": true,
+          "buffer": [
+            0,
+            42
+          ]
+        }
+      ],
+      "value": {
+        "position": 0,
+        "length": 2,
+        "bytes": [
+          0,
+          42
+        ]
+      },
+      "error": null
+    },
+    {
+      "name": "prefix-27",
+      "data": "AQAq",
+      "metadata": {},
+      "mode": "inspect",
+      "calls": [
+        {
+          "position": 0,
+          "explicitLength": true,
+          "buffer": [
+            1,
+            0,
+            42
+          ]
+        }
+      ],
+      "value": {
+        "position": 0,
+        "length": 3,
+        "bytes": [
+          1,
+          0,
+          42
+        ]
+      },
+      "error": null
+    },
+    {
+      "name": "prefix-28",
+      "data": "AgAq",
+      "metadata": {},
+      "mode": "inspect",
+      "calls": [
+        {
+          "position": 0,
+          "explicitLength": true,
+          "buffer": [
+            2,
+            0,
+            42
+          ]
+        }
+      ],
+      "value": {
+        "position": 0,
+        "length": 3,
+        "bytes": [
+          2,
+          0,
+          42
+        ]
+      },
+      "error": null
+    },
+    {
+      "name": "prefix-29",
+      "data": "gA==",
+      "metadata": {},
+      "mode": "inspect",
+      "calls": [
+        {
+          "position": 0,
+          "explicitLength": true,
+          "buffer": [
+            128
+          ]
+        }
+      ],
+      "value": {
+        "position": 0,
+        "length": 1,
+        "bytes": [
+          128
+        ]
+      },
+      "error": null
+    },
+    {
+      "name": "prefix-30",
+      "data": "/////w8q",
+      "metadata": {},
+      "mode": "inspect",
+      "calls": [
+        {
+          "position": 0,
+          "explicitLength": true,
+          "buffer": [
+            255,
+            255,
+            255,
+            255,
+            15,
+            42
+          ]
+        }
+      ],
+      "value": {
+        "position": 0,
+        "length": 6,
+        "bytes": [
+          255,
+          255,
+          255,
+          255,
+          15,
+          42
+        ]
+      },
+      "error": null
+    },
+    {
+      "name": "prefix-31",
+      "data": "////////////ASo=",
+      "metadata": {},
+      "mode": "inspect",
+      "calls": [
+        {
+          "position": 0,
+          "explicitLength": true,
+          "buffer": [
+            255,
+            255,
+            255,
+            255,
+            255,
+            255,
+            255,
+            255,
+            255,
+            1,
+            42
+          ]
+        }
+      ],
+      "value": {
+        "position": 0,
+        "length": 11,
+        "bytes": [
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          1,
+          42
+        ]
+      },
+      "error": null
+    },
+    {
+      "name": "prefix-32",
+      "data": "",
+      "metadata": {
+        "schemaId": null
+      },
+      "mode": "inspect",
+      "calls": [],
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Protobuf message: TypeError: Cannot read properties of null (reading 'length'), message: , messageType: {}"
+      }
+    },
+    {
+      "name": "prefix-33",
+      "data": "AA==",
+      "metadata": {
+        "schemaId": null
+      },
+      "mode": "inspect",
+      "calls": [],
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Protobuf message: TypeError: Cannot read properties of null (reading 'length'), message: AA==, messageType: {}"
+      }
+    },
+    {
+      "name": "prefix-34",
+      "data": "ACo=",
+      "metadata": {
+        "schemaId": null
+      },
+      "mode": "inspect",
+      "calls": [],
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Protobuf message: TypeError: Cannot read properties of null (reading 'length'), message: ACo=, messageType: {}"
+      }
+    },
+    {
+      "name": "prefix-35",
+      "data": "AQAq",
+      "metadata": {
+        "schemaId": null
+      },
+      "mode": "inspect",
+      "calls": [],
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Protobuf message: TypeError: Cannot read properties of null (reading 'length'), message: AQAq, messageType: {}"
+      }
+    },
+    {
+      "name": "prefix-36",
+      "data": "AgAq",
+      "metadata": {
+        "schemaId": null
+      },
+      "mode": "inspect",
+      "calls": [],
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Protobuf message: TypeError: Cannot read properties of null (reading 'length'), message: AgAq, messageType: {}"
+      }
+    },
+    {
+      "name": "prefix-37",
+      "data": "gA==",
+      "metadata": {
+        "schemaId": null
+      },
+      "mode": "inspect",
+      "calls": [],
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Protobuf message: TypeError: Cannot read properties of null (reading 'length'), message: gA==, messageType: {}"
+      }
+    },
+    {
+      "name": "prefix-38",
+      "data": "/////w8q",
+      "metadata": {
+        "schemaId": null
+      },
+      "mode": "inspect",
+      "calls": [],
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Protobuf message: TypeError: Cannot read properties of null (reading 'length'), message: /////w8q, messageType: {}"
+      }
+    },
+    {
+      "name": "prefix-39",
+      "data": "////////////ASo=",
+      "metadata": {
+        "schemaId": null
+      },
+      "mode": "inspect",
+      "calls": [],
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Protobuf message: TypeError: Cannot read properties of null (reading 'length'), message: ////////////ASo=, messageType: {}"
+      }
+    },
+    {
+      "name": "prefix-40",
+      "data": "",
+      "metadata": {
+        "schemaId": "123"
+      },
+      "mode": "inspect",
+      "calls": [],
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 0 + 10 > 0, message: , messageType: {}"
+      }
+    },
+    {
+      "name": "prefix-41",
+      "data": "AA==",
+      "metadata": {
+        "schemaId": "123"
+      },
+      "mode": "inspect",
+      "calls": [
+        {
+          "position": 1,
+          "explicitLength": false,
+          "buffer": [
+            0
+          ]
+        }
+      ],
+      "value": {
+        "position": 1,
+        "length": {
+          "$": "undefined"
+        },
+        "bytes": []
+      },
+      "error": null
+    },
+    {
+      "name": "prefix-42",
+      "data": "ACo=",
+      "metadata": {
+        "schemaId": "123"
+      },
+      "mode": "inspect",
+      "calls": [
+        {
+          "position": 1,
+          "explicitLength": false,
+          "buffer": [
+            0,
+            42
+          ]
+        }
+      ],
+      "value": {
+        "position": 1,
+        "length": {
+          "$": "undefined"
+        },
+        "bytes": [
+          42
+        ]
+      },
+      "error": null
+    },
+    {
+      "name": "prefix-43",
+      "data": "AQAq",
+      "metadata": {
+        "schemaId": "123"
+      },
+      "mode": "inspect",
+      "calls": [
+        {
+          "position": 2,
+          "explicitLength": false,
+          "buffer": [
+            1,
+            0,
+            42
+          ]
+        }
+      ],
+      "value": {
+        "position": 2,
+        "length": {
+          "$": "undefined"
+        },
+        "bytes": [
+          42
+        ]
+      },
+      "error": null
+    },
+    {
+      "name": "prefix-44",
+      "data": "AgAq",
+      "metadata": {
+        "schemaId": "123"
+      },
+      "mode": "inspect",
+      "calls": [
+        {
+          "position": 3,
+          "explicitLength": false,
+          "buffer": [
+            2,
+            0,
+            42
+          ]
+        }
+      ],
+      "value": {
+        "position": 3,
+        "length": {
+          "$": "undefined"
+        },
+        "bytes": []
+      },
+      "error": null
+    },
+    {
+      "name": "prefix-45",
+      "data": "gA==",
+      "metadata": {
+        "schemaId": "123"
+      },
+      "mode": "inspect",
+      "calls": [],
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 1 + 10 > 1, message: gA==, messageType: {}"
+      }
+    },
+    {
+      "name": "prefix-46",
+      "data": "/////w8q",
+      "metadata": {
+        "schemaId": "123"
+      },
+      "mode": "inspect",
+      "calls": [
+        {
+          "position": 4,
+          "explicitLength": false,
+          "buffer": [
+            255,
+            255,
+            255,
+            255,
+            15,
+            42
+          ]
+        }
+      ],
+      "value": {
+        "position": 4,
+        "length": {
+          "$": "undefined"
+        },
+        "bytes": [
+          15,
+          42
+        ]
+      },
+      "error": null
+    },
+    {
+      "name": "prefix-47",
+      "data": "////////////ASo=",
+      "metadata": {
+        "schemaId": "123"
+      },
+      "mode": "inspect",
+      "calls": [
+        {
+          "position": 9,
+          "explicitLength": false,
+          "buffer": [
+            255,
+            255,
+            255,
+            255,
+            255,
+            255,
+            255,
+            255,
+            255,
+            1,
+            42
+          ]
+        }
+      ],
+      "value": {
+        "position": 9,
+        "length": {
+          "$": "undefined"
+        },
+        "bytes": [
+          1,
+          42
+        ]
+      },
+      "error": null
+    },
+    {
+      "name": "prefix-48",
+      "data": "",
+      "metadata": {
+        "schemaId": "1234567890"
+      },
+      "mode": "inspect",
+      "calls": [],
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 0 + 10 > 0, message: , messageType: {}"
+      }
+    },
+    {
+      "name": "prefix-49",
+      "data": "AA==",
+      "metadata": {
+        "schemaId": "1234567890"
+      },
+      "mode": "inspect",
+      "calls": [
+        {
+          "position": 1,
+          "explicitLength": false,
+          "buffer": [
+            0
+          ]
+        }
+      ],
+      "value": {
+        "position": 1,
+        "length": {
+          "$": "undefined"
+        },
+        "bytes": []
+      },
+      "error": null
+    },
+    {
+      "name": "prefix-50",
+      "data": "ACo=",
+      "metadata": {
+        "schemaId": "1234567890"
+      },
+      "mode": "inspect",
+      "calls": [
+        {
+          "position": 1,
+          "explicitLength": false,
+          "buffer": [
+            0,
+            42
+          ]
+        }
+      ],
+      "value": {
+        "position": 1,
+        "length": {
+          "$": "undefined"
+        },
+        "bytes": [
+          42
+        ]
+      },
+      "error": null
+    },
+    {
+      "name": "prefix-51",
+      "data": "AQAq",
+      "metadata": {
+        "schemaId": "1234567890"
+      },
+      "mode": "inspect",
+      "calls": [
+        {
+          "position": 2,
+          "explicitLength": false,
+          "buffer": [
+            1,
+            0,
+            42
+          ]
+        }
+      ],
+      "value": {
+        "position": 2,
+        "length": {
+          "$": "undefined"
+        },
+        "bytes": [
+          42
+        ]
+      },
+      "error": null
+    },
+    {
+      "name": "prefix-52",
+      "data": "AgAq",
+      "metadata": {
+        "schemaId": "1234567890"
+      },
+      "mode": "inspect",
+      "calls": [
+        {
+          "position": 3,
+          "explicitLength": false,
+          "buffer": [
+            2,
+            0,
+            42
+          ]
+        }
+      ],
+      "value": {
+        "position": 3,
+        "length": {
+          "$": "undefined"
+        },
+        "bytes": []
+      },
+      "error": null
+    },
+    {
+      "name": "prefix-53",
+      "data": "gA==",
+      "metadata": {
+        "schemaId": "1234567890"
+      },
+      "mode": "inspect",
+      "calls": [],
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 1 + 10 > 1, message: gA==, messageType: {}"
+      }
+    },
+    {
+      "name": "prefix-54",
+      "data": "/////w8q",
+      "metadata": {
+        "schemaId": "1234567890"
+      },
+      "mode": "inspect",
+      "calls": [
+        {
+          "position": 4,
+          "explicitLength": false,
+          "buffer": [
+            255,
+            255,
+            255,
+            255,
+            15,
+            42
+          ]
+        }
+      ],
+      "value": {
+        "position": 4,
+        "length": {
+          "$": "undefined"
+        },
+        "bytes": [
+          15,
+          42
+        ]
+      },
+      "error": null
+    },
+    {
+      "name": "prefix-55",
+      "data": "////////////ASo=",
+      "metadata": {
+        "schemaId": "1234567890"
+      },
+      "mode": "inspect",
+      "calls": [
+        {
+          "position": 9,
+          "explicitLength": false,
+          "buffer": [
+            255,
+            255,
+            255,
+            255,
+            255,
+            255,
+            255,
+            255,
+            255,
+            1,
+            42
+          ]
+        }
+      ],
+      "value": {
+        "position": 9,
+        "length": {
+          "$": "undefined"
+        },
+        "bytes": [
+          1,
+          42
+        ]
+      },
+      "error": null
+    },
+    {
+      "name": "prefix-56",
+      "data": "",
+      "metadata": {
+        "schemaId": "12345678901"
+      },
+      "mode": "inspect",
+      "calls": [],
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 0 + 10 > 0, message: , messageType: {}"
+      }
+    },
+    {
+      "name": "prefix-57",
+      "data": "AA==",
+      "metadata": {
+        "schemaId": "12345678901"
+      },
+      "mode": "inspect",
+      "calls": [
+        {
+          "position": 1,
+          "explicitLength": false,
+          "buffer": [
+            0
+          ]
+        }
+      ],
+      "value": {
+        "position": 1,
+        "length": {
+          "$": "undefined"
+        },
+        "bytes": []
+      },
+      "error": null
+    },
+    {
+      "name": "prefix-58",
+      "data": "ACo=",
+      "metadata": {
+        "schemaId": "12345678901"
+      },
+      "mode": "inspect",
+      "calls": [
+        {
+          "position": 1,
+          "explicitLength": false,
+          "buffer": [
+            0,
+            42
+          ]
+        }
+      ],
+      "value": {
+        "position": 1,
+        "length": {
+          "$": "undefined"
+        },
+        "bytes": [
+          42
+        ]
+      },
+      "error": null
+    },
+    {
+      "name": "prefix-59",
+      "data": "AQAq",
+      "metadata": {
+        "schemaId": "12345678901"
+      },
+      "mode": "inspect",
+      "calls": [
+        {
+          "position": 1,
+          "explicitLength": false,
+          "buffer": [
+            1,
+            0,
+            42
+          ]
+        }
+      ],
+      "value": {
+        "position": 1,
+        "length": {
+          "$": "undefined"
+        },
+        "bytes": [
+          0,
+          42
+        ]
+      },
+      "error": null
+    },
+    {
+      "name": "prefix-60",
+      "data": "AgAq",
+      "metadata": {
+        "schemaId": "12345678901"
+      },
+      "mode": "inspect",
+      "calls": [
+        {
+          "position": 1,
+          "explicitLength": false,
+          "buffer": [
+            2,
+            0,
+            42
+          ]
+        }
+      ],
+      "value": {
+        "position": 1,
+        "length": {
+          "$": "undefined"
+        },
+        "bytes": [
+          0,
+          42
+        ]
+      },
+      "error": null
+    },
+    {
+      "name": "prefix-61",
+      "data": "gA==",
+      "metadata": {
+        "schemaId": "12345678901"
+      },
+      "mode": "inspect",
+      "calls": [],
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 1 + 10 > 1, message: gA==, messageType: {}"
+      }
+    },
+    {
+      "name": "prefix-62",
+      "data": "/////w8q",
+      "metadata": {
+        "schemaId": "12345678901"
+      },
+      "mode": "inspect",
+      "calls": [
+        {
+          "position": 5,
+          "explicitLength": false,
+          "buffer": [
+            255,
+            255,
+            255,
+            255,
+            15,
+            42
+          ]
+        }
+      ],
+      "value": {
+        "position": 5,
+        "length": {
+          "$": "undefined"
+        },
+        "bytes": [
+          42
+        ]
+      },
+      "error": null
+    },
+    {
+      "name": "prefix-63",
+      "data": "////////////ASo=",
+      "metadata": {
+        "schemaId": "12345678901"
+      },
+      "mode": "inspect",
+      "calls": [
+        {
+          "position": 10,
+          "explicitLength": false,
+          "buffer": [
+            255,
+            255,
+            255,
+            255,
+            255,
+            255,
+            255,
+            255,
+            255,
+            1,
+            42
+          ]
+        }
+      ],
+      "value": {
+        "position": 10,
+        "length": {
+          "$": "undefined"
+        },
+        "bytes": [
+          42
+        ]
+      },
+      "error": null
+    },
+    {
+      "name": "prefix-64",
+      "data": "",
+      "metadata": {
+        "schemaId": "abcdefab-cdef-1234-5678-abcdefabcdef"
+      },
+      "mode": "inspect",
+      "calls": [],
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 0 + 10 > 0, message: , messageType: {}"
+      }
+    },
+    {
+      "name": "prefix-65",
+      "data": "AA==",
+      "metadata": {
+        "schemaId": "abcdefab-cdef-1234-5678-abcdefabcdef"
+      },
+      "mode": "inspect",
+      "calls": [
+        {
+          "position": 1,
+          "explicitLength": false,
+          "buffer": [
+            0
+          ]
+        }
+      ],
+      "value": {
+        "position": 1,
+        "length": {
+          "$": "undefined"
+        },
+        "bytes": []
+      },
+      "error": null
+    },
+    {
+      "name": "prefix-66",
+      "data": "ACo=",
+      "metadata": {
+        "schemaId": "abcdefab-cdef-1234-5678-abcdefabcdef"
+      },
+      "mode": "inspect",
+      "calls": [
+        {
+          "position": 1,
+          "explicitLength": false,
+          "buffer": [
+            0,
+            42
+          ]
+        }
+      ],
+      "value": {
+        "position": 1,
+        "length": {
+          "$": "undefined"
+        },
+        "bytes": [
+          42
+        ]
+      },
+      "error": null
+    },
+    {
+      "name": "prefix-67",
+      "data": "AQAq",
+      "metadata": {
+        "schemaId": "abcdefab-cdef-1234-5678-abcdefabcdef"
+      },
+      "mode": "inspect",
+      "calls": [
+        {
+          "position": 1,
+          "explicitLength": false,
+          "buffer": [
+            1,
+            0,
+            42
+          ]
+        }
+      ],
+      "value": {
+        "position": 1,
+        "length": {
+          "$": "undefined"
+        },
+        "bytes": [
+          0,
+          42
+        ]
+      },
+      "error": null
+    },
+    {
+      "name": "prefix-68",
+      "data": "AgAq",
+      "metadata": {
+        "schemaId": "abcdefab-cdef-1234-5678-abcdefabcdef"
+      },
+      "mode": "inspect",
+      "calls": [
+        {
+          "position": 1,
+          "explicitLength": false,
+          "buffer": [
+            2,
+            0,
+            42
+          ]
+        }
+      ],
+      "value": {
+        "position": 1,
+        "length": {
+          "$": "undefined"
+        },
+        "bytes": [
+          0,
+          42
+        ]
+      },
+      "error": null
+    },
+    {
+      "name": "prefix-69",
+      "data": "gA==",
+      "metadata": {
+        "schemaId": "abcdefab-cdef-1234-5678-abcdefabcdef"
+      },
+      "mode": "inspect",
+      "calls": [],
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 1 + 10 > 1, message: gA==, messageType: {}"
+      }
+    },
+    {
+      "name": "prefix-70",
+      "data": "/////w8q",
+      "metadata": {
+        "schemaId": "abcdefab-cdef-1234-5678-abcdefabcdef"
+      },
+      "mode": "inspect",
+      "calls": [
+        {
+          "position": 5,
+          "explicitLength": false,
+          "buffer": [
+            255,
+            255,
+            255,
+            255,
+            15,
+            42
+          ]
+        }
+      ],
+      "value": {
+        "position": 5,
+        "length": {
+          "$": "undefined"
+        },
+        "bytes": [
+          42
+        ]
+      },
+      "error": null
+    },
+    {
+      "name": "prefix-71",
+      "data": "////////////ASo=",
+      "metadata": {
+        "schemaId": "abcdefab-cdef-1234-5678-abcdefabcdef"
+      },
+      "mode": "inspect",
+      "calls": [
+        {
+          "position": 10,
+          "explicitLength": false,
+          "buffer": [
+            255,
+            255,
+            255,
+            255,
+            255,
+            255,
+            255,
+            255,
+            255,
+            1,
+            42
+          ]
+        }
+      ],
+      "value": {
+        "position": 10,
+        "length": {
+          "$": "undefined"
+        },
+        "bytes": [
+          42
+        ]
+      },
+      "error": null
+    },
+    {
+      "name": "prefix-72",
+      "data": "",
+      "metadata": {
+        "schemaId": 42
+      },
+      "mode": "inspect",
+      "calls": [],
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 0 + 10 > 0, message: , messageType: {}"
+      }
+    },
+    {
+      "name": "prefix-73",
+      "data": "AA==",
+      "metadata": {
+        "schemaId": 42
+      },
+      "mode": "inspect",
+      "calls": [
+        {
+          "position": 1,
+          "explicitLength": false,
+          "buffer": [
+            0
+          ]
+        }
+      ],
+      "value": {
+        "position": 1,
+        "length": {
+          "$": "undefined"
+        },
+        "bytes": []
+      },
+      "error": null
+    },
+    {
+      "name": "prefix-74",
+      "data": "ACo=",
+      "metadata": {
+        "schemaId": 42
+      },
+      "mode": "inspect",
+      "calls": [
+        {
+          "position": 1,
+          "explicitLength": false,
+          "buffer": [
+            0,
+            42
+          ]
+        }
+      ],
+      "value": {
+        "position": 1,
+        "length": {
+          "$": "undefined"
+        },
+        "bytes": [
+          42
+        ]
+      },
+      "error": null
+    },
+    {
+      "name": "prefix-75",
+      "data": "AQAq",
+      "metadata": {
+        "schemaId": 42
+      },
+      "mode": "inspect",
+      "calls": [
+        {
+          "position": 2,
+          "explicitLength": false,
+          "buffer": [
+            1,
+            0,
+            42
+          ]
+        }
+      ],
+      "value": {
+        "position": 2,
+        "length": {
+          "$": "undefined"
+        },
+        "bytes": [
+          42
+        ]
+      },
+      "error": null
+    },
+    {
+      "name": "prefix-76",
+      "data": "AgAq",
+      "metadata": {
+        "schemaId": 42
+      },
+      "mode": "inspect",
+      "calls": [
+        {
+          "position": 3,
+          "explicitLength": false,
+          "buffer": [
+            2,
+            0,
+            42
+          ]
+        }
+      ],
+      "value": {
+        "position": 3,
+        "length": {
+          "$": "undefined"
+        },
+        "bytes": []
+      },
+      "error": null
+    },
+    {
+      "name": "prefix-77",
+      "data": "gA==",
+      "metadata": {
+        "schemaId": 42
+      },
+      "mode": "inspect",
+      "calls": [],
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 1 + 10 > 1, message: gA==, messageType: {}"
+      }
+    },
+    {
+      "name": "prefix-78",
+      "data": "/////w8q",
+      "metadata": {
+        "schemaId": 42
+      },
+      "mode": "inspect",
+      "calls": [
+        {
+          "position": 4,
+          "explicitLength": false,
+          "buffer": [
+            255,
+            255,
+            255,
+            255,
+            15,
+            42
+          ]
+        }
+      ],
+      "value": {
+        "position": 4,
+        "length": {
+          "$": "undefined"
+        },
+        "bytes": [
+          15,
+          42
+        ]
+      },
+      "error": null
+    },
+    {
+      "name": "prefix-79",
+      "data": "////////////ASo=",
+      "metadata": {
+        "schemaId": 42
+      },
+      "mode": "inspect",
+      "calls": [
+        {
+          "position": 9,
+          "explicitLength": false,
+          "buffer": [
+            255,
+            255,
+            255,
+            255,
+            255,
+            255,
+            255,
+            255,
+            255,
+            1,
+            42
+          ]
+        }
+      ],
+      "value": {
+        "position": 9,
+        "length": {
+          "$": "undefined"
+        },
+        "bytes": [
+          1,
+          42
+        ]
+      },
+      "error": null
+    },
+    {
+      "name": "prefix-80",
+      "data": "",
+      "metadata": {
+        "schemaId": false
+      },
+      "mode": "inspect",
+      "calls": [],
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 0 + 10 > 0, message: , messageType: {}"
+      }
+    },
+    {
+      "name": "prefix-81",
+      "data": "AA==",
+      "metadata": {
+        "schemaId": false
+      },
+      "mode": "inspect",
+      "calls": [
+        {
+          "position": 1,
+          "explicitLength": false,
+          "buffer": [
+            0
+          ]
+        }
+      ],
+      "value": {
+        "position": 1,
+        "length": {
+          "$": "undefined"
+        },
+        "bytes": []
+      },
+      "error": null
+    },
+    {
+      "name": "prefix-82",
+      "data": "ACo=",
+      "metadata": {
+        "schemaId": false
+      },
+      "mode": "inspect",
+      "calls": [
+        {
+          "position": 1,
+          "explicitLength": false,
+          "buffer": [
+            0,
+            42
+          ]
+        }
+      ],
+      "value": {
+        "position": 1,
+        "length": {
+          "$": "undefined"
+        },
+        "bytes": [
+          42
+        ]
+      },
+      "error": null
+    },
+    {
+      "name": "prefix-83",
+      "data": "AQAq",
+      "metadata": {
+        "schemaId": false
+      },
+      "mode": "inspect",
+      "calls": [
+        {
+          "position": 2,
+          "explicitLength": false,
+          "buffer": [
+            1,
+            0,
+            42
+          ]
+        }
+      ],
+      "value": {
+        "position": 2,
+        "length": {
+          "$": "undefined"
+        },
+        "bytes": [
+          42
+        ]
+      },
+      "error": null
+    },
+    {
+      "name": "prefix-84",
+      "data": "AgAq",
+      "metadata": {
+        "schemaId": false
+      },
+      "mode": "inspect",
+      "calls": [
+        {
+          "position": 3,
+          "explicitLength": false,
+          "buffer": [
+            2,
+            0,
+            42
+          ]
+        }
+      ],
+      "value": {
+        "position": 3,
+        "length": {
+          "$": "undefined"
+        },
+        "bytes": []
+      },
+      "error": null
+    },
+    {
+      "name": "prefix-85",
+      "data": "gA==",
+      "metadata": {
+        "schemaId": false
+      },
+      "mode": "inspect",
+      "calls": [],
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 1 + 10 > 1, message: gA==, messageType: {}"
+      }
+    },
+    {
+      "name": "prefix-86",
+      "data": "/////w8q",
+      "metadata": {
+        "schemaId": false
+      },
+      "mode": "inspect",
+      "calls": [
+        {
+          "position": 4,
+          "explicitLength": false,
+          "buffer": [
+            255,
+            255,
+            255,
+            255,
+            15,
+            42
+          ]
+        }
+      ],
+      "value": {
+        "position": 4,
+        "length": {
+          "$": "undefined"
+        },
+        "bytes": [
+          15,
+          42
+        ]
+      },
+      "error": null
+    },
+    {
+      "name": "prefix-87",
+      "data": "////////////ASo=",
+      "metadata": {
+        "schemaId": false
+      },
+      "mode": "inspect",
+      "calls": [
+        {
+          "position": 9,
+          "explicitLength": false,
+          "buffer": [
+            255,
+            255,
+            255,
+            255,
+            255,
+            255,
+            255,
+            255,
+            255,
+            1,
+            42
+          ]
+        }
+      ],
+      "value": {
+        "position": 9,
+        "length": {
+          "$": "undefined"
+        },
+        "bytes": [
+          1,
+          42
+        ]
+      },
+      "error": null
+    },
+    {
+      "name": "prefix-88",
+      "data": "",
+      "metadata": {
+        "schemaId": "😀😀😀😀😀"
+      },
+      "mode": "inspect",
+      "calls": [],
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 0 + 10 > 0, message: , messageType: {}"
+      }
+    },
+    {
+      "name": "prefix-89",
+      "data": "AA==",
+      "metadata": {
+        "schemaId": "😀😀😀😀😀"
+      },
+      "mode": "inspect",
+      "calls": [
+        {
+          "position": 1,
+          "explicitLength": false,
+          "buffer": [
+            0
+          ]
+        }
+      ],
+      "value": {
+        "position": 1,
+        "length": {
+          "$": "undefined"
+        },
+        "bytes": []
+      },
+      "error": null
+    },
+    {
+      "name": "prefix-90",
+      "data": "ACo=",
+      "metadata": {
+        "schemaId": "😀😀😀😀😀"
+      },
+      "mode": "inspect",
+      "calls": [
+        {
+          "position": 1,
+          "explicitLength": false,
+          "buffer": [
+            0,
+            42
+          ]
+        }
+      ],
+      "value": {
+        "position": 1,
+        "length": {
+          "$": "undefined"
+        },
+        "bytes": [
+          42
+        ]
+      },
+      "error": null
+    },
+    {
+      "name": "prefix-91",
+      "data": "AQAq",
+      "metadata": {
+        "schemaId": "😀😀😀😀😀"
+      },
+      "mode": "inspect",
+      "calls": [
+        {
+          "position": 2,
+          "explicitLength": false,
+          "buffer": [
+            1,
+            0,
+            42
+          ]
+        }
+      ],
+      "value": {
+        "position": 2,
+        "length": {
+          "$": "undefined"
+        },
+        "bytes": [
+          42
+        ]
+      },
+      "error": null
+    },
+    {
+      "name": "prefix-92",
+      "data": "AgAq",
+      "metadata": {
+        "schemaId": "😀😀😀😀😀"
+      },
+      "mode": "inspect",
+      "calls": [
+        {
+          "position": 3,
+          "explicitLength": false,
+          "buffer": [
+            2,
+            0,
+            42
+          ]
+        }
+      ],
+      "value": {
+        "position": 3,
+        "length": {
+          "$": "undefined"
+        },
+        "bytes": []
+      },
+      "error": null
+    },
+    {
+      "name": "prefix-93",
+      "data": "gA==",
+      "metadata": {
+        "schemaId": "😀😀😀😀😀"
+      },
+      "mode": "inspect",
+      "calls": [],
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 1 + 10 > 1, message: gA==, messageType: {}"
+      }
+    },
+    {
+      "name": "prefix-94",
+      "data": "/////w8q",
+      "metadata": {
+        "schemaId": "😀😀😀😀😀"
+      },
+      "mode": "inspect",
+      "calls": [
+        {
+          "position": 4,
+          "explicitLength": false,
+          "buffer": [
+            255,
+            255,
+            255,
+            255,
+            15,
+            42
+          ]
+        }
+      ],
+      "value": {
+        "position": 4,
+        "length": {
+          "$": "undefined"
+        },
+        "bytes": [
+          15,
+          42
+        ]
+      },
+      "error": null
+    },
+    {
+      "name": "prefix-95",
+      "data": "////////////ASo=",
+      "metadata": {
+        "schemaId": "😀😀😀😀😀"
+      },
+      "mode": "inspect",
+      "calls": [
+        {
+          "position": 9,
+          "explicitLength": false,
+          "buffer": [
+            255,
+            255,
+            255,
+            255,
+            255,
+            255,
+            255,
+            255,
+            255,
+            1,
+            42
+          ]
+        }
+      ],
+      "value": {
+        "position": 9,
+        "length": {
+          "$": "undefined"
+        },
+        "bytes": [
+          1,
+          42
+        ]
+      },
+      "error": null
+    },
+    {
+      "name": "prefix-96",
+      "data": "",
+      "metadata": {
+        "schemaId": "😀😀😀😀😀😀"
+      },
+      "mode": "inspect",
+      "calls": [],
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 0 + 10 > 0, message: , messageType: {}"
+      }
+    },
+    {
+      "name": "prefix-97",
+      "data": "AA==",
+      "metadata": {
+        "schemaId": "😀😀😀😀😀😀"
+      },
+      "mode": "inspect",
+      "calls": [
+        {
+          "position": 1,
+          "explicitLength": false,
+          "buffer": [
+            0
+          ]
+        }
+      ],
+      "value": {
+        "position": 1,
+        "length": {
+          "$": "undefined"
+        },
+        "bytes": []
+      },
+      "error": null
+    },
+    {
+      "name": "prefix-98",
+      "data": "ACo=",
+      "metadata": {
+        "schemaId": "😀😀😀😀😀😀"
+      },
+      "mode": "inspect",
+      "calls": [
+        {
+          "position": 1,
+          "explicitLength": false,
+          "buffer": [
+            0,
+            42
+          ]
+        }
+      ],
+      "value": {
+        "position": 1,
+        "length": {
+          "$": "undefined"
+        },
+        "bytes": [
+          42
+        ]
+      },
+      "error": null
+    },
+    {
+      "name": "prefix-99",
+      "data": "AQAq",
+      "metadata": {
+        "schemaId": "😀😀😀😀😀😀"
+      },
+      "mode": "inspect",
+      "calls": [
+        {
+          "position": 1,
+          "explicitLength": false,
+          "buffer": [
+            1,
+            0,
+            42
+          ]
+        }
+      ],
+      "value": {
+        "position": 1,
+        "length": {
+          "$": "undefined"
+        },
+        "bytes": [
+          0,
+          42
+        ]
+      },
+      "error": null
+    },
+    {
+      "name": "prefix-100",
+      "data": "AgAq",
+      "metadata": {
+        "schemaId": "😀😀😀😀😀😀"
+      },
+      "mode": "inspect",
+      "calls": [
+        {
+          "position": 1,
+          "explicitLength": false,
+          "buffer": [
+            2,
+            0,
+            42
+          ]
+        }
+      ],
+      "value": {
+        "position": 1,
+        "length": {
+          "$": "undefined"
+        },
+        "bytes": [
+          0,
+          42
+        ]
+      },
+      "error": null
+    },
+    {
+      "name": "prefix-101",
+      "data": "gA==",
+      "metadata": {
+        "schemaId": "😀😀😀😀😀😀"
+      },
+      "mode": "inspect",
+      "calls": [],
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 1 + 10 > 1, message: gA==, messageType: {}"
+      }
+    },
+    {
+      "name": "prefix-102",
+      "data": "/////w8q",
+      "metadata": {
+        "schemaId": "😀😀😀😀😀😀"
+      },
+      "mode": "inspect",
+      "calls": [
+        {
+          "position": 5,
+          "explicitLength": false,
+          "buffer": [
+            255,
+            255,
+            255,
+            255,
+            15,
+            42
+          ]
+        }
+      ],
+      "value": {
+        "position": 5,
+        "length": {
+          "$": "undefined"
+        },
+        "bytes": [
+          42
+        ]
+      },
+      "error": null
+    },
+    {
+      "name": "prefix-103",
+      "data": "////////////ASo=",
+      "metadata": {
+        "schemaId": "😀😀😀😀😀😀"
+      },
+      "mode": "inspect",
+      "calls": [
+        {
+          "position": 10,
+          "explicitLength": false,
+          "buffer": [
+            255,
+            255,
+            255,
+            255,
+            255,
+            255,
+            255,
+            255,
+            255,
+            1,
+            42
+          ]
+        }
+      ],
+      "value": {
+        "position": 10,
+        "length": {
+          "$": "undefined"
+        },
+        "bytes": [
+          42
+        ]
+      },
+      "error": null
+    },
+    {
+      "name": "adaptive-104",
+      "data": "AgAq",
+      "metadata": {
+        "schemaId": "17"
+      },
+      "mode": "marker",
+      "calls": [
+        {
+          "position": 3,
+          "explicitLength": false,
+          "buffer": [
+            2,
+            0,
+            42
+          ]
+        },
+        {
+          "position": 2,
+          "explicitLength": false,
+          "buffer": [
+            2,
+            0,
+            42
+          ]
+        }
+      ],
+      "value": {
+        "position": 2,
+        "length": {
+          "$": "undefined"
+        },
+        "bytes": [
+          42
+        ]
+      },
+      "error": null
+    },
+    {
+      "name": "adaptive-105",
+      "data": "AgAq",
+      "metadata": {
+        "schemaId": "17"
+      },
+      "mode": "marker",
+      "calls": [
+        {
+          "position": 2,
+          "explicitLength": false,
+          "buffer": [
+            2,
+            0,
+            42
+          ]
+        }
+      ],
+      "value": {
+        "position": 2,
+        "length": {
+          "$": "undefined"
+        },
+        "bytes": [
+          42
+        ]
+      },
+      "error": null
+    },
+    {
+      "name": "adaptive-106",
+      "data": "AQAq",
+      "metadata": {
+        "schemaId": "17"
+      },
+      "mode": "marker",
+      "calls": [
+        {
+          "position": 0,
+          "explicitLength": false,
+          "buffer": [
+            1,
+            0,
+            42
+          ]
+        },
+        {
+          "position": 2,
+          "explicitLength": false,
+          "buffer": [
+            1,
+            0,
+            42
+          ]
+        }
+      ],
+      "value": {
+        "position": 2,
+        "length": {
+          "$": "undefined"
+        },
+        "bytes": [
+          42
+        ]
+      },
+      "error": null
+    },
+    {
+      "name": "adaptive-107",
+      "data": "AQAq",
+      "metadata": {
+        "schemaId": "17"
+      },
+      "mode": "marker",
+      "calls": [
+        {
+          "position": 2,
+          "explicitLength": false,
+          "buffer": [
+            1,
+            0,
+            42
+          ]
+        }
+      ],
+      "value": {
+        "position": 2,
+        "length": {
+          "$": "undefined"
+        },
+        "bytes": [
+          42
+        ]
+      },
+      "error": null
+    },
+    {
+      "name": "adaptive-108",
+      "data": "gAAq",
+      "metadata": {
+        "schemaId": "17"
+      },
+      "mode": "marker",
+      "calls": [
+        {
+          "position": 2,
+          "explicitLength": false,
+          "buffer": [
+            128,
+            0,
+            42
+          ]
+        }
+      ],
+      "value": {
+        "position": 2,
+        "length": {
+          "$": "undefined"
+        },
+        "bytes": [
+          42
+        ]
+      },
+      "error": null
+    },
+    {
+      "name": "adaptive-109",
+      "data": "ACo=",
+      "metadata": {
+        "schemaId": "17"
+      },
+      "mode": "marker",
+      "calls": [
+        {
+          "position": 1,
+          "explicitLength": false,
+          "buffer": [
+            0,
+            42
+          ]
+        }
+      ],
+      "value": {
+        "position": 1,
+        "length": {
+          "$": "undefined"
+        },
+        "bytes": [
+          42
+        ]
+      },
+      "error": null
+    },
+    {
+      "name": "adaptive-110",
+      "data": "AwAAKg==",
+      "metadata": {
+        "schemaId": "17"
+      },
+      "mode": "marker",
+      "calls": [
+        {
+          "position": 4,
+          "explicitLength": false,
+          "buffer": [
+            3,
+            0,
+            0,
+            42
+          ]
+        },
+        {
+          "position": -1,
+          "explicitLength": false,
+          "buffer": [
+            3,
+            0,
+            0,
+            42
+          ]
+        }
+      ],
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Protobuf message: Error: expected marker at 4, message: AwAAKg==, messageType: {}"
+      }
+    },
+    {
+      "name": "adaptive-111",
+      "data": "BAAAKg==",
+      "metadata": {
+        "schemaId": "17"
+      },
+      "mode": "marker",
+      "calls": [
+        {
+          "position": 3,
+          "explicitLength": false,
+          "buffer": [
+            4,
+            0,
+            0,
+            42
+          ]
+        }
+      ],
+      "value": {
+        "position": 3,
+        "length": {
+          "$": "undefined"
+        },
+        "bytes": [
+          42
+        ]
+      },
+      "error": null
+    },
+    {
+      "name": "first-error-112",
+      "data": "ACo=",
+      "metadata": {
+        "schemaId": "17"
+      },
+      "mode": "reject",
+      "calls": [
+        {
+          "position": 1,
+          "explicitLength": false,
+          "buffer": [
+            0,
+            42
+          ]
+        },
+        {
+          "position": 1,
+          "explicitLength": false,
+          "buffer": [
+            0,
+            42
+          ]
+        }
+      ],
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Protobuf message: RangeError: decoder rejected at 1, message: ACo=, messageType: {}"
+      }
+    },
+    {
+      "name": "first-error-113",
+      "data": "AgAq",
+      "metadata": {
+        "schemaId": "17"
+      },
+      "mode": "reject",
+      "calls": [
+        {
+          "position": 2,
+          "explicitLength": false,
+          "buffer": [
+            2,
+            0,
+            42
+          ]
+        },
+        {
+          "position": 3,
+          "explicitLength": false,
+          "buffer": [
+            2,
+            0,
+            42
+          ]
+        }
+      ],
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Protobuf message: RangeError: decoder rejected at 2, message: AgAq, messageType: {}"
+      }
+    },
+    {
+      "name": "first-error-114",
+      "data": "",
+      "metadata": {
+        "schemaId": "17"
+      },
+      "mode": "reject",
+      "calls": [],
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 0 + 10 > 0, message: , messageType: {}"
+      }
+    },
+    {
+      "name": "first-error-115",
+      "data": "gA==",
+      "metadata": {
+        "schemaId": "17"
+      },
+      "mode": "reject",
+      "calls": [],
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 1 + 10 > 1, message: gA==, messageType: {}"
+      }
+    },
+    {
+      "name": "first-error-116",
+      "data": "BQA=",
+      "metadata": {
+        "schemaId": "17"
+      },
+      "mode": "reject",
+      "calls": [
+        {
+          "position": -2,
+          "explicitLength": false,
+          "buffer": [
+            5,
+            0
+          ]
+        }
+      ],
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Protobuf message: RangeError: decoder rejected at -2, message: BQA=, messageType: {}"
+      }
+    },
+    {
+      "name": "first-error-117",
+      "data": "/////w8=",
+      "metadata": {
+        "schemaId": "17"
+      },
+      "mode": "reject",
+      "calls": [
+        {
+          "position": -2147483643,
+          "explicitLength": false,
+          "buffer": [
+            255,
+            255,
+            255,
+            255,
+            15
+          ]
+        },
+        {
+          "position": 4,
+          "explicitLength": false,
+          "buffer": [
+            255,
+            255,
+            255,
+            255,
+            15
+          ]
+        }
+      ],
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Protobuf message: RangeError: decoder rejected at -2147483643, message: /////w8=, messageType: {}"
+      }
+    },
+    {
+      "name": "base64-118",
+      "data": "!!!ACo",
+      "metadata": {},
+      "mode": "inspect",
+      "calls": [
+        {
+          "position": 0,
+          "explicitLength": true,
+          "buffer": [
+            0,
+            42
+          ]
+        }
+      ],
+      "value": {
+        "position": 0,
+        "length": 2,
+        "bytes": [
+          0,
+          42
+        ]
+      },
+      "error": null
+    },
+    {
+      "name": "base64-119",
+      "data": "ACo",
+      "metadata": {},
+      "mode": "inspect",
+      "calls": [
+        {
+          "position": 0,
+          "explicitLength": true,
+          "buffer": [
+            0,
+            42
+          ]
+        }
+      ],
+      "value": {
+        "position": 0,
+        "length": 2,
+        "bytes": [
+          0,
+          42
+        ]
+      },
+      "error": null
+    },
+    {
+      "name": "base64-120",
+      "data": "ACo=\n",
+      "metadata": {},
+      "mode": "inspect",
+      "calls": [
+        {
+          "position": 0,
+          "explicitLength": true,
+          "buffer": [
+            0,
+            42
+          ]
+        }
+      ],
+      "value": {
+        "position": 0,
+        "length": 2,
+        "bytes": [
+          0,
+          42
+        ]
+      },
+      "error": null
+    },
+    {
+      "name": "base64-121",
+      "data": "____",
+      "metadata": {},
+      "mode": "inspect",
+      "calls": [
+        {
+          "position": 0,
+          "explicitLength": true,
+          "buffer": [
+            255,
+            255,
+            255
+          ]
+        }
+      ],
+      "value": {
+        "position": 0,
+        "length": 3,
+        "bytes": [
+          255,
+          255,
+          255
+        ]
+      },
+      "error": null
+    },
+    {
+      "name": "base64-122",
+      "data": "-w==",
+      "metadata": {},
+      "mode": "inspect",
+      "calls": [
+        {
+          "position": 0,
+          "explicitLength": true,
+          "buffer": [
+            251
+          ]
+        }
+      ],
+      "value": {
+        "position": 0,
+        "length": 1,
+        "bytes": [
+          251
+        ]
+      },
+      "error": null
+    },
+    {
+      "name": "schema-length-123",
+      "data": "ASo=",
+      "metadata": {
+        "schemaId": {
+          "length": null
+        }
+      },
+      "mode": "inspect",
+      "calls": [
+        {
+          "position": 0,
+          "explicitLength": false,
+          "buffer": [
+            1,
+            42
+          ]
+        }
+      ],
+      "value": {
+        "position": 0,
+        "length": {
+          "$": "undefined"
+        },
+        "bytes": [
+          1,
+          42
+        ]
+      },
+      "error": null
+    },
+    {
+      "name": "schema-length-124",
+      "data": "ACo=",
+      "metadata": {
+        "schemaId": {
+          "length": null
+        }
+      },
+      "mode": "inspect",
+      "calls": [
+        {
+          "position": 1,
+          "explicitLength": false,
+          "buffer": [
+            0,
+            42
+          ]
+        }
+      ],
+      "value": {
+        "position": 1,
+        "length": {
+          "$": "undefined"
+        },
+        "bytes": [
+          42
+        ]
+      },
+      "error": null
+    },
+    {
+      "name": "schema-length-125",
+      "data": "gA==",
+      "metadata": {
+        "schemaId": {
+          "length": null
+        }
+      },
+      "mode": "inspect",
+      "calls": [],
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 1 + 10 > 1, message: gA==, messageType: {}"
+      }
+    },
+    {
+      "name": "schema-length-126",
+      "data": "",
+      "metadata": {
+        "schemaId": {
+          "length": null
+        }
+      },
+      "mode": "inspect",
+      "calls": [],
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 0 + 10 > 0, message: , messageType: {}"
+      }
+    },
+    {
+      "name": "schema-length-127",
+      "data": "ASo=",
+      "metadata": {
+        "schemaId": {
+          "length": false
+        }
+      },
+      "mode": "inspect",
+      "calls": [
+        {
+          "position": 0,
+          "explicitLength": false,
+          "buffer": [
+            1,
+            42
+          ]
+        }
+      ],
+      "value": {
+        "position": 0,
+        "length": {
+          "$": "undefined"
+        },
+        "bytes": [
+          1,
+          42
+        ]
+      },
+      "error": null
+    },
+    {
+      "name": "schema-length-128",
+      "data": "ACo=",
+      "metadata": {
+        "schemaId": {
+          "length": false
+        }
+      },
+      "mode": "inspect",
+      "calls": [
+        {
+          "position": 1,
+          "explicitLength": false,
+          "buffer": [
+            0,
+            42
+          ]
+        }
+      ],
+      "value": {
+        "position": 1,
+        "length": {
+          "$": "undefined"
+        },
+        "bytes": [
+          42
+        ]
+      },
+      "error": null
+    },
+    {
+      "name": "schema-length-129",
+      "data": "gA==",
+      "metadata": {
+        "schemaId": {
+          "length": false
+        }
+      },
+      "mode": "inspect",
+      "calls": [],
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 1 + 10 > 1, message: gA==, messageType: {}"
+      }
+    },
+    {
+      "name": "schema-length-130",
+      "data": "",
+      "metadata": {
+        "schemaId": {
+          "length": false
+        }
+      },
+      "mode": "inspect",
+      "calls": [],
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 0 + 10 > 0, message: , messageType: {}"
+      }
+    },
+    {
+      "name": "schema-length-131",
+      "data": "ASo=",
+      "metadata": {
+        "schemaId": {
+          "length": true
+        }
+      },
+      "mode": "inspect",
+      "calls": [
+        {
+          "position": 0,
+          "explicitLength": false,
+          "buffer": [
+            1,
+            42
+          ]
+        }
+      ],
+      "value": {
+        "position": 0,
+        "length": {
+          "$": "undefined"
+        },
+        "bytes": [
+          1,
+          42
+        ]
+      },
+      "error": null
+    },
+    {
+      "name": "schema-length-132",
+      "data": "ACo=",
+      "metadata": {
+        "schemaId": {
+          "length": true
+        }
+      },
+      "mode": "inspect",
+      "calls": [
+        {
+          "position": 1,
+          "explicitLength": false,
+          "buffer": [
+            0,
+            42
+          ]
+        }
+      ],
+      "value": {
+        "position": 1,
+        "length": {
+          "$": "undefined"
+        },
+        "bytes": [
+          42
+        ]
+      },
+      "error": null
+    },
+    {
+      "name": "schema-length-133",
+      "data": "gA==",
+      "metadata": {
+        "schemaId": {
+          "length": true
+        }
+      },
+      "mode": "inspect",
+      "calls": [],
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 1 + 10 > 1, message: gA==, messageType: {}"
+      }
+    },
+    {
+      "name": "schema-length-134",
+      "data": "",
+      "metadata": {
+        "schemaId": {
+          "length": true
+        }
+      },
+      "mode": "inspect",
+      "calls": [],
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 0 + 10 > 0, message: , messageType: {}"
+      }
+    },
+    {
+      "name": "schema-length-135",
+      "data": "ASo=",
+      "metadata": {
+        "schemaId": {
+          "length": 0
+        }
+      },
+      "mode": "inspect",
+      "calls": [
+        {
+          "position": 0,
+          "explicitLength": false,
+          "buffer": [
+            1,
+            42
+          ]
+        }
+      ],
+      "value": {
+        "position": 0,
+        "length": {
+          "$": "undefined"
+        },
+        "bytes": [
+          1,
+          42
+        ]
+      },
+      "error": null
+    },
+    {
+      "name": "schema-length-136",
+      "data": "ACo=",
+      "metadata": {
+        "schemaId": {
+          "length": 0
+        }
+      },
+      "mode": "inspect",
+      "calls": [
+        {
+          "position": 1,
+          "explicitLength": false,
+          "buffer": [
+            0,
+            42
+          ]
+        }
+      ],
+      "value": {
+        "position": 1,
+        "length": {
+          "$": "undefined"
+        },
+        "bytes": [
+          42
+        ]
+      },
+      "error": null
+    },
+    {
+      "name": "schema-length-137",
+      "data": "gA==",
+      "metadata": {
+        "schemaId": {
+          "length": 0
+        }
+      },
+      "mode": "inspect",
+      "calls": [],
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 1 + 10 > 1, message: gA==, messageType: {}"
+      }
+    },
+    {
+      "name": "schema-length-138",
+      "data": "",
+      "metadata": {
+        "schemaId": {
+          "length": 0
+        }
+      },
+      "mode": "inspect",
+      "calls": [],
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 0 + 10 > 0, message: , messageType: {}"
+      }
+    },
+    {
+      "name": "schema-length-139",
+      "data": "ASo=",
+      "metadata": {
+        "schemaId": {
+          "length": 10
+        }
+      },
+      "mode": "inspect",
+      "calls": [
+        {
+          "position": 0,
+          "explicitLength": false,
+          "buffer": [
+            1,
+            42
+          ]
+        }
+      ],
+      "value": {
+        "position": 0,
+        "length": {
+          "$": "undefined"
+        },
+        "bytes": [
+          1,
+          42
+        ]
+      },
+      "error": null
+    },
+    {
+      "name": "schema-length-140",
+      "data": "ACo=",
+      "metadata": {
+        "schemaId": {
+          "length": 10
+        }
+      },
+      "mode": "inspect",
+      "calls": [
+        {
+          "position": 1,
+          "explicitLength": false,
+          "buffer": [
+            0,
+            42
+          ]
+        }
+      ],
+      "value": {
+        "position": 1,
+        "length": {
+          "$": "undefined"
+        },
+        "bytes": [
+          42
+        ]
+      },
+      "error": null
+    },
+    {
+      "name": "schema-length-141",
+      "data": "gA==",
+      "metadata": {
+        "schemaId": {
+          "length": 10
+        }
+      },
+      "mode": "inspect",
+      "calls": [],
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 1 + 10 > 1, message: gA==, messageType: {}"
+      }
+    },
+    {
+      "name": "schema-length-142",
+      "data": "",
+      "metadata": {
+        "schemaId": {
+          "length": 10
+        }
+      },
+      "mode": "inspect",
+      "calls": [],
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 0 + 10 > 0, message: , messageType: {}"
+      }
+    },
+    {
+      "name": "schema-length-143",
+      "data": "ASo=",
+      "metadata": {
+        "schemaId": {
+          "length": 10.5
+        }
+      },
+      "mode": "inspect",
+      "calls": [
+        {
+          "position": 1,
+          "explicitLength": false,
+          "buffer": [
+            1,
+            42
+          ]
+        }
+      ],
+      "value": {
+        "position": 1,
+        "length": {
+          "$": "undefined"
+        },
+        "bytes": [
+          42
+        ]
+      },
+      "error": null
+    },
+    {
+      "name": "schema-length-144",
+      "data": "ACo=",
+      "metadata": {
+        "schemaId": {
+          "length": 10.5
+        }
+      },
+      "mode": "inspect",
+      "calls": [
+        {
+          "position": 1,
+          "explicitLength": false,
+          "buffer": [
+            0,
+            42
+          ]
+        }
+      ],
+      "value": {
+        "position": 1,
+        "length": {
+          "$": "undefined"
+        },
+        "bytes": [
+          42
+        ]
+      },
+      "error": null
+    },
+    {
+      "name": "schema-length-145",
+      "data": "gA==",
+      "metadata": {
+        "schemaId": {
+          "length": 10.5
+        }
+      },
+      "mode": "inspect",
+      "calls": [],
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 1 + 10 > 1, message: gA==, messageType: {}"
+      }
+    },
+    {
+      "name": "schema-length-146",
+      "data": "",
+      "metadata": {
+        "schemaId": {
+          "length": 10.5
+        }
+      },
+      "mode": "inspect",
+      "calls": [],
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 0 + 10 > 0, message: , messageType: {}"
+      }
+    },
+    {
+      "name": "schema-length-147",
+      "data": "ASo=",
+      "metadata": {
+        "schemaId": {
+          "length": 11
+        }
+      },
+      "mode": "inspect",
+      "calls": [
+        {
+          "position": 1,
+          "explicitLength": false,
+          "buffer": [
+            1,
+            42
+          ]
+        }
+      ],
+      "value": {
+        "position": 1,
+        "length": {
+          "$": "undefined"
+        },
+        "bytes": [
+          42
+        ]
+      },
+      "error": null
+    },
+    {
+      "name": "schema-length-148",
+      "data": "ACo=",
+      "metadata": {
+        "schemaId": {
+          "length": 11
+        }
+      },
+      "mode": "inspect",
+      "calls": [
+        {
+          "position": 1,
+          "explicitLength": false,
+          "buffer": [
+            0,
+            42
+          ]
+        }
+      ],
+      "value": {
+        "position": 1,
+        "length": {
+          "$": "undefined"
+        },
+        "bytes": [
+          42
+        ]
+      },
+      "error": null
+    },
+    {
+      "name": "schema-length-149",
+      "data": "gA==",
+      "metadata": {
+        "schemaId": {
+          "length": 11
+        }
+      },
+      "mode": "inspect",
+      "calls": [],
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 1 + 10 > 1, message: gA==, messageType: {}"
+      }
+    },
+    {
+      "name": "schema-length-150",
+      "data": "",
+      "metadata": {
+        "schemaId": {
+          "length": 11
+        }
+      },
+      "mode": "inspect",
+      "calls": [],
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 0 + 10 > 0, message: , messageType: {}"
+      }
+    },
+    {
+      "name": "schema-length-151",
+      "data": "ASo=",
+      "metadata": {
+        "schemaId": {
+          "length": -11
+        }
+      },
+      "mode": "inspect",
+      "calls": [
+        {
+          "position": 0,
+          "explicitLength": false,
+          "buffer": [
+            1,
+            42
+          ]
+        }
+      ],
+      "value": {
+        "position": 0,
+        "length": {
+          "$": "undefined"
+        },
+        "bytes": [
+          1,
+          42
+        ]
+      },
+      "error": null
+    },
+    {
+      "name": "schema-length-152",
+      "data": "ACo=",
+      "metadata": {
+        "schemaId": {
+          "length": -11
+        }
+      },
+      "mode": "inspect",
+      "calls": [
+        {
+          "position": 1,
+          "explicitLength": false,
+          "buffer": [
+            0,
+            42
+          ]
+        }
+      ],
+      "value": {
+        "position": 1,
+        "length": {
+          "$": "undefined"
+        },
+        "bytes": [
+          42
+        ]
+      },
+      "error": null
+    },
+    {
+      "name": "schema-length-153",
+      "data": "gA==",
+      "metadata": {
+        "schemaId": {
+          "length": -11
+        }
+      },
+      "mode": "inspect",
+      "calls": [],
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 1 + 10 > 1, message: gA==, messageType: {}"
+      }
+    },
+    {
+      "name": "schema-length-154",
+      "data": "",
+      "metadata": {
+        "schemaId": {
+          "length": -11
+        }
+      },
+      "mode": "inspect",
+      "calls": [],
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 0 + 10 > 0, message: , messageType: {}"
+      }
+    },
+    {
+      "name": "schema-length-155",
+      "data": "ASo=",
+      "metadata": {
+        "schemaId": {
+          "length": ""
+        }
+      },
+      "mode": "inspect",
+      "calls": [
+        {
+          "position": 0,
+          "explicitLength": false,
+          "buffer": [
+            1,
+            42
+          ]
+        }
+      ],
+      "value": {
+        "position": 0,
+        "length": {
+          "$": "undefined"
+        },
+        "bytes": [
+          1,
+          42
+        ]
+      },
+      "error": null
+    },
+    {
+      "name": "schema-length-156",
+      "data": "ACo=",
+      "metadata": {
+        "schemaId": {
+          "length": ""
+        }
+      },
+      "mode": "inspect",
+      "calls": [
+        {
+          "position": 1,
+          "explicitLength": false,
+          "buffer": [
+            0,
+            42
+          ]
+        }
+      ],
+      "value": {
+        "position": 1,
+        "length": {
+          "$": "undefined"
+        },
+        "bytes": [
+          42
+        ]
+      },
+      "error": null
+    },
+    {
+      "name": "schema-length-157",
+      "data": "gA==",
+      "metadata": {
+        "schemaId": {
+          "length": ""
+        }
+      },
+      "mode": "inspect",
+      "calls": [],
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 1 + 10 > 1, message: gA==, messageType: {}"
+      }
+    },
+    {
+      "name": "schema-length-158",
+      "data": "",
+      "metadata": {
+        "schemaId": {
+          "length": ""
+        }
+      },
+      "mode": "inspect",
+      "calls": [],
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 0 + 10 > 0, message: , messageType: {}"
+      }
+    },
+    {
+      "name": "schema-length-159",
+      "data": "ASo=",
+      "metadata": {
+        "schemaId": {
+          "length": "11"
+        }
+      },
+      "mode": "inspect",
+      "calls": [
+        {
+          "position": 1,
+          "explicitLength": false,
+          "buffer": [
+            1,
+            42
+          ]
+        }
+      ],
+      "value": {
+        "position": 1,
+        "length": {
+          "$": "undefined"
+        },
+        "bytes": [
+          42
+        ]
+      },
+      "error": null
+    },
+    {
+      "name": "schema-length-160",
+      "data": "ACo=",
+      "metadata": {
+        "schemaId": {
+          "length": "11"
+        }
+      },
+      "mode": "inspect",
+      "calls": [
+        {
+          "position": 1,
+          "explicitLength": false,
+          "buffer": [
+            0,
+            42
+          ]
+        }
+      ],
+      "value": {
+        "position": 1,
+        "length": {
+          "$": "undefined"
+        },
+        "bytes": [
+          42
+        ]
+      },
+      "error": null
+    },
+    {
+      "name": "schema-length-161",
+      "data": "gA==",
+      "metadata": {
+        "schemaId": {
+          "length": "11"
+        }
+      },
+      "mode": "inspect",
+      "calls": [],
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 1 + 10 > 1, message: gA==, messageType: {}"
+      }
+    },
+    {
+      "name": "schema-length-162",
+      "data": "",
+      "metadata": {
+        "schemaId": {
+          "length": "11"
+        }
+      },
+      "mode": "inspect",
+      "calls": [],
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 0 + 10 > 0, message: , messageType: {}"
+      }
+    },
+    {
+      "name": "schema-length-163",
+      "data": "ASo=",
+      "metadata": {
+        "schemaId": {
+          "length": " 11 "
+        }
+      },
+      "mode": "inspect",
+      "calls": [
+        {
+          "position": 1,
+          "explicitLength": false,
+          "buffer": [
+            1,
+            42
+          ]
+        }
+      ],
+      "value": {
+        "position": 1,
+        "length": {
+          "$": "undefined"
+        },
+        "bytes": [
+          42
+        ]
+      },
+      "error": null
+    },
+    {
+      "name": "schema-length-164",
+      "data": "ACo=",
+      "metadata": {
+        "schemaId": {
+          "length": " 11 "
+        }
+      },
+      "mode": "inspect",
+      "calls": [
+        {
+          "position": 1,
+          "explicitLength": false,
+          "buffer": [
+            0,
+            42
+          ]
+        }
+      ],
+      "value": {
+        "position": 1,
+        "length": {
+          "$": "undefined"
+        },
+        "bytes": [
+          42
+        ]
+      },
+      "error": null
+    },
+    {
+      "name": "schema-length-165",
+      "data": "gA==",
+      "metadata": {
+        "schemaId": {
+          "length": " 11 "
+        }
+      },
+      "mode": "inspect",
+      "calls": [],
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 1 + 10 > 1, message: gA==, messageType: {}"
+      }
+    },
+    {
+      "name": "schema-length-166",
+      "data": "",
+      "metadata": {
+        "schemaId": {
+          "length": " 11 "
+        }
+      },
+      "mode": "inspect",
+      "calls": [],
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 0 + 10 > 0, message: , messageType: {}"
+      }
+    },
+    {
+      "name": "schema-length-167",
+      "data": "ASo=",
+      "metadata": {
+        "schemaId": {
+          "length": "0xb"
+        }
+      },
+      "mode": "inspect",
+      "calls": [
+        {
+          "position": 1,
+          "explicitLength": false,
+          "buffer": [
+            1,
+            42
+          ]
+        }
+      ],
+      "value": {
+        "position": 1,
+        "length": {
+          "$": "undefined"
+        },
+        "bytes": [
+          42
+        ]
+      },
+      "error": null
+    },
+    {
+      "name": "schema-length-168",
+      "data": "ACo=",
+      "metadata": {
+        "schemaId": {
+          "length": "0xb"
+        }
+      },
+      "mode": "inspect",
+      "calls": [
+        {
+          "position": 1,
+          "explicitLength": false,
+          "buffer": [
+            0,
+            42
+          ]
+        }
+      ],
+      "value": {
+        "position": 1,
+        "length": {
+          "$": "undefined"
+        },
+        "bytes": [
+          42
+        ]
+      },
+      "error": null
+    },
+    {
+      "name": "schema-length-169",
+      "data": "gA==",
+      "metadata": {
+        "schemaId": {
+          "length": "0xb"
+        }
+      },
+      "mode": "inspect",
+      "calls": [],
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 1 + 10 > 1, message: gA==, messageType: {}"
+      }
+    },
+    {
+      "name": "schema-length-170",
+      "data": "",
+      "metadata": {
+        "schemaId": {
+          "length": "0xb"
+        }
+      },
+      "mode": "inspect",
+      "calls": [],
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 0 + 10 > 0, message: , messageType: {}"
+      }
+    },
+    {
+      "name": "schema-length-171",
+      "data": "ASo=",
+      "metadata": {
+        "schemaId": {
+          "length": "1.1e1"
+        }
+      },
+      "mode": "inspect",
+      "calls": [
+        {
+          "position": 1,
+          "explicitLength": false,
+          "buffer": [
+            1,
+            42
+          ]
+        }
+      ],
+      "value": {
+        "position": 1,
+        "length": {
+          "$": "undefined"
+        },
+        "bytes": [
+          42
+        ]
+      },
+      "error": null
+    },
+    {
+      "name": "schema-length-172",
+      "data": "ACo=",
+      "metadata": {
+        "schemaId": {
+          "length": "1.1e1"
+        }
+      },
+      "mode": "inspect",
+      "calls": [
+        {
+          "position": 1,
+          "explicitLength": false,
+          "buffer": [
+            0,
+            42
+          ]
+        }
+      ],
+      "value": {
+        "position": 1,
+        "length": {
+          "$": "undefined"
+        },
+        "bytes": [
+          42
+        ]
+      },
+      "error": null
+    },
+    {
+      "name": "schema-length-173",
+      "data": "gA==",
+      "metadata": {
+        "schemaId": {
+          "length": "1.1e1"
+        }
+      },
+      "mode": "inspect",
+      "calls": [],
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 1 + 10 > 1, message: gA==, messageType: {}"
+      }
+    },
+    {
+      "name": "schema-length-174",
+      "data": "",
+      "metadata": {
+        "schemaId": {
+          "length": "1.1e1"
+        }
+      },
+      "mode": "inspect",
+      "calls": [],
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 0 + 10 > 0, message: , messageType: {}"
+      }
+    },
+    {
+      "name": "schema-length-175",
+      "data": "ASo=",
+      "metadata": {
+        "schemaId": {
+          "length": "Infinity"
+        }
+      },
+      "mode": "inspect",
+      "calls": [
+        {
+          "position": 1,
+          "explicitLength": false,
+          "buffer": [
+            1,
+            42
+          ]
+        }
+      ],
+      "value": {
+        "position": 1,
+        "length": {
+          "$": "undefined"
+        },
+        "bytes": [
+          42
+        ]
+      },
+      "error": null
+    },
+    {
+      "name": "schema-length-176",
+      "data": "ACo=",
+      "metadata": {
+        "schemaId": {
+          "length": "Infinity"
+        }
+      },
+      "mode": "inspect",
+      "calls": [
+        {
+          "position": 1,
+          "explicitLength": false,
+          "buffer": [
+            0,
+            42
+          ]
+        }
+      ],
+      "value": {
+        "position": 1,
+        "length": {
+          "$": "undefined"
+        },
+        "bytes": [
+          42
+        ]
+      },
+      "error": null
+    },
+    {
+      "name": "schema-length-177",
+      "data": "gA==",
+      "metadata": {
+        "schemaId": {
+          "length": "Infinity"
+        }
+      },
+      "mode": "inspect",
+      "calls": [],
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 1 + 10 > 1, message: gA==, messageType: {}"
+      }
+    },
+    {
+      "name": "schema-length-178",
+      "data": "",
+      "metadata": {
+        "schemaId": {
+          "length": "Infinity"
+        }
+      },
+      "mode": "inspect",
+      "calls": [],
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 0 + 10 > 0, message: , messageType: {}"
+      }
+    },
+    {
+      "name": "schema-length-179",
+      "data": "ASo=",
+      "metadata": {
+        "schemaId": {
+          "length": "invalid"
+        }
+      },
+      "mode": "inspect",
+      "calls": [
+        {
+          "position": 0,
+          "explicitLength": false,
+          "buffer": [
+            1,
+            42
+          ]
+        }
+      ],
+      "value": {
+        "position": 0,
+        "length": {
+          "$": "undefined"
+        },
+        "bytes": [
+          1,
+          42
+        ]
+      },
+      "error": null
+    },
+    {
+      "name": "schema-length-180",
+      "data": "ACo=",
+      "metadata": {
+        "schemaId": {
+          "length": "invalid"
+        }
+      },
+      "mode": "inspect",
+      "calls": [
+        {
+          "position": 1,
+          "explicitLength": false,
+          "buffer": [
+            0,
+            42
+          ]
+        }
+      ],
+      "value": {
+        "position": 1,
+        "length": {
+          "$": "undefined"
+        },
+        "bytes": [
+          42
+        ]
+      },
+      "error": null
+    },
+    {
+      "name": "schema-length-181",
+      "data": "gA==",
+      "metadata": {
+        "schemaId": {
+          "length": "invalid"
+        }
+      },
+      "mode": "inspect",
+      "calls": [],
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 1 + 10 > 1, message: gA==, messageType: {}"
+      }
+    },
+    {
+      "name": "schema-length-182",
+      "data": "",
+      "metadata": {
+        "schemaId": {
+          "length": "invalid"
+        }
+      },
+      "mode": "inspect",
+      "calls": [],
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 0 + 10 > 0, message: , messageType: {}"
+      }
+    },
+    {
+      "name": "schema-length-183",
+      "data": "ASo=",
+      "metadata": {
+        "schemaId": {
+          "length": []
+        }
+      },
+      "mode": "inspect",
+      "calls": [
+        {
+          "position": 0,
+          "explicitLength": false,
+          "buffer": [
+            1,
+            42
+          ]
+        }
+      ],
+      "value": {
+        "position": 0,
+        "length": {
+          "$": "undefined"
+        },
+        "bytes": [
+          1,
+          42
+        ]
+      },
+      "error": null
+    },
+    {
+      "name": "schema-length-184",
+      "data": "ACo=",
+      "metadata": {
+        "schemaId": {
+          "length": []
+        }
+      },
+      "mode": "inspect",
+      "calls": [
+        {
+          "position": 1,
+          "explicitLength": false,
+          "buffer": [
+            0,
+            42
+          ]
+        }
+      ],
+      "value": {
+        "position": 1,
+        "length": {
+          "$": "undefined"
+        },
+        "bytes": [
+          42
+        ]
+      },
+      "error": null
+    },
+    {
+      "name": "schema-length-185",
+      "data": "gA==",
+      "metadata": {
+        "schemaId": {
+          "length": []
+        }
+      },
+      "mode": "inspect",
+      "calls": [],
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 1 + 10 > 1, message: gA==, messageType: {}"
+      }
+    },
+    {
+      "name": "schema-length-186",
+      "data": "",
+      "metadata": {
+        "schemaId": {
+          "length": []
+        }
+      },
+      "mode": "inspect",
+      "calls": [],
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 0 + 10 > 0, message: , messageType: {}"
+      }
+    },
+    {
+      "name": "schema-length-187",
+      "data": "ASo=",
+      "metadata": {
+        "schemaId": {
+          "length": [
+            11
+          ]
+        }
+      },
+      "mode": "inspect",
+      "calls": [
+        {
+          "position": 1,
+          "explicitLength": false,
+          "buffer": [
+            1,
+            42
+          ]
+        }
+      ],
+      "value": {
+        "position": 1,
+        "length": {
+          "$": "undefined"
+        },
+        "bytes": [
+          42
+        ]
+      },
+      "error": null
+    },
+    {
+      "name": "schema-length-188",
+      "data": "ACo=",
+      "metadata": {
+        "schemaId": {
+          "length": [
+            11
+          ]
+        }
+      },
+      "mode": "inspect",
+      "calls": [
+        {
+          "position": 1,
+          "explicitLength": false,
+          "buffer": [
+            0,
+            42
+          ]
+        }
+      ],
+      "value": {
+        "position": 1,
+        "length": {
+          "$": "undefined"
+        },
+        "bytes": [
+          42
+        ]
+      },
+      "error": null
+    },
+    {
+      "name": "schema-length-189",
+      "data": "gA==",
+      "metadata": {
+        "schemaId": {
+          "length": [
+            11
+          ]
+        }
+      },
+      "mode": "inspect",
+      "calls": [],
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 1 + 10 > 1, message: gA==, messageType: {}"
+      }
+    },
+    {
+      "name": "schema-length-190",
+      "data": "",
+      "metadata": {
+        "schemaId": {
+          "length": [
+            11
+          ]
+        }
+      },
+      "mode": "inspect",
+      "calls": [],
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 0 + 10 > 0, message: , messageType: {}"
+      }
+    },
+    {
+      "name": "schema-length-191",
+      "data": "ASo=",
+      "metadata": {
+        "schemaId": {
+          "length": [
+            "11"
+          ]
+        }
+      },
+      "mode": "inspect",
+      "calls": [
+        {
+          "position": 1,
+          "explicitLength": false,
+          "buffer": [
+            1,
+            42
+          ]
+        }
+      ],
+      "value": {
+        "position": 1,
+        "length": {
+          "$": "undefined"
+        },
+        "bytes": [
+          42
+        ]
+      },
+      "error": null
+    },
+    {
+      "name": "schema-length-192",
+      "data": "ACo=",
+      "metadata": {
+        "schemaId": {
+          "length": [
+            "11"
+          ]
+        }
+      },
+      "mode": "inspect",
+      "calls": [
+        {
+          "position": 1,
+          "explicitLength": false,
+          "buffer": [
+            0,
+            42
+          ]
+        }
+      ],
+      "value": {
+        "position": 1,
+        "length": {
+          "$": "undefined"
+        },
+        "bytes": [
+          42
+        ]
+      },
+      "error": null
+    },
+    {
+      "name": "schema-length-193",
+      "data": "gA==",
+      "metadata": {
+        "schemaId": {
+          "length": [
+            "11"
+          ]
+        }
+      },
+      "mode": "inspect",
+      "calls": [],
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 1 + 10 > 1, message: gA==, messageType: {}"
+      }
+    },
+    {
+      "name": "schema-length-194",
+      "data": "",
+      "metadata": {
+        "schemaId": {
+          "length": [
+            "11"
+          ]
+        }
+      },
+      "mode": "inspect",
+      "calls": [],
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 0 + 10 > 0, message: , messageType: {}"
+      }
+    },
+    {
+      "name": "schema-length-195",
+      "data": "ASo=",
+      "metadata": {
+        "schemaId": {
+          "length": [
+            [
+              11
+            ]
+          ]
+        }
+      },
+      "mode": "inspect",
+      "calls": [
+        {
+          "position": 1,
+          "explicitLength": false,
+          "buffer": [
+            1,
+            42
+          ]
+        }
+      ],
+      "value": {
+        "position": 1,
+        "length": {
+          "$": "undefined"
+        },
+        "bytes": [
+          42
+        ]
+      },
+      "error": null
+    },
+    {
+      "name": "schema-length-196",
+      "data": "ACo=",
+      "metadata": {
+        "schemaId": {
+          "length": [
+            [
+              11
+            ]
+          ]
+        }
+      },
+      "mode": "inspect",
+      "calls": [
+        {
+          "position": 1,
+          "explicitLength": false,
+          "buffer": [
+            0,
+            42
+          ]
+        }
+      ],
+      "value": {
+        "position": 1,
+        "length": {
+          "$": "undefined"
+        },
+        "bytes": [
+          42
+        ]
+      },
+      "error": null
+    },
+    {
+      "name": "schema-length-197",
+      "data": "gA==",
+      "metadata": {
+        "schemaId": {
+          "length": [
+            [
+              11
+            ]
+          ]
+        }
+      },
+      "mode": "inspect",
+      "calls": [],
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 1 + 10 > 1, message: gA==, messageType: {}"
+      }
+    },
+    {
+      "name": "schema-length-198",
+      "data": "",
+      "metadata": {
+        "schemaId": {
+          "length": [
+            [
+              11
+            ]
+          ]
+        }
+      },
+      "mode": "inspect",
+      "calls": [],
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 0 + 10 > 0, message: , messageType: {}"
+      }
+    },
+    {
+      "name": "schema-length-199",
+      "data": "ASo=",
+      "metadata": {
+        "schemaId": {
+          "length": [
+            1,
+            1
+          ]
+        }
+      },
+      "mode": "inspect",
+      "calls": [
+        {
+          "position": 0,
+          "explicitLength": false,
+          "buffer": [
+            1,
+            42
+          ]
+        }
+      ],
+      "value": {
+        "position": 0,
+        "length": {
+          "$": "undefined"
+        },
+        "bytes": [
+          1,
+          42
+        ]
+      },
+      "error": null
+    },
+    {
+      "name": "schema-length-200",
+      "data": "ACo=",
+      "metadata": {
+        "schemaId": {
+          "length": [
+            1,
+            1
+          ]
+        }
+      },
+      "mode": "inspect",
+      "calls": [
+        {
+          "position": 1,
+          "explicitLength": false,
+          "buffer": [
+            0,
+            42
+          ]
+        }
+      ],
+      "value": {
+        "position": 1,
+        "length": {
+          "$": "undefined"
+        },
+        "bytes": [
+          42
+        ]
+      },
+      "error": null
+    },
+    {
+      "name": "schema-length-201",
+      "data": "gA==",
+      "metadata": {
+        "schemaId": {
+          "length": [
+            1,
+            1
+          ]
+        }
+      },
+      "mode": "inspect",
+      "calls": [],
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 1 + 10 > 1, message: gA==, messageType: {}"
+      }
+    },
+    {
+      "name": "schema-length-202",
+      "data": "",
+      "metadata": {
+        "schemaId": {
+          "length": [
+            1,
+            1
+          ]
+        }
+      },
+      "mode": "inspect",
+      "calls": [],
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 0 + 10 > 0, message: , messageType: {}"
+      }
+    },
+    {
+      "name": "schema-length-203",
+      "data": "ASo=",
+      "metadata": {
+        "schemaId": {
+          "length": {}
+        }
+      },
+      "mode": "inspect",
+      "calls": [
+        {
+          "position": 0,
+          "explicitLength": false,
+          "buffer": [
+            1,
+            42
+          ]
+        }
+      ],
+      "value": {
+        "position": 0,
+        "length": {
+          "$": "undefined"
+        },
+        "bytes": [
+          1,
+          42
+        ]
+      },
+      "error": null
+    },
+    {
+      "name": "schema-length-204",
+      "data": "ACo=",
+      "metadata": {
+        "schemaId": {
+          "length": {}
+        }
+      },
+      "mode": "inspect",
+      "calls": [
+        {
+          "position": 1,
+          "explicitLength": false,
+          "buffer": [
+            0,
+            42
+          ]
+        }
+      ],
+      "value": {
+        "position": 1,
+        "length": {
+          "$": "undefined"
+        },
+        "bytes": [
+          42
+        ]
+      },
+      "error": null
+    },
+    {
+      "name": "schema-length-205",
+      "data": "gA==",
+      "metadata": {
+        "schemaId": {
+          "length": {}
+        }
+      },
+      "mode": "inspect",
+      "calls": [],
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 1 + 10 > 1, message: gA==, messageType: {}"
+      }
+    },
+    {
+      "name": "schema-length-206",
+      "data": "",
+      "metadata": {
+        "schemaId": {
+          "length": {}
+        }
+      },
+      "mode": "inspect",
+      "calls": [],
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 0 + 10 > 0, message: , messageType: {}"
+      }
+    },
+    {
+      "name": "schema-length-207",
+      "data": "ASo=",
+      "metadata": {
+        "schemaId": {
+          "length": {
+            "value": 11
+          }
+        }
+      },
+      "mode": "inspect",
+      "calls": [
+        {
+          "position": 0,
+          "explicitLength": false,
+          "buffer": [
+            1,
+            42
+          ]
+        }
+      ],
+      "value": {
+        "position": 0,
+        "length": {
+          "$": "undefined"
+        },
+        "bytes": [
+          1,
+          42
+        ]
+      },
+      "error": null
+    },
+    {
+      "name": "schema-length-208",
+      "data": "ACo=",
+      "metadata": {
+        "schemaId": {
+          "length": {
+            "value": 11
+          }
+        }
+      },
+      "mode": "inspect",
+      "calls": [
+        {
+          "position": 1,
+          "explicitLength": false,
+          "buffer": [
+            0,
+            42
+          ]
+        }
+      ],
+      "value": {
+        "position": 1,
+        "length": {
+          "$": "undefined"
+        },
+        "bytes": [
+          42
+        ]
+      },
+      "error": null
+    },
+    {
+      "name": "schema-length-209",
+      "data": "gA==",
+      "metadata": {
+        "schemaId": {
+          "length": {
+            "value": 11
+          }
+        }
+      },
+      "mode": "inspect",
+      "calls": [],
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 1 + 10 > 1, message: gA==, messageType: {}"
+      }
+    },
+    {
+      "name": "schema-length-210",
+      "data": "",
+      "metadata": {
+        "schemaId": {
+          "length": {
+            "value": 11
+          }
+        }
+      },
+      "mode": "inspect",
+      "calls": [],
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 0 + 10 > 0, message: , messageType: {}"
+      }
+    },
+    {
+      "name": "schema-id-array-211",
+      "data": "ASo=",
+      "metadata": {
+        "schemaId": []
+      },
+      "mode": "inspect",
+      "calls": [
+        {
+          "position": 0,
+          "explicitLength": false,
+          "buffer": [
+            1,
+            42
+          ]
+        }
+      ],
+      "value": {
+        "position": 0,
+        "length": {
+          "$": "undefined"
+        },
+        "bytes": [
+          1,
+          42
+        ]
+      },
+      "error": null
+    },
+    {
+      "name": "schema-id-array-212",
+      "data": "ASo=",
+      "metadata": {
+        "schemaId": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "mode": "inspect",
+      "calls": [
+        {
+          "position": 0,
+          "explicitLength": false,
+          "buffer": [
+            1,
+            42
+          ]
+        }
+      ],
+      "value": {
+        "position": 0,
+        "length": {
+          "$": "undefined"
+        },
+        "bytes": [
+          1,
+          42
+        ]
+      },
+      "error": null
+    },
+    {
+      "name": "schema-id-array-213",
+      "data": "ASo=",
+      "metadata": {
+        "schemaId": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "mode": "inspect",
+      "calls": [
+        {
+          "position": 1,
+          "explicitLength": false,
+          "buffer": [
+            1,
+            42
+          ]
+        }
+      ],
+      "value": {
+        "position": 1,
+        "length": {
+          "$": "undefined"
+        },
+        "bytes": [
+          42
+        ]
+      },
+      "error": null
+    },
+    {
+      "name": "schema-id-array-214",
+      "data": "ASo=",
+      "metadata": {
+        "schemaId": {}
+      },
+      "mode": "inspect",
+      "calls": [
+        {
+          "position": 0,
+          "explicitLength": false,
+          "buffer": [
+            1,
+            42
+          ]
+        }
+      ],
+      "value": {
+        "position": 0,
+        "length": {
+          "$": "undefined"
+        },
+        "bytes": [
+          1,
+          42
+        ]
+      },
+      "error": null
+    },
+    {
+      "name": "metadata-native-215",
+      "data": "ASo=",
+      "metadata": 0,
+      "mode": "inspect",
+      "calls": [
+        {
+          "position": 0,
+          "explicitLength": true,
+          "buffer": [
+            1,
+            42
+          ]
+        }
+      ],
+      "value": {
+        "position": 0,
+        "length": 2,
+        "bytes": [
+          1,
+          42
+        ]
+      },
+      "error": null
+    },
+    {
+      "name": "metadata-native-216",
+      "data": "ASo=",
+      "metadata": false,
+      "mode": "inspect",
+      "calls": [
+        {
+          "position": 0,
+          "explicitLength": true,
+          "buffer": [
+            1,
+            42
+          ]
+        }
+      ],
+      "value": {
+        "position": 0,
+        "length": 2,
+        "bytes": [
+          1,
+          42
+        ]
+      },
+      "error": null
+    },
+    {
+      "name": "metadata-native-217",
+      "data": "ASo=",
+      "metadata": "metadata",
+      "mode": "inspect",
+      "calls": [
+        {
+          "position": 0,
+          "explicitLength": true,
+          "buffer": [
+            1,
+            42
+          ]
+        }
+      ],
+      "value": {
+        "position": 0,
+        "length": 2,
+        "bytes": [
+          1,
+          42
+        ]
+      },
+      "error": null
+    },
+    {
+      "name": "metadata-native-218",
+      "data": "ASo=",
+      "metadata": [],
+      "mode": "inspect",
+      "calls": [
+        {
+          "position": 0,
+          "explicitLength": true,
+          "buffer": [
+            1,
+            42
+          ]
+        }
+      ],
+      "value": {
+        "position": 0,
+        "length": 2,
+        "bytes": [
+          1,
+          42
+        ]
+      },
+      "error": null
+    },
+    {
+      "name": "metadata-native-219",
+      "data": "ASo=",
+      "metadata": [
+        1
+      ],
+      "mode": "inspect",
+      "calls": [
+        {
+          "position": 0,
+          "explicitLength": true,
+          "buffer": [
+            1,
+            42
+          ]
+        }
+      ],
+      "value": {
+        "position": 0,
+        "length": 2,
+        "bytes": [
+          1,
+          42
+        ]
+      },
+      "error": null
+    }
+  ],
+  "schema": "CtwBCg1maXh0dXJlLnByb3RvEgdmaXh0dXJlIrkBCgdQYXlsb2FkEgwKBG5hbWUYASABKAkSCgoCaWQYAiABKAMSDQoFY291bnQYAyABKAQSCwoDcmF3GAQgASgMEg8KB2VuYWJsZWQYBSABKAgSDgoGc2NvcmVzGAYgAygREhQKBXN0YXRlGAcgASgOMgVTdGF0ZRIWCgVjaGlsZBgIIAEoCzIHUGF5bG9hZBINCgVyYXRpbxgJIAEoASIaCgVTdGF0ZRIHCgNORVcQABIICgRET05FEAFiBnByb3RvMg==",
+  "native": [
+    {
+      "mode": "plain",
+      "data": "",
+      "metadata": {},
+      "value": {}
+    },
+    {
+      "mode": "glue",
+      "data": "AA==",
+      "metadata": {
+        "schemaId": "00000000-0000-0000-0000-000000000000"
+      },
+      "value": {}
+    },
+    {
+      "mode": "confluent",
+      "data": "AA==",
+      "metadata": {
+        "schemaId": "42"
+      },
+      "value": {}
+    },
+    {
+      "mode": "plain",
+      "data": "CgAQACgASQAAAAAAAAAA",
+      "metadata": {},
+      "value": {
+        "name": "",
+        "id": "0",
+        "enabled": false,
+        "ratio": 0
+      }
+    },
+    {
+      "mode": "glue",
+      "data": "AAoAEAAoAEkAAAAAAAAAAA==",
+      "metadata": {
+        "schemaId": "00000000-0000-0000-0000-000000000000"
+      },
+      "value": {
+        "name": "",
+        "id": "0",
+        "enabled": false,
+        "ratio": 0
+      }
+    },
+    {
+      "mode": "confluent",
+      "data": "AAoAEAAoAEkAAAAAAAAAAA==",
+      "metadata": {
+        "schemaId": "42"
+      },
+      "value": {
+        "name": "",
+        "id": "0",
+        "enabled": false,
+        "ratio": 0
+      }
+    },
+    {
+      "mode": "plain",
+      "data": "CgbDqfCfmIAQ//////////9/GP///////////wEiAwD/gCgBMAEwADD+////DzgBQhIKBWNoaWxkEICAgICAgICAgAFJAAAAAAAA+D8=",
+      "metadata": {},
+      "value": {
+        "name": "é😀",
+        "id": "9223372036854775807",
+        "count": "18446744073709551615",
+        "raw": "AP+A",
+        "enabled": true,
+        "scores": [
+          -1,
+          0,
+          2147483647
+        ],
+        "state": "DONE",
+        "child": {
+          "name": "child",
+          "id": "-9223372036854775808"
+        },
+        "ratio": 1.5
+      }
+    },
+    {
+      "mode": "glue",
+      "data": "AAoGw6nwn5iAEP//////////fxj///////////8BIgMA/4AoATABMAAw/v///w84AUISCgVjaGlsZBCAgICAgICAgIABSQAAAAAAAPg/",
+      "metadata": {
+        "schemaId": "00000000-0000-0000-0000-000000000000"
+      },
+      "value": {
+        "name": "é😀",
+        "id": "9223372036854775807",
+        "count": "18446744073709551615",
+        "raw": "AP+A",
+        "enabled": true,
+        "scores": [
+          -1,
+          0,
+          2147483647
+        ],
+        "state": "DONE",
+        "child": {
+          "name": "child",
+          "id": "-9223372036854775808"
+        },
+        "ratio": 1.5
+      }
+    },
+    {
+      "mode": "confluent",
+      "data": "AAoGw6nwn5iAEP//////////fxj///////////8BIgMA/4AoATABMAAw/v///w84AUISCgVjaGlsZBCAgICAgICAgIABSQAAAAAAAPg/",
+      "metadata": {
+        "schemaId": "42"
+      },
+      "value": {
+        "name": "é😀",
+        "id": "9223372036854775807",
+        "count": "18446744073709551615",
+        "raw": "AP+A",
+        "enabled": true,
+        "scores": [
+          -1,
+          0,
+          2147483647
+        ],
+        "state": "DONE",
+        "child": {
+          "name": "child",
+          "id": "-9223372036854775808"
+        },
+        "ratio": 1.5
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "upstream": "2.35.0",
+  "records": [
+    {
+      "level": "INFO",
+      "message": "plain",
+      "service": "orders",
+      "sampling_rate": 0,
+      "source": "base"
+    },
+    {
+      "level": "INFO",
+      "message": "attributes",
+      "service": "orders",
+      "sampling_rate": 0,
+      "source": "call",
+      "order": 7
+    },
+    {
+      "level": "WARN",
+      "message": "warning",
+      "service": "orders",
+      "sampling_rate": 0,
+      "source": "base"
+    }
+  ]
+}

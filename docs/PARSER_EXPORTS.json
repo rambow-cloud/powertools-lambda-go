@@ -1,0 +1,938 @@
+{
+  "reference": "2.35.0",
+  "note": "Runtime exports are observed by import. Declaration names include supporting local types; re-export aliases and complete behavioral mapping require review.",
+  "modules": [
+    {
+      "subpath": "errors",
+      "runtimeExports": [
+        "ParseError"
+      ],
+      "declarationNames": [
+        "ParseError"
+      ]
+    },
+    {
+      "subpath": "index",
+      "runtimeExports": [
+        "ParseError",
+        "parse",
+        "parser"
+      ],
+      "declarationNames": [
+        "ParseError",
+        "parse",
+        "parser"
+      ]
+    },
+    {
+      "subpath": "schemas/alb",
+      "runtimeExports": [
+        "AlbMultiValueHeadersSchema",
+        "AlbSchema"
+      ],
+      "declarationNames": [
+        "AlbMultiValueHeadersSchema",
+        "AlbSchema"
+      ]
+    },
+    {
+      "subpath": "schemas/api-gateway-websocket",
+      "runtimeExports": [
+        "APIGatewayProxyWebsocketEventSchema"
+      ],
+      "declarationNames": [
+        "APIGatewayProxyWebsocketEventSchema"
+      ]
+    },
+    {
+      "subpath": "schemas/api-gateway",
+      "runtimeExports": [
+        "APIGatewayEventRequestContextSchema",
+        "APIGatewayProxyEventSchema",
+        "APIGatewayRequestAuthorizerEventSchema",
+        "APIGatewayTokenAuthorizerEventSchema"
+      ],
+      "declarationNames": [
+        "APIGatewayEventRequestContextSchema",
+        "APIGatewayProxyEventSchema",
+        "APIGatewayRequestAuthorizerEventSchema",
+        "APIGatewayTokenAuthorizerEventSchema"
+      ]
+    },
+    {
+      "subpath": "schemas/api-gatewayv2",
+      "runtimeExports": [
+        "APIGatewayProxyEventV2Schema",
+        "APIGatewayRequestAuthorizerEventV2Schema",
+        "APIGatewayRequestAuthorizerV2Schema",
+        "APIGatewayRequestContextV2Schema"
+      ],
+      "declarationNames": [
+        "APIGatewayProxyEventV2Schema",
+        "APIGatewayRequestAuthorizerEventV2Schema",
+        "APIGatewayRequestAuthorizerV2Schema",
+        "APIGatewayRequestContextV2Schema"
+      ]
+    },
+    {
+      "subpath": "schemas/apigw-proxy",
+      "runtimeExports": [
+        "APIGatewayCert",
+        "APIGatewayHttpMethod",
+        "APIGatewayRecord",
+        "APIGatewayStringArray"
+      ],
+      "declarationNames": [
+        "APIGatewayCert",
+        "APIGatewayHttpMethod",
+        "APIGatewayRecord",
+        "APIGatewayStringArray"
+      ]
+    },
+    {
+      "subpath": "schemas/appsync-events",
+      "runtimeExports": [
+        "AppSyncCognitoIdentity",
+        "AppSyncEventsBaseSchema",
+        "AppSyncEventsInfoSchema",
+        "AppSyncEventsPublishSchema",
+        "AppSyncEventsRequestSchema",
+        "AppSyncEventsSubscribeSchema",
+        "AppSyncIamIdentity",
+        "AppSyncLambdaAuthIdentity",
+        "AppSyncOidcIdentity"
+      ],
+      "declarationNames": [
+        "AppSyncCognitoIdentity",
+        "AppSyncEventsBaseSchema",
+        "AppSyncEventsInfoSchema",
+        "AppSyncEventsPublishSchema",
+        "AppSyncEventsRequestSchema",
+        "AppSyncEventsSubscribeSchema",
+        "AppSyncIamIdentity",
+        "AppSyncLambdaAuthIdentity",
+        "AppSyncOidcIdentity"
+      ]
+    },
+    {
+      "subpath": "schemas/appsync-shared",
+      "runtimeExports": [
+        "AppSyncCognitoIdentity",
+        "AppSyncIamIdentity",
+        "AppSyncOidcIdentity"
+      ],
+      "declarationNames": [
+        "AppSyncCognitoIdentity",
+        "AppSyncIamIdentity",
+        "AppSyncOidcIdentity"
+      ]
+    },
+    {
+      "subpath": "schemas/appsync",
+      "runtimeExports": [
+        "AppSyncBatchResolverSchema",
+        "AppSyncCognitoIdentity",
+        "AppSyncIamIdentity",
+        "AppSyncLambdaIdentity",
+        "AppSyncOidcIdentity",
+        "AppSyncResolverSchema"
+      ],
+      "declarationNames": [
+        "AppSyncBatchResolverSchema",
+        "AppSyncCognitoIdentity",
+        "AppSyncIamIdentity",
+        "AppSyncLambdaIdentity",
+        "AppSyncOidcIdentity",
+        "AppSyncResolverSchema"
+      ]
+    },
+    {
+      "subpath": "schemas/cloudformation-custom-resource",
+      "runtimeExports": [
+        "CloudFormationCustomResourceCreateSchema",
+        "CloudFormationCustomResourceDeleteSchema",
+        "CloudFormationCustomResourceUpdateSchema"
+      ],
+      "declarationNames": [
+        "CloudFormationCustomResourceCreateSchema",
+        "CloudFormationCustomResourceDeleteSchema",
+        "CloudFormationCustomResourceUpdateSchema"
+      ]
+    },
+    {
+      "subpath": "schemas/cloudwatch",
+      "runtimeExports": [
+        "CloudWatchLogEventSchema",
+        "CloudWatchLogsDecodeSchema",
+        "CloudWatchLogsSchema"
+      ],
+      "declarationNames": [
+        "CloudWatchLogEventSchema",
+        "CloudWatchLogsDecodeSchema",
+        "CloudWatchLogsSchema"
+      ]
+    },
+    {
+      "subpath": "schemas/cognito",
+      "runtimeExports": [
+        "ChallengeResultSchema",
+        "CognitoTriggerBaseSchema",
+        "CreateAuthChallengeTriggerSchema",
+        "CustomEmailSenderTriggerSchema",
+        "CustomMessageTriggerSchema",
+        "CustomSMSSenderTriggerSchema",
+        "DefineAuthChallengeTriggerSchema",
+        "MigrateUserTriggerSchema",
+        "PostAuthenticationTriggerSchema",
+        "PostConfirmationTriggerSchema",
+        "PreAuthenticationTriggerSchema",
+        "PreSignupTriggerSchema",
+        "PreTokenGenerationTriggerGroupConfigurationSchema",
+        "PreTokenGenerationTriggerRequestSchema",
+        "PreTokenGenerationTriggerSchemaV1",
+        "PreTokenGenerationTriggerSchemaV2AndV3",
+        "VerifyAuthChallengeTriggerSchema"
+      ],
+      "declarationNames": [
+        "ChallengeResultSchema",
+        "CognitoTriggerBaseSchema",
+        "CreateAuthChallengeTriggerSchema",
+        "CustomEmailSenderTriggerSchema",
+        "CustomMessageTriggerSchema",
+        "CustomSMSSenderTriggerSchema",
+        "DefineAuthChallengeTriggerSchema",
+        "MigrateUserTriggerSchema",
+        "PostAuthenticationTriggerSchema",
+        "PostConfirmationTriggerSchema",
+        "PreAuthenticationTriggerSchema",
+        "PreSignupTriggerSchema",
+        "PreTokenGenerationTriggerGroupConfigurationSchema",
+        "PreTokenGenerationTriggerRequestSchema",
+        "PreTokenGenerationTriggerSchemaV1",
+        "PreTokenGenerationTriggerSchemaV2AndV3",
+        "VerifyAuthChallengeTriggerSchema"
+      ]
+    },
+    {
+      "subpath": "schemas/connect-outbound-campaigns",
+      "runtimeExports": [
+        "ConnectOutboundCampaignsCustomerProfileSchema",
+        "ConnectOutboundCampaignsSchema"
+      ],
+      "declarationNames": [
+        "ConnectOutboundCampaignsCustomerProfileSchema",
+        "ConnectOutboundCampaignsSchema"
+      ]
+    },
+    {
+      "subpath": "schemas/dynamodb",
+      "runtimeExports": [
+        "DynamoDBStreamChangeRecord",
+        "DynamoDBStreamChangeRecordBase",
+        "DynamoDBStreamRecord",
+        "DynamoDBStreamSchema",
+        "DynamoDBStreamToKinesisChangeRecord",
+        "DynamoDBStreamToKinesisRecord",
+        "UserIdentity"
+      ],
+      "declarationNames": [
+        "CustomEvent",
+        "CustomSchema",
+        "DynamoDBStreamChangeRecord",
+        "DynamoDBStreamChangeRecordBase",
+        "DynamoDBStreamChangeRecordBaseSchema",
+        "DynamoDBStreamChangeRecordSchema",
+        "DynamoDBStreamRecord",
+        "DynamoDBStreamRecordSchema",
+        "DynamoDBStreamSchema",
+        "DynamoDBStreamSchemaSchema",
+        "DynamoDBStreamToKinesisChangeRecord",
+        "DynamoDBStreamToKinesisChangeRecordSchema",
+        "DynamoDBStreamToKinesisRecord",
+        "DynamoDBStreamToKinesisRecordSchema",
+        "UserIdentity",
+        "UserIdentitySchema"
+      ]
+    },
+    {
+      "subpath": "schemas/eventbridge",
+      "runtimeExports": [
+        "EventBridgeSchema"
+      ],
+      "declarationNames": [
+        "EventBridgeSchema"
+      ]
+    },
+    {
+      "subpath": "schemas/index",
+      "runtimeExports": [
+        "APIGatewayEventRequestContextSchema",
+        "APIGatewayProxyEventSchema",
+        "APIGatewayProxyEventV2Schema",
+        "APIGatewayProxyWebsocketEventSchema",
+        "APIGatewayRequestAuthorizerEventSchema",
+        "APIGatewayRequestAuthorizerEventV2Schema",
+        "APIGatewayRequestAuthorizerV2Schema",
+        "APIGatewayRequestContextV2Schema",
+        "APIGatewayTokenAuthorizerEventSchema",
+        "AlbMultiValueHeadersSchema",
+        "AlbSchema",
+        "AppSyncBatchResolverSchema",
+        "AppSyncEventsBaseSchema",
+        "AppSyncEventsInfoSchema",
+        "AppSyncEventsPublishSchema",
+        "AppSyncEventsRequestSchema",
+        "AppSyncEventsSubscribeSchema",
+        "AppSyncResolverSchema",
+        "CloudFormationCustomResourceCreateSchema",
+        "CloudFormationCustomResourceDeleteSchema",
+        "CloudFormationCustomResourceUpdateSchema",
+        "CloudWatchLogEventSchema",
+        "CloudWatchLogsDecodeSchema",
+        "CloudWatchLogsSchema",
+        "ConnectOutboundCampaignsCustomerProfileSchema",
+        "ConnectOutboundCampaignsSchema",
+        "CreateAuthChallengeTriggerSchema",
+        "CustomEmailSenderTriggerSchema",
+        "CustomMessageTriggerSchema",
+        "CustomSMSSenderTriggerSchema",
+        "DefineAuthChallengeTriggerSchema",
+        "DynamoDBStreamRecord",
+        "DynamoDBStreamSchema",
+        "DynamoDBStreamToKinesisRecord",
+        "EventBridgeSchema",
+        "KafkaMskEventSchema",
+        "KafkaRecordSchema",
+        "KafkaSelfManagedEventSchema",
+        "KinesisDataStreamRecord",
+        "KinesisDataStreamSchema",
+        "KinesisDynamoDBStreamSchema",
+        "KinesisFirehoseRecordSchema",
+        "KinesisFirehoseSchema",
+        "KinesisFirehoseSqsRecordSchema",
+        "KinesisFirehoseSqsSchema",
+        "LambdaFunctionUrlSchema",
+        "MigrateUserTriggerSchema",
+        "PostAuthenticationTriggerSchema",
+        "PostConfirmationTriggerSchema",
+        "PreAuthenticationTriggerSchema",
+        "PreSignupTriggerSchema",
+        "PreTokenGenerationTriggerSchemaV1",
+        "PreTokenGenerationTriggerSchemaV2AndV3",
+        "S3EventNotificationEventBridgeSchema",
+        "S3ObjectLambdaEventSchema",
+        "S3Schema",
+        "S3SqsEventNotificationSchema",
+        "SesRecordSchema",
+        "SesSchema",
+        "SnsNotificationSchema",
+        "SnsRecordSchema",
+        "SnsSchema",
+        "SnsSqsNotificationSchema",
+        "SqsAttributesSchema",
+        "SqsMsgAttributeDataTypeSchema",
+        "SqsMsgAttributeSchema",
+        "SqsRecordSchema",
+        "SqsSchema",
+        "TransferFamilySchema",
+        "VerifyAuthChallengeTriggerSchema",
+        "VpcLatticeSchema",
+        "VpcLatticeV2Schema"
+      ],
+      "declarationNames": [
+        "APIGatewayEventRequestContextSchema",
+        "APIGatewayProxyEventSchema",
+        "APIGatewayProxyEventV2Schema",
+        "APIGatewayProxyWebsocketEventSchema",
+        "APIGatewayRequestAuthorizerEventSchema",
+        "APIGatewayRequestAuthorizerEventV2Schema",
+        "APIGatewayRequestAuthorizerV2Schema",
+        "APIGatewayRequestContextV2Schema",
+        "APIGatewayTokenAuthorizerEventSchema",
+        "AlbMultiValueHeadersSchema",
+        "AlbSchema",
+        "AppSyncBatchResolverSchema",
+        "AppSyncEventsBaseSchema",
+        "AppSyncEventsInfoSchema",
+        "AppSyncEventsPublishSchema",
+        "AppSyncEventsRequestSchema",
+        "AppSyncEventsSubscribeSchema",
+        "AppSyncResolverSchema",
+        "CloudFormationCustomResourceCreateSchema",
+        "CloudFormationCustomResourceDeleteSchema",
+        "CloudFormationCustomResourceUpdateSchema",
+        "CloudWatchLogEventSchema",
+        "CloudWatchLogsDecodeSchema",
+        "CloudWatchLogsSchema",
+        "ConnectOutboundCampaignsCustomerProfileSchema",
+        "ConnectOutboundCampaignsSchema",
+        "CreateAuthChallengeTriggerSchema",
+        "CustomEmailSenderTriggerSchema",
+        "CustomMessageTriggerSchema",
+        "CustomSMSSenderTriggerSchema",
+        "DefineAuthChallengeTriggerSchema",
+        "DynamoDBStreamRecord",
+        "DynamoDBStreamSchema",
+        "DynamoDBStreamToKinesisRecord",
+        "EventBridgeSchema",
+        "KafkaMskEventSchema",
+        "KafkaRecordSchema",
+        "KafkaSelfManagedEventSchema",
+        "KinesisDataStreamRecord",
+        "KinesisDataStreamSchema",
+        "KinesisDynamoDBStreamSchema",
+        "KinesisFirehoseRecordSchema",
+        "KinesisFirehoseSchema",
+        "KinesisFirehoseSqsRecordSchema",
+        "KinesisFirehoseSqsSchema",
+        "LambdaFunctionUrlSchema",
+        "MigrateUserTriggerSchema",
+        "PostAuthenticationTriggerSchema",
+        "PostConfirmationTriggerSchema",
+        "PreAuthenticationTriggerSchema",
+        "PreSignupTriggerSchema",
+        "PreTokenGenerationTriggerSchemaV1",
+        "PreTokenGenerationTriggerSchemaV2AndV3",
+        "S3EventNotificationEventBridgeSchema",
+        "S3ObjectLambdaEventSchema",
+        "S3Schema",
+        "S3SqsEventNotificationSchema",
+        "SesRecordSchema",
+        "SesSchema",
+        "SnsNotificationSchema",
+        "SnsRecordSchema",
+        "SnsSchema",
+        "SnsSqsNotificationSchema",
+        "SqsAttributesSchema",
+        "SqsMsgAttributeDataTypeSchema",
+        "SqsMsgAttributeSchema",
+        "SqsRecordSchema",
+        "SqsSchema",
+        "TransferFamilySchema",
+        "VerifyAuthChallengeTriggerSchema",
+        "VpcLatticeSchema",
+        "VpcLatticeV2Schema"
+      ]
+    },
+    {
+      "subpath": "schemas/kafka",
+      "runtimeExports": [
+        "KafkaMskEventSchema",
+        "KafkaRecordSchema",
+        "KafkaSelfManagedEventSchema"
+      ],
+      "declarationNames": [
+        "KafkaMskEventSchema",
+        "KafkaRecordSchema",
+        "KafkaSelfManagedEventSchema"
+      ]
+    },
+    {
+      "subpath": "schemas/kinesis-firehose",
+      "runtimeExports": [
+        "KinesisFirehoseRecordSchema",
+        "KinesisFirehoseSchema",
+        "KinesisFirehoseSqsRecordSchema",
+        "KinesisFirehoseSqsSchema"
+      ],
+      "declarationNames": [
+        "KinesisFirehoseRecordSchema",
+        "KinesisFirehoseSchema",
+        "KinesisFirehoseSqsRecordSchema",
+        "KinesisFirehoseSqsSchema"
+      ]
+    },
+    {
+      "subpath": "schemas/kinesis",
+      "runtimeExports": [
+        "KinesisDataStreamRecord",
+        "KinesisDataStreamRecordPayload",
+        "KinesisDataStreamSchema",
+        "KinesisDynamoDBStreamSchema"
+      ],
+      "declarationNames": [
+        "KinesisDataStreamRecord",
+        "KinesisDataStreamRecordPayload",
+        "KinesisDataStreamSchema",
+        "KinesisDynamoDBStreamSchema"
+      ]
+    },
+    {
+      "subpath": "schemas/lambda",
+      "runtimeExports": [
+        "LambdaFunctionUrlSchema"
+      ],
+      "declarationNames": [
+        "LambdaFunctionUrlSchema"
+      ]
+    },
+    {
+      "subpath": "schemas/s3",
+      "runtimeExports": [
+        "S3EventNotificationEventBridgeSchema",
+        "S3ObjectLambdaEventSchema",
+        "S3Schema",
+        "S3SqsEventNotificationSchema"
+      ],
+      "declarationNames": [
+        "S3EventNotificationEventBridgeSchema",
+        "S3ObjectLambdaEventSchema",
+        "S3Schema",
+        "S3SqsEventNotificationSchema"
+      ]
+    },
+    {
+      "subpath": "schemas/ses",
+      "runtimeExports": [
+        "SesRecordSchema",
+        "SesSchema"
+      ],
+      "declarationNames": [
+        "SesRecordSchema",
+        "SesSchema"
+      ]
+    },
+    {
+      "subpath": "schemas/sns",
+      "runtimeExports": [
+        "SnsNotificationSchema",
+        "SnsRecordSchema",
+        "SnsSchema",
+        "SnsSqsNotificationSchema"
+      ],
+      "declarationNames": [
+        "SnsNotificationSchema",
+        "SnsRecordSchema",
+        "SnsSchema",
+        "SnsSqsNotificationSchema"
+      ]
+    },
+    {
+      "subpath": "schemas/sqs",
+      "runtimeExports": [
+        "SqsAttributesSchema",
+        "SqsMsgAttributeDataTypeSchema",
+        "SqsMsgAttributeSchema",
+        "SqsRecordSchema",
+        "SqsSchema"
+      ],
+      "declarationNames": [
+        "SqsAttributesSchema",
+        "SqsMsgAttributeDataTypeSchema",
+        "SqsMsgAttributeSchema",
+        "SqsRecordSchema",
+        "SqsSchema"
+      ]
+    },
+    {
+      "subpath": "schemas/transfer-family",
+      "runtimeExports": [
+        "TransferFamilySchema"
+      ],
+      "declarationNames": [
+        "TransferFamilySchema"
+      ]
+    },
+    {
+      "subpath": "schemas/vpc-lattice",
+      "runtimeExports": [
+        "VpcLatticeSchema"
+      ],
+      "declarationNames": [
+        "VpcLatticeSchema"
+      ]
+    },
+    {
+      "subpath": "schemas/vpc-latticev2",
+      "runtimeExports": [
+        "VpcLatticeV2Schema"
+      ],
+      "declarationNames": [
+        "VpcLatticeV2Schema"
+      ]
+    },
+    {
+      "subpath": "envelopes/api-gateway",
+      "runtimeExports": [
+        "ApiGatewayEnvelope"
+      ],
+      "declarationNames": [
+        "ApiGatewayEnvelope"
+      ]
+    },
+    {
+      "subpath": "envelopes/api-gatewayv2",
+      "runtimeExports": [
+        "ApiGatewayV2Envelope"
+      ],
+      "declarationNames": [
+        "ApiGatewayV2Envelope"
+      ]
+    },
+    {
+      "subpath": "envelopes/cloudwatch",
+      "runtimeExports": [
+        "CloudWatchEnvelope"
+      ],
+      "declarationNames": [
+        "CloudWatchEnvelope",
+        "ZodType"
+      ]
+    },
+    {
+      "subpath": "envelopes/dynamodb",
+      "runtimeExports": [
+        "DynamoDBStreamEnvelope"
+      ],
+      "declarationNames": [
+        "DynamoDBStreamEnvelope",
+        "ZodType"
+      ]
+    },
+    {
+      "subpath": "envelopes/envelope",
+      "runtimeExports": [
+        "envelopeDiscriminator"
+      ],
+      "declarationNames": [
+        "envelopeDiscriminator"
+      ]
+    },
+    {
+      "subpath": "envelopes/eventbridge",
+      "runtimeExports": [
+        "EventBridgeEnvelope"
+      ],
+      "declarationNames": [
+        "EventBridgeEnvelope"
+      ]
+    },
+    {
+      "subpath": "envelopes/index",
+      "runtimeExports": [
+        "ApiGatewayEnvelope",
+        "ApiGatewayV2Envelope",
+        "CloudWatchEnvelope",
+        "DynamoDBStreamEnvelope",
+        "EventBridgeEnvelope",
+        "KafkaEnvelope",
+        "KinesisEnvelope",
+        "KinesisFirehoseEnvelope",
+        "LambdaFunctionUrlEnvelope",
+        "SnsEnvelope",
+        "SnsSqsEnvelope",
+        "SqsEnvelope",
+        "VpcLatticeEnvelope",
+        "VpcLatticeV2Envelope"
+      ],
+      "declarationNames": [
+        "ApiGatewayEnvelope",
+        "ApiGatewayV2Envelope",
+        "CloudWatchEnvelope",
+        "DynamoDBStreamEnvelope",
+        "EventBridgeEnvelope",
+        "KafkaEnvelope",
+        "KinesisEnvelope",
+        "KinesisFirehoseEnvelope",
+        "LambdaFunctionUrlEnvelope",
+        "SnsEnvelope",
+        "SnsSqsEnvelope",
+        "SqsEnvelope",
+        "VpcLatticeEnvelope",
+        "VpcLatticeV2Envelope"
+      ]
+    },
+    {
+      "subpath": "envelopes/kafka",
+      "runtimeExports": [
+        "KafkaEnvelope"
+      ],
+      "declarationNames": [
+        "KafkaEnvelope",
+        "ZodType",
+        "it"
+      ]
+    },
+    {
+      "subpath": "envelopes/kinesis-firehose",
+      "runtimeExports": [
+        "KinesisFirehoseEnvelope"
+      ],
+      "declarationNames": [
+        "KinesisFirehoseEnvelope",
+        "ZodType",
+        "it"
+      ]
+    },
+    {
+      "subpath": "envelopes/kinesis",
+      "runtimeExports": [
+        "KinesisEnvelope"
+      ],
+      "declarationNames": [
+        "KinesisEnvelope",
+        "ZodType",
+        "it"
+      ]
+    },
+    {
+      "subpath": "envelopes/lambda",
+      "runtimeExports": [
+        "LambdaFunctionUrlEnvelope"
+      ],
+      "declarationNames": [
+        "LambdaFunctionUrlEnvelope",
+        "URL"
+      ]
+    },
+    {
+      "subpath": "envelopes/sns-sqs",
+      "runtimeExports": [
+        "SnsSqsEnvelope"
+      ],
+      "declarationNames": [
+        "SnsSqsEnvelope",
+        "ZodType"
+      ]
+    },
+    {
+      "subpath": "envelopes/sns",
+      "runtimeExports": [
+        "SnsEnvelope"
+      ],
+      "declarationNames": [
+        "SnsEnvelope",
+        "ZodType",
+        "it"
+      ]
+    },
+    {
+      "subpath": "envelopes/sqs",
+      "runtimeExports": [
+        "SqsEnvelope"
+      ],
+      "declarationNames": [
+        "SqsEnvelope",
+        "ZodType",
+        "parsed",
+        "schema"
+      ]
+    },
+    {
+      "subpath": "envelopes/vpc-lattice",
+      "runtimeExports": [
+        "VpcLatticeEnvelope"
+      ],
+      "declarationNames": [
+        "VpcLatticeEnvelope"
+      ]
+    },
+    {
+      "subpath": "envelopes/vpc-latticev2",
+      "runtimeExports": [
+        "VpcLatticeV2Envelope"
+      ],
+      "declarationNames": [
+        "VpcLatticeV2Envelope"
+      ]
+    },
+    {
+      "subpath": "helpers/dynamodb",
+      "runtimeExports": [
+        "DynamoDBMarshalled"
+      ],
+      "declarationNames": [
+        "DynamoDBMarshalled",
+        "ZodType",
+        "eventSchema",
+        "mySchema",
+        "to"
+      ]
+    },
+    {
+      "subpath": "helpers/index",
+      "runtimeExports": [
+        "Base64Encoded",
+        "JSONStringified"
+      ],
+      "declarationNames": [
+        "Base64Encoded",
+        "ExtendedAlbEvent",
+        "JSONStringified",
+        "ZodType",
+        "_ExtendedKinesisDataStream",
+        "customSchema",
+        "extendedSchema",
+        "to"
+      ]
+    },
+    {
+      "subpath": "middleware/index",
+      "runtimeExports": [
+        "parser"
+      ],
+      "declarationNames": [
+        "Order",
+        "handler",
+        "orderSchema",
+        "parser"
+      ]
+    },
+    {
+      "subpath": "types/envelope",
+      "runtimeExports": [],
+      "declarationNames": [
+        "ArrayEnvelope",
+        "DynamoDBArrayEnvelope",
+        "DynamoDBStreamEnvelopeResponse",
+        "Envelope",
+        "ObjectEnvelope"
+      ]
+    },
+    {
+      "subpath": "types/index",
+      "runtimeExports": [],
+      "declarationNames": [
+        "ALBEvent",
+        "APIGatewayEventRequestContext",
+        "APIGatewayProxyEvent",
+        "APIGatewayProxyEventV2",
+        "APIGatewayProxyWebsocketEvent",
+        "APIGatewayRequestAuthorizerEvent",
+        "APIGatewayRequestAuthorizerEventV2",
+        "APIGatewayTokenAuthorizerEvent",
+        "AppSyncBatchResolverEvent",
+        "AppSyncEventsPublishEvent",
+        "AppSyncEventsSubscribeEvent",
+        "AppSyncResolverEvent",
+        "ArrayEnvelope",
+        "CloudFormationCustomResourceCreateEvent",
+        "CloudFormationCustomResourceDeleteEvent",
+        "CloudFormationCustomResourceUpdateEvent",
+        "CloudWatchLogEvent",
+        "CloudWatchLogsDecode",
+        "CloudWatchLogsEvent",
+        "ConnectOutboundCampaignsCustomerProfile",
+        "ConnectOutboundCampaignsEvent",
+        "DynamoDBArrayEnvelope",
+        "DynamoDBStreamEnvelopeResponse",
+        "DynamoDBStreamEvent",
+        "DynamoDBStreamRecord",
+        "DynamoDBStreamToKinesisRecordEvent",
+        "Envelope",
+        "EventBridgeEvent",
+        "InferOutput",
+        "KafkaMskEvent",
+        "KafkaRecord",
+        "KafkaSelfManagedEvent",
+        "KinesisDataStreamEvent",
+        "KinesisDataStreamRecordEvent",
+        "KinesisDynamoDBStreamEvent",
+        "KinesisFireHoseEvent",
+        "KinesisFireHoseSqsEvent",
+        "KinesisFirehoseRecord",
+        "KinesisFirehoseSqsRecord",
+        "LambdaFunctionUrlEvent",
+        "ObjectEnvelope",
+        "ParseFunction",
+        "ParsedResult",
+        "ParsedResultError",
+        "ParsedResultSuccess",
+        "ParserOptions",
+        "S3Event",
+        "S3EventNotificationEventBridge",
+        "S3ObjectLambdaEvent",
+        "S3SqsEventNotification",
+        "SesEvent",
+        "SesRecord",
+        "SnsEvent",
+        "SnsNotification",
+        "SnsRecord",
+        "SnsSqsNotification",
+        "SqsEvent",
+        "SqsRecord",
+        "TransferFamilyEvent",
+        "VpcLatticeEvent",
+        "VpcLatticeEventV2"
+      ]
+    },
+    {
+      "subpath": "types/parser",
+      "runtimeExports": [],
+      "declarationNames": [
+        "ErrorHandler",
+        "InferOutput",
+        "ParseFunction",
+        "ParsedResult",
+        "ParsedResultError",
+        "ParsedResultSuccess",
+        "ParserOptions",
+        "ParserOptionsBase",
+        "ParserOutput",
+        "ZodInferredResult",
+        "ZodInferredSafeParseResult",
+        "based",
+        "error",
+        "or",
+        "overloads",
+        "that"
+      ]
+    },
+    {
+      "subpath": "types/schema",
+      "runtimeExports": [],
+      "declarationNames": [
+        "ALBEvent",
+        "APIGatewayEventRequestContext",
+        "APIGatewayProxyEvent",
+        "APIGatewayProxyEventV2",
+        "APIGatewayProxyWebsocketEvent",
+        "APIGatewayRequestAuthorizerEvent",
+        "APIGatewayRequestAuthorizerEventV2",
+        "APIGatewayTokenAuthorizerEvent",
+        "AppSyncBatchResolverEvent",
+        "AppSyncEventsPublishEvent",
+        "AppSyncEventsSubscribeEvent",
+        "AppSyncResolverEvent",
+        "CloudFormationCustomResourceCreateEvent",
+        "CloudFormationCustomResourceDeleteEvent",
+        "CloudFormationCustomResourceUpdateEvent",
+        "CloudWatchLogEvent",
+        "CloudWatchLogsDecode",
+        "CloudWatchLogsEvent",
+        "ConnectOutboundCampaignsCustomerProfile",
+        "ConnectOutboundCampaignsEvent",
+        "DynamoDBStreamEvent",
+        "DynamoDBStreamRecord",
+        "DynamoDBStreamToKinesisRecordEvent",
+        "EventBridgeEvent",
+        "KafkaMskEvent",
+        "KafkaRecord",
+        "KafkaSelfManagedEvent",
+        "KinesisDataStreamEvent",
+        "KinesisDataStreamRecordEvent",
+        "KinesisDynamoDBStreamEvent",
+        "KinesisFireHoseEvent",
+        "KinesisFireHoseSqsEvent",
+        "KinesisFirehoseRecord",
+        "KinesisFirehoseSqsRecord",
+        "LambdaFunctionUrlEvent",
+        "S3Event",
+        "S3EventNotificationEventBridge",
+        "S3ObjectLambdaEvent",
+        "S3SqsEventNotification",
+        "SesEvent",
+        "SesRecord",
+        "SnsEvent",
+        "SnsNotification",
+        "SnsRecord",
+        "SnsSqsNotification",
+        "SqsEvent",
+        "SqsRecord",
+        "TransferFamilyEvent",
+        "VpcLatticeEvent",
+        "VpcLatticeEventV2"
+      ]
+    }
+  ]
+}

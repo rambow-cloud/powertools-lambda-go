@@ -1,0 +1,2210 @@
+{
+  "source": "@aws-lambda-powertools/jmespath@2.35.0",
+  "cases": [
+    {
+      "name": "standard-0",
+      "expression": "items[*].name",
+      "data": {
+        "items": [
+          {
+            "name": "b",
+            "n": 2
+          },
+          {
+            "name": "a",
+            "n": 1
+          },
+          {
+            "name": "c",
+            "n": 3
+          }
+        ],
+        "nested": [
+          [
+            1,
+            2
+          ],
+          [
+            3
+          ]
+        ],
+        "text": "hello",
+        "nil": null
+      },
+      "expected": [
+        "b",
+        "a",
+        "c"
+      ]
+    },
+    {
+      "name": "standard-1",
+      "expression": "items[?n >= `2`].name",
+      "data": {
+        "items": [
+          {
+            "name": "b",
+            "n": 2
+          },
+          {
+            "name": "a",
+            "n": 1
+          },
+          {
+            "name": "c",
+            "n": 3
+          }
+        ],
+        "nested": [
+          [
+            1,
+            2
+          ],
+          [
+            3
+          ]
+        ],
+        "text": "hello",
+        "nil": null
+      },
+      "expected": [
+        "b",
+        "c"
+      ]
+    },
+    {
+      "name": "standard-2",
+      "expression": "items[-1].name",
+      "data": {
+        "items": [
+          {
+            "name": "b",
+            "n": 2
+          },
+          {
+            "name": "a",
+            "n": 1
+          },
+          {
+            "name": "c",
+            "n": 3
+          }
+        ],
+        "nested": [
+          [
+            1,
+            2
+          ],
+          [
+            3
+          ]
+        ],
+        "text": "hello",
+        "nil": null
+      },
+      "expected": "c"
+    },
+    {
+      "name": "standard-3",
+      "expression": "items[0:3:2].n",
+      "data": {
+        "items": [
+          {
+            "name": "b",
+            "n": 2
+          },
+          {
+            "name": "a",
+            "n": 1
+          },
+          {
+            "name": "c",
+            "n": 3
+          }
+        ],
+        "nested": [
+          [
+            1,
+            2
+          ],
+          [
+            3
+          ]
+        ],
+        "text": "hello",
+        "nil": null
+      },
+      "expected": [
+        2,
+        3
+      ]
+    },
+    {
+      "name": "standard-4",
+      "expression": "items[::-1].name",
+      "data": {
+        "items": [
+          {
+            "name": "b",
+            "n": 2
+          },
+          {
+            "name": "a",
+            "n": 1
+          },
+          {
+            "name": "c",
+            "n": 3
+          }
+        ],
+        "nested": [
+          [
+            1,
+            2
+          ],
+          [
+            3
+          ]
+        ],
+        "text": "hello",
+        "nil": null
+      },
+      "expected": [
+        "c",
+        "a",
+        "b"
+      ]
+    },
+    {
+      "name": "standard-5",
+      "expression": "nested[]",
+      "data": {
+        "items": [
+          {
+            "name": "b",
+            "n": 2
+          },
+          {
+            "name": "a",
+            "n": 1
+          },
+          {
+            "name": "c",
+            "n": 3
+          }
+        ],
+        "nested": [
+          [
+            1,
+            2
+          ],
+          [
+            3
+          ]
+        ],
+        "text": "hello",
+        "nil": null
+      },
+      "expected": [
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "name": "standard-6",
+      "expression": "items[*].missing",
+      "data": {
+        "items": [
+          {
+            "name": "b",
+            "n": 2
+          },
+          {
+            "name": "a",
+            "n": 1
+          },
+          {
+            "name": "c",
+            "n": 3
+          }
+        ],
+        "nested": [
+          [
+            1,
+            2
+          ],
+          [
+            3
+          ]
+        ],
+        "text": "hello",
+        "nil": null
+      },
+      "expected": []
+    },
+    {
+      "name": "standard-7",
+      "expression": "items[9]",
+      "data": {
+        "items": [
+          {
+            "name": "b",
+            "n": 2
+          },
+          {
+            "name": "a",
+            "n": 1
+          },
+          {
+            "name": "c",
+            "n": 3
+          }
+        ],
+        "nested": [
+          [
+            1,
+            2
+          ],
+          [
+            3
+          ]
+        ],
+        "text": "hello",
+        "nil": null
+      },
+      "expected": null
+    },
+    {
+      "name": "standard-8",
+      "expression": "missing || text",
+      "data": {
+        "items": [
+          {
+            "name": "b",
+            "n": 2
+          },
+          {
+            "name": "a",
+            "n": 1
+          },
+          {
+            "name": "c",
+            "n": 3
+          }
+        ],
+        "nested": [
+          [
+            1,
+            2
+          ],
+          [
+            3
+          ]
+        ],
+        "text": "hello",
+        "nil": null
+      },
+      "expected": "hello"
+    },
+    {
+      "name": "standard-9",
+      "expression": "nil && text",
+      "data": {
+        "items": [
+          {
+            "name": "b",
+            "n": 2
+          },
+          {
+            "name": "a",
+            "n": 1
+          },
+          {
+            "name": "c",
+            "n": 3
+          }
+        ],
+        "nested": [
+          [
+            1,
+            2
+          ],
+          [
+            3
+          ]
+        ],
+        "text": "hello",
+        "nil": null
+      },
+      "expected": null
+    },
+    {
+      "name": "standard-10",
+      "expression": "!nil",
+      "data": {
+        "items": [
+          {
+            "name": "b",
+            "n": 2
+          },
+          {
+            "name": "a",
+            "n": 1
+          },
+          {
+            "name": "c",
+            "n": 3
+          }
+        ],
+        "nested": [
+          [
+            1,
+            2
+          ],
+          [
+            3
+          ]
+        ],
+        "text": "hello",
+        "nil": null
+      },
+      "expected": true
+    },
+    {
+      "name": "standard-11",
+      "expression": "items | [0].name",
+      "data": {
+        "items": [
+          {
+            "name": "b",
+            "n": 2
+          },
+          {
+            "name": "a",
+            "n": 1
+          },
+          {
+            "name": "c",
+            "n": 3
+          }
+        ],
+        "nested": [
+          [
+            1,
+            2
+          ],
+          [
+            3
+          ]
+        ],
+        "text": "hello",
+        "nil": null
+      },
+      "expected": "b"
+    },
+    {
+      "name": "standard-12",
+      "expression": "{names:items[*].name, count:length(items)}",
+      "data": {
+        "items": [
+          {
+            "name": "b",
+            "n": 2
+          },
+          {
+            "name": "a",
+            "n": 1
+          },
+          {
+            "name": "c",
+            "n": 3
+          }
+        ],
+        "nested": [
+          [
+            1,
+            2
+          ],
+          [
+            3
+          ]
+        ],
+        "text": "hello",
+        "nil": null
+      },
+      "expected": {
+        "names": [
+          "b",
+          "a",
+          "c"
+        ],
+        "count": 3
+      }
+    },
+    {
+      "name": "standard-13",
+      "expression": "[text,nil,missing]",
+      "data": {
+        "items": [
+          {
+            "name": "b",
+            "n": 2
+          },
+          {
+            "name": "a",
+            "n": 1
+          },
+          {
+            "name": "c",
+            "n": 3
+          }
+        ],
+        "nested": [
+          [
+            1,
+            2
+          ],
+          [
+            3
+          ]
+        ],
+        "text": "hello",
+        "nil": null
+      },
+      "expected": [
+        "hello",
+        null,
+        null
+      ]
+    },
+    {
+      "name": "standard-14",
+      "expression": "abs(`-3`)",
+      "data": {
+        "items": [
+          {
+            "name": "b",
+            "n": 2
+          },
+          {
+            "name": "a",
+            "n": 1
+          },
+          {
+            "name": "c",
+            "n": 3
+          }
+        ],
+        "nested": [
+          [
+            1,
+            2
+          ],
+          [
+            3
+          ]
+        ],
+        "text": "hello",
+        "nil": null
+      },
+      "expected": 3
+    },
+    {
+      "name": "standard-15",
+      "expression": "avg(items[*].n)",
+      "data": {
+        "items": [
+          {
+            "name": "b",
+            "n": 2
+          },
+          {
+            "name": "a",
+            "n": 1
+          },
+          {
+            "name": "c",
+            "n": 3
+          }
+        ],
+        "nested": [
+          [
+            1,
+            2
+          ],
+          [
+            3
+          ]
+        ],
+        "text": "hello",
+        "nil": null
+      },
+      "expected": 2
+    },
+    {
+      "name": "standard-16",
+      "expression": "ceil(`1.2`)",
+      "data": {
+        "items": [
+          {
+            "name": "b",
+            "n": 2
+          },
+          {
+            "name": "a",
+            "n": 1
+          },
+          {
+            "name": "c",
+            "n": 3
+          }
+        ],
+        "nested": [
+          [
+            1,
+            2
+          ],
+          [
+            3
+          ]
+        ],
+        "text": "hello",
+        "nil": null
+      },
+      "expected": 2
+    },
+    {
+      "name": "standard-17",
+      "expression": "contains(text, `\"ell\"`)",
+      "data": {
+        "items": [
+          {
+            "name": "b",
+            "n": 2
+          },
+          {
+            "name": "a",
+            "n": 1
+          },
+          {
+            "name": "c",
+            "n": 3
+          }
+        ],
+        "nested": [
+          [
+            1,
+            2
+          ],
+          [
+            3
+          ]
+        ],
+        "text": "hello",
+        "nil": null
+      },
+      "expected": true
+    },
+    {
+      "name": "standard-18",
+      "expression": "ends_with(text, `\"lo\"`)",
+      "data": {
+        "items": [
+          {
+            "name": "b",
+            "n": 2
+          },
+          {
+            "name": "a",
+            "n": 1
+          },
+          {
+            "name": "c",
+            "n": 3
+          }
+        ],
+        "nested": [
+          [
+            1,
+            2
+          ],
+          [
+            3
+          ]
+        ],
+        "text": "hello",
+        "nil": null
+      },
+      "expected": true
+    },
+    {
+      "name": "standard-19",
+      "expression": "floor(`1.8`)",
+      "data": {
+        "items": [
+          {
+            "name": "b",
+            "n": 2
+          },
+          {
+            "name": "a",
+            "n": 1
+          },
+          {
+            "name": "c",
+            "n": 3
+          }
+        ],
+        "nested": [
+          [
+            1,
+            2
+          ],
+          [
+            3
+          ]
+        ],
+        "text": "hello",
+        "nil": null
+      },
+      "expected": 1
+    },
+    {
+      "name": "standard-20",
+      "expression": "join(`\",\"`,items[*].name)",
+      "data": {
+        "items": [
+          {
+            "name": "b",
+            "n": 2
+          },
+          {
+            "name": "a",
+            "n": 1
+          },
+          {
+            "name": "c",
+            "n": 3
+          }
+        ],
+        "nested": [
+          [
+            1,
+            2
+          ],
+          [
+            3
+          ]
+        ],
+        "text": "hello",
+        "nil": null
+      },
+      "expected": "b,a,c"
+    },
+    {
+      "name": "standard-21",
+      "expression": "sort(keys(@))",
+      "data": {
+        "items": [
+          {
+            "name": "b",
+            "n": 2
+          },
+          {
+            "name": "a",
+            "n": 1
+          },
+          {
+            "name": "c",
+            "n": 3
+          }
+        ],
+        "nested": [
+          [
+            1,
+            2
+          ],
+          [
+            3
+          ]
+        ],
+        "text": "hello",
+        "nil": null
+      },
+      "expected": [
+        "items",
+        "nested",
+        "nil",
+        "text"
+      ]
+    },
+    {
+      "name": "standard-22",
+      "expression": "length(`\"你好\"`)",
+      "data": {
+        "items": [
+          {
+            "name": "b",
+            "n": 2
+          },
+          {
+            "name": "a",
+            "n": 1
+          },
+          {
+            "name": "c",
+            "n": 3
+          }
+        ],
+        "nested": [
+          [
+            1,
+            2
+          ],
+          [
+            3
+          ]
+        ],
+        "text": "hello",
+        "nil": null
+      },
+      "expected": 2
+    },
+    {
+      "name": "standard-23",
+      "expression": "map(&n,items)",
+      "data": {
+        "items": [
+          {
+            "name": "b",
+            "n": 2
+          },
+          {
+            "name": "a",
+            "n": 1
+          },
+          {
+            "name": "c",
+            "n": 3
+          }
+        ],
+        "nested": [
+          [
+            1,
+            2
+          ],
+          [
+            3
+          ]
+        ],
+        "text": "hello",
+        "nil": null
+      },
+      "expected": [
+        2,
+        1,
+        3
+      ]
+    },
+    {
+      "name": "standard-24",
+      "expression": "max(items[*].n)",
+      "data": {
+        "items": [
+          {
+            "name": "b",
+            "n": 2
+          },
+          {
+            "name": "a",
+            "n": 1
+          },
+          {
+            "name": "c",
+            "n": 3
+          }
+        ],
+        "nested": [
+          [
+            1,
+            2
+          ],
+          [
+            3
+          ]
+        ],
+        "text": "hello",
+        "nil": null
+      },
+      "expected": 3
+    },
+    {
+      "name": "standard-25",
+      "expression": "max_by(items,&n).name",
+      "data": {
+        "items": [
+          {
+            "name": "b",
+            "n": 2
+          },
+          {
+            "name": "a",
+            "n": 1
+          },
+          {
+            "name": "c",
+            "n": 3
+          }
+        ],
+        "nested": [
+          [
+            1,
+            2
+          ],
+          [
+            3
+          ]
+        ],
+        "text": "hello",
+        "nil": null
+      },
+      "expected": "c"
+    },
+    {
+      "name": "standard-26",
+      "expression": "merge(`{\"a\":1}`,`{\"a\":2,\"b\":3}`)",
+      "data": {
+        "items": [
+          {
+            "name": "b",
+            "n": 2
+          },
+          {
+            "name": "a",
+            "n": 1
+          },
+          {
+            "name": "c",
+            "n": 3
+          }
+        ],
+        "nested": [
+          [
+            1,
+            2
+          ],
+          [
+            3
+          ]
+        ],
+        "text": "hello",
+        "nil": null
+      },
+      "expected": {
+        "a": 2,
+        "b": 3
+      }
+    },
+    {
+      "name": "standard-27",
+      "expression": "min(items[*].n)",
+      "data": {
+        "items": [
+          {
+            "name": "b",
+            "n": 2
+          },
+          {
+            "name": "a",
+            "n": 1
+          },
+          {
+            "name": "c",
+            "n": 3
+          }
+        ],
+        "nested": [
+          [
+            1,
+            2
+          ],
+          [
+            3
+          ]
+        ],
+        "text": "hello",
+        "nil": null
+      },
+      "expected": 1
+    },
+    {
+      "name": "standard-28",
+      "expression": "min_by(items,&n).name",
+      "data": {
+        "items": [
+          {
+            "name": "b",
+            "n": 2
+          },
+          {
+            "name": "a",
+            "n": 1
+          },
+          {
+            "name": "c",
+            "n": 3
+          }
+        ],
+        "nested": [
+          [
+            1,
+            2
+          ],
+          [
+            3
+          ]
+        ],
+        "text": "hello",
+        "nil": null
+      },
+      "expected": "a"
+    },
+    {
+      "name": "standard-29",
+      "expression": "not_null(missing,nil,text)",
+      "data": {
+        "items": [
+          {
+            "name": "b",
+            "n": 2
+          },
+          {
+            "name": "a",
+            "n": 1
+          },
+          {
+            "name": "c",
+            "n": 3
+          }
+        ],
+        "nested": [
+          [
+            1,
+            2
+          ],
+          [
+            3
+          ]
+        ],
+        "text": "hello",
+        "nil": null
+      },
+      "expected": "hello"
+    },
+    {
+      "name": "standard-30",
+      "expression": "reverse(text)",
+      "data": {
+        "items": [
+          {
+            "name": "b",
+            "n": 2
+          },
+          {
+            "name": "a",
+            "n": 1
+          },
+          {
+            "name": "c",
+            "n": 3
+          }
+        ],
+        "nested": [
+          [
+            1,
+            2
+          ],
+          [
+            3
+          ]
+        ],
+        "text": "hello",
+        "nil": null
+      },
+      "expected": "olleh"
+    },
+    {
+      "name": "standard-31",
+      "expression": "sort(items[*].name)",
+      "data": {
+        "items": [
+          {
+            "name": "b",
+            "n": 2
+          },
+          {
+            "name": "a",
+            "n": 1
+          },
+          {
+            "name": "c",
+            "n": 3
+          }
+        ],
+        "nested": [
+          [
+            1,
+            2
+          ],
+          [
+            3
+          ]
+        ],
+        "text": "hello",
+        "nil": null
+      },
+      "expected": [
+        "a",
+        "b",
+        "c"
+      ]
+    },
+    {
+      "name": "standard-32",
+      "expression": "sort_by(items,&n)[*].name",
+      "data": {
+        "items": [
+          {
+            "name": "b",
+            "n": 2
+          },
+          {
+            "name": "a",
+            "n": 1
+          },
+          {
+            "name": "c",
+            "n": 3
+          }
+        ],
+        "nested": [
+          [
+            1,
+            2
+          ],
+          [
+            3
+          ]
+        ],
+        "text": "hello",
+        "nil": null
+      },
+      "expected": [
+        "a",
+        "b",
+        "c"
+      ]
+    },
+    {
+      "name": "standard-33",
+      "expression": "starts_with(text, `\"he\"`)",
+      "data": {
+        "items": [
+          {
+            "name": "b",
+            "n": 2
+          },
+          {
+            "name": "a",
+            "n": 1
+          },
+          {
+            "name": "c",
+            "n": 3
+          }
+        ],
+        "nested": [
+          [
+            1,
+            2
+          ],
+          [
+            3
+          ]
+        ],
+        "text": "hello",
+        "nil": null
+      },
+      "expected": true
+    },
+    {
+      "name": "standard-34",
+      "expression": "sum(items[*].n)",
+      "data": {
+        "items": [
+          {
+            "name": "b",
+            "n": 2
+          },
+          {
+            "name": "a",
+            "n": 1
+          },
+          {
+            "name": "c",
+            "n": 3
+          }
+        ],
+        "nested": [
+          [
+            1,
+            2
+          ],
+          [
+            3
+          ]
+        ],
+        "text": "hello",
+        "nil": null
+      },
+      "expected": 6
+    },
+    {
+      "name": "standard-35",
+      "expression": "to_array(text)",
+      "data": {
+        "items": [
+          {
+            "name": "b",
+            "n": 2
+          },
+          {
+            "name": "a",
+            "n": 1
+          },
+          {
+            "name": "c",
+            "n": 3
+          }
+        ],
+        "nested": [
+          [
+            1,
+            2
+          ],
+          [
+            3
+          ]
+        ],
+        "text": "hello",
+        "nil": null
+      },
+      "expected": [
+        "hello"
+      ]
+    },
+    {
+      "name": "standard-36",
+      "expression": "to_number(`\"12.5\"`)",
+      "data": {
+        "items": [
+          {
+            "name": "b",
+            "n": 2
+          },
+          {
+            "name": "a",
+            "n": 1
+          },
+          {
+            "name": "c",
+            "n": 3
+          }
+        ],
+        "nested": [
+          [
+            1,
+            2
+          ],
+          [
+            3
+          ]
+        ],
+        "text": "hello",
+        "nil": null
+      },
+      "expected": 12.5
+    },
+    {
+      "name": "standard-37",
+      "expression": "to_string(`42`)",
+      "data": {
+        "items": [
+          {
+            "name": "b",
+            "n": 2
+          },
+          {
+            "name": "a",
+            "n": 1
+          },
+          {
+            "name": "c",
+            "n": 3
+          }
+        ],
+        "nested": [
+          [
+            1,
+            2
+          ],
+          [
+            3
+          ]
+        ],
+        "text": "hello",
+        "nil": null
+      },
+      "expected": "42"
+    },
+    {
+      "name": "standard-38",
+      "expression": "type(nil)",
+      "data": {
+        "items": [
+          {
+            "name": "b",
+            "n": 2
+          },
+          {
+            "name": "a",
+            "n": 1
+          },
+          {
+            "name": "c",
+            "n": 3
+          }
+        ],
+        "nested": [
+          [
+            1,
+            2
+          ],
+          [
+            3
+          ]
+        ],
+        "text": "hello",
+        "nil": null
+      },
+      "expected": "null"
+    },
+    {
+      "name": "standard-39",
+      "expression": "sort(values(`{\"a\":2,\"b\":1}`))",
+      "data": {
+        "items": [
+          {
+            "name": "b",
+            "n": 2
+          },
+          {
+            "name": "a",
+            "n": 1
+          },
+          {
+            "name": "c",
+            "n": 3
+          }
+        ],
+        "nested": [
+          [
+            1,
+            2
+          ],
+          [
+            3
+          ]
+        ],
+        "text": "hello",
+        "nil": null
+      },
+      "expected": [
+        1,
+        2
+      ]
+    },
+    {
+      "name": "standard-40",
+      "expression": "avg(`[]`)",
+      "data": {
+        "items": [
+          {
+            "name": "b",
+            "n": 2
+          },
+          {
+            "name": "a",
+            "n": 1
+          },
+          {
+            "name": "c",
+            "n": 3
+          }
+        ],
+        "nested": [
+          [
+            1,
+            2
+          ],
+          [
+            3
+          ]
+        ],
+        "text": "hello",
+        "nil": null
+      },
+      "expected": null
+    },
+    {
+      "name": "standard-41",
+      "expression": "max(`[]`)",
+      "data": {
+        "items": [
+          {
+            "name": "b",
+            "n": 2
+          },
+          {
+            "name": "a",
+            "n": 1
+          },
+          {
+            "name": "c",
+            "n": 3
+          }
+        ],
+        "nested": [
+          [
+            1,
+            2
+          ],
+          [
+            3
+          ]
+        ],
+        "text": "hello",
+        "nil": null
+      },
+      "expected": null
+    },
+    {
+      "name": "standard-42",
+      "expression": "min(`[]`)",
+      "data": {
+        "items": [
+          {
+            "name": "b",
+            "n": 2
+          },
+          {
+            "name": "a",
+            "n": 1
+          },
+          {
+            "name": "c",
+            "n": 3
+          }
+        ],
+        "nested": [
+          [
+            1,
+            2
+          ],
+          [
+            3
+          ]
+        ],
+        "text": "hello",
+        "nil": null
+      },
+      "expected": null
+    },
+    {
+      "name": "standard-43",
+      "expression": "sort(`[]`)",
+      "data": {
+        "items": [
+          {
+            "name": "b",
+            "n": 2
+          },
+          {
+            "name": "a",
+            "n": 1
+          },
+          {
+            "name": "c",
+            "n": 3
+          }
+        ],
+        "nested": [
+          [
+            1,
+            2
+          ],
+          [
+            3
+          ]
+        ],
+        "text": "hello",
+        "nil": null
+      },
+      "expected": []
+    },
+    {
+      "name": "standard-44",
+      "expression": "sum(`[]`)",
+      "data": {
+        "items": [
+          {
+            "name": "b",
+            "n": 2
+          },
+          {
+            "name": "a",
+            "n": 1
+          },
+          {
+            "name": "c",
+            "n": 3
+          }
+        ],
+        "nested": [
+          [
+            1,
+            2
+          ],
+          [
+            3
+          ]
+        ],
+        "text": "hello",
+        "nil": null
+      },
+      "expected": 0
+    },
+    {
+      "name": "standard-45",
+      "expression": "to_number(`true`)",
+      "data": {
+        "items": [
+          {
+            "name": "b",
+            "n": 2
+          },
+          {
+            "name": "a",
+            "n": 1
+          },
+          {
+            "name": "c",
+            "n": 3
+          }
+        ],
+        "nested": [
+          [
+            1,
+            2
+          ],
+          [
+            3
+          ]
+        ],
+        "text": "hello",
+        "nil": null
+      },
+      "expected": null
+    },
+    {
+      "name": "standard-46",
+      "expression": "items[?n == `2`].name",
+      "data": {
+        "items": [
+          {
+            "name": "b",
+            "n": 2
+          },
+          {
+            "name": "a",
+            "n": 1
+          },
+          {
+            "name": "c",
+            "n": 3
+          }
+        ],
+        "nested": [
+          [
+            1,
+            2
+          ],
+          [
+            3
+          ]
+        ],
+        "text": "hello",
+        "nil": null
+      },
+      "expected": [
+        "b"
+      ]
+    },
+    {
+      "name": "standard-47",
+      "expression": "`0` || `1`",
+      "data": {
+        "items": [
+          {
+            "name": "b",
+            "n": 2
+          },
+          {
+            "name": "a",
+            "n": 1
+          },
+          {
+            "name": "c",
+            "n": 3
+          }
+        ],
+        "nested": [
+          [
+            1,
+            2
+          ],
+          [
+            3
+          ]
+        ],
+        "text": "hello",
+        "nil": null
+      },
+      "expected": 0
+    },
+    {
+      "name": "standard-48",
+      "expression": "`[]` || text",
+      "data": {
+        "items": [
+          {
+            "name": "b",
+            "n": 2
+          },
+          {
+            "name": "a",
+            "n": 1
+          },
+          {
+            "name": "c",
+            "n": 3
+          }
+        ],
+        "nested": [
+          [
+            1,
+            2
+          ],
+          [
+            3
+          ]
+        ],
+        "text": "hello",
+        "nil": null
+      },
+      "expected": "hello"
+    },
+    {
+      "name": "standard-49",
+      "expression": "\"text\"",
+      "data": {
+        "items": [
+          {
+            "name": "b",
+            "n": 2
+          },
+          {
+            "name": "a",
+            "n": 1
+          },
+          {
+            "name": "c",
+            "n": 3
+          }
+        ],
+        "nested": [
+          [
+            1,
+            2
+          ],
+          [
+            3
+          ]
+        ],
+        "text": "hello",
+        "nil": null
+      },
+      "expected": "hello"
+    },
+    {
+      "name": "envelope-API_GATEWAY_HTTP",
+      "envelope": "API_GATEWAY_HTTP",
+      "expression": "powertools_json(body)",
+      "data": {
+        "body": "{\"id\":\"http\"}"
+      },
+      "powertools": true,
+      "expected": {
+        "id": "http"
+      }
+    },
+    {
+      "name": "envelope-API_GATEWAY_REST",
+      "envelope": "API_GATEWAY_REST",
+      "expression": "powertools_json(body)",
+      "data": {
+        "body": "{\"id\":\"rest\"}"
+      },
+      "powertools": true,
+      "expected": {
+        "id": "rest"
+      }
+    },
+    {
+      "name": "envelope-SQS",
+      "envelope": "SQS",
+      "expression": "Records[*].powertools_json(body)",
+      "data": {
+        "Records": [
+          {
+            "body": "{\"id\":1}"
+          },
+          {
+            "body": "{\"id\":2}"
+          }
+        ]
+      },
+      "powertools": true,
+      "expected": [
+        {
+          "id": 1
+        },
+        {
+          "id": 2
+        }
+      ]
+    },
+    {
+      "name": "envelope-SNS",
+      "envelope": "SNS",
+      "expression": "Records[0].Sns.Message | powertools_json(@)",
+      "data": {
+        "Records": [
+          {
+            "Sns": {
+              "Message": "{\"id\":1}"
+            }
+          },
+          {
+            "Sns": {
+              "Message": "{\"id\":2}"
+            }
+          }
+        ]
+      },
+      "powertools": true,
+      "expected": {
+        "id": 1
+      }
+    },
+    {
+      "name": "envelope-EVENTBRIDGE",
+      "envelope": "EVENTBRIDGE",
+      "expression": "detail",
+      "data": {
+        "detail": {
+          "id": 1
+        }
+      },
+      "powertools": true,
+      "expected": {
+        "id": 1
+      }
+    },
+    {
+      "name": "envelope-CLOUDWATCH_EVENTS_SCHEDULED",
+      "envelope": "CLOUDWATCH_EVENTS_SCHEDULED",
+      "expression": "detail",
+      "data": {
+        "detail": {}
+      },
+      "powertools": true,
+      "expected": {}
+    },
+    {
+      "name": "envelope-KINESIS_DATA_STREAM",
+      "envelope": "KINESIS_DATA_STREAM",
+      "expression": "Records[*].kinesis.powertools_json(powertools_base64(data))",
+      "data": {
+        "Records": [
+          {
+            "kinesis": {
+              "data": "eyJpZCI6MX0="
+            }
+          }
+        ]
+      },
+      "powertools": true,
+      "expected": [
+        {
+          "id": 1
+        }
+      ]
+    },
+    {
+      "name": "envelope-CLOUDWATCH_LOGS",
+      "envelope": "CLOUDWATCH_LOGS",
+      "expression": "awslogs.powertools_base64_gzip(data) | powertools_json(@).logEvents[*]",
+      "data": {
+        "awslogs": {
+          "data": "H4sIAAAAAAAACqtWyslPdy1LzSspVrKKrlbKTFGyAgkp6SjlphYXJ6anKlkpZaTm5OQr1cbWAgAzNpICLgAAAA=="
+        }
+      },
+      "powertools": true,
+      "expected": [
+        {
+          "id": "log",
+          "message": "hello"
+        }
+      ]
+    },
+    {
+      "name": "envelope-S3_SNS_SQS",
+      "envelope": "S3_SNS_SQS",
+      "expression": "Records[*].powertools_json(body).powertools_json(Message).Records[0]",
+      "data": {
+        "Records": [
+          {
+            "body": "{\"Message\":\"{\\\"Records\\\":[{\\\"s3\\\":{\\\"bucket\\\":{\\\"name\\\":\\\"fixture\\\"}}},{\\\"ignored\\\":true}]}\"}"
+          }
+        ]
+      },
+      "powertools": true,
+      "expected": [
+        {
+          "s3": {
+            "bucket": {
+              "name": "fixture"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "envelope-S3_SQS",
+      "envelope": "S3_SQS",
+      "expression": "Records[*].powertools_json(body).Records[0]",
+      "data": {
+        "Records": [
+          {
+            "body": "{\"Records\":[{\"s3\":{\"bucket\":{\"name\":\"fixture\"}}},{\"ignored\":true}]}"
+          }
+        ]
+      },
+      "powertools": true,
+      "expected": [
+        {
+          "s3": {
+            "bucket": {
+              "name": "fixture"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "envelope-S3_SNS_KINESIS_FIREHOSE",
+      "envelope": "S3_SNS_KINESIS_FIREHOSE",
+      "expression": "records[*].powertools_json(powertools_base64(data)).powertools_json(Message).Records[0]",
+      "data": {
+        "records": [
+          {
+            "data": "eyJNZXNzYWdlIjoie1wiUmVjb3Jkc1wiOlt7XCJzM1wiOntcImJ1Y2tldFwiOntcIm5hbWVcIjpcImZpeHR1cmVcIn19fSx7XCJpZ25vcmVkXCI6dHJ1ZX1dfSJ9"
+          }
+        ]
+      },
+      "powertools": true,
+      "expected": [
+        {
+          "s3": {
+            "bucket": {
+              "name": "fixture"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "envelope-S3_KINESIS_FIREHOSE",
+      "envelope": "S3_KINESIS_FIREHOSE",
+      "expression": "records[*].powertools_json(powertools_base64(data)).Records[0]",
+      "data": {
+        "records": [
+          {
+            "data": "eyJSZWNvcmRzIjpbeyJzMyI6eyJidWNrZXQiOnsibmFtZSI6ImZpeHR1cmUifX19LHsiaWdub3JlZCI6dHJ1ZX1dfQ=="
+          }
+        ]
+      },
+      "powertools": true,
+      "expected": [
+        {
+          "s3": {
+            "bucket": {
+              "name": "fixture"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "envelope-S3_EVENTBRIDGE_SQS",
+      "envelope": "S3_EVENTBRIDGE_SQS",
+      "expression": "Records[*].powertools_json(body).detail",
+      "data": {
+        "Records": [
+          {
+            "body": "{\"detail\":{\"id\":\"detail\"}}"
+          }
+        ]
+      },
+      "powertools": true,
+      "expected": [
+        {
+          "id": "detail"
+        }
+      ]
+    },
+    {
+      "name": "json",
+      "expression": "powertools_json(@)",
+      "data": "{\"name\":\"value\",\"nested\":[1,null]}",
+      "powertools": true,
+      "expected": {
+        "name": "value",
+        "nested": [
+          1,
+          null
+        ]
+      }
+    },
+    {
+      "name": "base64",
+      "expression": "powertools_base64(@)",
+      "data": "aGVsbG8g5LiW55WM",
+      "powertools": true,
+      "expected": "hello 世界"
+    },
+    {
+      "name": "bom",
+      "expression": "powertools_base64(@)",
+      "data": "77u/aGVsbG8=",
+      "powertools": true,
+      "expected": "hello"
+    },
+    {
+      "name": "gzip",
+      "expression": "powertools_base64_gzip(@)",
+      "data": "H4sIAAAAAAAACstIzcnJV3iyY9rzqT0AbigusgwAAAA=",
+      "powertools": true,
+      "expected": "hello 世界"
+    },
+    {
+      "name": "invalid-json",
+      "expression": "powertools_json(@)",
+      "data": "bad",
+      "powertools": true,
+      "expectedUndefined": true
+    },
+    {
+      "name": "invalid-base64",
+      "expression": "powertools_base64(@)",
+      "data": "a",
+      "powertools": true,
+      "expectedUndefined": true
+    },
+    {
+      "name": "invalid-gzip",
+      "expression": "powertools_base64_gzip(@)",
+      "data": "bm90IGd6aXA=",
+      "powertools": true,
+      "expectedUndefined": true
+    },
+    {
+      "name": "error-70",
+      "expression": "",
+      "data": {
+        "items": [
+          {
+            "name": "b",
+            "n": 2
+          },
+          {
+            "name": "a",
+            "n": 1
+          },
+          {
+            "name": "c",
+            "n": 3
+          }
+        ],
+        "nested": [
+          [
+            1,
+            2
+          ],
+          [
+            3
+          ]
+        ],
+        "text": "hello",
+        "nil": null
+      },
+      "error": "IncompleteExpressionError"
+    },
+    {
+      "name": "error-71",
+      "expression": "items[",
+      "data": {
+        "items": [
+          {
+            "name": "b",
+            "n": 2
+          },
+          {
+            "name": "a",
+            "n": 1
+          },
+          {
+            "name": "c",
+            "n": 3
+          }
+        ],
+        "nested": [
+          [
+            1,
+            2
+          ],
+          [
+            3
+          ]
+        ],
+        "text": "hello",
+        "nil": null
+      },
+      "error": "IncompleteExpressionError"
+    },
+    {
+      "name": "error-72",
+      "expression": "unknown(text)",
+      "data": {
+        "items": [
+          {
+            "name": "b",
+            "n": 2
+          },
+          {
+            "name": "a",
+            "n": 1
+          },
+          {
+            "name": "c",
+            "n": 3
+          }
+        ],
+        "nested": [
+          [
+            1,
+            2
+          ],
+          [
+            3
+          ]
+        ],
+        "text": "hello",
+        "nil": null
+      },
+      "error": "UnknownFunctionError"
+    },
+    {
+      "name": "error-73",
+      "expression": "length()",
+      "data": {
+        "items": [
+          {
+            "name": "b",
+            "n": 2
+          },
+          {
+            "name": "a",
+            "n": 1
+          },
+          {
+            "name": "c",
+            "n": 3
+          }
+        ],
+        "nested": [
+          [
+            1,
+            2
+          ],
+          [
+            3
+          ]
+        ],
+        "text": "hello",
+        "nil": null
+      },
+      "error": "ArityError"
+    },
+    {
+      "name": "error-74",
+      "expression": "length(text,text)",
+      "data": {
+        "items": [
+          {
+            "name": "b",
+            "n": 2
+          },
+          {
+            "name": "a",
+            "n": 1
+          },
+          {
+            "name": "c",
+            "n": 3
+          }
+        ],
+        "nested": [
+          [
+            1,
+            2
+          ],
+          [
+            3
+          ]
+        ],
+        "text": "hello",
+        "nil": null
+      },
+      "error": "ArityError"
+    },
+    {
+      "name": "error-75",
+      "expression": "length(`1`)",
+      "data": {
+        "items": [
+          {
+            "name": "b",
+            "n": 2
+          },
+          {
+            "name": "a",
+            "n": 1
+          },
+          {
+            "name": "c",
+            "n": 3
+          }
+        ],
+        "nested": [
+          [
+            1,
+            2
+          ],
+          [
+            3
+          ]
+        ],
+        "text": "hello",
+        "nil": null
+      },
+      "error": "JMESPathTypeError"
+    },
+    {
+      "name": "error-76",
+      "expression": "sum(`[1,\"bad\"]`)",
+      "data": {
+        "items": [
+          {
+            "name": "b",
+            "n": 2
+          },
+          {
+            "name": "a",
+            "n": 1
+          },
+          {
+            "name": "c",
+            "n": 3
+          }
+        ],
+        "nested": [
+          [
+            1,
+            2
+          ],
+          [
+            3
+          ]
+        ],
+        "text": "hello",
+        "nil": null
+      },
+      "error": "JMESPathTypeError"
+    },
+    {
+      "name": "error-77",
+      "expression": "powertools_json(text)",
+      "data": {
+        "items": [
+          {
+            "name": "b",
+            "n": 2
+          },
+          {
+            "name": "a",
+            "n": 1
+          },
+          {
+            "name": "c",
+            "n": 3
+          }
+        ],
+        "nested": [
+          [
+            1,
+            2
+          ],
+          [
+            3
+          ]
+        ],
+        "text": "hello",
+        "nil": null
+      },
+      "error": "UnknownFunctionError"
+    }
+  ]
+}

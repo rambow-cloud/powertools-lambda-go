@@ -1,0 +1,1340 @@
+{
+  "version": "2.35.0",
+  "zodVersion": "4.1.12",
+  "cases": [
+    {
+      "name": "order-0",
+      "schema": "order",
+      "input": {
+        "id": "a",
+        "amount": 1,
+        "extra": true
+      },
+      "safe": true,
+      "expected": {
+        "success": true,
+        "data": {
+          "id": "a",
+          "amount": 1,
+          "retry": 3
+        }
+      }
+    },
+    {
+      "name": "order-1",
+      "schema": "order",
+      "input": {
+        "id": "a",
+        "amount": -1
+      },
+      "safe": true,
+      "expected": {
+        "success": false,
+        "issues": [
+          {
+            "code": "custom",
+            "message": "amount must be non-negative",
+            "path": [
+              "amount"
+            ]
+          }
+        ],
+        "original": {
+          "id": "a",
+          "amount": -1
+        }
+      }
+    },
+    {
+      "name": "order-2",
+      "schema": "order",
+      "input": {
+        "id": 1,
+        "amount": "x"
+      },
+      "safe": true,
+      "expected": {
+        "success": false,
+        "issues": [
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected string, received number",
+            "path": [
+              "id"
+            ],
+            "expected": "string"
+          },
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected number, received string",
+            "path": [
+              "amount"
+            ],
+            "expected": "number"
+          }
+        ],
+        "original": {
+          "id": 1,
+          "amount": "x"
+        }
+      }
+    },
+    {
+      "name": "order-3",
+      "schema": "order",
+      "input": {},
+      "safe": true,
+      "expected": {
+        "success": false,
+        "issues": [
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected string, received undefined",
+            "path": [
+              "id"
+            ],
+            "expected": "string"
+          },
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected number, received undefined",
+            "path": [
+              "amount"
+            ],
+            "expected": "number"
+          }
+        ],
+        "original": {}
+      }
+    },
+    {
+      "name": "order-4",
+      "schema": "order",
+      "input": null,
+      "safe": true,
+      "expected": {
+        "success": false,
+        "issues": [
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected object, received null",
+            "expected": "object"
+          }
+        ],
+        "original": null
+      }
+    },
+    {
+      "name": "order-5",
+      "schema": "order",
+      "input": {
+        "id": "a",
+        "amount": 0,
+        "note": null
+      },
+      "safe": true,
+      "expected": {
+        "success": true,
+        "data": {
+          "id": "a",
+          "amount": 0,
+          "retry": 3,
+          "note": null
+        }
+      }
+    },
+    {
+      "name": "order-6",
+      "schema": "order",
+      "input": {
+        "id": "a",
+        "amount": 1,
+        "retry": null
+      },
+      "safe": true,
+      "expected": {
+        "success": false,
+        "issues": [
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected number, received null",
+            "path": [
+              "retry"
+            ],
+            "expected": "number"
+          }
+        ],
+        "original": {
+          "id": "a",
+          "amount": 1,
+          "retry": null
+        }
+      }
+    },
+    {
+      "name": "strict-unknown",
+      "schema": "strict",
+      "input": {
+        "id": "a",
+        "amount": 1,
+        "extra": true
+      },
+      "safe": true,
+      "expected": {
+        "success": false,
+        "issues": [
+          {
+            "code": "unrecognized_keys",
+            "message": "Unrecognized key: \"extra\""
+          }
+        ],
+        "original": {
+          "id": "a",
+          "amount": 1,
+          "extra": true
+        }
+      }
+    },
+    {
+      "name": "passthrough",
+      "schema": "passthrough",
+      "input": {
+        "id": "a",
+        "amount": 1,
+        "extra": {
+          "enabled": true
+        }
+      },
+      "safe": true,
+      "expected": {
+        "success": true,
+        "data": {
+          "id": "a",
+          "amount": 1,
+          "retry": 3,
+          "extra": {
+            "enabled": true
+          }
+        }
+      }
+    },
+    {
+      "name": "transform",
+      "schema": "transform",
+      "input": {
+        "id": "a",
+        "amount": 1
+      },
+      "safe": true,
+      "expected": {
+        "success": true,
+        "data": {
+          "id": "A",
+          "amount": 1,
+          "retry": 3
+        }
+      }
+    },
+    {
+      "name": "json-success",
+      "schema": "json",
+      "input": "{\"id\":\"a\",\"amount\":1}",
+      "safe": true,
+      "expected": {
+        "success": true,
+        "data": {
+          "id": "a",
+          "amount": 1,
+          "retry": 3
+        }
+      }
+    },
+    {
+      "name": "json-invalid",
+      "schema": "json",
+      "input": "{broken",
+      "safe": true,
+      "expected": {
+        "success": false,
+        "issues": [
+          {
+            "code": "custom",
+            "message": "Invalid JSON - Expected property name or '}' in JSON at position 1 (line 1 column 2)"
+          }
+        ],
+        "original": "{broken"
+      }
+    },
+    {
+      "name": "json-wrong-type",
+      "schema": "json",
+      "input": {
+        "id": "a"
+      },
+      "safe": true,
+      "expected": {
+        "success": false,
+        "issues": [
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected string, received object",
+            "expected": "string"
+          }
+        ],
+        "original": {
+          "id": "a"
+        }
+      }
+    },
+    {
+      "name": "base64-json",
+      "schema": "base64",
+      "input": "eyJpZCI6ImEiLCJhbW91bnQiOjF9",
+      "safe": true,
+      "expected": {
+        "success": true,
+        "data": {
+          "id": "a",
+          "amount": 1,
+          "retry": 3
+        }
+      }
+    },
+    {
+      "name": "base64-gzip",
+      "schema": "base64",
+      "input": "H4sIAAAAAAAACqtWykxRslJKVNJRSszNL80rUbIyrAUAW4nnsRUAAAA=",
+      "safe": true,
+      "expected": {
+        "success": true,
+        "data": {
+          "id": "a",
+          "amount": 1,
+          "retry": 3
+        }
+      }
+    },
+    {
+      "name": "base64-text-schema",
+      "schema": "base64",
+      "input": "cGxhaW4gdGV4dA==",
+      "safe": true,
+      "expected": {
+        "success": false,
+        "issues": [
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected object, received string",
+            "expected": "object"
+          }
+        ],
+        "original": "cGxhaW4gdGV4dA=="
+      }
+    },
+    {
+      "name": "data-type-String",
+      "schema": "dataType",
+      "input": "String",
+      "safe": true,
+      "expected": {
+        "success": true,
+        "data": "String"
+      }
+    },
+    {
+      "name": "data-type-Number",
+      "schema": "dataType",
+      "input": "Number",
+      "safe": true,
+      "expected": {
+        "success": true,
+        "data": "Number"
+      }
+    },
+    {
+      "name": "data-type-Binary",
+      "schema": "dataType",
+      "input": "Binary",
+      "safe": true,
+      "expected": {
+        "success": true,
+        "data": "Binary"
+      }
+    },
+    {
+      "name": "data-type-custom",
+      "schema": "dataType",
+      "input": "custom",
+      "safe": true,
+      "expected": {
+        "success": true,
+        "data": "custom"
+      }
+    },
+    {
+      "name": "data-type-1",
+      "schema": "dataType",
+      "input": 1,
+      "safe": true,
+      "expected": {
+        "success": false,
+        "issues": [
+          {
+            "code": "invalid_union",
+            "message": "Invalid input",
+            "errors": [
+              [
+                {
+                  "code": "invalid_value",
+                  "message": "Invalid input: expected \"String\""
+                }
+              ],
+              [
+                {
+                  "code": "invalid_value",
+                  "message": "Invalid input: expected \"Number\""
+                }
+              ],
+              [
+                {
+                  "code": "invalid_value",
+                  "message": "Invalid input: expected \"Binary\""
+                }
+              ],
+              [
+                {
+                  "code": "invalid_type",
+                  "message": "Invalid input: expected string, received number",
+                  "expected": "string"
+                }
+              ]
+            ]
+          }
+        ],
+        "original": 1
+      }
+    },
+    {
+      "name": "data-type-null",
+      "schema": "dataType",
+      "input": null,
+      "safe": true,
+      "expected": {
+        "success": false,
+        "issues": [
+          {
+            "code": "invalid_union",
+            "message": "Invalid input",
+            "errors": [
+              [
+                {
+                  "code": "invalid_value",
+                  "message": "Invalid input: expected \"String\""
+                }
+              ],
+              [
+                {
+                  "code": "invalid_value",
+                  "message": "Invalid input: expected \"Number\""
+                }
+              ],
+              [
+                {
+                  "code": "invalid_value",
+                  "message": "Invalid input: expected \"Binary\""
+                }
+              ],
+              [
+                {
+                  "code": "invalid_type",
+                  "message": "Invalid input: expected string, received null",
+                  "expected": "string"
+                }
+              ]
+            ]
+          }
+        ],
+        "original": null
+      }
+    },
+    {
+      "name": "sqs-schema",
+      "schema": "sqs",
+      "input": {
+        "Records": [
+          {
+            "messageId": "1",
+            "receiptHandle": "receipt",
+            "body": "{\"id\":\"a\",\"amount\":1}",
+            "attributes": {
+              "ApproximateReceiveCount": "1",
+              "ApproximateFirstReceiveTimestamp": "1",
+              "SenderId": "sender",
+              "SentTimestamp": "1",
+              "DeadLetterQueueSourceArn": "arn:queue"
+            },
+            "messageAttributes": {},
+            "md5OfBody": "hash",
+            "eventSource": "aws:sqs",
+            "eventSourceARN": "arn:queue",
+            "awsRegion": "ap-east-1"
+          }
+        ],
+        "ignored": true
+      },
+      "safe": true,
+      "expected": {
+        "success": true,
+        "data": {
+          "Records": [
+            {
+              "messageId": "1",
+              "receiptHandle": "receipt",
+              "body": "{\"id\":\"a\",\"amount\":1}",
+              "attributes": {
+                "ApproximateReceiveCount": "1",
+                "ApproximateFirstReceiveTimestamp": "1",
+                "SenderId": "sender",
+                "SentTimestamp": "1",
+                "DeadLetterQueueSourceArn": "arn:queue"
+              },
+              "messageAttributes": {},
+              "md5OfBody": "hash",
+              "eventSource": "aws:sqs",
+              "eventSourceARN": "arn:queue",
+              "awsRegion": "ap-east-1"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "sqs-envelope",
+      "schema": "json",
+      "input": {
+        "Records": [
+          {
+            "messageId": "1",
+            "receiptHandle": "receipt",
+            "body": "{\"id\":\"a\",\"amount\":1}",
+            "attributes": {
+              "ApproximateReceiveCount": "1",
+              "ApproximateFirstReceiveTimestamp": "1",
+              "SenderId": "sender",
+              "SentTimestamp": "1",
+              "DeadLetterQueueSourceArn": "arn:queue"
+            },
+            "messageAttributes": {},
+            "md5OfBody": "hash",
+            "eventSource": "aws:sqs",
+            "eventSourceARN": "arn:queue",
+            "awsRegion": "ap-east-1"
+          }
+        ],
+        "ignored": true
+      },
+      "envelope": "sqs",
+      "safe": true,
+      "expected": {
+        "success": true,
+        "data": [
+          {
+            "id": "a",
+            "amount": 1,
+            "retry": 3
+          }
+        ]
+      }
+    },
+    {
+      "name": "sqs-no-implicit-json",
+      "schema": "order",
+      "input": {
+        "Records": [
+          {
+            "messageId": "1",
+            "receiptHandle": "receipt",
+            "body": "{\"id\":\"a\",\"amount\":1}",
+            "attributes": {
+              "ApproximateReceiveCount": "1",
+              "ApproximateFirstReceiveTimestamp": "1",
+              "SenderId": "sender",
+              "SentTimestamp": "1",
+              "DeadLetterQueueSourceArn": "arn:queue"
+            },
+            "messageAttributes": {},
+            "md5OfBody": "hash",
+            "eventSource": "aws:sqs",
+            "eventSourceARN": "arn:queue",
+            "awsRegion": "ap-east-1"
+          }
+        ],
+        "ignored": true
+      },
+      "envelope": "sqs",
+      "safe": true,
+      "expected": {
+        "success": false,
+        "issues": [
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected object, received string",
+            "path": [
+              "Records",
+              0,
+              "body"
+            ],
+            "expected": "object"
+          }
+        ],
+        "original": {
+          "Records": [
+            {
+              "messageId": "1",
+              "receiptHandle": "receipt",
+              "body": "{\"id\":\"a\",\"amount\":1}",
+              "attributes": {
+                "ApproximateReceiveCount": "1",
+                "ApproximateFirstReceiveTimestamp": "1",
+                "SenderId": "sender",
+                "SentTimestamp": "1",
+                "DeadLetterQueueSourceArn": "arn:queue"
+              },
+              "messageAttributes": {},
+              "md5OfBody": "hash",
+              "eventSource": "aws:sqs",
+              "eventSourceARN": "arn:queue",
+              "awsRegion": "ap-east-1"
+            }
+          ],
+          "ignored": true
+        }
+      }
+    },
+    {
+      "name": "sqs-text",
+      "schema": "text",
+      "input": {
+        "Records": [
+          {
+            "messageId": "1",
+            "receiptHandle": "receipt",
+            "body": "text",
+            "attributes": {
+              "ApproximateReceiveCount": "1",
+              "ApproximateFirstReceiveTimestamp": "1",
+              "SenderId": "sender",
+              "SentTimestamp": "1",
+              "DeadLetterQueueSourceArn": "arn:queue"
+            },
+            "messageAttributes": {},
+            "md5OfBody": "hash",
+            "eventSource": "aws:sqs",
+            "eventSourceARN": "arn:queue",
+            "awsRegion": "ap-east-1"
+          }
+        ]
+      },
+      "envelope": "sqs",
+      "safe": true,
+      "expected": {
+        "success": true,
+        "data": [
+          "text"
+        ]
+      }
+    },
+    {
+      "name": "sqs-empty",
+      "schema": "sqs",
+      "input": {
+        "Records": []
+      },
+      "safe": true,
+      "expected": {
+        "success": false,
+        "issues": [
+          {
+            "code": "too_small",
+            "message": "Too small: expected array to have >=1 items",
+            "path": [
+              "Records"
+            ]
+          }
+        ],
+        "original": {
+          "Records": []
+        }
+      }
+    },
+    {
+      "name": "sqs-missing-records",
+      "schema": "sqs",
+      "input": {},
+      "safe": true,
+      "expected": {
+        "success": false,
+        "issues": [
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected array, received undefined",
+            "path": [
+              "Records"
+            ],
+            "expected": "array"
+          }
+        ],
+        "original": {}
+      }
+    },
+    {
+      "name": "sqs-attributes",
+      "schema": "sqs",
+      "input": {
+        "Records": [
+          {
+            "messageId": "1",
+            "receiptHandle": "receipt",
+            "body": "{\"id\":\"a\",\"amount\":1}",
+            "attributes": {
+              "ApproximateReceiveCount": "1",
+              "ApproximateFirstReceiveTimestamp": "1",
+              "SenderId": "sender",
+              "SentTimestamp": "1",
+              "DeadLetterQueueSourceArn": "arn:queue"
+            },
+            "messageAttributes": {
+              "custom": {
+                "dataType": "custom",
+                "stringValue": null,
+                "binaryValue": null,
+                "stringListValues": [
+                  "a"
+                ]
+              }
+            },
+            "md5OfBody": "hash",
+            "eventSource": "aws:sqs",
+            "eventSourceARN": "arn:queue",
+            "awsRegion": "ap-east-1"
+          }
+        ],
+        "ignored": true
+      },
+      "safe": true,
+      "expected": {
+        "success": true,
+        "data": {
+          "Records": [
+            {
+              "messageId": "1",
+              "receiptHandle": "receipt",
+              "body": "{\"id\":\"a\",\"amount\":1}",
+              "attributes": {
+                "ApproximateReceiveCount": "1",
+                "ApproximateFirstReceiveTimestamp": "1",
+                "SenderId": "sender",
+                "SentTimestamp": "1",
+                "DeadLetterQueueSourceArn": "arn:queue"
+              },
+              "messageAttributes": {
+                "custom": {
+                  "stringValue": null,
+                  "binaryValue": null,
+                  "stringListValues": [
+                    "a"
+                  ],
+                  "dataType": "custom"
+                }
+              },
+              "md5OfBody": "hash",
+              "eventSource": "aws:sqs",
+              "eventSourceARN": "arn:queue",
+              "awsRegion": "ap-east-1"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "sqs-invalid-metadata",
+      "schema": "json",
+      "input": {
+        "Records": [
+          {
+            "messageId": "1",
+            "receiptHandle": "receipt",
+            "body": "{\"id\":\"a\",\"amount\":1}",
+            "attributes": {
+              "ApproximateReceiveCount": "1",
+              "ApproximateFirstReceiveTimestamp": "1",
+              "SentTimestamp": "1",
+              "DeadLetterQueueSourceArn": "arn:queue"
+            },
+            "messageAttributes": {},
+            "md5OfBody": "hash",
+            "eventSource": "other",
+            "eventSourceARN": "arn:queue",
+            "awsRegion": "ap-east-1"
+          }
+        ],
+        "ignored": true
+      },
+      "envelope": "sqs",
+      "safe": true,
+      "expected": {
+        "success": false,
+        "issues": [
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected string, received undefined",
+            "path": [
+              "Records",
+              0,
+              "attributes",
+              "SenderId"
+            ],
+            "expected": "string"
+          },
+          {
+            "code": "invalid_value",
+            "message": "Invalid input: expected \"aws:sqs\"",
+            "path": [
+              "Records",
+              0,
+              "eventSource"
+            ]
+          }
+        ],
+        "original": {
+          "Records": [
+            {
+              "messageId": "1",
+              "receiptHandle": "receipt",
+              "body": "{\"id\":\"a\",\"amount\":1}",
+              "attributes": {
+                "ApproximateReceiveCount": "1",
+                "ApproximateFirstReceiveTimestamp": "1",
+                "SentTimestamp": "1",
+                "DeadLetterQueueSourceArn": "arn:queue"
+              },
+              "messageAttributes": {},
+              "md5OfBody": "hash",
+              "eventSource": "other",
+              "eventSourceARN": "arn:queue",
+              "awsRegion": "ap-east-1"
+            }
+          ],
+          "ignored": true
+        }
+      }
+    },
+    {
+      "name": "sqs-safe-collect",
+      "schema": "json",
+      "input": {
+        "Records": [
+          {
+            "messageId": "1",
+            "receiptHandle": "receipt",
+            "body": "{\"id\":1,\"amount\":-1}",
+            "attributes": {
+              "ApproximateReceiveCount": "1",
+              "ApproximateFirstReceiveTimestamp": "1",
+              "SenderId": "sender",
+              "SentTimestamp": "1",
+              "DeadLetterQueueSourceArn": "arn:queue"
+            },
+            "messageAttributes": {},
+            "md5OfBody": "hash",
+            "eventSource": "aws:sqs",
+            "eventSourceARN": "arn:queue",
+            "awsRegion": "ap-east-1"
+          },
+          {
+            "messageId": "2",
+            "receiptHandle": "receipt",
+            "body": "{\"id\":\"b\",\"amount\":-1}",
+            "attributes": {
+              "ApproximateReceiveCount": "1",
+              "ApproximateFirstReceiveTimestamp": "1",
+              "SenderId": "sender",
+              "SentTimestamp": "1",
+              "DeadLetterQueueSourceArn": "arn:queue"
+            },
+            "messageAttributes": {},
+            "md5OfBody": "hash",
+            "eventSource": "aws:sqs",
+            "eventSourceARN": "arn:queue",
+            "awsRegion": "ap-east-1"
+          }
+        ]
+      },
+      "envelope": "sqs",
+      "safe": true,
+      "expected": {
+        "success": false,
+        "issues": [
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected string, received number",
+            "path": [
+              "Records",
+              0,
+              "body",
+              "id"
+            ],
+            "expected": "string"
+          },
+          {
+            "code": "custom",
+            "message": "amount must be non-negative",
+            "path": [
+              "Records",
+              0,
+              "body",
+              "amount"
+            ]
+          },
+          {
+            "code": "custom",
+            "message": "amount must be non-negative",
+            "path": [
+              "Records",
+              1,
+              "body",
+              "amount"
+            ]
+          }
+        ],
+        "original": {
+          "Records": [
+            {
+              "messageId": "1",
+              "receiptHandle": "receipt",
+              "body": "{\"id\":1,\"amount\":-1}",
+              "attributes": {
+                "ApproximateReceiveCount": "1",
+                "ApproximateFirstReceiveTimestamp": "1",
+                "SenderId": "sender",
+                "SentTimestamp": "1",
+                "DeadLetterQueueSourceArn": "arn:queue"
+              },
+              "messageAttributes": {},
+              "md5OfBody": "hash",
+              "eventSource": "aws:sqs",
+              "eventSourceARN": "arn:queue",
+              "awsRegion": "ap-east-1"
+            },
+            {
+              "messageId": "2",
+              "receiptHandle": "receipt",
+              "body": "{\"id\":\"b\",\"amount\":-1}",
+              "attributes": {
+                "ApproximateReceiveCount": "1",
+                "ApproximateFirstReceiveTimestamp": "1",
+                "SenderId": "sender",
+                "SentTimestamp": "1",
+                "DeadLetterQueueSourceArn": "arn:queue"
+              },
+              "messageAttributes": {},
+              "md5OfBody": "hash",
+              "eventSource": "aws:sqs",
+              "eventSourceARN": "arn:queue",
+              "awsRegion": "ap-east-1"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "sqs-stop-first",
+      "schema": "json",
+      "input": {
+        "Records": [
+          {
+            "messageId": "1",
+            "receiptHandle": "receipt",
+            "body": "{\"id\":1,\"amount\":-1}",
+            "attributes": {
+              "ApproximateReceiveCount": "1",
+              "ApproximateFirstReceiveTimestamp": "1",
+              "SenderId": "sender",
+              "SentTimestamp": "1",
+              "DeadLetterQueueSourceArn": "arn:queue"
+            },
+            "messageAttributes": {},
+            "md5OfBody": "hash",
+            "eventSource": "aws:sqs",
+            "eventSourceARN": "arn:queue",
+            "awsRegion": "ap-east-1"
+          },
+          {
+            "messageId": "2",
+            "receiptHandle": "receipt",
+            "body": "{\"id\":\"b\",\"amount\":-1}",
+            "attributes": {
+              "ApproximateReceiveCount": "1",
+              "ApproximateFirstReceiveTimestamp": "1",
+              "SenderId": "sender",
+              "SentTimestamp": "1",
+              "DeadLetterQueueSourceArn": "arn:queue"
+            },
+            "messageAttributes": {},
+            "md5OfBody": "hash",
+            "eventSource": "aws:sqs",
+            "eventSourceARN": "arn:queue",
+            "awsRegion": "ap-east-1"
+          }
+        ]
+      },
+      "envelope": "sqs",
+      "safe": false,
+      "expected": {
+        "success": false,
+        "thrown": true,
+        "error": "ParseError",
+        "issues": [
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected string, received number",
+            "path": [
+              "Records",
+              0,
+              "body",
+              "id"
+            ],
+            "expected": "string"
+          },
+          {
+            "code": "custom",
+            "message": "amount must be non-negative",
+            "path": [
+              "Records",
+              0,
+              "body",
+              "amount"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "eventbridge-schema",
+      "schema": "eventbridge",
+      "input": {
+        "version": "0",
+        "id": "event",
+        "source": "source",
+        "account": "account",
+        "time": "2026-09-15T00:00:00Z",
+        "region": "ap-east-1",
+        "resources": [],
+        "detail-type": "order",
+        "detail": {
+          "id": "a",
+          "amount": 1
+        }
+      },
+      "safe": true,
+      "expected": {
+        "success": true,
+        "data": {
+          "version": "0",
+          "id": "event",
+          "source": "source",
+          "account": "account",
+          "time": "2026-09-15T00:00:00Z",
+          "region": "ap-east-1",
+          "resources": [],
+          "detail-type": "order",
+          "detail": {
+            "id": "a",
+            "amount": 1
+          }
+        }
+      }
+    },
+    {
+      "name": "eventbridge-envelope",
+      "schema": "order",
+      "input": {
+        "version": "0",
+        "id": "event",
+        "source": "source",
+        "account": "account",
+        "time": "2026-09-15T00:00:00Z",
+        "region": "ap-east-1",
+        "resources": [],
+        "detail-type": "order",
+        "detail": {
+          "id": "a",
+          "amount": 1
+        }
+      },
+      "envelope": "eventbridge",
+      "safe": true,
+      "expected": {
+        "success": true,
+        "data": {
+          "id": "a",
+          "amount": 1,
+          "retry": 3
+        }
+      }
+    },
+    {
+      "name": "eventbridge-invalid-both",
+      "schema": "order",
+      "input": {
+        "version": "0",
+        "id": "event",
+        "source": "source",
+        "account": "account",
+        "time": "invalid",
+        "region": "ap-east-1",
+        "resources": [],
+        "detail-type": "order",
+        "detail": {
+          "id": 1,
+          "amount": -1
+        }
+      },
+      "envelope": "eventbridge",
+      "safe": true,
+      "expected": {
+        "success": false,
+        "issues": [
+          {
+            "code": "invalid_format",
+            "message": "Invalid ISO datetime",
+            "path": [
+              "time"
+            ]
+          },
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected string, received number",
+            "path": [
+              "detail",
+              "id"
+            ],
+            "expected": "string"
+          },
+          {
+            "code": "custom",
+            "message": "amount must be non-negative",
+            "path": [
+              "detail",
+              "amount"
+            ]
+          }
+        ],
+        "original": {
+          "version": "0",
+          "id": "event",
+          "source": "source",
+          "account": "account",
+          "time": "invalid",
+          "region": "ap-east-1",
+          "resources": [],
+          "detail-type": "order",
+          "detail": {
+            "id": 1,
+            "amount": -1
+          }
+        }
+      }
+    },
+    {
+      "name": "eventbridge-missing-detail",
+      "schema": "eventbridge",
+      "input": {
+        "version": "0",
+        "id": "event",
+        "source": "source",
+        "account": "account",
+        "time": "2026-09-15T00:00:00Z",
+        "region": "ap-east-1",
+        "resources": [],
+        "detail-type": "order"
+      },
+      "safe": true,
+      "expected": {
+        "success": true,
+        "data": {
+          "version": "0",
+          "id": "event",
+          "source": "source",
+          "account": "account",
+          "time": "2026-09-15T00:00:00Z",
+          "region": "ap-east-1",
+          "resources": [],
+          "detail-type": "order"
+        }
+      }
+    },
+    {
+      "name": "eventbridge-time-2026-09-15T00:00Z",
+      "schema": "eventbridge",
+      "input": {
+        "version": "0",
+        "id": "event",
+        "source": "source",
+        "account": "account",
+        "time": "2026-09-15T00:00Z",
+        "region": "ap-east-1",
+        "resources": [],
+        "detail-type": "order",
+        "detail": {
+          "id": "a",
+          "amount": 1
+        }
+      },
+      "safe": true,
+      "expected": {
+        "success": true,
+        "data": {
+          "version": "0",
+          "id": "event",
+          "source": "source",
+          "account": "account",
+          "time": "2026-09-15T00:00Z",
+          "region": "ap-east-1",
+          "resources": [],
+          "detail-type": "order",
+          "detail": {
+            "id": "a",
+            "amount": 1
+          }
+        }
+      }
+    },
+    {
+      "name": "eventbridge-time-2026-09-15T00:00:00.123456789Z",
+      "schema": "eventbridge",
+      "input": {
+        "version": "0",
+        "id": "event",
+        "source": "source",
+        "account": "account",
+        "time": "2026-09-15T00:00:00.123456789Z",
+        "region": "ap-east-1",
+        "resources": [],
+        "detail-type": "order",
+        "detail": {
+          "id": "a",
+          "amount": 1
+        }
+      },
+      "safe": true,
+      "expected": {
+        "success": true,
+        "data": {
+          "version": "0",
+          "id": "event",
+          "source": "source",
+          "account": "account",
+          "time": "2026-09-15T00:00:00.123456789Z",
+          "region": "ap-east-1",
+          "resources": [],
+          "detail-type": "order",
+          "detail": {
+            "id": "a",
+            "amount": 1
+          }
+        }
+      }
+    },
+    {
+      "name": "eventbridge-time-2026-02-30T00:00:00Z",
+      "schema": "eventbridge",
+      "input": {
+        "version": "0",
+        "id": "event",
+        "source": "source",
+        "account": "account",
+        "time": "2026-02-30T00:00:00Z",
+        "region": "ap-east-1",
+        "resources": [],
+        "detail-type": "order",
+        "detail": {
+          "id": "a",
+          "amount": 1
+        }
+      },
+      "safe": true,
+      "expected": {
+        "success": false,
+        "issues": [
+          {
+            "code": "invalid_format",
+            "message": "Invalid ISO datetime",
+            "path": [
+              "time"
+            ]
+          }
+        ],
+        "original": {
+          "version": "0",
+          "id": "event",
+          "source": "source",
+          "account": "account",
+          "time": "2026-02-30T00:00:00Z",
+          "region": "ap-east-1",
+          "resources": [],
+          "detail-type": "order",
+          "detail": {
+            "id": "a",
+            "amount": 1
+          }
+        }
+      }
+    },
+    {
+      "name": "eventbridge-time-2026-09-15T00:00:00+08:00",
+      "schema": "eventbridge",
+      "input": {
+        "version": "0",
+        "id": "event",
+        "source": "source",
+        "account": "account",
+        "time": "2026-09-15T00:00:00+08:00",
+        "region": "ap-east-1",
+        "resources": [],
+        "detail-type": "order",
+        "detail": {
+          "id": "a",
+          "amount": 1
+        }
+      },
+      "safe": true,
+      "expected": {
+        "success": false,
+        "issues": [
+          {
+            "code": "invalid_format",
+            "message": "Invalid ISO datetime",
+            "path": [
+              "time"
+            ]
+          }
+        ],
+        "original": {
+          "version": "0",
+          "id": "event",
+          "source": "source",
+          "account": "account",
+          "time": "2026-09-15T00:00:00+08:00",
+          "region": "ap-east-1",
+          "resources": [],
+          "detail-type": "order",
+          "detail": {
+            "id": "a",
+            "amount": 1
+          }
+        }
+      }
+    }
+  ]
+}

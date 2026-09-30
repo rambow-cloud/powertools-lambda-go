@@ -1,0 +1,25 @@
+{
+  "retrieved": "2026-09-26",
+  "files": [
+    {
+      "file": "powertools-typescript-LICENSE",
+      "source": "https://github.com/aws-powertools/powertools-lambda-typescript/blob/7bcc27b1574493f9452688673658f52b80c53847/LICENSE",
+      "sha256": "5cf66a4554832601b0277c7a539b8d8e8cf5912f53d91e4f83ecf6cb67f1cce6"
+    },
+    {
+      "file": "powertools-typescript-NOTICE",
+      "source": "https://github.com/aws-powertools/powertools-lambda-typescript/blob/7bcc27b1574493f9452688673658f52b80c53847/NOTICE",
+      "sha256": "d4290ed64c2edd0fce1d84e3f9dfb2881240fe534def76b8cd29ed6af683e287"
+    },
+    {
+      "file": "Unicode-3.0.txt",
+      "source": "https://www.unicode.org/license.txt",
+      "sha256": "e7a93b009565cfce55919a381437ac4db883e9da2126fa28b91d12732bc53d96"
+    },
+    {
+      "file": "opentelemetry-lambda-LICENSE",
+      "source": "https://github.com/open-telemetry/opentelemetry-lambda/blob/layer-collector%2F0.23.0/LICENSE",
+      "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
+    }
+  ]
+}

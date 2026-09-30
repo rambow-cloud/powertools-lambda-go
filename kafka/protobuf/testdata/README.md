@@ -1,0 +1,9 @@
+# Protobuf differential scenarios
+
+Generate with `node generate-kafka-protobuf.mjs` in tools/reference. The fixtures execute the actual CommonJS Kafka v2.35.0 consumer with protobufjs 7.5.4. The ESM import issue is recorded in the parent Kafka fixture README.
+
+The 220 prefix scenarios use an application-supplied message decoder, as supported by the public messageType contract. They compare original buffers, reader positions, explicit length arguments, both decoding attempts, results and complete errors. Preference state persists across scenarios. Cases cover absent/null metadata, missing/null/numeric/Unicode schema IDs, Glue uint32 consumption, Confluent byte skips, negative positions, truncation, permissive Base64, successful preference reversals and first-error retention when both attempts fail. The additional 97 scenarios cover object length coercion, array IDs and primitive metadata. These cases prove wrapper behavior, not protobufjs's internal wire decoder.
+
+Nine additional scenarios use actual protobufjs messages with a generated binary FileDescriptorSet. The Go tests load that descriptor with the official Protobuf library and compare protobufjs message JSON with protojson for the tested proto2 optional fields, signed/unsigned 64-bit extrema, bytes, repeated values, enum and nested messages through plain, Glue and Confluent paths. No numeric coercion or JSON field removal is used in these comparisons. Native tests cover 64 concurrent opposite-convention calls, callback reentrancy and cancellation.
+
+The native adapter returns fresh proto.Message values. Complete JavaScript object defaults, proto3 scalar presence, unknown/invalid wire behavior, decoder exception wording, description serialization and reentrant preference ordering remain explicit compatibility boundaries. No actual Schema Registry or AWS service acceptance is claimed.

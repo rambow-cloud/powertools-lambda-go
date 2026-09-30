@@ -1,0 +1,3537 @@
+{
+  "date": "2026-09-24",
+  "runtime": "AWS Lambda Runtime Interface Emulator",
+  "utilities": [
+    "logger",
+    "tracer",
+    "metrics",
+    "parameters",
+    "commons",
+    "metadata",
+    "signer",
+    "jmespath",
+    "batch",
+    "idempotency",
+    "idempotency/cache",
+    "parser",
+    "validation",
+    "eventhandler/http",
+    "eventhandler/appsyncevents",
+    "eventhandler/appsyncgraphql",
+    "eventhandler/bedrock",
+    "kafka",
+    "kafka/avro",
+    "kafka/protobuf",
+    "datamasking",
+    "datamasking/kms"
+  ],
+  "image": "public.ecr.aws/lambda/provided@sha256:0b17e5c778aef6ed7f61cbfa5dd416e17540e127846250646fceb712e0e7be5f",
+  "runtime_architecture": "amd64",
+  "cgo_enabled": false,
+  "module_checks_executed_in_runtime_run": false,
+  "builds_executed": true,
+  "invocation_count": 5,
+  "assertion_count": 868,
+  "passed": true,
+  "cleanup_errors": [],
+  "checks": [
+    {
+      "name": "Cache: TypeScript persistence seed",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: result",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: HTTP success",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: request identity",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: trace identity",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: sampling",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Metrics store presence and empty policy",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Metrics selective clearing",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Metrics timestamp cleared",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Metrics warning sequence",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Metrics invalid dimension skipped",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Metrics warned timestamp retained",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Metrics callbacks observe cleared state",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Metrics diagnostic scope closed",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Metrics manual capture composes with wrapper",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Metrics manual cold and warm isolation",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Metrics scoped function name",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Metrics cold-start late writes rejected",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Metrics custom configuration getter order",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Metrics custom configuration values",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Metrics single configuration reconstructed",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Metrics single default service restored",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Metrics reconstructed single scope closed",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Metrics non-finite JSON values",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Metrics numeric key ordering",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Metrics reserved envelope precedence",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Metrics prototype-name behavior",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Metrics value scope cleanup",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Metrics invalid numeric timestamps",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Metrics invalid Date timestamp",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Metrics inclusive timestamp limits",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Metrics explicit timestamp clock reads",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Metrics timestamp reset clock reads",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Metrics timestamp late writes rejected",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Metrics wrapper result and order",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Metrics wrapper default dimensions",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Metrics wrapper cold-start composition",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Metrics wrapper strict propagation",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Metrics wrapper publication stops",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Metrics wrapper scope closure",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: AppSync Events Parser and response order",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: AppSync Events invocation composition",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: AppSync Events aggregate precedence",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: AppSync Events missing route passthrough",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: AppSync Events item authorization envelopes",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: AppSync Events subscription and invalid input",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: GraphQL Parser and single resolver",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: GraphQL Logger and OTel context",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: GraphQL aggregate first-event route",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: GraphQL sequential graceful batch",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: GraphQL batch abort",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: GraphQL included exception handler",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: GraphQL missing and invalid input",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: GraphQL datetime scalar",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Bedrock conversion and Parser",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Bedrock Logger and OTel context",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Bedrock inherited session envelope",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Bedrock explicit response isolation",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Bedrock missing tool",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Bedrock tool error",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Bedrock invalid and empty result",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Bedrock panic and string body",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Kafka lazy access and Parser",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Kafka Idempotency duplicate suppression",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Kafka Logger and OTel context",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Kafka topic order and metadata",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Kafka tombstone and empty key",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Kafka UTF-8 header",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Kafka Avro record, union and bytes",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Kafka Avro precision guard",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Kafka Protobuf plain and Glue",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Kafka Protobuf Confluent",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Kafka Protobuf adaptive index convention",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Kafka Protobuf schema ID length coercion",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Kafka Protobuf missing metadata",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Data Masking field rule precedence",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Data Masking input ownership",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Data Masking provider round trip",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Data Masking provider invocation context",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Data Masking missing field diagnostic",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Data Masking missing provider",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: KMS masking authenticated round trip and ownership",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: KMS masking fresh uncached materials",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: KMS masking authenticated context rejection",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: KMS masking shared SDK identity",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Data Masking regex named Unicode capture",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Data Masking regex global reset",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: shared regex sticky UTF-16 offset",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: HTTP v1 adapter status",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: HTTP v1 Parser and Validation composition",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: HTTP v1 request middleware",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: HTTP v1 CORS response",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: HTTP v1 CORS preflight",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: HTTP v1 invalid preflight falls through",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: HTTP v1 gzip payload",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: HTTP v1 gzip composed headers",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: HTTP v1 deflate payload",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: HTTP v1 deflate composed headers",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: HTTP v1 identity skips compression",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: HTTP v1 no_transform skips compression",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: HTTP v2 adapter status",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: HTTP v2 Parser and Validation composition",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: HTTP v2 request middleware",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: HTTP v2 CORS response",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: HTTP v2 CORS preflight",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: HTTP v2 invalid preflight falls through",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: HTTP v2 gzip payload",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: HTTP v2 gzip composed headers",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: HTTP v2 deflate payload",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: HTTP v2 deflate composed headers",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: HTTP v2 identity skips compression",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: HTTP v2 no_transform skips compression",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: HTTP alb adapter status",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: HTTP alb Parser and Validation composition",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: HTTP alb request middleware",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: HTTP alb CORS response",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: HTTP alb CORS preflight",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: HTTP alb invalid preflight falls through",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: HTTP alb gzip payload",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: HTTP alb gzip composed headers",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: HTTP alb deflate payload",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: HTTP alb deflate composed headers",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: HTTP alb identity skips compression",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: HTTP alb no_transform skips compression",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: HTTP url adapter status",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: HTTP url Parser and Validation composition",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: HTTP url request middleware",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: HTTP url CORS response",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: HTTP url CORS preflight",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: HTTP url invalid preflight falls through",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: HTTP url gzip payload",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: HTTP url gzip composed headers",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: HTTP url deflate payload",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: HTTP url deflate composed headers",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: HTTP url identity skips compression",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: HTTP url no_transform skips compression",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: HTTP body validation rejects before handler",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: HTTP path validation rejects before handler",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: HTTP unmatched route",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: HTTP unsupported method",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: HTTP binary response",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: HTTP business invocation count",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Parameters values",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Metadata values",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: JMESPath decoded projection",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Batch sqs response",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Batch fifo response",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Batch fifo_groups response",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Batch kinesis response",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Batch dynamodb response",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Idempotency warm replay",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Idempotency duplicate suppression",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Idempotency Batch partial failure",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Idempotency failed-record retry",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Idempotency payload validation",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Parser rejects invalid orders before Idempotency",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Parser typed SQS envelope",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Parser safe aggregation and first-error mode",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Parser typed EventBridge detail",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Parser sns envelope",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Parser snssqs envelope",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Parser kinesis envelope",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Parser firehose envelope",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Parser cloudwatch envelope",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Parser DynamoDB images",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Parser DynamoDB large integer",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Parser apigateway HTTP envelope",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Parser apigatewayv2 HTTP envelope",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Parser lambdaurl HTTP envelope",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Parser lattice HTTP envelope",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Parser latticev2 HTTP envelope",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Parser ALB multi-value headers",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Parser HTTP metadata and body issues",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Parser Kafka ordered typed records",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Parser Kafka safe issue paths",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Parser CloudFormation update fields",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Parser Transfer IPv4",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Parser Connect empty profiles",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Parser SES receipt",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Parser S3 key and size preservation",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Parser Object Lambda transformations",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Parser AppSync typed arguments",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Parser AppSync batch",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Parser AppSync publish snapshot",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Parser AppSync subscribe",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Parser Cognito typed response",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Parser Cognito input rejection before handler",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Parser Cognito token variants",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Parser Cognito empty challenge session",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Validation typed response and outbound envelope bypass",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Validation inbound snapshot",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Validation inbound error stage",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Validation formats and external references",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Validation rejects before business handler",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Validation outbound error stage",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Validation preserves business result and error",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Validation cancellation",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Validation Unicode named backreference",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Validation original regex diagnostics",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Validation encoded pattern property path",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Validation rejects non-JavaScript regex syntax",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Validation regex resource failure remains operational",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Validation nested ordering and conditional summary",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Validation complete dependency diagnostics",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Validation property-name scope and tuple limit",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Validation oneOf retains failed branch diagnostics",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Validation mixed-type rule order",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Validation nullable array diagnostics",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Validation nested resource identity and literal references",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Validation recursive compiled reference scope",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Validation strict UTF-16 overlap rejection",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Validation strict overlap preserves Unicode payload matching",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Validation strict property escape identity",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Validation unused compilation checks deferred",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Validation referenced defs retain Draft 7 setup behavior",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Validation unused pattern matcher skipped",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Validation referenced unknown keyword rejected",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Validation unused structural error rejected",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Validation additional property matcher required",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Validation unvalidated scalar fragment",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Validation ignored condition",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Validation unused malformed keyword",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Validation registered annotations",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Validation reachable malformed keyword rejected",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Validation unselected branch compiled",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Validation non-string dependency diagnostic",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Validation fractional string limits",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Validation empty combinator summaries",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Validation non-string required parameters",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Validation multipleOf floating division",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Validation multipleOf zero divisor",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Validation multipleOf exponential quotient",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Validation fractional array limits",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Validation ignored missing reference",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Validation root dialect alias",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Validation ordered external registration",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Validation active missing reference rejected",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Validation reference into ignored condition",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Validation nested external resource identity",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Parser sole union branch diagnostic",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Parser nested union error tree",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Parser continued refinements",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Parser array diagnostic order",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Parser nested safe aggregation",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Parser nested ordinary aggregation",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Cache warm replay",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Cache concurrent acquisition",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Cache orphan recovery",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Cache validation retained",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Cache TypeScript to Go",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: result",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: HTTP success",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: request identity",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: trace identity",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: sampling",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Metrics store presence and empty policy",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Metrics selective clearing",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Metrics timestamp cleared",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Metrics warning sequence",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Metrics invalid dimension skipped",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Metrics warned timestamp retained",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Metrics callbacks observe cleared state",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Metrics diagnostic scope closed",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Metrics manual capture composes with wrapper",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Metrics manual cold and warm isolation",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Metrics scoped function name",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Metrics cold-start late writes rejected",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Metrics custom configuration getter order",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Metrics custom configuration values",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Metrics single configuration reconstructed",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Metrics single default service restored",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Metrics reconstructed single scope closed",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Metrics non-finite JSON values",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Metrics numeric key ordering",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Metrics reserved envelope precedence",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Metrics prototype-name behavior",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Metrics value scope cleanup",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Metrics invalid numeric timestamps",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Metrics invalid Date timestamp",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Metrics inclusive timestamp limits",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Metrics explicit timestamp clock reads",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Metrics timestamp reset clock reads",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Metrics timestamp late writes rejected",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Metrics wrapper result and order",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Metrics wrapper default dimensions",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Metrics wrapper cold-start composition",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Metrics wrapper strict propagation",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Metrics wrapper publication stops",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Metrics wrapper scope closure",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: AppSync Events Parser and response order",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: AppSync Events invocation composition",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: AppSync Events aggregate precedence",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: AppSync Events missing route passthrough",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: AppSync Events item authorization envelopes",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: AppSync Events subscription and invalid input",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: GraphQL Parser and single resolver",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: GraphQL Logger and OTel context",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: GraphQL aggregate first-event route",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: GraphQL sequential graceful batch",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: GraphQL batch abort",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: GraphQL included exception handler",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: GraphQL missing and invalid input",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: GraphQL datetime scalar",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Bedrock conversion and Parser",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Bedrock Logger and OTel context",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Bedrock inherited session envelope",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Bedrock explicit response isolation",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Bedrock missing tool",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Bedrock tool error",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Bedrock invalid and empty result",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Bedrock panic and string body",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Kafka lazy access and Parser",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Kafka Idempotency duplicate suppression",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Kafka Logger and OTel context",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Kafka topic order and metadata",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Kafka tombstone and empty key",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Kafka UTF-8 header",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Kafka Avro record, union and bytes",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Kafka Avro precision guard",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Kafka Protobuf plain and Glue",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Kafka Protobuf Confluent",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Kafka Protobuf adaptive index convention",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Kafka Protobuf schema ID length coercion",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Kafka Protobuf missing metadata",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Data Masking field rule precedence",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Data Masking input ownership",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Data Masking provider round trip",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Data Masking provider invocation context",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Data Masking missing field diagnostic",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Data Masking missing provider",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: KMS masking authenticated round trip and ownership",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: KMS masking fresh uncached materials",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: KMS masking authenticated context rejection",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: KMS masking shared SDK identity",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Data Masking regex named Unicode capture",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Data Masking regex global reset",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: shared regex sticky UTF-16 offset",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: HTTP v1 adapter status",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: HTTP v1 Parser and Validation composition",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: HTTP v1 request middleware",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: HTTP v1 CORS response",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: HTTP v1 CORS preflight",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: HTTP v1 invalid preflight falls through",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: HTTP v1 gzip payload",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: HTTP v1 gzip composed headers",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: HTTP v1 deflate payload",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: HTTP v1 deflate composed headers",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: HTTP v1 identity skips compression",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: HTTP v1 no_transform skips compression",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: HTTP v2 adapter status",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: HTTP v2 Parser and Validation composition",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: HTTP v2 request middleware",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: HTTP v2 CORS response",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: HTTP v2 CORS preflight",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: HTTP v2 invalid preflight falls through",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: HTTP v2 gzip payload",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: HTTP v2 gzip composed headers",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: HTTP v2 deflate payload",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: HTTP v2 deflate composed headers",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: HTTP v2 identity skips compression",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: HTTP v2 no_transform skips compression",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: HTTP alb adapter status",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: HTTP alb Parser and Validation composition",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: HTTP alb request middleware",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: HTTP alb CORS response",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: HTTP alb CORS preflight",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: HTTP alb invalid preflight falls through",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: HTTP alb gzip payload",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: HTTP alb gzip composed headers",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: HTTP alb deflate payload",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: HTTP alb deflate composed headers",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: HTTP alb identity skips compression",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: HTTP alb no_transform skips compression",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: HTTP url adapter status",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: HTTP url Parser and Validation composition",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: HTTP url request middleware",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: HTTP url CORS response",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: HTTP url CORS preflight",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: HTTP url invalid preflight falls through",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: HTTP url gzip payload",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: HTTP url gzip composed headers",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: HTTP url deflate payload",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: HTTP url deflate composed headers",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: HTTP url identity skips compression",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: HTTP url no_transform skips compression",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: HTTP body validation rejects before handler",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: HTTP path validation rejects before handler",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: HTTP unmatched route",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: HTTP unsupported method",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: HTTP binary response",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: HTTP business invocation count",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Parameters values",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Metadata values",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: JMESPath decoded projection",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Batch sqs response",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Batch fifo response",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Batch fifo_groups response",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Batch kinesis response",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Batch dynamodb response",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Idempotency warm replay",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Idempotency duplicate suppression",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Idempotency Batch partial failure",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Idempotency failed-record retry",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Idempotency payload validation",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Parser rejects invalid orders before Idempotency",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Parser typed SQS envelope",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Parser safe aggregation and first-error mode",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Parser typed EventBridge detail",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Parser sns envelope",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Parser snssqs envelope",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Parser kinesis envelope",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Parser firehose envelope",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Parser cloudwatch envelope",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Parser DynamoDB images",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Parser DynamoDB large integer",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Parser apigateway HTTP envelope",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Parser apigatewayv2 HTTP envelope",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Parser lambdaurl HTTP envelope",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Parser lattice HTTP envelope",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Parser latticev2 HTTP envelope",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Parser ALB multi-value headers",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Parser HTTP metadata and body issues",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Parser Kafka ordered typed records",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Parser Kafka safe issue paths",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Parser CloudFormation update fields",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Parser Transfer IPv4",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Parser Connect empty profiles",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Parser SES receipt",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Parser S3 key and size preservation",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Parser Object Lambda transformations",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Parser AppSync typed arguments",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Parser AppSync batch",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Parser AppSync publish snapshot",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Parser AppSync subscribe",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Parser Cognito typed response",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Parser Cognito input rejection before handler",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Parser Cognito token variants",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Parser Cognito empty challenge session",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Validation typed response and outbound envelope bypass",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Validation inbound snapshot",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Validation inbound error stage",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Validation formats and external references",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Validation rejects before business handler",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Validation outbound error stage",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Validation preserves business result and error",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Validation cancellation",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Validation Unicode named backreference",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Validation original regex diagnostics",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Validation encoded pattern property path",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Validation rejects non-JavaScript regex syntax",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Validation regex resource failure remains operational",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Validation nested ordering and conditional summary",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Validation complete dependency diagnostics",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Validation property-name scope and tuple limit",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Validation oneOf retains failed branch diagnostics",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Validation mixed-type rule order",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Validation nullable array diagnostics",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Validation nested resource identity and literal references",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Validation recursive compiled reference scope",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Validation strict UTF-16 overlap rejection",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Validation strict overlap preserves Unicode payload matching",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Validation strict property escape identity",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Validation unused compilation checks deferred",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Validation referenced defs retain Draft 7 setup behavior",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Validation unused pattern matcher skipped",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Validation referenced unknown keyword rejected",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Validation unused structural error rejected",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Validation additional property matcher required",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Validation unvalidated scalar fragment",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Validation ignored condition",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Validation unused malformed keyword",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Validation registered annotations",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Validation reachable malformed keyword rejected",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Validation unselected branch compiled",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Validation non-string dependency diagnostic",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Validation fractional string limits",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Validation empty combinator summaries",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Validation non-string required parameters",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Validation multipleOf floating division",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Validation multipleOf zero divisor",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Validation multipleOf exponential quotient",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Validation fractional array limits",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Validation ignored missing reference",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Validation root dialect alias",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Validation ordered external registration",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Validation active missing reference rejected",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Validation reference into ignored condition",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Validation nested external resource identity",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Parser sole union branch diagnostic",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Parser nested union error tree",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Parser continued refinements",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Parser array diagnostic order",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Parser nested safe aggregation",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Parser nested ordinary aggregation",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Cache warm replay",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Cache concurrent acquisition",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Cache orphan recovery",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Cache validation retained",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Cache TypeScript to Go",
+      "passed": true
+    },
+    {
+      "name": "local-2-error: result",
+      "passed": true
+    },
+    {
+      "name": "local-2-error: original error",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: result",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: HTTP success",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: request identity",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: trace identity",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: sampling",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Metrics store presence and empty policy",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Metrics selective clearing",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Metrics timestamp cleared",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Metrics warning sequence",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Metrics invalid dimension skipped",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Metrics warned timestamp retained",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Metrics callbacks observe cleared state",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Metrics diagnostic scope closed",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Metrics manual capture composes with wrapper",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Metrics manual cold and warm isolation",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Metrics scoped function name",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Metrics cold-start late writes rejected",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Metrics custom configuration getter order",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Metrics custom configuration values",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Metrics single configuration reconstructed",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Metrics single default service restored",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Metrics reconstructed single scope closed",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Metrics non-finite JSON values",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Metrics numeric key ordering",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Metrics reserved envelope precedence",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Metrics prototype-name behavior",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Metrics value scope cleanup",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Metrics invalid numeric timestamps",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Metrics invalid Date timestamp",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Metrics inclusive timestamp limits",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Metrics explicit timestamp clock reads",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Metrics timestamp reset clock reads",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Metrics timestamp late writes rejected",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Metrics wrapper result and order",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Metrics wrapper default dimensions",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Metrics wrapper cold-start composition",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Metrics wrapper strict propagation",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Metrics wrapper publication stops",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Metrics wrapper scope closure",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: AppSync Events Parser and response order",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: AppSync Events invocation composition",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: AppSync Events aggregate precedence",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: AppSync Events missing route passthrough",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: AppSync Events item authorization envelopes",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: AppSync Events subscription and invalid input",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: GraphQL Parser and single resolver",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: GraphQL Logger and OTel context",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: GraphQL aggregate first-event route",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: GraphQL sequential graceful batch",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: GraphQL batch abort",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: GraphQL included exception handler",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: GraphQL missing and invalid input",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: GraphQL datetime scalar",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Bedrock conversion and Parser",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Bedrock Logger and OTel context",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Bedrock inherited session envelope",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Bedrock explicit response isolation",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Bedrock missing tool",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Bedrock tool error",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Bedrock invalid and empty result",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Bedrock panic and string body",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Kafka lazy access and Parser",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Kafka Idempotency duplicate suppression",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Kafka Logger and OTel context",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Kafka topic order and metadata",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Kafka tombstone and empty key",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Kafka UTF-8 header",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Kafka Avro record, union and bytes",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Kafka Avro precision guard",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Kafka Protobuf plain and Glue",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Kafka Protobuf Confluent",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Kafka Protobuf adaptive index convention",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Kafka Protobuf schema ID length coercion",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Kafka Protobuf missing metadata",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Data Masking field rule precedence",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Data Masking input ownership",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Data Masking provider round trip",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Data Masking provider invocation context",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Data Masking missing field diagnostic",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Data Masking missing provider",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: KMS masking authenticated round trip and ownership",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: KMS masking fresh uncached materials",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: KMS masking authenticated context rejection",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: KMS masking shared SDK identity",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Data Masking regex named Unicode capture",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Data Masking regex global reset",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: shared regex sticky UTF-16 offset",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: HTTP v1 adapter status",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: HTTP v1 Parser and Validation composition",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: HTTP v1 request middleware",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: HTTP v1 CORS response",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: HTTP v1 CORS preflight",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: HTTP v1 invalid preflight falls through",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: HTTP v1 gzip payload",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: HTTP v1 gzip composed headers",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: HTTP v1 deflate payload",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: HTTP v1 deflate composed headers",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: HTTP v1 identity skips compression",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: HTTP v1 no_transform skips compression",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: HTTP v2 adapter status",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: HTTP v2 Parser and Validation composition",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: HTTP v2 request middleware",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: HTTP v2 CORS response",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: HTTP v2 CORS preflight",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: HTTP v2 invalid preflight falls through",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: HTTP v2 gzip payload",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: HTTP v2 gzip composed headers",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: HTTP v2 deflate payload",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: HTTP v2 deflate composed headers",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: HTTP v2 identity skips compression",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: HTTP v2 no_transform skips compression",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: HTTP alb adapter status",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: HTTP alb Parser and Validation composition",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: HTTP alb request middleware",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: HTTP alb CORS response",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: HTTP alb CORS preflight",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: HTTP alb invalid preflight falls through",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: HTTP alb gzip payload",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: HTTP alb gzip composed headers",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: HTTP alb deflate payload",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: HTTP alb deflate composed headers",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: HTTP alb identity skips compression",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: HTTP alb no_transform skips compression",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: HTTP url adapter status",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: HTTP url Parser and Validation composition",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: HTTP url request middleware",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: HTTP url CORS response",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: HTTP url CORS preflight",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: HTTP url invalid preflight falls through",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: HTTP url gzip payload",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: HTTP url gzip composed headers",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: HTTP url deflate payload",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: HTTP url deflate composed headers",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: HTTP url identity skips compression",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: HTTP url no_transform skips compression",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: HTTP body validation rejects before handler",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: HTTP path validation rejects before handler",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: HTTP unmatched route",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: HTTP unsupported method",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: HTTP binary response",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: HTTP business invocation count",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Parameters values",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Metadata values",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: JMESPath decoded projection",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Batch sqs response",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Batch fifo response",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Batch fifo_groups response",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Batch kinesis response",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Batch dynamodb response",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Idempotency warm replay",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Idempotency duplicate suppression",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Idempotency Batch partial failure",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Idempotency failed-record retry",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Idempotency payload validation",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Parser rejects invalid orders before Idempotency",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Parser typed SQS envelope",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Parser safe aggregation and first-error mode",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Parser typed EventBridge detail",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Parser sns envelope",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Parser snssqs envelope",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Parser kinesis envelope",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Parser firehose envelope",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Parser cloudwatch envelope",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Parser DynamoDB images",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Parser DynamoDB large integer",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Parser apigateway HTTP envelope",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Parser apigatewayv2 HTTP envelope",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Parser lambdaurl HTTP envelope",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Parser lattice HTTP envelope",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Parser latticev2 HTTP envelope",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Parser ALB multi-value headers",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Parser HTTP metadata and body issues",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Parser Kafka ordered typed records",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Parser Kafka safe issue paths",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Parser CloudFormation update fields",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Parser Transfer IPv4",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Parser Connect empty profiles",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Parser SES receipt",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Parser S3 key and size preservation",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Parser Object Lambda transformations",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Parser AppSync typed arguments",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Parser AppSync batch",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Parser AppSync publish snapshot",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Parser AppSync subscribe",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Parser Cognito typed response",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Parser Cognito input rejection before handler",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Parser Cognito token variants",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Parser Cognito empty challenge session",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Validation typed response and outbound envelope bypass",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Validation inbound snapshot",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Validation inbound error stage",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Validation formats and external references",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Validation rejects before business handler",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Validation outbound error stage",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Validation preserves business result and error",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Validation cancellation",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Validation Unicode named backreference",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Validation original regex diagnostics",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Validation encoded pattern property path",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Validation rejects non-JavaScript regex syntax",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Validation regex resource failure remains operational",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Validation nested ordering and conditional summary",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Validation complete dependency diagnostics",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Validation property-name scope and tuple limit",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Validation oneOf retains failed branch diagnostics",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Validation mixed-type rule order",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Validation nullable array diagnostics",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Validation nested resource identity and literal references",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Validation recursive compiled reference scope",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Validation strict UTF-16 overlap rejection",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Validation strict overlap preserves Unicode payload matching",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Validation strict property escape identity",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Validation unused compilation checks deferred",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Validation referenced defs retain Draft 7 setup behavior",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Validation unused pattern matcher skipped",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Validation referenced unknown keyword rejected",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Validation unused structural error rejected",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Validation additional property matcher required",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Validation unvalidated scalar fragment",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Validation ignored condition",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Validation unused malformed keyword",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Validation registered annotations",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Validation reachable malformed keyword rejected",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Validation unselected branch compiled",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Validation non-string dependency diagnostic",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Validation fractional string limits",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Validation empty combinator summaries",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Validation non-string required parameters",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Validation multipleOf floating division",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Validation multipleOf zero divisor",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Validation multipleOf exponential quotient",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Validation fractional array limits",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Validation ignored missing reference",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Validation root dialect alias",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Validation ordered external registration",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Validation active missing reference rejected",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Validation reference into ignored condition",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Validation nested external resource identity",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Parser sole union branch diagnostic",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Parser nested union error tree",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Parser continued refinements",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Parser array diagnostic order",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Parser nested safe aggregation",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Parser nested ordinary aggregation",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Cache warm replay",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Cache concurrent acquisition",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Cache orphan recovery",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Cache validation retained",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Cache TypeScript to Go",
+      "passed": true
+    },
+    {
+      "name": "local-4-panic: result",
+      "passed": true
+    },
+    {
+      "name": "local-4-panic: runtime panic response",
+      "passed": true
+    },
+    {
+      "name": "Cache: Go to TypeScript replay",
+      "passed": true
+    },
+    {
+      "name": "OTLP snapshot available",
+      "passed": true
+    },
+    {
+      "name": "Signer signatures and OTel transport composition",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: isolated EMF metric",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: EMF namespace and dimensions",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: one start log",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: cold start",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: temporary state",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: log correlation",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: OTel log correlation",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: JMESPath Logger correlation",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: buffer lifecycle",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: HTTP middleware EMF isolation",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: HTTP middleware EMF route dimensions",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: HTTP middleware EMF status",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: HTTP scoped route logs",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Idempotency execution logs",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Idempotency scoped correlation",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: handler and business spans",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: parent relationship",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: supplied parent",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: annotation",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: error status",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: HTTP OTel route spans",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: HTTP OTel middleware lifecycle",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: HTTP OTel middleware attributes",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Idempotency record spans",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: downstream SDK and HTTP",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: isolated EMF metric",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: EMF namespace and dimensions",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: one start log",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: cold start",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: temporary state",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: log correlation",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: OTel log correlation",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: JMESPath Logger correlation",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: buffer lifecycle",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: HTTP middleware EMF isolation",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: HTTP middleware EMF route dimensions",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: HTTP middleware EMF status",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: HTTP scoped route logs",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Idempotency execution logs",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Idempotency scoped correlation",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: handler and business spans",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: parent relationship",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: supplied parent",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: annotation",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: error status",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: HTTP OTel route spans",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: HTTP OTel middleware lifecycle",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: HTTP OTel middleware attributes",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Idempotency record spans",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: downstream SDK and HTTP",
+      "passed": true
+    },
+    {
+      "name": "local-2-error: isolated EMF metric",
+      "passed": true
+    },
+    {
+      "name": "local-2-error: EMF namespace and dimensions",
+      "passed": true
+    },
+    {
+      "name": "local-2-error: one start log",
+      "passed": true
+    },
+    {
+      "name": "local-2-error: cold start",
+      "passed": true
+    },
+    {
+      "name": "local-2-error: temporary state",
+      "passed": true
+    },
+    {
+      "name": "local-2-error: log correlation",
+      "passed": true
+    },
+    {
+      "name": "local-2-error: OTel log correlation",
+      "passed": true
+    },
+    {
+      "name": "local-2-error: JMESPath Logger correlation",
+      "passed": true
+    },
+    {
+      "name": "local-2-error: buffer lifecycle",
+      "passed": true
+    },
+    {
+      "name": "local-2-error: handler and business spans",
+      "passed": true
+    },
+    {
+      "name": "local-2-error: parent relationship",
+      "passed": true
+    },
+    {
+      "name": "local-2-error: supplied parent",
+      "passed": true
+    },
+    {
+      "name": "local-2-error: annotation",
+      "passed": true
+    },
+    {
+      "name": "local-2-error: error status",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: isolated EMF metric",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: EMF namespace and dimensions",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: one start log",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: cold start",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: temporary state",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: log correlation",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: OTel log correlation",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: JMESPath Logger correlation",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: buffer lifecycle",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: HTTP middleware EMF isolation",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: HTTP middleware EMF route dimensions",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: HTTP middleware EMF status",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: HTTP scoped route logs",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Idempotency execution logs",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Idempotency scoped correlation",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: no exported spans",
+      "passed": true
+    },
+    {
+      "name": "local-4-panic: isolated EMF metric",
+      "passed": true
+    },
+    {
+      "name": "local-4-panic: EMF namespace and dimensions",
+      "passed": true
+    },
+    {
+      "name": "local-4-panic: one start log",
+      "passed": true
+    },
+    {
+      "name": "local-4-panic: cold start",
+      "passed": true
+    },
+    {
+      "name": "local-4-panic: temporary state",
+      "passed": true
+    },
+    {
+      "name": "local-4-panic: log correlation",
+      "passed": true
+    },
+    {
+      "name": "local-4-panic: OTel log correlation",
+      "passed": true
+    },
+    {
+      "name": "local-4-panic: JMESPath Logger correlation",
+      "passed": true
+    },
+    {
+      "name": "local-4-panic: buffer lifecycle",
+      "passed": true
+    },
+    {
+      "name": "local-4-panic: handler and business spans",
+      "passed": true
+    },
+    {
+      "name": "local-4-panic: parent relationship",
+      "passed": true
+    },
+    {
+      "name": "local-4-panic: supplied parent",
+      "passed": true
+    },
+    {
+      "name": "local-4-panic: annotation",
+      "passed": true
+    },
+    {
+      "name": "local-4-panic: error status",
+      "passed": true
+    },
+    {
+      "name": "warm runtime reuse",
+      "passed": true
+    },
+    {
+      "name": "Idempotency: persisted completed records",
+      "passed": true
+    },
+    {
+      "name": "Idempotency: acquisition, completion, and cleanup requests",
+      "passed": true
+    },
+    {
+      "name": "Idempotency: SDK identity and propagation",
+      "passed": true
+    },
+    {
+      "name": "downstream propagation",
+      "passed": true
+    },
+    {
+      "name": "Metadata: warm cache reuse and explicit clear",
+      "passed": true
+    },
+    {
+      "name": "Metadata: authenticated requests",
+      "passed": true
+    },
+    {
+      "name": "Commons: one Powertools SDK user-agent marker",
+      "passed": true
+    },
+    {
+      "name": "Parameters AmazonSSM.GetParameter: cache reuse and forced refresh",
+      "passed": true
+    },
+    {
+      "name": "Parameters secretsmanager.GetSecretValue: cache reuse and forced refresh",
+      "passed": true
+    },
+    {
+      "name": "Parameters DynamoDB: cache reuse and forced refresh",
+      "passed": true
+    },
+    {
+      "name": "Parameters AppConfig: one session",
+      "passed": true
+    },
+    {
+      "name": "Parameters AppConfig: token rotation and empty update",
+      "passed": true
+    },
+    {
+      "name": "Parameters Agent: no additional cache",
+      "passed": true
+    },
+    {
+      "name": "no instrumentation failures",
+      "passed": true
+    },
+    {
+      "name": "original panic preserved in runtime log",
+      "passed": true
+    },
+    {
+      "name": "one isolated cold-start metric",
+      "passed": true
+    },
+    {
+      "name": "invocation and HTTP EMF documents",
+      "passed": true
+    },
+    {
+      "name": "no metric instrumentation failures",
+      "passed": true
+    }
+  ],
+  "sha256": {
+    "report.json": "5f99efb522c89292261009fb68920db96f0dd70be64e01c07fe661ea3588525b",
+    "otlp.json": "26fed08d072a7a0ba374ad695e3d98ca7caa807eadb907a3382e793a448b6b00",
+    "lambda.log": "849e13dffb92738343d5926597d9c3ab5f96f89a4ea8ce402aba68be724ea6bd",
+    "amd64/bootstrap": "85a54a8a193e4a40e5bec2bf9e24bdea36ee0a314f99363ea3f464a46828eb76",
+    "arm64/bootstrap": "2dc131ed585a97d3b8c2b7fb634a966cd94796ae168106e9807e906fcef401e5",
+    "amd64/capture": "7287b8e4b37c4a64b48a2fddc4b5fb50c373a9d84f2a78b4c008965c5ae2b5a9"
+  },
+  "cache_image": "valkey/valkey@sha256:d2e18f3410b6f616de1417f570fa55261af2898b9c5b2cfb6781ce2373ea43d1",
+  "cache_interop": {
+    "typescript_seed": {
+      "seeded": true
+    },
+    "go_to_typescript": {
+      "passed": true,
+      "calls": 0,
+      "response": {
+        "nested": [
+          1,
+          null,
+          true
+        ],
+        "owner": "go"
+      }
+    }
+  }
+}

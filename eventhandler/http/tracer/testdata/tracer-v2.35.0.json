@@ -1,0 +1,6354 @@
+{
+  "upstream": "2.35.0",
+  "scope": "Actual Router and HTTP tracer middleware; recording tracer contract, no X-Ray SDK. Go maps these calls to OTel.",
+  "cases": [
+    {
+      "name": "v1-json-full",
+      "action": "json",
+      "event": {
+        "httpMethod": "GET",
+        "path": "/items/id%20one",
+        "resource": "/items/id%20one",
+        "headers": {
+          "user-agent": "fixture-agent",
+          "x-forwarded-for": " 198.51.100.2 , 198.51.100.3"
+        },
+        "requestContext": {
+          "domainName": "api.example.test",
+          "requestId": "request-1",
+          "apiId": "api-1",
+          "extendedRequestId": "extended-1",
+          "identity": {
+            "sourceIp": "192.0.2.1"
+          }
+        },
+        "body": null,
+        "isBase64Encoded": false,
+        "pathParameters": null,
+        "queryStringParameters": null,
+        "multiValueQueryStringParameters": null,
+        "stageVariables": null
+      },
+      "status": 200,
+      "spans": [
+        {
+          "name": "GET /items/id%20one",
+          "http": {
+            "request": {
+              "method": "GET",
+              "url": "https://api.example.test/items/id%20one",
+              "user_agent": "fixture-agent",
+              "client_ip": "192.0.2.1",
+              "x_forwarded_for": true
+            },
+            "response": {
+              "status": 200
+            }
+          },
+          "closed": true
+        }
+      ],
+      "responses": [
+        {
+          "name": "GET /items/id%20one",
+          "value": {
+            "ok": true
+          }
+        }
+      ],
+      "errors": [],
+      "annotations": [
+        "ColdStart",
+        "Service"
+      ],
+      "restored": true
+    },
+    {
+      "name": "v1-json-missing",
+      "action": "json",
+      "event": {
+        "httpMethod": "GET",
+        "path": "/items/id%20one",
+        "resource": "/items/id%20one",
+        "headers": {},
+        "requestContext": {
+          "domainName": "api.example.test",
+          "identity": {
+            "sourceIp": ""
+          }
+        },
+        "body": null,
+        "isBase64Encoded": false,
+        "pathParameters": null,
+        "queryStringParameters": null,
+        "multiValueQueryStringParameters": null,
+        "stageVariables": null
+      },
+      "status": 200,
+      "spans": [
+        {
+          "name": "GET /items/id%20one",
+          "http": {
+            "request": {
+              "method": "GET",
+              "url": "https://api.example.test/items/id%20one"
+            },
+            "response": {
+              "status": 200
+            }
+          },
+          "closed": true
+        }
+      ],
+      "responses": [
+        {
+          "name": "GET /items/id%20one",
+          "value": {
+            "ok": true
+          }
+        }
+      ],
+      "errors": [],
+      "annotations": [
+        "ColdStart",
+        "Service"
+      ],
+      "restored": true
+    },
+    {
+      "name": "v1-text-full",
+      "action": "text",
+      "event": {
+        "httpMethod": "GET",
+        "path": "/items/id%20one",
+        "resource": "/items/id%20one",
+        "headers": {
+          "user-agent": "fixture-agent",
+          "x-forwarded-for": " 198.51.100.2 , 198.51.100.3"
+        },
+        "requestContext": {
+          "domainName": "api.example.test",
+          "requestId": "request-1",
+          "apiId": "api-1",
+          "extendedRequestId": "extended-1",
+          "identity": {
+            "sourceIp": "192.0.2.1"
+          }
+        },
+        "body": null,
+        "isBase64Encoded": false,
+        "pathParameters": null,
+        "queryStringParameters": null,
+        "multiValueQueryStringParameters": null,
+        "stageVariables": null
+      },
+      "status": 200,
+      "spans": [
+        {
+          "name": "GET /items/id%20one",
+          "http": {
+            "request": {
+              "method": "GET",
+              "url": "https://api.example.test/items/id%20one",
+              "user_agent": "fixture-agent",
+              "client_ip": "192.0.2.1",
+              "x_forwarded_for": true
+            },
+            "response": {
+              "status": 200
+            }
+          },
+          "closed": true
+        }
+      ],
+      "responses": [],
+      "errors": [],
+      "annotations": [
+        "ColdStart",
+        "Service"
+      ],
+      "restored": true
+    },
+    {
+      "name": "v1-text-missing",
+      "action": "text",
+      "event": {
+        "httpMethod": "GET",
+        "path": "/items/id%20one",
+        "resource": "/items/id%20one",
+        "headers": {},
+        "requestContext": {
+          "domainName": "api.example.test",
+          "identity": {
+            "sourceIp": ""
+          }
+        },
+        "body": null,
+        "isBase64Encoded": false,
+        "pathParameters": null,
+        "queryStringParameters": null,
+        "multiValueQueryStringParameters": null,
+        "stageVariables": null
+      },
+      "status": 200,
+      "spans": [
+        {
+          "name": "GET /items/id%20one",
+          "http": {
+            "request": {
+              "method": "GET",
+              "url": "https://api.example.test/items/id%20one"
+            },
+            "response": {
+              "status": 200
+            }
+          },
+          "closed": true
+        }
+      ],
+      "responses": [],
+      "errors": [],
+      "annotations": [
+        "ColdStart",
+        "Service"
+      ],
+      "restored": true
+    },
+    {
+      "name": "v1-charset-full",
+      "action": "charset",
+      "event": {
+        "httpMethod": "GET",
+        "path": "/items/id%20one",
+        "resource": "/items/id%20one",
+        "headers": {
+          "user-agent": "fixture-agent",
+          "x-forwarded-for": " 198.51.100.2 , 198.51.100.3"
+        },
+        "requestContext": {
+          "domainName": "api.example.test",
+          "requestId": "request-1",
+          "apiId": "api-1",
+          "extendedRequestId": "extended-1",
+          "identity": {
+            "sourceIp": "192.0.2.1"
+          }
+        },
+        "body": null,
+        "isBase64Encoded": false,
+        "pathParameters": null,
+        "queryStringParameters": null,
+        "multiValueQueryStringParameters": null,
+        "stageVariables": null
+      },
+      "status": 200,
+      "spans": [
+        {
+          "name": "GET /items/id%20one",
+          "http": {
+            "request": {
+              "method": "GET",
+              "url": "https://api.example.test/items/id%20one",
+              "user_agent": "fixture-agent",
+              "client_ip": "192.0.2.1",
+              "x_forwarded_for": true
+            },
+            "response": {
+              "status": 200
+            }
+          },
+          "closed": true
+        }
+      ],
+      "responses": [],
+      "errors": [],
+      "annotations": [
+        "ColdStart",
+        "Service"
+      ],
+      "restored": true
+    },
+    {
+      "name": "v1-charset-missing",
+      "action": "charset",
+      "event": {
+        "httpMethod": "GET",
+        "path": "/items/id%20one",
+        "resource": "/items/id%20one",
+        "headers": {},
+        "requestContext": {
+          "domainName": "api.example.test",
+          "identity": {
+            "sourceIp": ""
+          }
+        },
+        "body": null,
+        "isBase64Encoded": false,
+        "pathParameters": null,
+        "queryStringParameters": null,
+        "multiValueQueryStringParameters": null,
+        "stageVariables": null
+      },
+      "status": 200,
+      "spans": [
+        {
+          "name": "GET /items/id%20one",
+          "http": {
+            "request": {
+              "method": "GET",
+              "url": "https://api.example.test/items/id%20one"
+            },
+            "response": {
+              "status": 200
+            }
+          },
+          "closed": true
+        }
+      ],
+      "responses": [],
+      "errors": [],
+      "annotations": [
+        "ColdStart",
+        "Service"
+      ],
+      "restored": true
+    },
+    {
+      "name": "v1-invalid-json-full",
+      "action": "invalid-json",
+      "event": {
+        "httpMethod": "GET",
+        "path": "/items/id%20one",
+        "resource": "/items/id%20one",
+        "headers": {
+          "user-agent": "fixture-agent",
+          "x-forwarded-for": " 198.51.100.2 , 198.51.100.3"
+        },
+        "requestContext": {
+          "domainName": "api.example.test",
+          "requestId": "request-1",
+          "apiId": "api-1",
+          "extendedRequestId": "extended-1",
+          "identity": {
+            "sourceIp": "192.0.2.1"
+          }
+        },
+        "body": null,
+        "isBase64Encoded": false,
+        "pathParameters": null,
+        "queryStringParameters": null,
+        "multiValueQueryStringParameters": null,
+        "stageVariables": null
+      },
+      "status": 500,
+      "spans": [
+        {
+          "name": "GET /items/id%20one",
+          "http": {
+            "request": {
+              "method": "GET",
+              "url": "https://api.example.test/items/id%20one",
+              "user_agent": "fixture-agent",
+              "client_ip": "192.0.2.1",
+              "x_forwarded_for": true
+            },
+            "response": {
+              "status": 200
+            }
+          },
+          "closed": true
+        }
+      ],
+      "responses": [],
+      "errors": [
+        "SyntaxError"
+      ],
+      "annotations": [
+        "ColdStart",
+        "Service"
+      ],
+      "restored": true
+    },
+    {
+      "name": "v1-invalid-json-missing",
+      "action": "invalid-json",
+      "event": {
+        "httpMethod": "GET",
+        "path": "/items/id%20one",
+        "resource": "/items/id%20one",
+        "headers": {},
+        "requestContext": {
+          "domainName": "api.example.test",
+          "identity": {
+            "sourceIp": ""
+          }
+        },
+        "body": null,
+        "isBase64Encoded": false,
+        "pathParameters": null,
+        "queryStringParameters": null,
+        "multiValueQueryStringParameters": null,
+        "stageVariables": null
+      },
+      "status": 500,
+      "spans": [
+        {
+          "name": "GET /items/id%20one",
+          "http": {
+            "request": {
+              "method": "GET",
+              "url": "https://api.example.test/items/id%20one"
+            },
+            "response": {
+              "status": 200
+            }
+          },
+          "closed": true
+        }
+      ],
+      "responses": [],
+      "errors": [
+        "SyntaxError"
+      ],
+      "annotations": [
+        "ColdStart",
+        "Service"
+      ],
+      "restored": true
+    },
+    {
+      "name": "v1-http-error-full",
+      "action": "http-error",
+      "event": {
+        "httpMethod": "GET",
+        "path": "/items/id%20one",
+        "resource": "/items/id%20one",
+        "headers": {
+          "user-agent": "fixture-agent",
+          "x-forwarded-for": " 198.51.100.2 , 198.51.100.3"
+        },
+        "requestContext": {
+          "domainName": "api.example.test",
+          "requestId": "request-1",
+          "apiId": "api-1",
+          "extendedRequestId": "extended-1",
+          "identity": {
+            "sourceIp": "192.0.2.1"
+          }
+        },
+        "body": null,
+        "isBase64Encoded": false,
+        "pathParameters": null,
+        "queryStringParameters": null,
+        "multiValueQueryStringParameters": null,
+        "stageVariables": null
+      },
+      "status": 400,
+      "spans": [
+        {
+          "name": "GET /items/id%20one",
+          "http": {
+            "request": {
+              "method": "GET",
+              "url": "https://api.example.test/items/id%20one",
+              "user_agent": "fixture-agent",
+              "client_ip": "192.0.2.1",
+              "x_forwarded_for": true
+            },
+            "response": {
+              "status": 500
+            }
+          },
+          "closed": true
+        }
+      ],
+      "responses": [],
+      "errors": [
+        "BadRequestError"
+      ],
+      "annotations": [
+        "ColdStart",
+        "Service"
+      ],
+      "restored": true
+    },
+    {
+      "name": "v1-http-error-missing",
+      "action": "http-error",
+      "event": {
+        "httpMethod": "GET",
+        "path": "/items/id%20one",
+        "resource": "/items/id%20one",
+        "headers": {},
+        "requestContext": {
+          "domainName": "api.example.test",
+          "identity": {
+            "sourceIp": ""
+          }
+        },
+        "body": null,
+        "isBase64Encoded": false,
+        "pathParameters": null,
+        "queryStringParameters": null,
+        "multiValueQueryStringParameters": null,
+        "stageVariables": null
+      },
+      "status": 400,
+      "spans": [
+        {
+          "name": "GET /items/id%20one",
+          "http": {
+            "request": {
+              "method": "GET",
+              "url": "https://api.example.test/items/id%20one"
+            },
+            "response": {
+              "status": 500
+            }
+          },
+          "closed": true
+        }
+      ],
+      "responses": [],
+      "errors": [
+        "BadRequestError"
+      ],
+      "annotations": [
+        "ColdStart",
+        "Service"
+      ],
+      "restored": true
+    },
+    {
+      "name": "v1-error-full",
+      "action": "error",
+      "event": {
+        "httpMethod": "GET",
+        "path": "/items/id%20one",
+        "resource": "/items/id%20one",
+        "headers": {
+          "user-agent": "fixture-agent",
+          "x-forwarded-for": " 198.51.100.2 , 198.51.100.3"
+        },
+        "requestContext": {
+          "domainName": "api.example.test",
+          "requestId": "request-1",
+          "apiId": "api-1",
+          "extendedRequestId": "extended-1",
+          "identity": {
+            "sourceIp": "192.0.2.1"
+          }
+        },
+        "body": null,
+        "isBase64Encoded": false,
+        "pathParameters": null,
+        "queryStringParameters": null,
+        "multiValueQueryStringParameters": null,
+        "stageVariables": null
+      },
+      "status": 500,
+      "spans": [
+        {
+          "name": "GET /items/id%20one",
+          "http": {
+            "request": {
+              "method": "GET",
+              "url": "https://api.example.test/items/id%20one",
+              "user_agent": "fixture-agent",
+              "client_ip": "192.0.2.1",
+              "x_forwarded_for": true
+            },
+            "response": {
+              "status": 500
+            }
+          },
+          "closed": true
+        }
+      ],
+      "responses": [],
+      "errors": [
+        "Error"
+      ],
+      "annotations": [
+        "ColdStart",
+        "Service"
+      ],
+      "restored": true
+    },
+    {
+      "name": "v1-error-missing",
+      "action": "error",
+      "event": {
+        "httpMethod": "GET",
+        "path": "/items/id%20one",
+        "resource": "/items/id%20one",
+        "headers": {},
+        "requestContext": {
+          "domainName": "api.example.test",
+          "identity": {
+            "sourceIp": ""
+          }
+        },
+        "body": null,
+        "isBase64Encoded": false,
+        "pathParameters": null,
+        "queryStringParameters": null,
+        "multiValueQueryStringParameters": null,
+        "stageVariables": null
+      },
+      "status": 500,
+      "spans": [
+        {
+          "name": "GET /items/id%20one",
+          "http": {
+            "request": {
+              "method": "GET",
+              "url": "https://api.example.test/items/id%20one"
+            },
+            "response": {
+              "status": 500
+            }
+          },
+          "closed": true
+        }
+      ],
+      "responses": [],
+      "errors": [
+        "Error"
+      ],
+      "annotations": [
+        "ColdStart",
+        "Service"
+      ],
+      "restored": true
+    },
+    {
+      "name": "v1-missing-full",
+      "action": "missing",
+      "event": {
+        "httpMethod": "GET",
+        "path": "/missing",
+        "resource": "/missing",
+        "headers": {
+          "user-agent": "fixture-agent",
+          "x-forwarded-for": " 198.51.100.2 , 198.51.100.3"
+        },
+        "requestContext": {
+          "domainName": "api.example.test",
+          "requestId": "request-1",
+          "apiId": "api-1",
+          "extendedRequestId": "extended-1",
+          "identity": {
+            "sourceIp": "192.0.2.1"
+          }
+        },
+        "body": null,
+        "isBase64Encoded": false,
+        "pathParameters": null,
+        "queryStringParameters": null,
+        "multiValueQueryStringParameters": null,
+        "stageVariables": null
+      },
+      "status": 404,
+      "spans": [
+        {
+          "name": "GET /missing",
+          "http": {
+            "request": {
+              "method": "GET",
+              "url": "https://api.example.test/missing",
+              "user_agent": "fixture-agent",
+              "client_ip": "192.0.2.1",
+              "x_forwarded_for": true
+            },
+            "response": {
+              "status": 404
+            }
+          },
+          "closed": true
+        }
+      ],
+      "responses": [
+        {
+          "name": "GET /missing",
+          "value": {
+            "statusCode": 404,
+            "error": "NotFoundError",
+            "message": "Route /missing for method GET not found"
+          }
+        }
+      ],
+      "errors": [],
+      "annotations": [
+        "ColdStart",
+        "Service"
+      ],
+      "restored": true
+    },
+    {
+      "name": "v1-missing-missing",
+      "action": "missing",
+      "event": {
+        "httpMethod": "GET",
+        "path": "/missing",
+        "resource": "/missing",
+        "headers": {},
+        "requestContext": {
+          "domainName": "api.example.test",
+          "identity": {
+            "sourceIp": ""
+          }
+        },
+        "body": null,
+        "isBase64Encoded": false,
+        "pathParameters": null,
+        "queryStringParameters": null,
+        "multiValueQueryStringParameters": null,
+        "stageVariables": null
+      },
+      "status": 404,
+      "spans": [
+        {
+          "name": "GET /missing",
+          "http": {
+            "request": {
+              "method": "GET",
+              "url": "https://api.example.test/missing"
+            },
+            "response": {
+              "status": 404
+            }
+          },
+          "closed": true
+        }
+      ],
+      "responses": [
+        {
+          "name": "GET /missing",
+          "value": {
+            "statusCode": 404,
+            "error": "NotFoundError",
+            "message": "Route /missing for method GET not found"
+          }
+        }
+      ],
+      "errors": [],
+      "annotations": [
+        "ColdStart",
+        "Service"
+      ],
+      "restored": true
+    },
+    {
+      "name": "v1-server-full",
+      "action": "server",
+      "event": {
+        "httpMethod": "GET",
+        "path": "/items/id%20one",
+        "resource": "/items/id%20one",
+        "headers": {
+          "user-agent": "fixture-agent",
+          "x-forwarded-for": " 198.51.100.2 , 198.51.100.3"
+        },
+        "requestContext": {
+          "domainName": "api.example.test",
+          "requestId": "request-1",
+          "apiId": "api-1",
+          "extendedRequestId": "extended-1",
+          "identity": {
+            "sourceIp": "192.0.2.1"
+          }
+        },
+        "body": null,
+        "isBase64Encoded": false,
+        "pathParameters": null,
+        "queryStringParameters": null,
+        "multiValueQueryStringParameters": null,
+        "stageVariables": null
+      },
+      "status": 503,
+      "spans": [
+        {
+          "name": "GET /items/id%20one",
+          "http": {
+            "request": {
+              "method": "GET",
+              "url": "https://api.example.test/items/id%20one",
+              "user_agent": "fixture-agent",
+              "client_ip": "192.0.2.1",
+              "x_forwarded_for": true
+            },
+            "response": {
+              "status": 503
+            }
+          },
+          "closed": true
+        }
+      ],
+      "responses": [
+        {
+          "name": "GET /items/id%20one",
+          "value": {
+            "ok": true
+          }
+        }
+      ],
+      "errors": [],
+      "annotations": [
+        "ColdStart",
+        "Service"
+      ],
+      "restored": true
+    },
+    {
+      "name": "v1-server-missing",
+      "action": "server",
+      "event": {
+        "httpMethod": "GET",
+        "path": "/items/id%20one",
+        "resource": "/items/id%20one",
+        "headers": {},
+        "requestContext": {
+          "domainName": "api.example.test",
+          "identity": {
+            "sourceIp": ""
+          }
+        },
+        "body": null,
+        "isBase64Encoded": false,
+        "pathParameters": null,
+        "queryStringParameters": null,
+        "multiValueQueryStringParameters": null,
+        "stageVariables": null
+      },
+      "status": 503,
+      "spans": [
+        {
+          "name": "GET /items/id%20one",
+          "http": {
+            "request": {
+              "method": "GET",
+              "url": "https://api.example.test/items/id%20one"
+            },
+            "response": {
+              "status": 503
+            }
+          },
+          "closed": true
+        }
+      ],
+      "responses": [
+        {
+          "name": "GET /items/id%20one",
+          "value": {
+            "ok": true
+          }
+        }
+      ],
+      "errors": [],
+      "annotations": [
+        "ColdStart",
+        "Service"
+      ],
+      "restored": true
+    },
+    {
+      "name": "v1-disabled-full",
+      "action": "disabled",
+      "event": {
+        "httpMethod": "GET",
+        "path": "/items/id%20one",
+        "resource": "/items/id%20one",
+        "headers": {
+          "user-agent": "fixture-agent",
+          "x-forwarded-for": " 198.51.100.2 , 198.51.100.3"
+        },
+        "requestContext": {
+          "domainName": "api.example.test",
+          "requestId": "request-1",
+          "apiId": "api-1",
+          "extendedRequestId": "extended-1",
+          "identity": {
+            "sourceIp": "192.0.2.1"
+          }
+        },
+        "body": null,
+        "isBase64Encoded": false,
+        "pathParameters": null,
+        "queryStringParameters": null,
+        "multiValueQueryStringParameters": null,
+        "stageVariables": null
+      },
+      "status": 200,
+      "spans": [],
+      "responses": [],
+      "errors": [],
+      "annotations": [],
+      "restored": true
+    },
+    {
+      "name": "v1-disabled-missing",
+      "action": "disabled",
+      "event": {
+        "httpMethod": "GET",
+        "path": "/items/id%20one",
+        "resource": "/items/id%20one",
+        "headers": {},
+        "requestContext": {
+          "domainName": "api.example.test",
+          "identity": {
+            "sourceIp": ""
+          }
+        },
+        "body": null,
+        "isBase64Encoded": false,
+        "pathParameters": null,
+        "queryStringParameters": null,
+        "multiValueQueryStringParameters": null,
+        "stageVariables": null
+      },
+      "status": 200,
+      "spans": [],
+      "responses": [],
+      "errors": [],
+      "annotations": [],
+      "restored": true
+    },
+    {
+      "name": "v1-capture-off-full",
+      "action": "capture-off",
+      "event": {
+        "httpMethod": "GET",
+        "path": "/items/id%20one",
+        "resource": "/items/id%20one",
+        "headers": {
+          "user-agent": "fixture-agent",
+          "x-forwarded-for": " 198.51.100.2 , 198.51.100.3"
+        },
+        "requestContext": {
+          "domainName": "api.example.test",
+          "requestId": "request-1",
+          "apiId": "api-1",
+          "extendedRequestId": "extended-1",
+          "identity": {
+            "sourceIp": "192.0.2.1"
+          }
+        },
+        "body": null,
+        "isBase64Encoded": false,
+        "pathParameters": null,
+        "queryStringParameters": null,
+        "multiValueQueryStringParameters": null,
+        "stageVariables": null
+      },
+      "status": 200,
+      "spans": [
+        {
+          "name": "GET /items/id%20one",
+          "http": {
+            "request": {
+              "method": "GET",
+              "url": "https://api.example.test/items/id%20one",
+              "user_agent": "fixture-agent",
+              "client_ip": "192.0.2.1",
+              "x_forwarded_for": true
+            },
+            "response": {
+              "status": 200
+            }
+          },
+          "closed": true
+        }
+      ],
+      "responses": [],
+      "errors": [],
+      "annotations": [
+        "ColdStart",
+        "Service"
+      ],
+      "restored": true
+    },
+    {
+      "name": "v1-capture-off-missing",
+      "action": "capture-off",
+      "event": {
+        "httpMethod": "GET",
+        "path": "/items/id%20one",
+        "resource": "/items/id%20one",
+        "headers": {},
+        "requestContext": {
+          "domainName": "api.example.test",
+          "identity": {
+            "sourceIp": ""
+          }
+        },
+        "body": null,
+        "isBase64Encoded": false,
+        "pathParameters": null,
+        "queryStringParameters": null,
+        "multiValueQueryStringParameters": null,
+        "stageVariables": null
+      },
+      "status": 200,
+      "spans": [
+        {
+          "name": "GET /items/id%20one",
+          "http": {
+            "request": {
+              "method": "GET",
+              "url": "https://api.example.test/items/id%20one"
+            },
+            "response": {
+              "status": 200
+            }
+          },
+          "closed": true
+        }
+      ],
+      "responses": [],
+      "errors": [],
+      "annotations": [
+        "ColdStart",
+        "Service"
+      ],
+      "restored": true
+    },
+    {
+      "name": "v1-config-off-full",
+      "action": "config-off",
+      "event": {
+        "httpMethod": "GET",
+        "path": "/items/id%20one",
+        "resource": "/items/id%20one",
+        "headers": {
+          "user-agent": "fixture-agent",
+          "x-forwarded-for": " 198.51.100.2 , 198.51.100.3"
+        },
+        "requestContext": {
+          "domainName": "api.example.test",
+          "requestId": "request-1",
+          "apiId": "api-1",
+          "extendedRequestId": "extended-1",
+          "identity": {
+            "sourceIp": "192.0.2.1"
+          }
+        },
+        "body": null,
+        "isBase64Encoded": false,
+        "pathParameters": null,
+        "queryStringParameters": null,
+        "multiValueQueryStringParameters": null,
+        "stageVariables": null
+      },
+      "status": 200,
+      "spans": [
+        {
+          "name": "GET /items/id%20one",
+          "http": {
+            "request": {
+              "method": "GET",
+              "url": "https://api.example.test/items/id%20one",
+              "user_agent": "fixture-agent",
+              "client_ip": "192.0.2.1",
+              "x_forwarded_for": true
+            },
+            "response": {
+              "status": 200
+            }
+          },
+          "closed": true
+        }
+      ],
+      "responses": [],
+      "errors": [],
+      "annotations": [
+        "ColdStart",
+        "Service"
+      ],
+      "restored": true
+    },
+    {
+      "name": "v1-config-off-missing",
+      "action": "config-off",
+      "event": {
+        "httpMethod": "GET",
+        "path": "/items/id%20one",
+        "resource": "/items/id%20one",
+        "headers": {},
+        "requestContext": {
+          "domainName": "api.example.test",
+          "identity": {
+            "sourceIp": ""
+          }
+        },
+        "body": null,
+        "isBase64Encoded": false,
+        "pathParameters": null,
+        "queryStringParameters": null,
+        "multiValueQueryStringParameters": null,
+        "stageVariables": null
+      },
+      "status": 200,
+      "spans": [
+        {
+          "name": "GET /items/id%20one",
+          "http": {
+            "request": {
+              "method": "GET",
+              "url": "https://api.example.test/items/id%20one"
+            },
+            "response": {
+              "status": 200
+            }
+          },
+          "closed": true
+        }
+      ],
+      "responses": [],
+      "errors": [],
+      "annotations": [
+        "ColdStart",
+        "Service"
+      ],
+      "restored": true
+    },
+    {
+      "name": "v1-compressed-full",
+      "action": "compressed",
+      "event": {
+        "httpMethod": "GET",
+        "path": "/items/id%20one",
+        "resource": "/items/id%20one",
+        "headers": {
+          "user-agent": "fixture-agent",
+          "x-forwarded-for": " 198.51.100.2 , 198.51.100.3"
+        },
+        "requestContext": {
+          "domainName": "api.example.test",
+          "requestId": "request-1",
+          "apiId": "api-1",
+          "extendedRequestId": "extended-1",
+          "identity": {
+            "sourceIp": "192.0.2.1"
+          }
+        },
+        "body": null,
+        "isBase64Encoded": false,
+        "pathParameters": null,
+        "queryStringParameters": null,
+        "multiValueQueryStringParameters": null,
+        "stageVariables": null
+      },
+      "status": 500,
+      "spans": [
+        {
+          "name": "GET /items/id%20one",
+          "http": {
+            "request": {
+              "method": "GET",
+              "url": "https://api.example.test/items/id%20one",
+              "user_agent": "fixture-agent",
+              "client_ip": "192.0.2.1",
+              "x_forwarded_for": true
+            },
+            "response": {
+              "status": 200
+            }
+          },
+          "closed": true
+        }
+      ],
+      "responses": [],
+      "errors": [
+        "SyntaxError"
+      ],
+      "annotations": [
+        "ColdStart",
+        "Service"
+      ],
+      "restored": true
+    },
+    {
+      "name": "v1-compressed-missing",
+      "action": "compressed",
+      "event": {
+        "httpMethod": "GET",
+        "path": "/items/id%20one",
+        "resource": "/items/id%20one",
+        "headers": {},
+        "requestContext": {
+          "domainName": "api.example.test",
+          "identity": {
+            "sourceIp": ""
+          }
+        },
+        "body": null,
+        "isBase64Encoded": false,
+        "pathParameters": null,
+        "queryStringParameters": null,
+        "multiValueQueryStringParameters": null,
+        "stageVariables": null
+      },
+      "status": 500,
+      "spans": [
+        {
+          "name": "GET /items/id%20one",
+          "http": {
+            "request": {
+              "method": "GET",
+              "url": "https://api.example.test/items/id%20one"
+            },
+            "response": {
+              "status": 200
+            }
+          },
+          "closed": true
+        }
+      ],
+      "responses": [],
+      "errors": [
+        "SyntaxError"
+      ],
+      "annotations": [
+        "ColdStart",
+        "Service"
+      ],
+      "restored": true
+    },
+    {
+      "name": "v1-length-full",
+      "action": "length",
+      "event": {
+        "httpMethod": "GET",
+        "path": "/items/id%20one",
+        "resource": "/items/id%20one",
+        "headers": {
+          "user-agent": "fixture-agent",
+          "x-forwarded-for": " 198.51.100.2 , 198.51.100.3"
+        },
+        "requestContext": {
+          "domainName": "api.example.test",
+          "requestId": "request-1",
+          "apiId": "api-1",
+          "extendedRequestId": "extended-1",
+          "identity": {
+            "sourceIp": "192.0.2.1"
+          }
+        },
+        "body": null,
+        "isBase64Encoded": false,
+        "pathParameters": null,
+        "queryStringParameters": null,
+        "multiValueQueryStringParameters": null,
+        "stageVariables": null
+      },
+      "status": 200,
+      "spans": [
+        {
+          "name": "GET /items/id%20one",
+          "http": {
+            "request": {
+              "method": "GET",
+              "url": "https://api.example.test/items/id%20one",
+              "user_agent": "fixture-agent",
+              "client_ip": "192.0.2.1",
+              "x_forwarded_for": true
+            },
+            "response": {
+              "status": 200,
+              "content_length": 12
+            }
+          },
+          "closed": true
+        }
+      ],
+      "responses": [
+        {
+          "name": "GET /items/id%20one",
+          "value": {
+            "ok": true
+          }
+        }
+      ],
+      "errors": [],
+      "annotations": [
+        "ColdStart",
+        "Service"
+      ],
+      "restored": true
+    },
+    {
+      "name": "v1-length-missing",
+      "action": "length",
+      "event": {
+        "httpMethod": "GET",
+        "path": "/items/id%20one",
+        "resource": "/items/id%20one",
+        "headers": {},
+        "requestContext": {
+          "domainName": "api.example.test",
+          "identity": {
+            "sourceIp": ""
+          }
+        },
+        "body": null,
+        "isBase64Encoded": false,
+        "pathParameters": null,
+        "queryStringParameters": null,
+        "multiValueQueryStringParameters": null,
+        "stageVariables": null
+      },
+      "status": 200,
+      "spans": [
+        {
+          "name": "GET /items/id%20one",
+          "http": {
+            "request": {
+              "method": "GET",
+              "url": "https://api.example.test/items/id%20one"
+            },
+            "response": {
+              "status": 200,
+              "content_length": 12
+            }
+          },
+          "closed": true
+        }
+      ],
+      "responses": [
+        {
+          "name": "GET /items/id%20one",
+          "value": {
+            "ok": true
+          }
+        }
+      ],
+      "errors": [],
+      "annotations": [
+        "ColdStart",
+        "Service"
+      ],
+      "restored": true
+    },
+    {
+      "name": "v1-length-prefix-full",
+      "action": "length-prefix",
+      "event": {
+        "httpMethod": "GET",
+        "path": "/items/id%20one",
+        "resource": "/items/id%20one",
+        "headers": {
+          "user-agent": "fixture-agent",
+          "x-forwarded-for": " 198.51.100.2 , 198.51.100.3"
+        },
+        "requestContext": {
+          "domainName": "api.example.test",
+          "requestId": "request-1",
+          "apiId": "api-1",
+          "extendedRequestId": "extended-1",
+          "identity": {
+            "sourceIp": "192.0.2.1"
+          }
+        },
+        "body": null,
+        "isBase64Encoded": false,
+        "pathParameters": null,
+        "queryStringParameters": null,
+        "multiValueQueryStringParameters": null,
+        "stageVariables": null
+      },
+      "status": 200,
+      "spans": [
+        {
+          "name": "GET /items/id%20one",
+          "http": {
+            "request": {
+              "method": "GET",
+              "url": "https://api.example.test/items/id%20one",
+              "user_agent": "fixture-agent",
+              "client_ip": "192.0.2.1",
+              "x_forwarded_for": true
+            },
+            "response": {
+              "status": 200,
+              "content_length": 12
+            }
+          },
+          "closed": true
+        }
+      ],
+      "responses": [
+        {
+          "name": "GET /items/id%20one",
+          "value": {
+            "ok": true
+          }
+        }
+      ],
+      "errors": [],
+      "annotations": [
+        "ColdStart",
+        "Service"
+      ],
+      "restored": true
+    },
+    {
+      "name": "v1-length-prefix-missing",
+      "action": "length-prefix",
+      "event": {
+        "httpMethod": "GET",
+        "path": "/items/id%20one",
+        "resource": "/items/id%20one",
+        "headers": {},
+        "requestContext": {
+          "domainName": "api.example.test",
+          "identity": {
+            "sourceIp": ""
+          }
+        },
+        "body": null,
+        "isBase64Encoded": false,
+        "pathParameters": null,
+        "queryStringParameters": null,
+        "multiValueQueryStringParameters": null,
+        "stageVariables": null
+      },
+      "status": 200,
+      "spans": [
+        {
+          "name": "GET /items/id%20one",
+          "http": {
+            "request": {
+              "method": "GET",
+              "url": "https://api.example.test/items/id%20one"
+            },
+            "response": {
+              "status": 200,
+              "content_length": 12
+            }
+          },
+          "closed": true
+        }
+      ],
+      "responses": [
+        {
+          "name": "GET /items/id%20one",
+          "value": {
+            "ok": true
+          }
+        }
+      ],
+      "errors": [],
+      "annotations": [
+        "ColdStart",
+        "Service"
+      ],
+      "restored": true
+    },
+    {
+      "name": "v1-length-negative-full",
+      "action": "length-negative",
+      "event": {
+        "httpMethod": "GET",
+        "path": "/items/id%20one",
+        "resource": "/items/id%20one",
+        "headers": {
+          "user-agent": "fixture-agent",
+          "x-forwarded-for": " 198.51.100.2 , 198.51.100.3"
+        },
+        "requestContext": {
+          "domainName": "api.example.test",
+          "requestId": "request-1",
+          "apiId": "api-1",
+          "extendedRequestId": "extended-1",
+          "identity": {
+            "sourceIp": "192.0.2.1"
+          }
+        },
+        "body": null,
+        "isBase64Encoded": false,
+        "pathParameters": null,
+        "queryStringParameters": null,
+        "multiValueQueryStringParameters": null,
+        "stageVariables": null
+      },
+      "status": 200,
+      "spans": [
+        {
+          "name": "GET /items/id%20one",
+          "http": {
+            "request": {
+              "method": "GET",
+              "url": "https://api.example.test/items/id%20one",
+              "user_agent": "fixture-agent",
+              "client_ip": "192.0.2.1",
+              "x_forwarded_for": true
+            },
+            "response": {
+              "status": 200,
+              "content_length": -2
+            }
+          },
+          "closed": true
+        }
+      ],
+      "responses": [
+        {
+          "name": "GET /items/id%20one",
+          "value": {
+            "ok": true
+          }
+        }
+      ],
+      "errors": [],
+      "annotations": [
+        "ColdStart",
+        "Service"
+      ],
+      "restored": true
+    },
+    {
+      "name": "v1-length-negative-missing",
+      "action": "length-negative",
+      "event": {
+        "httpMethod": "GET",
+        "path": "/items/id%20one",
+        "resource": "/items/id%20one",
+        "headers": {},
+        "requestContext": {
+          "domainName": "api.example.test",
+          "identity": {
+            "sourceIp": ""
+          }
+        },
+        "body": null,
+        "isBase64Encoded": false,
+        "pathParameters": null,
+        "queryStringParameters": null,
+        "multiValueQueryStringParameters": null,
+        "stageVariables": null
+      },
+      "status": 200,
+      "spans": [
+        {
+          "name": "GET /items/id%20one",
+          "http": {
+            "request": {
+              "method": "GET",
+              "url": "https://api.example.test/items/id%20one"
+            },
+            "response": {
+              "status": 200,
+              "content_length": -2
+            }
+          },
+          "closed": true
+        }
+      ],
+      "responses": [
+        {
+          "name": "GET /items/id%20one",
+          "value": {
+            "ok": true
+          }
+        }
+      ],
+      "errors": [],
+      "annotations": [
+        "ColdStart",
+        "Service"
+      ],
+      "restored": true
+    },
+    {
+      "name": "v1-length-invalid-full",
+      "action": "length-invalid",
+      "event": {
+        "httpMethod": "GET",
+        "path": "/items/id%20one",
+        "resource": "/items/id%20one",
+        "headers": {
+          "user-agent": "fixture-agent",
+          "x-forwarded-for": " 198.51.100.2 , 198.51.100.3"
+        },
+        "requestContext": {
+          "domainName": "api.example.test",
+          "requestId": "request-1",
+          "apiId": "api-1",
+          "extendedRequestId": "extended-1",
+          "identity": {
+            "sourceIp": "192.0.2.1"
+          }
+        },
+        "body": null,
+        "isBase64Encoded": false,
+        "pathParameters": null,
+        "queryStringParameters": null,
+        "multiValueQueryStringParameters": null,
+        "stageVariables": null
+      },
+      "status": 200,
+      "spans": [
+        {
+          "name": "GET /items/id%20one",
+          "http": {
+            "request": {
+              "method": "GET",
+              "url": "https://api.example.test/items/id%20one",
+              "user_agent": "fixture-agent",
+              "client_ip": "192.0.2.1",
+              "x_forwarded_for": true
+            },
+            "response": {
+              "status": 200
+            }
+          },
+          "closed": true
+        }
+      ],
+      "responses": [
+        {
+          "name": "GET /items/id%20one",
+          "value": {
+            "ok": true
+          }
+        }
+      ],
+      "errors": [],
+      "annotations": [
+        "ColdStart",
+        "Service"
+      ],
+      "restored": true
+    },
+    {
+      "name": "v1-length-invalid-missing",
+      "action": "length-invalid",
+      "event": {
+        "httpMethod": "GET",
+        "path": "/items/id%20one",
+        "resource": "/items/id%20one",
+        "headers": {},
+        "requestContext": {
+          "domainName": "api.example.test",
+          "identity": {
+            "sourceIp": ""
+          }
+        },
+        "body": null,
+        "isBase64Encoded": false,
+        "pathParameters": null,
+        "queryStringParameters": null,
+        "multiValueQueryStringParameters": null,
+        "stageVariables": null
+      },
+      "status": 200,
+      "spans": [
+        {
+          "name": "GET /items/id%20one",
+          "http": {
+            "request": {
+              "method": "GET",
+              "url": "https://api.example.test/items/id%20one"
+            },
+            "response": {
+              "status": 200
+            }
+          },
+          "closed": true
+        }
+      ],
+      "responses": [
+        {
+          "name": "GET /items/id%20one",
+          "value": {
+            "ok": true
+          }
+        }
+      ],
+      "errors": [],
+      "annotations": [
+        "ColdStart",
+        "Service"
+      ],
+      "restored": true
+    },
+    {
+      "name": "v2-json-full",
+      "action": "json",
+      "event": {
+        "version": "2.0",
+        "routeKey": "$default",
+        "rawPath": "/items/id%20one",
+        "rawQueryString": "secret=omitted",
+        "headers": {
+          "user-agent": "fixture-agent",
+          "x-forwarded-for": " 198.51.100.2 , 198.51.100.3"
+        },
+        "requestContext": {
+          "domainName": "api.example.test",
+          "requestId": "request-1",
+          "apiId": "api-1",
+          "extendedRequestId": "extended-1",
+          "http": {
+            "method": "GET",
+            "sourceIp": "192.0.2.1"
+          }
+        },
+        "isBase64Encoded": false
+      },
+      "status": 200,
+      "spans": [
+        {
+          "name": "GET /items/id%20one",
+          "http": {
+            "request": {
+              "method": "GET",
+              "url": "https://api.example.test/items/id%20one",
+              "user_agent": "fixture-agent",
+              "client_ip": "192.0.2.1",
+              "x_forwarded_for": true
+            },
+            "response": {
+              "status": 200
+            }
+          },
+          "closed": true
+        }
+      ],
+      "responses": [
+        {
+          "name": "GET /items/id%20one",
+          "value": {
+            "ok": true
+          }
+        }
+      ],
+      "errors": [],
+      "annotations": [
+        "ColdStart",
+        "Service"
+      ],
+      "restored": true
+    },
+    {
+      "name": "v2-json-missing",
+      "action": "json",
+      "event": {
+        "version": "2.0",
+        "routeKey": "$default",
+        "rawPath": "/items/id%20one",
+        "rawQueryString": "secret=omitted",
+        "headers": {},
+        "requestContext": {
+          "domainName": "api.example.test",
+          "http": {
+            "method": "GET",
+            "sourceIp": ""
+          }
+        },
+        "isBase64Encoded": false
+      },
+      "status": 200,
+      "spans": [
+        {
+          "name": "GET /items/id%20one",
+          "http": {
+            "request": {
+              "method": "GET",
+              "url": "https://api.example.test/items/id%20one"
+            },
+            "response": {
+              "status": 200
+            }
+          },
+          "closed": true
+        }
+      ],
+      "responses": [
+        {
+          "name": "GET /items/id%20one",
+          "value": {
+            "ok": true
+          }
+        }
+      ],
+      "errors": [],
+      "annotations": [
+        "ColdStart",
+        "Service"
+      ],
+      "restored": true
+    },
+    {
+      "name": "v2-text-full",
+      "action": "text",
+      "event": {
+        "version": "2.0",
+        "routeKey": "$default",
+        "rawPath": "/items/id%20one",
+        "rawQueryString": "secret=omitted",
+        "headers": {
+          "user-agent": "fixture-agent",
+          "x-forwarded-for": " 198.51.100.2 , 198.51.100.3"
+        },
+        "requestContext": {
+          "domainName": "api.example.test",
+          "requestId": "request-1",
+          "apiId": "api-1",
+          "extendedRequestId": "extended-1",
+          "http": {
+            "method": "GET",
+            "sourceIp": "192.0.2.1"
+          }
+        },
+        "isBase64Encoded": false
+      },
+      "status": 200,
+      "spans": [
+        {
+          "name": "GET /items/id%20one",
+          "http": {
+            "request": {
+              "method": "GET",
+              "url": "https://api.example.test/items/id%20one",
+              "user_agent": "fixture-agent",
+              "client_ip": "192.0.2.1",
+              "x_forwarded_for": true
+            },
+            "response": {
+              "status": 200
+            }
+          },
+          "closed": true
+        }
+      ],
+      "responses": [],
+      "errors": [],
+      "annotations": [
+        "ColdStart",
+        "Service"
+      ],
+      "restored": true
+    },
+    {
+      "name": "v2-text-missing",
+      "action": "text",
+      "event": {
+        "version": "2.0",
+        "routeKey": "$default",
+        "rawPath": "/items/id%20one",
+        "rawQueryString": "secret=omitted",
+        "headers": {},
+        "requestContext": {
+          "domainName": "api.example.test",
+          "http": {
+            "method": "GET",
+            "sourceIp": ""
+          }
+        },
+        "isBase64Encoded": false
+      },
+      "status": 200,
+      "spans": [
+        {
+          "name": "GET /items/id%20one",
+          "http": {
+            "request": {
+              "method": "GET",
+              "url": "https://api.example.test/items/id%20one"
+            },
+            "response": {
+              "status": 200
+            }
+          },
+          "closed": true
+        }
+      ],
+      "responses": [],
+      "errors": [],
+      "annotations": [
+        "ColdStart",
+        "Service"
+      ],
+      "restored": true
+    },
+    {
+      "name": "v2-charset-full",
+      "action": "charset",
+      "event": {
+        "version": "2.0",
+        "routeKey": "$default",
+        "rawPath": "/items/id%20one",
+        "rawQueryString": "secret=omitted",
+        "headers": {
+          "user-agent": "fixture-agent",
+          "x-forwarded-for": " 198.51.100.2 , 198.51.100.3"
+        },
+        "requestContext": {
+          "domainName": "api.example.test",
+          "requestId": "request-1",
+          "apiId": "api-1",
+          "extendedRequestId": "extended-1",
+          "http": {
+            "method": "GET",
+            "sourceIp": "192.0.2.1"
+          }
+        },
+        "isBase64Encoded": false
+      },
+      "status": 200,
+      "spans": [
+        {
+          "name": "GET /items/id%20one",
+          "http": {
+            "request": {
+              "method": "GET",
+              "url": "https://api.example.test/items/id%20one",
+              "user_agent": "fixture-agent",
+              "client_ip": "192.0.2.1",
+              "x_forwarded_for": true
+            },
+            "response": {
+              "status": 200
+            }
+          },
+          "closed": true
+        }
+      ],
+      "responses": [],
+      "errors": [],
+      "annotations": [
+        "ColdStart",
+        "Service"
+      ],
+      "restored": true
+    },
+    {
+      "name": "v2-charset-missing",
+      "action": "charset",
+      "event": {
+        "version": "2.0",
+        "routeKey": "$default",
+        "rawPath": "/items/id%20one",
+        "rawQueryString": "secret=omitted",
+        "headers": {},
+        "requestContext": {
+          "domainName": "api.example.test",
+          "http": {
+            "method": "GET",
+            "sourceIp": ""
+          }
+        },
+        "isBase64Encoded": false
+      },
+      "status": 200,
+      "spans": [
+        {
+          "name": "GET /items/id%20one",
+          "http": {
+            "request": {
+              "method": "GET",
+              "url": "https://api.example.test/items/id%20one"
+            },
+            "response": {
+              "status": 200
+            }
+          },
+          "closed": true
+        }
+      ],
+      "responses": [],
+      "errors": [],
+      "annotations": [
+        "ColdStart",
+        "Service"
+      ],
+      "restored": true
+    },
+    {
+      "name": "v2-invalid-json-full",
+      "action": "invalid-json",
+      "event": {
+        "version": "2.0",
+        "routeKey": "$default",
+        "rawPath": "/items/id%20one",
+        "rawQueryString": "secret=omitted",
+        "headers": {
+          "user-agent": "fixture-agent",
+          "x-forwarded-for": " 198.51.100.2 , 198.51.100.3"
+        },
+        "requestContext": {
+          "domainName": "api.example.test",
+          "requestId": "request-1",
+          "apiId": "api-1",
+          "extendedRequestId": "extended-1",
+          "http": {
+            "method": "GET",
+            "sourceIp": "192.0.2.1"
+          }
+        },
+        "isBase64Encoded": false
+      },
+      "status": 500,
+      "spans": [
+        {
+          "name": "GET /items/id%20one",
+          "http": {
+            "request": {
+              "method": "GET",
+              "url": "https://api.example.test/items/id%20one",
+              "user_agent": "fixture-agent",
+              "client_ip": "192.0.2.1",
+              "x_forwarded_for": true
+            },
+            "response": {
+              "status": 200
+            }
+          },
+          "closed": true
+        }
+      ],
+      "responses": [],
+      "errors": [
+        "SyntaxError"
+      ],
+      "annotations": [
+        "ColdStart",
+        "Service"
+      ],
+      "restored": true
+    },
+    {
+      "name": "v2-invalid-json-missing",
+      "action": "invalid-json",
+      "event": {
+        "version": "2.0",
+        "routeKey": "$default",
+        "rawPath": "/items/id%20one",
+        "rawQueryString": "secret=omitted",
+        "headers": {},
+        "requestContext": {
+          "domainName": "api.example.test",
+          "http": {
+            "method": "GET",
+            "sourceIp": ""
+          }
+        },
+        "isBase64Encoded": false
+      },
+      "status": 500,
+      "spans": [
+        {
+          "name": "GET /items/id%20one",
+          "http": {
+            "request": {
+              "method": "GET",
+              "url": "https://api.example.test/items/id%20one"
+            },
+            "response": {
+              "status": 200
+            }
+          },
+          "closed": true
+        }
+      ],
+      "responses": [],
+      "errors": [
+        "SyntaxError"
+      ],
+      "annotations": [
+        "ColdStart",
+        "Service"
+      ],
+      "restored": true
+    },
+    {
+      "name": "v2-http-error-full",
+      "action": "http-error",
+      "event": {
+        "version": "2.0",
+        "routeKey": "$default",
+        "rawPath": "/items/id%20one",
+        "rawQueryString": "secret=omitted",
+        "headers": {
+          "user-agent": "fixture-agent",
+          "x-forwarded-for": " 198.51.100.2 , 198.51.100.3"
+        },
+        "requestContext": {
+          "domainName": "api.example.test",
+          "requestId": "request-1",
+          "apiId": "api-1",
+          "extendedRequestId": "extended-1",
+          "http": {
+            "method": "GET",
+            "sourceIp": "192.0.2.1"
+          }
+        },
+        "isBase64Encoded": false
+      },
+      "status": 400,
+      "spans": [
+        {
+          "name": "GET /items/id%20one",
+          "http": {
+            "request": {
+              "method": "GET",
+              "url": "https://api.example.test/items/id%20one",
+              "user_agent": "fixture-agent",
+              "client_ip": "192.0.2.1",
+              "x_forwarded_for": true
+            },
+            "response": {
+              "status": 500
+            }
+          },
+          "closed": true
+        }
+      ],
+      "responses": [],
+      "errors": [
+        "BadRequestError"
+      ],
+      "annotations": [
+        "ColdStart",
+        "Service"
+      ],
+      "restored": true
+    },
+    {
+      "name": "v2-http-error-missing",
+      "action": "http-error",
+      "event": {
+        "version": "2.0",
+        "routeKey": "$default",
+        "rawPath": "/items/id%20one",
+        "rawQueryString": "secret=omitted",
+        "headers": {},
+        "requestContext": {
+          "domainName": "api.example.test",
+          "http": {
+            "method": "GET",
+            "sourceIp": ""
+          }
+        },
+        "isBase64Encoded": false
+      },
+      "status": 400,
+      "spans": [
+        {
+          "name": "GET /items/id%20one",
+          "http": {
+            "request": {
+              "method": "GET",
+              "url": "https://api.example.test/items/id%20one"
+            },
+            "response": {
+              "status": 500
+            }
+          },
+          "closed": true
+        }
+      ],
+      "responses": [],
+      "errors": [
+        "BadRequestError"
+      ],
+      "annotations": [
+        "ColdStart",
+        "Service"
+      ],
+      "restored": true
+    },
+    {
+      "name": "v2-error-full",
+      "action": "error",
+      "event": {
+        "version": "2.0",
+        "routeKey": "$default",
+        "rawPath": "/items/id%20one",
+        "rawQueryString": "secret=omitted",
+        "headers": {
+          "user-agent": "fixture-agent",
+          "x-forwarded-for": " 198.51.100.2 , 198.51.100.3"
+        },
+        "requestContext": {
+          "domainName": "api.example.test",
+          "requestId": "request-1",
+          "apiId": "api-1",
+          "extendedRequestId": "extended-1",
+          "http": {
+            "method": "GET",
+            "sourceIp": "192.0.2.1"
+          }
+        },
+        "isBase64Encoded": false
+      },
+      "status": 500,
+      "spans": [
+        {
+          "name": "GET /items/id%20one",
+          "http": {
+            "request": {
+              "method": "GET",
+              "url": "https://api.example.test/items/id%20one",
+              "user_agent": "fixture-agent",
+              "client_ip": "192.0.2.1",
+              "x_forwarded_for": true
+            },
+            "response": {
+              "status": 500
+            }
+          },
+          "closed": true
+        }
+      ],
+      "responses": [],
+      "errors": [
+        "Error"
+      ],
+      "annotations": [
+        "ColdStart",
+        "Service"
+      ],
+      "restored": true
+    },
+    {
+      "name": "v2-error-missing",
+      "action": "error",
+      "event": {
+        "version": "2.0",
+        "routeKey": "$default",
+        "rawPath": "/items/id%20one",
+        "rawQueryString": "secret=omitted",
+        "headers": {},
+        "requestContext": {
+          "domainName": "api.example.test",
+          "http": {
+            "method": "GET",
+            "sourceIp": ""
+          }
+        },
+        "isBase64Encoded": false
+      },
+      "status": 500,
+      "spans": [
+        {
+          "name": "GET /items/id%20one",
+          "http": {
+            "request": {
+              "method": "GET",
+              "url": "https://api.example.test/items/id%20one"
+            },
+            "response": {
+              "status": 500
+            }
+          },
+          "closed": true
+        }
+      ],
+      "responses": [],
+      "errors": [
+        "Error"
+      ],
+      "annotations": [
+        "ColdStart",
+        "Service"
+      ],
+      "restored": true
+    },
+    {
+      "name": "v2-missing-full",
+      "action": "missing",
+      "event": {
+        "version": "2.0",
+        "routeKey": "$default",
+        "rawPath": "/missing",
+        "rawQueryString": "secret=omitted",
+        "headers": {
+          "user-agent": "fixture-agent",
+          "x-forwarded-for": " 198.51.100.2 , 198.51.100.3"
+        },
+        "requestContext": {
+          "domainName": "api.example.test",
+          "requestId": "request-1",
+          "apiId": "api-1",
+          "extendedRequestId": "extended-1",
+          "http": {
+            "method": "GET",
+            "sourceIp": "192.0.2.1"
+          }
+        },
+        "isBase64Encoded": false
+      },
+      "status": 404,
+      "spans": [
+        {
+          "name": "GET /missing",
+          "http": {
+            "request": {
+              "method": "GET",
+              "url": "https://api.example.test/missing",
+              "user_agent": "fixture-agent",
+              "client_ip": "192.0.2.1",
+              "x_forwarded_for": true
+            },
+            "response": {
+              "status": 404
+            }
+          },
+          "closed": true
+        }
+      ],
+      "responses": [
+        {
+          "name": "GET /missing",
+          "value": {
+            "statusCode": 404,
+            "error": "NotFoundError",
+            "message": "Route /missing for method GET not found"
+          }
+        }
+      ],
+      "errors": [],
+      "annotations": [
+        "ColdStart",
+        "Service"
+      ],
+      "restored": true
+    },
+    {
+      "name": "v2-missing-missing",
+      "action": "missing",
+      "event": {
+        "version": "2.0",
+        "routeKey": "$default",
+        "rawPath": "/missing",
+        "rawQueryString": "secret=omitted",
+        "headers": {},
+        "requestContext": {
+          "domainName": "api.example.test",
+          "http": {
+            "method": "GET",
+            "sourceIp": ""
+          }
+        },
+        "isBase64Encoded": false
+      },
+      "status": 404,
+      "spans": [
+        {
+          "name": "GET /missing",
+          "http": {
+            "request": {
+              "method": "GET",
+              "url": "https://api.example.test/missing"
+            },
+            "response": {
+              "status": 404
+            }
+          },
+          "closed": true
+        }
+      ],
+      "responses": [
+        {
+          "name": "GET /missing",
+          "value": {
+            "statusCode": 404,
+            "error": "NotFoundError",
+            "message": "Route /missing for method GET not found"
+          }
+        }
+      ],
+      "errors": [],
+      "annotations": [
+        "ColdStart",
+        "Service"
+      ],
+      "restored": true
+    },
+    {
+      "name": "v2-server-full",
+      "action": "server",
+      "event": {
+        "version": "2.0",
+        "routeKey": "$default",
+        "rawPath": "/items/id%20one",
+        "rawQueryString": "secret=omitted",
+        "headers": {
+          "user-agent": "fixture-agent",
+          "x-forwarded-for": " 198.51.100.2 , 198.51.100.3"
+        },
+        "requestContext": {
+          "domainName": "api.example.test",
+          "requestId": "request-1",
+          "apiId": "api-1",
+          "extendedRequestId": "extended-1",
+          "http": {
+            "method": "GET",
+            "sourceIp": "192.0.2.1"
+          }
+        },
+        "isBase64Encoded": false
+      },
+      "status": 503,
+      "spans": [
+        {
+          "name": "GET /items/id%20one",
+          "http": {
+            "request": {
+              "method": "GET",
+              "url": "https://api.example.test/items/id%20one",
+              "user_agent": "fixture-agent",
+              "client_ip": "192.0.2.1",
+              "x_forwarded_for": true
+            },
+            "response": {
+              "status": 503
+            }
+          },
+          "closed": true
+        }
+      ],
+      "responses": [
+        {
+          "name": "GET /items/id%20one",
+          "value": {
+            "ok": true
+          }
+        }
+      ],
+      "errors": [],
+      "annotations": [
+        "ColdStart",
+        "Service"
+      ],
+      "restored": true
+    },
+    {
+      "name": "v2-server-missing",
+      "action": "server",
+      "event": {
+        "version": "2.0",
+        "routeKey": "$default",
+        "rawPath": "/items/id%20one",
+        "rawQueryString": "secret=omitted",
+        "headers": {},
+        "requestContext": {
+          "domainName": "api.example.test",
+          "http": {
+            "method": "GET",
+            "sourceIp": ""
+          }
+        },
+        "isBase64Encoded": false
+      },
+      "status": 503,
+      "spans": [
+        {
+          "name": "GET /items/id%20one",
+          "http": {
+            "request": {
+              "method": "GET",
+              "url": "https://api.example.test/items/id%20one"
+            },
+            "response": {
+              "status": 503
+            }
+          },
+          "closed": true
+        }
+      ],
+      "responses": [
+        {
+          "name": "GET /items/id%20one",
+          "value": {
+            "ok": true
+          }
+        }
+      ],
+      "errors": [],
+      "annotations": [
+        "ColdStart",
+        "Service"
+      ],
+      "restored": true
+    },
+    {
+      "name": "v2-disabled-full",
+      "action": "disabled",
+      "event": {
+        "version": "2.0",
+        "routeKey": "$default",
+        "rawPath": "/items/id%20one",
+        "rawQueryString": "secret=omitted",
+        "headers": {
+          "user-agent": "fixture-agent",
+          "x-forwarded-for": " 198.51.100.2 , 198.51.100.3"
+        },
+        "requestContext": {
+          "domainName": "api.example.test",
+          "requestId": "request-1",
+          "apiId": "api-1",
+          "extendedRequestId": "extended-1",
+          "http": {
+            "method": "GET",
+            "sourceIp": "192.0.2.1"
+          }
+        },
+        "isBase64Encoded": false
+      },
+      "status": 200,
+      "spans": [],
+      "responses": [],
+      "errors": [],
+      "annotations": [],
+      "restored": true
+    },
+    {
+      "name": "v2-disabled-missing",
+      "action": "disabled",
+      "event": {
+        "version": "2.0",
+        "routeKey": "$default",
+        "rawPath": "/items/id%20one",
+        "rawQueryString": "secret=omitted",
+        "headers": {},
+        "requestContext": {
+          "domainName": "api.example.test",
+          "http": {
+            "method": "GET",
+            "sourceIp": ""
+          }
+        },
+        "isBase64Encoded": false
+      },
+      "status": 200,
+      "spans": [],
+      "responses": [],
+      "errors": [],
+      "annotations": [],
+      "restored": true
+    },
+    {
+      "name": "v2-capture-off-full",
+      "action": "capture-off",
+      "event": {
+        "version": "2.0",
+        "routeKey": "$default",
+        "rawPath": "/items/id%20one",
+        "rawQueryString": "secret=omitted",
+        "headers": {
+          "user-agent": "fixture-agent",
+          "x-forwarded-for": " 198.51.100.2 , 198.51.100.3"
+        },
+        "requestContext": {
+          "domainName": "api.example.test",
+          "requestId": "request-1",
+          "apiId": "api-1",
+          "extendedRequestId": "extended-1",
+          "http": {
+            "method": "GET",
+            "sourceIp": "192.0.2.1"
+          }
+        },
+        "isBase64Encoded": false
+      },
+      "status": 200,
+      "spans": [
+        {
+          "name": "GET /items/id%20one",
+          "http": {
+            "request": {
+              "method": "GET",
+              "url": "https://api.example.test/items/id%20one",
+              "user_agent": "fixture-agent",
+              "client_ip": "192.0.2.1",
+              "x_forwarded_for": true
+            },
+            "response": {
+              "status": 200
+            }
+          },
+          "closed": true
+        }
+      ],
+      "responses": [],
+      "errors": [],
+      "annotations": [
+        "ColdStart",
+        "Service"
+      ],
+      "restored": true
+    },
+    {
+      "name": "v2-capture-off-missing",
+      "action": "capture-off",
+      "event": {
+        "version": "2.0",
+        "routeKey": "$default",
+        "rawPath": "/items/id%20one",
+        "rawQueryString": "secret=omitted",
+        "headers": {},
+        "requestContext": {
+          "domainName": "api.example.test",
+          "http": {
+            "method": "GET",
+            "sourceIp": ""
+          }
+        },
+        "isBase64Encoded": false
+      },
+      "status": 200,
+      "spans": [
+        {
+          "name": "GET /items/id%20one",
+          "http": {
+            "request": {
+              "method": "GET",
+              "url": "https://api.example.test/items/id%20one"
+            },
+            "response": {
+              "status": 200
+            }
+          },
+          "closed": true
+        }
+      ],
+      "responses": [],
+      "errors": [],
+      "annotations": [
+        "ColdStart",
+        "Service"
+      ],
+      "restored": true
+    },
+    {
+      "name": "v2-config-off-full",
+      "action": "config-off",
+      "event": {
+        "version": "2.0",
+        "routeKey": "$default",
+        "rawPath": "/items/id%20one",
+        "rawQueryString": "secret=omitted",
+        "headers": {
+          "user-agent": "fixture-agent",
+          "x-forwarded-for": " 198.51.100.2 , 198.51.100.3"
+        },
+        "requestContext": {
+          "domainName": "api.example.test",
+          "requestId": "request-1",
+          "apiId": "api-1",
+          "extendedRequestId": "extended-1",
+          "http": {
+            "method": "GET",
+            "sourceIp": "192.0.2.1"
+          }
+        },
+        "isBase64Encoded": false
+      },
+      "status": 200,
+      "spans": [
+        {
+          "name": "GET /items/id%20one",
+          "http": {
+            "request": {
+              "method": "GET",
+              "url": "https://api.example.test/items/id%20one",
+              "user_agent": "fixture-agent",
+              "client_ip": "192.0.2.1",
+              "x_forwarded_for": true
+            },
+            "response": {
+              "status": 200
+            }
+          },
+          "closed": true
+        }
+      ],
+      "responses": [],
+      "errors": [],
+      "annotations": [
+        "ColdStart",
+        "Service"
+      ],
+      "restored": true
+    },
+    {
+      "name": "v2-config-off-missing",
+      "action": "config-off",
+      "event": {
+        "version": "2.0",
+        "routeKey": "$default",
+        "rawPath": "/items/id%20one",
+        "rawQueryString": "secret=omitted",
+        "headers": {},
+        "requestContext": {
+          "domainName": "api.example.test",
+          "http": {
+            "method": "GET",
+            "sourceIp": ""
+          }
+        },
+        "isBase64Encoded": false
+      },
+      "status": 200,
+      "spans": [
+        {
+          "name": "GET /items/id%20one",
+          "http": {
+            "request": {
+              "method": "GET",
+              "url": "https://api.example.test/items/id%20one"
+            },
+            "response": {
+              "status": 200
+            }
+          },
+          "closed": true
+        }
+      ],
+      "responses": [],
+      "errors": [],
+      "annotations": [
+        "ColdStart",
+        "Service"
+      ],
+      "restored": true
+    },
+    {
+      "name": "v2-compressed-full",
+      "action": "compressed",
+      "event": {
+        "version": "2.0",
+        "routeKey": "$default",
+        "rawPath": "/items/id%20one",
+        "rawQueryString": "secret=omitted",
+        "headers": {
+          "user-agent": "fixture-agent",
+          "x-forwarded-for": " 198.51.100.2 , 198.51.100.3"
+        },
+        "requestContext": {
+          "domainName": "api.example.test",
+          "requestId": "request-1",
+          "apiId": "api-1",
+          "extendedRequestId": "extended-1",
+          "http": {
+            "method": "GET",
+            "sourceIp": "192.0.2.1"
+          }
+        },
+        "isBase64Encoded": false
+      },
+      "status": 500,
+      "spans": [
+        {
+          "name": "GET /items/id%20one",
+          "http": {
+            "request": {
+              "method": "GET",
+              "url": "https://api.example.test/items/id%20one",
+              "user_agent": "fixture-agent",
+              "client_ip": "192.0.2.1",
+              "x_forwarded_for": true
+            },
+            "response": {
+              "status": 200
+            }
+          },
+          "closed": true
+        }
+      ],
+      "responses": [],
+      "errors": [
+        "SyntaxError"
+      ],
+      "annotations": [
+        "ColdStart",
+        "Service"
+      ],
+      "restored": true
+    },
+    {
+      "name": "v2-compressed-missing",
+      "action": "compressed",
+      "event": {
+        "version": "2.0",
+        "routeKey": "$default",
+        "rawPath": "/items/id%20one",
+        "rawQueryString": "secret=omitted",
+        "headers": {},
+        "requestContext": {
+          "domainName": "api.example.test",
+          "http": {
+            "method": "GET",
+            "sourceIp": ""
+          }
+        },
+        "isBase64Encoded": false
+      },
+      "status": 500,
+      "spans": [
+        {
+          "name": "GET /items/id%20one",
+          "http": {
+            "request": {
+              "method": "GET",
+              "url": "https://api.example.test/items/id%20one"
+            },
+            "response": {
+              "status": 200
+            }
+          },
+          "closed": true
+        }
+      ],
+      "responses": [],
+      "errors": [
+        "SyntaxError"
+      ],
+      "annotations": [
+        "ColdStart",
+        "Service"
+      ],
+      "restored": true
+    },
+    {
+      "name": "v2-length-full",
+      "action": "length",
+      "event": {
+        "version": "2.0",
+        "routeKey": "$default",
+        "rawPath": "/items/id%20one",
+        "rawQueryString": "secret=omitted",
+        "headers": {
+          "user-agent": "fixture-agent",
+          "x-forwarded-for": " 198.51.100.2 , 198.51.100.3"
+        },
+        "requestContext": {
+          "domainName": "api.example.test",
+          "requestId": "request-1",
+          "apiId": "api-1",
+          "extendedRequestId": "extended-1",
+          "http": {
+            "method": "GET",
+            "sourceIp": "192.0.2.1"
+          }
+        },
+        "isBase64Encoded": false
+      },
+      "status": 200,
+      "spans": [
+        {
+          "name": "GET /items/id%20one",
+          "http": {
+            "request": {
+              "method": "GET",
+              "url": "https://api.example.test/items/id%20one",
+              "user_agent": "fixture-agent",
+              "client_ip": "192.0.2.1",
+              "x_forwarded_for": true
+            },
+            "response": {
+              "status": 200,
+              "content_length": 12
+            }
+          },
+          "closed": true
+        }
+      ],
+      "responses": [
+        {
+          "name": "GET /items/id%20one",
+          "value": {
+            "ok": true
+          }
+        }
+      ],
+      "errors": [],
+      "annotations": [
+        "ColdStart",
+        "Service"
+      ],
+      "restored": true
+    },
+    {
+      "name": "v2-length-missing",
+      "action": "length",
+      "event": {
+        "version": "2.0",
+        "routeKey": "$default",
+        "rawPath": "/items/id%20one",
+        "rawQueryString": "secret=omitted",
+        "headers": {},
+        "requestContext": {
+          "domainName": "api.example.test",
+          "http": {
+            "method": "GET",
+            "sourceIp": ""
+          }
+        },
+        "isBase64Encoded": false
+      },
+      "status": 200,
+      "spans": [
+        {
+          "name": "GET /items/id%20one",
+          "http": {
+            "request": {
+              "method": "GET",
+              "url": "https://api.example.test/items/id%20one"
+            },
+            "response": {
+              "status": 200,
+              "content_length": 12
+            }
+          },
+          "closed": true
+        }
+      ],
+      "responses": [
+        {
+          "name": "GET /items/id%20one",
+          "value": {
+            "ok": true
+          }
+        }
+      ],
+      "errors": [],
+      "annotations": [
+        "ColdStart",
+        "Service"
+      ],
+      "restored": true
+    },
+    {
+      "name": "v2-length-prefix-full",
+      "action": "length-prefix",
+      "event": {
+        "version": "2.0",
+        "routeKey": "$default",
+        "rawPath": "/items/id%20one",
+        "rawQueryString": "secret=omitted",
+        "headers": {
+          "user-agent": "fixture-agent",
+          "x-forwarded-for": " 198.51.100.2 , 198.51.100.3"
+        },
+        "requestContext": {
+          "domainName": "api.example.test",
+          "requestId": "request-1",
+          "apiId": "api-1",
+          "extendedRequestId": "extended-1",
+          "http": {
+            "method": "GET",
+            "sourceIp": "192.0.2.1"
+          }
+        },
+        "isBase64Encoded": false
+      },
+      "status": 200,
+      "spans": [
+        {
+          "name": "GET /items/id%20one",
+          "http": {
+            "request": {
+              "method": "GET",
+              "url": "https://api.example.test/items/id%20one",
+              "user_agent": "fixture-agent",
+              "client_ip": "192.0.2.1",
+              "x_forwarded_for": true
+            },
+            "response": {
+              "status": 200,
+              "content_length": 12
+            }
+          },
+          "closed": true
+        }
+      ],
+      "responses": [
+        {
+          "name": "GET /items/id%20one",
+          "value": {
+            "ok": true
+          }
+        }
+      ],
+      "errors": [],
+      "annotations": [
+        "ColdStart",
+        "Service"
+      ],
+      "restored": true
+    },
+    {
+      "name": "v2-length-prefix-missing",
+      "action": "length-prefix",
+      "event": {
+        "version": "2.0",
+        "routeKey": "$default",
+        "rawPath": "/items/id%20one",
+        "rawQueryString": "secret=omitted",
+        "headers": {},
+        "requestContext": {
+          "domainName": "api.example.test",
+          "http": {
+            "method": "GET",
+            "sourceIp": ""
+          }
+        },
+        "isBase64Encoded": false
+      },
+      "status": 200,
+      "spans": [
+        {
+          "name": "GET /items/id%20one",
+          "http": {
+            "request": {
+              "method": "GET",
+              "url": "https://api.example.test/items/id%20one"
+            },
+            "response": {
+              "status": 200,
+              "content_length": 12
+            }
+          },
+          "closed": true
+        }
+      ],
+      "responses": [
+        {
+          "name": "GET /items/id%20one",
+          "value": {
+            "ok": true
+          }
+        }
+      ],
+      "errors": [],
+      "annotations": [
+        "ColdStart",
+        "Service"
+      ],
+      "restored": true
+    },
+    {
+      "name": "v2-length-negative-full",
+      "action": "length-negative",
+      "event": {
+        "version": "2.0",
+        "routeKey": "$default",
+        "rawPath": "/items/id%20one",
+        "rawQueryString": "secret=omitted",
+        "headers": {
+          "user-agent": "fixture-agent",
+          "x-forwarded-for": " 198.51.100.2 , 198.51.100.3"
+        },
+        "requestContext": {
+          "domainName": "api.example.test",
+          "requestId": "request-1",
+          "apiId": "api-1",
+          "extendedRequestId": "extended-1",
+          "http": {
+            "method": "GET",
+            "sourceIp": "192.0.2.1"
+          }
+        },
+        "isBase64Encoded": false
+      },
+      "status": 200,
+      "spans": [
+        {
+          "name": "GET /items/id%20one",
+          "http": {
+            "request": {
+              "method": "GET",
+              "url": "https://api.example.test/items/id%20one",
+              "user_agent": "fixture-agent",
+              "client_ip": "192.0.2.1",
+              "x_forwarded_for": true
+            },
+            "response": {
+              "status": 200,
+              "content_length": -2
+            }
+          },
+          "closed": true
+        }
+      ],
+      "responses": [
+        {
+          "name": "GET /items/id%20one",
+          "value": {
+            "ok": true
+          }
+        }
+      ],
+      "errors": [],
+      "annotations": [
+        "ColdStart",
+        "Service"
+      ],
+      "restored": true
+    },
+    {
+      "name": "v2-length-negative-missing",
+      "action": "length-negative",
+      "event": {
+        "version": "2.0",
+        "routeKey": "$default",
+        "rawPath": "/items/id%20one",
+        "rawQueryString": "secret=omitted",
+        "headers": {},
+        "requestContext": {
+          "domainName": "api.example.test",
+          "http": {
+            "method": "GET",
+            "sourceIp": ""
+          }
+        },
+        "isBase64Encoded": false
+      },
+      "status": 200,
+      "spans": [
+        {
+          "name": "GET /items/id%20one",
+          "http": {
+            "request": {
+              "method": "GET",
+              "url": "https://api.example.test/items/id%20one"
+            },
+            "response": {
+              "status": 200,
+              "content_length": -2
+            }
+          },
+          "closed": true
+        }
+      ],
+      "responses": [
+        {
+          "name": "GET /items/id%20one",
+          "value": {
+            "ok": true
+          }
+        }
+      ],
+      "errors": [],
+      "annotations": [
+        "ColdStart",
+        "Service"
+      ],
+      "restored": true
+    },
+    {
+      "name": "v2-length-invalid-full",
+      "action": "length-invalid",
+      "event": {
+        "version": "2.0",
+        "routeKey": "$default",
+        "rawPath": "/items/id%20one",
+        "rawQueryString": "secret=omitted",
+        "headers": {
+          "user-agent": "fixture-agent",
+          "x-forwarded-for": " 198.51.100.2 , 198.51.100.3"
+        },
+        "requestContext": {
+          "domainName": "api.example.test",
+          "requestId": "request-1",
+          "apiId": "api-1",
+          "extendedRequestId": "extended-1",
+          "http": {
+            "method": "GET",
+            "sourceIp": "192.0.2.1"
+          }
+        },
+        "isBase64Encoded": false
+      },
+      "status": 200,
+      "spans": [
+        {
+          "name": "GET /items/id%20one",
+          "http": {
+            "request": {
+              "method": "GET",
+              "url": "https://api.example.test/items/id%20one",
+              "user_agent": "fixture-agent",
+              "client_ip": "192.0.2.1",
+              "x_forwarded_for": true
+            },
+            "response": {
+              "status": 200
+            }
+          },
+          "closed": true
+        }
+      ],
+      "responses": [
+        {
+          "name": "GET /items/id%20one",
+          "value": {
+            "ok": true
+          }
+        }
+      ],
+      "errors": [],
+      "annotations": [
+        "ColdStart",
+        "Service"
+      ],
+      "restored": true
+    },
+    {
+      "name": "v2-length-invalid-missing",
+      "action": "length-invalid",
+      "event": {
+        "version": "2.0",
+        "routeKey": "$default",
+        "rawPath": "/items/id%20one",
+        "rawQueryString": "secret=omitted",
+        "headers": {},
+        "requestContext": {
+          "domainName": "api.example.test",
+          "http": {
+            "method": "GET",
+            "sourceIp": ""
+          }
+        },
+        "isBase64Encoded": false
+      },
+      "status": 200,
+      "spans": [
+        {
+          "name": "GET /items/id%20one",
+          "http": {
+            "request": {
+              "method": "GET",
+              "url": "https://api.example.test/items/id%20one"
+            },
+            "response": {
+              "status": 200
+            }
+          },
+          "closed": true
+        }
+      ],
+      "responses": [
+        {
+          "name": "GET /items/id%20one",
+          "value": {
+            "ok": true
+          }
+        }
+      ],
+      "errors": [],
+      "annotations": [
+        "ColdStart",
+        "Service"
+      ],
+      "restored": true
+    },
+    {
+      "name": "alb-json-full",
+      "action": "json",
+      "event": {
+        "httpMethod": "GET",
+        "path": "/items/id%20one",
+        "resource": "/items/id%20one",
+        "headers": {
+          "user-agent": "fixture-agent",
+          "x-forwarded-for": " 198.51.100.2 , 198.51.100.3"
+        },
+        "requestContext": {
+          "elb": {}
+        },
+        "body": null,
+        "isBase64Encoded": false,
+        "pathParameters": null,
+        "queryStringParameters": null,
+        "multiValueQueryStringParameters": null,
+        "stageVariables": null
+      },
+      "status": 200,
+      "spans": [
+        {
+          "name": "GET /items/id%20one",
+          "http": {
+            "request": {
+              "method": "GET",
+              "url": "https://localhost/items/id%20one",
+              "user_agent": "fixture-agent",
+              "client_ip": "198.51.100.2",
+              "x_forwarded_for": true
+            },
+            "response": {
+              "status": 200
+            }
+          },
+          "closed": true
+        }
+      ],
+      "responses": [
+        {
+          "name": "GET /items/id%20one",
+          "value": {
+            "ok": true
+          }
+        }
+      ],
+      "errors": [],
+      "annotations": [
+        "ColdStart",
+        "Service"
+      ],
+      "restored": true
+    },
+    {
+      "name": "alb-json-missing",
+      "action": "json",
+      "event": {
+        "httpMethod": "GET",
+        "path": "/items/id%20one",
+        "resource": "/items/id%20one",
+        "headers": {},
+        "requestContext": {
+          "elb": {}
+        },
+        "body": null,
+        "isBase64Encoded": false,
+        "pathParameters": null,
+        "queryStringParameters": null,
+        "multiValueQueryStringParameters": null,
+        "stageVariables": null
+      },
+      "status": 200,
+      "spans": [
+        {
+          "name": "GET /items/id%20one",
+          "http": {
+            "request": {
+              "method": "GET",
+              "url": "https://localhost/items/id%20one"
+            },
+            "response": {
+              "status": 200
+            }
+          },
+          "closed": true
+        }
+      ],
+      "responses": [
+        {
+          "name": "GET /items/id%20one",
+          "value": {
+            "ok": true
+          }
+        }
+      ],
+      "errors": [],
+      "annotations": [
+        "ColdStart",
+        "Service"
+      ],
+      "restored": true
+    },
+    {
+      "name": "alb-text-full",
+      "action": "text",
+      "event": {
+        "httpMethod": "GET",
+        "path": "/items/id%20one",
+        "resource": "/items/id%20one",
+        "headers": {
+          "user-agent": "fixture-agent",
+          "x-forwarded-for": " 198.51.100.2 , 198.51.100.3"
+        },
+        "requestContext": {
+          "elb": {}
+        },
+        "body": null,
+        "isBase64Encoded": false,
+        "pathParameters": null,
+        "queryStringParameters": null,
+        "multiValueQueryStringParameters": null,
+        "stageVariables": null
+      },
+      "status": 200,
+      "spans": [
+        {
+          "name": "GET /items/id%20one",
+          "http": {
+            "request": {
+              "method": "GET",
+              "url": "https://localhost/items/id%20one",
+              "user_agent": "fixture-agent",
+              "client_ip": "198.51.100.2",
+              "x_forwarded_for": true
+            },
+            "response": {
+              "status": 200
+            }
+          },
+          "closed": true
+        }
+      ],
+      "responses": [],
+      "errors": [],
+      "annotations": [
+        "ColdStart",
+        "Service"
+      ],
+      "restored": true
+    },
+    {
+      "name": "alb-text-missing",
+      "action": "text",
+      "event": {
+        "httpMethod": "GET",
+        "path": "/items/id%20one",
+        "resource": "/items/id%20one",
+        "headers": {},
+        "requestContext": {
+          "elb": {}
+        },
+        "body": null,
+        "isBase64Encoded": false,
+        "pathParameters": null,
+        "queryStringParameters": null,
+        "multiValueQueryStringParameters": null,
+        "stageVariables": null
+      },
+      "status": 200,
+      "spans": [
+        {
+          "name": "GET /items/id%20one",
+          "http": {
+            "request": {
+              "method": "GET",
+              "url": "https://localhost/items/id%20one"
+            },
+            "response": {
+              "status": 200
+            }
+          },
+          "closed": true
+        }
+      ],
+      "responses": [],
+      "errors": [],
+      "annotations": [
+        "ColdStart",
+        "Service"
+      ],
+      "restored": true
+    },
+    {
+      "name": "alb-charset-full",
+      "action": "charset",
+      "event": {
+        "httpMethod": "GET",
+        "path": "/items/id%20one",
+        "resource": "/items/id%20one",
+        "headers": {
+          "user-agent": "fixture-agent",
+          "x-forwarded-for": " 198.51.100.2 , 198.51.100.3"
+        },
+        "requestContext": {
+          "elb": {}
+        },
+        "body": null,
+        "isBase64Encoded": false,
+        "pathParameters": null,
+        "queryStringParameters": null,
+        "multiValueQueryStringParameters": null,
+        "stageVariables": null
+      },
+      "status": 200,
+      "spans": [
+        {
+          "name": "GET /items/id%20one",
+          "http": {
+            "request": {
+              "method": "GET",
+              "url": "https://localhost/items/id%20one",
+              "user_agent": "fixture-agent",
+              "client_ip": "198.51.100.2",
+              "x_forwarded_for": true
+            },
+            "response": {
+              "status": 200
+            }
+          },
+          "closed": true
+        }
+      ],
+      "responses": [],
+      "errors": [],
+      "annotations": [
+        "ColdStart",
+        "Service"
+      ],
+      "restored": true
+    },
+    {
+      "name": "alb-charset-missing",
+      "action": "charset",
+      "event": {
+        "httpMethod": "GET",
+        "path": "/items/id%20one",
+        "resource": "/items/id%20one",
+        "headers": {},
+        "requestContext": {
+          "elb": {}
+        },
+        "body": null,
+        "isBase64Encoded": false,
+        "pathParameters": null,
+        "queryStringParameters": null,
+        "multiValueQueryStringParameters": null,
+        "stageVariables": null
+      },
+      "status": 200,
+      "spans": [
+        {
+          "name": "GET /items/id%20one",
+          "http": {
+            "request": {
+              "method": "GET",
+              "url": "https://localhost/items/id%20one"
+            },
+            "response": {
+              "status": 200
+            }
+          },
+          "closed": true
+        }
+      ],
+      "responses": [],
+      "errors": [],
+      "annotations": [
+        "ColdStart",
+        "Service"
+      ],
+      "restored": true
+    },
+    {
+      "name": "alb-invalid-json-full",
+      "action": "invalid-json",
+      "event": {
+        "httpMethod": "GET",
+        "path": "/items/id%20one",
+        "resource": "/items/id%20one",
+        "headers": {
+          "user-agent": "fixture-agent",
+          "x-forwarded-for": " 198.51.100.2 , 198.51.100.3"
+        },
+        "requestContext": {
+          "elb": {}
+        },
+        "body": null,
+        "isBase64Encoded": false,
+        "pathParameters": null,
+        "queryStringParameters": null,
+        "multiValueQueryStringParameters": null,
+        "stageVariables": null
+      },
+      "status": 500,
+      "spans": [
+        {
+          "name": "GET /items/id%20one",
+          "http": {
+            "request": {
+              "method": "GET",
+              "url": "https://localhost/items/id%20one",
+              "user_agent": "fixture-agent",
+              "client_ip": "198.51.100.2",
+              "x_forwarded_for": true
+            },
+            "response": {
+              "status": 200
+            }
+          },
+          "closed": true
+        }
+      ],
+      "responses": [],
+      "errors": [
+        "SyntaxError"
+      ],
+      "annotations": [
+        "ColdStart",
+        "Service"
+      ],
+      "restored": true
+    },
+    {
+      "name": "alb-invalid-json-missing",
+      "action": "invalid-json",
+      "event": {
+        "httpMethod": "GET",
+        "path": "/items/id%20one",
+        "resource": "/items/id%20one",
+        "headers": {},
+        "requestContext": {
+          "elb": {}
+        },
+        "body": null,
+        "isBase64Encoded": false,
+        "pathParameters": null,
+        "queryStringParameters": null,
+        "multiValueQueryStringParameters": null,
+        "stageVariables": null
+      },
+      "status": 500,
+      "spans": [
+        {
+          "name": "GET /items/id%20one",
+          "http": {
+            "request": {
+              "method": "GET",
+              "url": "https://localhost/items/id%20one"
+            },
+            "response": {
+              "status": 200
+            }
+          },
+          "closed": true
+        }
+      ],
+      "responses": [],
+      "errors": [
+        "SyntaxError"
+      ],
+      "annotations": [
+        "ColdStart",
+        "Service"
+      ],
+      "restored": true
+    },
+    {
+      "name": "alb-http-error-full",
+      "action": "http-error",
+      "event": {
+        "httpMethod": "GET",
+        "path": "/items/id%20one",
+        "resource": "/items/id%20one",
+        "headers": {
+          "user-agent": "fixture-agent",
+          "x-forwarded-for": " 198.51.100.2 , 198.51.100.3"
+        },
+        "requestContext": {
+          "elb": {}
+        },
+        "body": null,
+        "isBase64Encoded": false,
+        "pathParameters": null,
+        "queryStringParameters": null,
+        "multiValueQueryStringParameters": null,
+        "stageVariables": null
+      },
+      "status": 400,
+      "spans": [
+        {
+          "name": "GET /items/id%20one",
+          "http": {
+            "request": {
+              "method": "GET",
+              "url": "https://localhost/items/id%20one",
+              "user_agent": "fixture-agent",
+              "client_ip": "198.51.100.2",
+              "x_forwarded_for": true
+            },
+            "response": {
+              "status": 500
+            }
+          },
+          "closed": true
+        }
+      ],
+      "responses": [],
+      "errors": [
+        "BadRequestError"
+      ],
+      "annotations": [
+        "ColdStart",
+        "Service"
+      ],
+      "restored": true
+    },
+    {
+      "name": "alb-http-error-missing",
+      "action": "http-error",
+      "event": {
+        "httpMethod": "GET",
+        "path": "/items/id%20one",
+        "resource": "/items/id%20one",
+        "headers": {},
+        "requestContext": {
+          "elb": {}
+        },
+        "body": null,
+        "isBase64Encoded": false,
+        "pathParameters": null,
+        "queryStringParameters": null,
+        "multiValueQueryStringParameters": null,
+        "stageVariables": null
+      },
+      "status": 400,
+      "spans": [
+        {
+          "name": "GET /items/id%20one",
+          "http": {
+            "request": {
+              "method": "GET",
+              "url": "https://localhost/items/id%20one"
+            },
+            "response": {
+              "status": 500
+            }
+          },
+          "closed": true
+        }
+      ],
+      "responses": [],
+      "errors": [
+        "BadRequestError"
+      ],
+      "annotations": [
+        "ColdStart",
+        "Service"
+      ],
+      "restored": true
+    },
+    {
+      "name": "alb-error-full",
+      "action": "error",
+      "event": {
+        "httpMethod": "GET",
+        "path": "/items/id%20one",
+        "resource": "/items/id%20one",
+        "headers": {
+          "user-agent": "fixture-agent",
+          "x-forwarded-for": " 198.51.100.2 , 198.51.100.3"
+        },
+        "requestContext": {
+          "elb": {}
+        },
+        "body": null,
+        "isBase64Encoded": false,
+        "pathParameters": null,
+        "queryStringParameters": null,
+        "multiValueQueryStringParameters": null,
+        "stageVariables": null
+      },
+      "status": 500,
+      "spans": [
+        {
+          "name": "GET /items/id%20one",
+          "http": {
+            "request": {
+              "method": "GET",
+              "url": "https://localhost/items/id%20one",
+              "user_agent": "fixture-agent",
+              "client_ip": "198.51.100.2",
+              "x_forwarded_for": true
+            },
+            "response": {
+              "status": 500
+            }
+          },
+          "closed": true
+        }
+      ],
+      "responses": [],
+      "errors": [
+        "Error"
+      ],
+      "annotations": [
+        "ColdStart",
+        "Service"
+      ],
+      "restored": true
+    },
+    {
+      "name": "alb-error-missing",
+      "action": "error",
+      "event": {
+        "httpMethod": "GET",
+        "path": "/items/id%20one",
+        "resource": "/items/id%20one",
+        "headers": {},
+        "requestContext": {
+          "elb": {}
+        },
+        "body": null,
+        "isBase64Encoded": false,
+        "pathParameters": null,
+        "queryStringParameters": null,
+        "multiValueQueryStringParameters": null,
+        "stageVariables": null
+      },
+      "status": 500,
+      "spans": [
+        {
+          "name": "GET /items/id%20one",
+          "http": {
+            "request": {
+              "method": "GET",
+              "url": "https://localhost/items/id%20one"
+            },
+            "response": {
+              "status": 500
+            }
+          },
+          "closed": true
+        }
+      ],
+      "responses": [],
+      "errors": [
+        "Error"
+      ],
+      "annotations": [
+        "ColdStart",
+        "Service"
+      ],
+      "restored": true
+    },
+    {
+      "name": "alb-missing-full",
+      "action": "missing",
+      "event": {
+        "httpMethod": "GET",
+        "path": "/missing",
+        "resource": "/missing",
+        "headers": {
+          "user-agent": "fixture-agent",
+          "x-forwarded-for": " 198.51.100.2 , 198.51.100.3"
+        },
+        "requestContext": {
+          "elb": {}
+        },
+        "body": null,
+        "isBase64Encoded": false,
+        "pathParameters": null,
+        "queryStringParameters": null,
+        "multiValueQueryStringParameters": null,
+        "stageVariables": null
+      },
+      "status": 404,
+      "spans": [
+        {
+          "name": "GET /missing",
+          "http": {
+            "request": {
+              "method": "GET",
+              "url": "https://localhost/missing",
+              "user_agent": "fixture-agent",
+              "client_ip": "198.51.100.2",
+              "x_forwarded_for": true
+            },
+            "response": {
+              "status": 404
+            }
+          },
+          "closed": true
+        }
+      ],
+      "responses": [
+        {
+          "name": "GET /missing",
+          "value": {
+            "statusCode": 404,
+            "error": "NotFoundError",
+            "message": "Route /missing for method GET not found"
+          }
+        }
+      ],
+      "errors": [],
+      "annotations": [
+        "ColdStart",
+        "Service"
+      ],
+      "restored": true
+    },
+    {
+      "name": "alb-missing-missing",
+      "action": "missing",
+      "event": {
+        "httpMethod": "GET",
+        "path": "/missing",
+        "resource": "/missing",
+        "headers": {},
+        "requestContext": {
+          "elb": {}
+        },
+        "body": null,
+        "isBase64Encoded": false,
+        "pathParameters": null,
+        "queryStringParameters": null,
+        "multiValueQueryStringParameters": null,
+        "stageVariables": null
+      },
+      "status": 404,
+      "spans": [
+        {
+          "name": "GET /missing",
+          "http": {
+            "request": {
+              "method": "GET",
+              "url": "https://localhost/missing"
+            },
+            "response": {
+              "status": 404
+            }
+          },
+          "closed": true
+        }
+      ],
+      "responses": [
+        {
+          "name": "GET /missing",
+          "value": {
+            "statusCode": 404,
+            "error": "NotFoundError",
+            "message": "Route /missing for method GET not found"
+          }
+        }
+      ],
+      "errors": [],
+      "annotations": [
+        "ColdStart",
+        "Service"
+      ],
+      "restored": true
+    },
+    {
+      "name": "alb-server-full",
+      "action": "server",
+      "event": {
+        "httpMethod": "GET",
+        "path": "/items/id%20one",
+        "resource": "/items/id%20one",
+        "headers": {
+          "user-agent": "fixture-agent",
+          "x-forwarded-for": " 198.51.100.2 , 198.51.100.3"
+        },
+        "requestContext": {
+          "elb": {}
+        },
+        "body": null,
+        "isBase64Encoded": false,
+        "pathParameters": null,
+        "queryStringParameters": null,
+        "multiValueQueryStringParameters": null,
+        "stageVariables": null
+      },
+      "status": 503,
+      "spans": [
+        {
+          "name": "GET /items/id%20one",
+          "http": {
+            "request": {
+              "method": "GET",
+              "url": "https://localhost/items/id%20one",
+              "user_agent": "fixture-agent",
+              "client_ip": "198.51.100.2",
+              "x_forwarded_for": true
+            },
+            "response": {
+              "status": 503
+            }
+          },
+          "closed": true
+        }
+      ],
+      "responses": [
+        {
+          "name": "GET /items/id%20one",
+          "value": {
+            "ok": true
+          }
+        }
+      ],
+      "errors": [],
+      "annotations": [
+        "ColdStart",
+        "Service"
+      ],
+      "restored": true
+    },
+    {
+      "name": "alb-server-missing",
+      "action": "server",
+      "event": {
+        "httpMethod": "GET",
+        "path": "/items/id%20one",
+        "resource": "/items/id%20one",
+        "headers": {},
+        "requestContext": {
+          "elb": {}
+        },
+        "body": null,
+        "isBase64Encoded": false,
+        "pathParameters": null,
+        "queryStringParameters": null,
+        "multiValueQueryStringParameters": null,
+        "stageVariables": null
+      },
+      "status": 503,
+      "spans": [
+        {
+          "name": "GET /items/id%20one",
+          "http": {
+            "request": {
+              "method": "GET",
+              "url": "https://localhost/items/id%20one"
+            },
+            "response": {
+              "status": 503
+            }
+          },
+          "closed": true
+        }
+      ],
+      "responses": [
+        {
+          "name": "GET /items/id%20one",
+          "value": {
+            "ok": true
+          }
+        }
+      ],
+      "errors": [],
+      "annotations": [
+        "ColdStart",
+        "Service"
+      ],
+      "restored": true
+    },
+    {
+      "name": "alb-disabled-full",
+      "action": "disabled",
+      "event": {
+        "httpMethod": "GET",
+        "path": "/items/id%20one",
+        "resource": "/items/id%20one",
+        "headers": {
+          "user-agent": "fixture-agent",
+          "x-forwarded-for": " 198.51.100.2 , 198.51.100.3"
+        },
+        "requestContext": {
+          "elb": {}
+        },
+        "body": null,
+        "isBase64Encoded": false,
+        "pathParameters": null,
+        "queryStringParameters": null,
+        "multiValueQueryStringParameters": null,
+        "stageVariables": null
+      },
+      "status": 200,
+      "spans": [],
+      "responses": [],
+      "errors": [],
+      "annotations": [],
+      "restored": true
+    },
+    {
+      "name": "alb-disabled-missing",
+      "action": "disabled",
+      "event": {
+        "httpMethod": "GET",
+        "path": "/items/id%20one",
+        "resource": "/items/id%20one",
+        "headers": {},
+        "requestContext": {
+          "elb": {}
+        },
+        "body": null,
+        "isBase64Encoded": false,
+        "pathParameters": null,
+        "queryStringParameters": null,
+        "multiValueQueryStringParameters": null,
+        "stageVariables": null
+      },
+      "status": 200,
+      "spans": [],
+      "responses": [],
+      "errors": [],
+      "annotations": [],
+      "restored": true
+    },
+    {
+      "name": "alb-capture-off-full",
+      "action": "capture-off",
+      "event": {
+        "httpMethod": "GET",
+        "path": "/items/id%20one",
+        "resource": "/items/id%20one",
+        "headers": {
+          "user-agent": "fixture-agent",
+          "x-forwarded-for": " 198.51.100.2 , 198.51.100.3"
+        },
+        "requestContext": {
+          "elb": {}
+        },
+        "body": null,
+        "isBase64Encoded": false,
+        "pathParameters": null,
+        "queryStringParameters": null,
+        "multiValueQueryStringParameters": null,
+        "stageVariables": null
+      },
+      "status": 200,
+      "spans": [
+        {
+          "name": "GET /items/id%20one",
+          "http": {
+            "request": {
+              "method": "GET",
+              "url": "https://localhost/items/id%20one",
+              "user_agent": "fixture-agent",
+              "client_ip": "198.51.100.2",
+              "x_forwarded_for": true
+            },
+            "response": {
+              "status": 200
+            }
+          },
+          "closed": true
+        }
+      ],
+      "responses": [],
+      "errors": [],
+      "annotations": [
+        "ColdStart",
+        "Service"
+      ],
+      "restored": true
+    },
+    {
+      "name": "alb-capture-off-missing",
+      "action": "capture-off",
+      "event": {
+        "httpMethod": "GET",
+        "path": "/items/id%20one",
+        "resource": "/items/id%20one",
+        "headers": {},
+        "requestContext": {
+          "elb": {}
+        },
+        "body": null,
+        "isBase64Encoded": false,
+        "pathParameters": null,
+        "queryStringParameters": null,
+        "multiValueQueryStringParameters": null,
+        "stageVariables": null
+      },
+      "status": 200,
+      "spans": [
+        {
+          "name": "GET /items/id%20one",
+          "http": {
+            "request": {
+              "method": "GET",
+              "url": "https://localhost/items/id%20one"
+            },
+            "response": {
+              "status": 200
+            }
+          },
+          "closed": true
+        }
+      ],
+      "responses": [],
+      "errors": [],
+      "annotations": [
+        "ColdStart",
+        "Service"
+      ],
+      "restored": true
+    },
+    {
+      "name": "alb-config-off-full",
+      "action": "config-off",
+      "event": {
+        "httpMethod": "GET",
+        "path": "/items/id%20one",
+        "resource": "/items/id%20one",
+        "headers": {
+          "user-agent": "fixture-agent",
+          "x-forwarded-for": " 198.51.100.2 , 198.51.100.3"
+        },
+        "requestContext": {
+          "elb": {}
+        },
+        "body": null,
+        "isBase64Encoded": false,
+        "pathParameters": null,
+        "queryStringParameters": null,
+        "multiValueQueryStringParameters": null,
+        "stageVariables": null
+      },
+      "status": 200,
+      "spans": [
+        {
+          "name": "GET /items/id%20one",
+          "http": {
+            "request": {
+              "method": "GET",
+              "url": "https://localhost/items/id%20one",
+              "user_agent": "fixture-agent",
+              "client_ip": "198.51.100.2",
+              "x_forwarded_for": true
+            },
+            "response": {
+              "status": 200
+            }
+          },
+          "closed": true
+        }
+      ],
+      "responses": [],
+      "errors": [],
+      "annotations": [
+        "ColdStart",
+        "Service"
+      ],
+      "restored": true
+    },
+    {
+      "name": "alb-config-off-missing",
+      "action": "config-off",
+      "event": {
+        "httpMethod": "GET",
+        "path": "/items/id%20one",
+        "resource": "/items/id%20one",
+        "headers": {},
+        "requestContext": {
+          "elb": {}
+        },
+        "body": null,
+        "isBase64Encoded": false,
+        "pathParameters": null,
+        "queryStringParameters": null,
+        "multiValueQueryStringParameters": null,
+        "stageVariables": null
+      },
+      "status": 200,
+      "spans": [
+        {
+          "name": "GET /items/id%20one",
+          "http": {
+            "request": {
+              "method": "GET",
+              "url": "https://localhost/items/id%20one"
+            },
+            "response": {
+              "status": 200
+            }
+          },
+          "closed": true
+        }
+      ],
+      "responses": [],
+      "errors": [],
+      "annotations": [
+        "ColdStart",
+        "Service"
+      ],
+      "restored": true
+    },
+    {
+      "name": "alb-compressed-full",
+      "action": "compressed",
+      "event": {
+        "httpMethod": "GET",
+        "path": "/items/id%20one",
+        "resource": "/items/id%20one",
+        "headers": {
+          "user-agent": "fixture-agent",
+          "x-forwarded-for": " 198.51.100.2 , 198.51.100.3"
+        },
+        "requestContext": {
+          "elb": {}
+        },
+        "body": null,
+        "isBase64Encoded": false,
+        "pathParameters": null,
+        "queryStringParameters": null,
+        "multiValueQueryStringParameters": null,
+        "stageVariables": null
+      },
+      "status": 500,
+      "spans": [
+        {
+          "name": "GET /items/id%20one",
+          "http": {
+            "request": {
+              "method": "GET",
+              "url": "https://localhost/items/id%20one",
+              "user_agent": "fixture-agent",
+              "client_ip": "198.51.100.2",
+              "x_forwarded_for": true
+            },
+            "response": {
+              "status": 200
+            }
+          },
+          "closed": true
+        }
+      ],
+      "responses": [],
+      "errors": [
+        "SyntaxError"
+      ],
+      "annotations": [
+        "ColdStart",
+        "Service"
+      ],
+      "restored": true
+    },
+    {
+      "name": "alb-compressed-missing",
+      "action": "compressed",
+      "event": {
+        "httpMethod": "GET",
+        "path": "/items/id%20one",
+        "resource": "/items/id%20one",
+        "headers": {},
+        "requestContext": {
+          "elb": {}
+        },
+        "body": null,
+        "isBase64Encoded": false,
+        "pathParameters": null,
+        "queryStringParameters": null,
+        "multiValueQueryStringParameters": null,
+        "stageVariables": null
+      },
+      "status": 500,
+      "spans": [
+        {
+          "name": "GET /items/id%20one",
+          "http": {
+            "request": {
+              "method": "GET",
+              "url": "https://localhost/items/id%20one"
+            },
+            "response": {
+              "status": 200
+            }
+          },
+          "closed": true
+        }
+      ],
+      "responses": [],
+      "errors": [
+        "SyntaxError"
+      ],
+      "annotations": [
+        "ColdStart",
+        "Service"
+      ],
+      "restored": true
+    },
+    {
+      "name": "alb-length-full",
+      "action": "length",
+      "event": {
+        "httpMethod": "GET",
+        "path": "/items/id%20one",
+        "resource": "/items/id%20one",
+        "headers": {
+          "user-agent": "fixture-agent",
+          "x-forwarded-for": " 198.51.100.2 , 198.51.100.3"
+        },
+        "requestContext": {
+          "elb": {}
+        },
+        "body": null,
+        "isBase64Encoded": false,
+        "pathParameters": null,
+        "queryStringParameters": null,
+        "multiValueQueryStringParameters": null,
+        "stageVariables": null
+      },
+      "status": 200,
+      "spans": [
+        {
+          "name": "GET /items/id%20one",
+          "http": {
+            "request": {
+              "method": "GET",
+              "url": "https://localhost/items/id%20one",
+              "user_agent": "fixture-agent",
+              "client_ip": "198.51.100.2",
+              "x_forwarded_for": true
+            },
+            "response": {
+              "status": 200,
+              "content_length": 12
+            }
+          },
+          "closed": true
+        }
+      ],
+      "responses": [
+        {
+          "name": "GET /items/id%20one",
+          "value": {
+            "ok": true
+          }
+        }
+      ],
+      "errors": [],
+      "annotations": [
+        "ColdStart",
+        "Service"
+      ],
+      "restored": true
+    },
+    {
+      "name": "alb-length-missing",
+      "action": "length",
+      "event": {
+        "httpMethod": "GET",
+        "path": "/items/id%20one",
+        "resource": "/items/id%20one",
+        "headers": {},
+        "requestContext": {
+          "elb": {}
+        },
+        "body": null,
+        "isBase64Encoded": false,
+        "pathParameters": null,
+        "queryStringParameters": null,
+        "multiValueQueryStringParameters": null,
+        "stageVariables": null
+      },
+      "status": 200,
+      "spans": [
+        {
+          "name": "GET /items/id%20one",
+          "http": {
+            "request": {
+              "method": "GET",
+              "url": "https://localhost/items/id%20one"
+            },
+            "response": {
+              "status": 200,
+              "content_length": 12
+            }
+          },
+          "closed": true
+        }
+      ],
+      "responses": [
+        {
+          "name": "GET /items/id%20one",
+          "value": {
+            "ok": true
+          }
+        }
+      ],
+      "errors": [],
+      "annotations": [
+        "ColdStart",
+        "Service"
+      ],
+      "restored": true
+    },
+    {
+      "name": "alb-length-prefix-full",
+      "action": "length-prefix",
+      "event": {
+        "httpMethod": "GET",
+        "path": "/items/id%20one",
+        "resource": "/items/id%20one",
+        "headers": {
+          "user-agent": "fixture-agent",
+          "x-forwarded-for": " 198.51.100.2 , 198.51.100.3"
+        },
+        "requestContext": {
+          "elb": {}
+        },
+        "body": null,
+        "isBase64Encoded": false,
+        "pathParameters": null,
+        "queryStringParameters": null,
+        "multiValueQueryStringParameters": null,
+        "stageVariables": null
+      },
+      "status": 200,
+      "spans": [
+        {
+          "name": "GET /items/id%20one",
+          "http": {
+            "request": {
+              "method": "GET",
+              "url": "https://localhost/items/id%20one",
+              "user_agent": "fixture-agent",
+              "client_ip": "198.51.100.2",
+              "x_forwarded_for": true
+            },
+            "response": {
+              "status": 200,
+              "content_length": 12
+            }
+          },
+          "closed": true
+        }
+      ],
+      "responses": [
+        {
+          "name": "GET /items/id%20one",
+          "value": {
+            "ok": true
+          }
+        }
+      ],
+      "errors": [],
+      "annotations": [
+        "ColdStart",
+        "Service"
+      ],
+      "restored": true
+    },
+    {
+      "name": "alb-length-prefix-missing",
+      "action": "length-prefix",
+      "event": {
+        "httpMethod": "GET",
+        "path": "/items/id%20one",
+        "resource": "/items/id%20one",
+        "headers": {},
+        "requestContext": {
+          "elb": {}
+        },
+        "body": null,
+        "isBase64Encoded": false,
+        "pathParameters": null,
+        "queryStringParameters": null,
+        "multiValueQueryStringParameters": null,
+        "stageVariables": null
+      },
+      "status": 200,
+      "spans": [
+        {
+          "name": "GET /items/id%20one",
+          "http": {
+            "request": {
+              "method": "GET",
+              "url": "https://localhost/items/id%20one"
+            },
+            "response": {
+              "status": 200,
+              "content_length": 12
+            }
+          },
+          "closed": true
+        }
+      ],
+      "responses": [
+        {
+          "name": "GET /items/id%20one",
+          "value": {
+            "ok": true
+          }
+        }
+      ],
+      "errors": [],
+      "annotations": [
+        "ColdStart",
+        "Service"
+      ],
+      "restored": true
+    },
+    {
+      "name": "alb-length-negative-full",
+      "action": "length-negative",
+      "event": {
+        "httpMethod": "GET",
+        "path": "/items/id%20one",
+        "resource": "/items/id%20one",
+        "headers": {
+          "user-agent": "fixture-agent",
+          "x-forwarded-for": " 198.51.100.2 , 198.51.100.3"
+        },
+        "requestContext": {
+          "elb": {}
+        },
+        "body": null,
+        "isBase64Encoded": false,
+        "pathParameters": null,
+        "queryStringParameters": null,
+        "multiValueQueryStringParameters": null,
+        "stageVariables": null
+      },
+      "status": 200,
+      "spans": [
+        {
+          "name": "GET /items/id%20one",
+          "http": {
+            "request": {
+              "method": "GET",
+              "url": "https://localhost/items/id%20one",
+              "user_agent": "fixture-agent",
+              "client_ip": "198.51.100.2",
+              "x_forwarded_for": true
+            },
+            "response": {
+              "status": 200,
+              "content_length": -2
+            }
+          },
+          "closed": true
+        }
+      ],
+      "responses": [
+        {
+          "name": "GET /items/id%20one",
+          "value": {
+            "ok": true
+          }
+        }
+      ],
+      "errors": [],
+      "annotations": [
+        "ColdStart",
+        "Service"
+      ],
+      "restored": true
+    },
+    {
+      "name": "alb-length-negative-missing",
+      "action": "length-negative",
+      "event": {
+        "httpMethod": "GET",
+        "path": "/items/id%20one",
+        "resource": "/items/id%20one",
+        "headers": {},
+        "requestContext": {
+          "elb": {}
+        },
+        "body": null,
+        "isBase64Encoded": false,
+        "pathParameters": null,
+        "queryStringParameters": null,
+        "multiValueQueryStringParameters": null,
+        "stageVariables": null
+      },
+      "status": 200,
+      "spans": [
+        {
+          "name": "GET /items/id%20one",
+          "http": {
+            "request": {
+              "method": "GET",
+              "url": "https://localhost/items/id%20one"
+            },
+            "response": {
+              "status": 200,
+              "content_length": -2
+            }
+          },
+          "closed": true
+        }
+      ],
+      "responses": [
+        {
+          "name": "GET /items/id%20one",
+          "value": {
+            "ok": true
+          }
+        }
+      ],
+      "errors": [],
+      "annotations": [
+        "ColdStart",
+        "Service"
+      ],
+      "restored": true
+    },
+    {
+      "name": "alb-length-invalid-full",
+      "action": "length-invalid",
+      "event": {
+        "httpMethod": "GET",
+        "path": "/items/id%20one",
+        "resource": "/items/id%20one",
+        "headers": {
+          "user-agent": "fixture-agent",
+          "x-forwarded-for": " 198.51.100.2 , 198.51.100.3"
+        },
+        "requestContext": {
+          "elb": {}
+        },
+        "body": null,
+        "isBase64Encoded": false,
+        "pathParameters": null,
+        "queryStringParameters": null,
+        "multiValueQueryStringParameters": null,
+        "stageVariables": null
+      },
+      "status": 200,
+      "spans": [
+        {
+          "name": "GET /items/id%20one",
+          "http": {
+            "request": {
+              "method": "GET",
+              "url": "https://localhost/items/id%20one",
+              "user_agent": "fixture-agent",
+              "client_ip": "198.51.100.2",
+              "x_forwarded_for": true
+            },
+            "response": {
+              "status": 200
+            }
+          },
+          "closed": true
+        }
+      ],
+      "responses": [
+        {
+          "name": "GET /items/id%20one",
+          "value": {
+            "ok": true
+          }
+        }
+      ],
+      "errors": [],
+      "annotations": [
+        "ColdStart",
+        "Service"
+      ],
+      "restored": true
+    },
+    {
+      "name": "alb-length-invalid-missing",
+      "action": "length-invalid",
+      "event": {
+        "httpMethod": "GET",
+        "path": "/items/id%20one",
+        "resource": "/items/id%20one",
+        "headers": {},
+        "requestContext": {
+          "elb": {}
+        },
+        "body": null,
+        "isBase64Encoded": false,
+        "pathParameters": null,
+        "queryStringParameters": null,
+        "multiValueQueryStringParameters": null,
+        "stageVariables": null
+      },
+      "status": 200,
+      "spans": [
+        {
+          "name": "GET /items/id%20one",
+          "http": {
+            "request": {
+              "method": "GET",
+              "url": "https://localhost/items/id%20one"
+            },
+            "response": {
+              "status": 200
+            }
+          },
+          "closed": true
+        }
+      ],
+      "responses": [
+        {
+          "name": "GET /items/id%20one",
+          "value": {
+            "ok": true
+          }
+        }
+      ],
+      "errors": [],
+      "annotations": [
+        "ColdStart",
+        "Service"
+      ],
+      "restored": true
+    },
+    {
+      "name": "url-json-full",
+      "action": "json",
+      "event": {
+        "version": "2.0",
+        "routeKey": "$default",
+        "rawPath": "/items/id%20one",
+        "rawQueryString": "secret=omitted",
+        "headers": {
+          "user-agent": "fixture-agent",
+          "x-forwarded-for": " 198.51.100.2 , 198.51.100.3"
+        },
+        "requestContext": {
+          "domainName": "id.lambda-url.ap-east-1.on.aws",
+          "requestId": "request-1",
+          "apiId": "api-1",
+          "extendedRequestId": "extended-1",
+          "http": {
+            "method": "GET",
+            "sourceIp": "192.0.2.1"
+          }
+        },
+        "isBase64Encoded": false
+      },
+      "status": 200,
+      "spans": [
+        {
+          "name": "GET /items/id%20one",
+          "http": {
+            "request": {
+              "method": "GET",
+              "url": "https://id.lambda-url.ap-east-1.on.aws/items/id%20one",
+              "user_agent": "fixture-agent",
+              "client_ip": "192.0.2.1",
+              "x_forwarded_for": true
+            },
+            "response": {
+              "status": 200
+            }
+          },
+          "closed": true
+        }
+      ],
+      "responses": [
+        {
+          "name": "GET /items/id%20one",
+          "value": {
+            "ok": true
+          }
+        }
+      ],
+      "errors": [],
+      "annotations": [
+        "ColdStart",
+        "Service"
+      ],
+      "restored": true
+    },
+    {
+      "name": "url-json-missing",
+      "action": "json",
+      "event": {
+        "version": "2.0",
+        "routeKey": "$default",
+        "rawPath": "/items/id%20one",
+        "rawQueryString": "secret=omitted",
+        "headers": {},
+        "requestContext": {
+          "domainName": "id.lambda-url.ap-east-1.on.aws",
+          "http": {
+            "method": "GET",
+            "sourceIp": ""
+          }
+        },
+        "isBase64Encoded": false
+      },
+      "status": 200,
+      "spans": [
+        {
+          "name": "GET /items/id%20one",
+          "http": {
+            "request": {
+              "method": "GET",
+              "url": "https://id.lambda-url.ap-east-1.on.aws/items/id%20one"
+            },
+            "response": {
+              "status": 200
+            }
+          },
+          "closed": true
+        }
+      ],
+      "responses": [
+        {
+          "name": "GET /items/id%20one",
+          "value": {
+            "ok": true
+          }
+        }
+      ],
+      "errors": [],
+      "annotations": [
+        "ColdStart",
+        "Service"
+      ],
+      "restored": true
+    },
+    {
+      "name": "url-text-full",
+      "action": "text",
+      "event": {
+        "version": "2.0",
+        "routeKey": "$default",
+        "rawPath": "/items/id%20one",
+        "rawQueryString": "secret=omitted",
+        "headers": {
+          "user-agent": "fixture-agent",
+          "x-forwarded-for": " 198.51.100.2 , 198.51.100.3"
+        },
+        "requestContext": {
+          "domainName": "id.lambda-url.ap-east-1.on.aws",
+          "requestId": "request-1",
+          "apiId": "api-1",
+          "extendedRequestId": "extended-1",
+          "http": {
+            "method": "GET",
+            "sourceIp": "192.0.2.1"
+          }
+        },
+        "isBase64Encoded": false
+      },
+      "status": 200,
+      "spans": [
+        {
+          "name": "GET /items/id%20one",
+          "http": {
+            "request": {
+              "method": "GET",
+              "url": "https://id.lambda-url.ap-east-1.on.aws/items/id%20one",
+              "user_agent": "fixture-agent",
+              "client_ip": "192.0.2.1",
+              "x_forwarded_for": true
+            },
+            "response": {
+              "status": 200
+            }
+          },
+          "closed": true
+        }
+      ],
+      "responses": [],
+      "errors": [],
+      "annotations": [
+        "ColdStart",
+        "Service"
+      ],
+      "restored": true
+    },
+    {
+      "name": "url-text-missing",
+      "action": "text",
+      "event": {
+        "version": "2.0",
+        "routeKey": "$default",
+        "rawPath": "/items/id%20one",
+        "rawQueryString": "secret=omitted",
+        "headers": {},
+        "requestContext": {
+          "domainName": "id.lambda-url.ap-east-1.on.aws",
+          "http": {
+            "method": "GET",
+            "sourceIp": ""
+          }
+        },
+        "isBase64Encoded": false
+      },
+      "status": 200,
+      "spans": [
+        {
+          "name": "GET /items/id%20one",
+          "http": {
+            "request": {
+              "method": "GET",
+              "url": "https://id.lambda-url.ap-east-1.on.aws/items/id%20one"
+            },
+            "response": {
+              "status": 200
+            }
+          },
+          "closed": true
+        }
+      ],
+      "responses": [],
+      "errors": [],
+      "annotations": [
+        "ColdStart",
+        "Service"
+      ],
+      "restored": true
+    },
+    {
+      "name": "url-charset-full",
+      "action": "charset",
+      "event": {
+        "version": "2.0",
+        "routeKey": "$default",
+        "rawPath": "/items/id%20one",
+        "rawQueryString": "secret=omitted",
+        "headers": {
+          "user-agent": "fixture-agent",
+          "x-forwarded-for": " 198.51.100.2 , 198.51.100.3"
+        },
+        "requestContext": {
+          "domainName": "id.lambda-url.ap-east-1.on.aws",
+          "requestId": "request-1",
+          "apiId": "api-1",
+          "extendedRequestId": "extended-1",
+          "http": {
+            "method": "GET",
+            "sourceIp": "192.0.2.1"
+          }
+        },
+        "isBase64Encoded": false
+      },
+      "status": 200,
+      "spans": [
+        {
+          "name": "GET /items/id%20one",
+          "http": {
+            "request": {
+              "method": "GET",
+              "url": "https://id.lambda-url.ap-east-1.on.aws/items/id%20one",
+              "user_agent": "fixture-agent",
+              "client_ip": "192.0.2.1",
+              "x_forwarded_for": true
+            },
+            "response": {
+              "status": 200
+            }
+          },
+          "closed": true
+        }
+      ],
+      "responses": [],
+      "errors": [],
+      "annotations": [
+        "ColdStart",
+        "Service"
+      ],
+      "restored": true
+    },
+    {
+      "name": "url-charset-missing",
+      "action": "charset",
+      "event": {
+        "version": "2.0",
+        "routeKey": "$default",
+        "rawPath": "/items/id%20one",
+        "rawQueryString": "secret=omitted",
+        "headers": {},
+        "requestContext": {
+          "domainName": "id.lambda-url.ap-east-1.on.aws",
+          "http": {
+            "method": "GET",
+            "sourceIp": ""
+          }
+        },
+        "isBase64Encoded": false
+      },
+      "status": 200,
+      "spans": [
+        {
+          "name": "GET /items/id%20one",
+          "http": {
+            "request": {
+              "method": "GET",
+              "url": "https://id.lambda-url.ap-east-1.on.aws/items/id%20one"
+            },
+            "response": {
+              "status": 200
+            }
+          },
+          "closed": true
+        }
+      ],
+      "responses": [],
+      "errors": [],
+      "annotations": [
+        "ColdStart",
+        "Service"
+      ],
+      "restored": true
+    },
+    {
+      "name": "url-invalid-json-full",
+      "action": "invalid-json",
+      "event": {
+        "version": "2.0",
+        "routeKey": "$default",
+        "rawPath": "/items/id%20one",
+        "rawQueryString": "secret=omitted",
+        "headers": {
+          "user-agent": "fixture-agent",
+          "x-forwarded-for": " 198.51.100.2 , 198.51.100.3"
+        },
+        "requestContext": {
+          "domainName": "id.lambda-url.ap-east-1.on.aws",
+          "requestId": "request-1",
+          "apiId": "api-1",
+          "extendedRequestId": "extended-1",
+          "http": {
+            "method": "GET",
+            "sourceIp": "192.0.2.1"
+          }
+        },
+        "isBase64Encoded": false
+      },
+      "status": 500,
+      "spans": [
+        {
+          "name": "GET /items/id%20one",
+          "http": {
+            "request": {
+              "method": "GET",
+              "url": "https://id.lambda-url.ap-east-1.on.aws/items/id%20one",
+              "user_agent": "fixture-agent",
+              "client_ip": "192.0.2.1",
+              "x_forwarded_for": true
+            },
+            "response": {
+              "status": 200
+            }
+          },
+          "closed": true
+        }
+      ],
+      "responses": [],
+      "errors": [
+        "SyntaxError"
+      ],
+      "annotations": [
+        "ColdStart",
+        "Service"
+      ],
+      "restored": true
+    },
+    {
+      "name": "url-invalid-json-missing",
+      "action": "invalid-json",
+      "event": {
+        "version": "2.0",
+        "routeKey": "$default",
+        "rawPath": "/items/id%20one",
+        "rawQueryString": "secret=omitted",
+        "headers": {},
+        "requestContext": {
+          "domainName": "id.lambda-url.ap-east-1.on.aws",
+          "http": {
+            "method": "GET",
+            "sourceIp": ""
+          }
+        },
+        "isBase64Encoded": false
+      },
+      "status": 500,
+      "spans": [
+        {
+          "name": "GET /items/id%20one",
+          "http": {
+            "request": {
+              "method": "GET",
+              "url": "https://id.lambda-url.ap-east-1.on.aws/items/id%20one"
+            },
+            "response": {
+              "status": 200
+            }
+          },
+          "closed": true
+        }
+      ],
+      "responses": [],
+      "errors": [
+        "SyntaxError"
+      ],
+      "annotations": [
+        "ColdStart",
+        "Service"
+      ],
+      "restored": true
+    },
+    {
+      "name": "url-http-error-full",
+      "action": "http-error",
+      "event": {
+        "version": "2.0",
+        "routeKey": "$default",
+        "rawPath": "/items/id%20one",
+        "rawQueryString": "secret=omitted",
+        "headers": {
+          "user-agent": "fixture-agent",
+          "x-forwarded-for": " 198.51.100.2 , 198.51.100.3"
+        },
+        "requestContext": {
+          "domainName": "id.lambda-url.ap-east-1.on.aws",
+          "requestId": "request-1",
+          "apiId": "api-1",
+          "extendedRequestId": "extended-1",
+          "http": {
+            "method": "GET",
+            "sourceIp": "192.0.2.1"
+          }
+        },
+        "isBase64Encoded": false
+      },
+      "status": 400,
+      "spans": [
+        {
+          "name": "GET /items/id%20one",
+          "http": {
+            "request": {
+              "method": "GET",
+              "url": "https://id.lambda-url.ap-east-1.on.aws/items/id%20one",
+              "user_agent": "fixture-agent",
+              "client_ip": "192.0.2.1",
+              "x_forwarded_for": true
+            },
+            "response": {
+              "status": 500
+            }
+          },
+          "closed": true
+        }
+      ],
+      "responses": [],
+      "errors": [
+        "BadRequestError"
+      ],
+      "annotations": [
+        "ColdStart",
+        "Service"
+      ],
+      "restored": true
+    },
+    {
+      "name": "url-http-error-missing",
+      "action": "http-error",
+      "event": {
+        "version": "2.0",
+        "routeKey": "$default",
+        "rawPath": "/items/id%20one",
+        "rawQueryString": "secret=omitted",
+        "headers": {},
+        "requestContext": {
+          "domainName": "id.lambda-url.ap-east-1.on.aws",
+          "http": {
+            "method": "GET",
+            "sourceIp": ""
+          }
+        },
+        "isBase64Encoded": false
+      },
+      "status": 400,
+      "spans": [
+        {
+          "name": "GET /items/id%20one",
+          "http": {
+            "request": {
+              "method": "GET",
+              "url": "https://id.lambda-url.ap-east-1.on.aws/items/id%20one"
+            },
+            "response": {
+              "status": 500
+            }
+          },
+          "closed": true
+        }
+      ],
+      "responses": [],
+      "errors": [
+        "BadRequestError"
+      ],
+      "annotations": [
+        "ColdStart",
+        "Service"
+      ],
+      "restored": true
+    },
+    {
+      "name": "url-error-full",
+      "action": "error",
+      "event": {
+        "version": "2.0",
+        "routeKey": "$default",
+        "rawPath": "/items/id%20one",
+        "rawQueryString": "secret=omitted",
+        "headers": {
+          "user-agent": "fixture-agent",
+          "x-forwarded-for": " 198.51.100.2 , 198.51.100.3"
+        },
+        "requestContext": {
+          "domainName": "id.lambda-url.ap-east-1.on.aws",
+          "requestId": "request-1",
+          "apiId": "api-1",
+          "extendedRequestId": "extended-1",
+          "http": {
+            "method": "GET",
+            "sourceIp": "192.0.2.1"
+          }
+        },
+        "isBase64Encoded": false
+      },
+      "status": 500,
+      "spans": [
+        {
+          "name": "GET /items/id%20one",
+          "http": {
+            "request": {
+              "method": "GET",
+              "url": "https://id.lambda-url.ap-east-1.on.aws/items/id%20one",
+              "user_agent": "fixture-agent",
+              "client_ip": "192.0.2.1",
+              "x_forwarded_for": true
+            },
+            "response": {
+              "status": 500
+            }
+          },
+          "closed": true
+        }
+      ],
+      "responses": [],
+      "errors": [
+        "Error"
+      ],
+      "annotations": [
+        "ColdStart",
+        "Service"
+      ],
+      "restored": true
+    },
+    {
+      "name": "url-error-missing",
+      "action": "error",
+      "event": {
+        "version": "2.0",
+        "routeKey": "$default",
+        "rawPath": "/items/id%20one",
+        "rawQueryString": "secret=omitted",
+        "headers": {},
+        "requestContext": {
+          "domainName": "id.lambda-url.ap-east-1.on.aws",
+          "http": {
+            "method": "GET",
+            "sourceIp": ""
+          }
+        },
+        "isBase64Encoded": false
+      },
+      "status": 500,
+      "spans": [
+        {
+          "name": "GET /items/id%20one",
+          "http": {
+            "request": {
+              "method": "GET",
+              "url": "https://id.lambda-url.ap-east-1.on.aws/items/id%20one"
+            },
+            "response": {
+              "status": 500
+            }
+          },
+          "closed": true
+        }
+      ],
+      "responses": [],
+      "errors": [
+        "Error"
+      ],
+      "annotations": [
+        "ColdStart",
+        "Service"
+      ],
+      "restored": true
+    },
+    {
+      "name": "url-missing-full",
+      "action": "missing",
+      "event": {
+        "version": "2.0",
+        "routeKey": "$default",
+        "rawPath": "/missing",
+        "rawQueryString": "secret=omitted",
+        "headers": {
+          "user-agent": "fixture-agent",
+          "x-forwarded-for": " 198.51.100.2 , 198.51.100.3"
+        },
+        "requestContext": {
+          "domainName": "id.lambda-url.ap-east-1.on.aws",
+          "requestId": "request-1",
+          "apiId": "api-1",
+          "extendedRequestId": "extended-1",
+          "http": {
+            "method": "GET",
+            "sourceIp": "192.0.2.1"
+          }
+        },
+        "isBase64Encoded": false
+      },
+      "status": 404,
+      "spans": [
+        {
+          "name": "GET /missing",
+          "http": {
+            "request": {
+              "method": "GET",
+              "url": "https://id.lambda-url.ap-east-1.on.aws/missing",
+              "user_agent": "fixture-agent",
+              "client_ip": "192.0.2.1",
+              "x_forwarded_for": true
+            },
+            "response": {
+              "status": 404
+            }
+          },
+          "closed": true
+        }
+      ],
+      "responses": [
+        {
+          "name": "GET /missing",
+          "value": {
+            "statusCode": 404,
+            "error": "NotFoundError",
+            "message": "Route /missing for method GET not found"
+          }
+        }
+      ],
+      "errors": [],
+      "annotations": [
+        "ColdStart",
+        "Service"
+      ],
+      "restored": true
+    },
+    {
+      "name": "url-missing-missing",
+      "action": "missing",
+      "event": {
+        "version": "2.0",
+        "routeKey": "$default",
+        "rawPath": "/missing",
+        "rawQueryString": "secret=omitted",
+        "headers": {},
+        "requestContext": {
+          "domainName": "id.lambda-url.ap-east-1.on.aws",
+          "http": {
+            "method": "GET",
+            "sourceIp": ""
+          }
+        },
+        "isBase64Encoded": false
+      },
+      "status": 404,
+      "spans": [
+        {
+          "name": "GET /missing",
+          "http": {
+            "request": {
+              "method": "GET",
+              "url": "https://id.lambda-url.ap-east-1.on.aws/missing"
+            },
+            "response": {
+              "status": 404
+            }
+          },
+          "closed": true
+        }
+      ],
+      "responses": [
+        {
+          "name": "GET /missing",
+          "value": {
+            "statusCode": 404,
+            "error": "NotFoundError",
+            "message": "Route /missing for method GET not found"
+          }
+        }
+      ],
+      "errors": [],
+      "annotations": [
+        "ColdStart",
+        "Service"
+      ],
+      "restored": true
+    },
+    {
+      "name": "url-server-full",
+      "action": "server",
+      "event": {
+        "version": "2.0",
+        "routeKey": "$default",
+        "rawPath": "/items/id%20one",
+        "rawQueryString": "secret=omitted",
+        "headers": {
+          "user-agent": "fixture-agent",
+          "x-forwarded-for": " 198.51.100.2 , 198.51.100.3"
+        },
+        "requestContext": {
+          "domainName": "id.lambda-url.ap-east-1.on.aws",
+          "requestId": "request-1",
+          "apiId": "api-1",
+          "extendedRequestId": "extended-1",
+          "http": {
+            "method": "GET",
+            "sourceIp": "192.0.2.1"
+          }
+        },
+        "isBase64Encoded": false
+      },
+      "status": 503,
+      "spans": [
+        {
+          "name": "GET /items/id%20one",
+          "http": {
+            "request": {
+              "method": "GET",
+              "url": "https://id.lambda-url.ap-east-1.on.aws/items/id%20one",
+              "user_agent": "fixture-agent",
+              "client_ip": "192.0.2.1",
+              "x_forwarded_for": true
+            },
+            "response": {
+              "status": 503
+            }
+          },
+          "closed": true
+        }
+      ],
+      "responses": [
+        {
+          "name": "GET /items/id%20one",
+          "value": {
+            "ok": true
+          }
+        }
+      ],
+      "errors": [],
+      "annotations": [
+        "ColdStart",
+        "Service"
+      ],
+      "restored": true
+    },
+    {
+      "name": "url-server-missing",
+      "action": "server",
+      "event": {
+        "version": "2.0",
+        "routeKey": "$default",
+        "rawPath": "/items/id%20one",
+        "rawQueryString": "secret=omitted",
+        "headers": {},
+        "requestContext": {
+          "domainName": "id.lambda-url.ap-east-1.on.aws",
+          "http": {
+            "method": "GET",
+            "sourceIp": ""
+          }
+        },
+        "isBase64Encoded": false
+      },
+      "status": 503,
+      "spans": [
+        {
+          "name": "GET /items/id%20one",
+          "http": {
+            "request": {
+              "method": "GET",
+              "url": "https://id.lambda-url.ap-east-1.on.aws/items/id%20one"
+            },
+            "response": {
+              "status": 503
+            }
+          },
+          "closed": true
+        }
+      ],
+      "responses": [
+        {
+          "name": "GET /items/id%20one",
+          "value": {
+            "ok": true
+          }
+        }
+      ],
+      "errors": [],
+      "annotations": [
+        "ColdStart",
+        "Service"
+      ],
+      "restored": true
+    },
+    {
+      "name": "url-disabled-full",
+      "action": "disabled",
+      "event": {
+        "version": "2.0",
+        "routeKey": "$default",
+        "rawPath": "/items/id%20one",
+        "rawQueryString": "secret=omitted",
+        "headers": {
+          "user-agent": "fixture-agent",
+          "x-forwarded-for": " 198.51.100.2 , 198.51.100.3"
+        },
+        "requestContext": {
+          "domainName": "id.lambda-url.ap-east-1.on.aws",
+          "requestId": "request-1",
+          "apiId": "api-1",
+          "extendedRequestId": "extended-1",
+          "http": {
+            "method": "GET",
+            "sourceIp": "192.0.2.1"
+          }
+        },
+        "isBase64Encoded": false
+      },
+      "status": 200,
+      "spans": [],
+      "responses": [],
+      "errors": [],
+      "annotations": [],
+      "restored": true
+    },
+    {
+      "name": "url-disabled-missing",
+      "action": "disabled",
+      "event": {
+        "version": "2.0",
+        "routeKey": "$default",
+        "rawPath": "/items/id%20one",
+        "rawQueryString": "secret=omitted",
+        "headers": {},
+        "requestContext": {
+          "domainName": "id.lambda-url.ap-east-1.on.aws",
+          "http": {
+            "method": "GET",
+            "sourceIp": ""
+          }
+        },
+        "isBase64Encoded": false
+      },
+      "status": 200,
+      "spans": [],
+      "responses": [],
+      "errors": [],
+      "annotations": [],
+      "restored": true
+    },
+    {
+      "name": "url-capture-off-full",
+      "action": "capture-off",
+      "event": {
+        "version": "2.0",
+        "routeKey": "$default",
+        "rawPath": "/items/id%20one",
+        "rawQueryString": "secret=omitted",
+        "headers": {
+          "user-agent": "fixture-agent",
+          "x-forwarded-for": " 198.51.100.2 , 198.51.100.3"
+        },
+        "requestContext": {
+          "domainName": "id.lambda-url.ap-east-1.on.aws",
+          "requestId": "request-1",
+          "apiId": "api-1",
+          "extendedRequestId": "extended-1",
+          "http": {
+            "method": "GET",
+            "sourceIp": "192.0.2.1"
+          }
+        },
+        "isBase64Encoded": false
+      },
+      "status": 200,
+      "spans": [
+        {
+          "name": "GET /items/id%20one",
+          "http": {
+            "request": {
+              "method": "GET",
+              "url": "https://id.lambda-url.ap-east-1.on.aws/items/id%20one",
+              "user_agent": "fixture-agent",
+              "client_ip": "192.0.2.1",
+              "x_forwarded_for": true
+            },
+            "response": {
+              "status": 200
+            }
+          },
+          "closed": true
+        }
+      ],
+      "responses": [],
+      "errors": [],
+      "annotations": [
+        "ColdStart",
+        "Service"
+      ],
+      "restored": true
+    },
+    {
+      "name": "url-capture-off-missing",
+      "action": "capture-off",
+      "event": {
+        "version": "2.0",
+        "routeKey": "$default",
+        "rawPath": "/items/id%20one",
+        "rawQueryString": "secret=omitted",
+        "headers": {},
+        "requestContext": {
+          "domainName": "id.lambda-url.ap-east-1.on.aws",
+          "http": {
+            "method": "GET",
+            "sourceIp": ""
+          }
+        },
+        "isBase64Encoded": false
+      },
+      "status": 200,
+      "spans": [
+        {
+          "name": "GET /items/id%20one",
+          "http": {
+            "request": {
+              "method": "GET",
+              "url": "https://id.lambda-url.ap-east-1.on.aws/items/id%20one"
+            },
+            "response": {
+              "status": 200
+            }
+          },
+          "closed": true
+        }
+      ],
+      "responses": [],
+      "errors": [],
+      "annotations": [
+        "ColdStart",
+        "Service"
+      ],
+      "restored": true
+    },
+    {
+      "name": "url-config-off-full",
+      "action": "config-off",
+      "event": {
+        "version": "2.0",
+        "routeKey": "$default",
+        "rawPath": "/items/id%20one",
+        "rawQueryString": "secret=omitted",
+        "headers": {
+          "user-agent": "fixture-agent",
+          "x-forwarded-for": " 198.51.100.2 , 198.51.100.3"
+        },
+        "requestContext": {
+          "domainName": "id.lambda-url.ap-east-1.on.aws",
+          "requestId": "request-1",
+          "apiId": "api-1",
+          "extendedRequestId": "extended-1",
+          "http": {
+            "method": "GET",
+            "sourceIp": "192.0.2.1"
+          }
+        },
+        "isBase64Encoded": false
+      },
+      "status": 200,
+      "spans": [
+        {
+          "name": "GET /items/id%20one",
+          "http": {
+            "request": {
+              "method": "GET",
+              "url": "https://id.lambda-url.ap-east-1.on.aws/items/id%20one",
+              "user_agent": "fixture-agent",
+              "client_ip": "192.0.2.1",
+              "x_forwarded_for": true
+            },
+            "response": {
+              "status": 200
+            }
+          },
+          "closed": true
+        }
+      ],
+      "responses": [],
+      "errors": [],
+      "annotations": [
+        "ColdStart",
+        "Service"
+      ],
+      "restored": true
+    },
+    {
+      "name": "url-config-off-missing",
+      "action": "config-off",
+      "event": {
+        "version": "2.0",
+        "routeKey": "$default",
+        "rawPath": "/items/id%20one",
+        "rawQueryString": "secret=omitted",
+        "headers": {},
+        "requestContext": {
+          "domainName": "id.lambda-url.ap-east-1.on.aws",
+          "http": {
+            "method": "GET",
+            "sourceIp": ""
+          }
+        },
+        "isBase64Encoded": false
+      },
+      "status": 200,
+      "spans": [
+        {
+          "name": "GET /items/id%20one",
+          "http": {
+            "request": {
+              "method": "GET",
+              "url": "https://id.lambda-url.ap-east-1.on.aws/items/id%20one"
+            },
+            "response": {
+              "status": 200
+            }
+          },
+          "closed": true
+        }
+      ],
+      "responses": [],
+      "errors": [],
+      "annotations": [
+        "ColdStart",
+        "Service"
+      ],
+      "restored": true
+    },
+    {
+      "name": "url-compressed-full",
+      "action": "compressed",
+      "event": {
+        "version": "2.0",
+        "routeKey": "$default",
+        "rawPath": "/items/id%20one",
+        "rawQueryString": "secret=omitted",
+        "headers": {
+          "user-agent": "fixture-agent",
+          "x-forwarded-for": " 198.51.100.2 , 198.51.100.3"
+        },
+        "requestContext": {
+          "domainName": "id.lambda-url.ap-east-1.on.aws",
+          "requestId": "request-1",
+          "apiId": "api-1",
+          "extendedRequestId": "extended-1",
+          "http": {
+            "method": "GET",
+            "sourceIp": "192.0.2.1"
+          }
+        },
+        "isBase64Encoded": false
+      },
+      "status": 500,
+      "spans": [
+        {
+          "name": "GET /items/id%20one",
+          "http": {
+            "request": {
+              "method": "GET",
+              "url": "https://id.lambda-url.ap-east-1.on.aws/items/id%20one",
+              "user_agent": "fixture-agent",
+              "client_ip": "192.0.2.1",
+              "x_forwarded_for": true
+            },
+            "response": {
+              "status": 200
+            }
+          },
+          "closed": true
+        }
+      ],
+      "responses": [],
+      "errors": [
+        "SyntaxError"
+      ],
+      "annotations": [
+        "ColdStart",
+        "Service"
+      ],
+      "restored": true
+    },
+    {
+      "name": "url-compressed-missing",
+      "action": "compressed",
+      "event": {
+        "version": "2.0",
+        "routeKey": "$default",
+        "rawPath": "/items/id%20one",
+        "rawQueryString": "secret=omitted",
+        "headers": {},
+        "requestContext": {
+          "domainName": "id.lambda-url.ap-east-1.on.aws",
+          "http": {
+            "method": "GET",
+            "sourceIp": ""
+          }
+        },
+        "isBase64Encoded": false
+      },
+      "status": 500,
+      "spans": [
+        {
+          "name": "GET /items/id%20one",
+          "http": {
+            "request": {
+              "method": "GET",
+              "url": "https://id.lambda-url.ap-east-1.on.aws/items/id%20one"
+            },
+            "response": {
+              "status": 200
+            }
+          },
+          "closed": true
+        }
+      ],
+      "responses": [],
+      "errors": [
+        "SyntaxError"
+      ],
+      "annotations": [
+        "ColdStart",
+        "Service"
+      ],
+      "restored": true
+    },
+    {
+      "name": "url-length-full",
+      "action": "length",
+      "event": {
+        "version": "2.0",
+        "routeKey": "$default",
+        "rawPath": "/items/id%20one",
+        "rawQueryString": "secret=omitted",
+        "headers": {
+          "user-agent": "fixture-agent",
+          "x-forwarded-for": " 198.51.100.2 , 198.51.100.3"
+        },
+        "requestContext": {
+          "domainName": "id.lambda-url.ap-east-1.on.aws",
+          "requestId": "request-1",
+          "apiId": "api-1",
+          "extendedRequestId": "extended-1",
+          "http": {
+            "method": "GET",
+            "sourceIp": "192.0.2.1"
+          }
+        },
+        "isBase64Encoded": false
+      },
+      "status": 200,
+      "spans": [
+        {
+          "name": "GET /items/id%20one",
+          "http": {
+            "request": {
+              "method": "GET",
+              "url": "https://id.lambda-url.ap-east-1.on.aws/items/id%20one",
+              "user_agent": "fixture-agent",
+              "client_ip": "192.0.2.1",
+              "x_forwarded_for": true
+            },
+            "response": {
+              "status": 200,
+              "content_length": 12
+            }
+          },
+          "closed": true
+        }
+      ],
+      "responses": [
+        {
+          "name": "GET /items/id%20one",
+          "value": {
+            "ok": true
+          }
+        }
+      ],
+      "errors": [],
+      "annotations": [
+        "ColdStart",
+        "Service"
+      ],
+      "restored": true
+    },
+    {
+      "name": "url-length-missing",
+      "action": "length",
+      "event": {
+        "version": "2.0",
+        "routeKey": "$default",
+        "rawPath": "/items/id%20one",
+        "rawQueryString": "secret=omitted",
+        "headers": {},
+        "requestContext": {
+          "domainName": "id.lambda-url.ap-east-1.on.aws",
+          "http": {
+            "method": "GET",
+            "sourceIp": ""
+          }
+        },
+        "isBase64Encoded": false
+      },
+      "status": 200,
+      "spans": [
+        {
+          "name": "GET /items/id%20one",
+          "http": {
+            "request": {
+              "method": "GET",
+              "url": "https://id.lambda-url.ap-east-1.on.aws/items/id%20one"
+            },
+            "response": {
+              "status": 200,
+              "content_length": 12
+            }
+          },
+          "closed": true
+        }
+      ],
+      "responses": [
+        {
+          "name": "GET /items/id%20one",
+          "value": {
+            "ok": true
+          }
+        }
+      ],
+      "errors": [],
+      "annotations": [
+        "ColdStart",
+        "Service"
+      ],
+      "restored": true
+    },
+    {
+      "name": "url-length-prefix-full",
+      "action": "length-prefix",
+      "event": {
+        "version": "2.0",
+        "routeKey": "$default",
+        "rawPath": "/items/id%20one",
+        "rawQueryString": "secret=omitted",
+        "headers": {
+          "user-agent": "fixture-agent",
+          "x-forwarded-for": " 198.51.100.2 , 198.51.100.3"
+        },
+        "requestContext": {
+          "domainName": "id.lambda-url.ap-east-1.on.aws",
+          "requestId": "request-1",
+          "apiId": "api-1",
+          "extendedRequestId": "extended-1",
+          "http": {
+            "method": "GET",
+            "sourceIp": "192.0.2.1"
+          }
+        },
+        "isBase64Encoded": false
+      },
+      "status": 200,
+      "spans": [
+        {
+          "name": "GET /items/id%20one",
+          "http": {
+            "request": {
+              "method": "GET",
+              "url": "https://id.lambda-url.ap-east-1.on.aws/items/id%20one",
+              "user_agent": "fixture-agent",
+              "client_ip": "192.0.2.1",
+              "x_forwarded_for": true
+            },
+            "response": {
+              "status": 200,
+              "content_length": 12
+            }
+          },
+          "closed": true
+        }
+      ],
+      "responses": [
+        {
+          "name": "GET /items/id%20one",
+          "value": {
+            "ok": true
+          }
+        }
+      ],
+      "errors": [],
+      "annotations": [
+        "ColdStart",
+        "Service"
+      ],
+      "restored": true
+    },
+    {
+      "name": "url-length-prefix-missing",
+      "action": "length-prefix",
+      "event": {
+        "version": "2.0",
+        "routeKey": "$default",
+        "rawPath": "/items/id%20one",
+        "rawQueryString": "secret=omitted",
+        "headers": {},
+        "requestContext": {
+          "domainName": "id.lambda-url.ap-east-1.on.aws",
+          "http": {
+            "method": "GET",
+            "sourceIp": ""
+          }
+        },
+        "isBase64Encoded": false
+      },
+      "status": 200,
+      "spans": [
+        {
+          "name": "GET /items/id%20one",
+          "http": {
+            "request": {
+              "method": "GET",
+              "url": "https://id.lambda-url.ap-east-1.on.aws/items/id%20one"
+            },
+            "response": {
+              "status": 200,
+              "content_length": 12
+            }
+          },
+          "closed": true
+        }
+      ],
+      "responses": [
+        {
+          "name": "GET /items/id%20one",
+          "value": {
+            "ok": true
+          }
+        }
+      ],
+      "errors": [],
+      "annotations": [
+        "ColdStart",
+        "Service"
+      ],
+      "restored": true
+    },
+    {
+      "name": "url-length-negative-full",
+      "action": "length-negative",
+      "event": {
+        "version": "2.0",
+        "routeKey": "$default",
+        "rawPath": "/items/id%20one",
+        "rawQueryString": "secret=omitted",
+        "headers": {
+          "user-agent": "fixture-agent",
+          "x-forwarded-for": " 198.51.100.2 , 198.51.100.3"
+        },
+        "requestContext": {
+          "domainName": "id.lambda-url.ap-east-1.on.aws",
+          "requestId": "request-1",
+          "apiId": "api-1",
+          "extendedRequestId": "extended-1",
+          "http": {
+            "method": "GET",
+            "sourceIp": "192.0.2.1"
+          }
+        },
+        "isBase64Encoded": false
+      },
+      "status": 200,
+      "spans": [
+        {
+          "name": "GET /items/id%20one",
+          "http": {
+            "request": {
+              "method": "GET",
+              "url": "https://id.lambda-url.ap-east-1.on.aws/items/id%20one",
+              "user_agent": "fixture-agent",
+              "client_ip": "192.0.2.1",
+              "x_forwarded_for": true
+            },
+            "response": {
+              "status": 200,
+              "content_length": -2
+            }
+          },
+          "closed": true
+        }
+      ],
+      "responses": [
+        {
+          "name": "GET /items/id%20one",
+          "value": {
+            "ok": true
+          }
+        }
+      ],
+      "errors": [],
+      "annotations": [
+        "ColdStart",
+        "Service"
+      ],
+      "restored": true
+    },
+    {
+      "name": "url-length-negative-missing",
+      "action": "length-negative",
+      "event": {
+        "version": "2.0",
+        "routeKey": "$default",
+        "rawPath": "/items/id%20one",
+        "rawQueryString": "secret=omitted",
+        "headers": {},
+        "requestContext": {
+          "domainName": "id.lambda-url.ap-east-1.on.aws",
+          "http": {
+            "method": "GET",
+            "sourceIp": ""
+          }
+        },
+        "isBase64Encoded": false
+      },
+      "status": 200,
+      "spans": [
+        {
+          "name": "GET /items/id%20one",
+          "http": {
+            "request": {
+              "method": "GET",
+              "url": "https://id.lambda-url.ap-east-1.on.aws/items/id%20one"
+            },
+            "response": {
+              "status": 200,
+              "content_length": -2
+            }
+          },
+          "closed": true
+        }
+      ],
+      "responses": [
+        {
+          "name": "GET /items/id%20one",
+          "value": {
+            "ok": true
+          }
+        }
+      ],
+      "errors": [],
+      "annotations": [
+        "ColdStart",
+        "Service"
+      ],
+      "restored": true
+    },
+    {
+      "name": "url-length-invalid-full",
+      "action": "length-invalid",
+      "event": {
+        "version": "2.0",
+        "routeKey": "$default",
+        "rawPath": "/items/id%20one",
+        "rawQueryString": "secret=omitted",
+        "headers": {
+          "user-agent": "fixture-agent",
+          "x-forwarded-for": " 198.51.100.2 , 198.51.100.3"
+        },
+        "requestContext": {
+          "domainName": "id.lambda-url.ap-east-1.on.aws",
+          "requestId": "request-1",
+          "apiId": "api-1",
+          "extendedRequestId": "extended-1",
+          "http": {
+            "method": "GET",
+            "sourceIp": "192.0.2.1"
+          }
+        },
+        "isBase64Encoded": false
+      },
+      "status": 200,
+      "spans": [
+        {
+          "name": "GET /items/id%20one",
+          "http": {
+            "request": {
+              "method": "GET",
+              "url": "https://id.lambda-url.ap-east-1.on.aws/items/id%20one",
+              "user_agent": "fixture-agent",
+              "client_ip": "192.0.2.1",
+              "x_forwarded_for": true
+            },
+            "response": {
+              "status": 200
+            }
+          },
+          "closed": true
+        }
+      ],
+      "responses": [
+        {
+          "name": "GET /items/id%20one",
+          "value": {
+            "ok": true
+          }
+        }
+      ],
+      "errors": [],
+      "annotations": [
+        "ColdStart",
+        "Service"
+      ],
+      "restored": true
+    },
+    {
+      "name": "url-length-invalid-missing",
+      "action": "length-invalid",
+      "event": {
+        "version": "2.0",
+        "routeKey": "$default",
+        "rawPath": "/items/id%20one",
+        "rawQueryString": "secret=omitted",
+        "headers": {},
+        "requestContext": {
+          "domainName": "id.lambda-url.ap-east-1.on.aws",
+          "http": {
+            "method": "GET",
+            "sourceIp": ""
+          }
+        },
+        "isBase64Encoded": false
+      },
+      "status": 200,
+      "spans": [
+        {
+          "name": "GET /items/id%20one",
+          "http": {
+            "request": {
+              "method": "GET",
+              "url": "https://id.lambda-url.ap-east-1.on.aws/items/id%20one"
+            },
+            "response": {
+              "status": 200
+            }
+          },
+          "closed": true
+        }
+      ],
+      "responses": [
+        {
+          "name": "GET /items/id%20one",
+          "value": {
+            "ok": true
+          }
+        }
+      ],
+      "errors": [],
+      "annotations": [
+        "ColdStart",
+        "Service"
+      ],
+      "restored": true
+    }
+  ]
+}

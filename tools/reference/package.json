@@ -1,0 +1,42 @@
+{
+  "name": "powertools-go-reference-fixtures",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "fixtures:graphql": "node generate-appsync-graphql.mjs",
+    "fixtures:bedrock": "node generate-bedrock.mjs",
+    "postfixtures": "node generate-appsync-graphql.mjs && node generate-bedrock.mjs && node generate-kafka.mjs && node generate-kafka-avro.mjs && node generate-kafka-protobuf.mjs && node generate-kafka-modes.mjs && node generate-datamasking.mjs && node generate-regex.mjs && node generate-datamasking-kms.mjs",
+    "fixtures": "node generate.mjs && node generate-sampling.mjs && node generate-metrics.mjs && node generate-metrics-stores.mjs && node generate-metrics-warnings.mjs && node generate-metrics-coldstart.mjs && node generate-metrics-config.mjs && node generate-metrics-values.mjs && node generate-metrics-timestamps.mjs && node generate-metrics-wrappers.mjs && node generate-parameters.mjs && node generate-commons.mjs && node generate-signer.mjs && node generate-jmespath.mjs && node generate-batch.mjs && node generate-idempotency.mjs && node generate-idempotency-cache.mjs && node generate-parser.mjs && node generate-parser-streams.mjs && node generate-parser-http.mjs && node generate-parser-services.mjs && node generate-parser-identity.mjs && node generate-parser-unions.mjs && node generate-validation.mjs && node generate-validation-regex.mjs && node generate-validation-applicators.mjs && node generate-validation-references.mjs && node generate-validation-strict.mjs && node generate-validation-setup.mjs && node generate-validation-keywords.mjs && node generate-validation-shapes.mjs && node generate-validation-graphs.mjs && node generate-http.mjs && node generate-http-middleware.mjs && node generate-http-stream.mjs && node generate-http-metrics.mjs && node generate-http-tracer.mjs && node generate-appsync-events.mjs",
+    "fixtures:kafka": "node generate-kafka.mjs",
+    "fixtures:kafka:avro": "node generate-kafka-avro.mjs",
+    "fixtures:kafka:protobuf": "node generate-kafka-protobuf.mjs",
+    "fixtures:kafka:modes": "node generate-kafka-modes.mjs",
+    "fixtures:datamasking": "node generate-datamasking.mjs",
+    "fixtures:regex": "node generate-regex.mjs",
+    "fixtures:datamasking:kms": "node generate-datamasking-kms.mjs"
+  },
+  "dependencies": {
+    "@aws-lambda-powertools/logger": "2.35.0"
+  },
+  "devDependencies": {
+    "@aws-crypto/client-node": "5.0.2",
+    "@aws-lambda-powertools/batch": "2.35.0",
+    "@aws-lambda-powertools/data-masking": "2.35.0",
+    "@aws-lambda-powertools/event-handler": "2.35.0",
+    "@aws-lambda-powertools/idempotency": "2.35.0",
+    "@aws-lambda-powertools/jmespath": "2.35.0",
+    "@aws-lambda-powertools/kafka": "2.35.0",
+    "@aws-lambda-powertools/metrics": "2.35.0",
+    "@aws-lambda-powertools/parameters": "2.35.0",
+    "@aws-lambda-powertools/parser": "2.35.0",
+    "@aws-lambda-powertools/signer": "2.35.0",
+    "@aws-lambda-powertools/validation": "2.35.0",
+    "@aws-sdk/client-dynamodb": "3.1131.0",
+    "@aws-sdk/client-ssm": "3.1131.0",
+    "@aws-sdk/util-dynamodb": "3.996.9",
+    "avro-js": "1.12.1",
+    "protobufjs": "7.5.4",
+    "zod": "4.1.12"
+  },
+  "license": "MIT"
+}

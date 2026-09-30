@@ -1,0 +1,27 @@
+{
+  "upstream": "2.35.0",
+  "draws": [
+    10,
+    11,
+    0
+  ],
+  "drawCount": 3,
+  "levels": [
+    "DEBUG",
+    "DEBUG",
+    "INFO",
+    "DEBUG"
+  ],
+  "diagnostics": [
+    {
+      "level": "DEBUG",
+      "message": "Setting log level to DEBUG due to sampling rate",
+      "sampling_rate": 0.1
+    },
+    {
+      "level": "DEBUG",
+      "message": "Setting log level to DEBUG due to sampling rate",
+      "sampling_rate": 0.1
+    }
+  ]
+}

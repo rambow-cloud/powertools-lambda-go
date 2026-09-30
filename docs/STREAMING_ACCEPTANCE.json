@@ -1,0 +1,698 @@
+{
+  "scope": "real aws-lambda-go SDK against a local Runtime API fixture; not AWS service acceptance",
+  "completed": true,
+  "cgo_enabled": false,
+  "runtime_architecture": "amd64",
+  "binary_architectures": [
+    "amd64",
+    "arm64"
+  ],
+  "image": "public.ecr.aws/lambda/provided@sha256:0b17e5c778aef6ed7f61cbfa5dd416e17540e127846250646fceb712e0e7be5f",
+  "checks": [
+    {
+      "name": "stream-0-success: streaming SDK content type",
+      "passed": true
+    },
+    {
+      "name": "stream-0-success: chunked Runtime API request",
+      "passed": true
+    },
+    {
+      "name": "stream-0-success: HTTP integration delimiter",
+      "passed": true
+    },
+    {
+      "name": "stream-0-success: HTTP status and request identity",
+      "passed": true
+    },
+    {
+      "name": "stream-0-success: CORS and compression composition",
+      "passed": true
+    },
+    {
+      "name": "stream-0-success: no error trailers",
+      "passed": true
+    },
+    {
+      "name": "stream-0-success: gated incremental chunks",
+      "passed": true
+    },
+    {
+      "name": "stream-1-success: streaming SDK content type",
+      "passed": true
+    },
+    {
+      "name": "stream-1-success: chunked Runtime API request",
+      "passed": true
+    },
+    {
+      "name": "stream-1-success: HTTP integration delimiter",
+      "passed": true
+    },
+    {
+      "name": "stream-1-success: HTTP status and request identity",
+      "passed": true
+    },
+    {
+      "name": "stream-1-success: CORS and compression composition",
+      "passed": true
+    },
+    {
+      "name": "stream-1-success: no error trailers",
+      "passed": true
+    },
+    {
+      "name": "stream-1-success: gated incremental chunks",
+      "passed": true
+    },
+    {
+      "name": "stream-2-read-error: streaming SDK content type",
+      "passed": true
+    },
+    {
+      "name": "stream-2-read-error: chunked Runtime API request",
+      "passed": true
+    },
+    {
+      "name": "stream-2-read-error: HTTP integration delimiter",
+      "passed": true
+    },
+    {
+      "name": "stream-2-read-error: HTTP status and request identity",
+      "passed": true
+    },
+    {
+      "name": "stream-2-read-error: CORS and compression composition",
+      "passed": true
+    },
+    {
+      "name": "stream-2-read-error: Runtime API error trailers",
+      "passed": true
+    },
+    {
+      "name": "stream-2-read-error: successful prefix retained",
+      "passed": true
+    },
+    {
+      "name": "stream-3-close-error: streaming SDK content type",
+      "passed": true
+    },
+    {
+      "name": "stream-3-close-error: chunked Runtime API request",
+      "passed": true
+    },
+    {
+      "name": "stream-3-close-error: HTTP integration delimiter",
+      "passed": true
+    },
+    {
+      "name": "stream-3-close-error: HTTP status and request identity",
+      "passed": true
+    },
+    {
+      "name": "stream-3-close-error: CORS and compression composition",
+      "passed": true
+    },
+    {
+      "name": "stream-3-close-error: Runtime API error trailers",
+      "passed": true
+    },
+    {
+      "name": "stream-3-close-error: successful prefix retained",
+      "passed": true
+    },
+    {
+      "name": "stream-4-panic: streaming SDK content type",
+      "passed": true
+    },
+    {
+      "name": "stream-4-panic: chunked Runtime API request",
+      "passed": true
+    },
+    {
+      "name": "stream-4-panic: HTTP integration delimiter",
+      "passed": true
+    },
+    {
+      "name": "stream-4-panic: HTTP status and request identity",
+      "passed": true
+    },
+    {
+      "name": "stream-4-panic: CORS and compression composition",
+      "passed": true
+    },
+    {
+      "name": "stream-4-panic: Runtime API error trailers",
+      "passed": true
+    },
+    {
+      "name": "stream-4-panic: successful prefix retained",
+      "passed": true
+    },
+    {
+      "name": "stream-5-deadline: streaming SDK content type",
+      "passed": true
+    },
+    {
+      "name": "stream-5-deadline: chunked Runtime API request",
+      "passed": true
+    },
+    {
+      "name": "stream-5-deadline: HTTP integration delimiter",
+      "passed": true
+    },
+    {
+      "name": "stream-5-deadline: HTTP status and request identity",
+      "passed": true
+    },
+    {
+      "name": "stream-5-deadline: CORS and compression composition",
+      "passed": true
+    },
+    {
+      "name": "stream-5-deadline: Runtime API error trailers",
+      "passed": true
+    },
+    {
+      "name": "stream-5-deadline: successful prefix retained",
+      "passed": true
+    },
+    {
+      "name": "stream-6-no-content: streaming SDK content type",
+      "passed": true
+    },
+    {
+      "name": "stream-6-no-content: chunked Runtime API request",
+      "passed": true
+    },
+    {
+      "name": "stream-6-no-content: HTTP integration delimiter",
+      "passed": true
+    },
+    {
+      "name": "stream-6-no-content: HTTP status and request identity",
+      "passed": true
+    },
+    {
+      "name": "stream-6-no-content: CORS and compression composition",
+      "passed": true
+    },
+    {
+      "name": "stream-6-no-content: no error trailers",
+      "passed": true
+    },
+    {
+      "name": "stream-6-no-content: no-content body",
+      "passed": true
+    },
+    {
+      "name": "stream-7-http-error: streaming SDK content type",
+      "passed": true
+    },
+    {
+      "name": "stream-7-http-error: chunked Runtime API request",
+      "passed": true
+    },
+    {
+      "name": "stream-7-http-error: HTTP integration delimiter",
+      "passed": true
+    },
+    {
+      "name": "stream-7-http-error: HTTP status and request identity",
+      "passed": true
+    },
+    {
+      "name": "stream-7-http-error: CORS and compression composition",
+      "passed": true
+    },
+    {
+      "name": "stream-7-http-error: no error trailers",
+      "passed": true
+    },
+    {
+      "name": "stream-7-http-error: pre-stream HTTP error",
+      "passed": true
+    },
+    {
+      "name": "stream-8-invalid-event: invocation error before streaming",
+      "passed": true
+    },
+    {
+      "name": "stream-9-success: streaming SDK content type",
+      "passed": true
+    },
+    {
+      "name": "stream-9-success: chunked Runtime API request",
+      "passed": true
+    },
+    {
+      "name": "stream-9-success: HTTP integration delimiter",
+      "passed": true
+    },
+    {
+      "name": "stream-9-success: HTTP status and request identity",
+      "passed": true
+    },
+    {
+      "name": "stream-9-success: CORS and compression composition",
+      "passed": true
+    },
+    {
+      "name": "stream-9-success: no error trailers",
+      "passed": true
+    },
+    {
+      "name": "stream-9-success: gated incremental chunks",
+      "passed": true
+    },
+    {
+      "name": "stream-0-success: body closed before invocation cleanup",
+      "passed": true
+    },
+    {
+      "name": "stream-0-success: correlated span and log",
+      "passed": true
+    },
+    {
+      "name": "stream-0-success: OTel terminal error state",
+      "passed": true
+    },
+    {
+      "name": "stream-1-success: body closed before invocation cleanup",
+      "passed": true
+    },
+    {
+      "name": "stream-1-success: correlated span and log",
+      "passed": true
+    },
+    {
+      "name": "stream-1-success: OTel terminal error state",
+      "passed": true
+    },
+    {
+      "name": "stream-2-read-error: body closed before invocation cleanup",
+      "passed": true
+    },
+    {
+      "name": "stream-2-read-error: correlated span and log",
+      "passed": true
+    },
+    {
+      "name": "stream-2-read-error: OTel terminal error state",
+      "passed": true
+    },
+    {
+      "name": "stream-3-close-error: body closed before invocation cleanup",
+      "passed": true
+    },
+    {
+      "name": "stream-3-close-error: correlated span and log",
+      "passed": true
+    },
+    {
+      "name": "stream-3-close-error: OTel terminal error state",
+      "passed": true
+    },
+    {
+      "name": "stream-4-panic: body closed before invocation cleanup",
+      "passed": true
+    },
+    {
+      "name": "stream-4-panic: correlated span and log",
+      "passed": true
+    },
+    {
+      "name": "stream-4-panic: OTel terminal error state",
+      "passed": true
+    },
+    {
+      "name": "stream-5-deadline: body closed before invocation cleanup",
+      "passed": true
+    },
+    {
+      "name": "stream-5-deadline: correlated span and log",
+      "passed": true
+    },
+    {
+      "name": "stream-5-deadline: OTel terminal error state",
+      "passed": true
+    },
+    {
+      "name": "stream-6-no-content: body closed before invocation cleanup",
+      "passed": true
+    },
+    {
+      "name": "stream-6-no-content: correlated span and log",
+      "passed": true
+    },
+    {
+      "name": "stream-6-no-content: OTel terminal error state",
+      "passed": true
+    },
+    {
+      "name": "stream-7-http-error: body closed before invocation cleanup",
+      "passed": true
+    },
+    {
+      "name": "stream-7-http-error: correlated span and log",
+      "passed": true
+    },
+    {
+      "name": "stream-7-http-error: OTel terminal error state",
+      "passed": true
+    },
+    {
+      "name": "stream-8-invalid-event: body closed before invocation cleanup",
+      "passed": true
+    },
+    {
+      "name": "stream-8-invalid-event: correlated span and log",
+      "passed": true
+    },
+    {
+      "name": "stream-8-invalid-event: OTel terminal error state",
+      "passed": true
+    },
+    {
+      "name": "stream-9-success: body closed before invocation cleanup",
+      "passed": true
+    },
+    {
+      "name": "stream-9-success: correlated span and log",
+      "passed": true
+    },
+    {
+      "name": "stream-9-success: OTel terminal error state",
+      "passed": true
+    },
+    {
+      "name": "warm execution continues after stream failures",
+      "passed": true
+    }
+  ],
+  "invocations": [
+    {
+      "mode": "success",
+      "result": {
+        "action": "response",
+        "body_base64": "Y2h1bmstb25lY2h1bmstdHdv",
+        "completed": true,
+        "content_type": "application/vnd.awslambda.http-integration-response",
+        "delimiter_valid": true,
+        "first_chunk": "chunk-one",
+        "id": "stream-0-success",
+        "metadata": {
+          "headers": {
+            "access-control-allow-origin": "https://app.test",
+            "content-type": "text/plain",
+            "transfer-encoding": "chunked",
+            "vary": "Origin",
+            "x-request-id": "stream-0-success"
+          },
+          "statusCode": 200
+        },
+        "response_mode": "",
+        "trailers": {
+          "Lambda-Runtime-Function-Error-Body": null,
+          "Lambda-Runtime-Function-Error-Type": null
+        },
+        "transfer_encoding": [
+          "chunked"
+        ]
+      }
+    },
+    {
+      "mode": "success",
+      "result": {
+        "action": "response",
+        "body_base64": "Y2h1bmstb25lY2h1bmstdHdv",
+        "completed": true,
+        "content_type": "application/vnd.awslambda.http-integration-response",
+        "delimiter_valid": true,
+        "first_chunk": "chunk-one",
+        "id": "stream-1-success",
+        "metadata": {
+          "headers": {
+            "access-control-allow-origin": "https://app.test",
+            "content-type": "text/plain",
+            "transfer-encoding": "chunked",
+            "vary": "Origin",
+            "x-request-id": "stream-1-success"
+          },
+          "statusCode": 200
+        },
+        "response_mode": "",
+        "trailers": {
+          "Lambda-Runtime-Function-Error-Body": null,
+          "Lambda-Runtime-Function-Error-Type": null
+        },
+        "transfer_encoding": [
+          "chunked"
+        ]
+      }
+    },
+    {
+      "mode": "read-error",
+      "result": {
+        "action": "response",
+        "body_base64": "Y2h1bmstb25l",
+        "completed": true,
+        "content_type": "application/vnd.awslambda.http-integration-response",
+        "delimiter_valid": true,
+        "first_chunk": "chunk-one",
+        "id": "stream-2-read-error",
+        "metadata": {
+          "headers": {
+            "access-control-allow-origin": "https://app.test",
+            "content-type": "text/plain",
+            "transfer-encoding": "chunked",
+            "vary": "Origin",
+            "x-request-id": "stream-2-read-error"
+          },
+          "statusCode": 200
+        },
+        "response_mode": "",
+        "trailers": {
+          "Lambda-Runtime-Function-Error-Body": [
+            "eyJlcnJvck1lc3NhZ2UiOiJzdHJlYW0gcmVhZCBmYWlsdXJlIiwiZXJyb3JUeXBlIjoiZXJyb3JTdHJpbmcifQ=="
+          ],
+          "Lambda-Runtime-Function-Error-Type": [
+            "errorString"
+          ]
+        },
+        "transfer_encoding": [
+          "chunked"
+        ]
+      }
+    },
+    {
+      "mode": "close-error",
+      "result": {
+        "action": "response",
+        "body_base64": "Y2h1bmstb25lY2h1bmstdHdv",
+        "completed": true,
+        "content_type": "application/vnd.awslambda.http-integration-response",
+        "delimiter_valid": true,
+        "first_chunk": "chunk-one",
+        "id": "stream-3-close-error",
+        "metadata": {
+          "headers": {
+            "access-control-allow-origin": "https://app.test",
+            "content-type": "text/plain",
+            "transfer-encoding": "chunked",
+            "vary": "Origin",
+            "x-request-id": "stream-3-close-error"
+          },
+          "statusCode": 200
+        },
+        "response_mode": "",
+        "trailers": {
+          "Lambda-Runtime-Function-Error-Body": [
+            "eyJlcnJvck1lc3NhZ2UiOiJzdHJlYW0gY2xvc2UgZmFpbHVyZSIsImVycm9yVHlwZSI6ImVycm9yU3RyaW5nIn0="
+          ],
+          "Lambda-Runtime-Function-Error-Type": [
+            "errorString"
+          ]
+        },
+        "transfer_encoding": [
+          "chunked"
+        ]
+      }
+    },
+    {
+      "mode": "panic",
+      "result": {
+        "action": "response",
+        "body_base64": "Y2h1bmstb25l",
+        "completed": true,
+        "content_type": "application/vnd.awslambda.http-integration-response",
+        "delimiter_valid": true,
+        "first_chunk": "chunk-one",
+        "id": "stream-4-panic",
+        "metadata": {
+          "headers": {
+            "access-control-allow-origin": "https://app.test",
+            "content-type": "text/plain",
+            "transfer-encoding": "chunked",
+            "vary": "Origin",
+            "x-request-id": "stream-4-panic"
+          },
+          "statusCode": 200
+        },
+        "response_mode": "",
+        "trailers": {
+          "Lambda-Runtime-Function-Error-Body": [
+            "eyJlcnJvck1lc3NhZ2UiOiJzdHJlYW0gaGFuZGxlciBwYW5pYzogc3RyZWFtIHJlYWQgcGFuaWMiLCJlcnJvclR5cGUiOiJTdHJlYW1QYW5pY0Vycm9yIn0="
+          ],
+          "Lambda-Runtime-Function-Error-Type": [
+            "StreamPanicError"
+          ]
+        },
+        "transfer_encoding": [
+          "chunked"
+        ]
+      }
+    },
+    {
+      "mode": "deadline",
+      "result": {
+        "action": "response",
+        "body_base64": "Y2h1bmstb25l",
+        "completed": true,
+        "content_type": "application/vnd.awslambda.http-integration-response",
+        "delimiter_valid": true,
+        "first_chunk": "chunk-one",
+        "id": "stream-5-deadline",
+        "metadata": {
+          "headers": {
+            "access-control-allow-origin": "https://app.test",
+            "content-type": "text/plain",
+            "transfer-encoding": "chunked",
+            "vary": "Origin",
+            "x-request-id": "stream-5-deadline"
+          },
+          "statusCode": 200
+        },
+        "response_mode": "",
+        "trailers": {
+          "Lambda-Runtime-Function-Error-Body": [
+            "eyJlcnJvck1lc3NhZ2UiOiJjb250ZXh0IGRlYWRsaW5lIGV4Y2VlZGVkIiwiZXJyb3JUeXBlIjoiZGVhZGxpbmVFeGNlZWRlZEVycm9yIn0="
+          ],
+          "Lambda-Runtime-Function-Error-Type": [
+            "deadlineExceededError"
+          ]
+        },
+        "transfer_encoding": [
+          "chunked"
+        ]
+      }
+    },
+    {
+      "mode": "no-content",
+      "result": {
+        "action": "response",
+        "body_base64": "",
+        "completed": true,
+        "content_type": "application/vnd.awslambda.http-integration-response",
+        "delimiter_valid": true,
+        "first_chunk": "",
+        "id": "stream-6-no-content",
+        "metadata": {
+          "headers": {
+            "access-control-allow-origin": "https://app.test",
+            "content-type": "application/json",
+            "transfer-encoding": "chunked",
+            "vary": "Origin",
+            "x-request-id": "stream-6-no-content"
+          },
+          "statusCode": 204
+        },
+        "response_mode": "",
+        "trailers": {
+          "Lambda-Runtime-Function-Error-Body": null,
+          "Lambda-Runtime-Function-Error-Type": null
+        },
+        "transfer_encoding": [
+          "chunked"
+        ]
+      }
+    },
+    {
+      "mode": "http-error",
+      "result": {
+        "action": "response",
+        "body_base64": "eyJzdGF0dXNDb2RlIjo0MDAsImVycm9yIjoiQmFkUmVxdWVzdEVycm9yIiwibWVzc2FnZSI6InN0cmVhbSBoYW5kbGVyIHJlamVjdGVkIn0=",
+        "completed": true,
+        "content_type": "application/vnd.awslambda.http-integration-response",
+        "delimiter_valid": true,
+        "first_chunk": "{\"statusC",
+        "id": "stream-7-http-error",
+        "metadata": {
+          "headers": {
+            "access-control-allow-origin": "https://app.test",
+            "content-type": "application/json",
+            "transfer-encoding": "chunked",
+            "vary": "Origin",
+            "x-request-id": "stream-7-http-error"
+          },
+          "statusCode": 400
+        },
+        "response_mode": "",
+        "trailers": {
+          "Lambda-Runtime-Function-Error-Body": null,
+          "Lambda-Runtime-Function-Error-Type": null
+        },
+        "transfer_encoding": [
+          "chunked"
+        ]
+      }
+    },
+    {
+      "mode": "invalid-event",
+      "result": {
+        "action": "error",
+        "body": "{\"errorMessage\":\"event is not compatible with the HTTP resolver\",\"errorType\":\"InvalidEventError\"}",
+        "completed": true,
+        "content_type": "application/json",
+        "id": "stream-8-invalid-event",
+        "response_mode": "",
+        "transfer_encoding": [
+          "chunked"
+        ]
+      }
+    },
+    {
+      "mode": "success",
+      "result": {
+        "action": "response",
+        "body_base64": "Y2h1bmstb25lY2h1bmstdHdv",
+        "completed": true,
+        "content_type": "application/vnd.awslambda.http-integration-response",
+        "delimiter_valid": true,
+        "first_chunk": "chunk-one",
+        "id": "stream-9-success",
+        "metadata": {
+          "headers": {
+            "access-control-allow-origin": "https://app.test",
+            "content-type": "text/plain",
+            "transfer-encoding": "chunked",
+            "vary": "Origin",
+            "x-request-id": "stream-9-success"
+          },
+          "statusCode": 200
+        },
+        "response_mode": "",
+        "trailers": {
+          "Lambda-Runtime-Function-Error-Body": null,
+          "Lambda-Runtime-Function-Error-Type": null
+        },
+        "transfer_encoding": [
+          "chunked"
+        ]
+      }
+    }
+  ],
+  "cleanup_errors": [],
+  "passed": true,
+  "assertion_count": 95
+}

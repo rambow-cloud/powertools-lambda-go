@@ -1,0 +1,164 @@
+{
+  "region": "ap-east-1",
+  "privacy": "Account, profile, stack identifiers and trace IDs are omitted; original evidence remains local.",
+  "checked_at_utc": "2026-09-12T20:29:21.120793+00:00",
+  "cleaned_at_utc": "2026-09-12T20:31:18.874657+00:00",
+  "checks_passed": 206,
+  "checks_total": 206,
+  "invocations": 20,
+  "cgo_enabled": false,
+  "collector": {
+    "source_url": "https://codeload.github.com/open-telemetry/opentelemetry-lambda/tar.gz/refs/tags/layer-collector/0.23.0",
+    "source_sha256": "7b71e669e4a86d3108670126000b622adb729af2e548b9c7e2cb2a810b0096b2",
+    "modification": "Use a trace-only component factory: OTLP receiver and awsxrayexporter v0.157.0",
+    "cgo_enabled": false,
+    "hashes": {
+      "amd64": "d9f86b1267a67d5e4ab846779c45d310c9d9f6ef11725c5937c5749210023224",
+      "arm64": "b341485f7e2b2dccbf7ed1efdb869373e1713387a6cc825c1d054c67020b3dc4"
+    }
+  },
+  "function_build_hashes": {
+    "amd64\\bootstrap": "da64f20781135635a7bb51d58dffdb3c79357226758dbe5479d85f147dbe7cfb",
+    "collector-amd64.zip": "16d07443dd1b0059a16a3e62b1779d428a006e5f8de9232b37aebcee8935c838",
+    "function-amd64.zip": "0a27e82c3594be53755b79d633b8a58a7308612ed0d3efaa214748c76f9c8c91",
+    "arm64\\bootstrap": "b30cf8296de27e03ec59c20878525023e3d30465ee0d14a67190538e056f5a47",
+    "collector-arm64.zip": "e81e17847132f6575591b4994928d6a99a09bcc9b53943d889d508f1a5a81b1a",
+    "function-arm64.zip": "3b2a89c5fff5659da6c4775571f9bf142e24b14190abdd671935fbd4ac33d6b6",
+    "function-amd64-ba6cd7.zip": "98f2bb967578ddde47b01fe0785bc27b2ee4c350e5448746526aa9de7cf32b91",
+    "function-arm64-ba6cd7.zip": "29df2183290c257ceedd47fc25655b95a1dfaaba6bd00e035017063020f8a166"
+  },
+  "cases": [
+    {
+      "id": "otel-amd64-native",
+      "backend": "otel",
+      "arch": "amd64",
+      "mode": "native"
+    },
+    {
+      "id": "otel-amd64-success",
+      "backend": "otel",
+      "arch": "amd64",
+      "mode": "success"
+    },
+    {
+      "id": "otel-amd64-error",
+      "backend": "otel",
+      "arch": "amd64",
+      "mode": "error"
+    },
+    {
+      "id": "otel-amd64-unsampled",
+      "backend": "otel",
+      "arch": "amd64",
+      "mode": "unsampled"
+    },
+    {
+      "id": "otel-amd64-panic",
+      "backend": "otel",
+      "arch": "amd64",
+      "mode": "panic"
+    },
+    {
+      "id": "otel-arm64-native",
+      "backend": "otel",
+      "arch": "arm64",
+      "mode": "native"
+    },
+    {
+      "id": "otel-arm64-success",
+      "backend": "otel",
+      "arch": "arm64",
+      "mode": "success"
+    },
+    {
+      "id": "otel-arm64-error",
+      "backend": "otel",
+      "arch": "arm64",
+      "mode": "error"
+    },
+    {
+      "id": "otel-arm64-unsampled",
+      "backend": "otel",
+      "arch": "arm64",
+      "mode": "unsampled"
+    },
+    {
+      "id": "otel-arm64-panic",
+      "backend": "otel",
+      "arch": "arm64",
+      "mode": "panic"
+    },
+    {
+      "id": "xray-amd64-native",
+      "backend": "xray",
+      "arch": "amd64",
+      "mode": "native"
+    },
+    {
+      "id": "xray-amd64-success",
+      "backend": "xray",
+      "arch": "amd64",
+      "mode": "success"
+    },
+    {
+      "id": "xray-amd64-error",
+      "backend": "xray",
+      "arch": "amd64",
+      "mode": "error"
+    },
+    {
+      "id": "xray-amd64-unsampled",
+      "backend": "xray",
+      "arch": "amd64",
+      "mode": "unsampled"
+    },
+    {
+      "id": "xray-amd64-panic",
+      "backend": "xray",
+      "arch": "amd64",
+      "mode": "panic"
+    },
+    {
+      "id": "xray-arm64-native",
+      "backend": "xray",
+      "arch": "arm64",
+      "mode": "native"
+    },
+    {
+      "id": "xray-arm64-success",
+      "backend": "xray",
+      "arch": "arm64",
+      "mode": "success"
+    },
+    {
+      "id": "xray-arm64-error",
+      "backend": "xray",
+      "arch": "arm64",
+      "mode": "error"
+    },
+    {
+      "id": "xray-arm64-unsampled",
+      "backend": "xray",
+      "arch": "arm64",
+      "mode": "unsampled"
+    },
+    {
+      "id": "xray-arm64-panic",
+      "backend": "xray",
+      "arch": "arm64",
+      "mode": "panic"
+    }
+  ],
+  "evidence_sha256": {
+    "report.json": "e7a71729f611a5db04b2e8cf434d2430cce9991dae2e5b8d827a0264e1024236",
+    "invocations.json": "afa7301c16e91548bedc330abfa5cbf9901c5f753ee0cb40d9cad608e5d51e07",
+    "cloudwatch.json": "20b7af402306885f7cb4b3ba513ab142717b9c63212f1de13d1eca7df23cd18a",
+    "xray.json": "3b89c4176932c49be3d44a23f85486dbdb720e74a7de7ee1ac87bdb0b5ae2403",
+    "template.json": "607340910740b9c95764bbee3e71d4ee267f5927af2239b127845fca16900c44"
+  },
+  "known_gaps": [
+    "X-Ray SDK v2 DynamoDB middleware omits table_name",
+    "OTel and X-Ray SDK operation names and metadata schemas differ",
+    "Hard timeout, freeze recovery, stress, and performance budgets are not verified"
+  ]
+}

@@ -1,0 +1,4290 @@
+{
+  "version": "2.35.0",
+  "avroVersion": "1.12.1",
+  "cases": [
+    {
+      "name": "valid-0",
+      "schema": "\"null\"",
+      "data": "",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": null
+    },
+    {
+      "name": "valid-1",
+      "schema": "\"boolean\"",
+      "data": "AA==",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": false,
+      "error": null
+    },
+    {
+      "name": "truncated-2",
+      "schema": "\"boolean\"",
+      "data": "",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: truncated buffer, message: , schema: \"boolean\""
+      }
+    },
+    {
+      "name": "trailing-3",
+      "schema": "\"boolean\"",
+      "data": "AAA=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: trailing data, message: AAA=, schema: \"boolean\""
+      }
+    },
+    {
+      "name": "valid-4",
+      "schema": "\"boolean\"",
+      "data": "AQ==",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": true,
+      "error": null
+    },
+    {
+      "name": "truncated-5",
+      "schema": "\"boolean\"",
+      "data": "",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: truncated buffer, message: , schema: \"boolean\""
+      }
+    },
+    {
+      "name": "trailing-6",
+      "schema": "\"boolean\"",
+      "data": "AQA=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: trailing data, message: AQA=, schema: \"boolean\""
+      }
+    },
+    {
+      "name": "valid-7",
+      "schema": "\"int\"",
+      "data": "/////w8=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": -2147483648,
+      "error": null
+    },
+    {
+      "name": "truncated-8",
+      "schema": "\"int\"",
+      "data": "/////w==",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: truncated buffer, message: /////w==, schema: \"int\""
+      }
+    },
+    {
+      "name": "trailing-9",
+      "schema": "\"int\"",
+      "data": "/////w8A",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: trailing data, message: /////w8A, schema: \"int\""
+      }
+    },
+    {
+      "name": "valid-10",
+      "schema": "\"int\"",
+      "data": "AQ==",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": -1,
+      "error": null
+    },
+    {
+      "name": "truncated-11",
+      "schema": "\"int\"",
+      "data": "",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: truncated buffer, message: , schema: \"int\""
+      }
+    },
+    {
+      "name": "trailing-12",
+      "schema": "\"int\"",
+      "data": "AQA=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: trailing data, message: AQA=, schema: \"int\""
+      }
+    },
+    {
+      "name": "valid-13",
+      "schema": "\"int\"",
+      "data": "AA==",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": 0,
+      "error": null
+    },
+    {
+      "name": "truncated-14",
+      "schema": "\"int\"",
+      "data": "",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: truncated buffer, message: , schema: \"int\""
+      }
+    },
+    {
+      "name": "trailing-15",
+      "schema": "\"int\"",
+      "data": "AAA=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: trailing data, message: AAA=, schema: \"int\""
+      }
+    },
+    {
+      "name": "valid-16",
+      "schema": "\"int\"",
+      "data": "Ag==",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": 1,
+      "error": null
+    },
+    {
+      "name": "truncated-17",
+      "schema": "\"int\"",
+      "data": "",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: truncated buffer, message: , schema: \"int\""
+      }
+    },
+    {
+      "name": "trailing-18",
+      "schema": "\"int\"",
+      "data": "AgA=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: trailing data, message: AgA=, schema: \"int\""
+      }
+    },
+    {
+      "name": "valid-19",
+      "schema": "\"int\"",
+      "data": "/v///w8=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": 2147483647,
+      "error": null
+    },
+    {
+      "name": "truncated-20",
+      "schema": "\"int\"",
+      "data": "/v///w==",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: truncated buffer, message: /v///w==, schema: \"int\""
+      }
+    },
+    {
+      "name": "trailing-21",
+      "schema": "\"int\"",
+      "data": "/v///w8A",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: trailing data, message: /v///w8A, schema: \"int\""
+      }
+    },
+    {
+      "name": "valid-22",
+      "schema": "\"long\"",
+      "data": "/P///////x8=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": 9007199254740990,
+      "error": null
+    },
+    {
+      "name": "truncated-23",
+      "schema": "\"long\"",
+      "data": "/P///////w==",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: truncated buffer, message: /P///////w==, schema: \"long\""
+      }
+    },
+    {
+      "name": "trailing-24",
+      "schema": "\"long\"",
+      "data": "/P///////x8A",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: trailing data, message: /P///////x8A, schema: \"long\""
+      }
+    },
+    {
+      "name": "valid-25",
+      "schema": "\"long\"",
+      "data": "gYCAgBA=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": -2147483649,
+      "error": null
+    },
+    {
+      "name": "truncated-26",
+      "schema": "\"long\"",
+      "data": "gYCAgA==",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: truncated buffer, message: gYCAgA==, schema: \"long\""
+      }
+    },
+    {
+      "name": "trailing-27",
+      "schema": "\"long\"",
+      "data": "gYCAgBAA",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: trailing data, message: gYCAgBAA, schema: \"long\""
+      }
+    },
+    {
+      "name": "valid-28",
+      "schema": "\"long\"",
+      "data": "AQ==",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": -1,
+      "error": null
+    },
+    {
+      "name": "truncated-29",
+      "schema": "\"long\"",
+      "data": "",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: truncated buffer, message: , schema: \"long\""
+      }
+    },
+    {
+      "name": "trailing-30",
+      "schema": "\"long\"",
+      "data": "AQA=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: trailing data, message: AQA=, schema: \"long\""
+      }
+    },
+    {
+      "name": "valid-31",
+      "schema": "\"long\"",
+      "data": "AA==",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": 0,
+      "error": null
+    },
+    {
+      "name": "truncated-32",
+      "schema": "\"long\"",
+      "data": "",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: truncated buffer, message: , schema: \"long\""
+      }
+    },
+    {
+      "name": "trailing-33",
+      "schema": "\"long\"",
+      "data": "AAA=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: trailing data, message: AAA=, schema: \"long\""
+      }
+    },
+    {
+      "name": "valid-34",
+      "schema": "\"long\"",
+      "data": "Ag==",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": 1,
+      "error": null
+    },
+    {
+      "name": "truncated-35",
+      "schema": "\"long\"",
+      "data": "",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: truncated buffer, message: , schema: \"long\""
+      }
+    },
+    {
+      "name": "trailing-36",
+      "schema": "\"long\"",
+      "data": "AgA=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: trailing data, message: AgA=, schema: \"long\""
+      }
+    },
+    {
+      "name": "valid-37",
+      "schema": "\"long\"",
+      "data": "gICAgBA=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": 2147483648,
+      "error": null
+    },
+    {
+      "name": "truncated-38",
+      "schema": "\"long\"",
+      "data": "gICAgA==",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: truncated buffer, message: gICAgA==, schema: \"long\""
+      }
+    },
+    {
+      "name": "trailing-39",
+      "schema": "\"long\"",
+      "data": "gICAgBAA",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: trailing data, message: gICAgBAA, schema: \"long\""
+      }
+    },
+    {
+      "name": "valid-40",
+      "schema": "\"long\"",
+      "data": "/P///////x8=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": 9007199254740990,
+      "error": null
+    },
+    {
+      "name": "truncated-41",
+      "schema": "\"long\"",
+      "data": "/P///////w==",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: truncated buffer, message: /P///////w==, schema: \"long\""
+      }
+    },
+    {
+      "name": "trailing-42",
+      "schema": "\"long\"",
+      "data": "/P///////x8A",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: trailing data, message: /P///////x8A, schema: \"long\""
+      }
+    },
+    {
+      "name": "valid-43",
+      "schema": "\"float\"",
+      "data": "AAAAAA==",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": 0,
+      "error": null
+    },
+    {
+      "name": "truncated-44",
+      "schema": "\"float\"",
+      "data": "AAAA",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: truncated buffer, message: AAAA, schema: \"float\""
+      }
+    },
+    {
+      "name": "trailing-45",
+      "schema": "\"float\"",
+      "data": "AAAAAAA=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: trailing data, message: AAAAAAA=, schema: \"float\""
+      }
+    },
+    {
+      "name": "valid-46",
+      "schema": "\"float\"",
+      "data": "AAAAgA==",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": {
+        "$": "-0"
+      },
+      "error": null
+    },
+    {
+      "name": "truncated-47",
+      "schema": "\"float\"",
+      "data": "AAAA",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: truncated buffer, message: AAAA, schema: \"float\""
+      }
+    },
+    {
+      "name": "trailing-48",
+      "schema": "\"float\"",
+      "data": "AAAAgAA=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: trailing data, message: AAAAgAA=, schema: \"float\""
+      }
+    },
+    {
+      "name": "valid-49",
+      "schema": "\"float\"",
+      "data": "AADAPw==",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": 1.5,
+      "error": null
+    },
+    {
+      "name": "truncated-50",
+      "schema": "\"float\"",
+      "data": "AADA",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: truncated buffer, message: AADA, schema: \"float\""
+      }
+    },
+    {
+      "name": "trailing-51",
+      "schema": "\"float\"",
+      "data": "AADAPwA=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: trailing data, message: AADAPwA=, schema: \"float\""
+      }
+    },
+    {
+      "name": "valid-52",
+      "schema": "\"float\"",
+      "data": "AACgvw==",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": -1.25,
+      "error": null
+    },
+    {
+      "name": "truncated-53",
+      "schema": "\"float\"",
+      "data": "AACg",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: truncated buffer, message: AACg, schema: \"float\""
+      }
+    },
+    {
+      "name": "trailing-54",
+      "schema": "\"float\"",
+      "data": "AACgvwA=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: trailing data, message: AACgvwA=, schema: \"float\""
+      }
+    },
+    {
+      "name": "valid-55",
+      "schema": "\"float\"",
+      "data": "yvJJcQ==",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": 1.0000000150474662e+30,
+      "error": null
+    },
+    {
+      "name": "truncated-56",
+      "schema": "\"float\"",
+      "data": "yvJJ",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: truncated buffer, message: yvJJ, schema: \"float\""
+      }
+    },
+    {
+      "name": "trailing-57",
+      "schema": "\"float\"",
+      "data": "yvJJcQA=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: trailing data, message: yvJJcQA=, schema: \"float\""
+      }
+    },
+    {
+      "name": "valid-58",
+      "schema": "\"float\"",
+      "data": "AACAfw==",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": {
+        "$": "Infinity"
+      },
+      "error": null
+    },
+    {
+      "name": "truncated-59",
+      "schema": "\"float\"",
+      "data": "AACA",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: truncated buffer, message: AACA, schema: \"float\""
+      }
+    },
+    {
+      "name": "trailing-60",
+      "schema": "\"float\"",
+      "data": "AACAfwA=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: trailing data, message: AACAfwA=, schema: \"float\""
+      }
+    },
+    {
+      "name": "valid-61",
+      "schema": "\"float\"",
+      "data": "AACA/w==",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": {
+        "$": "-Infinity"
+      },
+      "error": null
+    },
+    {
+      "name": "truncated-62",
+      "schema": "\"float\"",
+      "data": "AACA",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: truncated buffer, message: AACA, schema: \"float\""
+      }
+    },
+    {
+      "name": "trailing-63",
+      "schema": "\"float\"",
+      "data": "AACA/wA=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: trailing data, message: AACA/wA=, schema: \"float\""
+      }
+    },
+    {
+      "name": "valid-64",
+      "schema": "\"float\"",
+      "data": "AADAfw==",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": {
+        "$": "NaN"
+      },
+      "error": null
+    },
+    {
+      "name": "truncated-65",
+      "schema": "\"float\"",
+      "data": "AADA",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: truncated buffer, message: AADA, schema: \"float\""
+      }
+    },
+    {
+      "name": "trailing-66",
+      "schema": "\"float\"",
+      "data": "AADAfwA=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: trailing data, message: AADAfwA=, schema: \"float\""
+      }
+    },
+    {
+      "name": "valid-67",
+      "schema": "\"double\"",
+      "data": "AAAAAAAAAAA=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": 0,
+      "error": null
+    },
+    {
+      "name": "truncated-68",
+      "schema": "\"double\"",
+      "data": "AAAAAAAAAA==",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: truncated buffer, message: AAAAAAAAAA==, schema: \"double\""
+      }
+    },
+    {
+      "name": "trailing-69",
+      "schema": "\"double\"",
+      "data": "AAAAAAAAAAAA",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: trailing data, message: AAAAAAAAAAAA, schema: \"double\""
+      }
+    },
+    {
+      "name": "valid-70",
+      "schema": "\"double\"",
+      "data": "AAAAAAAAAIA=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": {
+        "$": "-0"
+      },
+      "error": null
+    },
+    {
+      "name": "truncated-71",
+      "schema": "\"double\"",
+      "data": "AAAAAAAAAA==",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: truncated buffer, message: AAAAAAAAAA==, schema: \"double\""
+      }
+    },
+    {
+      "name": "trailing-72",
+      "schema": "\"double\"",
+      "data": "AAAAAAAAAIAA",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: trailing data, message: AAAAAAAAAIAA, schema: \"double\""
+      }
+    },
+    {
+      "name": "valid-73",
+      "schema": "\"double\"",
+      "data": "AQAAAAAAAAA=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": 5e-324,
+      "error": null
+    },
+    {
+      "name": "truncated-74",
+      "schema": "\"double\"",
+      "data": "AQAAAAAAAA==",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: truncated buffer, message: AQAAAAAAAA==, schema: \"double\""
+      }
+    },
+    {
+      "name": "trailing-75",
+      "schema": "\"double\"",
+      "data": "AQAAAAAAAAAA",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: trailing data, message: AQAAAAAAAAAA, schema: \"double\""
+      }
+    },
+    {
+      "name": "valid-76",
+      "schema": "\"double\"",
+      "data": "////////738=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": 1.7976931348623157e+308,
+      "error": null
+    },
+    {
+      "name": "truncated-77",
+      "schema": "\"double\"",
+      "data": "////////7w==",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: truncated buffer, message: ////////7w==, schema: \"double\""
+      }
+    },
+    {
+      "name": "trailing-78",
+      "schema": "\"double\"",
+      "data": "////////738A",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: trailing data, message: ////////738A, schema: \"double\""
+      }
+    },
+    {
+      "name": "valid-79",
+      "schema": "\"double\"",
+      "data": "AAAAAAAA9D8=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": 1.25,
+      "error": null
+    },
+    {
+      "name": "truncated-80",
+      "schema": "\"double\"",
+      "data": "AAAAAAAA9A==",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: truncated buffer, message: AAAAAAAA9A==, schema: \"double\""
+      }
+    },
+    {
+      "name": "trailing-81",
+      "schema": "\"double\"",
+      "data": "AAAAAAAA9D8A",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: trailing data, message: AAAAAAAA9D8A, schema: \"double\""
+      }
+    },
+    {
+      "name": "valid-82",
+      "schema": "\"double\"",
+      "data": "AAAAAAAA8H8=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": {
+        "$": "Infinity"
+      },
+      "error": null
+    },
+    {
+      "name": "truncated-83",
+      "schema": "\"double\"",
+      "data": "AAAAAAAA8A==",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: truncated buffer, message: AAAAAAAA8A==, schema: \"double\""
+      }
+    },
+    {
+      "name": "trailing-84",
+      "schema": "\"double\"",
+      "data": "AAAAAAAA8H8A",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: trailing data, message: AAAAAAAA8H8A, schema: \"double\""
+      }
+    },
+    {
+      "name": "valid-85",
+      "schema": "\"double\"",
+      "data": "AAAAAAAA8P8=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": {
+        "$": "-Infinity"
+      },
+      "error": null
+    },
+    {
+      "name": "truncated-86",
+      "schema": "\"double\"",
+      "data": "AAAAAAAA8A==",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: truncated buffer, message: AAAAAAAA8A==, schema: \"double\""
+      }
+    },
+    {
+      "name": "trailing-87",
+      "schema": "\"double\"",
+      "data": "AAAAAAAA8P8A",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: trailing data, message: AAAAAAAA8P8A, schema: \"double\""
+      }
+    },
+    {
+      "name": "valid-88",
+      "schema": "\"double\"",
+      "data": "AAAAAAAA+H8=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": {
+        "$": "NaN"
+      },
+      "error": null
+    },
+    {
+      "name": "truncated-89",
+      "schema": "\"double\"",
+      "data": "AAAAAAAA+A==",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: truncated buffer, message: AAAAAAAA+A==, schema: \"double\""
+      }
+    },
+    {
+      "name": "trailing-90",
+      "schema": "\"double\"",
+      "data": "AAAAAAAA+H8A",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: trailing data, message: AAAAAAAA+H8A, schema: \"double\""
+      }
+    },
+    {
+      "name": "valid-91",
+      "schema": "\"string\"",
+      "data": "AA==",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": "",
+      "error": null
+    },
+    {
+      "name": "truncated-92",
+      "schema": "\"string\"",
+      "data": "",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: truncated buffer, message: , schema: \"string\""
+      }
+    },
+    {
+      "name": "trailing-93",
+      "schema": "\"string\"",
+      "data": "AAA=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: trailing data, message: AAA=, schema: \"string\""
+      }
+    },
+    {
+      "name": "valid-94",
+      "schema": "\"string\"",
+      "data": "CmhlbGxv",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": "hello",
+      "error": null
+    },
+    {
+      "name": "truncated-95",
+      "schema": "\"string\"",
+      "data": "CmhlbGw=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: truncated buffer, message: CmhlbGw=, schema: \"string\""
+      }
+    },
+    {
+      "name": "trailing-96",
+      "schema": "\"string\"",
+      "data": "CmhlbGxvAA==",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: trailing data, message: CmhlbGxvAA==, schema: \"string\""
+      }
+    },
+    {
+      "name": "valid-97",
+      "schema": "\"string\"",
+      "data": "DMOp8J+YgA==",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": "é😀",
+      "error": null
+    },
+    {
+      "name": "truncated-98",
+      "schema": "\"string\"",
+      "data": "DMOp8J+Y",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: truncated buffer, message: DMOp8J+Y, schema: \"string\""
+      }
+    },
+    {
+      "name": "trailing-99",
+      "schema": "\"string\"",
+      "data": "DMOp8J+YgAA=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: trailing data, message: DMOp8J+YgAA=, schema: \"string\""
+      }
+    },
+    {
+      "name": "valid-100",
+      "schema": "\"string\"",
+      "data": "EO+7v3ZhbHVl",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": "﻿value",
+      "error": null
+    },
+    {
+      "name": "truncated-101",
+      "schema": "\"string\"",
+      "data": "EO+7v3ZhbHU=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: truncated buffer, message: EO+7v3ZhbHU=, schema: \"string\""
+      }
+    },
+    {
+      "name": "trailing-102",
+      "schema": "\"string\"",
+      "data": "EO+7v3ZhbHVlAA==",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: trailing data, message: EO+7v3ZhbHVlAA==, schema: \"string\""
+      }
+    },
+    {
+      "name": "valid-103",
+      "schema": "\"string\"",
+      "data": "AgA=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": "\u0000",
+      "error": null
+    },
+    {
+      "name": "truncated-104",
+      "schema": "\"string\"",
+      "data": "Ag==",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: truncated buffer, message: Ag==, schema: \"string\""
+      }
+    },
+    {
+      "name": "trailing-105",
+      "schema": "\"string\"",
+      "data": "AgAA",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: trailing data, message: AgAA, schema: \"string\""
+      }
+    },
+    {
+      "name": "valid-106",
+      "schema": "\"bytes\"",
+      "data": "AA==",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": {
+        "$": "bytes",
+        "data": []
+      },
+      "error": null
+    },
+    {
+      "name": "truncated-107",
+      "schema": "\"bytes\"",
+      "data": "",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: truncated buffer, message: , schema: \"bytes\""
+      }
+    },
+    {
+      "name": "trailing-108",
+      "schema": "\"bytes\"",
+      "data": "AAA=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: trailing data, message: AAA=, schema: \"bytes\""
+      }
+    },
+    {
+      "name": "valid-109",
+      "schema": "\"bytes\"",
+      "data": "CAD/gEE=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": {
+        "$": "bytes",
+        "data": [
+          0,
+          255,
+          128,
+          65
+        ]
+      },
+      "error": null
+    },
+    {
+      "name": "truncated-110",
+      "schema": "\"bytes\"",
+      "data": "CAD/gA==",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: truncated buffer, message: CAD/gA==, schema: \"bytes\""
+      }
+    },
+    {
+      "name": "trailing-111",
+      "schema": "\"bytes\"",
+      "data": "CAD/gEEA",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: trailing data, message: CAD/gEEA, schema: \"bytes\""
+      }
+    },
+    {
+      "name": "valid-112",
+      "schema": "{\"type\":\"fixed\",\"name\":\"Token\",\"namespace\":\"sample\",\"size\":4}",
+      "data": "AAGA/w==",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": {
+        "$": "bytes",
+        "data": [
+          0,
+          1,
+          128,
+          255
+        ]
+      },
+      "error": null
+    },
+    {
+      "name": "truncated-113",
+      "schema": "{\"type\":\"fixed\",\"name\":\"Token\",\"namespace\":\"sample\",\"size\":4}",
+      "data": "AAGA",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: truncated buffer, message: AAGA, schema: {\"type\":\"fixed\",\"name\":\"Token\",\"namespace\":\"sample\",\"size\":4}"
+      }
+    },
+    {
+      "name": "trailing-114",
+      "schema": "{\"type\":\"fixed\",\"name\":\"Token\",\"namespace\":\"sample\",\"size\":4}",
+      "data": "AAGA/wA=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: trailing data, message: AAGA/wA=, schema: {\"type\":\"fixed\",\"name\":\"Token\",\"namespace\":\"sample\",\"size\":4}"
+      }
+    },
+    {
+      "name": "valid-115",
+      "schema": "{\"type\":\"enum\",\"name\":\"Color\",\"symbols\":[\"RED\",\"GREEN\",\"BLUE\"]}",
+      "data": "AA==",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": "RED",
+      "error": null
+    },
+    {
+      "name": "truncated-116",
+      "schema": "{\"type\":\"enum\",\"name\":\"Color\",\"symbols\":[\"RED\",\"GREEN\",\"BLUE\"]}",
+      "data": "",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: truncated buffer, message: , schema: {\"type\":\"enum\",\"name\":\"Color\",\"symbols\":[\"RED\",\"GREEN\",\"BLUE\"]}"
+      }
+    },
+    {
+      "name": "trailing-117",
+      "schema": "{\"type\":\"enum\",\"name\":\"Color\",\"symbols\":[\"RED\",\"GREEN\",\"BLUE\"]}",
+      "data": "AAA=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: trailing data, message: AAA=, schema: {\"type\":\"enum\",\"name\":\"Color\",\"symbols\":[\"RED\",\"GREEN\",\"BLUE\"]}"
+      }
+    },
+    {
+      "name": "valid-118",
+      "schema": "{\"type\":\"enum\",\"name\":\"Color\",\"symbols\":[\"RED\",\"GREEN\",\"BLUE\"]}",
+      "data": "BA==",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": "BLUE",
+      "error": null
+    },
+    {
+      "name": "truncated-119",
+      "schema": "{\"type\":\"enum\",\"name\":\"Color\",\"symbols\":[\"RED\",\"GREEN\",\"BLUE\"]}",
+      "data": "",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: truncated buffer, message: , schema: {\"type\":\"enum\",\"name\":\"Color\",\"symbols\":[\"RED\",\"GREEN\",\"BLUE\"]}"
+      }
+    },
+    {
+      "name": "trailing-120",
+      "schema": "{\"type\":\"enum\",\"name\":\"Color\",\"symbols\":[\"RED\",\"GREEN\",\"BLUE\"]}",
+      "data": "BAA=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: trailing data, message: BAA=, schema: {\"type\":\"enum\",\"name\":\"Color\",\"symbols\":[\"RED\",\"GREEN\",\"BLUE\"]}"
+      }
+    },
+    {
+      "name": "valid-121",
+      "schema": "{\"type\":\"array\",\"items\":\"long\"}",
+      "data": "AA==",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": [],
+      "error": null
+    },
+    {
+      "name": "truncated-122",
+      "schema": "{\"type\":\"array\",\"items\":\"long\"}",
+      "data": "",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: truncated buffer, message: , schema: {\"type\":\"array\",\"items\":\"long\"}"
+      }
+    },
+    {
+      "name": "trailing-123",
+      "schema": "{\"type\":\"array\",\"items\":\"long\"}",
+      "data": "AAA=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: trailing data, message: AAA=, schema: {\"type\":\"array\",\"items\":\"long\"}"
+      }
+    },
+    {
+      "name": "valid-124",
+      "schema": "{\"type\":\"array\",\"items\":\"long\"}",
+      "data": "BgIEBgA=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": [
+        1,
+        2,
+        3
+      ],
+      "error": null
+    },
+    {
+      "name": "truncated-125",
+      "schema": "{\"type\":\"array\",\"items\":\"long\"}",
+      "data": "BgIEBg==",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: truncated buffer, message: BgIEBg==, schema: {\"type\":\"array\",\"items\":\"long\"}"
+      }
+    },
+    {
+      "name": "trailing-126",
+      "schema": "{\"type\":\"array\",\"items\":\"long\"}",
+      "data": "BgIEBgAA",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: trailing data, message: BgIEBgAA, schema: {\"type\":\"array\",\"items\":\"long\"}"
+      }
+    },
+    {
+      "name": "valid-127",
+      "schema": "{\"type\":\"array\",\"items\":\"long\"}",
+      "data": "BAH8////////HwA=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": [
+        -1,
+        9007199254740990
+      ],
+      "error": null
+    },
+    {
+      "name": "truncated-128",
+      "schema": "{\"type\":\"array\",\"items\":\"long\"}",
+      "data": "BAH8////////Hw==",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: truncated buffer, message: BAH8////////Hw==, schema: {\"type\":\"array\",\"items\":\"long\"}"
+      }
+    },
+    {
+      "name": "trailing-129",
+      "schema": "{\"type\":\"array\",\"items\":\"long\"}",
+      "data": "BAH8////////HwAA",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: trailing data, message: BAH8////////HwAA, schema: {\"type\":\"array\",\"items\":\"long\"}"
+      }
+    },
+    {
+      "name": "valid-130",
+      "schema": "{\"type\":\"map\",\"values\":\"string\"}",
+      "data": "AA==",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": {},
+      "error": null
+    },
+    {
+      "name": "truncated-131",
+      "schema": "{\"type\":\"map\",\"values\":\"string\"}",
+      "data": "",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: truncated buffer, message: , schema: {\"type\":\"map\",\"values\":\"string\"}"
+      }
+    },
+    {
+      "name": "trailing-132",
+      "schema": "{\"type\":\"map\",\"values\":\"string\"}",
+      "data": "AAA=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: trailing data, message: AAA=, schema: {\"type\":\"map\",\"values\":\"string\"}"
+      }
+    },
+    {
+      "name": "valid-133",
+      "schema": "{\"type\":\"map\",\"values\":\"string\"}",
+      "data": "BgJ6CGxhc3QCYQpmaXJzdA51bmljb2RlBMOpAA==",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": {
+        "z": "last",
+        "a": "first",
+        "unicode": "é"
+      },
+      "error": null
+    },
+    {
+      "name": "truncated-134",
+      "schema": "{\"type\":\"map\",\"values\":\"string\"}",
+      "data": "BgJ6CGxhc3QCYQpmaXJzdA51bmljb2RlBMOp",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: truncated buffer, message: BgJ6CGxhc3QCYQpmaXJzdA51bmljb2RlBMOp, schema: {\"type\":\"map\",\"values\":\"string\"}"
+      }
+    },
+    {
+      "name": "trailing-135",
+      "schema": "{\"type\":\"map\",\"values\":\"string\"}",
+      "data": "BgJ6CGxhc3QCYQpmaXJzdA51bmljb2RlBMOpAAA=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: trailing data, message: BgJ6CGxhc3QCYQpmaXJzdA51bmljb2RlBMOpAAA=, schema: {\"type\":\"map\",\"values\":\"string\"}"
+      }
+    },
+    {
+      "name": "valid-136",
+      "schema": "[\"null\",\"string\",\"int\"]",
+      "data": "AA==",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": null
+    },
+    {
+      "name": "truncated-137",
+      "schema": "[\"null\",\"string\",\"int\"]",
+      "data": "",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: truncated buffer, message: , schema: [\"null\",\"string\",\"int\"]"
+      }
+    },
+    {
+      "name": "trailing-138",
+      "schema": "[\"null\",\"string\",\"int\"]",
+      "data": "AAA=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: trailing data, message: AAA=, schema: [\"null\",\"string\",\"int\"]"
+      }
+    },
+    {
+      "name": "valid-139",
+      "schema": "[\"null\",\"string\",\"int\"]",
+      "data": "AgpoZWxsbw==",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": {
+        "string": "hello"
+      },
+      "error": null
+    },
+    {
+      "name": "truncated-140",
+      "schema": "[\"null\",\"string\",\"int\"]",
+      "data": "AgpoZWxs",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: truncated buffer, message: AgpoZWxs, schema: [\"null\",\"string\",\"int\"]"
+      }
+    },
+    {
+      "name": "trailing-141",
+      "schema": "[\"null\",\"string\",\"int\"]",
+      "data": "AgpoZWxsbwA=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: trailing data, message: AgpoZWxsbwA=, schema: [\"null\",\"string\",\"int\"]"
+      }
+    },
+    {
+      "name": "valid-142",
+      "schema": "[\"null\",\"string\",\"int\"]",
+      "data": "BFQ=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": {
+        "int": 42
+      },
+      "error": null
+    },
+    {
+      "name": "truncated-143",
+      "schema": "[\"null\",\"string\",\"int\"]",
+      "data": "BA==",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: truncated buffer, message: BA==, schema: [\"null\",\"string\",\"int\"]"
+      }
+    },
+    {
+      "name": "trailing-144",
+      "schema": "[\"null\",\"string\",\"int\"]",
+      "data": "BFQA",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: trailing data, message: BFQA, schema: [\"null\",\"string\",\"int\"]"
+      }
+    },
+    {
+      "name": "valid-145",
+      "schema": "{\"type\":\"record\",\"name\":\"Order\",\"namespace\":\"sample\",\"fields\":[{\"name\":\"id\",\"type\":\"string\"},{\"name\":\"amount\",\"type\":\"long\"},{\"name\":\"optional\",\"type\":[\"null\",\"string\"]},{\"name\":\"items\",\"type\":{\"type\":\"array\",\"items\":\"bytes\"}},{\"name\":\"tags\",\"type\":{\"type\":\"map\",\"values\":\"int\"}}]}",
+      "data": "AmFUAgZ5ZXMCAv8AAgJ4AgA=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": {
+        "id": "a",
+        "amount": 42,
+        "optional": {
+          "string": "yes"
+        },
+        "items": [
+          {
+            "$": "bytes",
+            "data": [
+              255
+            ]
+          }
+        ],
+        "tags": {
+          "x": 1
+        }
+      },
+      "error": null
+    },
+    {
+      "name": "truncated-146",
+      "schema": "{\"type\":\"record\",\"name\":\"Order\",\"namespace\":\"sample\",\"fields\":[{\"name\":\"id\",\"type\":\"string\"},{\"name\":\"amount\",\"type\":\"long\"},{\"name\":\"optional\",\"type\":[\"null\",\"string\"]},{\"name\":\"items\",\"type\":{\"type\":\"array\",\"items\":\"bytes\"}},{\"name\":\"tags\",\"type\":{\"type\":\"map\",\"values\":\"int\"}}]}",
+      "data": "AmFUAgZ5ZXMCAv8AAgJ4Ag==",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: truncated buffer, message: AmFUAgZ5ZXMCAv8AAgJ4Ag==, schema: {\"type\":\"record\",\"name\":\"Order\",\"namespace\":\"sample\",\"fields\":[{\"name\":\"id\",\"type\":\"string\"},{\"name\":\"amount\",\"type\":\"long\"},{\"name\":\"optional\",\"type\":[\"null\",\"string\"]},{\"name\":\"items\",\"type\":{\"type\":\"array\",\"items\":\"bytes\"}},{\"name\":\"tags\",\"type\":{\"type\":\"map\",\"values\":\"int\"}}]}"
+      }
+    },
+    {
+      "name": "trailing-147",
+      "schema": "{\"type\":\"record\",\"name\":\"Order\",\"namespace\":\"sample\",\"fields\":[{\"name\":\"id\",\"type\":\"string\"},{\"name\":\"amount\",\"type\":\"long\"},{\"name\":\"optional\",\"type\":[\"null\",\"string\"]},{\"name\":\"items\",\"type\":{\"type\":\"array\",\"items\":\"bytes\"}},{\"name\":\"tags\",\"type\":{\"type\":\"map\",\"values\":\"int\"}}]}",
+      "data": "AmFUAgZ5ZXMCAv8AAgJ4AgAA",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: trailing data, message: AmFUAgZ5ZXMCAv8AAgJ4AgAA, schema: {\"type\":\"record\",\"name\":\"Order\",\"namespace\":\"sample\",\"fields\":[{\"name\":\"id\",\"type\":\"string\"},{\"name\":\"amount\",\"type\":\"long\"},{\"name\":\"optional\",\"type\":[\"null\",\"string\"]},{\"name\":\"items\",\"type\":{\"type\":\"array\",\"items\":\"bytes\"}},{\"name\":\"tags\",\"type\":{\"type\":\"map\",\"values\":\"int\"}}]}"
+      }
+    },
+    {
+      "name": "valid-148",
+      "schema": "{\"type\":\"record\",\"name\":\"Order\",\"namespace\":\"sample\",\"fields\":[{\"name\":\"id\",\"type\":\"string\"},{\"name\":\"amount\",\"type\":\"long\"},{\"name\":\"optional\",\"type\":[\"null\",\"string\"]},{\"name\":\"items\",\"type\":{\"type\":\"array\",\"items\":\"bytes\"}},{\"name\":\"tags\",\"type\":{\"type\":\"map\",\"values\":\"int\"}}]}",
+      "data": "AmIAAAAA",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": {
+        "id": "b",
+        "amount": 0,
+        "optional": null,
+        "items": [],
+        "tags": {}
+      },
+      "error": null
+    },
+    {
+      "name": "truncated-149",
+      "schema": "{\"type\":\"record\",\"name\":\"Order\",\"namespace\":\"sample\",\"fields\":[{\"name\":\"id\",\"type\":\"string\"},{\"name\":\"amount\",\"type\":\"long\"},{\"name\":\"optional\",\"type\":[\"null\",\"string\"]},{\"name\":\"items\",\"type\":{\"type\":\"array\",\"items\":\"bytes\"}},{\"name\":\"tags\",\"type\":{\"type\":\"map\",\"values\":\"int\"}}]}",
+      "data": "AmIAAAA=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: truncated buffer, message: AmIAAAA=, schema: {\"type\":\"record\",\"name\":\"Order\",\"namespace\":\"sample\",\"fields\":[{\"name\":\"id\",\"type\":\"string\"},{\"name\":\"amount\",\"type\":\"long\"},{\"name\":\"optional\",\"type\":[\"null\",\"string\"]},{\"name\":\"items\",\"type\":{\"type\":\"array\",\"items\":\"bytes\"}},{\"name\":\"tags\",\"type\":{\"type\":\"map\",\"values\":\"int\"}}]}"
+      }
+    },
+    {
+      "name": "trailing-150",
+      "schema": "{\"type\":\"record\",\"name\":\"Order\",\"namespace\":\"sample\",\"fields\":[{\"name\":\"id\",\"type\":\"string\"},{\"name\":\"amount\",\"type\":\"long\"},{\"name\":\"optional\",\"type\":[\"null\",\"string\"]},{\"name\":\"items\",\"type\":{\"type\":\"array\",\"items\":\"bytes\"}},{\"name\":\"tags\",\"type\":{\"type\":\"map\",\"values\":\"int\"}}]}",
+      "data": "AmIAAAAAAA==",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: trailing data, message: AmIAAAAAAA==, schema: {\"type\":\"record\",\"name\":\"Order\",\"namespace\":\"sample\",\"fields\":[{\"name\":\"id\",\"type\":\"string\"},{\"name\":\"amount\",\"type\":\"long\"},{\"name\":\"optional\",\"type\":[\"null\",\"string\"]},{\"name\":\"items\",\"type\":{\"type\":\"array\",\"items\":\"bytes\"}},{\"name\":\"tags\",\"type\":{\"type\":\"map\",\"values\":\"int\"}}]}"
+      }
+    },
+    {
+      "name": "valid-151",
+      "schema": "{\"type\":\"record\",\"name\":\"Node\",\"namespace\":\"graph\",\"fields\":[{\"name\":\"value\",\"type\":\"int\"},{\"name\":\"next\",\"type\":[\"null\",\"Node\"]}]}",
+      "data": "AgA=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": {
+        "value": 1,
+        "next": null
+      },
+      "error": null
+    },
+    {
+      "name": "truncated-152",
+      "schema": "{\"type\":\"record\",\"name\":\"Node\",\"namespace\":\"graph\",\"fields\":[{\"name\":\"value\",\"type\":\"int\"},{\"name\":\"next\",\"type\":[\"null\",\"Node\"]}]}",
+      "data": "Ag==",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: truncated buffer, message: Ag==, schema: {\"type\":\"record\",\"name\":\"Node\",\"namespace\":\"graph\",\"fields\":[{\"name\":\"value\",\"type\":\"int\"},{\"name\":\"next\",\"type\":[\"null\",\"Node\"]}]}"
+      }
+    },
+    {
+      "name": "trailing-153",
+      "schema": "{\"type\":\"record\",\"name\":\"Node\",\"namespace\":\"graph\",\"fields\":[{\"name\":\"value\",\"type\":\"int\"},{\"name\":\"next\",\"type\":[\"null\",\"Node\"]}]}",
+      "data": "AgAA",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: trailing data, message: AgAA, schema: {\"type\":\"record\",\"name\":\"Node\",\"namespace\":\"graph\",\"fields\":[{\"name\":\"value\",\"type\":\"int\"},{\"name\":\"next\",\"type\":[\"null\",\"Node\"]}]}"
+      }
+    },
+    {
+      "name": "valid-154",
+      "schema": "{\"type\":\"record\",\"name\":\"Node\",\"namespace\":\"graph\",\"fields\":[{\"name\":\"value\",\"type\":\"int\"},{\"name\":\"next\",\"type\":[\"null\",\"Node\"]}]}",
+      "data": "AgIEAA==",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": {
+        "value": 1,
+        "next": {
+          "graph.Node": {
+            "value": 2,
+            "next": null
+          }
+        }
+      },
+      "error": null
+    },
+    {
+      "name": "truncated-155",
+      "schema": "{\"type\":\"record\",\"name\":\"Node\",\"namespace\":\"graph\",\"fields\":[{\"name\":\"value\",\"type\":\"int\"},{\"name\":\"next\",\"type\":[\"null\",\"Node\"]}]}",
+      "data": "AgIE",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: truncated buffer, message: AgIE, schema: {\"type\":\"record\",\"name\":\"Node\",\"namespace\":\"graph\",\"fields\":[{\"name\":\"value\",\"type\":\"int\"},{\"name\":\"next\",\"type\":[\"null\",\"Node\"]}]}"
+      }
+    },
+    {
+      "name": "trailing-156",
+      "schema": "{\"type\":\"record\",\"name\":\"Node\",\"namespace\":\"graph\",\"fields\":[{\"name\":\"value\",\"type\":\"int\"},{\"name\":\"next\",\"type\":[\"null\",\"Node\"]}]}",
+      "data": "AgIEAAA=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: trailing data, message: AgIEAAA=, schema: {\"type\":\"record\",\"name\":\"Node\",\"namespace\":\"graph\",\"fields\":[{\"name\":\"value\",\"type\":\"int\"},{\"name\":\"next\",\"type\":[\"null\",\"Node\"]}]}"
+      }
+    },
+    {
+      "name": "valid-157",
+      "schema": "[{\"type\":\"record\",\"name\":\"Thing\",\"namespace\":\"ns\",\"fields\":[{\"name\":\"v\",\"type\":\"int\"}]},\"null\"]",
+      "data": "AAY=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": {
+        "ns.Thing": {
+          "v": 3
+        }
+      },
+      "error": null
+    },
+    {
+      "name": "truncated-158",
+      "schema": "[{\"type\":\"record\",\"name\":\"Thing\",\"namespace\":\"ns\",\"fields\":[{\"name\":\"v\",\"type\":\"int\"}]},\"null\"]",
+      "data": "AA==",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: truncated buffer, message: AA==, schema: [{\"type\":\"record\",\"name\":\"Thing\",\"namespace\":\"ns\",\"fields\":[{\"name\":\"v\",\"type\":\"int\"}]},\"null\"]"
+      }
+    },
+    {
+      "name": "trailing-159",
+      "schema": "[{\"type\":\"record\",\"name\":\"Thing\",\"namespace\":\"ns\",\"fields\":[{\"name\":\"v\",\"type\":\"int\"}]},\"null\"]",
+      "data": "AAYA",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: trailing data, message: AAYA, schema: [{\"type\":\"record\",\"name\":\"Thing\",\"namespace\":\"ns\",\"fields\":[{\"name\":\"v\",\"type\":\"int\"}]},\"null\"]"
+      }
+    },
+    {
+      "name": "valid-160",
+      "schema": "[{\"type\":\"record\",\"name\":\"Thing\",\"namespace\":\"ns\",\"fields\":[{\"name\":\"v\",\"type\":\"int\"}]},\"null\"]",
+      "data": "Ag==",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": null
+    },
+    {
+      "name": "truncated-161",
+      "schema": "[{\"type\":\"record\",\"name\":\"Thing\",\"namespace\":\"ns\",\"fields\":[{\"name\":\"v\",\"type\":\"int\"}]},\"null\"]",
+      "data": "",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: truncated buffer, message: , schema: [{\"type\":\"record\",\"name\":\"Thing\",\"namespace\":\"ns\",\"fields\":[{\"name\":\"v\",\"type\":\"int\"}]},\"null\"]"
+      }
+    },
+    {
+      "name": "trailing-162",
+      "schema": "[{\"type\":\"record\",\"name\":\"Thing\",\"namespace\":\"ns\",\"fields\":[{\"name\":\"v\",\"type\":\"int\"}]},\"null\"]",
+      "data": "AgA=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: trailing data, message: AgA=, schema: [{\"type\":\"record\",\"name\":\"Thing\",\"namespace\":\"ns\",\"fields\":[{\"name\":\"v\",\"type\":\"int\"}]},\"null\"]"
+      }
+    },
+    {
+      "name": "valid-163",
+      "schema": "{\"type\":\"long\",\"logicalType\":\"timestamp-millis\"}",
+      "data": "9gE=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": 123,
+      "error": null
+    },
+    {
+      "name": "truncated-164",
+      "schema": "{\"type\":\"long\",\"logicalType\":\"timestamp-millis\"}",
+      "data": "9g==",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: truncated buffer, message: 9g==, schema: {\"type\":\"long\",\"logicalType\":\"timestamp-millis\"}"
+      }
+    },
+    {
+      "name": "trailing-165",
+      "schema": "{\"type\":\"long\",\"logicalType\":\"timestamp-millis\"}",
+      "data": "9gEA",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: trailing data, message: 9gEA, schema: {\"type\":\"long\",\"logicalType\":\"timestamp-millis\"}"
+      }
+    },
+    {
+      "name": "valid-166",
+      "schema": "{\"type\":\"int\",\"logicalType\":\"date\"}",
+      "data": "9gE=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": 123,
+      "error": null
+    },
+    {
+      "name": "truncated-167",
+      "schema": "{\"type\":\"int\",\"logicalType\":\"date\"}",
+      "data": "9g==",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: truncated buffer, message: 9g==, schema: {\"type\":\"int\",\"logicalType\":\"date\"}"
+      }
+    },
+    {
+      "name": "trailing-168",
+      "schema": "{\"type\":\"int\",\"logicalType\":\"date\"}",
+      "data": "9gEA",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: trailing data, message: 9gEA, schema: {\"type\":\"int\",\"logicalType\":\"date\"}"
+      }
+    },
+    {
+      "name": "valid-169",
+      "schema": "{\"type\":\"bytes\",\"logicalType\":\"decimal\",\"precision\":10,\"scale\":2}",
+      "data": "BAEC",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": {
+        "$": "bytes",
+        "data": [
+          1,
+          2
+        ]
+      },
+      "error": null
+    },
+    {
+      "name": "truncated-170",
+      "schema": "{\"type\":\"bytes\",\"logicalType\":\"decimal\",\"precision\":10,\"scale\":2}",
+      "data": "BAE=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: truncated buffer, message: BAE=, schema: {\"type\":\"bytes\",\"logicalType\":\"decimal\",\"precision\":10,\"scale\":2}"
+      }
+    },
+    {
+      "name": "trailing-171",
+      "schema": "{\"type\":\"bytes\",\"logicalType\":\"decimal\",\"precision\":10,\"scale\":2}",
+      "data": "BAECAA==",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: trailing data, message: BAECAA==, schema: {\"type\":\"bytes\",\"logicalType\":\"decimal\",\"precision\":10,\"scale\":2}"
+      }
+    },
+    {
+      "name": "valid-172",
+      "schema": "{\"type\":\"string\",\"logicalType\":\"uuid\"}",
+      "data": "FG5vdC1hLXV1aWQ=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": "not-a-uuid",
+      "error": null
+    },
+    {
+      "name": "truncated-173",
+      "schema": "{\"type\":\"string\",\"logicalType\":\"uuid\"}",
+      "data": "FG5vdC1hLXV1aQ==",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: truncated buffer, message: FG5vdC1hLXV1aQ==, schema: {\"type\":\"string\",\"logicalType\":\"uuid\"}"
+      }
+    },
+    {
+      "name": "trailing-174",
+      "schema": "{\"type\":\"string\",\"logicalType\":\"uuid\"}",
+      "data": "FG5vdC1hLXV1aWQA",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: trailing data, message: FG5vdC1hLXV1aWQA, schema: {\"type\":\"string\",\"logicalType\":\"uuid\"}"
+      }
+    },
+    {
+      "name": "valid-175",
+      "schema": "{\"type\":\"long\",\"logicalType\":\"unknown\"}",
+      "data": "9gE=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": 123,
+      "error": null
+    },
+    {
+      "name": "truncated-176",
+      "schema": "{\"type\":\"long\",\"logicalType\":\"unknown\"}",
+      "data": "9g==",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: truncated buffer, message: 9g==, schema: {\"type\":\"long\",\"logicalType\":\"unknown\"}"
+      }
+    },
+    {
+      "name": "trailing-177",
+      "schema": "{\"type\":\"long\",\"logicalType\":\"unknown\"}",
+      "data": "9gEA",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: trailing data, message: 9gEA, schema: {\"type\":\"long\",\"logicalType\":\"unknown\"}"
+      }
+    },
+    {
+      "name": "precision-178",
+      "schema": "long",
+      "data": "////////////AQ==",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: potential precision loss, message: ////////////AQ==, schema: long"
+      }
+    },
+    {
+      "name": "precision-179",
+      "schema": "long",
+      "data": "/////////x8=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: potential precision loss, message: /////////x8=, schema: long"
+      }
+    },
+    {
+      "name": "precision-180",
+      "schema": "long",
+      "data": "/f///////x8=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": 9007199254740990,
+      "error": null
+    },
+    {
+      "name": "precision-181",
+      "schema": "long",
+      "data": "/v///////x8=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: potential precision loss, message: /v///////x8=, schema: long"
+      }
+    },
+    {
+      "name": "precision-182",
+      "schema": "long",
+      "data": "gICAgICAgCA=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: potential precision loss, message: gICAgICAgCA=, schema: long"
+      }
+    },
+    {
+      "name": "precision-183",
+      "schema": "long",
+      "data": "/v//////////AQ==",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: potential precision loss, message: /v//////////AQ==, schema: long"
+      }
+    },
+    {
+      "name": "integer-boundary-184",
+      "schema": "int",
+      "data": "+///fw==",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": -134217726,
+      "error": null
+    },
+    {
+      "name": "integer-boundary-185",
+      "schema": "long",
+      "data": "+///fw==",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": -134217726,
+      "error": null
+    },
+    {
+      "name": "integer-boundary-186",
+      "schema": "int",
+      "data": "/P//fw==",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": 134217726,
+      "error": null
+    },
+    {
+      "name": "integer-boundary-187",
+      "schema": "long",
+      "data": "/P//fw==",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": 134217726,
+      "error": null
+    },
+    {
+      "name": "integer-boundary-188",
+      "schema": "int",
+      "data": "/f//fw==",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": -134217727,
+      "error": null
+    },
+    {
+      "name": "integer-boundary-189",
+      "schema": "long",
+      "data": "/f//fw==",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": -134217727,
+      "error": null
+    },
+    {
+      "name": "integer-boundary-190",
+      "schema": "int",
+      "data": "/v//fw==",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": 134217727,
+      "error": null
+    },
+    {
+      "name": "integer-boundary-191",
+      "schema": "long",
+      "data": "/v//fw==",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": 134217727,
+      "error": null
+    },
+    {
+      "name": "integer-boundary-192",
+      "schema": "int",
+      "data": "////fw==",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": -134217728,
+      "error": null
+    },
+    {
+      "name": "integer-boundary-193",
+      "schema": "long",
+      "data": "////fw==",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": -134217728,
+      "error": null
+    },
+    {
+      "name": "integer-boundary-194",
+      "schema": "int",
+      "data": "gICAgAE=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": 134217728,
+      "error": null
+    },
+    {
+      "name": "integer-boundary-195",
+      "schema": "long",
+      "data": "gICAgAE=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": 134217728,
+      "error": null
+    },
+    {
+      "name": "integer-boundary-196",
+      "schema": "int",
+      "data": "gYCAgAE=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": -134217729,
+      "error": null
+    },
+    {
+      "name": "integer-boundary-197",
+      "schema": "long",
+      "data": "gYCAgAE=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": -134217729,
+      "error": null
+    },
+    {
+      "name": "integer-boundary-198",
+      "schema": "int",
+      "data": "goCAgAE=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": 134217729,
+      "error": null
+    },
+    {
+      "name": "integer-boundary-199",
+      "schema": "long",
+      "data": "goCAgAE=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": 134217729,
+      "error": null
+    },
+    {
+      "name": "integer-boundary-200",
+      "schema": "int",
+      "data": "g4CAgAE=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": -134217730,
+      "error": null
+    },
+    {
+      "name": "integer-boundary-201",
+      "schema": "long",
+      "data": "g4CAgAE=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": -134217730,
+      "error": null
+    },
+    {
+      "name": "integer-boundary-202",
+      "schema": "int",
+      "data": "hICAgAE=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": 134217730,
+      "error": null
+    },
+    {
+      "name": "integer-boundary-203",
+      "schema": "long",
+      "data": "hICAgAE=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": 134217730,
+      "error": null
+    },
+    {
+      "name": "integer-boundary-204",
+      "schema": "int",
+      "data": "+////wE=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": -268435454,
+      "error": null
+    },
+    {
+      "name": "integer-boundary-205",
+      "schema": "long",
+      "data": "+////wE=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": -268435454,
+      "error": null
+    },
+    {
+      "name": "integer-boundary-206",
+      "schema": "int",
+      "data": "/P///wE=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": 268435454,
+      "error": null
+    },
+    {
+      "name": "integer-boundary-207",
+      "schema": "long",
+      "data": "/P///wE=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": 268435454,
+      "error": null
+    },
+    {
+      "name": "integer-boundary-208",
+      "schema": "int",
+      "data": "/f///wE=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": -268435455,
+      "error": null
+    },
+    {
+      "name": "integer-boundary-209",
+      "schema": "long",
+      "data": "/f///wE=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": -268435455,
+      "error": null
+    },
+    {
+      "name": "integer-boundary-210",
+      "schema": "int",
+      "data": "/v///wE=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": 268435455,
+      "error": null
+    },
+    {
+      "name": "integer-boundary-211",
+      "schema": "long",
+      "data": "/v///wE=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": 268435455,
+      "error": null
+    },
+    {
+      "name": "integer-boundary-212",
+      "schema": "int",
+      "data": "/////wE=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": -268435456,
+      "error": null
+    },
+    {
+      "name": "integer-boundary-213",
+      "schema": "long",
+      "data": "/////wE=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": -268435456,
+      "error": null
+    },
+    {
+      "name": "integer-boundary-214",
+      "schema": "int",
+      "data": "gICAgAI=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": 268435456,
+      "error": null
+    },
+    {
+      "name": "integer-boundary-215",
+      "schema": "long",
+      "data": "gICAgAI=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": 268435456,
+      "error": null
+    },
+    {
+      "name": "integer-boundary-216",
+      "schema": "int",
+      "data": "gYCAgAI=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": -268435457,
+      "error": null
+    },
+    {
+      "name": "integer-boundary-217",
+      "schema": "long",
+      "data": "gYCAgAI=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": -268435457,
+      "error": null
+    },
+    {
+      "name": "integer-boundary-218",
+      "schema": "int",
+      "data": "goCAgAI=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": 268435457,
+      "error": null
+    },
+    {
+      "name": "integer-boundary-219",
+      "schema": "long",
+      "data": "goCAgAI=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": 268435457,
+      "error": null
+    },
+    {
+      "name": "integer-boundary-220",
+      "schema": "int",
+      "data": "g4CAgAI=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": -268435458,
+      "error": null
+    },
+    {
+      "name": "integer-boundary-221",
+      "schema": "long",
+      "data": "g4CAgAI=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": -268435458,
+      "error": null
+    },
+    {
+      "name": "integer-boundary-222",
+      "schema": "int",
+      "data": "hICAgAI=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": 268435458,
+      "error": null
+    },
+    {
+      "name": "integer-boundary-223",
+      "schema": "long",
+      "data": "hICAgAI=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": 268435458,
+      "error": null
+    },
+    {
+      "name": "integer-boundary-224",
+      "schema": "int",
+      "data": "+////w8=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": -2147483646,
+      "error": null
+    },
+    {
+      "name": "integer-boundary-225",
+      "schema": "long",
+      "data": "+////w8=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": -2147483646,
+      "error": null
+    },
+    {
+      "name": "integer-boundary-226",
+      "schema": "int",
+      "data": "/P///w8=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": 2147483646,
+      "error": null
+    },
+    {
+      "name": "integer-boundary-227",
+      "schema": "long",
+      "data": "/P///w8=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": 2147483646,
+      "error": null
+    },
+    {
+      "name": "integer-boundary-228",
+      "schema": "int",
+      "data": "/f///w8=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": -2147483647,
+      "error": null
+    },
+    {
+      "name": "integer-boundary-229",
+      "schema": "long",
+      "data": "/f///w8=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": -2147483647,
+      "error": null
+    },
+    {
+      "name": "integer-boundary-230",
+      "schema": "int",
+      "data": "/v///w8=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": 2147483647,
+      "error": null
+    },
+    {
+      "name": "integer-boundary-231",
+      "schema": "long",
+      "data": "/v///w8=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": 2147483647,
+      "error": null
+    },
+    {
+      "name": "integer-boundary-232",
+      "schema": "int",
+      "data": "/////w8=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": -2147483648,
+      "error": null
+    },
+    {
+      "name": "integer-boundary-233",
+      "schema": "long",
+      "data": "/////w8=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": -2147483648,
+      "error": null
+    },
+    {
+      "name": "integer-boundary-234",
+      "schema": "int",
+      "data": "gICAgBA=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": 2147483648,
+      "error": null
+    },
+    {
+      "name": "integer-boundary-235",
+      "schema": "long",
+      "data": "gICAgBA=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": 2147483648,
+      "error": null
+    },
+    {
+      "name": "integer-boundary-236",
+      "schema": "int",
+      "data": "gYCAgBA=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": -2147483649,
+      "error": null
+    },
+    {
+      "name": "integer-boundary-237",
+      "schema": "long",
+      "data": "gYCAgBA=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": -2147483649,
+      "error": null
+    },
+    {
+      "name": "integer-boundary-238",
+      "schema": "int",
+      "data": "goCAgBA=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": 2147483649,
+      "error": null
+    },
+    {
+      "name": "integer-boundary-239",
+      "schema": "long",
+      "data": "goCAgBA=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": 2147483649,
+      "error": null
+    },
+    {
+      "name": "integer-boundary-240",
+      "schema": "int",
+      "data": "g4CAgBA=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": -2147483650,
+      "error": null
+    },
+    {
+      "name": "integer-boundary-241",
+      "schema": "long",
+      "data": "g4CAgBA=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": -2147483650,
+      "error": null
+    },
+    {
+      "name": "integer-boundary-242",
+      "schema": "int",
+      "data": "hICAgBA=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": 2147483650,
+      "error": null
+    },
+    {
+      "name": "integer-boundary-243",
+      "schema": "long",
+      "data": "hICAgBA=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": 2147483650,
+      "error": null
+    },
+    {
+      "name": "integer-boundary-244",
+      "schema": "int",
+      "data": "+////x8=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": -4294967294,
+      "error": null
+    },
+    {
+      "name": "integer-boundary-245",
+      "schema": "long",
+      "data": "+////x8=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": -4294967294,
+      "error": null
+    },
+    {
+      "name": "integer-boundary-246",
+      "schema": "int",
+      "data": "/P///x8=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": 4294967294,
+      "error": null
+    },
+    {
+      "name": "integer-boundary-247",
+      "schema": "long",
+      "data": "/P///x8=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": 4294967294,
+      "error": null
+    },
+    {
+      "name": "integer-boundary-248",
+      "schema": "int",
+      "data": "/f///x8=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": -4294967295,
+      "error": null
+    },
+    {
+      "name": "integer-boundary-249",
+      "schema": "long",
+      "data": "/f///x8=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": -4294967295,
+      "error": null
+    },
+    {
+      "name": "integer-boundary-250",
+      "schema": "int",
+      "data": "/v///x8=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": 4294967295,
+      "error": null
+    },
+    {
+      "name": "integer-boundary-251",
+      "schema": "long",
+      "data": "/v///x8=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": 4294967295,
+      "error": null
+    },
+    {
+      "name": "integer-boundary-252",
+      "schema": "int",
+      "data": "/////x8=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": -4294967296,
+      "error": null
+    },
+    {
+      "name": "integer-boundary-253",
+      "schema": "long",
+      "data": "/////x8=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": -4294967296,
+      "error": null
+    },
+    {
+      "name": "integer-boundary-254",
+      "schema": "int",
+      "data": "gICAgCA=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": 4294967296,
+      "error": null
+    },
+    {
+      "name": "integer-boundary-255",
+      "schema": "long",
+      "data": "gICAgCA=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": 4294967296,
+      "error": null
+    },
+    {
+      "name": "integer-boundary-256",
+      "schema": "int",
+      "data": "gYCAgCA=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": -4294967297,
+      "error": null
+    },
+    {
+      "name": "integer-boundary-257",
+      "schema": "long",
+      "data": "gYCAgCA=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": -4294967297,
+      "error": null
+    },
+    {
+      "name": "integer-boundary-258",
+      "schema": "int",
+      "data": "goCAgCA=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": 4294967297,
+      "error": null
+    },
+    {
+      "name": "integer-boundary-259",
+      "schema": "long",
+      "data": "goCAgCA=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": 4294967297,
+      "error": null
+    },
+    {
+      "name": "integer-boundary-260",
+      "schema": "int",
+      "data": "g4CAgCA=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": -4294967298,
+      "error": null
+    },
+    {
+      "name": "integer-boundary-261",
+      "schema": "long",
+      "data": "g4CAgCA=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": -4294967298,
+      "error": null
+    },
+    {
+      "name": "integer-boundary-262",
+      "schema": "int",
+      "data": "hICAgCA=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": 4294967298,
+      "error": null
+    },
+    {
+      "name": "integer-boundary-263",
+      "schema": "long",
+      "data": "hICAgCA=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": 4294967298,
+      "error": null
+    },
+    {
+      "name": "integer-boundary-264",
+      "schema": "int",
+      "data": "+////////w8=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": -4503599627370494,
+      "error": null
+    },
+    {
+      "name": "integer-boundary-265",
+      "schema": "long",
+      "data": "+////////w8=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": -4503599627370494,
+      "error": null
+    },
+    {
+      "name": "integer-boundary-266",
+      "schema": "int",
+      "data": "/P///////w8=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": 4503599627370494,
+      "error": null
+    },
+    {
+      "name": "integer-boundary-267",
+      "schema": "long",
+      "data": "/P///////w8=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": 4503599627370494,
+      "error": null
+    },
+    {
+      "name": "integer-boundary-268",
+      "schema": "int",
+      "data": "/f///////w8=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": -4503599627370495,
+      "error": null
+    },
+    {
+      "name": "integer-boundary-269",
+      "schema": "long",
+      "data": "/f///////w8=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": -4503599627370495,
+      "error": null
+    },
+    {
+      "name": "integer-boundary-270",
+      "schema": "int",
+      "data": "/v///////w8=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": 4503599627370495,
+      "error": null
+    },
+    {
+      "name": "integer-boundary-271",
+      "schema": "long",
+      "data": "/v///////w8=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": 4503599627370495,
+      "error": null
+    },
+    {
+      "name": "integer-boundary-272",
+      "schema": "int",
+      "data": "/////////w8=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": -4503599627370496,
+      "error": null
+    },
+    {
+      "name": "integer-boundary-273",
+      "schema": "long",
+      "data": "/////////w8=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": -4503599627370496,
+      "error": null
+    },
+    {
+      "name": "integer-boundary-274",
+      "schema": "int",
+      "data": "gICAgICAgBA=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": 4503599627370496,
+      "error": null
+    },
+    {
+      "name": "integer-boundary-275",
+      "schema": "long",
+      "data": "gICAgICAgBA=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": 4503599627370496,
+      "error": null
+    },
+    {
+      "name": "integer-boundary-276",
+      "schema": "int",
+      "data": "gYCAgICAgBA=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": 4503599627370496,
+      "error": null
+    },
+    {
+      "name": "integer-boundary-277",
+      "schema": "long",
+      "data": "gYCAgICAgBA=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": 4503599627370496,
+      "error": null
+    },
+    {
+      "name": "integer-boundary-278",
+      "schema": "int",
+      "data": "goCAgICAgBA=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": 4503599627370497,
+      "error": null
+    },
+    {
+      "name": "integer-boundary-279",
+      "schema": "long",
+      "data": "goCAgICAgBA=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": 4503599627370497,
+      "error": null
+    },
+    {
+      "name": "integer-boundary-280",
+      "schema": "int",
+      "data": "g4CAgICAgBA=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": 4503599627370498,
+      "error": null
+    },
+    {
+      "name": "integer-boundary-281",
+      "schema": "long",
+      "data": "g4CAgICAgBA=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": 4503599627370498,
+      "error": null
+    },
+    {
+      "name": "integer-boundary-282",
+      "schema": "int",
+      "data": "hICAgICAgBA=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": 4503599627370498,
+      "error": null
+    },
+    {
+      "name": "integer-boundary-283",
+      "schema": "long",
+      "data": "hICAgICAgBA=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": 4503599627370498,
+      "error": null
+    },
+    {
+      "name": "integer-boundary-284",
+      "schema": "int",
+      "data": "+////////x8=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": 9007199254740990,
+      "error": null
+    },
+    {
+      "name": "integer-boundary-285",
+      "schema": "long",
+      "data": "+////////x8=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": 9007199254740990,
+      "error": null
+    },
+    {
+      "name": "integer-boundary-286",
+      "schema": "int",
+      "data": "/P///////x8=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": 9007199254740990,
+      "error": null
+    },
+    {
+      "name": "integer-boundary-287",
+      "schema": "long",
+      "data": "/P///////x8=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": 9007199254740990,
+      "error": null
+    },
+    {
+      "name": "integer-boundary-288",
+      "schema": "int",
+      "data": "/f///////x8=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": 9007199254740990,
+      "error": null
+    },
+    {
+      "name": "integer-boundary-289",
+      "schema": "long",
+      "data": "/f///////x8=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": 9007199254740990,
+      "error": null
+    },
+    {
+      "name": "integer-boundary-290",
+      "schema": "int",
+      "data": "/v///////x8=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": 9007199254740991,
+      "error": null
+    },
+    {
+      "name": "integer-boundary-291",
+      "schema": "long",
+      "data": "/v///////x8=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: potential precision loss, message: /v///////x8=, schema: long"
+      }
+    },
+    {
+      "name": "integer-boundary-292",
+      "schema": "int",
+      "data": "/////////x8=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": 9007199254740992,
+      "error": null
+    },
+    {
+      "name": "integer-boundary-293",
+      "schema": "long",
+      "data": "/////////x8=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: potential precision loss, message: /////////x8=, schema: long"
+      }
+    },
+    {
+      "name": "integer-boundary-294",
+      "schema": "int",
+      "data": "gICAgICAgCA=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": 9007199254740992,
+      "error": null
+    },
+    {
+      "name": "integer-boundary-295",
+      "schema": "long",
+      "data": "gICAgICAgCA=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: potential precision loss, message: gICAgICAgCA=, schema: long"
+      }
+    },
+    {
+      "name": "integer-boundary-296",
+      "schema": "int",
+      "data": "gYCAgICAgCA=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": 9007199254740992,
+      "error": null
+    },
+    {
+      "name": "integer-boundary-297",
+      "schema": "long",
+      "data": "gYCAgICAgCA=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: potential precision loss, message: gYCAgICAgCA=, schema: long"
+      }
+    },
+    {
+      "name": "integer-boundary-298",
+      "schema": "int",
+      "data": "goCAgICAgCA=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": 9007199254740992,
+      "error": null
+    },
+    {
+      "name": "integer-boundary-299",
+      "schema": "long",
+      "data": "goCAgICAgCA=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: potential precision loss, message: goCAgICAgCA=, schema: long"
+      }
+    },
+    {
+      "name": "integer-boundary-300",
+      "schema": "int",
+      "data": "g4CAgICAgCA=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": 9007199254740994,
+      "error": null
+    },
+    {
+      "name": "integer-boundary-301",
+      "schema": "long",
+      "data": "g4CAgICAgCA=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: potential precision loss, message: g4CAgICAgCA=, schema: long"
+      }
+    },
+    {
+      "name": "integer-boundary-302",
+      "schema": "int",
+      "data": "hICAgICAgCA=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": 9007199254740994,
+      "error": null
+    },
+    {
+      "name": "integer-boundary-303",
+      "schema": "long",
+      "data": "hICAgICAgCA=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: potential precision loss, message: hICAgICAgCA=, schema: long"
+      }
+    },
+    {
+      "name": "integer-boundary-304",
+      "schema": "int",
+      "data": "+////////z8=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": 18014398509481982,
+      "error": null
+    },
+    {
+      "name": "integer-boundary-305",
+      "schema": "long",
+      "data": "+////////z8=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: potential precision loss, message: +////////z8=, schema: long"
+      }
+    },
+    {
+      "name": "integer-boundary-306",
+      "schema": "int",
+      "data": "/P///////z8=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": 18014398509481982,
+      "error": null
+    },
+    {
+      "name": "integer-boundary-307",
+      "schema": "long",
+      "data": "/P///////z8=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: potential precision loss, message: /P///////z8=, schema: long"
+      }
+    },
+    {
+      "name": "integer-boundary-308",
+      "schema": "int",
+      "data": "/f///////z8=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": 18014398509481982,
+      "error": null
+    },
+    {
+      "name": "integer-boundary-309",
+      "schema": "long",
+      "data": "/f///////z8=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: potential precision loss, message: /f///////z8=, schema: long"
+      }
+    },
+    {
+      "name": "integer-boundary-310",
+      "schema": "int",
+      "data": "/v///////z8=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": 18014398509481984,
+      "error": null
+    },
+    {
+      "name": "integer-boundary-311",
+      "schema": "long",
+      "data": "/v///////z8=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: potential precision loss, message: /v///////z8=, schema: long"
+      }
+    },
+    {
+      "name": "integer-boundary-312",
+      "schema": "int",
+      "data": "/////////z8=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": 18014398509481984,
+      "error": null
+    },
+    {
+      "name": "integer-boundary-313",
+      "schema": "long",
+      "data": "/////////z8=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: potential precision loss, message: /////////z8=, schema: long"
+      }
+    },
+    {
+      "name": "integer-boundary-314",
+      "schema": "int",
+      "data": "gICAgICAgEA=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": 18014398509481984,
+      "error": null
+    },
+    {
+      "name": "integer-boundary-315",
+      "schema": "long",
+      "data": "gICAgICAgEA=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: potential precision loss, message: gICAgICAgEA=, schema: long"
+      }
+    },
+    {
+      "name": "integer-boundary-316",
+      "schema": "int",
+      "data": "gYCAgICAgEA=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": 18014398509481984,
+      "error": null
+    },
+    {
+      "name": "integer-boundary-317",
+      "schema": "long",
+      "data": "gYCAgICAgEA=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: potential precision loss, message: gYCAgICAgEA=, schema: long"
+      }
+    },
+    {
+      "name": "integer-boundary-318",
+      "schema": "int",
+      "data": "goCAgICAgEA=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": 18014398509481984,
+      "error": null
+    },
+    {
+      "name": "integer-boundary-319",
+      "schema": "long",
+      "data": "goCAgICAgEA=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: potential precision loss, message: goCAgICAgEA=, schema: long"
+      }
+    },
+    {
+      "name": "integer-boundary-320",
+      "schema": "int",
+      "data": "g4CAgICAgEA=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": 18014398509481984,
+      "error": null
+    },
+    {
+      "name": "integer-boundary-321",
+      "schema": "long",
+      "data": "g4CAgICAgEA=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: potential precision loss, message: g4CAgICAgEA=, schema: long"
+      }
+    },
+    {
+      "name": "integer-boundary-322",
+      "schema": "int",
+      "data": "hICAgICAgEA=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": 18014398509481984,
+      "error": null
+    },
+    {
+      "name": "integer-boundary-323",
+      "schema": "long",
+      "data": "hICAgICAgEA=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: potential precision loss, message: hICAgICAgEA=, schema: long"
+      }
+    },
+    {
+      "name": "integer-boundary-324",
+      "schema": "int",
+      "data": "+/////////9/",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": 4611686018427388000,
+      "error": null
+    },
+    {
+      "name": "integer-boundary-325",
+      "schema": "long",
+      "data": "+/////////9/",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: potential precision loss, message: +/////////9/, schema: long"
+      }
+    },
+    {
+      "name": "integer-boundary-326",
+      "schema": "int",
+      "data": "/P////////9/",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": 4611686018427388000,
+      "error": null
+    },
+    {
+      "name": "integer-boundary-327",
+      "schema": "long",
+      "data": "/P////////9/",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: potential precision loss, message: /P////////9/, schema: long"
+      }
+    },
+    {
+      "name": "integer-boundary-328",
+      "schema": "int",
+      "data": "/f////////9/",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": 4611686018427388000,
+      "error": null
+    },
+    {
+      "name": "integer-boundary-329",
+      "schema": "long",
+      "data": "/f////////9/",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: potential precision loss, message: /f////////9/, schema: long"
+      }
+    },
+    {
+      "name": "integer-boundary-330",
+      "schema": "int",
+      "data": "/v////////9/",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": 4611686018427388000,
+      "error": null
+    },
+    {
+      "name": "integer-boundary-331",
+      "schema": "long",
+      "data": "/v////////9/",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: potential precision loss, message: /v////////9/, schema: long"
+      }
+    },
+    {
+      "name": "integer-boundary-332",
+      "schema": "int",
+      "data": "//////////9/",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": 4611686018427388000,
+      "error": null
+    },
+    {
+      "name": "integer-boundary-333",
+      "schema": "long",
+      "data": "//////////9/",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: potential precision loss, message: //////////9/, schema: long"
+      }
+    },
+    {
+      "name": "integer-boundary-334",
+      "schema": "int",
+      "data": "gICAgICAgICAAQ==",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": 4611686018427388000,
+      "error": null
+    },
+    {
+      "name": "integer-boundary-335",
+      "schema": "long",
+      "data": "gICAgICAgICAAQ==",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: potential precision loss, message: gICAgICAgICAAQ==, schema: long"
+      }
+    },
+    {
+      "name": "integer-boundary-336",
+      "schema": "int",
+      "data": "gYCAgICAgICAAQ==",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": 4611686018427388000,
+      "error": null
+    },
+    {
+      "name": "integer-boundary-337",
+      "schema": "long",
+      "data": "gYCAgICAgICAAQ==",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: potential precision loss, message: gYCAgICAgICAAQ==, schema: long"
+      }
+    },
+    {
+      "name": "integer-boundary-338",
+      "schema": "int",
+      "data": "goCAgICAgICAAQ==",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": 4611686018427388000,
+      "error": null
+    },
+    {
+      "name": "integer-boundary-339",
+      "schema": "long",
+      "data": "goCAgICAgICAAQ==",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: potential precision loss, message: goCAgICAgICAAQ==, schema: long"
+      }
+    },
+    {
+      "name": "integer-boundary-340",
+      "schema": "int",
+      "data": "g4CAgICAgICAAQ==",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": 4611686018427388000,
+      "error": null
+    },
+    {
+      "name": "integer-boundary-341",
+      "schema": "long",
+      "data": "g4CAgICAgICAAQ==",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: potential precision loss, message: g4CAgICAgICAAQ==, schema: long"
+      }
+    },
+    {
+      "name": "integer-boundary-342",
+      "schema": "int",
+      "data": "hICAgICAgICAAQ==",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": 4611686018427388000,
+      "error": null
+    },
+    {
+      "name": "integer-boundary-343",
+      "schema": "long",
+      "data": "hICAgICAgICAAQ==",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: potential precision loss, message: hICAgICAgICAAQ==, schema: long"
+      }
+    },
+    {
+      "name": "permissive-344",
+      "schema": "boolean",
+      "data": "AQ==",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": true,
+      "error": null
+    },
+    {
+      "name": "permissive-345",
+      "schema": "boolean",
+      "data": "/w==",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": true,
+      "error": null
+    },
+    {
+      "name": "permissive-346",
+      "schema": "boolean",
+      "data": "!!!AQ",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": true,
+      "error": null
+    },
+    {
+      "name": "permissive-347",
+      "schema": "boolean",
+      "data": "AQ",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": true,
+      "error": null
+    },
+    {
+      "name": "permissive-348",
+      "schema": "boolean",
+      "data": "AQ==\n",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": true,
+      "error": null
+    },
+    {
+      "name": "utf8-349",
+      "schema": "string",
+      "data": "Av8=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": "�",
+      "error": null
+    },
+    {
+      "name": "utf8-350",
+      "schema": "string",
+      "data": "BOKC",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": "�",
+      "error": null
+    },
+    {
+      "name": "utf8-351",
+      "schema": "string",
+      "data": "Bu+7vw==",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": "﻿",
+      "error": null
+    },
+    {
+      "name": "index-352",
+      "schema": "[\"null\",\"string\"]",
+      "data": "AQ==",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: invalid union index: -1, message: AQ==, schema: [\"null\",\"string\"]"
+      }
+    },
+    {
+      "name": "index-353",
+      "schema": "[\"null\",\"string\"]",
+      "data": "BA==",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: invalid union index: 2, message: BA==, schema: [\"null\",\"string\"]"
+      }
+    },
+    {
+      "name": "index-354",
+      "schema": "[\"null\",\"string\"]",
+      "data": "Cg==",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: invalid union index: 5, message: Cg==, schema: [\"null\",\"string\"]"
+      }
+    },
+    {
+      "name": "index-355",
+      "schema": "{\"type\":\"enum\",\"name\":\"Color\",\"symbols\":[\"A\",\"B\"]}",
+      "data": "AQ==",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: invalid Color enum index: -1, message: AQ==, schema: {\"type\":\"enum\",\"name\":\"Color\",\"symbols\":[\"A\",\"B\"]}"
+      }
+    },
+    {
+      "name": "index-356",
+      "schema": "{\"type\":\"enum\",\"name\":\"Color\",\"symbols\":[\"A\",\"B\"]}",
+      "data": "BA==",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: invalid Color enum index: 2, message: BA==, schema: {\"type\":\"enum\",\"name\":\"Color\",\"symbols\":[\"A\",\"B\"]}"
+      }
+    },
+    {
+      "name": "index-357",
+      "schema": "{\"type\":\"enum\",\"name\":\"Color\",\"symbols\":[\"A\",\"B\"]}",
+      "data": "Cg==",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: invalid Color enum index: 5, message: Cg==, schema: {\"type\":\"enum\",\"name\":\"Color\",\"symbols\":[\"A\",\"B\"]}"
+      }
+    },
+    {
+      "name": "empty-358",
+      "schema": "int",
+      "data": "",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: truncated buffer, message: , schema: int"
+      }
+    },
+    {
+      "name": "empty-359",
+      "schema": "boolean",
+      "data": "",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: truncated buffer, message: , schema: boolean"
+      }
+    },
+    {
+      "name": "empty-360",
+      "schema": "bytes",
+      "data": "",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: truncated buffer, message: , schema: bytes"
+      }
+    },
+    {
+      "name": "empty-361",
+      "schema": "string",
+      "data": "",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: truncated buffer, message: , schema: string"
+      }
+    },
+    {
+      "name": "empty-362",
+      "schema": "{\"type\":\"fixed\",\"name\":\"F\",\"size\":4}",
+      "data": "",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: truncated buffer, message: , schema: {\"type\":\"fixed\",\"name\":\"F\",\"size\":4}"
+      }
+    },
+    {
+      "name": "empty-363",
+      "schema": "{\"type\":\"array\",\"items\":\"int\"}",
+      "data": "",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: truncated buffer, message: , schema: {\"type\":\"array\",\"items\":\"int\"}"
+      }
+    },
+    {
+      "name": "empty-364",
+      "schema": "{\"type\":\"map\",\"values\":\"int\"}",
+      "data": "",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": null,
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: truncated buffer, message: , schema: {\"type\":\"map\",\"values\":\"int\"}"
+      }
+    },
+    {
+      "name": "negative-array-block",
+      "schema": "{\"type\":\"array\",\"items\":\"int\"}",
+      "data": "AwQCBAA=",
+      "metadata": {
+        "dataFormat": "AVRO"
+      },
+      "value": [
+        1,
+        2
+      ],
+      "error": null
+    },
+    {
+      "name": "metadata-366",
+      "schema": "int",
+      "data": "Ag==",
+      "metadata": {},
+      "value": 1,
+      "error": null
+    },
+    {
+      "name": "metadata-367",
+      "schema": "int",
+      "data": "Ag==",
+      "metadata": {
+        "dataFormat": "AVRO",
+        "schemaId": "12"
+      },
+      "value": 1,
+      "error": null
+    },
+    {
+      "name": "metadata-368",
+      "schema": "int",
+      "data": "Ag==",
+      "metadata": {
+        "dataFormat": "AVRO",
+        "schemaId": "11111111-2222-3333-4444-555555555555"
+      },
+      "value": 1,
+      "error": null
+    },
+    {
+      "name": "metadata-369",
+      "schema": "int",
+      "data": "Ag==",
+      "metadata": null,
+      "value": 1,
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+receivers:
+  otlp:
+    protocols:
+      http:
+        endpoint: localhost:4318
+exporters:
+  awsxray:
+    region: ${env:AWS_REGION}
+    indexed_attributes: [ColdStart, Service, TestID]
+service:
+  pipelines:
+    traces:
+      receivers: [otlp]
+      exporters: [awsxray]

@@ -1,0 +1,84 @@
+# HTTP CORS and compression
+
+Reference: installed `@aws-lambda-powertools/event-handler@2.35.0`, specifically `http/middleware/cors.js`, `compress.js`, `http/constants.js`, the public declarations and the router composition code. `CORS` and `Compress` live in the independent HTTP module and introduce no third-party dependencies. They use the existing synchronous middleware contract and snapshot configuration at construction for concurrent router reuse.
+
+## Usage
+
+```go
+app := httpapi.New(httpapi.Options{})
+maxAge := float64(600)
+app.Use(httpapi.CORS(httpapi.CORSOptions{
+    Origins: []string{"https://app.example.com", "https://admin.example.com"},
+    AllowMethods: []string{"GET", "POST"},
+    AllowHeaders: []string{"Authorization", "Content-Type"},
+    ExposeHeaders: []string{"X-Request-ID"},
+    Credentials: true,
+    MaxAge: &maxAge,
+}))
+app.Use(httpapi.Compress(httpapi.CompressionOptions{}))
+
+threshold := float64(512)
+err := app.Get("/large", func(request *httpapi.RequestContext) (any, error) {
+    return map[string]any{"message": "response data"}, nil
+}, httpapi.Compress(httpapi.CompressionOptions{
+    Encoding: "deflate",
+    Threshold: &threshold,
+}))
+if err != nil {
+    log.Fatal(err)
+}
+```
+
+This example only demonstrates configuration; the short sample body does not exceed the threshold. Put CORS before compression when preflight responses should bypass downstream processing. Use normal middleware registration for route-specific policies. The complete native Lambda example is in [examples/http](https://github.com/rambow-cloud/powertools-lambda-go/blob/main/examples/http/main.go).
+
+## CORS contract
+
+| Option | Default / mapping |
+| --- | --- |
+| `Origin *string` | Nil means `"*"`; a pointer also permits the empty string |
+| `Origins []string` | Non-nil selects the reference array form and takes precedence over `Origin`; an empty array allows no origins |
+| `AllowMethods []string` | Nil means DELETE, GET, HEAD, PATCH, POST, PUT; values are uppercased |
+| `AllowHeaders []string` | Nil means Authorization, Content-Type, X-Amz-Date, X-Api-Key, X-Amz-Security-Token; values are lowercased |
+| `ExposeHeaders []string` | Empty by default; preserves configured spelling and order |
+| `Credentials bool` | False |
+| `MaxAge *float64` | Omitted by default; an explicit zero is retained |
+
+Non-nil empty lists stay empty. Caller-owned slices and pointer values are copied before requests run. Origin callbacks are not part of the pinned public type or implementation, despite an example in its comments; they are not invented as a Go API.
+
+An absent Origin does not receive CORS headers. Allowed origins are exact, case-sensitive matches, unless the configured string/list contains `*`. A wildcard writes `*` even with credentials enabled. A non-wildcard origin array sets `Vary: Origin`; a single origin string does not. Setting Vary replaces an earlier value rather than appending it. These are reference behaviors, not browser-policy enhancements.
+
+OPTIONS short-circuits with 204 only when the origin is allowed, the requested method is configured, and every requested header is configured. Request header names are lowercased and trimmed; `*` in AllowHeaders is a literal allowed name, not an arbitrary-header wildcard. Invalid preflights continue routing, commonly producing 404. Successful preflights include all configured methods/headers and optional max age, not expose headers. Unsupported HTTP methods are rejected before middleware by the router.
+
+Ordinary CORS headers are set before the next middleware/handler. A handler can overwrite them. Header values are appended for exposed headers and preflight method/header lists. Global valid preflight handling takes precedence over any route policy because it short-circuits the chain. To apply route-specific preflight policies, register an OPTIONS route and attach the policy there without a broader global policy intercepting it.
+
+## Compression contract
+
+`CompressionOptions.Encoding` defaults to `gzip`; `deflate` uses the zlib wrapper, matching the Web CompressionStream format. `Threshold` defaults to 1024; a pointer allows explicit zero, negative and fractional values. Compression requires the content length to be strictly greater than the threshold.
+
+After a successful `next`, the middleware first skips an exact `Transfer-Encoding: chunked`. Otherwise it fills a missing Content-Length for any non-null body, even if the response will not be compressed. A supplied Content-Length is trusted for the threshold decision; numeric parsing reuses Commons JavaScript Number semantics. An empty header bypasses the length comparison. A null body remains distinct from a supplied empty body.
+
+Compression is skipped for HEAD, any existing Content-Encoding/Transfer-Encoding header, a comma-separated `no-transform` Cache-Control directive, or a null body. The no-transform directive is case-insensitive; `no-transform=1` and `x-no-transform` do not match. There is no Content-Type filter in the pinned implementation.
+
+Accept-Encoding handling intentionally preserves the reference's case-sensitive substring checks:
+
+- An absent header behaves as `*`; an explicitly empty header does not.
+- The preferred encoding or `*` must occur somewhere in the header.
+- Any occurrence of `identity` disables compression.
+- Quality weights are not interpreted: `gzip;q=0` and `*;q=0` can select compression.
+- There is no fallback from the configured encoding to another encoding and no automatic `Vary: Accept-Encoding`.
+
+Compression replaces the owned response body, removes Content-Length and sets Content-Encoding. The ordinary proxy conversion selects Base64 from that header. With nested compression middleware, the outer middleware may populate Content-Length from an already compressed inner body and then skip re-encoding it. Header values must describe the actual bytes emitted by that runtime.
+
+Go uses its standard gzip/zlib implementations. Compressed bytes and their lengths can differ from Node even for identical content. This is an explicit wire representation difference: exact compressed-byte parity is not claimed. Resolve currently buffers responses; this middleware does not establish native Lambda response streaming. Read/write/close failures retain their causes; consumed bodies are closed once. Cancellation is checked before and during compression, but it cannot forcibly interrupt an application reader that blocks inside Read. Readers must cooperate with their request context where necessary.
+
+## Evidence and remaining scope
+
+`tools/reference/generate-http-middleware.mjs` executes the actual pinned middleware/router and records 1,076 cases across API Gateway REST, HTTP API v2, ALB and Function URL events. It covers defaults, empty and wildcard configurations, preflight allow/deny, route policies, credentials, max-age numeric formatting, encoding/quality strings, exact thresholds, null/empty/Unicode bodies, pre-encoded and transfer-encoded responses, cache directives, errors, HEAD, and both middleware orders.
+
+The comparison checks status, Base64 flags, headers, cookies, handler invocation counts and decoded payload bytes. For compressed bodies only, it compares decompressed bytes instead of compressor-specific wire bytes. If nested middleware supplies Content-Length, each runtime's length is checked against its own compressed bytes before comparison. The existing JSON-body decoded-value normalization remains; no error or negotiation differences are removed from the fixture.
+
+Additional Go tests exercise 64 simultaneous callers using one middleware configuration, post-construction option mutation, read/close/write failures, error and panic identity, cancellation, and exactly-once body cleanup. Original HTTP reference cases remain part of the same module tests.
+
+Full HTTP parity remains open, including malformed native header values, Go/JavaScript Unicode case conversion edges, converter/URL/regex/error contracts and streaming. Performance/allocation limits and release gates are separate from these correctness checks. Current packaged/runtime acceptance is recorded in [LOCAL_VALIDATION.md](LOCAL_VALIDATION.md) and [HTTP_PLAN.md](HTTP_PLAN.md).
+
+Acceptance (2026-09-17, Asia/Shanghai): all 20 packaged modules/17 consumers passed, both CGO-disabled Linux binaries built and Docker passed 609/609 assertions. The new runtime probes add 108 assertions covering all four event adapters, preflight short-circuit/fallthrough, both compression algorithms, actual compressed lengths, CORS/request identity composition, and identity/no-transform skips. An initial runtime failure exposed a development GET fixture using an empty body rather than null. After that fixture-only fix, the continuation rebuilt binaries with `--skip-module-checks`; public library source was unchanged. The same successful artifacts passed 14/14 Batch checks, with temporary containers/network removed. Docker executed amd64 only; arm64 remains cross-build evidence.

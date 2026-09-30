@@ -1,0 +1,2183 @@
+{
+  "source": "@aws-lambda-powertools/batch@2.35.0",
+  "cases": [
+    {
+      "name": "sqs-async-empty",
+      "source": "sqs",
+      "sync": false,
+      "records": [],
+      "suppress": false,
+      "expected": {
+        "response": {
+          "batchItemFailures": []
+        },
+        "visited": [],
+        "successes": [],
+        "failures": [],
+        "errorTypes": [],
+        "error": null
+      }
+    },
+    {
+      "name": "sqs-async-success",
+      "source": "sqs",
+      "sync": false,
+      "records": [
+        {
+          "fixtureId": "1",
+          "fail": false,
+          "messageId": "1",
+          "body": "{\"id\":\"1\"}",
+          "attributes": {}
+        },
+        {
+          "fixtureId": "2",
+          "fail": false,
+          "messageId": "2",
+          "body": "{\"id\":\"2\"}",
+          "attributes": {}
+        }
+      ],
+      "suppress": false,
+      "expected": {
+        "response": {
+          "batchItemFailures": []
+        },
+        "visited": [
+          "1",
+          "2"
+        ],
+        "successes": [
+          "1",
+          "2"
+        ],
+        "failures": [],
+        "errorTypes": [],
+        "error": null
+      }
+    },
+    {
+      "name": "sqs-async-partial",
+      "source": "sqs",
+      "sync": false,
+      "records": [
+        {
+          "fixtureId": "1",
+          "fail": false,
+          "messageId": "1",
+          "body": "{\"id\":\"1\"}",
+          "attributes": {}
+        },
+        {
+          "fixtureId": "2",
+          "fail": true,
+          "messageId": "2",
+          "body": "{\"id\":\"2\"}",
+          "attributes": {}
+        },
+        {
+          "fixtureId": "3",
+          "fail": false,
+          "messageId": "3",
+          "body": "{\"id\":\"3\"}",
+          "attributes": {}
+        },
+        {
+          "fixtureId": "4",
+          "fail": true,
+          "messageId": "4",
+          "body": "{\"id\":\"4\"}",
+          "attributes": {}
+        }
+      ],
+      "suppress": false,
+      "expected": {
+        "response": {
+          "batchItemFailures": [
+            {
+              "itemIdentifier": "2"
+            },
+            {
+              "itemIdentifier": "4"
+            }
+          ]
+        },
+        "visited": [
+          "1",
+          "2",
+          "3",
+          "4"
+        ],
+        "successes": [
+          "1",
+          "3"
+        ],
+        "failures": [
+          "2",
+          "4"
+        ],
+        "errorTypes": [
+          "Error",
+          "Error"
+        ],
+        "error": null
+      }
+    },
+    {
+      "name": "sqs-async-all-failed",
+      "source": "sqs",
+      "sync": false,
+      "records": [
+        {
+          "fixtureId": "1",
+          "fail": true,
+          "messageId": "1",
+          "body": "{\"id\":\"1\"}",
+          "attributes": {}
+        },
+        {
+          "fixtureId": "2",
+          "fail": true,
+          "messageId": "2",
+          "body": "{\"id\":\"2\"}",
+          "attributes": {}
+        }
+      ],
+      "suppress": false,
+      "expected": {
+        "response": {
+          "batchItemFailures": []
+        },
+        "visited": [
+          "1",
+          "2"
+        ],
+        "successes": [],
+        "failures": [
+          "1",
+          "2"
+        ],
+        "errorTypes": [
+          "Error",
+          "Error"
+        ],
+        "error": "FullBatchFailureError"
+      }
+    },
+    {
+      "name": "sqs-async-suppressed",
+      "source": "sqs",
+      "sync": false,
+      "records": [
+        {
+          "fixtureId": "1",
+          "fail": true,
+          "messageId": "1",
+          "body": "{\"id\":\"1\"}",
+          "attributes": {}
+        },
+        {
+          "fixtureId": "2",
+          "fail": true,
+          "messageId": "2",
+          "body": "{\"id\":\"2\"}",
+          "attributes": {}
+        }
+      ],
+      "suppress": true,
+      "expected": {
+        "response": {
+          "batchItemFailures": [
+            {
+              "itemIdentifier": "1"
+            },
+            {
+              "itemIdentifier": "2"
+            }
+          ]
+        },
+        "visited": [
+          "1",
+          "2"
+        ],
+        "successes": [],
+        "failures": [
+          "1",
+          "2"
+        ],
+        "errorTypes": [
+          "Error",
+          "Error"
+        ],
+        "error": null
+      }
+    },
+    {
+      "name": "sqs-sync-empty",
+      "source": "sqs",
+      "sync": true,
+      "records": [],
+      "suppress": false,
+      "expected": {
+        "response": {
+          "batchItemFailures": []
+        },
+        "visited": [],
+        "successes": [],
+        "failures": [],
+        "errorTypes": [],
+        "error": null
+      }
+    },
+    {
+      "name": "sqs-sync-success",
+      "source": "sqs",
+      "sync": true,
+      "records": [
+        {
+          "fixtureId": "1",
+          "fail": false,
+          "messageId": "1",
+          "body": "{\"id\":\"1\"}",
+          "attributes": {}
+        },
+        {
+          "fixtureId": "2",
+          "fail": false,
+          "messageId": "2",
+          "body": "{\"id\":\"2\"}",
+          "attributes": {}
+        }
+      ],
+      "suppress": false,
+      "expected": {
+        "response": {
+          "batchItemFailures": []
+        },
+        "visited": [
+          "1",
+          "2"
+        ],
+        "successes": [
+          "1",
+          "2"
+        ],
+        "failures": [],
+        "errorTypes": [],
+        "error": null
+      }
+    },
+    {
+      "name": "sqs-sync-partial",
+      "source": "sqs",
+      "sync": true,
+      "records": [
+        {
+          "fixtureId": "1",
+          "fail": false,
+          "messageId": "1",
+          "body": "{\"id\":\"1\"}",
+          "attributes": {}
+        },
+        {
+          "fixtureId": "2",
+          "fail": true,
+          "messageId": "2",
+          "body": "{\"id\":\"2\"}",
+          "attributes": {}
+        },
+        {
+          "fixtureId": "3",
+          "fail": false,
+          "messageId": "3",
+          "body": "{\"id\":\"3\"}",
+          "attributes": {}
+        },
+        {
+          "fixtureId": "4",
+          "fail": true,
+          "messageId": "4",
+          "body": "{\"id\":\"4\"}",
+          "attributes": {}
+        }
+      ],
+      "suppress": false,
+      "expected": {
+        "response": {
+          "batchItemFailures": [
+            {
+              "itemIdentifier": "2"
+            },
+            {
+              "itemIdentifier": "4"
+            }
+          ]
+        },
+        "visited": [
+          "1",
+          "2",
+          "3",
+          "4"
+        ],
+        "successes": [
+          "1",
+          "3"
+        ],
+        "failures": [
+          "2",
+          "4"
+        ],
+        "errorTypes": [
+          "Error",
+          "Error"
+        ],
+        "error": null
+      }
+    },
+    {
+      "name": "sqs-sync-all-failed",
+      "source": "sqs",
+      "sync": true,
+      "records": [
+        {
+          "fixtureId": "1",
+          "fail": true,
+          "messageId": "1",
+          "body": "{\"id\":\"1\"}",
+          "attributes": {}
+        },
+        {
+          "fixtureId": "2",
+          "fail": true,
+          "messageId": "2",
+          "body": "{\"id\":\"2\"}",
+          "attributes": {}
+        }
+      ],
+      "suppress": false,
+      "expected": {
+        "response": {
+          "batchItemFailures": []
+        },
+        "visited": [
+          "1",
+          "2"
+        ],
+        "successes": [],
+        "failures": [
+          "1",
+          "2"
+        ],
+        "errorTypes": [
+          "Error",
+          "Error"
+        ],
+        "error": "FullBatchFailureError"
+      }
+    },
+    {
+      "name": "sqs-sync-suppressed",
+      "source": "sqs",
+      "sync": true,
+      "records": [
+        {
+          "fixtureId": "1",
+          "fail": true,
+          "messageId": "1",
+          "body": "{\"id\":\"1\"}",
+          "attributes": {}
+        },
+        {
+          "fixtureId": "2",
+          "fail": true,
+          "messageId": "2",
+          "body": "{\"id\":\"2\"}",
+          "attributes": {}
+        }
+      ],
+      "suppress": true,
+      "expected": {
+        "response": {
+          "batchItemFailures": [
+            {
+              "itemIdentifier": "1"
+            },
+            {
+              "itemIdentifier": "2"
+            }
+          ]
+        },
+        "visited": [
+          "1",
+          "2"
+        ],
+        "successes": [],
+        "failures": [
+          "1",
+          "2"
+        ],
+        "errorTypes": [
+          "Error",
+          "Error"
+        ],
+        "error": null
+      }
+    },
+    {
+      "name": "kinesis-async-empty",
+      "source": "kinesis",
+      "sync": false,
+      "records": [],
+      "suppress": false,
+      "expected": {
+        "response": {
+          "batchItemFailures": []
+        },
+        "visited": [],
+        "successes": [],
+        "failures": [],
+        "errorTypes": [],
+        "error": null
+      }
+    },
+    {
+      "name": "kinesis-async-success",
+      "source": "kinesis",
+      "sync": false,
+      "records": [
+        {
+          "fixtureId": "1",
+          "fail": false,
+          "kinesis": {
+            "sequenceNumber": "1",
+            "data": "eyJpZCI6IjEifQ=="
+          }
+        },
+        {
+          "fixtureId": "2",
+          "fail": false,
+          "kinesis": {
+            "sequenceNumber": "2",
+            "data": "eyJpZCI6IjIifQ=="
+          }
+        }
+      ],
+      "suppress": false,
+      "expected": {
+        "response": {
+          "batchItemFailures": []
+        },
+        "visited": [
+          "1",
+          "2"
+        ],
+        "successes": [
+          "1",
+          "2"
+        ],
+        "failures": [],
+        "errorTypes": [],
+        "error": null
+      }
+    },
+    {
+      "name": "kinesis-async-partial",
+      "source": "kinesis",
+      "sync": false,
+      "records": [
+        {
+          "fixtureId": "1",
+          "fail": false,
+          "kinesis": {
+            "sequenceNumber": "1",
+            "data": "eyJpZCI6IjEifQ=="
+          }
+        },
+        {
+          "fixtureId": "2",
+          "fail": true,
+          "kinesis": {
+            "sequenceNumber": "2",
+            "data": "eyJpZCI6IjIifQ=="
+          }
+        },
+        {
+          "fixtureId": "3",
+          "fail": false,
+          "kinesis": {
+            "sequenceNumber": "3",
+            "data": "eyJpZCI6IjMifQ=="
+          }
+        },
+        {
+          "fixtureId": "4",
+          "fail": true,
+          "kinesis": {
+            "sequenceNumber": "4",
+            "data": "eyJpZCI6IjQifQ=="
+          }
+        }
+      ],
+      "suppress": false,
+      "expected": {
+        "response": {
+          "batchItemFailures": [
+            {
+              "itemIdentifier": "2"
+            },
+            {
+              "itemIdentifier": "4"
+            }
+          ]
+        },
+        "visited": [
+          "1",
+          "2",
+          "3",
+          "4"
+        ],
+        "successes": [
+          "1",
+          "3"
+        ],
+        "failures": [
+          "2",
+          "4"
+        ],
+        "errorTypes": [
+          "Error",
+          "Error"
+        ],
+        "error": null
+      }
+    },
+    {
+      "name": "kinesis-async-all-failed",
+      "source": "kinesis",
+      "sync": false,
+      "records": [
+        {
+          "fixtureId": "1",
+          "fail": true,
+          "kinesis": {
+            "sequenceNumber": "1",
+            "data": "eyJpZCI6IjEifQ=="
+          }
+        },
+        {
+          "fixtureId": "2",
+          "fail": true,
+          "kinesis": {
+            "sequenceNumber": "2",
+            "data": "eyJpZCI6IjIifQ=="
+          }
+        }
+      ],
+      "suppress": false,
+      "expected": {
+        "response": {
+          "batchItemFailures": []
+        },
+        "visited": [
+          "1",
+          "2"
+        ],
+        "successes": [],
+        "failures": [
+          "1",
+          "2"
+        ],
+        "errorTypes": [
+          "Error",
+          "Error"
+        ],
+        "error": "FullBatchFailureError"
+      }
+    },
+    {
+      "name": "kinesis-async-suppressed",
+      "source": "kinesis",
+      "sync": false,
+      "records": [
+        {
+          "fixtureId": "1",
+          "fail": true,
+          "kinesis": {
+            "sequenceNumber": "1",
+            "data": "eyJpZCI6IjEifQ=="
+          }
+        },
+        {
+          "fixtureId": "2",
+          "fail": true,
+          "kinesis": {
+            "sequenceNumber": "2",
+            "data": "eyJpZCI6IjIifQ=="
+          }
+        }
+      ],
+      "suppress": true,
+      "expected": {
+        "response": {
+          "batchItemFailures": [
+            {
+              "itemIdentifier": "1"
+            },
+            {
+              "itemIdentifier": "2"
+            }
+          ]
+        },
+        "visited": [
+          "1",
+          "2"
+        ],
+        "successes": [],
+        "failures": [
+          "1",
+          "2"
+        ],
+        "errorTypes": [
+          "Error",
+          "Error"
+        ],
+        "error": null
+      }
+    },
+    {
+      "name": "kinesis-sync-empty",
+      "source": "kinesis",
+      "sync": true,
+      "records": [],
+      "suppress": false,
+      "expected": {
+        "response": {
+          "batchItemFailures": []
+        },
+        "visited": [],
+        "successes": [],
+        "failures": [],
+        "errorTypes": [],
+        "error": null
+      }
+    },
+    {
+      "name": "kinesis-sync-success",
+      "source": "kinesis",
+      "sync": true,
+      "records": [
+        {
+          "fixtureId": "1",
+          "fail": false,
+          "kinesis": {
+            "sequenceNumber": "1",
+            "data": "eyJpZCI6IjEifQ=="
+          }
+        },
+        {
+          "fixtureId": "2",
+          "fail": false,
+          "kinesis": {
+            "sequenceNumber": "2",
+            "data": "eyJpZCI6IjIifQ=="
+          }
+        }
+      ],
+      "suppress": false,
+      "expected": {
+        "response": {
+          "batchItemFailures": []
+        },
+        "visited": [
+          "1",
+          "2"
+        ],
+        "successes": [
+          "1",
+          "2"
+        ],
+        "failures": [],
+        "errorTypes": [],
+        "error": null
+      }
+    },
+    {
+      "name": "kinesis-sync-partial",
+      "source": "kinesis",
+      "sync": true,
+      "records": [
+        {
+          "fixtureId": "1",
+          "fail": false,
+          "kinesis": {
+            "sequenceNumber": "1",
+            "data": "eyJpZCI6IjEifQ=="
+          }
+        },
+        {
+          "fixtureId": "2",
+          "fail": true,
+          "kinesis": {
+            "sequenceNumber": "2",
+            "data": "eyJpZCI6IjIifQ=="
+          }
+        },
+        {
+          "fixtureId": "3",
+          "fail": false,
+          "kinesis": {
+            "sequenceNumber": "3",
+            "data": "eyJpZCI6IjMifQ=="
+          }
+        },
+        {
+          "fixtureId": "4",
+          "fail": true,
+          "kinesis": {
+            "sequenceNumber": "4",
+            "data": "eyJpZCI6IjQifQ=="
+          }
+        }
+      ],
+      "suppress": false,
+      "expected": {
+        "response": {
+          "batchItemFailures": [
+            {
+              "itemIdentifier": "2"
+            },
+            {
+              "itemIdentifier": "4"
+            }
+          ]
+        },
+        "visited": [
+          "1",
+          "2",
+          "3",
+          "4"
+        ],
+        "successes": [
+          "1",
+          "3"
+        ],
+        "failures": [
+          "2",
+          "4"
+        ],
+        "errorTypes": [
+          "Error",
+          "Error"
+        ],
+        "error": null
+      }
+    },
+    {
+      "name": "kinesis-sync-all-failed",
+      "source": "kinesis",
+      "sync": true,
+      "records": [
+        {
+          "fixtureId": "1",
+          "fail": true,
+          "kinesis": {
+            "sequenceNumber": "1",
+            "data": "eyJpZCI6IjEifQ=="
+          }
+        },
+        {
+          "fixtureId": "2",
+          "fail": true,
+          "kinesis": {
+            "sequenceNumber": "2",
+            "data": "eyJpZCI6IjIifQ=="
+          }
+        }
+      ],
+      "suppress": false,
+      "expected": {
+        "response": {
+          "batchItemFailures": []
+        },
+        "visited": [
+          "1",
+          "2"
+        ],
+        "successes": [],
+        "failures": [
+          "1",
+          "2"
+        ],
+        "errorTypes": [
+          "Error",
+          "Error"
+        ],
+        "error": "FullBatchFailureError"
+      }
+    },
+    {
+      "name": "kinesis-sync-suppressed",
+      "source": "kinesis",
+      "sync": true,
+      "records": [
+        {
+          "fixtureId": "1",
+          "fail": true,
+          "kinesis": {
+            "sequenceNumber": "1",
+            "data": "eyJpZCI6IjEifQ=="
+          }
+        },
+        {
+          "fixtureId": "2",
+          "fail": true,
+          "kinesis": {
+            "sequenceNumber": "2",
+            "data": "eyJpZCI6IjIifQ=="
+          }
+        }
+      ],
+      "suppress": true,
+      "expected": {
+        "response": {
+          "batchItemFailures": [
+            {
+              "itemIdentifier": "1"
+            },
+            {
+              "itemIdentifier": "2"
+            }
+          ]
+        },
+        "visited": [
+          "1",
+          "2"
+        ],
+        "successes": [],
+        "failures": [
+          "1",
+          "2"
+        ],
+        "errorTypes": [
+          "Error",
+          "Error"
+        ],
+        "error": null
+      }
+    },
+    {
+      "name": "dynamodb-async-empty",
+      "source": "dynamodb",
+      "sync": false,
+      "records": [],
+      "suppress": false,
+      "expected": {
+        "response": {
+          "batchItemFailures": []
+        },
+        "visited": [],
+        "successes": [],
+        "failures": [],
+        "errorTypes": [],
+        "error": null
+      }
+    },
+    {
+      "name": "dynamodb-async-success",
+      "source": "dynamodb",
+      "sync": false,
+      "records": [
+        {
+          "fixtureId": "1",
+          "fail": false,
+          "dynamodb": {
+            "SequenceNumber": "1"
+          }
+        },
+        {
+          "fixtureId": "2",
+          "fail": false,
+          "dynamodb": {
+            "SequenceNumber": "2"
+          }
+        }
+      ],
+      "suppress": false,
+      "expected": {
+        "response": {
+          "batchItemFailures": []
+        },
+        "visited": [
+          "1",
+          "2"
+        ],
+        "successes": [
+          "1",
+          "2"
+        ],
+        "failures": [],
+        "errorTypes": [],
+        "error": null
+      }
+    },
+    {
+      "name": "dynamodb-async-partial",
+      "source": "dynamodb",
+      "sync": false,
+      "records": [
+        {
+          "fixtureId": "1",
+          "fail": false,
+          "dynamodb": {
+            "SequenceNumber": "1"
+          }
+        },
+        {
+          "fixtureId": "2",
+          "fail": true,
+          "dynamodb": {
+            "SequenceNumber": "2"
+          }
+        },
+        {
+          "fixtureId": "3",
+          "fail": false,
+          "dynamodb": {
+            "SequenceNumber": "3"
+          }
+        },
+        {
+          "fixtureId": "4",
+          "fail": true,
+          "dynamodb": {
+            "SequenceNumber": "4"
+          }
+        }
+      ],
+      "suppress": false,
+      "expected": {
+        "response": {
+          "batchItemFailures": [
+            {
+              "itemIdentifier": "2"
+            },
+            {
+              "itemIdentifier": "4"
+            }
+          ]
+        },
+        "visited": [
+          "1",
+          "2",
+          "3",
+          "4"
+        ],
+        "successes": [
+          "1",
+          "3"
+        ],
+        "failures": [
+          "2",
+          "4"
+        ],
+        "errorTypes": [
+          "Error",
+          "Error"
+        ],
+        "error": null
+      }
+    },
+    {
+      "name": "dynamodb-async-all-failed",
+      "source": "dynamodb",
+      "sync": false,
+      "records": [
+        {
+          "fixtureId": "1",
+          "fail": true,
+          "dynamodb": {
+            "SequenceNumber": "1"
+          }
+        },
+        {
+          "fixtureId": "2",
+          "fail": true,
+          "dynamodb": {
+            "SequenceNumber": "2"
+          }
+        }
+      ],
+      "suppress": false,
+      "expected": {
+        "response": {
+          "batchItemFailures": []
+        },
+        "visited": [
+          "1",
+          "2"
+        ],
+        "successes": [],
+        "failures": [
+          "1",
+          "2"
+        ],
+        "errorTypes": [
+          "Error",
+          "Error"
+        ],
+        "error": "FullBatchFailureError"
+      }
+    },
+    {
+      "name": "dynamodb-async-suppressed",
+      "source": "dynamodb",
+      "sync": false,
+      "records": [
+        {
+          "fixtureId": "1",
+          "fail": true,
+          "dynamodb": {
+            "SequenceNumber": "1"
+          }
+        },
+        {
+          "fixtureId": "2",
+          "fail": true,
+          "dynamodb": {
+            "SequenceNumber": "2"
+          }
+        }
+      ],
+      "suppress": true,
+      "expected": {
+        "response": {
+          "batchItemFailures": [
+            {
+              "itemIdentifier": "1"
+            },
+            {
+              "itemIdentifier": "2"
+            }
+          ]
+        },
+        "visited": [
+          "1",
+          "2"
+        ],
+        "successes": [],
+        "failures": [
+          "1",
+          "2"
+        ],
+        "errorTypes": [
+          "Error",
+          "Error"
+        ],
+        "error": null
+      }
+    },
+    {
+      "name": "dynamodb-sync-empty",
+      "source": "dynamodb",
+      "sync": true,
+      "records": [],
+      "suppress": false,
+      "expected": {
+        "response": {
+          "batchItemFailures": []
+        },
+        "visited": [],
+        "successes": [],
+        "failures": [],
+        "errorTypes": [],
+        "error": null
+      }
+    },
+    {
+      "name": "dynamodb-sync-success",
+      "source": "dynamodb",
+      "sync": true,
+      "records": [
+        {
+          "fixtureId": "1",
+          "fail": false,
+          "dynamodb": {
+            "SequenceNumber": "1"
+          }
+        },
+        {
+          "fixtureId": "2",
+          "fail": false,
+          "dynamodb": {
+            "SequenceNumber": "2"
+          }
+        }
+      ],
+      "suppress": false,
+      "expected": {
+        "response": {
+          "batchItemFailures": []
+        },
+        "visited": [
+          "1",
+          "2"
+        ],
+        "successes": [
+          "1",
+          "2"
+        ],
+        "failures": [],
+        "errorTypes": [],
+        "error": null
+      }
+    },
+    {
+      "name": "dynamodb-sync-partial",
+      "source": "dynamodb",
+      "sync": true,
+      "records": [
+        {
+          "fixtureId": "1",
+          "fail": false,
+          "dynamodb": {
+            "SequenceNumber": "1"
+          }
+        },
+        {
+          "fixtureId": "2",
+          "fail": true,
+          "dynamodb": {
+            "SequenceNumber": "2"
+          }
+        },
+        {
+          "fixtureId": "3",
+          "fail": false,
+          "dynamodb": {
+            "SequenceNumber": "3"
+          }
+        },
+        {
+          "fixtureId": "4",
+          "fail": true,
+          "dynamodb": {
+            "SequenceNumber": "4"
+          }
+        }
+      ],
+      "suppress": false,
+      "expected": {
+        "response": {
+          "batchItemFailures": [
+            {
+              "itemIdentifier": "2"
+            },
+            {
+              "itemIdentifier": "4"
+            }
+          ]
+        },
+        "visited": [
+          "1",
+          "2",
+          "3",
+          "4"
+        ],
+        "successes": [
+          "1",
+          "3"
+        ],
+        "failures": [
+          "2",
+          "4"
+        ],
+        "errorTypes": [
+          "Error",
+          "Error"
+        ],
+        "error": null
+      }
+    },
+    {
+      "name": "dynamodb-sync-all-failed",
+      "source": "dynamodb",
+      "sync": true,
+      "records": [
+        {
+          "fixtureId": "1",
+          "fail": true,
+          "dynamodb": {
+            "SequenceNumber": "1"
+          }
+        },
+        {
+          "fixtureId": "2",
+          "fail": true,
+          "dynamodb": {
+            "SequenceNumber": "2"
+          }
+        }
+      ],
+      "suppress": false,
+      "expected": {
+        "response": {
+          "batchItemFailures": []
+        },
+        "visited": [
+          "1",
+          "2"
+        ],
+        "successes": [],
+        "failures": [
+          "1",
+          "2"
+        ],
+        "errorTypes": [
+          "Error",
+          "Error"
+        ],
+        "error": "FullBatchFailureError"
+      }
+    },
+    {
+      "name": "dynamodb-sync-suppressed",
+      "source": "dynamodb",
+      "sync": true,
+      "records": [
+        {
+          "fixtureId": "1",
+          "fail": true,
+          "dynamodb": {
+            "SequenceNumber": "1"
+          }
+        },
+        {
+          "fixtureId": "2",
+          "fail": true,
+          "dynamodb": {
+            "SequenceNumber": "2"
+          }
+        }
+      ],
+      "suppress": true,
+      "expected": {
+        "response": {
+          "batchItemFailures": [
+            {
+              "itemIdentifier": "1"
+            },
+            {
+              "itemIdentifier": "2"
+            }
+          ]
+        },
+        "visited": [
+          "1",
+          "2"
+        ],
+        "successes": [],
+        "failures": [
+          "1",
+          "2"
+        ],
+        "errorTypes": [
+          "Error",
+          "Error"
+        ],
+        "error": null
+      }
+    },
+    {
+      "name": "fifo-async-stop",
+      "source": "sqs",
+      "fifo": true,
+      "sync": false,
+      "records": [
+        {
+          "fixtureId": "1",
+          "fail": false,
+          "messageId": "1",
+          "body": "{\"id\":\"1\"}",
+          "attributes": {
+            "MessageGroupId": "a"
+          }
+        },
+        {
+          "fixtureId": "2",
+          "fail": true,
+          "messageId": "2",
+          "body": "{\"id\":\"2\"}",
+          "attributes": {
+            "MessageGroupId": "a"
+          }
+        },
+        {
+          "fixtureId": "3",
+          "fail": false,
+          "messageId": "3",
+          "body": "{\"id\":\"3\"}",
+          "attributes": {
+            "MessageGroupId": "b"
+          }
+        },
+        {
+          "fixtureId": "4",
+          "fail": false,
+          "messageId": "4",
+          "body": "{\"id\":\"4\"}",
+          "attributes": {
+            "MessageGroupId": "a"
+          }
+        }
+      ],
+      "skip": false,
+      "suppress": false,
+      "expected": {
+        "response": {
+          "batchItemFailures": [
+            {
+              "itemIdentifier": "2"
+            },
+            {
+              "itemIdentifier": "3"
+            },
+            {
+              "itemIdentifier": "4"
+            }
+          ]
+        },
+        "visited": [
+          "1",
+          "2"
+        ],
+        "successes": [
+          "1"
+        ],
+        "failures": [
+          "2",
+          "3",
+          "4"
+        ],
+        "errorTypes": [
+          "Error",
+          "SqsFifoShortCircuitError",
+          "SqsFifoShortCircuitError"
+        ],
+        "error": null
+      }
+    },
+    {
+      "name": "fifo-async-groups",
+      "source": "sqs",
+      "fifo": true,
+      "sync": false,
+      "records": [
+        {
+          "fixtureId": "1",
+          "fail": true,
+          "messageId": "1",
+          "body": "{\"id\":\"1\"}",
+          "attributes": {
+            "MessageGroupId": "a"
+          }
+        },
+        {
+          "fixtureId": "2",
+          "fail": false,
+          "messageId": "2",
+          "body": "{\"id\":\"2\"}",
+          "attributes": {
+            "MessageGroupId": "b"
+          }
+        },
+        {
+          "fixtureId": "3",
+          "fail": false,
+          "messageId": "3",
+          "body": "{\"id\":\"3\"}",
+          "attributes": {
+            "MessageGroupId": "a"
+          }
+        },
+        {
+          "fixtureId": "4",
+          "fail": true,
+          "messageId": "4",
+          "body": "{\"id\":\"4\"}",
+          "attributes": {
+            "MessageGroupId": "b"
+          }
+        },
+        {
+          "fixtureId": "5",
+          "fail": false,
+          "messageId": "5",
+          "body": "{\"id\":\"5\"}",
+          "attributes": {
+            "MessageGroupId": "b"
+          }
+        },
+        {
+          "fixtureId": "6",
+          "fail": false,
+          "messageId": "6",
+          "body": "{\"id\":\"6\"}",
+          "attributes": {
+            "MessageGroupId": "c"
+          }
+        }
+      ],
+      "skip": true,
+      "suppress": false,
+      "expected": {
+        "response": {
+          "batchItemFailures": [
+            {
+              "itemIdentifier": "1"
+            },
+            {
+              "itemIdentifier": "3"
+            },
+            {
+              "itemIdentifier": "4"
+            },
+            {
+              "itemIdentifier": "5"
+            }
+          ]
+        },
+        "visited": [
+          "1",
+          "2",
+          "4",
+          "6"
+        ],
+        "successes": [
+          "2",
+          "6"
+        ],
+        "failures": [
+          "1",
+          "3",
+          "4",
+          "5"
+        ],
+        "errorTypes": [
+          "Error",
+          "SqsFifoMessageGroupShortCircuitError",
+          "Error",
+          "SqsFifoMessageGroupShortCircuitError"
+        ],
+        "error": null
+      }
+    },
+    {
+      "name": "fifo-async-all",
+      "source": "sqs",
+      "fifo": true,
+      "sync": false,
+      "records": [
+        {
+          "fixtureId": "1",
+          "fail": true,
+          "messageId": "1",
+          "body": "{\"id\":\"1\"}",
+          "attributes": {
+            "MessageGroupId": "a"
+          }
+        },
+        {
+          "fixtureId": "2",
+          "fail": false,
+          "messageId": "2",
+          "body": "{\"id\":\"2\"}",
+          "attributes": {
+            "MessageGroupId": "a"
+          }
+        },
+        {
+          "fixtureId": "3",
+          "fail": false,
+          "messageId": "3",
+          "body": "{\"id\":\"3\"}",
+          "attributes": {
+            "MessageGroupId": "b"
+          }
+        }
+      ],
+      "skip": false,
+      "suppress": false,
+      "expected": {
+        "response": {
+          "batchItemFailures": []
+        },
+        "visited": [
+          "1"
+        ],
+        "successes": [],
+        "failures": [
+          "1",
+          "2",
+          "3"
+        ],
+        "errorTypes": [
+          "Error",
+          "SqsFifoShortCircuitError",
+          "SqsFifoShortCircuitError"
+        ],
+        "error": "FullBatchFailureError"
+      }
+    },
+    {
+      "name": "fifo-async-suppressed",
+      "source": "sqs",
+      "fifo": true,
+      "sync": false,
+      "records": [
+        {
+          "fixtureId": "1",
+          "fail": true,
+          "messageId": "1",
+          "body": "{\"id\":\"1\"}",
+          "attributes": {
+            "MessageGroupId": "a"
+          }
+        },
+        {
+          "fixtureId": "2",
+          "fail": false,
+          "messageId": "2",
+          "body": "{\"id\":\"2\"}",
+          "attributes": {
+            "MessageGroupId": "a"
+          }
+        }
+      ],
+      "skip": false,
+      "suppress": true,
+      "expected": {
+        "response": {
+          "batchItemFailures": [
+            {
+              "itemIdentifier": "1"
+            },
+            {
+              "itemIdentifier": "2"
+            }
+          ]
+        },
+        "visited": [
+          "1"
+        ],
+        "successes": [],
+        "failures": [
+          "1",
+          "2"
+        ],
+        "errorTypes": [
+          "Error",
+          "SqsFifoShortCircuitError"
+        ],
+        "error": null
+      }
+    },
+    {
+      "name": "fifo-async-missing-group",
+      "source": "sqs",
+      "fifo": true,
+      "sync": false,
+      "records": [
+        {
+          "fixtureId": "1",
+          "fail": true,
+          "messageId": "1",
+          "body": "{\"id\":\"1\"}",
+          "attributes": {}
+        },
+        {
+          "fixtureId": "2",
+          "fail": false,
+          "messageId": "2",
+          "body": "{\"id\":\"2\"}",
+          "attributes": {}
+        },
+        {
+          "fixtureId": "3",
+          "fail": false,
+          "messageId": "3",
+          "body": "{\"id\":\"3\"}",
+          "attributes": {
+            "MessageGroupId": "a"
+          }
+        }
+      ],
+      "skip": true,
+      "suppress": false,
+      "expected": {
+        "response": {
+          "batchItemFailures": [
+            {
+              "itemIdentifier": "1"
+            }
+          ]
+        },
+        "visited": [
+          "1",
+          "2",
+          "3"
+        ],
+        "successes": [
+          "2",
+          "3"
+        ],
+        "failures": [
+          "1"
+        ],
+        "errorTypes": [
+          "Error"
+        ],
+        "error": null
+      }
+    },
+    {
+      "name": "fifo-async-empty-group",
+      "source": "sqs",
+      "fifo": true,
+      "sync": false,
+      "records": [
+        {
+          "fixtureId": "1",
+          "fail": true,
+          "messageId": "1",
+          "body": "{\"id\":\"1\"}",
+          "attributes": {
+            "MessageGroupId": ""
+          }
+        },
+        {
+          "fixtureId": "2",
+          "fail": false,
+          "messageId": "2",
+          "body": "{\"id\":\"2\"}",
+          "attributes": {
+            "MessageGroupId": ""
+          }
+        },
+        {
+          "fixtureId": "3",
+          "fail": false,
+          "messageId": "3",
+          "body": "{\"id\":\"3\"}",
+          "attributes": {
+            "MessageGroupId": "a"
+          }
+        }
+      ],
+      "skip": true,
+      "suppress": false,
+      "expected": {
+        "response": {
+          "batchItemFailures": [
+            {
+              "itemIdentifier": "1"
+            }
+          ]
+        },
+        "visited": [
+          "1",
+          "2",
+          "3"
+        ],
+        "successes": [
+          "2",
+          "3"
+        ],
+        "failures": [
+          "1"
+        ],
+        "errorTypes": [
+          "Error"
+        ],
+        "error": null
+      }
+    },
+    {
+      "name": "fifo-sync-stop",
+      "source": "sqs",
+      "fifo": true,
+      "sync": true,
+      "records": [
+        {
+          "fixtureId": "1",
+          "fail": false,
+          "messageId": "1",
+          "body": "{\"id\":\"1\"}",
+          "attributes": {
+            "MessageGroupId": "a"
+          }
+        },
+        {
+          "fixtureId": "2",
+          "fail": true,
+          "messageId": "2",
+          "body": "{\"id\":\"2\"}",
+          "attributes": {
+            "MessageGroupId": "a"
+          }
+        },
+        {
+          "fixtureId": "3",
+          "fail": false,
+          "messageId": "3",
+          "body": "{\"id\":\"3\"}",
+          "attributes": {
+            "MessageGroupId": "b"
+          }
+        },
+        {
+          "fixtureId": "4",
+          "fail": false,
+          "messageId": "4",
+          "body": "{\"id\":\"4\"}",
+          "attributes": {
+            "MessageGroupId": "a"
+          }
+        }
+      ],
+      "skip": false,
+      "suppress": false,
+      "expected": {
+        "response": {
+          "batchItemFailures": [
+            {
+              "itemIdentifier": "2"
+            },
+            {
+              "itemIdentifier": "3"
+            },
+            {
+              "itemIdentifier": "4"
+            }
+          ]
+        },
+        "visited": [
+          "1",
+          "2"
+        ],
+        "successes": [
+          "1"
+        ],
+        "failures": [
+          "2",
+          "3",
+          "4"
+        ],
+        "errorTypes": [
+          "Error",
+          "SqsFifoShortCircuitError",
+          "SqsFifoShortCircuitError"
+        ],
+        "error": null
+      }
+    },
+    {
+      "name": "fifo-sync-groups",
+      "source": "sqs",
+      "fifo": true,
+      "sync": true,
+      "records": [
+        {
+          "fixtureId": "1",
+          "fail": true,
+          "messageId": "1",
+          "body": "{\"id\":\"1\"}",
+          "attributes": {
+            "MessageGroupId": "a"
+          }
+        },
+        {
+          "fixtureId": "2",
+          "fail": false,
+          "messageId": "2",
+          "body": "{\"id\":\"2\"}",
+          "attributes": {
+            "MessageGroupId": "b"
+          }
+        },
+        {
+          "fixtureId": "3",
+          "fail": false,
+          "messageId": "3",
+          "body": "{\"id\":\"3\"}",
+          "attributes": {
+            "MessageGroupId": "a"
+          }
+        },
+        {
+          "fixtureId": "4",
+          "fail": true,
+          "messageId": "4",
+          "body": "{\"id\":\"4\"}",
+          "attributes": {
+            "MessageGroupId": "b"
+          }
+        },
+        {
+          "fixtureId": "5",
+          "fail": false,
+          "messageId": "5",
+          "body": "{\"id\":\"5\"}",
+          "attributes": {
+            "MessageGroupId": "b"
+          }
+        },
+        {
+          "fixtureId": "6",
+          "fail": false,
+          "messageId": "6",
+          "body": "{\"id\":\"6\"}",
+          "attributes": {
+            "MessageGroupId": "c"
+          }
+        }
+      ],
+      "skip": true,
+      "suppress": false,
+      "expected": {
+        "response": {
+          "batchItemFailures": [
+            {
+              "itemIdentifier": "1"
+            },
+            {
+              "itemIdentifier": "3"
+            },
+            {
+              "itemIdentifier": "4"
+            },
+            {
+              "itemIdentifier": "5"
+            }
+          ]
+        },
+        "visited": [
+          "1",
+          "2",
+          "4",
+          "6"
+        ],
+        "successes": [
+          "2",
+          "6"
+        ],
+        "failures": [
+          "1",
+          "3",
+          "4",
+          "5"
+        ],
+        "errorTypes": [
+          "Error",
+          "SqsFifoMessageGroupShortCircuitError",
+          "Error",
+          "SqsFifoMessageGroupShortCircuitError"
+        ],
+        "error": null
+      }
+    },
+    {
+      "name": "fifo-sync-all",
+      "source": "sqs",
+      "fifo": true,
+      "sync": true,
+      "records": [
+        {
+          "fixtureId": "1",
+          "fail": true,
+          "messageId": "1",
+          "body": "{\"id\":\"1\"}",
+          "attributes": {
+            "MessageGroupId": "a"
+          }
+        },
+        {
+          "fixtureId": "2",
+          "fail": false,
+          "messageId": "2",
+          "body": "{\"id\":\"2\"}",
+          "attributes": {
+            "MessageGroupId": "a"
+          }
+        },
+        {
+          "fixtureId": "3",
+          "fail": false,
+          "messageId": "3",
+          "body": "{\"id\":\"3\"}",
+          "attributes": {
+            "MessageGroupId": "b"
+          }
+        }
+      ],
+      "skip": false,
+      "suppress": false,
+      "expected": {
+        "response": {
+          "batchItemFailures": []
+        },
+        "visited": [
+          "1"
+        ],
+        "successes": [],
+        "failures": [
+          "1",
+          "2",
+          "3"
+        ],
+        "errorTypes": [
+          "Error",
+          "SqsFifoShortCircuitError",
+          "SqsFifoShortCircuitError"
+        ],
+        "error": "FullBatchFailureError"
+      }
+    },
+    {
+      "name": "fifo-sync-suppressed",
+      "source": "sqs",
+      "fifo": true,
+      "sync": true,
+      "records": [
+        {
+          "fixtureId": "1",
+          "fail": true,
+          "messageId": "1",
+          "body": "{\"id\":\"1\"}",
+          "attributes": {
+            "MessageGroupId": "a"
+          }
+        },
+        {
+          "fixtureId": "2",
+          "fail": false,
+          "messageId": "2",
+          "body": "{\"id\":\"2\"}",
+          "attributes": {
+            "MessageGroupId": "a"
+          }
+        }
+      ],
+      "skip": false,
+      "suppress": true,
+      "expected": {
+        "response": {
+          "batchItemFailures": [
+            {
+              "itemIdentifier": "1"
+            },
+            {
+              "itemIdentifier": "2"
+            }
+          ]
+        },
+        "visited": [
+          "1"
+        ],
+        "successes": [],
+        "failures": [
+          "1",
+          "2"
+        ],
+        "errorTypes": [
+          "Error",
+          "SqsFifoShortCircuitError"
+        ],
+        "error": null
+      }
+    },
+    {
+      "name": "fifo-sync-missing-group",
+      "source": "sqs",
+      "fifo": true,
+      "sync": true,
+      "records": [
+        {
+          "fixtureId": "1",
+          "fail": true,
+          "messageId": "1",
+          "body": "{\"id\":\"1\"}",
+          "attributes": {}
+        },
+        {
+          "fixtureId": "2",
+          "fail": false,
+          "messageId": "2",
+          "body": "{\"id\":\"2\"}",
+          "attributes": {}
+        },
+        {
+          "fixtureId": "3",
+          "fail": false,
+          "messageId": "3",
+          "body": "{\"id\":\"3\"}",
+          "attributes": {
+            "MessageGroupId": "a"
+          }
+        }
+      ],
+      "skip": true,
+      "suppress": false,
+      "expected": {
+        "response": {
+          "batchItemFailures": [
+            {
+              "itemIdentifier": "1"
+            }
+          ]
+        },
+        "visited": [
+          "1",
+          "2",
+          "3"
+        ],
+        "successes": [
+          "2",
+          "3"
+        ],
+        "failures": [
+          "1"
+        ],
+        "errorTypes": [
+          "Error"
+        ],
+        "error": null
+      }
+    },
+    {
+      "name": "fifo-sync-empty-group",
+      "source": "sqs",
+      "fifo": true,
+      "sync": true,
+      "records": [
+        {
+          "fixtureId": "1",
+          "fail": true,
+          "messageId": "1",
+          "body": "{\"id\":\"1\"}",
+          "attributes": {
+            "MessageGroupId": ""
+          }
+        },
+        {
+          "fixtureId": "2",
+          "fail": false,
+          "messageId": "2",
+          "body": "{\"id\":\"2\"}",
+          "attributes": {
+            "MessageGroupId": ""
+          }
+        },
+        {
+          "fixtureId": "3",
+          "fail": false,
+          "messageId": "3",
+          "body": "{\"id\":\"3\"}",
+          "attributes": {
+            "MessageGroupId": "a"
+          }
+        }
+      ],
+      "skip": true,
+      "suppress": false,
+      "expected": {
+        "response": {
+          "batchItemFailures": [
+            {
+              "itemIdentifier": "1"
+            }
+          ]
+        },
+        "visited": [
+          "1",
+          "2",
+          "3"
+        ],
+        "successes": [
+          "2",
+          "3"
+        ],
+        "failures": [
+          "1"
+        ],
+        "errorTypes": [
+          "Error"
+        ],
+        "error": null
+      }
+    },
+    {
+      "name": "dynamodb-empty-sequence",
+      "source": "dynamodb",
+      "records": [
+        {
+          "fixtureId": "1",
+          "fail": false,
+          "dynamodb": {
+            "SequenceNumber": "1"
+          }
+        },
+        {
+          "fixtureId": "",
+          "fail": true,
+          "dynamodb": {
+            "SequenceNumber": ""
+          }
+        }
+      ],
+      "suppress": true,
+      "expected": {
+        "response": {
+          "batchItemFailures": []
+        },
+        "visited": [
+          "1",
+          ""
+        ],
+        "successes": [
+          "1"
+        ],
+        "failures": [
+          ""
+        ],
+        "errorTypes": [
+          "Error"
+        ],
+        "error": null
+      }
+    }
+  ],
+  "invalidEvents": [
+    {
+      "event": {},
+      "error": "UnexpectedBatchTypeError"
+    },
+    {
+      "event": {
+        "Records": null
+      },
+      "error": "UnexpectedBatchTypeError"
+    },
+    {
+      "event": {
+        "Records": {}
+      },
+      "error": "UnexpectedBatchTypeError"
+    },
+    {
+      "event": {
+        "Records": "invalid"
+      },
+      "error": "UnexpectedBatchTypeError"
+    }
+  ]
+}

@@ -1,0 +1,68 @@
+go 1.26
+
+use (
+	.
+	./commons/awssdk
+	./commons/dynamodb
+	./commons/regex
+	./commons/metadata
+	./logger
+	./metrics
+	./parameters
+	./signer
+	./jmespath
+	./datamasking
+	./datamasking/kms
+	./kafka
+	./kafka/avro
+	./kafka/protobuf
+	./batch
+	./idempotency
+	./idempotency/cache
+	./parser
+	./validation
+	./eventhandler/http
+	./eventhandler/appsyncevents
+	./eventhandler/appsyncgraphql
+	./eventhandler/bedrock
+	./eventhandler/http/metrics
+	./eventhandler/http/tracer
+	./tracer
+	./tracer/xray
+	./examples
+	./integration
+	./tools
+)
+
+// Resolve unpublished required versions during workspace graph loading.
+// These development mappings are never included in published module metadata.
+replace (
+ github.com/rambow-cloud/powertools-lambda-go/datamasking/kms v0.1.0 => ./datamasking/kms
+ github.com/rambow-cloud/powertools-lambda-go/commons/regex v0.1.0 => ./commons/regex
+	github.com/rambow-cloud/powertools-lambda-go v0.1.0 => .
+	github.com/rambow-cloud/powertools-lambda-go/commons/awssdk v0.1.0 => ./commons/awssdk
+	github.com/rambow-cloud/powertools-lambda-go/commons/dynamodb v0.1.0 => ./commons/dynamodb
+	github.com/rambow-cloud/powertools-lambda-go/commons/metadata v0.1.0 => ./commons/metadata
+	github.com/rambow-cloud/powertools-lambda-go/logger v0.1.0 => ./logger
+	github.com/rambow-cloud/powertools-lambda-go/metrics v0.1.0 => ./metrics
+	github.com/rambow-cloud/powertools-lambda-go/parameters v0.1.0 => ./parameters
+	github.com/rambow-cloud/powertools-lambda-go/signer v0.1.0 => ./signer
+	github.com/rambow-cloud/powertools-lambda-go/jmespath v0.1.0 => ./jmespath
+	github.com/rambow-cloud/powertools-lambda-go/datamasking v0.1.0 => ./datamasking
+	github.com/rambow-cloud/powertools-lambda-go/kafka/protobuf v0.1.0 => ./kafka/protobuf
+	github.com/rambow-cloud/powertools-lambda-go/kafka/avro v0.1.0 => ./kafka/avro
+	github.com/rambow-cloud/powertools-lambda-go/kafka v0.1.0 => ./kafka
+	github.com/rambow-cloud/powertools-lambda-go/batch v0.1.0 => ./batch
+	github.com/rambow-cloud/powertools-lambda-go/idempotency v0.1.0 => ./idempotency
+	github.com/rambow-cloud/powertools-lambda-go/idempotency/cache v0.1.0 => ./idempotency/cache
+	github.com/rambow-cloud/powertools-lambda-go/parser v0.1.0 => ./parser
+	github.com/rambow-cloud/powertools-lambda-go/validation v0.1.0 => ./validation
+	github.com/rambow-cloud/powertools-lambda-go/eventhandler/http v0.1.0 => ./eventhandler/http
+	github.com/rambow-cloud/powertools-lambda-go/eventhandler/appsyncevents v0.1.0 => ./eventhandler/appsyncevents
+	github.com/rambow-cloud/powertools-lambda-go/eventhandler/appsyncgraphql v0.1.0 => ./eventhandler/appsyncgraphql
+	github.com/rambow-cloud/powertools-lambda-go/eventhandler/bedrock v0.1.0 => ./eventhandler/bedrock
+	github.com/rambow-cloud/powertools-lambda-go/eventhandler/http/metrics v0.1.0 => ./eventhandler/http/metrics
+	github.com/rambow-cloud/powertools-lambda-go/eventhandler/http/tracer v0.1.0 => ./eventhandler/http/tracer
+	github.com/rambow-cloud/powertools-lambda-go/tracer v0.1.0 => ./tracer
+	github.com/rambow-cloud/powertools-lambda-go/tracer/xray v0.1.0 => ./tracer/xray
+)

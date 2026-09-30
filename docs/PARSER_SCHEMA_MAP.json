@@ -1,0 +1,804 @@
+{
+  "reference": "2.35.0",
+  "scope": "Runtime schema names only; inferred types and complete behavior are separate acceptance gates.",
+  "exports": [
+    {
+      "referenceName": "AlbMultiValueHeadersSchema",
+      "goSymbol": "schemas.AlbMultiValueHeadersSchema",
+      "goSource": "parser/schemas/alb.go",
+      "referenceSubpaths": [
+        "schemas/alb",
+        "schemas/index"
+      ]
+    },
+    {
+      "referenceName": "AlbSchema",
+      "goSymbol": "schemas.AlbSchema",
+      "goSource": "parser/schemas/alb.go",
+      "referenceSubpaths": [
+        "schemas/alb",
+        "schemas/index"
+      ]
+    },
+    {
+      "referenceName": "APIGatewayCert",
+      "goSymbol": "schemas.APIGatewayCert",
+      "goSource": "parser/schemas/apigw_proxy.go",
+      "referenceSubpaths": [
+        "schemas/apigw-proxy"
+      ]
+    },
+    {
+      "referenceName": "APIGatewayEventRequestContextSchema",
+      "goSymbol": "schemas.APIGatewayEventRequestContextSchema",
+      "goSource": "parser/schemas/api_gateway.go",
+      "referenceSubpaths": [
+        "schemas/api-gateway",
+        "schemas/index"
+      ]
+    },
+    {
+      "referenceName": "APIGatewayHttpMethod",
+      "goSymbol": "schemas.APIGatewayHttpMethod",
+      "goSource": "parser/schemas/apigw_proxy.go",
+      "referenceSubpaths": [
+        "schemas/apigw-proxy"
+      ]
+    },
+    {
+      "referenceName": "APIGatewayProxyEventSchema",
+      "goSymbol": "schemas.APIGatewayProxyEventSchema",
+      "goSource": "parser/schemas/api_gateway.go",
+      "referenceSubpaths": [
+        "schemas/api-gateway",
+        "schemas/index"
+      ]
+    },
+    {
+      "referenceName": "APIGatewayProxyEventV2Schema",
+      "goSymbol": "schemas.APIGatewayProxyEventV2Schema",
+      "goSource": "parser/schemas/api_gatewayv2.go",
+      "referenceSubpaths": [
+        "schemas/api-gatewayv2",
+        "schemas/index"
+      ]
+    },
+    {
+      "referenceName": "APIGatewayProxyWebsocketEventSchema",
+      "goSymbol": "schemas.APIGatewayProxyWebsocketEventSchema",
+      "goSource": "parser/schemas/websocket.go",
+      "referenceSubpaths": [
+        "schemas/api-gateway-websocket",
+        "schemas/index"
+      ]
+    },
+    {
+      "referenceName": "APIGatewayRecord",
+      "goSymbol": "schemas.APIGatewayRecord",
+      "goSource": "parser/schemas/apigw_proxy.go",
+      "referenceSubpaths": [
+        "schemas/apigw-proxy"
+      ]
+    },
+    {
+      "referenceName": "APIGatewayRequestAuthorizerEventSchema",
+      "goSymbol": "schemas.APIGatewayRequestAuthorizerEventSchema",
+      "goSource": "parser/schemas/api_gateway.go",
+      "referenceSubpaths": [
+        "schemas/api-gateway",
+        "schemas/index"
+      ]
+    },
+    {
+      "referenceName": "APIGatewayRequestAuthorizerEventV2Schema",
+      "goSymbol": "schemas.APIGatewayRequestAuthorizerEventV2Schema",
+      "goSource": "parser/schemas/api_gatewayv2.go",
+      "referenceSubpaths": [
+        "schemas/api-gatewayv2",
+        "schemas/index"
+      ]
+    },
+    {
+      "referenceName": "APIGatewayRequestAuthorizerV2Schema",
+      "goSymbol": "schemas.APIGatewayRequestAuthorizerV2Schema",
+      "goSource": "parser/schemas/api_gatewayv2.go",
+      "referenceSubpaths": [
+        "schemas/api-gatewayv2",
+        "schemas/index"
+      ]
+    },
+    {
+      "referenceName": "APIGatewayRequestContextV2Schema",
+      "goSymbol": "schemas.APIGatewayRequestContextV2Schema",
+      "goSource": "parser/schemas/api_gatewayv2.go",
+      "referenceSubpaths": [
+        "schemas/api-gatewayv2",
+        "schemas/index"
+      ]
+    },
+    {
+      "referenceName": "APIGatewayStringArray",
+      "goSymbol": "schemas.APIGatewayStringArray",
+      "goSource": "parser/schemas/apigw_proxy.go",
+      "referenceSubpaths": [
+        "schemas/apigw-proxy"
+      ]
+    },
+    {
+      "referenceName": "APIGatewayTokenAuthorizerEventSchema",
+      "goSymbol": "schemas.APIGatewayTokenAuthorizerEventSchema",
+      "goSource": "parser/schemas/api_gateway.go",
+      "referenceSubpaths": [
+        "schemas/api-gateway",
+        "schemas/index"
+      ]
+    },
+    {
+      "referenceName": "AppSyncBatchResolverSchema",
+      "goSymbol": "schemas.AppSyncBatchResolverSchema",
+      "goSource": "parser/schemas/appsync.go",
+      "referenceSubpaths": [
+        "schemas/appsync",
+        "schemas/index"
+      ]
+    },
+    {
+      "referenceName": "AppSyncCognitoIdentity",
+      "goSymbol": "schemas.AppSyncCognitoIdentity",
+      "goSource": "parser/schemas/appsync.go",
+      "referenceSubpaths": [
+        "schemas/appsync-events",
+        "schemas/appsync-shared",
+        "schemas/appsync"
+      ]
+    },
+    {
+      "referenceName": "AppSyncEventsBaseSchema",
+      "goSymbol": "schemas.AppSyncEventsBaseSchema",
+      "goSource": "parser/schemas/appsync.go",
+      "referenceSubpaths": [
+        "schemas/appsync-events",
+        "schemas/index"
+      ]
+    },
+    {
+      "referenceName": "AppSyncEventsInfoSchema",
+      "goSymbol": "schemas.AppSyncEventsInfoSchema",
+      "goSource": "parser/schemas/appsync.go",
+      "referenceSubpaths": [
+        "schemas/appsync-events",
+        "schemas/index"
+      ]
+    },
+    {
+      "referenceName": "AppSyncEventsPublishSchema",
+      "goSymbol": "schemas.AppSyncEventsPublishSchema",
+      "goSource": "parser/schemas/appsync.go",
+      "referenceSubpaths": [
+        "schemas/appsync-events",
+        "schemas/index"
+      ]
+    },
+    {
+      "referenceName": "AppSyncEventsRequestSchema",
+      "goSymbol": "schemas.AppSyncEventsRequestSchema",
+      "goSource": "parser/schemas/appsync.go",
+      "referenceSubpaths": [
+        "schemas/appsync-events",
+        "schemas/index"
+      ]
+    },
+    {
+      "referenceName": "AppSyncEventsSubscribeSchema",
+      "goSymbol": "schemas.AppSyncEventsSubscribeSchema",
+      "goSource": "parser/schemas/appsync.go",
+      "referenceSubpaths": [
+        "schemas/appsync-events",
+        "schemas/index"
+      ]
+    },
+    {
+      "referenceName": "AppSyncIamIdentity",
+      "goSymbol": "schemas.AppSyncIamIdentity",
+      "goSource": "parser/schemas/appsync.go",
+      "referenceSubpaths": [
+        "schemas/appsync-events",
+        "schemas/appsync-shared",
+        "schemas/appsync"
+      ]
+    },
+    {
+      "referenceName": "AppSyncLambdaAuthIdentity",
+      "goSymbol": "schemas.AppSyncLambdaAuthIdentity",
+      "goSource": "parser/schemas/appsync.go",
+      "referenceSubpaths": [
+        "schemas/appsync-events"
+      ]
+    },
+    {
+      "referenceName": "AppSyncLambdaIdentity",
+      "goSymbol": "schemas.AppSyncLambdaIdentity",
+      "goSource": "parser/schemas/appsync.go",
+      "referenceSubpaths": [
+        "schemas/appsync"
+      ]
+    },
+    {
+      "referenceName": "AppSyncOidcIdentity",
+      "goSymbol": "schemas.AppSyncOidcIdentity",
+      "goSource": "parser/schemas/appsync.go",
+      "referenceSubpaths": [
+        "schemas/appsync-events",
+        "schemas/appsync-shared",
+        "schemas/appsync"
+      ]
+    },
+    {
+      "referenceName": "AppSyncResolverSchema",
+      "goSymbol": "schemas.AppSyncResolverSchema",
+      "goSource": "parser/schemas/appsync.go",
+      "referenceSubpaths": [
+        "schemas/appsync",
+        "schemas/index"
+      ]
+    },
+    {
+      "referenceName": "ChallengeResultSchema",
+      "goSymbol": "schemas.ChallengeResultSchema",
+      "goSource": "parser/schemas/cognito.go",
+      "referenceSubpaths": [
+        "schemas/cognito"
+      ]
+    },
+    {
+      "referenceName": "CloudFormationCustomResourceCreateSchema",
+      "goSymbol": "schemas.CloudFormationCustomResourceCreateSchema",
+      "goSource": "parser/schemas/service_events.go",
+      "referenceSubpaths": [
+        "schemas/cloudformation-custom-resource",
+        "schemas/index"
+      ]
+    },
+    {
+      "referenceName": "CloudFormationCustomResourceDeleteSchema",
+      "goSymbol": "schemas.CloudFormationCustomResourceDeleteSchema",
+      "goSource": "parser/schemas/service_events.go",
+      "referenceSubpaths": [
+        "schemas/cloudformation-custom-resource",
+        "schemas/index"
+      ]
+    },
+    {
+      "referenceName": "CloudFormationCustomResourceUpdateSchema",
+      "goSymbol": "schemas.CloudFormationCustomResourceUpdateSchema",
+      "goSource": "parser/schemas/service_events.go",
+      "referenceSubpaths": [
+        "schemas/cloudformation-custom-resource",
+        "schemas/index"
+      ]
+    },
+    {
+      "referenceName": "CloudWatchLogEventSchema",
+      "goSymbol": "schemas.CloudWatchLogEventSchema",
+      "goSource": "parser/schemas/cloudwatch.go",
+      "referenceSubpaths": [
+        "schemas/cloudwatch",
+        "schemas/index"
+      ]
+    },
+    {
+      "referenceName": "CloudWatchLogsDecodeSchema",
+      "goSymbol": "schemas.CloudWatchLogsDecodeSchema",
+      "goSource": "parser/schemas/cloudwatch.go",
+      "referenceSubpaths": [
+        "schemas/cloudwatch",
+        "schemas/index"
+      ]
+    },
+    {
+      "referenceName": "CloudWatchLogsSchema",
+      "goSymbol": "schemas.CloudWatchLogsSchema",
+      "goSource": "parser/schemas/cloudwatch.go",
+      "referenceSubpaths": [
+        "schemas/cloudwatch",
+        "schemas/index"
+      ]
+    },
+    {
+      "referenceName": "CognitoTriggerBaseSchema",
+      "goSymbol": "schemas.CognitoTriggerBaseSchema",
+      "goSource": "parser/schemas/cognito.go",
+      "referenceSubpaths": [
+        "schemas/cognito"
+      ]
+    },
+    {
+      "referenceName": "ConnectOutboundCampaignsCustomerProfileSchema",
+      "goSymbol": "schemas.ConnectOutboundCampaignsCustomerProfileSchema",
+      "goSource": "parser/schemas/service_events.go",
+      "referenceSubpaths": [
+        "schemas/connect-outbound-campaigns",
+        "schemas/index"
+      ]
+    },
+    {
+      "referenceName": "ConnectOutboundCampaignsSchema",
+      "goSymbol": "schemas.ConnectOutboundCampaignsSchema",
+      "goSource": "parser/schemas/service_events.go",
+      "referenceSubpaths": [
+        "schemas/connect-outbound-campaigns",
+        "schemas/index"
+      ]
+    },
+    {
+      "referenceName": "CreateAuthChallengeTriggerSchema",
+      "goSymbol": "schemas.CreateAuthChallengeTriggerSchema",
+      "goSource": "parser/schemas/cognito.go",
+      "referenceSubpaths": [
+        "schemas/cognito",
+        "schemas/index"
+      ]
+    },
+    {
+      "referenceName": "CustomEmailSenderTriggerSchema",
+      "goSymbol": "schemas.CustomEmailSenderTriggerSchema",
+      "goSource": "parser/schemas/cognito.go",
+      "referenceSubpaths": [
+        "schemas/cognito",
+        "schemas/index"
+      ]
+    },
+    {
+      "referenceName": "CustomMessageTriggerSchema",
+      "goSymbol": "schemas.CustomMessageTriggerSchema",
+      "goSource": "parser/schemas/cognito.go",
+      "referenceSubpaths": [
+        "schemas/cognito",
+        "schemas/index"
+      ]
+    },
+    {
+      "referenceName": "CustomSMSSenderTriggerSchema",
+      "goSymbol": "schemas.CustomSMSSenderTriggerSchema",
+      "goSource": "parser/schemas/cognito.go",
+      "referenceSubpaths": [
+        "schemas/cognito",
+        "schemas/index"
+      ]
+    },
+    {
+      "referenceName": "DefineAuthChallengeTriggerSchema",
+      "goSymbol": "schemas.DefineAuthChallengeTriggerSchema",
+      "goSource": "parser/schemas/cognito.go",
+      "referenceSubpaths": [
+        "schemas/cognito",
+        "schemas/index"
+      ]
+    },
+    {
+      "referenceName": "DynamoDBStreamChangeRecord",
+      "goSymbol": "schemas.DynamoDBStreamChangeRecord",
+      "goSource": "parser/schemas/dynamodb.go",
+      "referenceSubpaths": [
+        "schemas/dynamodb"
+      ]
+    },
+    {
+      "referenceName": "DynamoDBStreamChangeRecordBase",
+      "goSymbol": "schemas.DynamoDBStreamChangeRecordBase",
+      "goSource": "parser/schemas/dynamodb.go",
+      "referenceSubpaths": [
+        "schemas/dynamodb"
+      ]
+    },
+    {
+      "referenceName": "DynamoDBStreamRecord",
+      "goSymbol": "schemas.DynamoDBStreamRecord",
+      "goSource": "parser/schemas/dynamodb.go",
+      "referenceSubpaths": [
+        "schemas/dynamodb",
+        "schemas/index"
+      ]
+    },
+    {
+      "referenceName": "DynamoDBStreamSchema",
+      "goSymbol": "schemas.DynamoDBStreamSchema",
+      "goSource": "parser/schemas/dynamodb.go",
+      "referenceSubpaths": [
+        "schemas/dynamodb",
+        "schemas/index"
+      ]
+    },
+    {
+      "referenceName": "DynamoDBStreamToKinesisChangeRecord",
+      "goSymbol": "schemas.DynamoDBStreamToKinesisChangeRecord",
+      "goSource": "parser/schemas/dynamodb.go",
+      "referenceSubpaths": [
+        "schemas/dynamodb"
+      ]
+    },
+    {
+      "referenceName": "DynamoDBStreamToKinesisRecord",
+      "goSymbol": "schemas.DynamoDBStreamToKinesisRecord",
+      "goSource": "parser/schemas/dynamodb.go",
+      "referenceSubpaths": [
+        "schemas/dynamodb",
+        "schemas/index"
+      ]
+    },
+    {
+      "referenceName": "EventBridgeSchema",
+      "goSymbol": "schemas.EventBridgeSchema",
+      "goSource": "parser/schemas/eventbridge.go",
+      "referenceSubpaths": [
+        "schemas/eventbridge",
+        "schemas/index"
+      ]
+    },
+    {
+      "referenceName": "KafkaMskEventSchema",
+      "goSymbol": "schemas.KafkaMskEventSchema",
+      "goSource": "parser/schemas/kafka.go",
+      "referenceSubpaths": [
+        "schemas/index",
+        "schemas/kafka"
+      ]
+    },
+    {
+      "referenceName": "KafkaRecordSchema",
+      "goSymbol": "schemas.KafkaRecordSchema",
+      "goSource": "parser/schemas/kafka.go",
+      "referenceSubpaths": [
+        "schemas/index",
+        "schemas/kafka"
+      ]
+    },
+    {
+      "referenceName": "KafkaSelfManagedEventSchema",
+      "goSymbol": "schemas.KafkaSelfManagedEventSchema",
+      "goSource": "parser/schemas/kafka.go",
+      "referenceSubpaths": [
+        "schemas/index",
+        "schemas/kafka"
+      ]
+    },
+    {
+      "referenceName": "KinesisDataStreamRecord",
+      "goSymbol": "schemas.KinesisDataStreamRecord",
+      "goSource": "parser/schemas/kinesis.go",
+      "referenceSubpaths": [
+        "schemas/index",
+        "schemas/kinesis"
+      ]
+    },
+    {
+      "referenceName": "KinesisDataStreamRecordPayload",
+      "goSymbol": "schemas.KinesisDataStreamRecordPayload",
+      "goSource": "parser/schemas/kinesis.go",
+      "referenceSubpaths": [
+        "schemas/kinesis"
+      ]
+    },
+    {
+      "referenceName": "KinesisDataStreamSchema",
+      "goSymbol": "schemas.KinesisDataStreamSchema",
+      "goSource": "parser/schemas/kinesis.go",
+      "referenceSubpaths": [
+        "schemas/index",
+        "schemas/kinesis"
+      ]
+    },
+    {
+      "referenceName": "KinesisDynamoDBStreamSchema",
+      "goSymbol": "schemas.KinesisDynamoDBStreamSchema",
+      "goSource": "parser/schemas/kinesis.go",
+      "referenceSubpaths": [
+        "schemas/index",
+        "schemas/kinesis"
+      ]
+    },
+    {
+      "referenceName": "KinesisFirehoseRecordSchema",
+      "goSymbol": "schemas.KinesisFirehoseRecordSchema",
+      "goSource": "parser/schemas/firehose.go",
+      "referenceSubpaths": [
+        "schemas/index",
+        "schemas/kinesis-firehose"
+      ]
+    },
+    {
+      "referenceName": "KinesisFirehoseSchema",
+      "goSymbol": "schemas.KinesisFirehoseSchema",
+      "goSource": "parser/schemas/firehose.go",
+      "referenceSubpaths": [
+        "schemas/index",
+        "schemas/kinesis-firehose"
+      ]
+    },
+    {
+      "referenceName": "KinesisFirehoseSqsRecordSchema",
+      "goSymbol": "schemas.KinesisFirehoseSqsRecordSchema",
+      "goSource": "parser/schemas/firehose.go",
+      "referenceSubpaths": [
+        "schemas/index",
+        "schemas/kinesis-firehose"
+      ]
+    },
+    {
+      "referenceName": "KinesisFirehoseSqsSchema",
+      "goSymbol": "schemas.KinesisFirehoseSqsSchema",
+      "goSource": "parser/schemas/firehose.go",
+      "referenceSubpaths": [
+        "schemas/index",
+        "schemas/kinesis-firehose"
+      ]
+    },
+    {
+      "referenceName": "LambdaFunctionUrlSchema",
+      "goSymbol": "schemas.LambdaFunctionUrlSchema",
+      "goSource": "parser/schemas/api_gatewayv2.go",
+      "referenceSubpaths": [
+        "schemas/index",
+        "schemas/lambda"
+      ]
+    },
+    {
+      "referenceName": "MigrateUserTriggerSchema",
+      "goSymbol": "schemas.MigrateUserTriggerSchema",
+      "goSource": "parser/schemas/cognito.go",
+      "referenceSubpaths": [
+        "schemas/cognito",
+        "schemas/index"
+      ]
+    },
+    {
+      "referenceName": "PostAuthenticationTriggerSchema",
+      "goSymbol": "schemas.PostAuthenticationTriggerSchema",
+      "goSource": "parser/schemas/cognito.go",
+      "referenceSubpaths": [
+        "schemas/cognito",
+        "schemas/index"
+      ]
+    },
+    {
+      "referenceName": "PostConfirmationTriggerSchema",
+      "goSymbol": "schemas.PostConfirmationTriggerSchema",
+      "goSource": "parser/schemas/cognito.go",
+      "referenceSubpaths": [
+        "schemas/cognito",
+        "schemas/index"
+      ]
+    },
+    {
+      "referenceName": "PreAuthenticationTriggerSchema",
+      "goSymbol": "schemas.PreAuthenticationTriggerSchema",
+      "goSource": "parser/schemas/cognito.go",
+      "referenceSubpaths": [
+        "schemas/cognito",
+        "schemas/index"
+      ]
+    },
+    {
+      "referenceName": "PreSignupTriggerSchema",
+      "goSymbol": "schemas.PreSignupTriggerSchema",
+      "goSource": "parser/schemas/cognito.go",
+      "referenceSubpaths": [
+        "schemas/cognito",
+        "schemas/index"
+      ]
+    },
+    {
+      "referenceName": "PreTokenGenerationTriggerGroupConfigurationSchema",
+      "goSymbol": "schemas.PreTokenGenerationTriggerGroupConfigurationSchema",
+      "goSource": "parser/schemas/cognito.go",
+      "referenceSubpaths": [
+        "schemas/cognito"
+      ]
+    },
+    {
+      "referenceName": "PreTokenGenerationTriggerRequestSchema",
+      "goSymbol": "schemas.PreTokenGenerationTriggerRequestSchema",
+      "goSource": "parser/schemas/cognito.go",
+      "referenceSubpaths": [
+        "schemas/cognito"
+      ]
+    },
+    {
+      "referenceName": "PreTokenGenerationTriggerSchemaV1",
+      "goSymbol": "schemas.PreTokenGenerationTriggerSchemaV1",
+      "goSource": "parser/schemas/cognito.go",
+      "referenceSubpaths": [
+        "schemas/cognito",
+        "schemas/index"
+      ]
+    },
+    {
+      "referenceName": "PreTokenGenerationTriggerSchemaV2AndV3",
+      "goSymbol": "schemas.PreTokenGenerationTriggerSchemaV2AndV3",
+      "goSource": "parser/schemas/cognito.go",
+      "referenceSubpaths": [
+        "schemas/cognito",
+        "schemas/index"
+      ]
+    },
+    {
+      "referenceName": "S3EventNotificationEventBridgeSchema",
+      "goSymbol": "schemas.S3EventNotificationEventBridgeSchema",
+      "goSource": "parser/schemas/s3.go",
+      "referenceSubpaths": [
+        "schemas/index",
+        "schemas/s3"
+      ]
+    },
+    {
+      "referenceName": "S3ObjectLambdaEventSchema",
+      "goSymbol": "schemas.S3ObjectLambdaEventSchema",
+      "goSource": "parser/schemas/s3.go",
+      "referenceSubpaths": [
+        "schemas/index",
+        "schemas/s3"
+      ]
+    },
+    {
+      "referenceName": "S3Schema",
+      "goSymbol": "schemas.S3Schema",
+      "goSource": "parser/schemas/s3.go",
+      "referenceSubpaths": [
+        "schemas/index",
+        "schemas/s3"
+      ]
+    },
+    {
+      "referenceName": "S3SqsEventNotificationSchema",
+      "goSymbol": "schemas.S3SqsEventNotificationSchema",
+      "goSource": "parser/schemas/s3.go",
+      "referenceSubpaths": [
+        "schemas/index",
+        "schemas/s3"
+      ]
+    },
+    {
+      "referenceName": "SesRecordSchema",
+      "goSymbol": "schemas.SesRecordSchema",
+      "goSource": "parser/schemas/ses.go",
+      "referenceSubpaths": [
+        "schemas/index",
+        "schemas/ses"
+      ]
+    },
+    {
+      "referenceName": "SesSchema",
+      "goSymbol": "schemas.SesSchema",
+      "goSource": "parser/schemas/ses.go",
+      "referenceSubpaths": [
+        "schemas/index",
+        "schemas/ses"
+      ]
+    },
+    {
+      "referenceName": "SnsNotificationSchema",
+      "goSymbol": "schemas.SnsNotificationSchema",
+      "goSource": "parser/schemas/sns.go",
+      "referenceSubpaths": [
+        "schemas/index",
+        "schemas/sns"
+      ]
+    },
+    {
+      "referenceName": "SnsRecordSchema",
+      "goSymbol": "schemas.SnsRecordSchema",
+      "goSource": "parser/schemas/sns.go",
+      "referenceSubpaths": [
+        "schemas/index",
+        "schemas/sns"
+      ]
+    },
+    {
+      "referenceName": "SnsSchema",
+      "goSymbol": "schemas.SnsSchema",
+      "goSource": "parser/schemas/sns.go",
+      "referenceSubpaths": [
+        "schemas/index",
+        "schemas/sns"
+      ]
+    },
+    {
+      "referenceName": "SnsSqsNotificationSchema",
+      "goSymbol": "schemas.SnsSqsNotificationSchema",
+      "goSource": "parser/schemas/sns.go",
+      "referenceSubpaths": [
+        "schemas/index",
+        "schemas/sns"
+      ]
+    },
+    {
+      "referenceName": "SqsAttributesSchema",
+      "goSymbol": "schemas.SqsAttributesSchema",
+      "goSource": "parser/schemas/sqs.go",
+      "referenceSubpaths": [
+        "schemas/index",
+        "schemas/sqs"
+      ]
+    },
+    {
+      "referenceName": "SqsMsgAttributeDataTypeSchema",
+      "goSymbol": "schemas.SqsMsgAttributeDataTypeSchema",
+      "goSource": "parser/schemas/sqs.go",
+      "referenceSubpaths": [
+        "schemas/index",
+        "schemas/sqs"
+      ]
+    },
+    {
+      "referenceName": "SqsMsgAttributeSchema",
+      "goSymbol": "schemas.SqsMsgAttributeSchema",
+      "goSource": "parser/schemas/sqs.go",
+      "referenceSubpaths": [
+        "schemas/index",
+        "schemas/sqs"
+      ]
+    },
+    {
+      "referenceName": "SqsRecordSchema",
+      "goSymbol": "schemas.SqsRecordSchema",
+      "goSource": "parser/schemas/sqs.go",
+      "referenceSubpaths": [
+        "schemas/index",
+        "schemas/sqs"
+      ]
+    },
+    {
+      "referenceName": "SqsSchema",
+      "goSymbol": "schemas.SqsSchema",
+      "goSource": "parser/schemas/sqs.go",
+      "referenceSubpaths": [
+        "schemas/index",
+        "schemas/sqs"
+      ]
+    },
+    {
+      "referenceName": "TransferFamilySchema",
+      "goSymbol": "schemas.TransferFamilySchema",
+      "goSource": "parser/schemas/service_events.go",
+      "referenceSubpaths": [
+        "schemas/index",
+        "schemas/transfer-family"
+      ]
+    },
+    {
+      "referenceName": "UserIdentity",
+      "goSymbol": "schemas.UserIdentity",
+      "goSource": "parser/schemas/dynamodb.go",
+      "referenceSubpaths": [
+        "schemas/dynamodb"
+      ]
+    },
+    {
+      "referenceName": "VerifyAuthChallengeTriggerSchema",
+      "goSymbol": "schemas.VerifyAuthChallengeTriggerSchema",
+      "goSource": "parser/schemas/cognito.go",
+      "referenceSubpaths": [
+        "schemas/cognito",
+        "schemas/index"
+      ]
+    },
+    {
+      "referenceName": "VpcLatticeSchema",
+      "goSymbol": "schemas.VpcLatticeSchema",
+      "goSource": "parser/schemas/vpc_lattice.go",
+      "referenceSubpaths": [
+        "schemas/index",
+        "schemas/vpc-lattice"
+      ]
+    },
+    {
+      "referenceName": "VpcLatticeV2Schema",
+      "goSymbol": "schemas.VpcLatticeV2Schema",
+      "goSource": "parser/schemas/vpc_lattice.go",
+      "referenceSubpaths": [
+        "schemas/index",
+        "schemas/vpc-latticev2"
+      ]
+    }
+  ]
+}

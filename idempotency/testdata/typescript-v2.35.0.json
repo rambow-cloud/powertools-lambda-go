@@ -1,0 +1,1022 @@
+{
+  "version": "2.35.0",
+  "keys": [
+    {
+      "raw": "{}",
+      "canonical": "{}",
+      "key": "operation#mZFLkyvTelC5g8XnyQrpOw=="
+    },
+    {
+      "raw": "null",
+      "canonical": "null",
+      "key": "operation#N6YlnMDB2uKZp4Zkid/wvQ=="
+    },
+    {
+      "raw": "false",
+      "canonical": "false",
+      "key": "operation#aJNKPpRV+nJCAjfrBZAjJw=="
+    },
+    {
+      "raw": "0",
+      "canonical": "0",
+      "key": "operation#z80ghJXVZe9m59/5+Ydk2g=="
+    },
+    {
+      "raw": "\"\"",
+      "canonical": "\"\"",
+      "key": "operation#nUVowAnSA6sQ4z6plToCZA=="
+    },
+    {
+      "raw": "[]",
+      "canonical": "[]",
+      "key": "operation#11FxOYiYfpMxmANj4kGJzg=="
+    },
+    {
+      "raw": "[null,false,0,\"\"]",
+      "canonical": "[null,false,0,\"\"]",
+      "key": "operation#nk5mHjN9p/mBP+Wi40yLyQ=="
+    },
+    {
+      "raw": "{\"a\":null,\"b\":false}",
+      "canonical": "{\"a\":null,\"b\":false}",
+      "key": "operation#1eFNJl+rvVkwtjwVOu5i8Q=="
+    },
+    {
+      "raw": "{\"z\":1,\"B\":2,\"a\":3}",
+      "canonical": "{\"a\":3,\"B\":2,\"z\":1}",
+      "key": "operation#YBVUnIFfud8pmqPj4DbF+Q=="
+    },
+    {
+      "raw": "{\"a\":1,\"A\":2}",
+      "canonical": "{\"a\":1,\"A\":2}",
+      "key": "operation#Z+5IESDzxWOK38QGx5ZHhA=="
+    },
+    {
+      "raw": "{\"A\":2,\"a\":1}",
+      "canonical": "{\"A\":2,\"a\":1}",
+      "key": "operation#iEa8oODo8tUwYP0O0CMg6A=="
+    },
+    {
+      "raw": "{\"10\":\"ten\",\"2\":\"two\",\"01\":\"one\",\"b\":2,\"A\":1}",
+      "canonical": "{\"2\":\"two\",\"10\":\"ten\",\"01\":\"one\",\"A\":1,\"b\":2}",
+      "key": "operation#vls7a/RCfzDhAcx9L8w7bw=="
+    },
+    {
+      "raw": "{\"nested\":{\"z\":1,\"A\":2},\"array\":[{\"b\":2,\"a\":1},3]}",
+      "canonical": "{\"array\":[{\"a\":1,\"b\":2},3],\"nested\":{\"A\":2,\"z\":1}}",
+      "key": "operation#+OTnDHSHM7uVcK/iHJM3LA=="
+    },
+    {
+      "raw": "{\"__proto__\":{\"polluted\":true},\"constructor\":3,\"ok\":1}",
+      "canonical": "{\"constructor\":3,\"ok\":1}",
+      "key": "operation#t7s3rlMF8yAun1UTnXbY7w=="
+    },
+    {
+      "raw": "\"<>&\\n\\t\\u2028\\u2029😀\"",
+      "canonical": "\"<>&\\n\\t  😀\"",
+      "key": "operation#1B/uaC5XoqqvPonUCnzs0A=="
+    },
+    {
+      "raw": "{\"😀\":1,\"\":2,\"Z\":3}",
+      "canonical": "{\"Z\":3,\"😀\":1,\"\":2}",
+      "key": "operation#f4E1vFSuaDshV3RM40nWRg=="
+    },
+    {
+      "raw": "[-0,0.0000001,0.000001,1e20,1e21,9007199254740993]",
+      "canonical": "[0,1e-7,0.000001,100000000000000000000,1e+21,9007199254740992]",
+      "key": "operation#hCPIZAZfLY41brk9q76UeQ=="
+    },
+    {
+      "raw": "{\"same\":1,\"same\":2}",
+      "canonical": "{\"same\":2}",
+      "key": "operation#qB4q4+VJydUTYs4wqVIpnA=="
+    },
+    {
+      "raw": "{\"array\":[2,1]}",
+      "canonical": "{\"array\":[2,1]}",
+      "key": "operation#qSiMyX4keE9zi3dy8+99Bg=="
+    },
+    {
+      "raw": "{\"array\":[1,2]}",
+      "canonical": "{\"array\":[1,2]}",
+      "key": "operation#Ho3kRJvJ8wPgtemyrtDUEQ=="
+    },
+    {
+      "raw": "{\"order\":{\"id\":\"123\",\"total\":7},\"ignored\":true}",
+      "config": {
+        "eventKeyJmesPath": "order.id",
+        "payloadValidationJmesPath": "order.total",
+        "hashFunction": "md5"
+      },
+      "key": "operation#dX0gS2jo4cQZKIaUq5CPVQ==",
+      "validation": "jxTkX87qFnpaNt7dS+olQw=="
+    },
+    {
+      "raw": "{\"order\":{\"id\":\"123\",\"total\":7},\"ignored\":true}",
+      "config": {
+        "eventKeyJmesPath": "order.id",
+        "payloadValidationJmesPath": "order.total",
+        "hashFunction": "sha1"
+      },
+      "key": "operation#V9ygImAX6DTcD2zINjlhzPcxu4U=",
+      "validation": "kCujzaGIOAFZS24bRSeQzFOUj9o="
+    },
+    {
+      "raw": "{\"order\":{\"id\":\"123\",\"total\":7},\"ignored\":true}",
+      "config": {
+        "eventKeyJmesPath": "order.id",
+        "payloadValidationJmesPath": "order.total",
+        "hashFunction": "sha256"
+      },
+      "key": "operation#MUDVlCDKkgx5/e8AM2BUPBKxTamE8A+GZXVunanEt0M=",
+      "validation": "eQJpm+Qsio5G+7tFAXJlF+hrIsVqGJ92JabaSQgbJFE="
+    },
+    {
+      "raw": "{\"order\":{\"id\":\"123\",\"total\":7},\"ignored\":true}",
+      "config": {
+        "eventKeyJmesPath": "order.id",
+        "payloadValidationJmesPath": "order.total",
+        "hashFunction": "sha384"
+      },
+      "key": "operation#zo9IkAVuECkIetD9Vfbb5ftbMGk3XtTJ6ip9lMVfdDGnGIg6uScBU8ThkIxhFvmA",
+      "validation": "wrFMvz/Lc5aDODuWFX92XIYp3SQVzrOyd7X2Ao6Ls8jMVAi+ioglSQfG67HNTxgn"
+    },
+    {
+      "raw": "{\"order\":{\"id\":\"123\",\"total\":7},\"ignored\":true}",
+      "config": {
+        "eventKeyJmesPath": "order.id",
+        "payloadValidationJmesPath": "order.total",
+        "hashFunction": "sha512"
+      },
+      "key": "operation#OPoqIU3SZ5bto1T2S8fO80AyeUn2HrzRF4FYpluVSlVqsNHnWiXv3ExOO0GNURYhnXYRTgrOT5jowMQCukpg9Q==",
+      "validation": "8FIQxbQmPw7Ew5lb2rRY2B05U/NUqRCVIPFZ2x6IALzUW5fFbc6QofwnqwPguKmvhnN0cCPEBimTdBFtb5ZpgQ=="
+    }
+  ],
+  "scenarios": [
+    {
+      "name": "replay",
+      "steps": [
+        {
+          "event": {
+            "id": "a"
+          }
+        },
+        {
+          "event": {
+            "id": "a"
+          }
+        }
+      ],
+      "results": [
+        {
+          "response": {
+            "call": 1,
+            "event": {
+              "id": "a"
+            }
+          }
+        },
+        {
+          "response": {
+            "call": 1,
+            "event": {
+              "id": "a"
+            }
+          }
+        }
+      ],
+      "calls": 1,
+      "operations": [
+        "put",
+        "update",
+        "put"
+      ],
+      "records": [
+        {
+          "id": "operation#ahqBSUp3Za1BFYCzHBtwRA==",
+          "status": "COMPLETED",
+          "expiration": 1800003600,
+          "data": {
+            "call": 1,
+            "event": {
+              "id": "a"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "key-projection",
+      "config": {
+        "eventKeyJmesPath": "id"
+      },
+      "steps": [
+        {
+          "event": {
+            "id": "a",
+            "ignored": 1
+          }
+        },
+        {
+          "event": {
+            "id": "a",
+            "ignored": 2
+          }
+        }
+      ],
+      "results": [
+        {
+          "response": {
+            "call": 1,
+            "event": {
+              "id": "a",
+              "ignored": 1
+            }
+          }
+        },
+        {
+          "response": {
+            "call": 1,
+            "event": {
+              "id": "a",
+              "ignored": 1
+            }
+          }
+        }
+      ],
+      "calls": 1,
+      "operations": [
+        "put",
+        "update",
+        "put"
+      ],
+      "records": [
+        {
+          "id": "operation#YGeSSuGxgyq849Ev6DdVqQ==",
+          "status": "COMPLETED",
+          "expiration": 1800003600,
+          "data": {
+            "call": 1,
+            "event": {
+              "id": "a",
+              "ignored": 1
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "validation",
+      "config": {
+        "eventKeyJmesPath": "id",
+        "payloadValidationJmesPath": "amount"
+      },
+      "steps": [
+        {
+          "event": {
+            "id": "a",
+            "amount": 1
+          }
+        },
+        {
+          "event": {
+            "id": "a",
+            "amount": 2
+          }
+        }
+      ],
+      "results": [
+        {
+          "response": {
+            "call": 1,
+            "event": {
+              "id": "a",
+              "amount": 1
+            }
+          }
+        },
+        {
+          "error": "IdempotencyValidationError"
+        }
+      ],
+      "calls": 1,
+      "operations": [
+        "put",
+        "update",
+        "put"
+      ],
+      "records": [
+        {
+          "id": "operation#YGeSSuGxgyq849Ev6DdVqQ==",
+          "status": "COMPLETED",
+          "expiration": 1800003600,
+          "data": {
+            "call": 1,
+            "event": {
+              "id": "a",
+              "amount": 1
+            }
+          },
+          "validation": "xMpCOKC5I4INzFCab3WEmw=="
+        }
+      ]
+    },
+    {
+      "name": "missing-bypass",
+      "config": {
+        "eventKeyJmesPath": "absent"
+      },
+      "steps": [
+        {
+          "event": {}
+        },
+        {
+          "event": {}
+        }
+      ],
+      "results": [
+        {
+          "response": {
+            "call": 1,
+            "event": {}
+          }
+        },
+        {
+          "response": {
+            "call": 2,
+            "event": {}
+          }
+        }
+      ],
+      "calls": 2,
+      "operations": [],
+      "records": []
+    },
+    {
+      "name": "missing-strict",
+      "config": {
+        "eventKeyJmesPath": "absent",
+        "throwOnNoIdempotencyKey": true
+      },
+      "steps": [
+        {
+          "event": {}
+        }
+      ],
+      "results": [
+        {
+          "error": "IdempotencyPersistenceLayerError",
+          "cause": "IdempotencyKeyError"
+        }
+      ],
+      "calls": 0,
+      "operations": [],
+      "records": []
+    },
+    {
+      "name": "false-is-key",
+      "config": {
+        "eventKeyJmesPath": "id"
+      },
+      "steps": [
+        {
+          "event": {
+            "id": false
+          }
+        },
+        {
+          "event": {
+            "id": false
+          }
+        }
+      ],
+      "results": [
+        {
+          "response": {
+            "call": 1,
+            "event": {
+              "id": false
+            }
+          }
+        },
+        {
+          "response": {
+            "call": 1,
+            "event": {
+              "id": false
+            }
+          }
+        }
+      ],
+      "calls": 1,
+      "operations": [
+        "put",
+        "update",
+        "put"
+      ],
+      "records": [
+        {
+          "id": "operation#aJNKPpRV+nJCAjfrBZAjJw==",
+          "status": "COMPLETED",
+          "expiration": 1800003600,
+          "data": {
+            "call": 1,
+            "event": {
+              "id": false
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "false-strict",
+      "config": {
+        "eventKeyJmesPath": "id",
+        "throwOnNoIdempotencyKey": true
+      },
+      "steps": [
+        {
+          "event": {
+            "id": false
+          }
+        }
+      ],
+      "results": [
+        {
+          "error": "IdempotencyPersistenceLayerError",
+          "cause": "IdempotencyKeyError"
+        }
+      ],
+      "calls": 0,
+      "operations": [],
+      "records": []
+    },
+    {
+      "name": "handler-error-retry",
+      "steps": [
+        {
+          "event": {
+            "id": "a"
+          },
+          "fail": true
+        },
+        {
+          "event": {
+            "id": "a"
+          }
+        }
+      ],
+      "results": [
+        {
+          "error": "Error"
+        },
+        {
+          "response": {
+            "call": 2,
+            "event": {
+              "id": "a"
+            }
+          }
+        }
+      ],
+      "calls": 2,
+      "operations": [
+        "put",
+        "delete",
+        "put",
+        "update"
+      ],
+      "records": [
+        {
+          "id": "operation#ahqBSUp3Za1BFYCzHBtwRA==",
+          "status": "COMPLETED",
+          "expiration": 1800003600,
+          "data": {
+            "call": 2,
+            "event": {
+              "id": "a"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "expired",
+      "config": {
+        "expiresAfterSeconds": 2
+      },
+      "steps": [
+        {
+          "event": {
+            "id": "a"
+          }
+        },
+        {
+          "event": {
+            "id": "a"
+          },
+          "advance": 3000
+        }
+      ],
+      "results": [
+        {
+          "response": {
+            "call": 1,
+            "event": {
+              "id": "a"
+            }
+          }
+        },
+        {
+          "response": {
+            "call": 2,
+            "event": {
+              "id": "a"
+            }
+          }
+        }
+      ],
+      "calls": 2,
+      "operations": [
+        "put",
+        "update",
+        "put",
+        "update"
+      ],
+      "records": [
+        {
+          "id": "operation#ahqBSUp3Za1BFYCzHBtwRA==",
+          "status": "COMPLETED",
+          "expiration": 1800000005,
+          "data": {
+            "call": 2,
+            "event": {
+              "id": "a"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "local-cache",
+      "config": {
+        "useLocalCache": true
+      },
+      "steps": [
+        {
+          "event": {
+            "id": "a"
+          }
+        },
+        {
+          "event": {
+            "id": "a"
+          }
+        }
+      ],
+      "results": [
+        {
+          "response": {
+            "call": 1,
+            "event": {
+              "id": "a"
+            }
+          }
+        },
+        {
+          "response": {
+            "call": 1,
+            "event": {
+              "id": "a"
+            }
+          }
+        }
+      ],
+      "calls": 1,
+      "operations": [
+        "put",
+        "update"
+      ],
+      "records": [
+        {
+          "id": "operation#ahqBSUp3Za1BFYCzHBtwRA==",
+          "status": "COMPLETED",
+          "expiration": 1800003600,
+          "data": {
+            "call": 1,
+            "event": {
+              "id": "a"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "cache-expired",
+      "config": {
+        "useLocalCache": true,
+        "expiresAfterSeconds": 2
+      },
+      "steps": [
+        {
+          "event": {
+            "id": "a"
+          }
+        },
+        {
+          "event": {
+            "id": "a"
+          },
+          "advance": 3000
+        }
+      ],
+      "results": [
+        {
+          "response": {
+            "call": 1,
+            "event": {
+              "id": "a"
+            }
+          }
+        },
+        {
+          "response": {
+            "call": 2,
+            "event": {
+              "id": "a"
+            }
+          }
+        }
+      ],
+      "calls": 2,
+      "operations": [
+        "put",
+        "update",
+        "put",
+        "update"
+      ],
+      "records": [
+        {
+          "id": "operation#ahqBSUp3Za1BFYCzHBtwRA==",
+          "status": "COMPLETED",
+          "expiration": 1800000005,
+          "data": {
+            "call": 2,
+            "event": {
+              "id": "a"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "completion-expiry",
+      "config": {
+        "expiresAfterSeconds": 2
+      },
+      "steps": [
+        {
+          "event": {
+            "id": "a"
+          },
+          "work": 1200
+        },
+        {
+          "event": {
+            "id": "a"
+          },
+          "advance": 1000
+        }
+      ],
+      "results": [
+        {
+          "response": {
+            "call": 1,
+            "event": {
+              "id": "a"
+            }
+          }
+        },
+        {
+          "response": {
+            "call": 1,
+            "event": {
+              "id": "a"
+            }
+          }
+        }
+      ],
+      "calls": 1,
+      "operations": [
+        "put",
+        "update",
+        "put"
+      ],
+      "records": [
+        {
+          "id": "operation#ahqBSUp3Za1BFYCzHBtwRA==",
+          "status": "COMPLETED",
+          "expiration": 1800000003,
+          "data": {
+            "call": 1,
+            "event": {
+              "id": "a"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "inprogress",
+      "seed": "live",
+      "steps": [
+        {
+          "event": {
+            "id": "a"
+          }
+        }
+      ],
+      "results": [
+        {
+          "error": "IdempotencyAlreadyInProgressError"
+        }
+      ],
+      "calls": 0,
+      "operations": [
+        "put"
+      ],
+      "records": [
+        {
+          "id": "operation#ahqBSUp3Za1BFYCzHBtwRA==",
+          "status": "INPROGRESS",
+          "expiration": 1800003600,
+          "in_progress_expiration": 1800000005250
+        }
+      ]
+    },
+    {
+      "name": "orphan-recovery",
+      "seed": "expired",
+      "steps": [
+        {
+          "event": {
+            "id": "a"
+          }
+        }
+      ],
+      "results": [
+        {
+          "response": {
+            "call": 1,
+            "event": {
+              "id": "a"
+            }
+          }
+        }
+      ],
+      "calls": 1,
+      "operations": [
+        "put",
+        "update"
+      ],
+      "records": [
+        {
+          "id": "operation#ahqBSUp3Za1BFYCzHBtwRA==",
+          "status": "COMPLETED",
+          "expiration": 1800003600,
+          "data": {
+            "call": 1,
+            "event": {
+              "id": "a"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "wire": [
+    {
+      "composite": false,
+      "commands": [
+        {
+          "type": "PutItemCommand",
+          "input": {
+            "TableName": "records",
+            "Item": {
+              "id": {
+                "S": "operation#YGeSSuGxgyq849Ev6DdVqQ=="
+              },
+              "expiration": {
+                "N": "1800003600"
+              },
+              "status": {
+                "S": "INPROGRESS"
+              },
+              "in_progress_expiration": {
+                "N": "1800000005250"
+              },
+              "validation": {
+                "S": "jxTkX87qFnpaNt7dS+olQw=="
+              }
+            },
+            "ExpressionAttributeNames": {
+              "#id": "id",
+              "#expiry": "expiration",
+              "#in_progress_expiry": "in_progress_expiration",
+              "#status": "status"
+            },
+            "ExpressionAttributeValues": {
+              ":now": {
+                "N": "1800000000.25"
+              },
+              ":now_in_millis": {
+                "N": "1800000000250"
+              },
+              ":inprogress": {
+                "S": "INPROGRESS"
+              }
+            },
+            "ConditionExpression": "attribute_not_exists(#id) OR #expiry < :now OR (#status = :inprogress AND attribute_exists(#in_progress_expiry) AND #in_progress_expiry < :now_in_millis)",
+            "ReturnValuesOnConditionCheckFailure": "ALL_OLD"
+          }
+        },
+        {
+          "type": "UpdateItemCommand",
+          "input": {
+            "TableName": "records",
+            "Key": {
+              "id": {
+                "S": "operation#YGeSSuGxgyq849Ev6DdVqQ=="
+              }
+            },
+            "UpdateExpression": "SET #expiry = :expiry, #status = :status, #response_data = :response_data, #validation_key = :validation_key",
+            "ExpressionAttributeNames": {
+              "#expiry": "expiration",
+              "#status": "status",
+              "#response_data": "data",
+              "#validation_key": "validation"
+            },
+            "ExpressionAttributeValues": {
+              ":expiry": {
+                "N": "1800003600"
+              },
+              ":status": {
+                "S": "COMPLETED"
+              },
+              ":response_data": {
+                "M": {
+                  "ok": {
+                    "BOOL": true
+                  },
+                  "amount": {
+                    "N": "1.5"
+                  },
+                  "nested": {
+                    "L": [
+                      {
+                        "NULL": true
+                      },
+                      {
+                        "N": "3"
+                      }
+                    ]
+                  }
+                }
+              },
+              ":validation_key": {
+                "S": "jxTkX87qFnpaNt7dS+olQw=="
+              }
+            }
+          }
+        },
+        {
+          "type": "DeleteItemCommand",
+          "input": {
+            "TableName": "records",
+            "Key": {
+              "id": {
+                "S": "operation#YGeSSuGxgyq849Ev6DdVqQ=="
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "composite": true,
+      "commands": [
+        {
+          "type": "PutItemCommand",
+          "input": {
+            "TableName": "records",
+            "Item": {
+              "pk": {
+                "S": "tenant"
+              },
+              "sk": {
+                "S": "operation#YGeSSuGxgyq849Ev6DdVqQ=="
+              },
+              "e": {
+                "N": "1800003600"
+              },
+              "s": {
+                "S": "INPROGRESS"
+              },
+              "ip": {
+                "N": "1800000005250"
+              },
+              "v": {
+                "S": "jxTkX87qFnpaNt7dS+olQw=="
+              }
+            },
+            "ExpressionAttributeNames": {
+              "#id": "pk",
+              "#expiry": "e",
+              "#in_progress_expiry": "ip",
+              "#status": "s"
+            },
+            "ExpressionAttributeValues": {
+              ":now": {
+                "N": "1800000000.25"
+              },
+              ":now_in_millis": {
+                "N": "1800000000250"
+              },
+              ":inprogress": {
+                "S": "INPROGRESS"
+              }
+            },
+            "ConditionExpression": "attribute_not_exists(#id) OR #expiry < :now OR (#status = :inprogress AND attribute_exists(#in_progress_expiry) AND #in_progress_expiry < :now_in_millis)",
+            "ReturnValuesOnConditionCheckFailure": "ALL_OLD"
+          }
+        },
+        {
+          "type": "UpdateItemCommand",
+          "input": {
+            "TableName": "records",
+            "Key": {
+              "pk": {
+                "S": "tenant"
+              },
+              "sk": {
+                "S": "operation#YGeSSuGxgyq849Ev6DdVqQ=="
+              }
+            },
+            "UpdateExpression": "SET #expiry = :expiry, #status = :status, #response_data = :response_data, #validation_key = :validation_key",
+            "ExpressionAttributeNames": {
+              "#expiry": "e",
+              "#status": "s",
+              "#response_data": "d",
+              "#validation_key": "v"
+            },
+            "ExpressionAttributeValues": {
+              ":expiry": {
+                "N": "1800003600"
+              },
+              ":status": {
+                "S": "COMPLETED"
+              },
+              ":response_data": {
+                "M": {
+                  "ok": {
+                    "BOOL": true
+                  },
+                  "amount": {
+                    "N": "1.5"
+                  },
+                  "nested": {
+                    "L": [
+                      {
+                        "NULL": true
+                      },
+                      {
+                        "N": "3"
+                      }
+                    ]
+                  }
+                }
+              },
+              ":validation_key": {
+                "S": "jxTkX87qFnpaNt7dS+olQw=="
+              }
+            }
+          }
+        },
+        {
+          "type": "DeleteItemCommand",
+          "input": {
+            "TableName": "records",
+            "Key": {
+              "pk": {
+                "S": "tenant"
+              },
+              "sk": {
+                "S": "operation#YGeSSuGxgyq849Ev6DdVqQ=="
+              }
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

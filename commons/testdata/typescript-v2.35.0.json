@@ -1,0 +1,1118 @@
+{
+  "version": "2.35.0",
+  "env": [
+    {
+      "raw": null,
+      "mode": "string",
+      "error": "Error"
+    },
+    {
+      "raw": null,
+      "mode": "number",
+      "error": "TypeError"
+    },
+    {
+      "raw": null,
+      "mode": "boolean",
+      "error": "Error"
+    },
+    {
+      "raw": null,
+      "mode": "extended",
+      "error": "Error"
+    },
+    {
+      "raw": "",
+      "mode": "string",
+      "value": ""
+    },
+    {
+      "raw": "",
+      "mode": "number",
+      "value": 0
+    },
+    {
+      "raw": "",
+      "mode": "boolean",
+      "error": "Error"
+    },
+    {
+      "raw": "",
+      "mode": "extended",
+      "error": "Error"
+    },
+    {
+      "raw": "  hello  ",
+      "mode": "string",
+      "value": "hello"
+    },
+    {
+      "raw": "  hello  ",
+      "mode": "number",
+      "error": "TypeError"
+    },
+    {
+      "raw": "  hello  ",
+      "mode": "boolean",
+      "error": "Error"
+    },
+    {
+      "raw": "  hello  ",
+      "mode": "extended",
+      "error": "Error"
+    },
+    {
+      "raw": "true",
+      "mode": "string",
+      "value": "true"
+    },
+    {
+      "raw": "true",
+      "mode": "number",
+      "error": "TypeError"
+    },
+    {
+      "raw": "true",
+      "mode": "boolean",
+      "value": true
+    },
+    {
+      "raw": "true",
+      "mode": "extended",
+      "value": true
+    },
+    {
+      "raw": "TRUE",
+      "mode": "string",
+      "value": "TRUE"
+    },
+    {
+      "raw": "TRUE",
+      "mode": "number",
+      "error": "TypeError"
+    },
+    {
+      "raw": "TRUE",
+      "mode": "boolean",
+      "value": true
+    },
+    {
+      "raw": "TRUE",
+      "mode": "extended",
+      "value": true
+    },
+    {
+      "raw": " yes ",
+      "mode": "string",
+      "value": "yes"
+    },
+    {
+      "raw": " yes ",
+      "mode": "number",
+      "error": "TypeError"
+    },
+    {
+      "raw": " yes ",
+      "mode": "boolean",
+      "error": "Error"
+    },
+    {
+      "raw": " yes ",
+      "mode": "extended",
+      "value": true
+    },
+    {
+      "raw": "n",
+      "mode": "string",
+      "value": "n"
+    },
+    {
+      "raw": "n",
+      "mode": "number",
+      "error": "TypeError"
+    },
+    {
+      "raw": "n",
+      "mode": "boolean",
+      "error": "Error"
+    },
+    {
+      "raw": "n",
+      "mode": "extended",
+      "value": false
+    },
+    {
+      "raw": "t",
+      "mode": "string",
+      "value": "t"
+    },
+    {
+      "raw": "t",
+      "mode": "number",
+      "error": "TypeError"
+    },
+    {
+      "raw": "t",
+      "mode": "boolean",
+      "error": "Error"
+    },
+    {
+      "raw": "t",
+      "mode": "extended",
+      "value": true
+    },
+    {
+      "raw": "off",
+      "mode": "string",
+      "value": "off"
+    },
+    {
+      "raw": "off",
+      "mode": "number",
+      "error": "TypeError"
+    },
+    {
+      "raw": "off",
+      "mode": "boolean",
+      "error": "Error"
+    },
+    {
+      "raw": "off",
+      "mode": "extended",
+      "value": false
+    },
+    {
+      "raw": "1",
+      "mode": "string",
+      "value": "1"
+    },
+    {
+      "raw": "1",
+      "mode": "number",
+      "value": 1
+    },
+    {
+      "raw": "1",
+      "mode": "boolean",
+      "error": "Error"
+    },
+    {
+      "raw": "1",
+      "mode": "extended",
+      "value": true
+    },
+    {
+      "raw": "0",
+      "mode": "string",
+      "value": "0"
+    },
+    {
+      "raw": "0",
+      "mode": "number",
+      "value": 0
+    },
+    {
+      "raw": "0",
+      "mode": "boolean",
+      "error": "Error"
+    },
+    {
+      "raw": "0",
+      "mode": "extended",
+      "value": false
+    },
+    {
+      "raw": "invalid",
+      "mode": "string",
+      "value": "invalid"
+    },
+    {
+      "raw": "invalid",
+      "mode": "number",
+      "error": "TypeError"
+    },
+    {
+      "raw": "invalid",
+      "mode": "boolean",
+      "error": "Error"
+    },
+    {
+      "raw": "invalid",
+      "mode": "extended",
+      "error": "Error"
+    },
+    {
+      "raw": " 2.5 ",
+      "mode": "string",
+      "value": "2.5"
+    },
+    {
+      "raw": " 2.5 ",
+      "mode": "number",
+      "value": 2.5
+    },
+    {
+      "raw": " 2.5 ",
+      "mode": "boolean",
+      "error": "Error"
+    },
+    {
+      "raw": " 2.5 ",
+      "mode": "extended",
+      "error": "Error"
+    },
+    {
+      "raw": "0x10",
+      "mode": "string",
+      "value": "0x10"
+    },
+    {
+      "raw": "0x10",
+      "mode": "number",
+      "value": 16
+    },
+    {
+      "raw": "0x10",
+      "mode": "boolean",
+      "error": "Error"
+    },
+    {
+      "raw": "0x10",
+      "mode": "extended",
+      "error": "Error"
+    },
+    {
+      "raw": "0b11",
+      "mode": "string",
+      "value": "0b11"
+    },
+    {
+      "raw": "0b11",
+      "mode": "number",
+      "value": 3
+    },
+    {
+      "raw": "0b11",
+      "mode": "boolean",
+      "error": "Error"
+    },
+    {
+      "raw": "0b11",
+      "mode": "extended",
+      "error": "Error"
+    },
+    {
+      "raw": "1e2",
+      "mode": "string",
+      "value": "1e2"
+    },
+    {
+      "raw": "1e2",
+      "mode": "number",
+      "value": 100
+    },
+    {
+      "raw": "1e2",
+      "mode": "boolean",
+      "error": "Error"
+    },
+    {
+      "raw": "1e2",
+      "mode": "extended",
+      "error": "Error"
+    },
+    {
+      "raw": "Infinity",
+      "mode": "string",
+      "value": "Infinity"
+    },
+    {
+      "raw": "Infinity",
+      "mode": "number",
+      "value": {
+        "number": "Infinity"
+      }
+    },
+    {
+      "raw": "Infinity",
+      "mode": "boolean",
+      "error": "Error"
+    },
+    {
+      "raw": "Infinity",
+      "mode": "extended",
+      "error": "Error"
+    }
+  ],
+  "base64": [
+    {
+      "input": "",
+      "encoding": null,
+      "value": []
+    },
+    {
+      "input": "",
+      "encoding": "base64",
+      "value": []
+    },
+    {
+      "input": "",
+      "encoding": "utf8",
+      "value": []
+    },
+    {
+      "input": "",
+      "encoding": "hex",
+      "value": []
+    },
+    {
+      "input": "",
+      "encoding": "utf16le",
+      "value": []
+    },
+    {
+      "input": "aGVsbG8=",
+      "encoding": null,
+      "value": [
+        97,
+        71,
+        86,
+        115,
+        98,
+        71,
+        56,
+        61
+      ]
+    },
+    {
+      "input": "aGVsbG8=",
+      "encoding": "base64",
+      "value": [
+        104,
+        101,
+        108,
+        108,
+        111
+      ]
+    },
+    {
+      "input": "aGVsbG8=",
+      "encoding": "utf8",
+      "value": [
+        97,
+        71,
+        86,
+        115,
+        98,
+        71,
+        56,
+        61
+      ]
+    },
+    {
+      "input": "aGVsbG8=",
+      "encoding": "hex",
+      "value": []
+    },
+    {
+      "input": "aGVsbG8=",
+      "encoding": "utf16le",
+      "value": [
+        97,
+        0,
+        71,
+        0,
+        86,
+        0,
+        115,
+        0,
+        98,
+        0,
+        71,
+        0,
+        56,
+        0,
+        61,
+        0
+      ]
+    },
+    {
+      "input": "aGVsbG8",
+      "encoding": null,
+      "error": "TypeError"
+    },
+    {
+      "input": "aGVsbG8",
+      "encoding": "base64",
+      "error": "TypeError"
+    },
+    {
+      "input": "aGVsbG8",
+      "encoding": "utf8",
+      "error": "TypeError"
+    },
+    {
+      "input": "aGVsbG8",
+      "encoding": "hex",
+      "error": "TypeError"
+    },
+    {
+      "input": "aGVsbG8",
+      "encoding": "utf16le",
+      "error": "TypeError"
+    },
+    {
+      "input": "aGVs bG8",
+      "encoding": null,
+      "error": "TypeError"
+    },
+    {
+      "input": "aGVs bG8",
+      "encoding": "base64",
+      "error": "TypeError"
+    },
+    {
+      "input": "aGVs bG8",
+      "encoding": "utf8",
+      "error": "TypeError"
+    },
+    {
+      "input": "aGVs bG8",
+      "encoding": "hex",
+      "error": "TypeError"
+    },
+    {
+      "input": "aGVs bG8",
+      "encoding": "utf16le",
+      "error": "TypeError"
+    },
+    {
+      "input": "8J-SqQ==",
+      "encoding": null,
+      "error": "TypeError"
+    },
+    {
+      "input": "8J-SqQ==",
+      "encoding": "base64",
+      "error": "TypeError"
+    },
+    {
+      "input": "8J-SqQ==",
+      "encoding": "utf8",
+      "error": "TypeError"
+    },
+    {
+      "input": "8J-SqQ==",
+      "encoding": "hex",
+      "error": "TypeError"
+    },
+    {
+      "input": "8J-SqQ==",
+      "encoding": "utf16le",
+      "error": "TypeError"
+    },
+    {
+      "input": "%%%=",
+      "encoding": null,
+      "error": "TypeError"
+    },
+    {
+      "input": "%%%=",
+      "encoding": "base64",
+      "error": "TypeError"
+    },
+    {
+      "input": "%%%=",
+      "encoding": "utf8",
+      "error": "TypeError"
+    },
+    {
+      "input": "%%%=",
+      "encoding": "hex",
+      "error": "TypeError"
+    },
+    {
+      "input": "%%%=",
+      "encoding": "utf16le",
+      "error": "TypeError"
+    },
+    {
+      "input": "AAA=",
+      "encoding": null,
+      "value": [
+        65,
+        65,
+        65,
+        61
+      ]
+    },
+    {
+      "input": "AAA=",
+      "encoding": "base64",
+      "value": [
+        0,
+        0
+      ]
+    },
+    {
+      "input": "AAA=",
+      "encoding": "utf8",
+      "value": [
+        65,
+        65,
+        65,
+        61
+      ]
+    },
+    {
+      "input": "AAA=",
+      "encoding": "hex",
+      "value": [
+        170
+      ]
+    },
+    {
+      "input": "AAA=",
+      "encoding": "utf16le",
+      "value": [
+        65,
+        0,
+        65,
+        0,
+        65,
+        0,
+        61,
+        0
+      ]
+    },
+    {
+      "input": "AA==",
+      "encoding": null,
+      "value": [
+        65,
+        65,
+        61,
+        61
+      ]
+    },
+    {
+      "input": "AA==",
+      "encoding": "base64",
+      "value": [
+        0
+      ]
+    },
+    {
+      "input": "AA==",
+      "encoding": "utf8",
+      "value": [
+        65,
+        65,
+        61,
+        61
+      ]
+    },
+    {
+      "input": "AA==",
+      "encoding": "hex",
+      "value": [
+        170
+      ]
+    },
+    {
+      "input": "AA==",
+      "encoding": "utf16le",
+      "value": [
+        65,
+        0,
+        65,
+        0,
+        61,
+        0,
+        61,
+        0
+      ]
+    },
+    {
+      "input": "abcd",
+      "encoding": null,
+      "value": [
+        97,
+        98,
+        99,
+        100
+      ]
+    },
+    {
+      "input": "abcd",
+      "encoding": "base64",
+      "value": [
+        105,
+        183,
+        29
+      ]
+    },
+    {
+      "input": "abcd",
+      "encoding": "utf8",
+      "value": [
+        97,
+        98,
+        99,
+        100
+      ]
+    },
+    {
+      "input": "abcd",
+      "encoding": "hex",
+      "value": [
+        171,
+        205
+      ]
+    },
+    {
+      "input": "abcd",
+      "encoding": "utf16le",
+      "value": [
+        97,
+        0,
+        98,
+        0,
+        99,
+        0,
+        100,
+        0
+      ]
+    },
+    {
+      "input": "abcz",
+      "encoding": null,
+      "value": [
+        97,
+        98,
+        99,
+        122
+      ]
+    },
+    {
+      "input": "abcz",
+      "encoding": "base64",
+      "value": [
+        105,
+        183,
+        51
+      ]
+    },
+    {
+      "input": "abcz",
+      "encoding": "utf8",
+      "value": [
+        97,
+        98,
+        99,
+        122
+      ]
+    },
+    {
+      "input": "abcz",
+      "encoding": "hex",
+      "value": [
+        171
+      ]
+    },
+    {
+      "input": "abcz",
+      "encoding": "utf16le",
+      "value": [
+        97,
+        0,
+        98,
+        0,
+        99,
+        0,
+        122,
+        0
+      ]
+    }
+  ],
+  "merged": {
+    "nested": {
+      "a": 1,
+      "b": 2
+    },
+    "array": [
+      {
+        "a": 1,
+        "b": 2
+      },
+      9,
+      3
+    ],
+    "nil": null
+  },
+  "source": {
+    "nested": {
+      "b": 2
+    },
+    "array": [
+      {
+        "b": 2
+      },
+      9
+    ],
+    "nil": null
+  },
+  "circular": {
+    "value": 1
+  },
+  "unsafe": {
+    "safe": 2
+  },
+  "lru": {
+    "size": 2,
+    "a": true,
+    "b": false,
+    "c": 3
+  },
+  "numbers": [
+    {
+      "input": "0",
+      "value": 0
+    },
+    {
+      "input": "2.5",
+      "value": 2.5
+    },
+    {
+      "input": "9007199254740991",
+      "value": 9007199254740991
+    },
+    {
+      "input": "9007199254740992",
+      "value": {
+        "bigint": "9007199254740992"
+      }
+    },
+    {
+      "input": "-9007199254740993",
+      "value": {
+        "bigint": "-9007199254740993"
+      }
+    },
+    {
+      "input": "9007199254740992.5",
+      "error": "UnmarshallDynamoDBAttributeError"
+    },
+    {
+      "input": "1e20",
+      "error": "UnmarshallDynamoDBAttributeError"
+    },
+    {
+      "input": "Infinity",
+      "value": {
+        "number": "Infinity"
+      }
+    },
+    {
+      "input": "invalid",
+      "value": {
+        "number": "NaN"
+      }
+    }
+  ],
+  "types": [
+    {
+      "value": null,
+      "type": "null",
+      "truthy": false,
+      "integer": false
+    },
+    {
+      "value": "",
+      "type": "string",
+      "truthy": false,
+      "integer": false
+    },
+    {
+      "value": " ",
+      "type": "string",
+      "truthy": true,
+      "integer": false
+    },
+    {
+      "value": 0,
+      "type": "number",
+      "truthy": false,
+      "integer": true
+    },
+    {
+      "value": 1,
+      "type": "number",
+      "truthy": true,
+      "integer": true
+    },
+    {
+      "value": 1.5,
+      "type": "number",
+      "truthy": true,
+      "integer": false
+    },
+    {
+      "value": true,
+      "type": "boolean",
+      "truthy": true,
+      "integer": false
+    },
+    {
+      "value": false,
+      "type": "boolean",
+      "truthy": false,
+      "integer": false
+    },
+    {
+      "value": [],
+      "type": "array",
+      "truthy": false,
+      "integer": false
+    },
+    {
+      "value": [
+        1
+      ],
+      "type": "array",
+      "truthy": true,
+      "integer": false
+    },
+    {
+      "value": {},
+      "type": "object",
+      "truthy": false,
+      "integer": false
+    },
+    {
+      "value": {
+        "a": 1
+      },
+      "type": "object",
+      "truthy": true,
+      "integer": false
+    }
+  ],
+  "rawItem": {
+    "s": {
+      "S": "text"
+    },
+    "b": {
+      "B": "raw-binary"
+    },
+    "ss": {
+      "SS": [
+        "a",
+        "a",
+        "b"
+      ]
+    },
+    "ns": {
+      "NS": [
+        "1",
+        "1",
+        "9007199254740992"
+      ]
+    },
+    "flag": {
+      "BOOL": true
+    },
+    "nil": {
+      "NULL": true
+    },
+    "list": {
+      "L": [
+        {
+          "N": "2"
+        },
+        {
+          "M": {
+            "nested": {
+              "S": "yes"
+            }
+          }
+        }
+      ]
+    }
+  },
+  "unmarshalled": {
+    "s": "text",
+    "b": "raw-binary",
+    "ss": [
+      "a",
+      "b"
+    ],
+    "ns": [
+      1,
+      {
+        "bigint": "9007199254740992"
+      }
+    ],
+    "flag": true,
+    "nil": null,
+    "list": [
+      2,
+      {
+        "nested": "yes"
+      }
+    ]
+  },
+  "runtime": [
+    {
+      "initialization": null,
+      "dev": "",
+      "local": false,
+      "lambda": false
+    },
+    {
+      "initialization": null,
+      "dev": "true",
+      "local": true,
+      "lambda": false
+    },
+    {
+      "initialization": null,
+      "dev": "yes",
+      "local": true,
+      "lambda": false
+    },
+    {
+      "initialization": null,
+      "dev": "false",
+      "local": false,
+      "lambda": false
+    },
+    {
+      "initialization": "",
+      "dev": "",
+      "local": false,
+      "lambda": true
+    },
+    {
+      "initialization": "",
+      "dev": "true",
+      "local": true,
+      "lambda": false
+    },
+    {
+      "initialization": "",
+      "dev": "yes",
+      "local": true,
+      "lambda": false
+    },
+    {
+      "initialization": "",
+      "dev": "false",
+      "local": false,
+      "lambda": true
+    },
+    {
+      "initialization": "unknown",
+      "dev": "",
+      "local": false,
+      "lambda": false
+    },
+    {
+      "initialization": "unknown",
+      "dev": "true",
+      "local": true,
+      "lambda": false
+    },
+    {
+      "initialization": "unknown",
+      "dev": "yes",
+      "local": true,
+      "lambda": false
+    },
+    {
+      "initialization": "unknown",
+      "dev": "false",
+      "local": false,
+      "lambda": false
+    },
+    {
+      "initialization": "on-demand",
+      "dev": "",
+      "local": false,
+      "lambda": true
+    },
+    {
+      "initialization": "on-demand",
+      "dev": "true",
+      "local": true,
+      "lambda": false
+    },
+    {
+      "initialization": "on-demand",
+      "dev": "yes",
+      "local": true,
+      "lambda": false
+    },
+    {
+      "initialization": "on-demand",
+      "dev": "false",
+      "local": false,
+      "lambda": true
+    },
+    {
+      "initialization": "provisioned-concurrency",
+      "dev": "",
+      "local": false,
+      "lambda": true
+    },
+    {
+      "initialization": "provisioned-concurrency",
+      "dev": "true",
+      "local": true,
+      "lambda": false
+    },
+    {
+      "initialization": "provisioned-concurrency",
+      "dev": "yes",
+      "local": true,
+      "lambda": false
+    },
+    {
+      "initialization": "provisioned-concurrency",
+      "dev": "false",
+      "local": false,
+      "lambda": true
+    }
+  ],
+  "metadata": {
+    "first": {
+      "AvailabilityZoneID": "ape1-az1",
+      "future": {
+        "enabled": true
+      }
+    },
+    "second": {
+      "AvailabilityZoneID": "ape1-az1",
+      "future": {
+        "enabled": true
+      }
+    },
+    "third": {
+      "AvailabilityZoneID": "ape1-az1",
+      "future": {
+        "enabled": true
+      }
+    },
+    "local": {},
+    "requests": [
+      {
+        "url": "http://metadata.local:9001/2026-01-15/metadata/execution-environment",
+        "authorization": "Bearer fixture-token"
+      },
+      {
+        "url": "http://metadata.local:9001/2026-01-15/metadata/execution-environment",
+        "authorization": "Bearer fixture-token"
+      }
+    ]
+  }
+}

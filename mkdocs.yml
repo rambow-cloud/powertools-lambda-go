@@ -1,0 +1,176 @@
+site_name: Powertools for AWS Lambda (Go)
+site_description: Independent Go utilities for AWS Lambda, with OpenTelemetry tracing and independently versioned modules.
+site_url: https://rambow-cloud.github.io/powertools-lambda-go/
+repo_url: https://github.com/rambow-cloud/powertools-lambda-go
+repo_name: GitHub
+edit_uri: edit/main/docs/
+copyright: |
+  Copyright &copy; 2026 rambow-cloud contributors. Independent community project.<br>
+  Go Gopher adapted from a design by <a href="https://go.dev/blog/gopher">Renee French</a>
+  (<a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>).
+docs_dir: docs
+site_dir: dist/site
+strict: true
+
+theme:
+  name: material
+  custom_dir: website/overrides
+  language: en
+  font: false
+  logo: assets/logo-ram-gopher.png
+  favicon: assets/logo-ram-gopher.png
+  icon:
+    repo: fontawesome/brands/github
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: custom
+      accent: custom
+      toggle:
+        icon: material/weather-night
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: custom
+      accent: custom
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to light mode
+  features:
+    - navigation.indexes
+    - navigation.tracking
+    - toc.follow
+    - navigation.top
+    - navigation.footer
+    - search.suggest
+    - search.highlight
+    - content.code.copy
+    - content.action.edit
+    - content.tabs.link
+
+plugins:
+  - search
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - md_in_html
+  - tables
+  - toc:
+      permalink: true
+      title: On this page
+      toc_depth: 2
+  - pymdownx.details
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.superfences
+  - pymdownx.snippets:
+      base_path: [!relative $config_dir]
+      check_paths: true
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.tasklist:
+      custom_checkbox: true
+
+validation:
+  nav:
+    omitted_files: warn
+    not_found: warn
+    absolute_links: warn
+  links:
+    not_found: warn
+    anchors: warn
+    unrecognized_links: warn
+    absolute_links: warn
+
+extra_css:
+  - stylesheets/powertools.css
+
+watch:
+  - examples/basic/main.go
+  - website/overrides
+
+extra:
+  generator: false
+
+nav:
+  - What is Powertools for Go: index.md
+  - Getting started:
+      - First Lambda: GETTING_STARTED.md
+      - Modules and installation: MODULES.md
+      - Compatibility: COMPATIBILITY.md
+  - Tracer: TRACER.md
+  - Logger: LOGGER.md
+  - Metrics: METRICS.md
+  - Event handlers:
+      - HTTP:
+          - Routing: HTTP.md
+          - Middleware: HTTP_MIDDLEWARE.md
+          - Observability: HTTP_OBSERVABILITY.md
+          - Streaming: HTTP_STREAMING.md
+      - AppSync Events: APPSYNC_EVENTS.md
+      - AppSync GraphQL: APPSYNC_GRAPHQL.md
+      - Bedrock Agents: BEDROCK.md
+  - Parameters: PARAMETERS.md
+  - Idempotency:
+      - DynamoDB: IDEMPOTENCY.md
+      - Redis and Valkey: IDEMPOTENCY_CACHE.md
+  - Batch processing: BATCH.md
+  - JMESPath: JMESPATH.md
+  - Parser:
+      - Overview: PARSER.md
+      - Streams: PARSER_STREAMS.md
+      - HTTP: PARSER_HTTP.md
+      - Identity events: PARSER_IDENTITY.md
+      - Service events: PARSER_SERVICES.md
+      - Errors: PARSER_ERRORS.md
+  - Validation:
+      - Overview: JSON_SCHEMA_VALIDATION.md
+      - Keywords: VALIDATION_KEYWORDS.md
+      - Applicators: VALIDATION_APPLICATORS.md
+      - References: VALIDATION_REFERENCES.md
+      - Recursive schemas: VALIDATION_GRAPHS.md
+      - Value shapes: VALIDATION_SHAPES.md
+      - Strict mode: VALIDATION_STRICT.md
+      - Regular expressions: VALIDATION_REGEX.md
+  - Data Masking:
+      - Overview: DATAMASKING.md
+      - KMS provider: DATAMASKING_KMS.md
+  - Kafka:
+      - Overview: KAFKA.md
+      - Avro and Protobuf: KAFKA_BINARY.md
+      - Source and JSON modes: KAFKA_MODES.md
+  - Signer: SIGNER.md
+  - Commons and Metadata:
+      - Overview: COMMONS.md
+      - Regular expressions: REGEX.md
+      - Reuse audit: COMMONS_REUSE.md
+  - Resources:
+      - X-Ray migration: XRAY_MIGRATION.md
+      - Roadmap: ROADMAP.md
+      - Completion checklist: CHECKLIST.md
+      - Publication: PUBLICATION.md
+      - Release plan: PUBLISHING_PLAN.md
+  - Development:
+      - Documentation and CI: DOCUMENTATION.md
+      - Verification:
+          - Overview: VALIDATION.md
+          - Local acceptance: LOCAL_VALIDATION.md
+          - Historical AWS acceptance: AWS_VALIDATION.md
+      - Design and remaining work:
+          - Tracing decision: TRACING_DECISION.md
+          - Commons: COMMONS_PLAN.md
+          - Metrics: METRICS_PLAN.md
+          - Signer: SIGNER_PLAN.md
+          - JMESPath: JMESPATH_PLAN.md
+          - Batch: BATCH_PLAN.md
+          - Idempotency: IDEMPOTENCY_PLAN.md
+          - Parser: PARSER_PLAN.md
+          - Validation: VALIDATION_PLAN.md
+          - Kafka: KAFKA_PLAN.md
+          - Data Masking: DATAMASKING_PLAN.md
+          - HTTP: HTTP_PLAN.md
+          - AppSync Events: APPSYNC_EVENTS_PLAN.md
+          - AppSync GraphQL: APPSYNC_GRAPHQL_PLAN.md
+          - Bedrock: BEDROCK_PLAN.md

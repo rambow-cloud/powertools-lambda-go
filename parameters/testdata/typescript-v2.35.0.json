@@ -1,0 +1,144 @@
+{
+  "version": "2.35.0",
+  "cases": [
+    {
+      "name": "plain",
+      "options": {},
+      "value": "hello",
+      "calls": 1
+    },
+    {
+      "name": "plain",
+      "options": {},
+      "value": "hello",
+      "calls": 1
+    },
+    {
+      "name": "plain",
+      "options": {
+        "forceFetch": true
+      },
+      "value": "hello",
+      "calls": 2
+    },
+    {
+      "name": "json",
+      "options": {
+        "transform": "json"
+      },
+      "value": {
+        "enabled": true,
+        "count": 2
+      },
+      "calls": 3
+    },
+    {
+      "name": "binary",
+      "options": {
+        "transform": "binary"
+      },
+      "value": "hello",
+      "calls": 4
+    },
+    {
+      "name": "empty",
+      "options": {},
+      "value": "",
+      "calls": 5
+    },
+    {
+      "name": "null",
+      "options": {
+        "transform": "json"
+      },
+      "value": null,
+      "calls": 6
+    },
+    {
+      "name": "missing",
+      "options": {},
+      "value": null,
+      "calls": 7
+    },
+    {
+      "name": "missing",
+      "options": {
+        "throwOnMissing": true
+      },
+      "error": "ParameterNotFoundError",
+      "calls": 8
+    },
+    {
+      "name": "invalid",
+      "options": {
+        "transform": "json"
+      },
+      "error": "TransformParameterError",
+      "calls": 9
+    }
+  ],
+  "multiple": {
+    "flags.JSON": {
+      "enabled": true
+    },
+    "text.binary": "hello",
+    "plain": "untouched",
+    "broken.json": null
+  },
+  "strictError": "TransformParameterError",
+  "batches": [
+    {
+      "secret": "{\"secret\":true}",
+      "plain": {
+        "enabled": true
+      },
+      "_errors": []
+    },
+    {
+      "secret": "{\"secret\":true}",
+      "plain": {
+        "enabled": true
+      },
+      "_errors": []
+    },
+    {
+      "empty": null,
+      "_errors": [
+        "missing"
+      ]
+    }
+  ],
+  "sdkCalls": [
+    {
+      "operation": "GetParameterCommand",
+      "input": {
+        "Name": "secret",
+        "WithDecryption": true
+      }
+    },
+    {
+      "operation": "GetParametersCommand",
+      "input": {
+        "Names": [
+          "plain"
+        ]
+      }
+    },
+    {
+      "operation": "GetParameterCommand",
+      "input": {
+        "Name": "secret",
+        "WithDecryption": true
+      }
+    },
+    {
+      "operation": "GetParametersCommand",
+      "input": {
+        "Names": [
+          "empty",
+          "missing"
+        ]
+      }
+    }
+  ]
+}

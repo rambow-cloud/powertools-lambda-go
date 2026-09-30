@@ -1,0 +1,67 @@
+{
+  "source": "existing local Docker artifacts; no additional invocations",
+  "passed": true,
+  "checks": [
+    {
+      "name": "local-0-success: eight invoked record logs",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: scoped Logger identity",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: eight OTel record spans",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: business parent preserved",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: two isolated record failures",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: eight invoked record logs",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: scoped Logger identity",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: eight OTel record spans",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: business parent preserved",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: two isolated record failures",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: eight invoked record logs",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: scoped Logger identity",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: unsampled Batch exports no spans",
+      "passed": true
+    },
+    {
+      "name": "three successful invocation probes",
+      "passed": true
+    }
+  ],
+  "sha256": {
+    "report.json": "5f99efb522c89292261009fb68920db96f0dd70be64e01c07fe661ea3588525b",
+    "otlp.json": "26fed08d072a7a0ba374ad695e3d98ca7caa807eadb907a3382e793a448b6b00",
+    "lambda.log": "849e13dffb92738343d5926597d9c3ab5f96f89a4ea8ce402aba68be724ea6bd"
+  }
+}

@@ -1,0 +1,156 @@
+{
+  "version": "2.35.0",
+  "runtime": [
+    {
+      "initialization": null,
+      "dev": "",
+      "local": false,
+      "lambda": false
+    },
+    {
+      "initialization": null,
+      "dev": "true",
+      "local": true,
+      "lambda": false
+    },
+    {
+      "initialization": null,
+      "dev": "yes",
+      "local": true,
+      "lambda": false
+    },
+    {
+      "initialization": null,
+      "dev": "false",
+      "local": false,
+      "lambda": false
+    },
+    {
+      "initialization": "",
+      "dev": "",
+      "local": false,
+      "lambda": true
+    },
+    {
+      "initialization": "",
+      "dev": "true",
+      "local": true,
+      "lambda": false
+    },
+    {
+      "initialization": "",
+      "dev": "yes",
+      "local": true,
+      "lambda": false
+    },
+    {
+      "initialization": "",
+      "dev": "false",
+      "local": false,
+      "lambda": true
+    },
+    {
+      "initialization": "unknown",
+      "dev": "",
+      "local": false,
+      "lambda": false
+    },
+    {
+      "initialization": "unknown",
+      "dev": "true",
+      "local": true,
+      "lambda": false
+    },
+    {
+      "initialization": "unknown",
+      "dev": "yes",
+      "local": true,
+      "lambda": false
+    },
+    {
+      "initialization": "unknown",
+      "dev": "false",
+      "local": false,
+      "lambda": false
+    },
+    {
+      "initialization": "on-demand",
+      "dev": "",
+      "local": false,
+      "lambda": true
+    },
+    {
+      "initialization": "on-demand",
+      "dev": "true",
+      "local": true,
+      "lambda": false
+    },
+    {
+      "initialization": "on-demand",
+      "dev": "yes",
+      "local": true,
+      "lambda": false
+    },
+    {
+      "initialization": "on-demand",
+      "dev": "false",
+      "local": false,
+      "lambda": true
+    },
+    {
+      "initialization": "provisioned-concurrency",
+      "dev": "",
+      "local": false,
+      "lambda": true
+    },
+    {
+      "initialization": "provisioned-concurrency",
+      "dev": "true",
+      "local": true,
+      "lambda": false
+    },
+    {
+      "initialization": "provisioned-concurrency",
+      "dev": "yes",
+      "local": true,
+      "lambda": false
+    },
+    {
+      "initialization": "provisioned-concurrency",
+      "dev": "false",
+      "local": false,
+      "lambda": true
+    }
+  ],
+  "metadata": {
+    "first": {
+      "AvailabilityZoneID": "ape1-az1",
+      "future": {
+        "enabled": true
+      }
+    },
+    "second": {
+      "AvailabilityZoneID": "ape1-az1",
+      "future": {
+        "enabled": true
+      }
+    },
+    "third": {
+      "AvailabilityZoneID": "ape1-az1",
+      "future": {
+        "enabled": true
+      }
+    },
+    "local": {},
+    "requests": [
+      {
+        "url": "http://metadata.local:9001/2026-01-15/metadata/execution-environment",
+        "authorization": "Bearer fixture-token"
+      },
+      {
+        "url": "http://metadata.local:9001/2026-01-15/metadata/execution-environment",
+        "authorization": "Bearer fixture-token"
+      }
+    ]
+  }
+}

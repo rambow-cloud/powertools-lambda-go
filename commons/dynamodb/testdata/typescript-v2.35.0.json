@@ -1,0 +1,113 @@
+{
+  "version": "2.35.0",
+  "numbers": [
+    {
+      "input": "0",
+      "value": 0
+    },
+    {
+      "input": "2.5",
+      "value": 2.5
+    },
+    {
+      "input": "9007199254740991",
+      "value": 9007199254740991
+    },
+    {
+      "input": "9007199254740992",
+      "value": {
+        "bigint": "9007199254740992"
+      }
+    },
+    {
+      "input": "-9007199254740993",
+      "value": {
+        "bigint": "-9007199254740993"
+      }
+    },
+    {
+      "input": "9007199254740992.5",
+      "error": "UnmarshallDynamoDBAttributeError"
+    },
+    {
+      "input": "1e20",
+      "error": "UnmarshallDynamoDBAttributeError"
+    },
+    {
+      "input": "Infinity",
+      "value": {
+        "number": "Infinity"
+      }
+    },
+    {
+      "input": "invalid",
+      "value": {
+        "number": "NaN"
+      }
+    }
+  ],
+  "rawItem": {
+    "s": {
+      "S": "text"
+    },
+    "b": {
+      "B": "raw-binary"
+    },
+    "ss": {
+      "SS": [
+        "a",
+        "a",
+        "b"
+      ]
+    },
+    "ns": {
+      "NS": [
+        "1",
+        "1",
+        "9007199254740992"
+      ]
+    },
+    "flag": {
+      "BOOL": true
+    },
+    "nil": {
+      "NULL": true
+    },
+    "list": {
+      "L": [
+        {
+          "N": "2"
+        },
+        {
+          "M": {
+            "nested": {
+              "S": "yes"
+            }
+          }
+        }
+      ]
+    }
+  },
+  "unmarshalled": {
+    "s": "text",
+    "b": "raw-binary",
+    "ss": [
+      "a",
+      "b"
+    ],
+    "ns": [
+      1,
+      {
+        "bigint": "9007199254740992"
+      }
+    ],
+    "flag": true,
+    "nil": null,
+    "list": [
+      2,
+      {
+        "nested": "yes"
+      }
+    ]
+  }
+}

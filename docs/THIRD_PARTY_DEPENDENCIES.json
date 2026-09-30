@@ -1,0 +1,663 @@
+{
+  "date": "2026-09-26",
+  "scope": "Direct declared Go requirements and direct npm reference tools; not a transitive binary SBOM.",
+  "go": [
+    {
+      "module": "github.com/aws/aws-cryptographic-material-providers-library/releases/go/mpl",
+      "version": "v0.4.0",
+      "license": "Apache-2.0",
+      "used_by": [
+        "datamasking/kms"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE",
+          "sha256": "09e8a9bcec8067104652c168685ab0931e7868f9c8284b66f5ae6edae5f1130b"
+        }
+      ]
+    },
+    {
+      "module": "github.com/aws/aws-encryption-sdk/releases/go/encryption-sdk",
+      "version": "v0.4.0",
+      "license": "Apache-2.0",
+      "used_by": [
+        "datamasking/kms"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE",
+          "sha256": "09e8a9bcec8067104652c168685ab0931e7868f9c8284b66f5ae6edae5f1130b"
+        }
+      ]
+    },
+    {
+      "module": "github.com/aws/aws-lambda-go",
+      "version": "v1.55.0",
+      "license": "Apache-2.0 (Lambda sample code: MIT-0)",
+      "used_by": [
+        "logger",
+        "batch",
+        "tracer",
+        "examples",
+        "integration"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE",
+          "sha256": "8c6db340475136df3c1201d458fa5755698eace76e510471ecc9d857d6083dac"
+        },
+        {
+          "name": "LICENSE-LAMBDACODE",
+          "sha256": "b989d4f1eaf6094c133dc61a33fff638a63f64fdd4ba881adaf245b9bad3a22c"
+        },
+        {
+          "name": "LICENSE-SUMMARY",
+          "sha256": "00c31061d11a7d289e3f5ac49f58b0d5cffdd9d1d24a9ee4c9848354356386bc"
+        }
+      ]
+    },
+    {
+      "module": "github.com/aws/aws-sdk-go-v2",
+      "version": "v1.47.0",
+      "license": "Apache-2.0",
+      "used_by": [
+        "commons/awssdk",
+        "parameters",
+        "signer",
+        "idempotency",
+        "tracer",
+        "examples",
+        "integration"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE.txt",
+          "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+        },
+        {
+          "name": "NOTICE.txt",
+          "sha256": "a6e830174d62dafad3a718384772ea1f4c0e27989f050932dc442a5e3ddad080"
+        }
+      ]
+    },
+    {
+      "module": "github.com/aws/aws-sdk-go-v2/config",
+      "version": "v1.33.4",
+      "license": "Apache-2.0",
+      "used_by": [
+        "parameters",
+        "datamasking/kms",
+        "examples"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE.txt",
+          "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+        }
+      ]
+    },
+    {
+      "module": "github.com/aws/aws-sdk-go-v2/credentials",
+      "version": "v1.20.4",
+      "license": "Apache-2.0",
+      "used_by": [
+        "integration"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE.txt",
+          "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+        }
+      ]
+    },
+    {
+      "module": "github.com/aws/aws-sdk-go-v2/feature/dynamodb/attributevalue",
+      "version": "v1.21.4",
+      "license": "Apache-2.0",
+      "used_by": [
+        "commons/dynamodb",
+        "idempotency"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE.txt",
+          "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+        }
+      ]
+    },
+    {
+      "module": "github.com/aws/aws-sdk-go-v2/service/appconfigdata",
+      "version": "v1.31.0",
+      "license": "Apache-2.0",
+      "used_by": [
+        "parameters",
+        "integration"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE.txt",
+          "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+        }
+      ]
+    },
+    {
+      "module": "github.com/aws/aws-sdk-go-v2/service/dynamodb",
+      "version": "v1.68.0",
+      "license": "Apache-2.0",
+      "used_by": [
+        "commons/dynamodb",
+        "parameters",
+        "idempotency",
+        "tracer",
+        "examples",
+        "integration"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE.txt",
+          "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+        }
+      ]
+    },
+    {
+      "module": "github.com/aws/aws-sdk-go-v2/service/kms",
+      "version": "v1.51.1",
+      "license": "Apache-2.0",
+      "used_by": [
+        "datamasking/kms",
+        "integration"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE.txt",
+          "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+        }
+      ]
+    },
+    {
+      "module": "github.com/aws/aws-sdk-go-v2/service/secretsmanager",
+      "version": "v1.44.2",
+      "license": "Apache-2.0",
+      "used_by": [
+        "parameters",
+        "integration"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE.txt",
+          "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+        }
+      ]
+    },
+    {
+      "module": "github.com/aws/aws-sdk-go-v2/service/ssm",
+      "version": "v1.78.0",
+      "license": "Apache-2.0",
+      "used_by": [
+        "commons/awssdk",
+        "parameters",
+        "integration"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE.txt",
+          "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+        }
+      ]
+    },
+    {
+      "module": "github.com/aws/aws-xray-sdk-go/v2",
+      "version": "v2.0.3",
+      "license": "Apache-2.0",
+      "used_by": [
+        "tracer/xray"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE",
+          "sha256": "b40930bbcf80744c86c46a12bc9da056641d722716c378f5659b9e555ef833e1"
+        },
+        {
+          "name": "NOTICE.txt",
+          "sha256": "9705d0a9e0a56e5000ac5be4101ddd4381f62366d4f60bf0d1bc25415d17b15c"
+        }
+      ]
+    },
+    {
+      "module": "github.com/aws/smithy-go",
+      "version": "v1.28.1",
+      "license": "Apache-2.0",
+      "used_by": [
+        "commons/awssdk",
+        "datamasking/kms",
+        "tracer",
+        "tracer/xray"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE",
+          "sha256": "09e8a9bcec8067104652c168685ab0931e7868f9c8284b66f5ae6edae5f1130b"
+        },
+        {
+          "name": "NOTICE",
+          "sha256": "d4290ed64c2edd0fce1d84e3f9dfb2881240fe534def76b8cd29ed6af683e287"
+        }
+      ]
+    },
+    {
+      "module": "github.com/dlclark/regexp2/v2",
+      "version": "v2.8.0",
+      "license": "MIT",
+      "used_by": [
+        "commons/regex",
+        "validation"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE",
+          "sha256": "9be5d04bb4d706914d5bf943710da4afeb42048f7c529902fb57c82762a991a9"
+        }
+      ]
+    },
+    {
+      "module": "github.com/hamba/avro/v2",
+      "version": "v2.31.0",
+      "license": "MIT",
+      "used_by": [
+        "kafka/avro"
+      ],
+      "license_files": [
+        {
+          "name": "LICENCE",
+          "sha256": "d9403e727669174d3d1a2fbd48ccd5f6f808233f06908d9a35e794ffaab87b47"
+        }
+      ]
+    },
+    {
+      "module": "github.com/jmespath-community/go-jmespath",
+      "version": "v1.1.1",
+      "license": "Apache-2.0",
+      "used_by": [
+        "jmespath"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE",
+          "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+        },
+        {
+          "name": "NOTICE",
+          "sha256": "990e0fe452fa1f544499fa85d135ec1551679a4f9cb39338f8ea5bb10a414567"
+        }
+      ]
+    },
+    {
+      "module": "github.com/redis/go-redis/v9",
+      "version": "v9.21.0",
+      "license": "BSD-2-Clause",
+      "used_by": [
+        "idempotency/cache",
+        "integration"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE",
+          "sha256": "a3a7dff87da3927db65cb4c87b1cfbc96ca2755704461a485d457be7ae300a86"
+        }
+      ]
+    },
+    {
+      "module": "github.com/santhosh-tekuri/jsonschema/v6",
+      "version": "v6.0.3",
+      "license": "Apache-2.0",
+      "used_by": [
+        "validation"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE",
+          "sha256": "c8858a5a76440bbca484e134cf7df46385d090dd18b2c58e650f939258802e5b"
+        }
+      ]
+    },
+    {
+      "module": "go.opentelemetry.io/contrib/instrumentation/github.com/aws/aws-sdk-go-v2/otelaws",
+      "version": "v0.71.0",
+      "license": "Apache-2.0",
+      "used_by": [
+        "tracer"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE",
+          "sha256": "1ae07514be1d7bb33f0698f8d91fb51b8b9fe1463157ec1c72081a49b9bc6f40"
+        }
+      ]
+    },
+    {
+      "module": "go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp",
+      "version": "v0.71.0",
+      "license": "Apache-2.0",
+      "used_by": [
+        "tracer"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE",
+          "sha256": "1ae07514be1d7bb33f0698f8d91fb51b8b9fe1463157ec1c72081a49b9bc6f40"
+        }
+      ]
+    },
+    {
+      "module": "go.opentelemetry.io/contrib/propagators/aws",
+      "version": "v1.46.0",
+      "license": "Apache-2.0",
+      "used_by": [
+        "tracer"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE",
+          "sha256": "1ae07514be1d7bb33f0698f8d91fb51b8b9fe1463157ec1c72081a49b9bc6f40"
+        }
+      ]
+    },
+    {
+      "module": "go.opentelemetry.io/otel",
+      "version": "v1.46.0",
+      "license": "Apache-2.0",
+      "used_by": [
+        "eventhandler/http/tracer",
+        "tracer"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE",
+          "sha256": "1ae07514be1d7bb33f0698f8d91fb51b8b9fe1463157ec1c72081a49b9bc6f40"
+        }
+      ]
+    },
+    {
+      "module": "go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracehttp",
+      "version": "v1.46.0",
+      "license": "Apache-2.0",
+      "used_by": [
+        "tracer"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE",
+          "sha256": "1ae07514be1d7bb33f0698f8d91fb51b8b9fe1463157ec1c72081a49b9bc6f40"
+        }
+      ]
+    },
+    {
+      "module": "go.opentelemetry.io/otel/sdk",
+      "version": "v1.46.0",
+      "license": "Apache-2.0",
+      "used_by": [
+        "eventhandler/http/tracer",
+        "tracer",
+        "examples"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE",
+          "sha256": "1ae07514be1d7bb33f0698f8d91fb51b8b9fe1463157ec1c72081a49b9bc6f40"
+        }
+      ]
+    },
+    {
+      "module": "go.opentelemetry.io/otel/trace",
+      "version": "v1.46.0",
+      "license": "Apache-2.0",
+      "used_by": [
+        "logger",
+        "eventhandler/http/tracer",
+        "tracer"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE",
+          "sha256": "1ae07514be1d7bb33f0698f8d91fb51b8b9fe1463157ec1c72081a49b9bc6f40"
+        }
+      ]
+    },
+    {
+      "module": "go.opentelemetry.io/proto/otlp",
+      "version": "v1.11.0",
+      "license": "Apache-2.0",
+      "used_by": [
+        "integration"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE",
+          "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
+        }
+      ]
+    },
+    {
+      "module": "golang.org/x/text",
+      "version": "v0.14.0",
+      "license": "BSD-3-Clause",
+      "used_by": [
+        "validation"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE",
+          "sha256": "2d36597f7117c38b006835ae7f537487207d8ec407aa9d9980794b2030cbc067"
+        }
+      ]
+    },
+    {
+      "module": "google.golang.org/protobuf",
+      "version": "v1.36.12",
+      "license": "BSD-3-Clause",
+      "used_by": [
+        "kafka/protobuf",
+        "integration"
+      ],
+      "license_files": [
+        {
+          "name": "LICENSE",
+          "sha256": "4835612df0098ca95f8e7d9e3bffcb02358d435dbb38057c844c99d7f725eb20"
+        }
+      ]
+    }
+  ],
+  "npm": [
+    {
+      "package": "@aws-crypto/client-node",
+      "version": "5.0.2",
+      "license": "Apache-2.0",
+      "source": {
+        "type": "git",
+        "url": "https://github.com/aws/aws-encryption-sdk-javascript.git",
+        "directory": "modules/client-node"
+      },
+      "scope": "Development reference generator only"
+    },
+    {
+      "package": "@aws-lambda-powertools/batch",
+      "version": "2.35.0",
+      "license": "MIT-0",
+      "source": {
+        "type": "git",
+        "url": "git+https://github.com/aws-powertools/powertools-lambda-typescript.git"
+      },
+      "scope": "Development reference generator only"
+    },
+    {
+      "package": "@aws-lambda-powertools/data-masking",
+      "version": "2.35.0",
+      "license": "MIT-0",
+      "source": {
+        "type": "git",
+        "url": "git+https://github.com/aws-powertools/powertools-lambda-typescript.git"
+      },
+      "scope": "Development reference generator only"
+    },
+    {
+      "package": "@aws-lambda-powertools/event-handler",
+      "version": "2.35.0",
+      "license": "MIT-0",
+      "source": {
+        "type": "git",
+        "url": "git+https://github.com/aws-powertools/powertools-lambda-typescript.git"
+      },
+      "scope": "Development reference generator only"
+    },
+    {
+      "package": "@aws-lambda-powertools/idempotency",
+      "version": "2.35.0",
+      "license": "MIT-0",
+      "source": {
+        "type": "git",
+        "url": "git+https://github.com/aws-powertools/powertools-lambda-typescript.git"
+      },
+      "scope": "Development reference generator only"
+    },
+    {
+      "package": "@aws-lambda-powertools/jmespath",
+      "version": "2.35.0",
+      "license": "MIT-0",
+      "source": {
+        "type": "git",
+        "url": "git+https://github.com/aws-powertools/powertools-lambda-typescript.git"
+      },
+      "scope": "Development reference generator only"
+    },
+    {
+      "package": "@aws-lambda-powertools/kafka",
+      "version": "2.35.0",
+      "license": "MIT-0",
+      "source": {
+        "type": "git",
+        "url": "git+https://github.com/aws-powertools/powertools-lambda-typescript.git"
+      },
+      "scope": "Development reference generator only"
+    },
+    {
+      "package": "@aws-lambda-powertools/logger",
+      "version": "2.35.0",
+      "license": "MIT-0",
+      "source": {
+        "type": "git",
+        "url": "git+https://github.com/aws-powertools/powertools-lambda-typescript.git"
+      },
+      "scope": "Development reference generator only"
+    },
+    {
+      "package": "@aws-lambda-powertools/metrics",
+      "version": "2.35.0",
+      "license": "MIT-0",
+      "source": {
+        "type": "git",
+        "url": "git+https://github.com/aws-powertools/powertools-lambda-typescript.git"
+      },
+      "scope": "Development reference generator only"
+    },
+    {
+      "package": "@aws-lambda-powertools/parameters",
+      "version": "2.35.0",
+      "license": "MIT-0",
+      "source": {
+        "type": "git",
+        "url": "git+https://github.com/aws-powertools/powertools-lambda-typescript.git"
+      },
+      "scope": "Development reference generator only"
+    },
+    {
+      "package": "@aws-lambda-powertools/parser",
+      "version": "2.35.0",
+      "license": "MIT-0",
+      "source": {
+        "type": "git",
+        "url": "git+https://github.com/aws-powertools/powertools-lambda-typescript.git"
+      },
+      "scope": "Development reference generator only"
+    },
+    {
+      "package": "@aws-lambda-powertools/signer",
+      "version": "2.35.0",
+      "license": "MIT-0",
+      "source": {
+        "type": "git",
+        "url": "git+https://github.com/aws-powertools/powertools-lambda-typescript.git"
+      },
+      "scope": "Development reference generator only"
+    },
+    {
+      "package": "@aws-lambda-powertools/validation",
+      "version": "2.35.0",
+      "license": "MIT-0",
+      "source": {
+        "type": "git",
+        "url": "git+https://github.com/aws-powertools/powertools-lambda-typescript.git"
+      },
+      "scope": "Development reference generator only"
+    },
+    {
+      "package": "@aws-sdk/client-dynamodb",
+      "version": "3.1131.0",
+      "license": "Apache-2.0",
+      "source": {
+        "type": "git",
+        "url": "https://github.com/aws/aws-sdk-js-v3.git",
+        "directory": "clients/client-dynamodb"
+      },
+      "scope": "Development reference generator only"
+    },
+    {
+      "package": "@aws-sdk/client-ssm",
+      "version": "3.1131.0",
+      "license": "Apache-2.0",
+      "source": {
+        "type": "git",
+        "url": "https://github.com/aws/aws-sdk-js-v3.git",
+        "directory": "clients/client-ssm"
+      },
+      "scope": "Development reference generator only"
+    },
+    {
+      "package": "@aws-sdk/util-dynamodb",
+      "version": "3.996.9",
+      "license": "Apache-2.0",
+      "source": {
+        "type": "git",
+        "url": "https://github.com/aws/aws-sdk-js-v3.git",
+        "directory": "packages/util-dynamodb"
+      },
+      "scope": "Development reference generator only"
+    },
+    {
+      "package": "avro-js",
+      "version": "1.12.1",
+      "license": "Apache-2.0",
+      "source": {
+        "type": "git",
+        "url": "https://github.com/apache/avro"
+      },
+      "scope": "Development reference generator only"
+    },
+    {
+      "package": "protobufjs",
+      "version": "7.5.4",
+      "license": "BSD-3-Clause",
+      "source": "protobufjs/protobuf.js",
+      "scope": "Development reference generator only"
+    },
+    {
+      "package": "zod",
+      "version": "4.1.12",
+      "license": "MIT",
+      "source": {
+        "type": "git",
+        "url": "git+https://github.com/colinhacks/zod.git"
+      },
+      "scope": "Development reference generator only"
+    }
+  ]
+}

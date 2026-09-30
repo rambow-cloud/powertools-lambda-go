@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block header %}
+<div class="pt-utility">
+  <div class="pt-utility__inner md-grid">
+    <a class="pt-utility__brand" href="https://github.com/rambow-cloud">rambow-cloud</a>
+    <span class="pt-utility__description">Independent tools for AWS Lambda</span>
+    <a href="{{ config.repo_url }}/issues">Feedback</a>
+  </div>
+</div>
+{{ super() }}
+{% endblock %}
+
+{% block content %}
+<nav class="pt-breadcrumbs" aria-label="Breadcrumb">
+  <a href="{{ nav.homepage.url | url }}">Documentation</a>
+  {% if page and not page.is_homepage %}
+    {% for ancestor in page.ancestors | reverse %}
+      <span aria-hidden="true">/</span>
+      <span>{{ ancestor.title }}</span>
+    {% endfor %}
+    <span aria-hidden="true">/</span>
+    <span aria-current="page">{{ page.title }}</span>
+  {% endif %}
+</nav>
+<div class="pt-guide-label">Developer Guide <span>Go</span></div>
+{{ super() }}
+{% endblock %}

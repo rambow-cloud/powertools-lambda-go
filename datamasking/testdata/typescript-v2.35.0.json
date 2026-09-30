@@ -1,0 +1,5252 @@
+{
+  "version": "2.35.0",
+  "cases": [
+    {
+      "name": "erase-0",
+      "method": "erase",
+      "data": "null",
+      "options": {},
+      "ignoreMissing": false,
+      "provider": true,
+      "value": null,
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "erase-1",
+      "method": "erase",
+      "data": "null",
+      "options": {
+        "customMask": ""
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": null,
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "erase-2",
+      "method": "erase",
+      "data": "null",
+      "options": {
+        "customMask": "[removed]"
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": null,
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "erase-3",
+      "method": "erase",
+      "data": "null",
+      "options": {
+        "dynamicMask": true
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": null,
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "erase-4",
+      "method": "erase",
+      "data": "null",
+      "options": {
+        "dynamicMask": false
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": null,
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "erase-5",
+      "method": "erase",
+      "data": "null",
+      "options": {
+        "fields": []
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": null,
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "erase-6",
+      "method": "erase",
+      "data": "null",
+      "options": {
+        "rules": []
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": null,
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "erase-7",
+      "method": "erase",
+      "data": "true",
+      "options": {},
+      "ignoreMissing": false,
+      "provider": true,
+      "value": "*****",
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "erase-8",
+      "method": "erase",
+      "data": "true",
+      "options": {
+        "customMask": ""
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": "",
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "erase-9",
+      "method": "erase",
+      "data": "true",
+      "options": {
+        "customMask": "[removed]"
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": "[removed]",
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "erase-10",
+      "method": "erase",
+      "data": "true",
+      "options": {
+        "dynamicMask": true
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": "****",
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "erase-11",
+      "method": "erase",
+      "data": "true",
+      "options": {
+        "dynamicMask": false
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": "*****",
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "erase-12",
+      "method": "erase",
+      "data": "true",
+      "options": {
+        "fields": []
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": true,
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "erase-13",
+      "method": "erase",
+      "data": "true",
+      "options": {
+        "rules": []
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": true,
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "erase-14",
+      "method": "erase",
+      "data": "false",
+      "options": {},
+      "ignoreMissing": false,
+      "provider": true,
+      "value": "*****",
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "erase-15",
+      "method": "erase",
+      "data": "false",
+      "options": {
+        "customMask": ""
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": "",
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "erase-16",
+      "method": "erase",
+      "data": "false",
+      "options": {
+        "customMask": "[removed]"
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": "[removed]",
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "erase-17",
+      "method": "erase",
+      "data": "false",
+      "options": {
+        "dynamicMask": true
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": "*****",
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "erase-18",
+      "method": "erase",
+      "data": "false",
+      "options": {
+        "dynamicMask": false
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": "*****",
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "erase-19",
+      "method": "erase",
+      "data": "false",
+      "options": {
+        "fields": []
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": false,
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "erase-20",
+      "method": "erase",
+      "data": "false",
+      "options": {
+        "rules": []
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": false,
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "erase-21",
+      "method": "erase",
+      "data": "0",
+      "options": {},
+      "ignoreMissing": false,
+      "provider": true,
+      "value": "*****",
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "erase-22",
+      "method": "erase",
+      "data": "0",
+      "options": {
+        "customMask": ""
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": "",
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "erase-23",
+      "method": "erase",
+      "data": "0",
+      "options": {
+        "customMask": "[removed]"
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": "[removed]",
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "erase-24",
+      "method": "erase",
+      "data": "0",
+      "options": {
+        "dynamicMask": true
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": "*",
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "erase-25",
+      "method": "erase",
+      "data": "0",
+      "options": {
+        "dynamicMask": false
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": "*****",
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "erase-26",
+      "method": "erase",
+      "data": "0",
+      "options": {
+        "fields": []
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": 0,
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "erase-27",
+      "method": "erase",
+      "data": "0",
+      "options": {
+        "rules": []
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": 0,
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "erase-28",
+      "method": "erase",
+      "data": "0",
+      "options": {},
+      "ignoreMissing": false,
+      "provider": true,
+      "value": "*****",
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "erase-29",
+      "method": "erase",
+      "data": "0",
+      "options": {
+        "customMask": ""
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": "",
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "erase-30",
+      "method": "erase",
+      "data": "0",
+      "options": {
+        "customMask": "[removed]"
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": "[removed]",
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "erase-31",
+      "method": "erase",
+      "data": "0",
+      "options": {
+        "dynamicMask": true
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": "*",
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "erase-32",
+      "method": "erase",
+      "data": "0",
+      "options": {
+        "dynamicMask": false
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": "*****",
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "erase-33",
+      "method": "erase",
+      "data": "0",
+      "options": {
+        "fields": []
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": 0,
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "erase-34",
+      "method": "erase",
+      "data": "0",
+      "options": {
+        "rules": []
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": 0,
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "erase-35",
+      "method": "erase",
+      "data": "42",
+      "options": {},
+      "ignoreMissing": false,
+      "provider": true,
+      "value": "*****",
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "erase-36",
+      "method": "erase",
+      "data": "42",
+      "options": {
+        "customMask": ""
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": "",
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "erase-37",
+      "method": "erase",
+      "data": "42",
+      "options": {
+        "customMask": "[removed]"
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": "[removed]",
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "erase-38",
+      "method": "erase",
+      "data": "42",
+      "options": {
+        "dynamicMask": true
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": "**",
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "erase-39",
+      "method": "erase",
+      "data": "42",
+      "options": {
+        "dynamicMask": false
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": "*****",
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "erase-40",
+      "method": "erase",
+      "data": "42",
+      "options": {
+        "fields": []
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": 42,
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "erase-41",
+      "method": "erase",
+      "data": "42",
+      "options": {
+        "rules": []
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": 42,
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "erase-42",
+      "method": "erase",
+      "data": "-1.25",
+      "options": {},
+      "ignoreMissing": false,
+      "provider": true,
+      "value": "*****",
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "erase-43",
+      "method": "erase",
+      "data": "-1.25",
+      "options": {
+        "customMask": ""
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": "",
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "erase-44",
+      "method": "erase",
+      "data": "-1.25",
+      "options": {
+        "customMask": "[removed]"
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": "[removed]",
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "erase-45",
+      "method": "erase",
+      "data": "-1.25",
+      "options": {
+        "dynamicMask": true
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": "*****",
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "erase-46",
+      "method": "erase",
+      "data": "-1.25",
+      "options": {
+        "dynamicMask": false
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": "*****",
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "erase-47",
+      "method": "erase",
+      "data": "-1.25",
+      "options": {
+        "fields": []
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": -1.25,
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "erase-48",
+      "method": "erase",
+      "data": "-1.25",
+      "options": {
+        "rules": []
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": -1.25,
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "erase-49",
+      "method": "erase",
+      "data": "1e-7",
+      "options": {},
+      "ignoreMissing": false,
+      "provider": true,
+      "value": "*****",
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "erase-50",
+      "method": "erase",
+      "data": "1e-7",
+      "options": {
+        "customMask": ""
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": "",
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "erase-51",
+      "method": "erase",
+      "data": "1e-7",
+      "options": {
+        "customMask": "[removed]"
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": "[removed]",
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "erase-52",
+      "method": "erase",
+      "data": "1e-7",
+      "options": {
+        "dynamicMask": true
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": "****",
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "erase-53",
+      "method": "erase",
+      "data": "1e-7",
+      "options": {
+        "dynamicMask": false
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": "*****",
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "erase-54",
+      "method": "erase",
+      "data": "1e-7",
+      "options": {
+        "fields": []
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": 1e-7,
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "erase-55",
+      "method": "erase",
+      "data": "1e-7",
+      "options": {
+        "rules": []
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": 1e-7,
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "erase-56",
+      "method": "erase",
+      "data": "1e+21",
+      "options": {},
+      "ignoreMissing": false,
+      "provider": true,
+      "value": "*****",
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "erase-57",
+      "method": "erase",
+      "data": "1e+21",
+      "options": {
+        "customMask": ""
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": "",
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "erase-58",
+      "method": "erase",
+      "data": "1e+21",
+      "options": {
+        "customMask": "[removed]"
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": "[removed]",
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "erase-59",
+      "method": "erase",
+      "data": "1e+21",
+      "options": {
+        "dynamicMask": true
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": "*****",
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "erase-60",
+      "method": "erase",
+      "data": "1e+21",
+      "options": {
+        "dynamicMask": false
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": "*****",
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "erase-61",
+      "method": "erase",
+      "data": "1e+21",
+      "options": {
+        "fields": []
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": 1e+21,
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "erase-62",
+      "method": "erase",
+      "data": "1e+21",
+      "options": {
+        "rules": []
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": 1e+21,
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "erase-63",
+      "method": "erase",
+      "data": "\"\"",
+      "options": {},
+      "ignoreMissing": false,
+      "provider": true,
+      "value": "*****",
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "erase-64",
+      "method": "erase",
+      "data": "\"\"",
+      "options": {
+        "customMask": ""
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": "",
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "erase-65",
+      "method": "erase",
+      "data": "\"\"",
+      "options": {
+        "customMask": "[removed]"
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": "[removed]",
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "erase-66",
+      "method": "erase",
+      "data": "\"\"",
+      "options": {
+        "dynamicMask": true
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": "",
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "erase-67",
+      "method": "erase",
+      "data": "\"\"",
+      "options": {
+        "dynamicMask": false
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": "*****",
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "erase-68",
+      "method": "erase",
+      "data": "\"\"",
+      "options": {
+        "fields": []
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": "",
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "erase-69",
+      "method": "erase",
+      "data": "\"\"",
+      "options": {
+        "rules": []
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": "",
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "erase-70",
+      "method": "erase",
+      "data": "\"hello\"",
+      "options": {},
+      "ignoreMissing": false,
+      "provider": true,
+      "value": "*****",
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "erase-71",
+      "method": "erase",
+      "data": "\"hello\"",
+      "options": {
+        "customMask": ""
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": "",
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "erase-72",
+      "method": "erase",
+      "data": "\"hello\"",
+      "options": {
+        "customMask": "[removed]"
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": "[removed]",
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "erase-73",
+      "method": "erase",
+      "data": "\"hello\"",
+      "options": {
+        "dynamicMask": true
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": "*****",
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "erase-74",
+      "method": "erase",
+      "data": "\"hello\"",
+      "options": {
+        "dynamicMask": false
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": "*****",
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "erase-75",
+      "method": "erase",
+      "data": "\"hello\"",
+      "options": {
+        "fields": []
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": "hello",
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "erase-76",
+      "method": "erase",
+      "data": "\"hello\"",
+      "options": {
+        "rules": []
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": "hello",
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "erase-77",
+      "method": "erase",
+      "data": "\"é😀\"",
+      "options": {},
+      "ignoreMissing": false,
+      "provider": true,
+      "value": "*****",
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "erase-78",
+      "method": "erase",
+      "data": "\"é😀\"",
+      "options": {
+        "customMask": ""
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": "",
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "erase-79",
+      "method": "erase",
+      "data": "\"é😀\"",
+      "options": {
+        "customMask": "[removed]"
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": "[removed]",
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "erase-80",
+      "method": "erase",
+      "data": "\"é😀\"",
+      "options": {
+        "dynamicMask": true
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": "***",
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "erase-81",
+      "method": "erase",
+      "data": "\"é😀\"",
+      "options": {
+        "dynamicMask": false
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": "*****",
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "erase-82",
+      "method": "erase",
+      "data": "\"é😀\"",
+      "options": {
+        "fields": []
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": "é😀",
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "erase-83",
+      "method": "erase",
+      "data": "\"é😀\"",
+      "options": {
+        "rules": []
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": "é😀",
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "erase-84",
+      "method": "erase",
+      "data": "[]",
+      "options": {},
+      "ignoreMissing": false,
+      "provider": true,
+      "value": [],
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "erase-85",
+      "method": "erase",
+      "data": "[]",
+      "options": {
+        "customMask": ""
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": [],
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "erase-86",
+      "method": "erase",
+      "data": "[]",
+      "options": {
+        "customMask": "[removed]"
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": [],
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "erase-87",
+      "method": "erase",
+      "data": "[]",
+      "options": {
+        "dynamicMask": true
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": [],
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "erase-88",
+      "method": "erase",
+      "data": "[]",
+      "options": {
+        "dynamicMask": false
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": [],
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "erase-89",
+      "method": "erase",
+      "data": "[]",
+      "options": {
+        "fields": []
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": [],
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "erase-90",
+      "method": "erase",
+      "data": "[]",
+      "options": {
+        "rules": []
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": [],
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "erase-91",
+      "method": "erase",
+      "data": "[1,null,\"x\"]",
+      "options": {},
+      "ignoreMissing": false,
+      "provider": true,
+      "value": [
+        "*****",
+        "*****",
+        "*****"
+      ],
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "erase-92",
+      "method": "erase",
+      "data": "[1,null,\"x\"]",
+      "options": {
+        "customMask": ""
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": [
+        "",
+        null,
+        ""
+      ],
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "erase-93",
+      "method": "erase",
+      "data": "[1,null,\"x\"]",
+      "options": {
+        "customMask": "[removed]"
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": [
+        "[removed]",
+        null,
+        "[removed]"
+      ],
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "erase-94",
+      "method": "erase",
+      "data": "[1,null,\"x\"]",
+      "options": {
+        "dynamicMask": true
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": [
+        "*",
+        null,
+        "*"
+      ],
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "erase-95",
+      "method": "erase",
+      "data": "[1,null,\"x\"]",
+      "options": {
+        "dynamicMask": false
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": [
+        "*****",
+        null,
+        "*****"
+      ],
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "erase-96",
+      "method": "erase",
+      "data": "[1,null,\"x\"]",
+      "options": {
+        "fields": []
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": [
+        1,
+        null,
+        "x"
+      ],
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "erase-97",
+      "method": "erase",
+      "data": "[1,null,\"x\"]",
+      "options": {
+        "rules": []
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": [
+        1,
+        null,
+        "x"
+      ],
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "erase-98",
+      "method": "erase",
+      "data": "{}",
+      "options": {},
+      "ignoreMissing": false,
+      "provider": true,
+      "value": "*****",
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "erase-99",
+      "method": "erase",
+      "data": "{}",
+      "options": {
+        "customMask": ""
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": {},
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "erase-100",
+      "method": "erase",
+      "data": "{}",
+      "options": {
+        "customMask": "[removed]"
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": {},
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "erase-101",
+      "method": "erase",
+      "data": "{}",
+      "options": {
+        "dynamicMask": true
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": {},
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "erase-102",
+      "method": "erase",
+      "data": "{}",
+      "options": {
+        "dynamicMask": false
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": {},
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "erase-103",
+      "method": "erase",
+      "data": "{}",
+      "options": {
+        "fields": []
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": {},
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "erase-104",
+      "method": "erase",
+      "data": "{}",
+      "options": {
+        "rules": []
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": {},
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "erase-105",
+      "method": "erase",
+      "data": "{\"z\":1,\"a\":{\"secret\":\"yes\",\"nil\":null},\"list\":[true,{\"token\":\"x\"}]}",
+      "options": {},
+      "ignoreMissing": false,
+      "provider": true,
+      "value": "*****",
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "erase-106",
+      "method": "erase",
+      "data": "{\"z\":1,\"a\":{\"secret\":\"yes\",\"nil\":null},\"list\":[true,{\"token\":\"x\"}]}",
+      "options": {
+        "customMask": ""
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": {
+        "z": "",
+        "a": {
+          "secret": "",
+          "nil": null
+        },
+        "list": [
+          "",
+          {
+            "token": ""
+          }
+        ]
+      },
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "erase-107",
+      "method": "erase",
+      "data": "{\"z\":1,\"a\":{\"secret\":\"yes\",\"nil\":null},\"list\":[true,{\"token\":\"x\"}]}",
+      "options": {
+        "customMask": "[removed]"
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": {
+        "z": "[removed]",
+        "a": {
+          "secret": "[removed]",
+          "nil": null
+        },
+        "list": [
+          "[removed]",
+          {
+            "token": "[removed]"
+          }
+        ]
+      },
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "erase-108",
+      "method": "erase",
+      "data": "{\"z\":1,\"a\":{\"secret\":\"yes\",\"nil\":null},\"list\":[true,{\"token\":\"x\"}]}",
+      "options": {
+        "dynamicMask": true
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": {
+        "z": "*",
+        "a": {
+          "secret": "***",
+          "nil": null
+        },
+        "list": [
+          "****",
+          {
+            "token": "*"
+          }
+        ]
+      },
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "erase-109",
+      "method": "erase",
+      "data": "{\"z\":1,\"a\":{\"secret\":\"yes\",\"nil\":null},\"list\":[true,{\"token\":\"x\"}]}",
+      "options": {
+        "dynamicMask": false
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": {
+        "z": "*****",
+        "a": {
+          "secret": "*****",
+          "nil": null
+        },
+        "list": [
+          "*****",
+          {
+            "token": "*****"
+          }
+        ]
+      },
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "erase-110",
+      "method": "erase",
+      "data": "{\"z\":1,\"a\":{\"secret\":\"yes\",\"nil\":null},\"list\":[true,{\"token\":\"x\"}]}",
+      "options": {
+        "fields": []
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": {
+        "z": 1,
+        "a": {
+          "secret": "yes",
+          "nil": null
+        },
+        "list": [
+          true,
+          {
+            "token": "x"
+          }
+        ]
+      },
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "erase-111",
+      "method": "erase",
+      "data": "{\"z\":1,\"a\":{\"secret\":\"yes\",\"nil\":null},\"list\":[true,{\"token\":\"x\"}]}",
+      "options": {
+        "rules": []
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": {
+        "z": 1,
+        "a": {
+          "secret": "yes",
+          "nil": null
+        },
+        "list": [
+          true,
+          {
+            "token": "x"
+          }
+        ]
+      },
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "erase-112",
+      "method": "erase",
+      "data": "{\"z\":\"last\",\"users\":[{\"id\":1,\"secret\":\"one\"},{\"id\":2,\"secret\":null}],\"info\":{\"secret\":\"two\",\"nested\":{\"secret\":\"three\"}},\"empty\":[],\"nil\":null}",
+      "options": {
+        "fields": [
+          "users[*].secret"
+        ]
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": {
+        "z": "last",
+        "users": [
+          {
+            "id": 1,
+            "secret": "*****"
+          },
+          {
+            "id": 2,
+            "secret": "*****"
+          }
+        ],
+        "info": {
+          "secret": "two",
+          "nested": {
+            "secret": "three"
+          }
+        },
+        "empty": [],
+        "nil": null
+      },
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "erase-113",
+      "method": "erase",
+      "data": "{\"z\":\"last\",\"users\":[{\"id\":1,\"secret\":\"one\"},{\"id\":2,\"secret\":null}],\"info\":{\"secret\":\"two\",\"nested\":{\"secret\":\"three\"}},\"empty\":[],\"nil\":null}",
+      "options": {
+        "fields": [
+          "users[*].secret"
+        ]
+      },
+      "ignoreMissing": true,
+      "provider": true,
+      "value": {
+        "z": "last",
+        "users": [
+          {
+            "id": 1,
+            "secret": "*****"
+          },
+          {
+            "id": 2,
+            "secret": "*****"
+          }
+        ],
+        "info": {
+          "secret": "two",
+          "nested": {
+            "secret": "three"
+          }
+        },
+        "empty": [],
+        "nil": null
+      },
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "erase-114",
+      "method": "erase",
+      "data": "{\"z\":\"last\",\"users\":[{\"id\":1,\"secret\":\"one\"},{\"id\":2,\"secret\":null}],\"info\":{\"secret\":\"two\",\"nested\":{\"secret\":\"three\"}},\"empty\":[],\"nil\":null}",
+      "options": {
+        "fields": [
+          "users.*.id"
+        ]
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": {
+        "z": "last",
+        "users": [
+          {
+            "id": "*****",
+            "secret": "one"
+          },
+          {
+            "id": "*****",
+            "secret": null
+          }
+        ],
+        "info": {
+          "secret": "two",
+          "nested": {
+            "secret": "three"
+          }
+        },
+        "empty": [],
+        "nil": null
+      },
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "erase-115",
+      "method": "erase",
+      "data": "{\"z\":\"last\",\"users\":[{\"id\":1,\"secret\":\"one\"},{\"id\":2,\"secret\":null}],\"info\":{\"secret\":\"two\",\"nested\":{\"secret\":\"three\"}},\"empty\":[],\"nil\":null}",
+      "options": {
+        "fields": [
+          "users.*.id"
+        ]
+      },
+      "ignoreMissing": true,
+      "provider": true,
+      "value": {
+        "z": "last",
+        "users": [
+          {
+            "id": "*****",
+            "secret": "one"
+          },
+          {
+            "id": "*****",
+            "secret": null
+          }
+        ],
+        "info": {
+          "secret": "two",
+          "nested": {
+            "secret": "three"
+          }
+        },
+        "empty": [],
+        "nil": null
+      },
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "erase-116",
+      "method": "erase",
+      "data": "{\"z\":\"last\",\"users\":[{\"id\":1,\"secret\":\"one\"},{\"id\":2,\"secret\":null}],\"info\":{\"secret\":\"two\",\"nested\":{\"secret\":\"three\"}},\"empty\":[],\"nil\":null}",
+      "options": {
+        "fields": [
+          "info.*"
+        ]
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": {
+        "z": "last",
+        "users": [
+          {
+            "id": 1,
+            "secret": "one"
+          },
+          {
+            "id": 2,
+            "secret": null
+          }
+        ],
+        "info": {
+          "secret": "*****",
+          "nested": "*****"
+        },
+        "empty": [],
+        "nil": null
+      },
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "erase-117",
+      "method": "erase",
+      "data": "{\"z\":\"last\",\"users\":[{\"id\":1,\"secret\":\"one\"},{\"id\":2,\"secret\":null}],\"info\":{\"secret\":\"two\",\"nested\":{\"secret\":\"three\"}},\"empty\":[],\"nil\":null}",
+      "options": {
+        "fields": [
+          "info.*"
+        ]
+      },
+      "ignoreMissing": true,
+      "provider": true,
+      "value": {
+        "z": "last",
+        "users": [
+          {
+            "id": 1,
+            "secret": "one"
+          },
+          {
+            "id": 2,
+            "secret": null
+          }
+        ],
+        "info": {
+          "secret": "*****",
+          "nested": "*****"
+        },
+        "empty": [],
+        "nil": null
+      },
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "erase-118",
+      "method": "erase",
+      "data": "{\"z\":\"last\",\"users\":[{\"id\":1,\"secret\":\"one\"},{\"id\":2,\"secret\":null}],\"info\":{\"secret\":\"two\",\"nested\":{\"secret\":\"three\"}},\"empty\":[],\"nil\":null}",
+      "options": {
+        "fields": [
+          "*"
+        ]
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": {
+        "z": "*****",
+        "users": "*****",
+        "info": "*****",
+        "empty": "*****",
+        "nil": "*****"
+      },
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "erase-119",
+      "method": "erase",
+      "data": "{\"z\":\"last\",\"users\":[{\"id\":1,\"secret\":\"one\"},{\"id\":2,\"secret\":null}],\"info\":{\"secret\":\"two\",\"nested\":{\"secret\":\"three\"}},\"empty\":[],\"nil\":null}",
+      "options": {
+        "fields": [
+          "*"
+        ]
+      },
+      "ignoreMissing": true,
+      "provider": true,
+      "value": {
+        "z": "*****",
+        "users": "*****",
+        "info": "*****",
+        "empty": "*****",
+        "nil": "*****"
+      },
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "erase-120",
+      "method": "erase",
+      "data": "{\"z\":\"last\",\"users\":[{\"id\":1,\"secret\":\"one\"},{\"id\":2,\"secret\":null}],\"info\":{\"secret\":\"two\",\"nested\":{\"secret\":\"three\"}},\"empty\":[],\"nil\":null}",
+      "options": {
+        "fields": [
+          "users.0.secret"
+        ]
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": {
+        "z": "last",
+        "users": [
+          {
+            "id": 1,
+            "secret": "*****"
+          },
+          {
+            "id": 2,
+            "secret": null
+          }
+        ],
+        "info": {
+          "secret": "two",
+          "nested": {
+            "secret": "three"
+          }
+        },
+        "empty": [],
+        "nil": null
+      },
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "erase-121",
+      "method": "erase",
+      "data": "{\"z\":\"last\",\"users\":[{\"id\":1,\"secret\":\"one\"},{\"id\":2,\"secret\":null}],\"info\":{\"secret\":\"two\",\"nested\":{\"secret\":\"three\"}},\"empty\":[],\"nil\":null}",
+      "options": {
+        "fields": [
+          "users.0.secret"
+        ]
+      },
+      "ignoreMissing": true,
+      "provider": true,
+      "value": {
+        "z": "last",
+        "users": [
+          {
+            "id": 1,
+            "secret": "*****"
+          },
+          {
+            "id": 2,
+            "secret": null
+          }
+        ],
+        "info": {
+          "secret": "two",
+          "nested": {
+            "secret": "three"
+          }
+        },
+        "empty": [],
+        "nil": null
+      },
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "erase-122",
+      "method": "erase",
+      "data": "{\"z\":\"last\",\"users\":[{\"id\":1,\"secret\":\"one\"},{\"id\":2,\"secret\":null}],\"info\":{\"secret\":\"two\",\"nested\":{\"secret\":\"three\"}},\"empty\":[],\"nil\":null}",
+      "options": {
+        "fields": [
+          "users[0].secret"
+        ]
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": null,
+      "error": {
+        "name": "DataMaskingFieldNotFoundError",
+        "message": "Field not found: 'users[0].secret'"
+      },
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "erase-123",
+      "method": "erase",
+      "data": "{\"z\":\"last\",\"users\":[{\"id\":1,\"secret\":\"one\"},{\"id\":2,\"secret\":null}],\"info\":{\"secret\":\"two\",\"nested\":{\"secret\":\"three\"}},\"empty\":[],\"nil\":null}",
+      "options": {
+        "fields": [
+          "users[0].secret"
+        ]
+      },
+      "ignoreMissing": true,
+      "provider": true,
+      "value": {
+        "z": "last",
+        "users": [
+          {
+            "id": 1,
+            "secret": "one"
+          },
+          {
+            "id": 2,
+            "secret": null
+          }
+        ],
+        "info": {
+          "secret": "two",
+          "nested": {
+            "secret": "three"
+          }
+        },
+        "empty": [],
+        "nil": null
+      },
+      "error": null,
+      "warnings": [
+        "Field not found: 'users[0].secret'"
+      ],
+      "calls": []
+    },
+    {
+      "name": "erase-124",
+      "method": "erase",
+      "data": "{\"z\":\"last\",\"users\":[{\"id\":1,\"secret\":\"one\"},{\"id\":2,\"secret\":null}],\"info\":{\"secret\":\"two\",\"nested\":{\"secret\":\"three\"}},\"empty\":[],\"nil\":null}",
+      "options": {
+        "fields": [
+          "users.01.secret"
+        ]
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": null,
+      "error": {
+        "name": "DataMaskingFieldNotFoundError",
+        "message": "Field not found: 'users.01.secret'"
+      },
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "erase-125",
+      "method": "erase",
+      "data": "{\"z\":\"last\",\"users\":[{\"id\":1,\"secret\":\"one\"},{\"id\":2,\"secret\":null}],\"info\":{\"secret\":\"two\",\"nested\":{\"secret\":\"three\"}},\"empty\":[],\"nil\":null}",
+      "options": {
+        "fields": [
+          "users.01.secret"
+        ]
+      },
+      "ignoreMissing": true,
+      "provider": true,
+      "value": {
+        "z": "last",
+        "users": [
+          {
+            "id": 1,
+            "secret": "one"
+          },
+          {
+            "id": 2,
+            "secret": null
+          }
+        ],
+        "info": {
+          "secret": "two",
+          "nested": {
+            "secret": "three"
+          }
+        },
+        "empty": [],
+        "nil": null
+      },
+      "error": null,
+      "warnings": [
+        "Field not found: 'users.01.secret'"
+      ],
+      "calls": []
+    },
+    {
+      "name": "erase-126",
+      "method": "erase",
+      "data": "{\"z\":\"last\",\"users\":[{\"id\":1,\"secret\":\"one\"},{\"id\":2,\"secret\":null}],\"info\":{\"secret\":\"two\",\"nested\":{\"secret\":\"three\"}},\"empty\":[],\"nil\":null}",
+      "options": {
+        "fields": [
+          "missing"
+        ]
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": null,
+      "error": {
+        "name": "DataMaskingFieldNotFoundError",
+        "message": "Field not found: 'missing'"
+      },
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "erase-127",
+      "method": "erase",
+      "data": "{\"z\":\"last\",\"users\":[{\"id\":1,\"secret\":\"one\"},{\"id\":2,\"secret\":null}],\"info\":{\"secret\":\"two\",\"nested\":{\"secret\":\"three\"}},\"empty\":[],\"nil\":null}",
+      "options": {
+        "fields": [
+          "missing"
+        ]
+      },
+      "ignoreMissing": true,
+      "provider": true,
+      "value": {
+        "z": "last",
+        "users": [
+          {
+            "id": 1,
+            "secret": "one"
+          },
+          {
+            "id": 2,
+            "secret": null
+          }
+        ],
+        "info": {
+          "secret": "two",
+          "nested": {
+            "secret": "three"
+          }
+        },
+        "empty": [],
+        "nil": null
+      },
+      "error": null,
+      "warnings": [
+        "Field not found: 'missing'"
+      ],
+      "calls": []
+    },
+    {
+      "name": "erase-128",
+      "method": "erase",
+      "data": "{\"z\":\"last\",\"users\":[{\"id\":1,\"secret\":\"one\"},{\"id\":2,\"secret\":null}],\"info\":{\"secret\":\"two\",\"nested\":{\"secret\":\"three\"}},\"empty\":[],\"nil\":null}",
+      "options": {
+        "fields": [
+          "info.secret.x"
+        ]
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": null,
+      "error": {
+        "name": "DataMaskingFieldNotFoundError",
+        "message": "Field not found: 'info.secret.x'"
+      },
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "erase-129",
+      "method": "erase",
+      "data": "{\"z\":\"last\",\"users\":[{\"id\":1,\"secret\":\"one\"},{\"id\":2,\"secret\":null}],\"info\":{\"secret\":\"two\",\"nested\":{\"secret\":\"three\"}},\"empty\":[],\"nil\":null}",
+      "options": {
+        "fields": [
+          "info.secret.x"
+        ]
+      },
+      "ignoreMissing": true,
+      "provider": true,
+      "value": {
+        "z": "last",
+        "users": [
+          {
+            "id": 1,
+            "secret": "one"
+          },
+          {
+            "id": 2,
+            "secret": null
+          }
+        ],
+        "info": {
+          "secret": "two",
+          "nested": {
+            "secret": "three"
+          }
+        },
+        "empty": [],
+        "nil": null
+      },
+      "error": null,
+      "warnings": [
+        "Field not found: 'info.secret.x'"
+      ],
+      "calls": []
+    },
+    {
+      "name": "erase-130",
+      "method": "erase",
+      "data": "{\"z\":\"last\",\"users\":[{\"id\":1,\"secret\":\"one\"},{\"id\":2,\"secret\":null}],\"info\":{\"secret\":\"two\",\"nested\":{\"secret\":\"three\"}},\"empty\":[],\"nil\":null}",
+      "options": {
+        "fields": [
+          "nil.x"
+        ]
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": null,
+      "error": {
+        "name": "DataMaskingFieldNotFoundError",
+        "message": "Field not found: 'nil.x'"
+      },
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "erase-131",
+      "method": "erase",
+      "data": "{\"z\":\"last\",\"users\":[{\"id\":1,\"secret\":\"one\"},{\"id\":2,\"secret\":null}],\"info\":{\"secret\":\"two\",\"nested\":{\"secret\":\"three\"}},\"empty\":[],\"nil\":null}",
+      "options": {
+        "fields": [
+          "nil.x"
+        ]
+      },
+      "ignoreMissing": true,
+      "provider": true,
+      "value": {
+        "z": "last",
+        "users": [
+          {
+            "id": 1,
+            "secret": "one"
+          },
+          {
+            "id": 2,
+            "secret": null
+          }
+        ],
+        "info": {
+          "secret": "two",
+          "nested": {
+            "secret": "three"
+          }
+        },
+        "empty": [],
+        "nil": null
+      },
+      "error": null,
+      "warnings": [
+        "Field not found: 'nil.x'"
+      ],
+      "calls": []
+    },
+    {
+      "name": "erase-132",
+      "method": "erase",
+      "data": "{\"z\":\"last\",\"users\":[{\"id\":1,\"secret\":\"one\"},{\"id\":2,\"secret\":null}],\"info\":{\"secret\":\"two\",\"nested\":{\"secret\":\"three\"}},\"empty\":[],\"nil\":null}",
+      "options": {
+        "fields": [
+          ""
+        ]
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": {
+        "z": "last",
+        "users": [
+          {
+            "id": 1,
+            "secret": "one"
+          },
+          {
+            "id": 2,
+            "secret": null
+          }
+        ],
+        "info": {
+          "secret": "two",
+          "nested": {
+            "secret": "three"
+          }
+        },
+        "empty": [],
+        "nil": null
+      },
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "erase-133",
+      "method": "erase",
+      "data": "{\"z\":\"last\",\"users\":[{\"id\":1,\"secret\":\"one\"},{\"id\":2,\"secret\":null}],\"info\":{\"secret\":\"two\",\"nested\":{\"secret\":\"three\"}},\"empty\":[],\"nil\":null}",
+      "options": {
+        "fields": [
+          ""
+        ]
+      },
+      "ignoreMissing": true,
+      "provider": true,
+      "value": {
+        "z": "last",
+        "users": [
+          {
+            "id": 1,
+            "secret": "one"
+          },
+          {
+            "id": 2,
+            "secret": null
+          }
+        ],
+        "info": {
+          "secret": "two",
+          "nested": {
+            "secret": "three"
+          }
+        },
+        "empty": [],
+        "nil": null
+      },
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "erase-134",
+      "method": "erase",
+      "data": "{\"z\":\"last\",\"users\":[{\"id\":1,\"secret\":\"one\"},{\"id\":2,\"secret\":null}],\"info\":{\"secret\":\"two\",\"nested\":{\"secret\":\"three\"}},\"empty\":[],\"nil\":null}",
+      "options": {
+        "fields": [
+          "."
+        ]
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": {
+        "z": "last",
+        "users": [
+          {
+            "id": 1,
+            "secret": "one"
+          },
+          {
+            "id": 2,
+            "secret": null
+          }
+        ],
+        "info": {
+          "secret": "two",
+          "nested": {
+            "secret": "three"
+          }
+        },
+        "empty": [],
+        "nil": null
+      },
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "erase-135",
+      "method": "erase",
+      "data": "{\"z\":\"last\",\"users\":[{\"id\":1,\"secret\":\"one\"},{\"id\":2,\"secret\":null}],\"info\":{\"secret\":\"two\",\"nested\":{\"secret\":\"three\"}},\"empty\":[],\"nil\":null}",
+      "options": {
+        "fields": [
+          "."
+        ]
+      },
+      "ignoreMissing": true,
+      "provider": true,
+      "value": {
+        "z": "last",
+        "users": [
+          {
+            "id": 1,
+            "secret": "one"
+          },
+          {
+            "id": 2,
+            "secret": null
+          }
+        ],
+        "info": {
+          "secret": "two",
+          "nested": {
+            "secret": "three"
+          }
+        },
+        "empty": [],
+        "nil": null
+      },
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "erase-136",
+      "method": "erase",
+      "data": "{\"z\":\"last\",\"users\":[{\"id\":1,\"secret\":\"one\"},{\"id\":2,\"secret\":null}],\"info\":{\"secret\":\"two\",\"nested\":{\"secret\":\"three\"}},\"empty\":[],\"nil\":null}",
+      "options": {
+        "fields": [
+          "..info..secret."
+        ]
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": {
+        "z": "last",
+        "users": [
+          {
+            "id": 1,
+            "secret": "one"
+          },
+          {
+            "id": 2,
+            "secret": null
+          }
+        ],
+        "info": {
+          "secret": "*****",
+          "nested": {
+            "secret": "three"
+          }
+        },
+        "empty": [],
+        "nil": null
+      },
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "erase-137",
+      "method": "erase",
+      "data": "{\"z\":\"last\",\"users\":[{\"id\":1,\"secret\":\"one\"},{\"id\":2,\"secret\":null}],\"info\":{\"secret\":\"two\",\"nested\":{\"secret\":\"three\"}},\"empty\":[],\"nil\":null}",
+      "options": {
+        "fields": [
+          "..info..secret."
+        ]
+      },
+      "ignoreMissing": true,
+      "provider": true,
+      "value": {
+        "z": "last",
+        "users": [
+          {
+            "id": 1,
+            "secret": "one"
+          },
+          {
+            "id": 2,
+            "secret": null
+          }
+        ],
+        "info": {
+          "secret": "*****",
+          "nested": {
+            "secret": "three"
+          }
+        },
+        "empty": [],
+        "nil": null
+      },
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "erase-138",
+      "method": "erase",
+      "data": "{\"z\":\"last\",\"users\":[{\"id\":1,\"secret\":\"one\"},{\"id\":2,\"secret\":null}],\"info\":{\"secret\":\"two\",\"nested\":{\"secret\":\"three\"}},\"empty\":[],\"nil\":null}",
+      "options": {
+        "fields": [
+          "empty[*]"
+        ]
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": null,
+      "error": {
+        "name": "DataMaskingFieldNotFoundError",
+        "message": "Field not found: 'empty[*]'"
+      },
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "erase-139",
+      "method": "erase",
+      "data": "{\"z\":\"last\",\"users\":[{\"id\":1,\"secret\":\"one\"},{\"id\":2,\"secret\":null}],\"info\":{\"secret\":\"two\",\"nested\":{\"secret\":\"three\"}},\"empty\":[],\"nil\":null}",
+      "options": {
+        "fields": [
+          "empty[*]"
+        ]
+      },
+      "ignoreMissing": true,
+      "provider": true,
+      "value": {
+        "z": "last",
+        "users": [
+          {
+            "id": 1,
+            "secret": "one"
+          },
+          {
+            "id": 2,
+            "secret": null
+          }
+        ],
+        "info": {
+          "secret": "two",
+          "nested": {
+            "secret": "three"
+          }
+        },
+        "empty": [],
+        "nil": null
+      },
+      "error": null,
+      "warnings": [
+        "Field not found: 'empty[*]'"
+      ],
+      "calls": []
+    },
+    {
+      "name": "erase-140",
+      "method": "erase",
+      "data": "{\"z\":\"last\",\"users\":[{\"id\":1,\"secret\":\"one\"},{\"id\":2,\"secret\":null}],\"info\":{\"secret\":\"two\",\"nested\":{\"secret\":\"three\"}},\"empty\":[],\"nil\":null}",
+      "options": {
+        "fields": [
+          "users[*]secret"
+        ]
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": {
+        "z": "last",
+        "users": [
+          {
+            "id": 1,
+            "secret": "*****"
+          },
+          {
+            "id": 2,
+            "secret": "*****"
+          }
+        ],
+        "info": {
+          "secret": "two",
+          "nested": {
+            "secret": "three"
+          }
+        },
+        "empty": [],
+        "nil": null
+      },
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "erase-141",
+      "method": "erase",
+      "data": "{\"z\":\"last\",\"users\":[{\"id\":1,\"secret\":\"one\"},{\"id\":2,\"secret\":null}],\"info\":{\"secret\":\"two\",\"nested\":{\"secret\":\"three\"}},\"empty\":[],\"nil\":null}",
+      "options": {
+        "fields": [
+          "users[*]secret"
+        ]
+      },
+      "ignoreMissing": true,
+      "provider": true,
+      "value": {
+        "z": "last",
+        "users": [
+          {
+            "id": 1,
+            "secret": "*****"
+          },
+          {
+            "id": 2,
+            "secret": "*****"
+          }
+        ],
+        "info": {
+          "secret": "two",
+          "nested": {
+            "secret": "three"
+          }
+        },
+        "empty": [],
+        "nil": null
+      },
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "erase-142",
+      "method": "erase",
+      "data": "{\"z\":\"last\",\"users\":[{\"id\":1,\"secret\":\"one\"},{\"id\":2,\"secret\":null}],\"info\":{\"secret\":\"two\",\"nested\":{\"secret\":\"three\"}},\"empty\":[],\"nil\":null}",
+      "options": {
+        "fields": [
+          "info.secret",
+          "missing"
+        ]
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": null,
+      "error": {
+        "name": "DataMaskingFieldNotFoundError",
+        "message": "Field not found: 'missing'"
+      },
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "erase-143",
+      "method": "erase",
+      "data": "{\"z\":\"last\",\"users\":[{\"id\":1,\"secret\":\"one\"},{\"id\":2,\"secret\":null}],\"info\":{\"secret\":\"two\",\"nested\":{\"secret\":\"three\"}},\"empty\":[],\"nil\":null}",
+      "options": {
+        "fields": [
+          "info.secret",
+          "missing"
+        ]
+      },
+      "ignoreMissing": true,
+      "provider": true,
+      "value": {
+        "z": "last",
+        "users": [
+          {
+            "id": 1,
+            "secret": "one"
+          },
+          {
+            "id": 2,
+            "secret": null
+          }
+        ],
+        "info": {
+          "secret": "*****",
+          "nested": {
+            "secret": "three"
+          }
+        },
+        "empty": [],
+        "nil": null
+      },
+      "error": null,
+      "warnings": [
+        "Field not found: 'missing'"
+      ],
+      "calls": []
+    },
+    {
+      "name": "erase-144",
+      "method": "erase",
+      "data": "{\"z\":\"last\",\"users\":[{\"id\":1,\"secret\":\"one\"},{\"id\":2,\"secret\":null}],\"info\":{\"secret\":\"two\",\"nested\":{\"secret\":\"three\"}},\"empty\":[],\"nil\":null}",
+      "options": {
+        "fields": [
+          "info.secret",
+          "info.secret"
+        ]
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": {
+        "z": "last",
+        "users": [
+          {
+            "id": 1,
+            "secret": "one"
+          },
+          {
+            "id": 2,
+            "secret": null
+          }
+        ],
+        "info": {
+          "secret": "*****",
+          "nested": {
+            "secret": "three"
+          }
+        },
+        "empty": [],
+        "nil": null
+      },
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "erase-145",
+      "method": "erase",
+      "data": "{\"z\":\"last\",\"users\":[{\"id\":1,\"secret\":\"one\"},{\"id\":2,\"secret\":null}],\"info\":{\"secret\":\"two\",\"nested\":{\"secret\":\"three\"}},\"empty\":[],\"nil\":null}",
+      "options": {
+        "fields": [
+          "info.secret",
+          "info.secret"
+        ]
+      },
+      "ignoreMissing": true,
+      "provider": true,
+      "value": {
+        "z": "last",
+        "users": [
+          {
+            "id": 1,
+            "secret": "one"
+          },
+          {
+            "id": 2,
+            "secret": null
+          }
+        ],
+        "info": {
+          "secret": "*****",
+          "nested": {
+            "secret": "three"
+          }
+        },
+        "empty": [],
+        "nil": null
+      },
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "erase-146",
+      "method": "erase",
+      "data": "{\"z\":\"last\",\"users\":[{\"id\":1,\"secret\":\"one\"},{\"id\":2,\"secret\":null}],\"info\":{\"secret\":\"two\",\"nested\":{\"secret\":\"three\"}},\"empty\":[],\"nil\":null}",
+      "options": {
+        "fields": [
+          "info",
+          "info.secret"
+        ]
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": null,
+      "error": {
+        "name": "DataMaskingFieldNotFoundError",
+        "message": "Field not found: 'info.secret'"
+      },
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "erase-147",
+      "method": "erase",
+      "data": "{\"z\":\"last\",\"users\":[{\"id\":1,\"secret\":\"one\"},{\"id\":2,\"secret\":null}],\"info\":{\"secret\":\"two\",\"nested\":{\"secret\":\"three\"}},\"empty\":[],\"nil\":null}",
+      "options": {
+        "fields": [
+          "info",
+          "info.secret"
+        ]
+      },
+      "ignoreMissing": true,
+      "provider": true,
+      "value": {
+        "z": "last",
+        "users": [
+          {
+            "id": 1,
+            "secret": "one"
+          },
+          {
+            "id": 2,
+            "secret": null
+          }
+        ],
+        "info": "*****",
+        "empty": [],
+        "nil": null
+      },
+      "error": null,
+      "warnings": [
+        "Field not found: 'info.secret'"
+      ],
+      "calls": []
+    },
+    {
+      "name": "erase-148",
+      "method": "erase",
+      "data": "{\"z\":\"last\",\"users\":[{\"id\":1,\"secret\":\"one\"},{\"id\":2,\"secret\":null}],\"info\":{\"secret\":\"two\",\"nested\":{\"secret\":\"three\"}},\"empty\":[],\"nil\":null}",
+      "options": {
+        "fields": [
+          "users[*].secret"
+        ],
+        "dynamicMask": true
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": {
+        "z": "last",
+        "users": [
+          {
+            "id": 1,
+            "secret": "***"
+          },
+          {
+            "id": 2,
+            "secret": null
+          }
+        ],
+        "info": {
+          "secret": "two",
+          "nested": {
+            "secret": "three"
+          }
+        },
+        "empty": [],
+        "nil": null
+      },
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "erase-149",
+      "method": "erase",
+      "data": "{\"z\":\"last\",\"users\":[{\"id\":1,\"secret\":\"one\"},{\"id\":2,\"secret\":null}],\"info\":{\"secret\":\"two\",\"nested\":{\"secret\":\"three\"}},\"empty\":[],\"nil\":null}",
+      "options": {
+        "fields": [
+          "users[*].secret"
+        ],
+        "customMask": ""
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": {
+        "z": "last",
+        "users": [
+          {
+            "id": 1,
+            "secret": ""
+          },
+          {
+            "id": 2,
+            "secret": null
+          }
+        ],
+        "info": {
+          "secret": "two",
+          "nested": {
+            "secret": "three"
+          }
+        },
+        "empty": [],
+        "nil": null
+      },
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "erase-150",
+      "method": "erase",
+      "data": "{\"z\":\"last\",\"users\":[{\"id\":1,\"secret\":\"one\"},{\"id\":2,\"secret\":null}],\"info\":{\"secret\":\"two\",\"nested\":{\"secret\":\"three\"}},\"empty\":[],\"nil\":null}",
+      "options": {
+        "fields": [
+          "info"
+        ],
+        "dynamicMask": true
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": {
+        "z": "last",
+        "users": [
+          {
+            "id": 1,
+            "secret": "one"
+          },
+          {
+            "id": 2,
+            "secret": null
+          }
+        ],
+        "info": "***************",
+        "empty": [],
+        "nil": null
+      },
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "erase-151",
+      "method": "erase",
+      "data": "{\"z\":\"last\",\"users\":[{\"id\":1,\"secret\":\"one\"},{\"id\":2,\"secret\":null}],\"info\":{\"secret\":\"two\",\"nested\":{\"secret\":\"three\"}},\"empty\":[],\"nil\":null}",
+      "options": {
+        "fields": [
+          "users"
+        ],
+        "dynamicMask": true
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": {
+        "z": "last",
+        "users": "*******************************",
+        "info": {
+          "secret": "two",
+          "nested": {
+            "secret": "three"
+          }
+        },
+        "empty": [],
+        "nil": null
+      },
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "erase-152",
+      "method": "erase",
+      "data": "{\"z\":\"last\",\"users\":[{\"id\":1,\"secret\":\"one\"},{\"id\":2,\"secret\":null}],\"info\":{\"secret\":\"two\",\"nested\":{\"secret\":\"three\"}},\"empty\":[],\"nil\":null}",
+      "options": {
+        "fields": [
+          "info.*"
+        ],
+        "customMask": "default",
+        "rules": [
+          {
+            "field": "info.secret",
+            "rule": {
+              "customMask": "specific"
+            }
+          }
+        ]
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": {
+        "z": "last",
+        "users": [
+          {
+            "id": 1,
+            "secret": "one"
+          },
+          {
+            "id": 2,
+            "secret": null
+          }
+        ],
+        "info": {
+          "secret": "specific",
+          "nested": "default"
+        },
+        "empty": [],
+        "nil": null
+      },
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "erase-153",
+      "method": "erase",
+      "data": "{\"z\":\"last\",\"users\":[{\"id\":1,\"secret\":\"one\"},{\"id\":2,\"secret\":null}],\"info\":{\"secret\":\"two\",\"nested\":{\"secret\":\"three\"}},\"empty\":[],\"nil\":null}",
+      "options": {
+        "fields": [
+          "users[*].secret"
+        ],
+        "rules": [
+          {
+            "field": "users.0.secret",
+            "rule": {
+              "customMask": "first"
+            }
+          }
+        ]
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": {
+        "z": "last",
+        "users": [
+          {
+            "id": 1,
+            "secret": "first"
+          },
+          {
+            "id": 2,
+            "secret": "*****"
+          }
+        ],
+        "info": {
+          "secret": "two",
+          "nested": {
+            "secret": "three"
+          }
+        },
+        "empty": [],
+        "nil": null
+      },
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "erase-154",
+      "method": "erase",
+      "data": "{\"z\":\"last\",\"users\":[{\"id\":1,\"secret\":\"one\"},{\"id\":2,\"secret\":null}],\"info\":{\"secret\":\"two\",\"nested\":{\"secret\":\"three\"}},\"empty\":[],\"nil\":null}",
+      "options": {
+        "rules": [
+          {
+            "field": "missing",
+            "rule": {
+              "customMask": "ignored"
+            }
+          }
+        ]
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": {
+        "z": "last",
+        "users": [
+          {
+            "id": 1,
+            "secret": "one"
+          },
+          {
+            "id": 2,
+            "secret": null
+          }
+        ],
+        "info": {
+          "secret": "two",
+          "nested": {
+            "secret": "three"
+          }
+        },
+        "empty": [],
+        "nil": null
+      },
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "erase-155",
+      "method": "erase",
+      "data": "{\"z\":\"last\",\"users\":[{\"id\":1,\"secret\":\"one\"},{\"id\":2,\"secret\":null}],\"info\":{\"secret\":\"two\",\"nested\":{\"secret\":\"three\"}},\"empty\":[],\"nil\":null}",
+      "options": {
+        "rules": [
+          {
+            "field": "info.secret",
+            "rule": {}
+          },
+          {
+            "field": "info.nested.secret",
+            "rule": {
+              "dynamicMask": false
+            }
+          }
+        ]
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": {
+        "z": "last",
+        "users": [
+          {
+            "id": 1,
+            "secret": "one"
+          },
+          {
+            "id": 2,
+            "secret": null
+          }
+        ],
+        "info": {
+          "secret": "*****",
+          "nested": {
+            "secret": "*****"
+          }
+        },
+        "empty": [],
+        "nil": null
+      },
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "erase-156",
+      "method": "erase",
+      "data": "{\"z\":\"last\",\"users\":[{\"id\":1,\"secret\":\"one\"},{\"id\":2,\"secret\":null}],\"info\":{\"secret\":\"two\",\"nested\":{\"secret\":\"three\"}},\"empty\":[],\"nil\":null}",
+      "options": {
+        "rules": [
+          {
+            "field": "info.*",
+            "rule": {
+              "customMask": "first"
+            }
+          },
+          {
+            "field": "info.secret",
+            "rule": {
+              "dynamicMask": true
+            }
+          }
+        ]
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": {
+        "z": "last",
+        "users": [
+          {
+            "id": 1,
+            "secret": "one"
+          },
+          {
+            "id": 2,
+            "secret": null
+          }
+        ],
+        "info": {
+          "secret": "*****",
+          "nested": "first"
+        },
+        "empty": [],
+        "nil": null
+      },
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "erase-157",
+      "method": "erase",
+      "data": "{\"z\":\"last\",\"users\":[{\"id\":1,\"secret\":\"one\"},{\"id\":2,\"secret\":null}],\"info\":{\"secret\":\"two\",\"nested\":{\"secret\":\"three\"}},\"empty\":[],\"nil\":null}",
+      "options": {
+        "dynamicMask": true,
+        "rules": [
+          {
+            "field": "users[*].secret",
+            "rule": {
+              "customMask": "secret"
+            }
+          }
+        ]
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": {
+        "z": "last",
+        "users": [
+          {
+            "id": 1,
+            "secret": "secret"
+          },
+          {
+            "id": 2,
+            "secret": null
+          }
+        ],
+        "info": {
+          "secret": "two",
+          "nested": {
+            "secret": "three"
+          }
+        },
+        "empty": [],
+        "nil": null
+      },
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "erase-158",
+      "method": "erase",
+      "data": "{\"__proto__\":{\"secret\":\"a\"},\"constructor\":{\"secret\":\"b\"},\"prototype\":\"c\",\"safe\":\"d\"}",
+      "options": {
+        "fields": [
+          "*"
+        ]
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": {
+        "__proto__": {
+          "secret": "a"
+        },
+        "constructor": {
+          "secret": "b"
+        },
+        "prototype": "c",
+        "safe": "*****"
+      },
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "erase-159",
+      "method": "erase",
+      "data": "{\"__proto__\":{\"secret\":\"a\"},\"constructor\":{\"secret\":\"b\"},\"prototype\":\"c\",\"safe\":\"d\"}",
+      "options": {
+        "dynamicMask": true
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": {
+        "__proto__": {
+          "secret": "a"
+        },
+        "constructor": {
+          "secret": "b"
+        },
+        "prototype": "c",
+        "safe": "*"
+      },
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "erase-160",
+      "method": "erase",
+      "data": "{\"__proto__\":{\"secret\":\"a\"},\"constructor\":{\"secret\":\"b\"},\"prototype\":\"c\",\"safe\":\"d\"}",
+      "options": {
+        "fields": [
+          "__proto__"
+        ]
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": {
+        "__proto__": {
+          "secret": "a"
+        },
+        "constructor": {
+          "secret": "b"
+        },
+        "prototype": "c",
+        "safe": "d"
+      },
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "erase-161",
+      "method": "erase",
+      "data": "{\"__proto__\":{\"secret\":\"a\"},\"constructor\":{\"secret\":\"b\"},\"prototype\":\"c\",\"safe\":\"d\"}",
+      "options": {
+        "fields": [
+          "constructor.secret"
+        ]
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": {
+        "__proto__": {
+          "secret": "a"
+        },
+        "constructor": {
+          "secret": "*****"
+        },
+        "prototype": "c",
+        "safe": "d"
+      },
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "erase-162",
+      "method": "erase",
+      "data": "{\"__proto__\":{\"secret\":\"a\"},\"constructor\":{\"secret\":\"b\"},\"prototype\":\"c\",\"safe\":\"d\"}",
+      "options": {
+        "fields": [
+          "constructor.secret"
+        ],
+        "customMask": "x"
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": {
+        "__proto__": {
+          "secret": "a"
+        },
+        "constructor": {
+          "secret": {
+            "$": "undefined"
+          }
+        },
+        "prototype": "c",
+        "safe": "d"
+      },
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "erase-163",
+      "method": "erase",
+      "data": "[1,2]",
+      "options": {
+        "fields": [
+          "length"
+        ]
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": null,
+      "error": {
+        "name": "RangeError",
+        "message": "Invalid array length"
+      },
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "erase-164",
+      "method": "erase",
+      "data": "[1,2]",
+      "options": {
+        "fields": [
+          "0"
+        ]
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": [
+        "*****",
+        2
+      ],
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "erase-165",
+      "method": "erase",
+      "data": "[1,2]",
+      "options": {
+        "fields": [
+          "-1"
+        ]
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": null,
+      "error": {
+        "name": "DataMaskingFieldNotFoundError",
+        "message": "Field not found: '-1'"
+      },
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "erase-166",
+      "method": "erase",
+      "data": "[1,2]",
+      "options": {
+        "fields": [
+          "[*]"
+        ]
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": [
+        "*****",
+        "*****"
+      ],
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "encrypt-167",
+      "method": "encrypt",
+      "data": "null",
+      "options": {},
+      "ignoreMissing": false,
+      "provider": true,
+      "value": "cipher:null",
+      "error": null,
+      "warnings": [],
+      "calls": [
+        {
+          "method": "encrypt",
+          "data": "null",
+          "context": null
+        }
+      ]
+    },
+    {
+      "name": "encrypt-168",
+      "method": "encrypt",
+      "data": "null",
+      "options": {
+        "fields": [],
+        "context": {
+          "tenant": "example"
+        }
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": null,
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "decrypt-169",
+      "method": "decrypt",
+      "data": "\"cipher:null\"",
+      "options": {
+        "fields": [
+          "ignored"
+        ],
+        "context": {
+          "tenant": "example"
+        }
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": null,
+      "error": null,
+      "warnings": [],
+      "calls": [
+        {
+          "method": "decrypt",
+          "data": "cipher:null",
+          "context": {
+            "tenant": "example"
+          }
+        }
+      ]
+    },
+    {
+      "name": "encrypt-170",
+      "method": "encrypt",
+      "data": "true",
+      "options": {},
+      "ignoreMissing": false,
+      "provider": true,
+      "value": "cipher:true",
+      "error": null,
+      "warnings": [],
+      "calls": [
+        {
+          "method": "encrypt",
+          "data": "true",
+          "context": null
+        }
+      ]
+    },
+    {
+      "name": "encrypt-171",
+      "method": "encrypt",
+      "data": "true",
+      "options": {
+        "fields": [],
+        "context": {
+          "tenant": "example"
+        }
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": true,
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "decrypt-172",
+      "method": "decrypt",
+      "data": "\"cipher:true\"",
+      "options": {
+        "fields": [
+          "ignored"
+        ],
+        "context": {
+          "tenant": "example"
+        }
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": true,
+      "error": null,
+      "warnings": [],
+      "calls": [
+        {
+          "method": "decrypt",
+          "data": "cipher:true",
+          "context": {
+            "tenant": "example"
+          }
+        }
+      ]
+    },
+    {
+      "name": "encrypt-173",
+      "method": "encrypt",
+      "data": "false",
+      "options": {},
+      "ignoreMissing": false,
+      "provider": true,
+      "value": "cipher:false",
+      "error": null,
+      "warnings": [],
+      "calls": [
+        {
+          "method": "encrypt",
+          "data": "false",
+          "context": null
+        }
+      ]
+    },
+    {
+      "name": "encrypt-174",
+      "method": "encrypt",
+      "data": "false",
+      "options": {
+        "fields": [],
+        "context": {
+          "tenant": "example"
+        }
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": false,
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "decrypt-175",
+      "method": "decrypt",
+      "data": "\"cipher:false\"",
+      "options": {
+        "fields": [
+          "ignored"
+        ],
+        "context": {
+          "tenant": "example"
+        }
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": false,
+      "error": null,
+      "warnings": [],
+      "calls": [
+        {
+          "method": "decrypt",
+          "data": "cipher:false",
+          "context": {
+            "tenant": "example"
+          }
+        }
+      ]
+    },
+    {
+      "name": "encrypt-176",
+      "method": "encrypt",
+      "data": "0",
+      "options": {},
+      "ignoreMissing": false,
+      "provider": true,
+      "value": "cipher:0",
+      "error": null,
+      "warnings": [],
+      "calls": [
+        {
+          "method": "encrypt",
+          "data": "0",
+          "context": null
+        }
+      ]
+    },
+    {
+      "name": "encrypt-177",
+      "method": "encrypt",
+      "data": "0",
+      "options": {
+        "fields": [],
+        "context": {
+          "tenant": "example"
+        }
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": 0,
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "decrypt-178",
+      "method": "decrypt",
+      "data": "\"cipher:0\"",
+      "options": {
+        "fields": [
+          "ignored"
+        ],
+        "context": {
+          "tenant": "example"
+        }
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": 0,
+      "error": null,
+      "warnings": [],
+      "calls": [
+        {
+          "method": "decrypt",
+          "data": "cipher:0",
+          "context": {
+            "tenant": "example"
+          }
+        }
+      ]
+    },
+    {
+      "name": "encrypt-179",
+      "method": "encrypt",
+      "data": "0",
+      "options": {},
+      "ignoreMissing": false,
+      "provider": true,
+      "value": "cipher:0",
+      "error": null,
+      "warnings": [],
+      "calls": [
+        {
+          "method": "encrypt",
+          "data": "0",
+          "context": null
+        }
+      ]
+    },
+    {
+      "name": "encrypt-180",
+      "method": "encrypt",
+      "data": "0",
+      "options": {
+        "fields": [],
+        "context": {
+          "tenant": "example"
+        }
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": 0,
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "decrypt-181",
+      "method": "decrypt",
+      "data": "\"cipher:0\"",
+      "options": {
+        "fields": [
+          "ignored"
+        ],
+        "context": {
+          "tenant": "example"
+        }
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": 0,
+      "error": null,
+      "warnings": [],
+      "calls": [
+        {
+          "method": "decrypt",
+          "data": "cipher:0",
+          "context": {
+            "tenant": "example"
+          }
+        }
+      ]
+    },
+    {
+      "name": "encrypt-182",
+      "method": "encrypt",
+      "data": "42",
+      "options": {},
+      "ignoreMissing": false,
+      "provider": true,
+      "value": "cipher:42",
+      "error": null,
+      "warnings": [],
+      "calls": [
+        {
+          "method": "encrypt",
+          "data": "42",
+          "context": null
+        }
+      ]
+    },
+    {
+      "name": "encrypt-183",
+      "method": "encrypt",
+      "data": "42",
+      "options": {
+        "fields": [],
+        "context": {
+          "tenant": "example"
+        }
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": 42,
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "decrypt-184",
+      "method": "decrypt",
+      "data": "\"cipher:42\"",
+      "options": {
+        "fields": [
+          "ignored"
+        ],
+        "context": {
+          "tenant": "example"
+        }
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": 42,
+      "error": null,
+      "warnings": [],
+      "calls": [
+        {
+          "method": "decrypt",
+          "data": "cipher:42",
+          "context": {
+            "tenant": "example"
+          }
+        }
+      ]
+    },
+    {
+      "name": "encrypt-185",
+      "method": "encrypt",
+      "data": "-1.25",
+      "options": {},
+      "ignoreMissing": false,
+      "provider": true,
+      "value": "cipher:-1.25",
+      "error": null,
+      "warnings": [],
+      "calls": [
+        {
+          "method": "encrypt",
+          "data": "-1.25",
+          "context": null
+        }
+      ]
+    },
+    {
+      "name": "encrypt-186",
+      "method": "encrypt",
+      "data": "-1.25",
+      "options": {
+        "fields": [],
+        "context": {
+          "tenant": "example"
+        }
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": -1.25,
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "decrypt-187",
+      "method": "decrypt",
+      "data": "\"cipher:-1.25\"",
+      "options": {
+        "fields": [
+          "ignored"
+        ],
+        "context": {
+          "tenant": "example"
+        }
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": -1.25,
+      "error": null,
+      "warnings": [],
+      "calls": [
+        {
+          "method": "decrypt",
+          "data": "cipher:-1.25",
+          "context": {
+            "tenant": "example"
+          }
+        }
+      ]
+    },
+    {
+      "name": "encrypt-188",
+      "method": "encrypt",
+      "data": "1e-7",
+      "options": {},
+      "ignoreMissing": false,
+      "provider": true,
+      "value": "cipher:1e-7",
+      "error": null,
+      "warnings": [],
+      "calls": [
+        {
+          "method": "encrypt",
+          "data": "1e-7",
+          "context": null
+        }
+      ]
+    },
+    {
+      "name": "encrypt-189",
+      "method": "encrypt",
+      "data": "1e-7",
+      "options": {
+        "fields": [],
+        "context": {
+          "tenant": "example"
+        }
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": 1e-7,
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "decrypt-190",
+      "method": "decrypt",
+      "data": "\"cipher:1e-7\"",
+      "options": {
+        "fields": [
+          "ignored"
+        ],
+        "context": {
+          "tenant": "example"
+        }
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": 1e-7,
+      "error": null,
+      "warnings": [],
+      "calls": [
+        {
+          "method": "decrypt",
+          "data": "cipher:1e-7",
+          "context": {
+            "tenant": "example"
+          }
+        }
+      ]
+    },
+    {
+      "name": "encrypt-191",
+      "method": "encrypt",
+      "data": "1e+21",
+      "options": {},
+      "ignoreMissing": false,
+      "provider": true,
+      "value": "cipher:1e+21",
+      "error": null,
+      "warnings": [],
+      "calls": [
+        {
+          "method": "encrypt",
+          "data": "1e+21",
+          "context": null
+        }
+      ]
+    },
+    {
+      "name": "encrypt-192",
+      "method": "encrypt",
+      "data": "1e+21",
+      "options": {
+        "fields": [],
+        "context": {
+          "tenant": "example"
+        }
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": 1e+21,
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "decrypt-193",
+      "method": "decrypt",
+      "data": "\"cipher:1e+21\"",
+      "options": {
+        "fields": [
+          "ignored"
+        ],
+        "context": {
+          "tenant": "example"
+        }
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": 1e+21,
+      "error": null,
+      "warnings": [],
+      "calls": [
+        {
+          "method": "decrypt",
+          "data": "cipher:1e+21",
+          "context": {
+            "tenant": "example"
+          }
+        }
+      ]
+    },
+    {
+      "name": "encrypt-194",
+      "method": "encrypt",
+      "data": "\"\"",
+      "options": {},
+      "ignoreMissing": false,
+      "provider": true,
+      "value": "cipher:\"\"",
+      "error": null,
+      "warnings": [],
+      "calls": [
+        {
+          "method": "encrypt",
+          "data": "\"\"",
+          "context": null
+        }
+      ]
+    },
+    {
+      "name": "encrypt-195",
+      "method": "encrypt",
+      "data": "\"\"",
+      "options": {
+        "fields": [],
+        "context": {
+          "tenant": "example"
+        }
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": "",
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "decrypt-196",
+      "method": "decrypt",
+      "data": "\"cipher:\\\"\\\"\"",
+      "options": {
+        "fields": [
+          "ignored"
+        ],
+        "context": {
+          "tenant": "example"
+        }
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": "",
+      "error": null,
+      "warnings": [],
+      "calls": [
+        {
+          "method": "decrypt",
+          "data": "cipher:\"\"",
+          "context": {
+            "tenant": "example"
+          }
+        }
+      ]
+    },
+    {
+      "name": "encrypt-197",
+      "method": "encrypt",
+      "data": "\"hello\"",
+      "options": {},
+      "ignoreMissing": false,
+      "provider": true,
+      "value": "cipher:\"hello\"",
+      "error": null,
+      "warnings": [],
+      "calls": [
+        {
+          "method": "encrypt",
+          "data": "\"hello\"",
+          "context": null
+        }
+      ]
+    },
+    {
+      "name": "encrypt-198",
+      "method": "encrypt",
+      "data": "\"hello\"",
+      "options": {
+        "fields": [],
+        "context": {
+          "tenant": "example"
+        }
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": "hello",
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "decrypt-199",
+      "method": "decrypt",
+      "data": "\"cipher:\\\"hello\\\"\"",
+      "options": {
+        "fields": [
+          "ignored"
+        ],
+        "context": {
+          "tenant": "example"
+        }
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": "hello",
+      "error": null,
+      "warnings": [],
+      "calls": [
+        {
+          "method": "decrypt",
+          "data": "cipher:\"hello\"",
+          "context": {
+            "tenant": "example"
+          }
+        }
+      ]
+    },
+    {
+      "name": "encrypt-200",
+      "method": "encrypt",
+      "data": "\"é😀\"",
+      "options": {},
+      "ignoreMissing": false,
+      "provider": true,
+      "value": "cipher:\"é😀\"",
+      "error": null,
+      "warnings": [],
+      "calls": [
+        {
+          "method": "encrypt",
+          "data": "\"é😀\"",
+          "context": null
+        }
+      ]
+    },
+    {
+      "name": "encrypt-201",
+      "method": "encrypt",
+      "data": "\"é😀\"",
+      "options": {
+        "fields": [],
+        "context": {
+          "tenant": "example"
+        }
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": "é😀",
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "decrypt-202",
+      "method": "decrypt",
+      "data": "\"cipher:\\\"é😀\\\"\"",
+      "options": {
+        "fields": [
+          "ignored"
+        ],
+        "context": {
+          "tenant": "example"
+        }
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": "é😀",
+      "error": null,
+      "warnings": [],
+      "calls": [
+        {
+          "method": "decrypt",
+          "data": "cipher:\"é😀\"",
+          "context": {
+            "tenant": "example"
+          }
+        }
+      ]
+    },
+    {
+      "name": "encrypt-203",
+      "method": "encrypt",
+      "data": "[]",
+      "options": {},
+      "ignoreMissing": false,
+      "provider": true,
+      "value": "cipher:[]",
+      "error": null,
+      "warnings": [],
+      "calls": [
+        {
+          "method": "encrypt",
+          "data": "[]",
+          "context": null
+        }
+      ]
+    },
+    {
+      "name": "encrypt-204",
+      "method": "encrypt",
+      "data": "[]",
+      "options": {
+        "fields": [],
+        "context": {
+          "tenant": "example"
+        }
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": [],
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "decrypt-205",
+      "method": "decrypt",
+      "data": "\"cipher:[]\"",
+      "options": {
+        "fields": [
+          "ignored"
+        ],
+        "context": {
+          "tenant": "example"
+        }
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": [],
+      "error": null,
+      "warnings": [],
+      "calls": [
+        {
+          "method": "decrypt",
+          "data": "cipher:[]",
+          "context": {
+            "tenant": "example"
+          }
+        }
+      ]
+    },
+    {
+      "name": "encrypt-206",
+      "method": "encrypt",
+      "data": "[1,null,\"x\"]",
+      "options": {},
+      "ignoreMissing": false,
+      "provider": true,
+      "value": "cipher:[1,null,\"x\"]",
+      "error": null,
+      "warnings": [],
+      "calls": [
+        {
+          "method": "encrypt",
+          "data": "[1,null,\"x\"]",
+          "context": null
+        }
+      ]
+    },
+    {
+      "name": "encrypt-207",
+      "method": "encrypt",
+      "data": "[1,null,\"x\"]",
+      "options": {
+        "fields": [],
+        "context": {
+          "tenant": "example"
+        }
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": [
+        1,
+        null,
+        "x"
+      ],
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "decrypt-208",
+      "method": "decrypt",
+      "data": "\"cipher:[1,null,\\\"x\\\"]\"",
+      "options": {
+        "fields": [
+          "ignored"
+        ],
+        "context": {
+          "tenant": "example"
+        }
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": [
+        1,
+        null,
+        "x"
+      ],
+      "error": null,
+      "warnings": [],
+      "calls": [
+        {
+          "method": "decrypt",
+          "data": "cipher:[1,null,\"x\"]",
+          "context": {
+            "tenant": "example"
+          }
+        }
+      ]
+    },
+    {
+      "name": "encrypt-209",
+      "method": "encrypt",
+      "data": "{}",
+      "options": {},
+      "ignoreMissing": false,
+      "provider": true,
+      "value": "cipher:{}",
+      "error": null,
+      "warnings": [],
+      "calls": [
+        {
+          "method": "encrypt",
+          "data": "{}",
+          "context": null
+        }
+      ]
+    },
+    {
+      "name": "encrypt-210",
+      "method": "encrypt",
+      "data": "{}",
+      "options": {
+        "fields": [],
+        "context": {
+          "tenant": "example"
+        }
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": {},
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "decrypt-211",
+      "method": "decrypt",
+      "data": "\"cipher:{}\"",
+      "options": {
+        "fields": [
+          "ignored"
+        ],
+        "context": {
+          "tenant": "example"
+        }
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": {},
+      "error": null,
+      "warnings": [],
+      "calls": [
+        {
+          "method": "decrypt",
+          "data": "cipher:{}",
+          "context": {
+            "tenant": "example"
+          }
+        }
+      ]
+    },
+    {
+      "name": "encrypt-212",
+      "method": "encrypt",
+      "data": "{\"z\":1,\"a\":{\"secret\":\"yes\",\"nil\":null},\"list\":[true,{\"token\":\"x\"}]}",
+      "options": {},
+      "ignoreMissing": false,
+      "provider": true,
+      "value": "cipher:{\"z\":1,\"a\":{\"secret\":\"yes\",\"nil\":null},\"list\":[true,{\"token\":\"x\"}]}",
+      "error": null,
+      "warnings": [],
+      "calls": [
+        {
+          "method": "encrypt",
+          "data": "{\"z\":1,\"a\":{\"secret\":\"yes\",\"nil\":null},\"list\":[true,{\"token\":\"x\"}]}",
+          "context": null
+        }
+      ]
+    },
+    {
+      "name": "encrypt-213",
+      "method": "encrypt",
+      "data": "{\"z\":1,\"a\":{\"secret\":\"yes\",\"nil\":null},\"list\":[true,{\"token\":\"x\"}]}",
+      "options": {
+        "fields": [],
+        "context": {
+          "tenant": "example"
+        }
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": {
+        "z": 1,
+        "a": {
+          "secret": "yes",
+          "nil": null
+        },
+        "list": [
+          true,
+          {
+            "token": "x"
+          }
+        ]
+      },
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "decrypt-214",
+      "method": "decrypt",
+      "data": "\"cipher:{\\\"z\\\":1,\\\"a\\\":{\\\"secret\\\":\\\"yes\\\",\\\"nil\\\":null},\\\"list\\\":[true,{\\\"token\\\":\\\"x\\\"}]}\"",
+      "options": {
+        "fields": [
+          "ignored"
+        ],
+        "context": {
+          "tenant": "example"
+        }
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": {
+        "z": 1,
+        "a": {
+          "secret": "yes",
+          "nil": null
+        },
+        "list": [
+          true,
+          {
+            "token": "x"
+          }
+        ]
+      },
+      "error": null,
+      "warnings": [],
+      "calls": [
+        {
+          "method": "decrypt",
+          "data": "cipher:{\"z\":1,\"a\":{\"secret\":\"yes\",\"nil\":null},\"list\":[true,{\"token\":\"x\"}]}",
+          "context": {
+            "tenant": "example"
+          }
+        }
+      ]
+    },
+    {
+      "name": "encrypt-215",
+      "method": "encrypt",
+      "data": "{\"z\":\"last\",\"users\":[{\"id\":1,\"secret\":\"one\"},{\"id\":2,\"secret\":null}],\"info\":{\"secret\":\"two\",\"nested\":{\"secret\":\"three\"}},\"empty\":[],\"nil\":null}",
+      "options": {
+        "fields": [
+          "users[*].secret"
+        ],
+        "context": {
+          "tenant": "example"
+        }
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": {
+        "z": "last",
+        "users": [
+          {
+            "id": 1,
+            "secret": "cipher:\"one\""
+          },
+          {
+            "id": 2,
+            "secret": "cipher:null"
+          }
+        ],
+        "info": {
+          "secret": "two",
+          "nested": {
+            "secret": "three"
+          }
+        },
+        "empty": [],
+        "nil": null
+      },
+      "error": null,
+      "warnings": [],
+      "calls": [
+        {
+          "method": "encrypt",
+          "data": "\"one\"",
+          "context": {
+            "tenant": "example"
+          }
+        },
+        {
+          "method": "encrypt",
+          "data": "null",
+          "context": {
+            "tenant": "example"
+          }
+        }
+      ]
+    },
+    {
+      "name": "encrypt-216",
+      "method": "encrypt",
+      "data": "{\"z\":\"last\",\"users\":[{\"id\":1,\"secret\":\"one\"},{\"id\":2,\"secret\":null}],\"info\":{\"secret\":\"two\",\"nested\":{\"secret\":\"three\"}},\"empty\":[],\"nil\":null}",
+      "options": {
+        "fields": [
+          "users.*.id"
+        ],
+        "context": {
+          "tenant": "example"
+        }
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": {
+        "z": "last",
+        "users": [
+          {
+            "id": "cipher:1",
+            "secret": "one"
+          },
+          {
+            "id": "cipher:2",
+            "secret": null
+          }
+        ],
+        "info": {
+          "secret": "two",
+          "nested": {
+            "secret": "three"
+          }
+        },
+        "empty": [],
+        "nil": null
+      },
+      "error": null,
+      "warnings": [],
+      "calls": [
+        {
+          "method": "encrypt",
+          "data": "1",
+          "context": {
+            "tenant": "example"
+          }
+        },
+        {
+          "method": "encrypt",
+          "data": "2",
+          "context": {
+            "tenant": "example"
+          }
+        }
+      ]
+    },
+    {
+      "name": "encrypt-217",
+      "method": "encrypt",
+      "data": "{\"z\":\"last\",\"users\":[{\"id\":1,\"secret\":\"one\"},{\"id\":2,\"secret\":null}],\"info\":{\"secret\":\"two\",\"nested\":{\"secret\":\"three\"}},\"empty\":[],\"nil\":null}",
+      "options": {
+        "fields": [
+          "info"
+        ],
+        "context": {
+          "tenant": "example"
+        }
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": {
+        "z": "last",
+        "users": [
+          {
+            "id": 1,
+            "secret": "one"
+          },
+          {
+            "id": 2,
+            "secret": null
+          }
+        ],
+        "info": "cipher:{\"secret\":\"two\",\"nested\":{\"secret\":\"three\"}}",
+        "empty": [],
+        "nil": null
+      },
+      "error": null,
+      "warnings": [],
+      "calls": [
+        {
+          "method": "encrypt",
+          "data": "{\"secret\":\"two\",\"nested\":{\"secret\":\"three\"}}",
+          "context": {
+            "tenant": "example"
+          }
+        }
+      ]
+    },
+    {
+      "name": "encrypt-218",
+      "method": "encrypt",
+      "data": "{\"z\":\"last\",\"users\":[{\"id\":1,\"secret\":\"one\"},{\"id\":2,\"secret\":null}],\"info\":{\"secret\":\"two\",\"nested\":{\"secret\":\"three\"}},\"empty\":[],\"nil\":null}",
+      "options": {
+        "fields": [
+          "users"
+        ],
+        "context": {
+          "tenant": "example"
+        }
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": {
+        "z": "last",
+        "users": "cipher:[{\"id\":1,\"secret\":\"one\"},{\"id\":2,\"secret\":null}]",
+        "info": {
+          "secret": "two",
+          "nested": {
+            "secret": "three"
+          }
+        },
+        "empty": [],
+        "nil": null
+      },
+      "error": null,
+      "warnings": [],
+      "calls": [
+        {
+          "method": "encrypt",
+          "data": "[{\"id\":1,\"secret\":\"one\"},{\"id\":2,\"secret\":null}]",
+          "context": {
+            "tenant": "example"
+          }
+        }
+      ]
+    },
+    {
+      "name": "encrypt-219",
+      "method": "encrypt",
+      "data": "{\"z\":\"last\",\"users\":[{\"id\":1,\"secret\":\"one\"},{\"id\":2,\"secret\":null}],\"info\":{\"secret\":\"two\",\"nested\":{\"secret\":\"three\"}},\"empty\":[],\"nil\":null}",
+      "options": {
+        "fields": [
+          "missing"
+        ],
+        "context": {
+          "tenant": "example"
+        }
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": {
+        "z": "last",
+        "users": [
+          {
+            "id": 1,
+            "secret": "one"
+          },
+          {
+            "id": 2,
+            "secret": null
+          }
+        ],
+        "info": {
+          "secret": "two",
+          "nested": {
+            "secret": "three"
+          }
+        },
+        "empty": [],
+        "nil": null
+      },
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "encrypt-220",
+      "method": "encrypt",
+      "data": "{\"z\":\"last\",\"users\":[{\"id\":1,\"secret\":\"one\"},{\"id\":2,\"secret\":null}],\"info\":{\"secret\":\"two\",\"nested\":{\"secret\":\"three\"}},\"empty\":[],\"nil\":null}",
+      "options": {
+        "fields": [
+          "info.secret",
+          "info.secret"
+        ],
+        "context": {
+          "tenant": "example"
+        }
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": {
+        "z": "last",
+        "users": [
+          {
+            "id": 1,
+            "secret": "one"
+          },
+          {
+            "id": 2,
+            "secret": null
+          }
+        ],
+        "info": {
+          "secret": "cipher:\"two\"",
+          "nested": {
+            "secret": "three"
+          }
+        },
+        "empty": [],
+        "nil": null
+      },
+      "error": null,
+      "warnings": [],
+      "calls": [
+        {
+          "method": "encrypt",
+          "data": "\"two\"",
+          "context": {
+            "tenant": "example"
+          }
+        },
+        {
+          "method": "encrypt",
+          "data": "\"two\"",
+          "context": {
+            "tenant": "example"
+          }
+        }
+      ]
+    },
+    {
+      "name": "encrypt-221",
+      "method": "encrypt",
+      "data": "{\"z\":\"last\",\"users\":[{\"id\":1,\"secret\":\"one\"},{\"id\":2,\"secret\":null}],\"info\":{\"secret\":\"two\",\"nested\":{\"secret\":\"three\"}},\"empty\":[],\"nil\":null}",
+      "options": {
+        "fields": [
+          ""
+        ],
+        "context": {
+          "tenant": "example"
+        }
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": {
+        "z": "last",
+        "users": [
+          {
+            "id": 1,
+            "secret": "one"
+          },
+          {
+            "id": 2,
+            "secret": null
+          }
+        ],
+        "info": {
+          "secret": "two",
+          "nested": {
+            "secret": "three"
+          }
+        },
+        "empty": [],
+        "nil": null
+      },
+      "error": null,
+      "warnings": [],
+      "calls": [
+        {
+          "method": "encrypt",
+          "data": "{\"z\":\"last\",\"users\":[{\"id\":1,\"secret\":\"one\"},{\"id\":2,\"secret\":null}],\"info\":{\"secret\":\"two\",\"nested\":{\"secret\":\"three\"}},\"empty\":[],\"nil\":null}",
+          "context": {
+            "tenant": "example"
+          }
+        }
+      ]
+    },
+    {
+      "name": "encrypt-222",
+      "method": "encrypt",
+      "data": "{\"z\":\"last\",\"users\":[{\"id\":1,\"secret\":\"one\"},{\"id\":2,\"secret\":null}],\"info\":{\"secret\":\"two\",\"nested\":{\"secret\":\"three\"}},\"empty\":[],\"nil\":null}",
+      "options": {
+        "fields": [
+          "nil"
+        ],
+        "context": {
+          "tenant": "example"
+        }
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": {
+        "z": "last",
+        "users": [
+          {
+            "id": 1,
+            "secret": "one"
+          },
+          {
+            "id": 2,
+            "secret": null
+          }
+        ],
+        "info": {
+          "secret": "two",
+          "nested": {
+            "secret": "three"
+          }
+        },
+        "empty": [],
+        "nil": "cipher:null"
+      },
+      "error": null,
+      "warnings": [],
+      "calls": [
+        {
+          "method": "encrypt",
+          "data": "null",
+          "context": {
+            "tenant": "example"
+          }
+        }
+      ]
+    },
+    {
+      "name": "encrypt-223",
+      "method": "encrypt",
+      "data": "{\"z\":\"last\",\"users\":[{\"id\":1,\"secret\":\"one\"},{\"id\":2,\"secret\":null}],\"info\":{\"secret\":\"two\",\"nested\":{\"secret\":\"three\"}},\"empty\":[],\"nil\":null}",
+      "options": {
+        "fields": [
+          "users[*]"
+        ],
+        "context": {
+          "tenant": "example"
+        }
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": {
+        "z": "last",
+        "users": [
+          "cipher:{\"id\":1,\"secret\":\"one\"}",
+          "cipher:{\"id\":2,\"secret\":null}"
+        ],
+        "info": {
+          "secret": "two",
+          "nested": {
+            "secret": "three"
+          }
+        },
+        "empty": [],
+        "nil": null
+      },
+      "error": null,
+      "warnings": [],
+      "calls": [
+        {
+          "method": "encrypt",
+          "data": "{\"id\":1,\"secret\":\"one\"}",
+          "context": {
+            "tenant": "example"
+          }
+        },
+        {
+          "method": "encrypt",
+          "data": "{\"id\":2,\"secret\":null}",
+          "context": {
+            "tenant": "example"
+          }
+        }
+      ]
+    },
+    {
+      "name": "decrypt-224",
+      "method": "decrypt",
+      "data": "{\"z\":\"cipher:42\",\"users\":[{\"secret\":\"cipher:\\\"one\\\"\"},{\"secret\":null}],\"info\":{\"flag\":false,\"count\":7,\"list\":[],\"object\":{},\"nil\":null}}",
+      "options": {},
+      "ignoreMissing": false,
+      "provider": true,
+      "value": {
+        "z": "cipher:42",
+        "users": [
+          {
+            "secret": "cipher:\"one\""
+          },
+          {
+            "secret": null
+          }
+        ],
+        "info": {
+          "flag": false,
+          "count": 7,
+          "list": [],
+          "object": {},
+          "nil": null
+        }
+      },
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "decrypt-225",
+      "method": "decrypt",
+      "data": "{\"z\":\"cipher:42\",\"users\":[{\"secret\":\"cipher:\\\"one\\\"\"},{\"secret\":null}],\"info\":{\"flag\":false,\"count\":7,\"list\":[],\"object\":{},\"nil\":null}}",
+      "options": {
+        "fields": []
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": {
+        "z": "cipher:42",
+        "users": [
+          {
+            "secret": "cipher:\"one\""
+          },
+          {
+            "secret": null
+          }
+        ],
+        "info": {
+          "flag": false,
+          "count": 7,
+          "list": [],
+          "object": {},
+          "nil": null
+        }
+      },
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "decrypt-226",
+      "method": "decrypt",
+      "data": "{\"z\":\"cipher:42\",\"users\":[{\"secret\":\"cipher:\\\"one\\\"\"},{\"secret\":null}],\"info\":{\"flag\":false,\"count\":7,\"list\":[],\"object\":{},\"nil\":null}}",
+      "options": {
+        "fields": [
+          "users[*].secret"
+        ]
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": {
+        "z": "cipher:42",
+        "users": [
+          {
+            "secret": "one"
+          },
+          {
+            "secret": null
+          }
+        ],
+        "info": {
+          "flag": false,
+          "count": 7,
+          "list": [],
+          "object": {},
+          "nil": null
+        }
+      },
+      "error": null,
+      "warnings": [
+        "Skipping decryption of non-string value of type object; expected an encrypted string"
+      ],
+      "calls": [
+        {
+          "method": "decrypt",
+          "data": "cipher:\"one\"",
+          "context": null
+        }
+      ]
+    },
+    {
+      "name": "decrypt-227",
+      "method": "decrypt",
+      "data": "{\"z\":\"cipher:42\",\"users\":[{\"secret\":\"cipher:\\\"one\\\"\"},{\"secret\":null}],\"info\":{\"flag\":false,\"count\":7,\"list\":[],\"object\":{},\"nil\":null}}",
+      "options": {
+        "fields": [
+          "info.*"
+        ]
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": {
+        "z": "cipher:42",
+        "users": [
+          {
+            "secret": "cipher:\"one\""
+          },
+          {
+            "secret": null
+          }
+        ],
+        "info": {
+          "flag": false,
+          "count": 7,
+          "list": [],
+          "object": {},
+          "nil": null
+        }
+      },
+      "error": null,
+      "warnings": [
+        "Skipping decryption of non-string value of type boolean; expected an encrypted string",
+        "Skipping decryption of non-string value of type number; expected an encrypted string",
+        "Skipping decryption of non-string value of type object; expected an encrypted string",
+        "Skipping decryption of non-string value of type object; expected an encrypted string",
+        "Skipping decryption of non-string value of type object; expected an encrypted string"
+      ],
+      "calls": []
+    },
+    {
+      "name": "decrypt-228",
+      "method": "decrypt",
+      "data": "{\"z\":\"cipher:42\",\"users\":[{\"secret\":\"cipher:\\\"one\\\"\"},{\"secret\":null}],\"info\":{\"flag\":false,\"count\":7,\"list\":[],\"object\":{},\"nil\":null}}",
+      "options": {
+        "fields": [
+          "missing"
+        ]
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": {
+        "z": "cipher:42",
+        "users": [
+          {
+            "secret": "cipher:\"one\""
+          },
+          {
+            "secret": null
+          }
+        ],
+        "info": {
+          "flag": false,
+          "count": 7,
+          "list": [],
+          "object": {},
+          "nil": null
+        }
+      },
+      "error": null,
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "decrypt-229",
+      "method": "decrypt",
+      "data": "{\"z\":\"cipher:42\",\"users\":[{\"secret\":\"cipher:\\\"one\\\"\"},{\"secret\":null}],\"info\":{\"flag\":false,\"count\":7,\"list\":[],\"object\":{},\"nil\":null}}",
+      "options": {
+        "fields": [
+          "z",
+          "z"
+        ]
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": {
+        "z": 42,
+        "users": [
+          {
+            "secret": "cipher:\"one\""
+          },
+          {
+            "secret": null
+          }
+        ],
+        "info": {
+          "flag": false,
+          "count": 7,
+          "list": [],
+          "object": {},
+          "nil": null
+        }
+      },
+      "error": null,
+      "warnings": [],
+      "calls": [
+        {
+          "method": "decrypt",
+          "data": "cipher:42",
+          "context": null
+        },
+        {
+          "method": "decrypt",
+          "data": "cipher:42",
+          "context": null
+        }
+      ]
+    },
+    {
+      "name": "decrypt-230",
+      "method": "decrypt",
+      "data": "{\"z\":\"cipher:42\",\"users\":[{\"secret\":\"cipher:\\\"one\\\"\"},{\"secret\":null}],\"info\":{\"flag\":false,\"count\":7,\"list\":[],\"object\":{},\"nil\":null}}",
+      "options": {
+        "fields": [
+          "z"
+        ]
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": {
+        "z": 42,
+        "users": [
+          {
+            "secret": "cipher:\"one\""
+          },
+          {
+            "secret": null
+          }
+        ],
+        "info": {
+          "flag": false,
+          "count": 7,
+          "list": [],
+          "object": {},
+          "nil": null
+        }
+      },
+      "error": null,
+      "warnings": [],
+      "calls": [
+        {
+          "method": "decrypt",
+          "data": "cipher:42",
+          "context": null
+        }
+      ]
+    },
+    {
+      "name": "encrypt-231",
+      "method": "encrypt",
+      "data": "null",
+      "options": {},
+      "ignoreMissing": false,
+      "provider": false,
+      "value": null,
+      "error": {
+        "name": "DataMaskingEncryptionError",
+        "message": "Encryption provider is required for encrypt/decrypt operations"
+      },
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "encrypt-232",
+      "method": "encrypt",
+      "data": "{}",
+      "options": {},
+      "ignoreMissing": false,
+      "provider": false,
+      "value": null,
+      "error": {
+        "name": "DataMaskingEncryptionError",
+        "message": "Encryption provider is required for encrypt/decrypt operations"
+      },
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "encrypt-233",
+      "method": "encrypt",
+      "data": "\"text\"",
+      "options": {},
+      "ignoreMissing": false,
+      "provider": false,
+      "value": null,
+      "error": {
+        "name": "DataMaskingEncryptionError",
+        "message": "Encryption provider is required for encrypt/decrypt operations"
+      },
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "decrypt-234",
+      "method": "decrypt",
+      "data": "null",
+      "options": {},
+      "ignoreMissing": false,
+      "provider": false,
+      "value": null,
+      "error": {
+        "name": "DataMaskingEncryptionError",
+        "message": "Encryption provider is required for encrypt/decrypt operations"
+      },
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "decrypt-235",
+      "method": "decrypt",
+      "data": "{}",
+      "options": {},
+      "ignoreMissing": false,
+      "provider": false,
+      "value": null,
+      "error": {
+        "name": "DataMaskingEncryptionError",
+        "message": "Encryption provider is required for encrypt/decrypt operations"
+      },
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "decrypt-236",
+      "method": "decrypt",
+      "data": "\"text\"",
+      "options": {},
+      "ignoreMissing": false,
+      "provider": false,
+      "value": null,
+      "error": {
+        "name": "DataMaskingEncryptionError",
+        "message": "Encryption provider is required for encrypt/decrypt operations"
+      },
+      "warnings": [],
+      "calls": []
+    },
+    {
+      "name": "encrypt-237",
+      "method": "encrypt",
+      "data": "{\"secret\":\"reject\"}",
+      "options": {
+        "fields": [
+          "secret"
+        ]
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": null,
+      "error": {
+        "name": "Error",
+        "message": "provider rejected"
+      },
+      "warnings": [],
+      "calls": [
+        {
+          "method": "encrypt",
+          "data": "\"reject\"",
+          "context": null
+        }
+      ]
+    },
+    {
+      "name": "decrypt-238",
+      "method": "decrypt",
+      "data": "{\"secret\":\"not-ciphertext\"}",
+      "options": {
+        "fields": [
+          "secret"
+        ]
+      },
+      "ignoreMissing": false,
+      "provider": true,
+      "value": null,
+      "error": {
+        "name": "Error",
+        "message": "invalid test ciphertext"
+      },
+      "warnings": [],
+      "calls": [
+        {
+          "method": "decrypt",
+          "data": "not-ciphertext",
+          "context": null
+        }
+      ]
+    },
+    {
+      "name": "encrypt-239",
+      "method": "encrypt",
+      "data": "{\"2\":\"two\",\"10\":\"ten\",\"z\":3,\"a\":2}",
+      "options": {},
+      "ignoreMissing": false,
+      "provider": true,
+      "value": "cipher:{\"2\":\"two\",\"10\":\"ten\",\"z\":3,\"a\":2}",
+      "error": null,
+      "warnings": [],
+      "calls": [
+        {
+          "method": "encrypt",
+          "data": "{\"2\":\"two\",\"10\":\"ten\",\"z\":3,\"a\":2}",
+          "context": null
+        }
+      ]
+    }
+  ],
+  "asyncFailure": [
+    "start:\"reject\"",
+    "start:\"pending\"",
+    "caught:first rejection",
+    "release",
+    "completed"
+  ]
+}

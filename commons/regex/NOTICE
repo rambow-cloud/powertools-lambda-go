@@ -1,0 +1,87 @@
+Powertools for Go Lambda - Third-party notices
+
+Original contributions are licensed under the accompanying MIT LICENSE.
+Third-party material retains its own copyright and license terms.
+This independent project is not an official AWS distribution or endorsement.
+External dependencies retain their own licenses; they are not relicensed by
+this module. The repository's THIRD_PARTY_NOTICES.md and
+docs/THIRD_PARTY_DEPENDENCIES.json document source provenance and direct
+dependencies. Those inventories are not a complete binary-distribution SBOM.
+
+Powertools for AWS Lambda (TypeScript)
+Reference: v2.35.0, commit 7bcc27b1574493f9452688673658f52b80c53847
+Source: https://github.com/aws-powertools/powertools-lambda-typescript
+License: MIT-0
+Scope: compatibility-oriented Go implementations, reference constants,
+schemas, examples, and generated behavioral fixtures. The implementation
+adapts TypeScript APIs to Go and uses OpenTelemetry for maintained tracing;
+it does not claim complete behavioral equivalence.
+The following upstream notice and permission text are preserved verbatim.
+
+Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+
+Copyright 2021 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of
+this software and associated documentation files (the "Software"), to deal in
+the Software without restriction, including without limitation the rights to
+use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
+the Software, and to permit persons to whom the Software is furnished to do so.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
+FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
+IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+Unicode Character Database 16.0.0
+Sources:
+https://www.unicode.org/Public/16.0.0/ucd/PropertyAliases.txt
+https://www.unicode.org/Public/16.0.0/ucd/PropertyValueAliases.txt
+License: Unicode-3.0
+Copyright 2024 Unicode, Inc. (the source data headers remain intact).
+Scope: tools/reference/unicode source files, commons/regex/unicode_properties.json
+and commons/regex/legacy_fold.json. Range and case-fold tables were generated
+using Node.js v22.21.1 with Unicode 16.0. The data is not relicensed under MIT.
+The following official Unicode license was retrieved on 2026-09-26.
+
+UNICODE LICENSE V3
+
+COPYRIGHT AND PERMISSION NOTICE
+
+Copyright © 1991-2026 Unicode, Inc.
+
+NOTICE TO USER: Carefully read the following legal agreement. BY
+DOWNLOADING, INSTALLING, COPYING OR OTHERWISE USING DATA FILES, AND/OR
+SOFTWARE, YOU UNEQUIVOCALLY ACCEPT, AND AGREE TO BE BOUND BY, ALL OF THE
+TERMS AND CONDITIONS OF THIS AGREEMENT. IF YOU DO NOT AGREE, DO NOT
+DOWNLOAD, INSTALL, COPY, DISTRIBUTE OR USE THE DATA FILES OR SOFTWARE.
+
+Permission is hereby granted, free of charge, to any person obtaining a
+copy of data files and any associated documentation (the "Data Files") or
+software and any associated documentation (the "Software") to deal in the
+Data Files or Software without restriction, including without limitation
+the rights to use, copy, modify, merge, publish, distribute, and/or sell
+copies of the Data Files or Software, and to permit persons to whom the
+Data Files or Software are furnished to do so, provided that either (a)
+this copyright and permission notice appear with all copies of the Data
+Files or Software, or (b) this copyright and permission notice appear in
+associated Documentation.
+
+THE DATA FILES AND SOFTWARE ARE PROVIDED "AS IS", WITHOUT WARRANTY OF ANY
+KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF
+THIRD PARTY RIGHTS.
+
+IN NO EVENT SHALL THE COPYRIGHT HOLDER OR HOLDERS INCLUDED IN THIS NOTICE
+BE LIABLE FOR ANY CLAIM, OR ANY SPECIAL INDIRECT OR CONSEQUENTIAL DAMAGES,
+OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS,
+WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION,
+ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THE DATA
+FILES OR SOFTWARE.
+
+Except as contained in this notice, the name of a copyright holder shall
+not be used in advertising or otherwise to promote the sale, use or other
+dealings in these Data Files or Software without prior written
+authorization of the copyright holder.

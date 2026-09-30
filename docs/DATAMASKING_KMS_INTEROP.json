@@ -1,0 +1,442 @@
+{
+  "scope": "Actual AWS Encryption SDK messages through local KMS fixtures; no real KMS/cache acceptance",
+  "typescript": "2.35.0",
+  "clientNode": "5.0.2",
+  "goSDK": "0.4.0",
+  "completed": true,
+  "requests": 36,
+  "checks": [
+    {
+      "name": "kms-0: Go to TypeScript authenticated decryption",
+      "passed": true
+    },
+    {
+      "name": "kms-0: committed signed default suite",
+      "passed": true
+    },
+    {
+      "name": "kms-0: context mismatch",
+      "passed": true
+    },
+    {
+      "name": "kms-1: Go to TypeScript authenticated decryption",
+      "passed": true
+    },
+    {
+      "name": "kms-1: committed signed default suite",
+      "passed": true
+    },
+    {
+      "name": "kms-1: context mismatch",
+      "passed": true
+    },
+    {
+      "name": "kms-2: Go to TypeScript authenticated decryption",
+      "passed": true
+    },
+    {
+      "name": "kms-2: committed signed default suite",
+      "passed": true
+    },
+    {
+      "name": "kms-2: context mismatch",
+      "passed": true
+    },
+    {
+      "name": "kms-3: Go to TypeScript authenticated decryption",
+      "passed": true
+    },
+    {
+      "name": "kms-3: committed signed default suite",
+      "passed": true
+    },
+    {
+      "name": "kms-3: context mismatch",
+      "passed": true
+    },
+    {
+      "name": "kms-4: Go to TypeScript authenticated decryption",
+      "passed": true
+    },
+    {
+      "name": "kms-4: committed signed default suite",
+      "passed": true
+    },
+    {
+      "name": "kms-4: context mismatch",
+      "passed": true
+    },
+    {
+      "name": "kms-5: Go to TypeScript authenticated decryption",
+      "passed": true
+    },
+    {
+      "name": "kms-5: committed signed default suite",
+      "passed": true
+    },
+    {
+      "name": "kms-5: context mismatch",
+      "passed": true
+    },
+    {
+      "name": "kms-6: Go to TypeScript authenticated decryption",
+      "passed": true
+    },
+    {
+      "name": "kms-6: committed signed default suite",
+      "passed": true
+    },
+    {
+      "name": "kms-6: context mismatch",
+      "passed": true
+    },
+    {
+      "name": "kms-7: Go to TypeScript authenticated decryption",
+      "passed": true
+    },
+    {
+      "name": "kms-7: committed signed default suite",
+      "passed": true
+    },
+    {
+      "name": "kms-7: context mismatch",
+      "passed": true
+    },
+    {
+      "name": "kms-8: Go to TypeScript authenticated decryption",
+      "passed": true
+    },
+    {
+      "name": "kms-8: committed signed default suite",
+      "passed": true
+    },
+    {
+      "name": "kms-8: context mismatch",
+      "passed": true
+    },
+    {
+      "name": "kms-9: Go to TypeScript authenticated decryption",
+      "passed": true
+    },
+    {
+      "name": "kms-9: committed signed default suite",
+      "passed": true
+    },
+    {
+      "name": "kms-9: context mismatch",
+      "passed": true
+    },
+    {
+      "name": "kms-10: Go to TypeScript authenticated decryption",
+      "passed": true
+    },
+    {
+      "name": "kms-10: committed signed default suite",
+      "passed": true
+    },
+    {
+      "name": "kms-10: context mismatch",
+      "passed": true
+    },
+    {
+      "name": "kms-11: Go to TypeScript authenticated decryption",
+      "passed": true
+    },
+    {
+      "name": "kms-11: committed signed default suite",
+      "passed": true
+    },
+    {
+      "name": "kms-11: context mismatch",
+      "passed": true
+    },
+    {
+      "name": "kms-12: Go to TypeScript authenticated decryption",
+      "passed": true
+    },
+    {
+      "name": "kms-12: committed signed default suite",
+      "passed": true
+    },
+    {
+      "name": "kms-12: context mismatch",
+      "passed": true
+    },
+    {
+      "name": "kms-13: Go to TypeScript authenticated decryption",
+      "passed": true
+    },
+    {
+      "name": "kms-13: committed signed default suite",
+      "passed": true
+    },
+    {
+      "name": "kms-13: context mismatch",
+      "passed": true
+    },
+    {
+      "name": "kms-14: Go to TypeScript authenticated decryption",
+      "passed": true
+    },
+    {
+      "name": "kms-14: committed signed default suite",
+      "passed": true
+    },
+    {
+      "name": "kms-14: context mismatch",
+      "passed": true
+    },
+    {
+      "name": "kms-15: Go to TypeScript authenticated decryption",
+      "passed": true
+    },
+    {
+      "name": "kms-15: committed signed default suite",
+      "passed": true
+    },
+    {
+      "name": "kms-15: context mismatch",
+      "passed": true
+    },
+    {
+      "name": "kms-16: Go to TypeScript authenticated decryption",
+      "passed": true
+    },
+    {
+      "name": "kms-16: committed signed default suite",
+      "passed": true
+    },
+    {
+      "name": "kms-16: context mismatch",
+      "passed": true
+    },
+    {
+      "name": "kms-17: Go to TypeScript authenticated decryption",
+      "passed": true
+    },
+    {
+      "name": "kms-17: committed signed default suite",
+      "passed": true
+    },
+    {
+      "name": "kms-17: context mismatch",
+      "passed": true
+    },
+    {
+      "name": "kms-18: Go to TypeScript authenticated decryption",
+      "passed": true
+    },
+    {
+      "name": "kms-18: committed signed default suite",
+      "passed": true
+    },
+    {
+      "name": "kms-18: context mismatch",
+      "passed": true
+    },
+    {
+      "name": "kms-19: Go to TypeScript authenticated decryption",
+      "passed": true
+    },
+    {
+      "name": "kms-19: committed signed default suite",
+      "passed": true
+    },
+    {
+      "name": "kms-19: context mismatch",
+      "passed": true
+    },
+    {
+      "name": "kms-20: Go to TypeScript authenticated decryption",
+      "passed": true
+    },
+    {
+      "name": "kms-20: committed signed default suite",
+      "passed": true
+    },
+    {
+      "name": "kms-20: context mismatch",
+      "passed": true
+    },
+    {
+      "name": "kms-21: Go to TypeScript authenticated decryption",
+      "passed": true
+    },
+    {
+      "name": "kms-21: committed signed default suite",
+      "passed": true
+    },
+    {
+      "name": "kms-21: context mismatch",
+      "passed": true
+    },
+    {
+      "name": "kms-22: Go to TypeScript authenticated decryption",
+      "passed": true
+    },
+    {
+      "name": "kms-22: committed signed default suite",
+      "passed": true
+    },
+    {
+      "name": "kms-22: context mismatch",
+      "passed": true
+    },
+    {
+      "name": "kms-23: Go to TypeScript authenticated decryption",
+      "passed": true
+    },
+    {
+      "name": "kms-23: committed signed default suite",
+      "passed": true
+    },
+    {
+      "name": "kms-23: context mismatch",
+      "passed": true
+    },
+    {
+      "name": "kms-24: Go to TypeScript authenticated decryption",
+      "passed": true
+    },
+    {
+      "name": "kms-24: committed signed default suite",
+      "passed": true
+    },
+    {
+      "name": "kms-24: context mismatch",
+      "passed": true
+    },
+    {
+      "name": "kms-25: Go to TypeScript authenticated decryption",
+      "passed": true
+    },
+    {
+      "name": "kms-25: committed signed default suite",
+      "passed": true
+    },
+    {
+      "name": "kms-25: context mismatch",
+      "passed": true
+    },
+    {
+      "name": "kms-26: Go to TypeScript authenticated decryption",
+      "passed": true
+    },
+    {
+      "name": "kms-26: committed signed default suite",
+      "passed": true
+    },
+    {
+      "name": "kms-26: context mismatch",
+      "passed": true
+    },
+    {
+      "name": "kms-27: Go to TypeScript authenticated decryption",
+      "passed": true
+    },
+    {
+      "name": "kms-27: committed signed default suite",
+      "passed": true
+    },
+    {
+      "name": "kms-27: context mismatch",
+      "passed": true
+    },
+    {
+      "name": "kms-28: Go to TypeScript authenticated decryption",
+      "passed": true
+    },
+    {
+      "name": "kms-28: committed signed default suite",
+      "passed": true
+    },
+    {
+      "name": "kms-28: context mismatch",
+      "passed": true
+    },
+    {
+      "name": "kms-29: Go to TypeScript authenticated decryption",
+      "passed": true
+    },
+    {
+      "name": "kms-29: committed signed default suite",
+      "passed": true
+    },
+    {
+      "name": "kms-29: context mismatch",
+      "passed": true
+    },
+    {
+      "name": "kms-30: Go to TypeScript authenticated decryption",
+      "passed": true
+    },
+    {
+      "name": "kms-30: committed signed default suite",
+      "passed": true
+    },
+    {
+      "name": "kms-30: context mismatch",
+      "passed": true
+    },
+    {
+      "name": "kms-31: Go to TypeScript authenticated decryption",
+      "passed": true
+    },
+    {
+      "name": "kms-31: committed signed default suite",
+      "passed": true
+    },
+    {
+      "name": "kms-31: context mismatch",
+      "passed": true
+    },
+    {
+      "name": "kms-32: Go to TypeScript authenticated decryption",
+      "passed": true
+    },
+    {
+      "name": "kms-32: committed signed default suite",
+      "passed": true
+    },
+    {
+      "name": "kms-32: context mismatch",
+      "passed": true
+    },
+    {
+      "name": "kms-33: Go to TypeScript authenticated decryption",
+      "passed": true
+    },
+    {
+      "name": "kms-33: committed signed default suite",
+      "passed": true
+    },
+    {
+      "name": "kms-33: context mismatch",
+      "passed": true
+    },
+    {
+      "name": "kms-34: Go to TypeScript authenticated decryption",
+      "passed": true
+    },
+    {
+      "name": "kms-34: committed signed default suite",
+      "passed": true
+    },
+    {
+      "name": "kms-34: context mismatch",
+      "passed": true
+    },
+    {
+      "name": "kms-35: Go to TypeScript authenticated decryption",
+      "passed": true
+    },
+    {
+      "name": "kms-35: committed signed default suite",
+      "passed": true
+    },
+    {
+      "name": "kms-35: context mismatch",
+      "passed": true
+    }
+  ]
+}

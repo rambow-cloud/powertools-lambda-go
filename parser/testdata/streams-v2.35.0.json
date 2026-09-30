@@ -1,0 +1,5435 @@
+{
+  "version": "2.35.0",
+  "zodVersion": "4.1.12",
+  "cases": [
+    {
+      "name": "SnsNotificationSchema-valid",
+      "schema": "SnsNotificationSchema",
+      "input": {
+        "Subject": null,
+        "TopicArn": "arn:topic",
+        "UnsubscribeUrl": "https://example.test/unsubscribe",
+        "SigningCertUrl": "https://example.test/cert",
+        "Type": "Notification",
+        "Message": "{\"id\":\"a\",\"amount\":1}",
+        "MessageId": "1",
+        "Timestamp": "2026-09-15T00:00:00Z",
+        "MessageAttributes": {
+          "tag": {
+            "Type": "String",
+            "Value": "value"
+          }
+        },
+        "ignored": true
+      },
+      "safe": true,
+      "expected": {
+        "success": true,
+        "data": {
+          "Subject": null,
+          "TopicArn": "arn:topic",
+          "UnsubscribeUrl": "https://example.test/unsubscribe",
+          "SigningCertUrl": "https://example.test/cert",
+          "Type": "Notification",
+          "MessageAttributes": {
+            "tag": {
+              "Type": "String",
+              "Value": "value"
+            }
+          },
+          "Message": "{\"id\":\"a\",\"amount\":1}",
+          "MessageId": "1",
+          "Timestamp": "2026-09-15T00:00:00Z"
+        }
+      }
+    },
+    {
+      "name": "SnsNotificationSchema-missing",
+      "schema": "SnsNotificationSchema",
+      "input": {},
+      "safe": true,
+      "expected": {
+        "success": false,
+        "issues": [
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected string, received undefined",
+            "path": [
+              "TopicArn"
+            ],
+            "expected": "string"
+          },
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected string, received undefined",
+            "path": [
+              "UnsubscribeUrl"
+            ],
+            "expected": "string"
+          },
+          {
+            "code": "invalid_value",
+            "message": "Invalid input: expected \"Notification\"",
+            "path": [
+              "Type"
+            ]
+          },
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected string, received undefined",
+            "path": [
+              "Message"
+            ],
+            "expected": "string"
+          },
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected string, received undefined",
+            "path": [
+              "MessageId"
+            ],
+            "expected": "string"
+          },
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected string, received undefined",
+            "path": [
+              "Timestamp"
+            ],
+            "expected": "string"
+          }
+        ],
+        "original": {}
+      }
+    },
+    {
+      "name": "SnsSqsNotificationSchema-valid",
+      "schema": "SnsSqsNotificationSchema",
+      "input": {
+        "Subject": null,
+        "TopicArn": "arn:topic",
+        "Type": "Notification",
+        "Message": "{\"id\":\"a\",\"amount\":1}",
+        "MessageId": "1",
+        "Timestamp": "2026-09-15T00:00:00Z",
+        "MessageAttributes": {
+          "tag": {
+            "Type": "String",
+            "Value": "value"
+          }
+        },
+        "ignored": true,
+        "UnsubscribeURL": "not a URL",
+        "SigningCertURL": "https://example.test/cert"
+      },
+      "safe": true,
+      "expected": {
+        "success": true,
+        "data": {
+          "Subject": null,
+          "TopicArn": "arn:topic",
+          "UnsubscribeURL": "not a URL",
+          "SigningCertURL": "https://example.test/cert",
+          "Type": "Notification",
+          "MessageAttributes": {
+            "tag": {
+              "Type": "String",
+              "Value": "value"
+            }
+          },
+          "Message": "{\"id\":\"a\",\"amount\":1}",
+          "MessageId": "1",
+          "Timestamp": "2026-09-15T00:00:00Z"
+        }
+      }
+    },
+    {
+      "name": "SnsSqsNotificationSchema-missing",
+      "schema": "SnsSqsNotificationSchema",
+      "input": {},
+      "safe": true,
+      "expected": {
+        "success": false,
+        "issues": [
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected string, received undefined",
+            "path": [
+              "TopicArn"
+            ],
+            "expected": "string"
+          },
+          {
+            "code": "invalid_value",
+            "message": "Invalid input: expected \"Notification\"",
+            "path": [
+              "Type"
+            ]
+          },
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected string, received undefined",
+            "path": [
+              "Message"
+            ],
+            "expected": "string"
+          },
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected string, received undefined",
+            "path": [
+              "MessageId"
+            ],
+            "expected": "string"
+          },
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected string, received undefined",
+            "path": [
+              "Timestamp"
+            ],
+            "expected": "string"
+          }
+        ],
+        "original": {}
+      }
+    },
+    {
+      "name": "SnsRecordSchema-valid",
+      "schema": "SnsRecordSchema",
+      "input": {
+        "EventSource": "aws:sns",
+        "EventVersion": "1",
+        "EventSubscriptionArn": "arn:subscription",
+        "Sns": {
+          "Subject": null,
+          "TopicArn": "arn:topic",
+          "UnsubscribeUrl": "https://example.test/unsubscribe",
+          "SigningCertUrl": "https://example.test/cert",
+          "Type": "Notification",
+          "Message": "{\"id\":\"a\",\"amount\":1}",
+          "MessageId": "1",
+          "Timestamp": "2026-09-15T00:00:00Z",
+          "MessageAttributes": {
+            "tag": {
+              "Type": "String",
+              "Value": "value"
+            }
+          },
+          "ignored": true
+        }
+      },
+      "safe": true,
+      "expected": {
+        "success": true,
+        "data": {
+          "EventSource": "aws:sns",
+          "EventVersion": "1",
+          "EventSubscriptionArn": "arn:subscription",
+          "Sns": {
+            "Subject": null,
+            "TopicArn": "arn:topic",
+            "UnsubscribeUrl": "https://example.test/unsubscribe",
+            "SigningCertUrl": "https://example.test/cert",
+            "Type": "Notification",
+            "MessageAttributes": {
+              "tag": {
+                "Type": "String",
+                "Value": "value"
+              }
+            },
+            "Message": "{\"id\":\"a\",\"amount\":1}",
+            "MessageId": "1",
+            "Timestamp": "2026-09-15T00:00:00Z"
+          }
+        }
+      }
+    },
+    {
+      "name": "SnsRecordSchema-missing",
+      "schema": "SnsRecordSchema",
+      "input": {},
+      "safe": true,
+      "expected": {
+        "success": false,
+        "issues": [
+          {
+            "code": "invalid_value",
+            "message": "Invalid input: expected \"aws:sns\"",
+            "path": [
+              "EventSource"
+            ]
+          },
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected string, received undefined",
+            "path": [
+              "EventVersion"
+            ],
+            "expected": "string"
+          },
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected string, received undefined",
+            "path": [
+              "EventSubscriptionArn"
+            ],
+            "expected": "string"
+          },
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected object, received undefined",
+            "path": [
+              "Sns"
+            ],
+            "expected": "object"
+          }
+        ],
+        "original": {}
+      }
+    },
+    {
+      "name": "SnsSchema-valid",
+      "schema": "SnsSchema",
+      "input": {
+        "Records": [
+          {
+            "EventSource": "aws:sns",
+            "EventVersion": "1",
+            "EventSubscriptionArn": "arn:subscription",
+            "Sns": {
+              "Subject": null,
+              "TopicArn": "arn:topic",
+              "UnsubscribeUrl": "https://example.test/unsubscribe",
+              "SigningCertUrl": "https://example.test/cert",
+              "Type": "Notification",
+              "Message": "{\"id\":\"a\",\"amount\":1}",
+              "MessageId": "1",
+              "Timestamp": "2026-09-15T00:00:00Z",
+              "MessageAttributes": {
+                "tag": {
+                  "Type": "String",
+                  "Value": "value"
+                }
+              },
+              "ignored": true
+            }
+          }
+        ]
+      },
+      "safe": true,
+      "expected": {
+        "success": true,
+        "data": {
+          "Records": [
+            {
+              "EventSource": "aws:sns",
+              "EventVersion": "1",
+              "EventSubscriptionArn": "arn:subscription",
+              "Sns": {
+                "Subject": null,
+                "TopicArn": "arn:topic",
+                "UnsubscribeUrl": "https://example.test/unsubscribe",
+                "SigningCertUrl": "https://example.test/cert",
+                "Type": "Notification",
+                "MessageAttributes": {
+                  "tag": {
+                    "Type": "String",
+                    "Value": "value"
+                  }
+                },
+                "Message": "{\"id\":\"a\",\"amount\":1}",
+                "MessageId": "1",
+                "Timestamp": "2026-09-15T00:00:00Z"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "SnsSchema-missing",
+      "schema": "SnsSchema",
+      "input": {},
+      "safe": true,
+      "expected": {
+        "success": false,
+        "issues": [
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected array, received undefined",
+            "path": [
+              "Records"
+            ],
+            "expected": "array"
+          }
+        ],
+        "original": {}
+      }
+    },
+    {
+      "name": "DynamoDBStreamChangeRecordBase-valid",
+      "schema": "DynamoDBStreamChangeRecordBase",
+      "input": {
+        "ApproximateCreationDateTime": 1,
+        "Keys": {
+          "id": {
+            "S": "a"
+          }
+        },
+        "NewImage": {
+          "id": {
+            "S": "a"
+          },
+          "amount": {
+            "N": "1"
+          }
+        },
+        "OldImage": {
+          "id": {
+            "S": "old"
+          },
+          "amount": {
+            "N": "0"
+          }
+        },
+        "SequenceNumber": "90071992547409930001",
+        "SizeBytes": 10,
+        "StreamViewType": "NEW_AND_OLD_IMAGES"
+      },
+      "safe": true,
+      "expected": {
+        "success": true,
+        "data": {
+          "ApproximateCreationDateTime": 1,
+          "Keys": {
+            "id": {
+              "S": "a"
+            }
+          },
+          "NewImage": {
+            "id": {
+              "S": "a"
+            },
+            "amount": {
+              "N": "1"
+            }
+          },
+          "OldImage": {
+            "id": {
+              "S": "old"
+            },
+            "amount": {
+              "N": "0"
+            }
+          },
+          "SequenceNumber": "90071992547409930001",
+          "SizeBytes": 10,
+          "StreamViewType": "NEW_AND_OLD_IMAGES"
+        }
+      }
+    },
+    {
+      "name": "DynamoDBStreamChangeRecordBase-missing",
+      "schema": "DynamoDBStreamChangeRecordBase",
+      "input": {},
+      "safe": true,
+      "expected": {
+        "success": false,
+        "issues": [
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected record, received undefined",
+            "path": [
+              "Keys"
+            ],
+            "expected": "record"
+          },
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected string, received undefined",
+            "path": [
+              "SequenceNumber"
+            ],
+            "expected": "string"
+          },
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected number, received undefined",
+            "path": [
+              "SizeBytes"
+            ],
+            "expected": "number"
+          },
+          {
+            "code": "invalid_value",
+            "message": "Invalid option: expected one of \"NEW_IMAGE\"|\"OLD_IMAGE\"|\"NEW_AND_OLD_IMAGES\"|\"KEYS_ONLY\"",
+            "path": [
+              "StreamViewType"
+            ]
+          }
+        ],
+        "original": {}
+      }
+    },
+    {
+      "name": "DynamoDBStreamToKinesisChangeRecord-valid",
+      "schema": "DynamoDBStreamToKinesisChangeRecord",
+      "input": {
+        "ApproximateCreationDateTime": 1,
+        "Keys": {
+          "id": {
+            "S": "a"
+          }
+        },
+        "NewImage": {
+          "id": {
+            "S": "a"
+          },
+          "amount": {
+            "N": "1"
+          }
+        },
+        "OldImage": {
+          "id": {
+            "S": "old"
+          },
+          "amount": {
+            "N": "0"
+          }
+        },
+        "SizeBytes": 10
+      },
+      "safe": true,
+      "expected": {
+        "success": true,
+        "data": {
+          "ApproximateCreationDateTime": 1,
+          "Keys": {
+            "id": {
+              "S": "a"
+            }
+          },
+          "NewImage": {
+            "id": {
+              "S": "a"
+            },
+            "amount": {
+              "N": "1"
+            }
+          },
+          "OldImage": {
+            "id": {
+              "S": "old"
+            },
+            "amount": {
+              "N": "0"
+            }
+          },
+          "SizeBytes": 10
+        }
+      }
+    },
+    {
+      "name": "DynamoDBStreamToKinesisChangeRecord-missing",
+      "schema": "DynamoDBStreamToKinesisChangeRecord",
+      "input": {},
+      "safe": true,
+      "expected": {
+        "success": false,
+        "issues": [
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected record, received undefined",
+            "path": [
+              "Keys"
+            ],
+            "expected": "record"
+          },
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected number, received undefined",
+            "path": [
+              "SizeBytes"
+            ],
+            "expected": "number"
+          }
+        ],
+        "original": {}
+      }
+    },
+    {
+      "name": "DynamoDBStreamChangeRecord-valid",
+      "schema": "DynamoDBStreamChangeRecord",
+      "input": {
+        "ApproximateCreationDateTime": 1,
+        "Keys": {
+          "id": {
+            "S": "a"
+          }
+        },
+        "NewImage": {
+          "id": {
+            "S": "a"
+          },
+          "amount": {
+            "N": "1"
+          }
+        },
+        "OldImage": {
+          "id": {
+            "S": "old"
+          },
+          "amount": {
+            "N": "0"
+          }
+        },
+        "SequenceNumber": "90071992547409930001",
+        "SizeBytes": 10,
+        "StreamViewType": "NEW_AND_OLD_IMAGES"
+      },
+      "safe": true,
+      "expected": {
+        "success": true,
+        "data": {
+          "ApproximateCreationDateTime": 1,
+          "Keys": {
+            "id": "a"
+          },
+          "NewImage": {
+            "id": "a",
+            "amount": 1
+          },
+          "OldImage": {
+            "id": "old",
+            "amount": 0
+          },
+          "SequenceNumber": "90071992547409930001",
+          "SizeBytes": 10,
+          "StreamViewType": "NEW_AND_OLD_IMAGES"
+        }
+      }
+    },
+    {
+      "name": "DynamoDBStreamChangeRecord-missing",
+      "schema": "DynamoDBStreamChangeRecord",
+      "input": {},
+      "safe": true,
+      "expected": {
+        "success": false,
+        "issues": [
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected record, received undefined",
+            "path": [
+              "Keys"
+            ],
+            "expected": "record"
+          },
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected string, received undefined",
+            "path": [
+              "SequenceNumber"
+            ],
+            "expected": "string"
+          },
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected number, received undefined",
+            "path": [
+              "SizeBytes"
+            ],
+            "expected": "number"
+          },
+          {
+            "code": "invalid_value",
+            "message": "Invalid option: expected one of \"NEW_IMAGE\"|\"OLD_IMAGE\"|\"NEW_AND_OLD_IMAGES\"|\"KEYS_ONLY\"",
+            "path": [
+              "StreamViewType"
+            ]
+          }
+        ],
+        "original": {}
+      }
+    },
+    {
+      "name": "UserIdentity-valid",
+      "schema": "UserIdentity",
+      "input": {
+        "type": "Service",
+        "principalId": "dynamodb.amazonaws.com"
+      },
+      "safe": true,
+      "expected": {
+        "success": true,
+        "data": {
+          "type": "Service",
+          "principalId": "dynamodb.amazonaws.com"
+        }
+      }
+    },
+    {
+      "name": "UserIdentity-missing",
+      "schema": "UserIdentity",
+      "input": {},
+      "safe": true,
+      "expected": {
+        "success": false,
+        "issues": [
+          {
+            "code": "invalid_value",
+            "message": "Invalid input: expected \"Service\"",
+            "path": [
+              "type"
+            ]
+          },
+          {
+            "code": "invalid_value",
+            "message": "Invalid input: expected \"dynamodb.amazonaws.com\"",
+            "path": [
+              "principalId"
+            ]
+          }
+        ],
+        "original": {}
+      }
+    },
+    {
+      "name": "DynamoDBStreamRecord-valid",
+      "schema": "DynamoDBStreamRecord",
+      "input": {
+        "eventID": "1",
+        "eventName": "MODIFY",
+        "eventVersion": "1",
+        "eventSource": "aws:dynamodb",
+        "awsRegion": "ap-east-1",
+        "eventSourceARN": "arn:stream",
+        "dynamodb": {
+          "ApproximateCreationDateTime": 1,
+          "Keys": {
+            "id": {
+              "S": "a"
+            }
+          },
+          "NewImage": {
+            "id": {
+              "S": "a"
+            },
+            "amount": {
+              "N": "1"
+            }
+          },
+          "OldImage": {
+            "id": {
+              "S": "old"
+            },
+            "amount": {
+              "N": "0"
+            }
+          },
+          "SequenceNumber": "90071992547409930001",
+          "SizeBytes": 10,
+          "StreamViewType": "NEW_AND_OLD_IMAGES"
+        },
+        "userIdentity": {
+          "type": "Service",
+          "principalId": "dynamodb.amazonaws.com"
+        }
+      },
+      "safe": true,
+      "expected": {
+        "success": true,
+        "data": {
+          "eventID": "1",
+          "eventName": "MODIFY",
+          "eventVersion": "1",
+          "eventSource": "aws:dynamodb",
+          "awsRegion": "ap-east-1",
+          "eventSourceARN": "arn:stream",
+          "dynamodb": {
+            "ApproximateCreationDateTime": 1,
+            "Keys": {
+              "id": "a"
+            },
+            "NewImage": {
+              "id": "a",
+              "amount": 1
+            },
+            "OldImage": {
+              "id": "old",
+              "amount": 0
+            },
+            "SequenceNumber": "90071992547409930001",
+            "SizeBytes": 10,
+            "StreamViewType": "NEW_AND_OLD_IMAGES"
+          },
+          "userIdentity": {
+            "type": "Service",
+            "principalId": "dynamodb.amazonaws.com"
+          }
+        }
+      }
+    },
+    {
+      "name": "DynamoDBStreamRecord-missing",
+      "schema": "DynamoDBStreamRecord",
+      "input": {},
+      "safe": true,
+      "expected": {
+        "success": false,
+        "issues": [
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected string, received undefined",
+            "path": [
+              "eventID"
+            ],
+            "expected": "string"
+          },
+          {
+            "code": "invalid_value",
+            "message": "Invalid option: expected one of \"INSERT\"|\"MODIFY\"|\"REMOVE\"",
+            "path": [
+              "eventName"
+            ]
+          },
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected string, received undefined",
+            "path": [
+              "eventVersion"
+            ],
+            "expected": "string"
+          },
+          {
+            "code": "invalid_value",
+            "message": "Invalid input: expected \"aws:dynamodb\"",
+            "path": [
+              "eventSource"
+            ]
+          },
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected string, received undefined",
+            "path": [
+              "awsRegion"
+            ],
+            "expected": "string"
+          },
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected string, received undefined",
+            "path": [
+              "eventSourceARN"
+            ],
+            "expected": "string"
+          },
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected object, received undefined",
+            "path": [
+              "dynamodb"
+            ],
+            "expected": "object"
+          }
+        ],
+        "original": {}
+      }
+    },
+    {
+      "name": "DynamoDBStreamToKinesisRecord-valid",
+      "schema": "DynamoDBStreamToKinesisRecord",
+      "input": {
+        "eventID": "1",
+        "eventName": "MODIFY",
+        "eventSource": "aws:dynamodb",
+        "awsRegion": "ap-east-1",
+        "dynamodb": {
+          "ApproximateCreationDateTime": 1,
+          "Keys": {
+            "id": {
+              "S": "a"
+            }
+          },
+          "NewImage": {
+            "id": {
+              "S": "a"
+            },
+            "amount": {
+              "N": "1"
+            }
+          },
+          "OldImage": {
+            "id": {
+              "S": "old"
+            },
+            "amount": {
+              "N": "0"
+            }
+          },
+          "SizeBytes": 10
+        },
+        "userIdentity": null,
+        "recordFormat": "application/json",
+        "tableName": "orders"
+      },
+      "safe": true,
+      "expected": {
+        "success": true,
+        "data": {
+          "eventID": "1",
+          "eventName": "MODIFY",
+          "eventSource": "aws:dynamodb",
+          "awsRegion": "ap-east-1",
+          "dynamodb": {
+            "ApproximateCreationDateTime": 1,
+            "Keys": {
+              "id": "a"
+            },
+            "NewImage": {
+              "id": "a",
+              "amount": 1
+            },
+            "OldImage": {
+              "id": "old",
+              "amount": 0
+            },
+            "SizeBytes": 10
+          },
+          "userIdentity": null,
+          "recordFormat": "application/json",
+          "tableName": "orders"
+        }
+      }
+    },
+    {
+      "name": "DynamoDBStreamToKinesisRecord-missing",
+      "schema": "DynamoDBStreamToKinesisRecord",
+      "input": {},
+      "safe": true,
+      "expected": {
+        "success": false,
+        "issues": [
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected string, received undefined",
+            "path": [
+              "eventID"
+            ],
+            "expected": "string"
+          },
+          {
+            "code": "invalid_value",
+            "message": "Invalid option: expected one of \"INSERT\"|\"MODIFY\"|\"REMOVE\"",
+            "path": [
+              "eventName"
+            ]
+          },
+          {
+            "code": "invalid_value",
+            "message": "Invalid input: expected \"aws:dynamodb\"",
+            "path": [
+              "eventSource"
+            ]
+          },
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected string, received undefined",
+            "path": [
+              "awsRegion"
+            ],
+            "expected": "string"
+          },
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected object, received undefined",
+            "path": [
+              "dynamodb"
+            ],
+            "expected": "object"
+          },
+          {
+            "code": "invalid_value",
+            "message": "Invalid input: expected \"application/json\"",
+            "path": [
+              "recordFormat"
+            ]
+          },
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected string, received undefined",
+            "path": [
+              "tableName"
+            ],
+            "expected": "string"
+          }
+        ],
+        "original": {}
+      }
+    },
+    {
+      "name": "DynamoDBStreamSchema-valid",
+      "schema": "DynamoDBStreamSchema",
+      "input": {
+        "Records": [
+          {
+            "eventID": "1",
+            "eventName": "MODIFY",
+            "eventVersion": "1",
+            "eventSource": "aws:dynamodb",
+            "awsRegion": "ap-east-1",
+            "eventSourceARN": "arn:stream",
+            "dynamodb": {
+              "ApproximateCreationDateTime": 1,
+              "Keys": {
+                "id": {
+                  "S": "a"
+                }
+              },
+              "NewImage": {
+                "id": {
+                  "S": "a"
+                },
+                "amount": {
+                  "N": "1"
+                }
+              },
+              "OldImage": {
+                "id": {
+                  "S": "old"
+                },
+                "amount": {
+                  "N": "0"
+                }
+              },
+              "SequenceNumber": "90071992547409930001",
+              "SizeBytes": 10,
+              "StreamViewType": "NEW_AND_OLD_IMAGES"
+            },
+            "userIdentity": {
+              "type": "Service",
+              "principalId": "dynamodb.amazonaws.com"
+            }
+          }
+        ]
+      },
+      "safe": true,
+      "expected": {
+        "success": true,
+        "data": {
+          "Records": [
+            {
+              "eventID": "1",
+              "eventName": "MODIFY",
+              "eventVersion": "1",
+              "eventSource": "aws:dynamodb",
+              "awsRegion": "ap-east-1",
+              "eventSourceARN": "arn:stream",
+              "dynamodb": {
+                "ApproximateCreationDateTime": 1,
+                "Keys": {
+                  "id": "a"
+                },
+                "NewImage": {
+                  "id": "a",
+                  "amount": 1
+                },
+                "OldImage": {
+                  "id": "old",
+                  "amount": 0
+                },
+                "SequenceNumber": "90071992547409930001",
+                "SizeBytes": 10,
+                "StreamViewType": "NEW_AND_OLD_IMAGES"
+              },
+              "userIdentity": {
+                "type": "Service",
+                "principalId": "dynamodb.amazonaws.com"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "DynamoDBStreamSchema-missing",
+      "schema": "DynamoDBStreamSchema",
+      "input": {},
+      "safe": true,
+      "expected": {
+        "success": false,
+        "issues": [
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected array, received undefined",
+            "path": [
+              "Records"
+            ],
+            "expected": "array"
+          }
+        ],
+        "original": {}
+      }
+    },
+    {
+      "name": "KinesisDataStreamRecordPayload-valid",
+      "schema": "KinesisDataStreamRecordPayload",
+      "input": {
+        "kinesisSchemaVersion": "1",
+        "partitionKey": "key",
+        "sequenceNumber": "90071992547409930001",
+        "approximateArrivalTimestamp": 1,
+        "data": "eyJpZCI6ImEiLCJhbW91bnQiOjF9"
+      },
+      "safe": true,
+      "expected": {
+        "success": true,
+        "data": {
+          "kinesisSchemaVersion": "1",
+          "partitionKey": "key",
+          "sequenceNumber": "90071992547409930001",
+          "approximateArrivalTimestamp": 1,
+          "data": {
+            "id": "a",
+            "amount": 1
+          }
+        }
+      }
+    },
+    {
+      "name": "KinesisDataStreamRecordPayload-missing",
+      "schema": "KinesisDataStreamRecordPayload",
+      "input": {},
+      "safe": true,
+      "expected": {
+        "success": false,
+        "issues": [
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected string, received undefined",
+            "path": [
+              "kinesisSchemaVersion"
+            ],
+            "expected": "string"
+          },
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected string, received undefined",
+            "path": [
+              "partitionKey"
+            ],
+            "expected": "string"
+          },
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected string, received undefined",
+            "path": [
+              "sequenceNumber"
+            ],
+            "expected": "string"
+          },
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected number, received undefined",
+            "path": [
+              "approximateArrivalTimestamp"
+            ],
+            "expected": "number"
+          },
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected string, received undefined",
+            "path": [
+              "data"
+            ],
+            "expected": "string"
+          }
+        ],
+        "original": {}
+      }
+    },
+    {
+      "name": "KinesisDataStreamRecord-valid",
+      "schema": "KinesisDataStreamRecord",
+      "input": {
+        "eventSource": "aws:kinesis",
+        "eventVersion": "1",
+        "eventID": "1",
+        "eventName": "aws:kinesis:record",
+        "awsRegion": "ap-east-1",
+        "invokeIdentityArn": "arn:role",
+        "eventSourceARN": "arn:stream",
+        "kinesis": {
+          "kinesisSchemaVersion": "1",
+          "partitionKey": "key",
+          "sequenceNumber": "90071992547409930001",
+          "approximateArrivalTimestamp": 1,
+          "data": "eyJpZCI6ImEiLCJhbW91bnQiOjF9"
+        }
+      },
+      "safe": true,
+      "expected": {
+        "success": true,
+        "data": {
+          "eventSource": "aws:kinesis",
+          "eventVersion": "1",
+          "eventID": "1",
+          "eventName": "aws:kinesis:record",
+          "awsRegion": "ap-east-1",
+          "invokeIdentityArn": "arn:role",
+          "eventSourceARN": "arn:stream",
+          "kinesis": {
+            "kinesisSchemaVersion": "1",
+            "partitionKey": "key",
+            "sequenceNumber": "90071992547409930001",
+            "approximateArrivalTimestamp": 1,
+            "data": {
+              "id": "a",
+              "amount": 1
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "KinesisDataStreamRecord-missing",
+      "schema": "KinesisDataStreamRecord",
+      "input": {},
+      "safe": true,
+      "expected": {
+        "success": false,
+        "issues": [
+          {
+            "code": "invalid_value",
+            "message": "Invalid input: expected \"aws:kinesis\"",
+            "path": [
+              "eventSource"
+            ]
+          },
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected string, received undefined",
+            "path": [
+              "eventVersion"
+            ],
+            "expected": "string"
+          },
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected string, received undefined",
+            "path": [
+              "eventID"
+            ],
+            "expected": "string"
+          },
+          {
+            "code": "invalid_value",
+            "message": "Invalid input: expected \"aws:kinesis:record\"",
+            "path": [
+              "eventName"
+            ]
+          },
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected string, received undefined",
+            "path": [
+              "awsRegion"
+            ],
+            "expected": "string"
+          },
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected string, received undefined",
+            "path": [
+              "invokeIdentityArn"
+            ],
+            "expected": "string"
+          },
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected string, received undefined",
+            "path": [
+              "eventSourceARN"
+            ],
+            "expected": "string"
+          },
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected object, received undefined",
+            "path": [
+              "kinesis"
+            ],
+            "expected": "object"
+          }
+        ],
+        "original": {}
+      }
+    },
+    {
+      "name": "KinesisDataStreamSchema-valid",
+      "schema": "KinesisDataStreamSchema",
+      "input": {
+        "Records": [
+          {
+            "eventSource": "aws:kinesis",
+            "eventVersion": "1",
+            "eventID": "1",
+            "eventName": "aws:kinesis:record",
+            "awsRegion": "ap-east-1",
+            "invokeIdentityArn": "arn:role",
+            "eventSourceARN": "arn:stream",
+            "kinesis": {
+              "kinesisSchemaVersion": "1",
+              "partitionKey": "key",
+              "sequenceNumber": "90071992547409930001",
+              "approximateArrivalTimestamp": 1,
+              "data": "eyJpZCI6ImEiLCJhbW91bnQiOjF9"
+            }
+          }
+        ]
+      },
+      "safe": true,
+      "expected": {
+        "success": true,
+        "data": {
+          "Records": [
+            {
+              "eventSource": "aws:kinesis",
+              "eventVersion": "1",
+              "eventID": "1",
+              "eventName": "aws:kinesis:record",
+              "awsRegion": "ap-east-1",
+              "invokeIdentityArn": "arn:role",
+              "eventSourceARN": "arn:stream",
+              "kinesis": {
+                "kinesisSchemaVersion": "1",
+                "partitionKey": "key",
+                "sequenceNumber": "90071992547409930001",
+                "approximateArrivalTimestamp": 1,
+                "data": {
+                  "id": "a",
+                  "amount": 1
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "KinesisDataStreamSchema-missing",
+      "schema": "KinesisDataStreamSchema",
+      "input": {},
+      "safe": true,
+      "expected": {
+        "success": false,
+        "issues": [
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected array, received undefined",
+            "path": [
+              "Records"
+            ],
+            "expected": "array"
+          }
+        ],
+        "original": {}
+      }
+    },
+    {
+      "name": "KinesisDynamoDBStreamSchema-valid",
+      "schema": "KinesisDynamoDBStreamSchema",
+      "input": {
+        "Records": [
+          {
+            "eventSource": "aws:kinesis",
+            "eventVersion": "1",
+            "eventID": "1",
+            "eventName": "aws:kinesis:record",
+            "awsRegion": "ap-east-1",
+            "invokeIdentityArn": "arn:role",
+            "eventSourceARN": "arn:stream",
+            "kinesis": {
+              "kinesisSchemaVersion": "1",
+              "partitionKey": "key",
+              "sequenceNumber": "90071992547409930001",
+              "approximateArrivalTimestamp": 1,
+              "data": "eyJldmVudElEIjoiMSIsImV2ZW50TmFtZSI6Ik1PRElGWSIsImV2ZW50U291cmNlIjoiYXdzOmR5bmFtb2RiIiwiYXdzUmVnaW9uIjoiYXAtZWFzdC0xIiwiZHluYW1vZGIiOnsiQXBwcm94aW1hdGVDcmVhdGlvbkRhdGVUaW1lIjoxLCJLZXlzIjp7ImlkIjp7IlMiOiJhIn19LCJOZXdJbWFnZSI6eyJpZCI6eyJTIjoiYSJ9LCJhbW91bnQiOnsiTiI6IjEifX0sIk9sZEltYWdlIjp7ImlkIjp7IlMiOiJvbGQifSwiYW1vdW50Ijp7Ik4iOiIwIn19LCJTaXplQnl0ZXMiOjEwfSwidXNlcklkZW50aXR5IjpudWxsLCJyZWNvcmRGb3JtYXQiOiJhcHBsaWNhdGlvbi9qc29uIiwidGFibGVOYW1lIjoib3JkZXJzIn0="
+            }
+          }
+        ]
+      },
+      "safe": true,
+      "expected": {
+        "success": true,
+        "data": {
+          "Records": [
+            {
+              "eventSource": "aws:kinesis",
+              "eventVersion": "1",
+              "eventID": "1",
+              "eventName": "aws:kinesis:record",
+              "awsRegion": "ap-east-1",
+              "invokeIdentityArn": "arn:role",
+              "eventSourceARN": "arn:stream",
+              "kinesis": {
+                "kinesisSchemaVersion": "1",
+                "partitionKey": "key",
+                "sequenceNumber": "90071992547409930001",
+                "approximateArrivalTimestamp": 1,
+                "data": {
+                  "eventID": "1",
+                  "eventName": "MODIFY",
+                  "eventSource": "aws:dynamodb",
+                  "awsRegion": "ap-east-1",
+                  "dynamodb": {
+                    "ApproximateCreationDateTime": 1,
+                    "Keys": {
+                      "id": "a"
+                    },
+                    "NewImage": {
+                      "id": "a",
+                      "amount": 1
+                    },
+                    "OldImage": {
+                      "id": "old",
+                      "amount": 0
+                    },
+                    "SizeBytes": 10
+                  },
+                  "userIdentity": null,
+                  "recordFormat": "application/json",
+                  "tableName": "orders"
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "KinesisDynamoDBStreamSchema-missing",
+      "schema": "KinesisDynamoDBStreamSchema",
+      "input": {},
+      "safe": true,
+      "expected": {
+        "success": false,
+        "issues": [
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected array, received undefined",
+            "path": [
+              "Records"
+            ],
+            "expected": "array"
+          }
+        ],
+        "original": {}
+      }
+    },
+    {
+      "name": "KinesisFirehoseRecordSchema-valid",
+      "schema": "KinesisFirehoseRecordSchema",
+      "input": {
+        "recordId": "1",
+        "approximateArrivalTimestamp": 1,
+        "kinesisRecordMetadata": {
+          "shardId": "shard",
+          "partitionKey": "key",
+          "approximateArrivalTimestamp": 1,
+          "sequenceNumber": "1",
+          "subsequenceNumber": 0
+        },
+        "data": "eyJpZCI6ImEiLCJhbW91bnQiOjF9"
+      },
+      "safe": true,
+      "expected": {
+        "success": true,
+        "data": {
+          "recordId": "1",
+          "approximateArrivalTimestamp": 1,
+          "kinesisRecordMetadata": {
+            "shardId": "shard",
+            "partitionKey": "key",
+            "approximateArrivalTimestamp": 1,
+            "sequenceNumber": "1",
+            "subsequenceNumber": 0
+          },
+          "data": "{\"id\":\"a\",\"amount\":1}"
+        }
+      }
+    },
+    {
+      "name": "KinesisFirehoseRecordSchema-missing",
+      "schema": "KinesisFirehoseRecordSchema",
+      "input": {},
+      "safe": true,
+      "expected": {
+        "success": false,
+        "issues": [
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected string, received undefined",
+            "path": [
+              "recordId"
+            ],
+            "expected": "string"
+          },
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected number, received undefined",
+            "path": [
+              "approximateArrivalTimestamp"
+            ],
+            "expected": "number"
+          },
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected string, received undefined",
+            "path": [
+              "data"
+            ],
+            "expected": "string"
+          }
+        ],
+        "original": {}
+      }
+    },
+    {
+      "name": "KinesisFirehoseSqsRecordSchema-valid",
+      "schema": "KinesisFirehoseSqsRecordSchema",
+      "input": {
+        "recordId": "1",
+        "approximateArrivalTimestamp": 1,
+        "kinesisRecordMetadata": {
+          "shardId": "shard",
+          "partitionKey": "key",
+          "approximateArrivalTimestamp": 1,
+          "sequenceNumber": "1",
+          "subsequenceNumber": 0
+        },
+        "data": "eyJtZXNzYWdlSWQiOiIxIiwicmVjZWlwdEhhbmRsZSI6InIiLCJib2R5Ijoie1wiU3ViamVjdFwiOm51bGwsXCJUb3BpY0FyblwiOlwiYXJuOnRvcGljXCIsXCJUeXBlXCI6XCJOb3RpZmljYXRpb25cIixcIk1lc3NhZ2VcIjpcIntcXFwiaWRcXFwiOlxcXCJhXFxcIixcXFwiYW1vdW50XFxcIjoxfVwiLFwiTWVzc2FnZUlkXCI6XCIxXCIsXCJUaW1lc3RhbXBcIjpcIjIwMjYtMDktMTVUMDA6MDA6MDBaXCIsXCJNZXNzYWdlQXR0cmlidXRlc1wiOntcInRhZ1wiOntcIlR5cGVcIjpcIlN0cmluZ1wiLFwiVmFsdWVcIjpcInZhbHVlXCJ9fSxcImlnbm9yZWRcIjp0cnVlLFwiVW5zdWJzY3JpYmVVUkxcIjpcIm5vdCBhIFVSTFwiLFwiU2lnbmluZ0NlcnRVUkxcIjpcImh0dHBzOi8vZXhhbXBsZS50ZXN0L2NlcnRcIn0iLCJhdHRyaWJ1dGVzIjp7IkFwcHJveGltYXRlUmVjZWl2ZUNvdW50IjoiMSIsIkFwcHJveGltYXRlRmlyc3RSZWNlaXZlVGltZXN0YW1wIjoiMSIsIlNlbmRlcklkIjoicyIsIlNlbnRUaW1lc3RhbXAiOiIxIn0sIm1lc3NhZ2VBdHRyaWJ1dGVzIjp7fSwibWQ1T2ZCb2R5IjoiaGFzaCIsImV2ZW50U291cmNlIjoiYXdzOnNxcyIsImV2ZW50U291cmNlQVJOIjoiYXJuOnF1ZXVlIiwiYXdzUmVnaW9uIjoiYXAtZWFzdC0xIn0="
+      },
+      "safe": true,
+      "expected": {
+        "success": true,
+        "data": {
+          "recordId": "1",
+          "approximateArrivalTimestamp": 1,
+          "kinesisRecordMetadata": {
+            "shardId": "shard",
+            "partitionKey": "key",
+            "approximateArrivalTimestamp": 1,
+            "sequenceNumber": "1",
+            "subsequenceNumber": 0
+          },
+          "data": {
+            "messageId": "1",
+            "receiptHandle": "r",
+            "body": "{\"Subject\":null,\"TopicArn\":\"arn:topic\",\"Type\":\"Notification\",\"Message\":\"{\\\"id\\\":\\\"a\\\",\\\"amount\\\":1}\",\"MessageId\":\"1\",\"Timestamp\":\"2026-09-15T00:00:00Z\",\"MessageAttributes\":{\"tag\":{\"Type\":\"String\",\"Value\":\"value\"}},\"ignored\":true,\"UnsubscribeURL\":\"not a URL\",\"SigningCertURL\":\"https://example.test/cert\"}",
+            "attributes": {
+              "ApproximateReceiveCount": "1",
+              "ApproximateFirstReceiveTimestamp": "1",
+              "SenderId": "s",
+              "SentTimestamp": "1"
+            },
+            "messageAttributes": {},
+            "md5OfBody": "hash",
+            "eventSource": "aws:sqs",
+            "eventSourceARN": "arn:queue",
+            "awsRegion": "ap-east-1"
+          }
+        }
+      }
+    },
+    {
+      "name": "KinesisFirehoseSqsRecordSchema-missing",
+      "schema": "KinesisFirehoseSqsRecordSchema",
+      "input": {},
+      "safe": true,
+      "expected": {
+        "success": false,
+        "issues": [
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected string, received undefined",
+            "path": [
+              "recordId"
+            ],
+            "expected": "string"
+          },
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected number, received undefined",
+            "path": [
+              "approximateArrivalTimestamp"
+            ],
+            "expected": "number"
+          },
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected string, received undefined",
+            "path": [
+              "data"
+            ],
+            "expected": "string"
+          }
+        ],
+        "original": {}
+      }
+    },
+    {
+      "name": "KinesisFirehoseSchema-valid",
+      "schema": "KinesisFirehoseSchema",
+      "input": {
+        "invocationId": "1",
+        "deliveryStreamArn": "arn:delivery",
+        "region": "ap-east-1",
+        "records": [
+          {
+            "recordId": "1",
+            "approximateArrivalTimestamp": 1,
+            "kinesisRecordMetadata": {
+              "shardId": "shard",
+              "partitionKey": "key",
+              "approximateArrivalTimestamp": 1,
+              "sequenceNumber": "1",
+              "subsequenceNumber": 0
+            },
+            "data": "eyJpZCI6ImEiLCJhbW91bnQiOjF9"
+          }
+        ]
+      },
+      "safe": true,
+      "expected": {
+        "success": true,
+        "data": {
+          "invocationId": "1",
+          "deliveryStreamArn": "arn:delivery",
+          "region": "ap-east-1",
+          "records": [
+            {
+              "recordId": "1",
+              "approximateArrivalTimestamp": 1,
+              "kinesisRecordMetadata": {
+                "shardId": "shard",
+                "partitionKey": "key",
+                "approximateArrivalTimestamp": 1,
+                "sequenceNumber": "1",
+                "subsequenceNumber": 0
+              },
+              "data": "{\"id\":\"a\",\"amount\":1}"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "KinesisFirehoseSchema-missing",
+      "schema": "KinesisFirehoseSchema",
+      "input": {},
+      "safe": true,
+      "expected": {
+        "success": false,
+        "issues": [
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected string, received undefined",
+            "path": [
+              "invocationId"
+            ],
+            "expected": "string"
+          },
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected string, received undefined",
+            "path": [
+              "deliveryStreamArn"
+            ],
+            "expected": "string"
+          },
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected string, received undefined",
+            "path": [
+              "region"
+            ],
+            "expected": "string"
+          },
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected array, received undefined",
+            "path": [
+              "records"
+            ],
+            "expected": "array"
+          }
+        ],
+        "original": {}
+      }
+    },
+    {
+      "name": "KinesisFirehoseSqsSchema-valid",
+      "schema": "KinesisFirehoseSqsSchema",
+      "input": {
+        "invocationId": "1",
+        "deliveryStreamArn": "arn:delivery",
+        "region": "ap-east-1",
+        "records": [
+          {
+            "recordId": "1",
+            "approximateArrivalTimestamp": 1,
+            "kinesisRecordMetadata": {
+              "shardId": "shard",
+              "partitionKey": "key",
+              "approximateArrivalTimestamp": 1,
+              "sequenceNumber": "1",
+              "subsequenceNumber": 0
+            },
+            "data": "eyJtZXNzYWdlSWQiOiIxIiwicmVjZWlwdEhhbmRsZSI6InIiLCJib2R5Ijoie1wiU3ViamVjdFwiOm51bGwsXCJUb3BpY0FyblwiOlwiYXJuOnRvcGljXCIsXCJUeXBlXCI6XCJOb3RpZmljYXRpb25cIixcIk1lc3NhZ2VcIjpcIntcXFwiaWRcXFwiOlxcXCJhXFxcIixcXFwiYW1vdW50XFxcIjoxfVwiLFwiTWVzc2FnZUlkXCI6XCIxXCIsXCJUaW1lc3RhbXBcIjpcIjIwMjYtMDktMTVUMDA6MDA6MDBaXCIsXCJNZXNzYWdlQXR0cmlidXRlc1wiOntcInRhZ1wiOntcIlR5cGVcIjpcIlN0cmluZ1wiLFwiVmFsdWVcIjpcInZhbHVlXCJ9fSxcImlnbm9yZWRcIjp0cnVlLFwiVW5zdWJzY3JpYmVVUkxcIjpcIm5vdCBhIFVSTFwiLFwiU2lnbmluZ0NlcnRVUkxcIjpcImh0dHBzOi8vZXhhbXBsZS50ZXN0L2NlcnRcIn0iLCJhdHRyaWJ1dGVzIjp7IkFwcHJveGltYXRlUmVjZWl2ZUNvdW50IjoiMSIsIkFwcHJveGltYXRlRmlyc3RSZWNlaXZlVGltZXN0YW1wIjoiMSIsIlNlbmRlcklkIjoicyIsIlNlbnRUaW1lc3RhbXAiOiIxIn0sIm1lc3NhZ2VBdHRyaWJ1dGVzIjp7fSwibWQ1T2ZCb2R5IjoiaGFzaCIsImV2ZW50U291cmNlIjoiYXdzOnNxcyIsImV2ZW50U291cmNlQVJOIjoiYXJuOnF1ZXVlIiwiYXdzUmVnaW9uIjoiYXAtZWFzdC0xIn0="
+          }
+        ]
+      },
+      "safe": true,
+      "expected": {
+        "success": true,
+        "data": {
+          "invocationId": "1",
+          "deliveryStreamArn": "arn:delivery",
+          "region": "ap-east-1",
+          "records": [
+            {
+              "recordId": "1",
+              "approximateArrivalTimestamp": 1,
+              "kinesisRecordMetadata": {
+                "shardId": "shard",
+                "partitionKey": "key",
+                "approximateArrivalTimestamp": 1,
+                "sequenceNumber": "1",
+                "subsequenceNumber": 0
+              },
+              "data": {
+                "messageId": "1",
+                "receiptHandle": "r",
+                "body": "{\"Subject\":null,\"TopicArn\":\"arn:topic\",\"Type\":\"Notification\",\"Message\":\"{\\\"id\\\":\\\"a\\\",\\\"amount\\\":1}\",\"MessageId\":\"1\",\"Timestamp\":\"2026-09-15T00:00:00Z\",\"MessageAttributes\":{\"tag\":{\"Type\":\"String\",\"Value\":\"value\"}},\"ignored\":true,\"UnsubscribeURL\":\"not a URL\",\"SigningCertURL\":\"https://example.test/cert\"}",
+                "attributes": {
+                  "ApproximateReceiveCount": "1",
+                  "ApproximateFirstReceiveTimestamp": "1",
+                  "SenderId": "s",
+                  "SentTimestamp": "1"
+                },
+                "messageAttributes": {},
+                "md5OfBody": "hash",
+                "eventSource": "aws:sqs",
+                "eventSourceARN": "arn:queue",
+                "awsRegion": "ap-east-1"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "KinesisFirehoseSqsSchema-missing",
+      "schema": "KinesisFirehoseSqsSchema",
+      "input": {},
+      "safe": true,
+      "expected": {
+        "success": false,
+        "issues": [
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected string, received undefined",
+            "path": [
+              "invocationId"
+            ],
+            "expected": "string"
+          },
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected string, received undefined",
+            "path": [
+              "deliveryStreamArn"
+            ],
+            "expected": "string"
+          },
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected string, received undefined",
+            "path": [
+              "region"
+            ],
+            "expected": "string"
+          },
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected array, received undefined",
+            "path": [
+              "records"
+            ],
+            "expected": "array"
+          }
+        ],
+        "original": {}
+      }
+    },
+    {
+      "name": "CloudWatchLogEventSchema-valid",
+      "schema": "CloudWatchLogEventSchema",
+      "input": {
+        "id": "1",
+        "timestamp": 1,
+        "message": "{\"id\":\"a\",\"amount\":1}"
+      },
+      "safe": true,
+      "expected": {
+        "success": true,
+        "data": {
+          "id": "1",
+          "timestamp": 1,
+          "message": "{\"id\":\"a\",\"amount\":1}"
+        }
+      }
+    },
+    {
+      "name": "CloudWatchLogEventSchema-missing",
+      "schema": "CloudWatchLogEventSchema",
+      "input": {},
+      "safe": true,
+      "expected": {
+        "success": false,
+        "issues": [
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected string, received undefined",
+            "path": [
+              "id"
+            ],
+            "expected": "string"
+          },
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected number, received undefined",
+            "path": [
+              "timestamp"
+            ],
+            "expected": "number"
+          },
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected string, received undefined",
+            "path": [
+              "message"
+            ],
+            "expected": "string"
+          }
+        ],
+        "original": {}
+      }
+    },
+    {
+      "name": "CloudWatchLogsDecodeSchema-valid",
+      "schema": "CloudWatchLogsDecodeSchema",
+      "input": {
+        "messageType": "DATA_MESSAGE",
+        "owner": "owner",
+        "logGroup": "group",
+        "logStream": "stream",
+        "subscriptionFilters": [],
+        "logEvents": [
+          {
+            "id": "1",
+            "timestamp": 1,
+            "message": "{\"id\":\"a\",\"amount\":1}"
+          }
+        ]
+      },
+      "safe": true,
+      "expected": {
+        "success": true,
+        "data": {
+          "messageType": "DATA_MESSAGE",
+          "owner": "owner",
+          "logGroup": "group",
+          "logStream": "stream",
+          "subscriptionFilters": [],
+          "logEvents": [
+            {
+              "id": "1",
+              "timestamp": 1,
+              "message": "{\"id\":\"a\",\"amount\":1}"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "CloudWatchLogsDecodeSchema-missing",
+      "schema": "CloudWatchLogsDecodeSchema",
+      "input": {},
+      "safe": true,
+      "expected": {
+        "success": false,
+        "issues": [
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected string, received undefined",
+            "path": [
+              "messageType"
+            ],
+            "expected": "string"
+          },
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected string, received undefined",
+            "path": [
+              "owner"
+            ],
+            "expected": "string"
+          },
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected string, received undefined",
+            "path": [
+              "logGroup"
+            ],
+            "expected": "string"
+          },
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected string, received undefined",
+            "path": [
+              "logStream"
+            ],
+            "expected": "string"
+          },
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected array, received undefined",
+            "path": [
+              "subscriptionFilters"
+            ],
+            "expected": "array"
+          },
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected array, received undefined",
+            "path": [
+              "logEvents"
+            ],
+            "expected": "array"
+          }
+        ],
+        "original": {}
+      }
+    },
+    {
+      "name": "CloudWatchLogsSchema-valid",
+      "schema": "CloudWatchLogsSchema",
+      "input": {
+        "awslogs": {
+          "data": "H4sIAAAAAAAACjWOPQ+CQBBE/8vU19BuRyJSWUHnEXPKhlzCfeR2wRjCfzeiVm/mZYrZEFjETdy/MoNwqvv6dmm6rm4bGKRn5AL60WBOU1vSkkGYDh6q08IugCDfYCDLXR7FZ/Upnv2sXAR0HY51s3LUT93gRxAqGKgPLOpCBlXmfwmEzcKPFmThLIyFC2mJakHVjn3Y3/pVpFe+AAAA"
+        }
+      },
+      "safe": true,
+      "expected": {
+        "success": true,
+        "data": {
+          "awslogs": {
+            "data": {
+              "messageType": "DATA_MESSAGE",
+              "owner": "owner",
+              "logGroup": "group",
+              "logStream": "stream",
+              "subscriptionFilters": [],
+              "logEvents": [
+                {
+                  "id": "1",
+                  "timestamp": 1,
+                  "message": "{\"id\":\"a\",\"amount\":1}"
+                }
+              ]
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "CloudWatchLogsSchema-missing",
+      "schema": "CloudWatchLogsSchema",
+      "input": {},
+      "safe": true,
+      "expected": {
+        "success": false,
+        "issues": [
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected object, received undefined",
+            "path": [
+              "awslogs"
+            ],
+            "expected": "object"
+          }
+        ],
+        "original": {}
+      }
+    },
+    {
+      "name": "sns-safe",
+      "schema": "json",
+      "input": {
+        "Records": [
+          {
+            "EventSource": "aws:sns",
+            "EventVersion": "1",
+            "EventSubscriptionArn": "arn:subscription",
+            "Sns": {
+              "Subject": null,
+              "TopicArn": "arn:topic",
+              "UnsubscribeUrl": "https://example.test/unsubscribe",
+              "SigningCertUrl": "https://example.test/cert",
+              "Type": "Notification",
+              "Message": "{\"id\":\"a\",\"amount\":1}",
+              "MessageId": "1",
+              "Timestamp": "2026-09-15T00:00:00Z",
+              "MessageAttributes": {
+                "tag": {
+                  "Type": "String",
+                  "Value": "value"
+                }
+              },
+              "ignored": true
+            }
+          }
+        ]
+      },
+      "envelope": "sns",
+      "safe": true,
+      "expected": {
+        "success": true,
+        "data": [
+          {
+            "id": "a",
+            "amount": 1,
+            "retry": 3
+          }
+        ]
+      }
+    },
+    {
+      "name": "sns-ordinary",
+      "schema": "json",
+      "input": {
+        "Records": [
+          {
+            "EventSource": "aws:sns",
+            "EventVersion": "1",
+            "EventSubscriptionArn": "arn:subscription",
+            "Sns": {
+              "Subject": null,
+              "TopicArn": "arn:topic",
+              "UnsubscribeUrl": "https://example.test/unsubscribe",
+              "SigningCertUrl": "https://example.test/cert",
+              "Type": "Notification",
+              "Message": "{\"id\":\"a\",\"amount\":1}",
+              "MessageId": "1",
+              "Timestamp": "2026-09-15T00:00:00Z",
+              "MessageAttributes": {
+                "tag": {
+                  "Type": "String",
+                  "Value": "value"
+                }
+              },
+              "ignored": true
+            }
+          }
+        ]
+      },
+      "envelope": "sns",
+      "safe": false,
+      "expected": {
+        "success": true,
+        "data": [
+          {
+            "id": "a",
+            "amount": 1,
+            "retry": 3
+          }
+        ]
+      }
+    },
+    {
+      "name": "sns-invalid-outer",
+      "schema": "json",
+      "input": {},
+      "envelope": "sns",
+      "safe": true,
+      "expected": {
+        "success": false,
+        "issues": [
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected array, received undefined",
+            "path": [
+              "Records"
+            ],
+            "expected": "array"
+          }
+        ],
+        "original": {}
+      }
+    },
+    {
+      "name": "snssqs-safe",
+      "schema": "json",
+      "input": {
+        "Records": [
+          {
+            "messageId": "1",
+            "receiptHandle": "r",
+            "body": "{\"Subject\":null,\"TopicArn\":\"arn:topic\",\"Type\":\"Notification\",\"Message\":\"{\\\"id\\\":\\\"a\\\",\\\"amount\\\":1}\",\"MessageId\":\"1\",\"Timestamp\":\"2026-09-15T00:00:00Z\",\"MessageAttributes\":{\"tag\":{\"Type\":\"String\",\"Value\":\"value\"}},\"ignored\":true,\"UnsubscribeURL\":\"not a URL\",\"SigningCertURL\":\"https://example.test/cert\"}",
+            "attributes": {
+              "ApproximateReceiveCount": "1",
+              "ApproximateFirstReceiveTimestamp": "1",
+              "SenderId": "s",
+              "SentTimestamp": "1"
+            },
+            "messageAttributes": {},
+            "md5OfBody": "hash",
+            "eventSource": "aws:sqs",
+            "eventSourceARN": "arn:queue",
+            "awsRegion": "ap-east-1"
+          }
+        ]
+      },
+      "envelope": "snssqs",
+      "safe": true,
+      "expected": {
+        "success": true,
+        "data": [
+          {
+            "id": "a",
+            "amount": 1,
+            "retry": 3
+          }
+        ]
+      }
+    },
+    {
+      "name": "snssqs-ordinary",
+      "schema": "json",
+      "input": {
+        "Records": [
+          {
+            "messageId": "1",
+            "receiptHandle": "r",
+            "body": "{\"Subject\":null,\"TopicArn\":\"arn:topic\",\"Type\":\"Notification\",\"Message\":\"{\\\"id\\\":\\\"a\\\",\\\"amount\\\":1}\",\"MessageId\":\"1\",\"Timestamp\":\"2026-09-15T00:00:00Z\",\"MessageAttributes\":{\"tag\":{\"Type\":\"String\",\"Value\":\"value\"}},\"ignored\":true,\"UnsubscribeURL\":\"not a URL\",\"SigningCertURL\":\"https://example.test/cert\"}",
+            "attributes": {
+              "ApproximateReceiveCount": "1",
+              "ApproximateFirstReceiveTimestamp": "1",
+              "SenderId": "s",
+              "SentTimestamp": "1"
+            },
+            "messageAttributes": {},
+            "md5OfBody": "hash",
+            "eventSource": "aws:sqs",
+            "eventSourceARN": "arn:queue",
+            "awsRegion": "ap-east-1"
+          }
+        ]
+      },
+      "envelope": "snssqs",
+      "safe": false,
+      "expected": {
+        "success": true,
+        "data": [
+          {
+            "id": "a",
+            "amount": 1,
+            "retry": 3
+          }
+        ]
+      }
+    },
+    {
+      "name": "snssqs-invalid-outer",
+      "schema": "json",
+      "input": {},
+      "envelope": "snssqs",
+      "safe": true,
+      "expected": {
+        "success": false,
+        "issues": [
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected array, received undefined",
+            "path": [
+              "Records"
+            ],
+            "expected": "array"
+          }
+        ],
+        "original": {}
+      }
+    },
+    {
+      "name": "kinesis-safe",
+      "schema": "order",
+      "input": {
+        "Records": [
+          {
+            "eventSource": "aws:kinesis",
+            "eventVersion": "1",
+            "eventID": "1",
+            "eventName": "aws:kinesis:record",
+            "awsRegion": "ap-east-1",
+            "invokeIdentityArn": "arn:role",
+            "eventSourceARN": "arn:stream",
+            "kinesis": {
+              "kinesisSchemaVersion": "1",
+              "partitionKey": "key",
+              "sequenceNumber": "90071992547409930001",
+              "approximateArrivalTimestamp": 1,
+              "data": "eyJpZCI6ImEiLCJhbW91bnQiOjF9"
+            }
+          }
+        ]
+      },
+      "envelope": "kinesis",
+      "safe": true,
+      "expected": {
+        "success": true,
+        "data": [
+          {
+            "id": "a",
+            "amount": 1,
+            "retry": 3
+          }
+        ]
+      }
+    },
+    {
+      "name": "kinesis-ordinary",
+      "schema": "order",
+      "input": {
+        "Records": [
+          {
+            "eventSource": "aws:kinesis",
+            "eventVersion": "1",
+            "eventID": "1",
+            "eventName": "aws:kinesis:record",
+            "awsRegion": "ap-east-1",
+            "invokeIdentityArn": "arn:role",
+            "eventSourceARN": "arn:stream",
+            "kinesis": {
+              "kinesisSchemaVersion": "1",
+              "partitionKey": "key",
+              "sequenceNumber": "90071992547409930001",
+              "approximateArrivalTimestamp": 1,
+              "data": "eyJpZCI6ImEiLCJhbW91bnQiOjF9"
+            }
+          }
+        ]
+      },
+      "envelope": "kinesis",
+      "safe": false,
+      "expected": {
+        "success": true,
+        "data": [
+          {
+            "id": "a",
+            "amount": 1,
+            "retry": 3
+          }
+        ]
+      }
+    },
+    {
+      "name": "kinesis-invalid-outer",
+      "schema": "order",
+      "input": {},
+      "envelope": "kinesis",
+      "safe": true,
+      "expected": {
+        "success": false,
+        "issues": [
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected array, received undefined",
+            "path": [
+              "Records"
+            ],
+            "expected": "array"
+          }
+        ],
+        "original": {}
+      }
+    },
+    {
+      "name": "firehose-safe",
+      "schema": "json",
+      "input": {
+        "invocationId": "1",
+        "deliveryStreamArn": "arn:delivery",
+        "region": "ap-east-1",
+        "records": [
+          {
+            "recordId": "1",
+            "approximateArrivalTimestamp": 1,
+            "kinesisRecordMetadata": {
+              "shardId": "shard",
+              "partitionKey": "key",
+              "approximateArrivalTimestamp": 1,
+              "sequenceNumber": "1",
+              "subsequenceNumber": 0
+            },
+            "data": "eyJpZCI6ImEiLCJhbW91bnQiOjF9"
+          }
+        ]
+      },
+      "envelope": "firehose",
+      "safe": true,
+      "expected": {
+        "success": true,
+        "data": [
+          {
+            "id": "a",
+            "amount": 1,
+            "retry": 3
+          }
+        ]
+      }
+    },
+    {
+      "name": "firehose-ordinary",
+      "schema": "json",
+      "input": {
+        "invocationId": "1",
+        "deliveryStreamArn": "arn:delivery",
+        "region": "ap-east-1",
+        "records": [
+          {
+            "recordId": "1",
+            "approximateArrivalTimestamp": 1,
+            "kinesisRecordMetadata": {
+              "shardId": "shard",
+              "partitionKey": "key",
+              "approximateArrivalTimestamp": 1,
+              "sequenceNumber": "1",
+              "subsequenceNumber": 0
+            },
+            "data": "eyJpZCI6ImEiLCJhbW91bnQiOjF9"
+          }
+        ]
+      },
+      "envelope": "firehose",
+      "safe": false,
+      "expected": {
+        "success": true,
+        "data": [
+          {
+            "id": "a",
+            "amount": 1,
+            "retry": 3
+          }
+        ]
+      }
+    },
+    {
+      "name": "firehose-invalid-outer",
+      "schema": "json",
+      "input": {},
+      "envelope": "firehose",
+      "safe": true,
+      "expected": {
+        "success": false,
+        "issues": [
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected string, received undefined",
+            "path": [
+              "invocationId"
+            ],
+            "expected": "string"
+          },
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected string, received undefined",
+            "path": [
+              "deliveryStreamArn"
+            ],
+            "expected": "string"
+          },
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected string, received undefined",
+            "path": [
+              "region"
+            ],
+            "expected": "string"
+          },
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected array, received undefined",
+            "path": [
+              "records"
+            ],
+            "expected": "array"
+          }
+        ],
+        "original": {}
+      }
+    },
+    {
+      "name": "cloudwatch-safe",
+      "schema": "json",
+      "input": {
+        "awslogs": {
+          "data": "H4sIAAAAAAAACjWOPQ+CQBBE/8vU19BuRyJSWUHnEXPKhlzCfeR2wRjCfzeiVm/mZYrZEFjETdy/MoNwqvv6dmm6rm4bGKRn5AL60WBOU1vSkkGYDh6q08IugCDfYCDLXR7FZ/Upnv2sXAR0HY51s3LUT93gRxAqGKgPLOpCBlXmfwmEzcKPFmThLIyFC2mJakHVjn3Y3/pVpFe+AAAA"
+        }
+      },
+      "envelope": "cloudwatch",
+      "safe": true,
+      "expected": {
+        "success": true,
+        "data": [
+          {
+            "id": "a",
+            "amount": 1,
+            "retry": 3
+          }
+        ]
+      }
+    },
+    {
+      "name": "cloudwatch-ordinary",
+      "schema": "json",
+      "input": {
+        "awslogs": {
+          "data": "H4sIAAAAAAAACjWOPQ+CQBBE/8vU19BuRyJSWUHnEXPKhlzCfeR2wRjCfzeiVm/mZYrZEFjETdy/MoNwqvv6dmm6rm4bGKRn5AL60WBOU1vSkkGYDh6q08IugCDfYCDLXR7FZ/Upnv2sXAR0HY51s3LUT93gRxAqGKgPLOpCBlXmfwmEzcKPFmThLIyFC2mJakHVjn3Y3/pVpFe+AAAA"
+        }
+      },
+      "envelope": "cloudwatch",
+      "safe": false,
+      "expected": {
+        "success": true,
+        "data": [
+          {
+            "id": "a",
+            "amount": 1,
+            "retry": 3
+          }
+        ]
+      }
+    },
+    {
+      "name": "cloudwatch-invalid-outer",
+      "schema": "json",
+      "input": {},
+      "envelope": "cloudwatch",
+      "safe": true,
+      "expected": {
+        "success": false,
+        "issues": [
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected object, received undefined",
+            "path": [
+              "awslogs"
+            ],
+            "expected": "object"
+          }
+        ],
+        "original": {}
+      }
+    },
+    {
+      "name": "dynamodb-safe",
+      "schema": "order",
+      "input": {
+        "Records": [
+          {
+            "eventID": "1",
+            "eventName": "MODIFY",
+            "eventVersion": "1",
+            "eventSource": "aws:dynamodb",
+            "awsRegion": "ap-east-1",
+            "eventSourceARN": "arn:stream",
+            "dynamodb": {
+              "ApproximateCreationDateTime": 1,
+              "Keys": {
+                "id": {
+                  "S": "a"
+                }
+              },
+              "NewImage": {
+                "id": {
+                  "S": "a"
+                },
+                "amount": {
+                  "N": "1"
+                }
+              },
+              "OldImage": {
+                "id": {
+                  "S": "old"
+                },
+                "amount": {
+                  "N": "0"
+                }
+              },
+              "SequenceNumber": "90071992547409930001",
+              "SizeBytes": 10,
+              "StreamViewType": "NEW_AND_OLD_IMAGES"
+            },
+            "userIdentity": {
+              "type": "Service",
+              "principalId": "dynamodb.amazonaws.com"
+            }
+          }
+        ]
+      },
+      "envelope": "dynamodb",
+      "safe": true,
+      "expected": {
+        "success": true,
+        "data": [
+          {
+            "NewImage": {
+              "id": "a",
+              "amount": 1,
+              "retry": 3
+            },
+            "OldImage": {
+              "id": "old",
+              "amount": 0,
+              "retry": 3
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "dynamodb-ordinary",
+      "schema": "order",
+      "input": {
+        "Records": [
+          {
+            "eventID": "1",
+            "eventName": "MODIFY",
+            "eventVersion": "1",
+            "eventSource": "aws:dynamodb",
+            "awsRegion": "ap-east-1",
+            "eventSourceARN": "arn:stream",
+            "dynamodb": {
+              "ApproximateCreationDateTime": 1,
+              "Keys": {
+                "id": {
+                  "S": "a"
+                }
+              },
+              "NewImage": {
+                "id": {
+                  "S": "a"
+                },
+                "amount": {
+                  "N": "1"
+                }
+              },
+              "OldImage": {
+                "id": {
+                  "S": "old"
+                },
+                "amount": {
+                  "N": "0"
+                }
+              },
+              "SequenceNumber": "90071992547409930001",
+              "SizeBytes": 10,
+              "StreamViewType": "NEW_AND_OLD_IMAGES"
+            },
+            "userIdentity": {
+              "type": "Service",
+              "principalId": "dynamodb.amazonaws.com"
+            }
+          }
+        ]
+      },
+      "envelope": "dynamodb",
+      "safe": false,
+      "expected": {
+        "success": true,
+        "data": [
+          {
+            "NewImage": {
+              "id": "a",
+              "amount": 1,
+              "retry": 3
+            },
+            "OldImage": {
+              "id": "old",
+              "amount": 0,
+              "retry": 3
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "dynamodb-invalid-outer",
+      "schema": "order",
+      "input": {},
+      "envelope": "dynamodb",
+      "safe": true,
+      "expected": {
+        "success": false,
+        "issues": [
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected array, received undefined",
+            "path": [
+              "Records"
+            ],
+            "expected": "array"
+          }
+        ],
+        "original": {}
+      }
+    },
+    {
+      "name": "sns-multiple-true",
+      "schema": "json",
+      "input": {
+        "Records": [
+          {
+            "EventSource": "aws:sns",
+            "EventVersion": "1",
+            "EventSubscriptionArn": "arn:subscription",
+            "Sns": {
+              "Subject": null,
+              "TopicArn": "arn:topic",
+              "UnsubscribeUrl": "https://example.test/unsubscribe",
+              "SigningCertUrl": "https://example.test/cert",
+              "Type": "Notification",
+              "Message": "{\"id\":1,\"amount\":-1}",
+              "MessageId": "1",
+              "Timestamp": "2026-09-15T00:00:00Z",
+              "MessageAttributes": {
+                "tag": {
+                  "Type": "String",
+                  "Value": "value"
+                }
+              },
+              "ignored": true
+            }
+          },
+          {
+            "EventSource": "aws:sns",
+            "EventVersion": "1",
+            "EventSubscriptionArn": "arn:subscription",
+            "Sns": {
+              "Subject": null,
+              "TopicArn": "arn:topic",
+              "UnsubscribeUrl": "https://example.test/unsubscribe",
+              "SigningCertUrl": "https://example.test/cert",
+              "Type": "Notification",
+              "Message": "{\"id\":1,\"amount\":-1}",
+              "MessageId": "1",
+              "Timestamp": "2026-09-15T00:00:00Z",
+              "MessageAttributes": {
+                "tag": {
+                  "Type": "String",
+                  "Value": "value"
+                }
+              },
+              "ignored": true
+            }
+          }
+        ]
+      },
+      "envelope": "sns",
+      "safe": true,
+      "expected": {
+        "success": false,
+        "issues": [
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected string, received number",
+            "path": [
+              "Records",
+              0,
+              "Sns",
+              "Message",
+              "id"
+            ],
+            "expected": "string"
+          },
+          {
+            "code": "custom",
+            "message": "amount must be non-negative",
+            "path": [
+              "Records",
+              0,
+              "Sns",
+              "Message",
+              "amount"
+            ]
+          },
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected string, received number",
+            "path": [
+              "Records",
+              1,
+              "Sns",
+              "Message",
+              "id"
+            ],
+            "expected": "string"
+          },
+          {
+            "code": "custom",
+            "message": "amount must be non-negative",
+            "path": [
+              "Records",
+              1,
+              "Sns",
+              "Message",
+              "amount"
+            ]
+          }
+        ],
+        "original": {
+          "Records": [
+            {
+              "EventSource": "aws:sns",
+              "EventVersion": "1",
+              "EventSubscriptionArn": "arn:subscription",
+              "Sns": {
+                "Subject": null,
+                "TopicArn": "arn:topic",
+                "UnsubscribeUrl": "https://example.test/unsubscribe",
+                "SigningCertUrl": "https://example.test/cert",
+                "Type": "Notification",
+                "Message": "{\"id\":1,\"amount\":-1}",
+                "MessageId": "1",
+                "Timestamp": "2026-09-15T00:00:00Z",
+                "MessageAttributes": {
+                  "tag": {
+                    "Type": "String",
+                    "Value": "value"
+                  }
+                },
+                "ignored": true
+              }
+            },
+            {
+              "EventSource": "aws:sns",
+              "EventVersion": "1",
+              "EventSubscriptionArn": "arn:subscription",
+              "Sns": {
+                "Subject": null,
+                "TopicArn": "arn:topic",
+                "UnsubscribeUrl": "https://example.test/unsubscribe",
+                "SigningCertUrl": "https://example.test/cert",
+                "Type": "Notification",
+                "Message": "{\"id\":1,\"amount\":-1}",
+                "MessageId": "1",
+                "Timestamp": "2026-09-15T00:00:00Z",
+                "MessageAttributes": {
+                  "tag": {
+                    "Type": "String",
+                    "Value": "value"
+                  }
+                },
+                "ignored": true
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "snssqs-multiple-true",
+      "schema": "json",
+      "input": {
+        "Records": [
+          {
+            "messageId": "1",
+            "receiptHandle": "r",
+            "body": "{broken",
+            "attributes": {
+              "ApproximateReceiveCount": "1",
+              "ApproximateFirstReceiveTimestamp": "1",
+              "SenderId": "s",
+              "SentTimestamp": "1"
+            },
+            "messageAttributes": {},
+            "md5OfBody": "hash",
+            "eventSource": "aws:sqs",
+            "eventSourceARN": "arn:queue",
+            "awsRegion": "ap-east-1"
+          },
+          {
+            "messageId": "1",
+            "receiptHandle": "r",
+            "body": "{\"Subject\":null,\"TopicArn\":\"arn:topic\",\"Type\":\"Notification\",\"Message\":\"{\\\"id\\\":1,\\\"amount\\\":-1}\",\"MessageId\":\"1\",\"Timestamp\":\"2026-09-15T00:00:00Z\",\"MessageAttributes\":{\"tag\":{\"Type\":\"String\",\"Value\":\"value\"}},\"ignored\":true,\"UnsubscribeURL\":\"not a URL\",\"SigningCertURL\":\"https://example.test/cert\"}",
+            "attributes": {
+              "ApproximateReceiveCount": "1",
+              "ApproximateFirstReceiveTimestamp": "1",
+              "SenderId": "s",
+              "SentTimestamp": "1"
+            },
+            "messageAttributes": {},
+            "md5OfBody": "hash",
+            "eventSource": "aws:sqs",
+            "eventSourceARN": "arn:queue",
+            "awsRegion": "ap-east-1"
+          }
+        ]
+      },
+      "envelope": "snssqs",
+      "safe": true,
+      "expected": {
+        "success": false,
+        "issues": [
+          {
+            "code": "custom",
+            "message": "Invalid JSON - Expected property name or '}' in JSON at position 1 (line 1 column 2)",
+            "path": [
+              "Records",
+              0,
+              "body"
+            ]
+          },
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected string, received number",
+            "path": [
+              "Records",
+              1,
+              "body",
+              "id"
+            ],
+            "expected": "string"
+          },
+          {
+            "code": "custom",
+            "message": "amount must be non-negative",
+            "path": [
+              "Records",
+              1,
+              "body",
+              "amount"
+            ]
+          }
+        ],
+        "original": {
+          "Records": [
+            {
+              "messageId": "1",
+              "receiptHandle": "r",
+              "body": "{broken",
+              "attributes": {
+                "ApproximateReceiveCount": "1",
+                "ApproximateFirstReceiveTimestamp": "1",
+                "SenderId": "s",
+                "SentTimestamp": "1"
+              },
+              "messageAttributes": {},
+              "md5OfBody": "hash",
+              "eventSource": "aws:sqs",
+              "eventSourceARN": "arn:queue",
+              "awsRegion": "ap-east-1"
+            },
+            {
+              "messageId": "1",
+              "receiptHandle": "r",
+              "body": "{\"Subject\":null,\"TopicArn\":\"arn:topic\",\"Type\":\"Notification\",\"Message\":\"{\\\"id\\\":1,\\\"amount\\\":-1}\",\"MessageId\":\"1\",\"Timestamp\":\"2026-09-15T00:00:00Z\",\"MessageAttributes\":{\"tag\":{\"Type\":\"String\",\"Value\":\"value\"}},\"ignored\":true,\"UnsubscribeURL\":\"not a URL\",\"SigningCertURL\":\"https://example.test/cert\"}",
+              "attributes": {
+                "ApproximateReceiveCount": "1",
+                "ApproximateFirstReceiveTimestamp": "1",
+                "SenderId": "s",
+                "SentTimestamp": "1"
+              },
+              "messageAttributes": {},
+              "md5OfBody": "hash",
+              "eventSource": "aws:sqs",
+              "eventSourceARN": "arn:queue",
+              "awsRegion": "ap-east-1"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "kinesis-multiple-true",
+      "schema": "order",
+      "input": {
+        "Records": [
+          {
+            "eventSource": "aws:kinesis",
+            "eventVersion": "1",
+            "eventID": "1",
+            "eventName": "aws:kinesis:record",
+            "awsRegion": "ap-east-1",
+            "invokeIdentityArn": "arn:role",
+            "eventSourceARN": "arn:stream",
+            "kinesis": {
+              "kinesisSchemaVersion": "1",
+              "partitionKey": "key",
+              "sequenceNumber": "90071992547409930001",
+              "approximateArrivalTimestamp": 1,
+              "data": "eyJpZCI6MSwiYW1vdW50IjotMX0="
+            }
+          },
+          {
+            "eventSource": "aws:kinesis",
+            "eventVersion": "1",
+            "eventID": "1",
+            "eventName": "aws:kinesis:record",
+            "awsRegion": "ap-east-1",
+            "invokeIdentityArn": "arn:role",
+            "eventSourceARN": "arn:stream",
+            "kinesis": {
+              "kinesisSchemaVersion": "1",
+              "partitionKey": "key",
+              "sequenceNumber": "90071992547409930001",
+              "approximateArrivalTimestamp": 1,
+              "data": "eyJpZCI6MSwiYW1vdW50IjotMX0="
+            }
+          }
+        ]
+      },
+      "envelope": "kinesis",
+      "safe": true,
+      "expected": {
+        "success": false,
+        "issues": [
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected string, received number",
+            "path": [
+              "Records",
+              0,
+              "kinesis",
+              "data",
+              "id"
+            ],
+            "expected": "string"
+          },
+          {
+            "code": "custom",
+            "message": "amount must be non-negative",
+            "path": [
+              "Records",
+              0,
+              "kinesis",
+              "data",
+              "amount"
+            ]
+          },
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected string, received number",
+            "path": [
+              "Records",
+              1,
+              "kinesis",
+              "data",
+              "id"
+            ],
+            "expected": "string"
+          },
+          {
+            "code": "custom",
+            "message": "amount must be non-negative",
+            "path": [
+              "Records",
+              1,
+              "kinesis",
+              "data",
+              "amount"
+            ]
+          }
+        ],
+        "original": {
+          "Records": [
+            {
+              "eventSource": "aws:kinesis",
+              "eventVersion": "1",
+              "eventID": "1",
+              "eventName": "aws:kinesis:record",
+              "awsRegion": "ap-east-1",
+              "invokeIdentityArn": "arn:role",
+              "eventSourceARN": "arn:stream",
+              "kinesis": {
+                "kinesisSchemaVersion": "1",
+                "partitionKey": "key",
+                "sequenceNumber": "90071992547409930001",
+                "approximateArrivalTimestamp": 1,
+                "data": "eyJpZCI6MSwiYW1vdW50IjotMX0="
+              }
+            },
+            {
+              "eventSource": "aws:kinesis",
+              "eventVersion": "1",
+              "eventID": "1",
+              "eventName": "aws:kinesis:record",
+              "awsRegion": "ap-east-1",
+              "invokeIdentityArn": "arn:role",
+              "eventSourceARN": "arn:stream",
+              "kinesis": {
+                "kinesisSchemaVersion": "1",
+                "partitionKey": "key",
+                "sequenceNumber": "90071992547409930001",
+                "approximateArrivalTimestamp": 1,
+                "data": "eyJpZCI6MSwiYW1vdW50IjotMX0="
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "firehose-multiple-true",
+      "schema": "json",
+      "input": {
+        "invocationId": "1",
+        "deliveryStreamArn": "arn:delivery",
+        "region": "ap-east-1",
+        "records": [
+          {
+            "recordId": "1",
+            "approximateArrivalTimestamp": 1,
+            "kinesisRecordMetadata": {
+              "shardId": "shard",
+              "partitionKey": "key",
+              "approximateArrivalTimestamp": 1,
+              "sequenceNumber": "1",
+              "subsequenceNumber": 0
+            },
+            "data": "eyJpZCI6MSwiYW1vdW50IjotMX0="
+          },
+          {
+            "recordId": "1",
+            "approximateArrivalTimestamp": 1,
+            "kinesisRecordMetadata": {
+              "shardId": "shard",
+              "partitionKey": "key",
+              "approximateArrivalTimestamp": 1,
+              "sequenceNumber": "1",
+              "subsequenceNumber": 0
+            },
+            "data": "eyJpZCI6MSwiYW1vdW50IjotMX0="
+          }
+        ]
+      },
+      "envelope": "firehose",
+      "safe": true,
+      "expected": {
+        "success": false,
+        "issues": [
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected string, received number",
+            "path": [
+              "records",
+              0,
+              "data",
+              "id"
+            ],
+            "expected": "string"
+          },
+          {
+            "code": "custom",
+            "message": "amount must be non-negative",
+            "path": [
+              "records",
+              0,
+              "data",
+              "amount"
+            ]
+          },
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected string, received number",
+            "path": [
+              "records",
+              1,
+              "data",
+              "id"
+            ],
+            "expected": "string"
+          },
+          {
+            "code": "custom",
+            "message": "amount must be non-negative",
+            "path": [
+              "records",
+              1,
+              "data",
+              "amount"
+            ]
+          }
+        ],
+        "original": {
+          "invocationId": "1",
+          "deliveryStreamArn": "arn:delivery",
+          "region": "ap-east-1",
+          "records": [
+            {
+              "recordId": "1",
+              "approximateArrivalTimestamp": 1,
+              "kinesisRecordMetadata": {
+                "shardId": "shard",
+                "partitionKey": "key",
+                "approximateArrivalTimestamp": 1,
+                "sequenceNumber": "1",
+                "subsequenceNumber": 0
+              },
+              "data": "eyJpZCI6MSwiYW1vdW50IjotMX0="
+            },
+            {
+              "recordId": "1",
+              "approximateArrivalTimestamp": 1,
+              "kinesisRecordMetadata": {
+                "shardId": "shard",
+                "partitionKey": "key",
+                "approximateArrivalTimestamp": 1,
+                "sequenceNumber": "1",
+                "subsequenceNumber": 0
+              },
+              "data": "eyJpZCI6MSwiYW1vdW50IjotMX0="
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "cloudwatch-multiple-true",
+      "schema": "json",
+      "input": {
+        "awslogs": {
+          "data": "H4sIAAAAAAAACqWOvQrCQBCE32Xqs7h2u4AxlVXSeUFOs4SD3A93G0VC3l0S9QmsZuZjBmaB51LsyN0rMQjHqquu57ptq6aGQnwGzqCvKkxxbHKcEwjjrjtqJbP1IJSPUSjzrdyzS+JiOLlJOBfQpd/b9YODbHGBG0DQUBDnuYj1CaTV7xIIi4EbzAYNrI9zEAM66BWr+mvdr29YSJ7N+QAAAA=="
+        }
+      },
+      "envelope": "cloudwatch",
+      "safe": true,
+      "expected": {
+        "success": false,
+        "issues": [
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected string, received number",
+            "path": [
+              "awslogs",
+              "data",
+              "logEvents",
+              0,
+              "message",
+              "id"
+            ],
+            "expected": "string"
+          },
+          {
+            "code": "custom",
+            "message": "amount must be non-negative",
+            "path": [
+              "awslogs",
+              "data",
+              "logEvents",
+              0,
+              "message",
+              "amount"
+            ]
+          },
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected string, received number",
+            "path": [
+              "awslogs",
+              "data",
+              "logEvents",
+              1,
+              "message",
+              "id"
+            ],
+            "expected": "string"
+          },
+          {
+            "code": "custom",
+            "message": "amount must be non-negative",
+            "path": [
+              "awslogs",
+              "data",
+              "logEvents",
+              1,
+              "message",
+              "amount"
+            ]
+          }
+        ],
+        "original": {
+          "awslogs": {
+            "data": "H4sIAAAAAAAACqWOvQrCQBCE32Xqs7h2u4AxlVXSeUFOs4SD3A93G0VC3l0S9QmsZuZjBmaB51LsyN0rMQjHqquu57ptq6aGQnwGzqCvKkxxbHKcEwjjrjtqJbP1IJSPUSjzrdyzS+JiOLlJOBfQpd/b9YODbHGBG0DQUBDnuYj1CaTV7xIIi4EbzAYNrI9zEAM66BWr+mvdr29YSJ7N+QAAAA=="
+          }
+        }
+      }
+    },
+    {
+      "name": "dynamodb-multiple-true",
+      "schema": "order",
+      "input": {
+        "Records": [
+          {
+            "eventID": "1",
+            "eventName": "MODIFY",
+            "eventVersion": "1",
+            "eventSource": "aws:dynamodb",
+            "awsRegion": "ap-east-1",
+            "eventSourceARN": "arn:stream",
+            "dynamodb": {
+              "ApproximateCreationDateTime": 1,
+              "Keys": {
+                "id": {
+                  "S": "a"
+                }
+              },
+              "NewImage": {
+                "id": {
+                  "N": "1"
+                },
+                "amount": {
+                  "N": "-1"
+                }
+              },
+              "OldImage": {
+                "id": {
+                  "N": "1"
+                },
+                "amount": {
+                  "N": "-1"
+                }
+              },
+              "SequenceNumber": "90071992547409930001",
+              "SizeBytes": 10,
+              "StreamViewType": "NEW_AND_OLD_IMAGES"
+            },
+            "userIdentity": {
+              "type": "Service",
+              "principalId": "dynamodb.amazonaws.com"
+            }
+          },
+          {
+            "eventID": "1",
+            "eventName": "MODIFY",
+            "eventVersion": "1",
+            "eventSource": "aws:dynamodb",
+            "awsRegion": "ap-east-1",
+            "eventSourceARN": "arn:stream",
+            "dynamodb": {
+              "ApproximateCreationDateTime": 1,
+              "Keys": {
+                "id": {
+                  "S": "a"
+                }
+              },
+              "NewImage": {
+                "id": {
+                  "N": "1"
+                },
+                "amount": {
+                  "N": "-1"
+                }
+              },
+              "OldImage": {
+                "id": {
+                  "S": "old"
+                },
+                "amount": {
+                  "N": "0"
+                }
+              },
+              "SequenceNumber": "90071992547409930001",
+              "SizeBytes": 10,
+              "StreamViewType": "NEW_AND_OLD_IMAGES"
+            },
+            "userIdentity": {
+              "type": "Service",
+              "principalId": "dynamodb.amazonaws.com"
+            }
+          }
+        ]
+      },
+      "envelope": "dynamodb",
+      "safe": true,
+      "expected": {
+        "success": false,
+        "issues": [
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected string, received number",
+            "path": [
+              "Records",
+              0,
+              "dynamodb",
+              "NewImage",
+              "id"
+            ],
+            "expected": "string"
+          },
+          {
+            "code": "custom",
+            "message": "amount must be non-negative",
+            "path": [
+              "Records",
+              0,
+              "dynamodb",
+              "NewImage",
+              "amount"
+            ]
+          },
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected string, received number",
+            "path": [
+              "Records",
+              0,
+              "dynamodb",
+              "OldImage",
+              "id"
+            ],
+            "expected": "string"
+          },
+          {
+            "code": "custom",
+            "message": "amount must be non-negative",
+            "path": [
+              "Records",
+              0,
+              "dynamodb",
+              "OldImage",
+              "amount"
+            ]
+          },
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected string, received number",
+            "path": [
+              "Records",
+              1,
+              "dynamodb",
+              "NewImage",
+              "id"
+            ],
+            "expected": "string"
+          },
+          {
+            "code": "custom",
+            "message": "amount must be non-negative",
+            "path": [
+              "Records",
+              1,
+              "dynamodb",
+              "NewImage",
+              "amount"
+            ]
+          }
+        ],
+        "original": {
+          "Records": [
+            {
+              "eventID": "1",
+              "eventName": "MODIFY",
+              "eventVersion": "1",
+              "eventSource": "aws:dynamodb",
+              "awsRegion": "ap-east-1",
+              "eventSourceARN": "arn:stream",
+              "dynamodb": {
+                "ApproximateCreationDateTime": 1,
+                "Keys": {
+                  "id": {
+                    "S": "a"
+                  }
+                },
+                "NewImage": {
+                  "id": {
+                    "N": "1"
+                  },
+                  "amount": {
+                    "N": "-1"
+                  }
+                },
+                "OldImage": {
+                  "id": {
+                    "N": "1"
+                  },
+                  "amount": {
+                    "N": "-1"
+                  }
+                },
+                "SequenceNumber": "90071992547409930001",
+                "SizeBytes": 10,
+                "StreamViewType": "NEW_AND_OLD_IMAGES"
+              },
+              "userIdentity": {
+                "type": "Service",
+                "principalId": "dynamodb.amazonaws.com"
+              }
+            },
+            {
+              "eventID": "1",
+              "eventName": "MODIFY",
+              "eventVersion": "1",
+              "eventSource": "aws:dynamodb",
+              "awsRegion": "ap-east-1",
+              "eventSourceARN": "arn:stream",
+              "dynamodb": {
+                "ApproximateCreationDateTime": 1,
+                "Keys": {
+                  "id": {
+                    "S": "a"
+                  }
+                },
+                "NewImage": {
+                  "id": {
+                    "N": "1"
+                  },
+                  "amount": {
+                    "N": "-1"
+                  }
+                },
+                "OldImage": {
+                  "id": {
+                    "S": "old"
+                  },
+                  "amount": {
+                    "N": "0"
+                  }
+                },
+                "SequenceNumber": "90071992547409930001",
+                "SizeBytes": 10,
+                "StreamViewType": "NEW_AND_OLD_IMAGES"
+              },
+              "userIdentity": {
+                "type": "Service",
+                "principalId": "dynamodb.amazonaws.com"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "sns-multiple-false",
+      "schema": "json",
+      "input": {
+        "Records": [
+          {
+            "EventSource": "aws:sns",
+            "EventVersion": "1",
+            "EventSubscriptionArn": "arn:subscription",
+            "Sns": {
+              "Subject": null,
+              "TopicArn": "arn:topic",
+              "UnsubscribeUrl": "https://example.test/unsubscribe",
+              "SigningCertUrl": "https://example.test/cert",
+              "Type": "Notification",
+              "Message": "{\"id\":1,\"amount\":-1}",
+              "MessageId": "1",
+              "Timestamp": "2026-09-15T00:00:00Z",
+              "MessageAttributes": {
+                "tag": {
+                  "Type": "String",
+                  "Value": "value"
+                }
+              },
+              "ignored": true
+            }
+          },
+          {
+            "EventSource": "aws:sns",
+            "EventVersion": "1",
+            "EventSubscriptionArn": "arn:subscription",
+            "Sns": {
+              "Subject": null,
+              "TopicArn": "arn:topic",
+              "UnsubscribeUrl": "https://example.test/unsubscribe",
+              "SigningCertUrl": "https://example.test/cert",
+              "Type": "Notification",
+              "Message": "{\"id\":1,\"amount\":-1}",
+              "MessageId": "1",
+              "Timestamp": "2026-09-15T00:00:00Z",
+              "MessageAttributes": {
+                "tag": {
+                  "Type": "String",
+                  "Value": "value"
+                }
+              },
+              "ignored": true
+            }
+          }
+        ]
+      },
+      "envelope": "sns",
+      "safe": false,
+      "expected": {
+        "success": false,
+        "thrown": true,
+        "error": "ParseError",
+        "issues": [
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected string, received number",
+            "path": [
+              "Records",
+              0,
+              "Sns",
+              "Message",
+              "id"
+            ],
+            "expected": "string"
+          },
+          {
+            "code": "custom",
+            "message": "amount must be non-negative",
+            "path": [
+              "Records",
+              0,
+              "Sns",
+              "Message",
+              "amount"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "snssqs-multiple-false",
+      "schema": "json",
+      "input": {
+        "Records": [
+          {
+            "messageId": "1",
+            "receiptHandle": "r",
+            "body": "{broken",
+            "attributes": {
+              "ApproximateReceiveCount": "1",
+              "ApproximateFirstReceiveTimestamp": "1",
+              "SenderId": "s",
+              "SentTimestamp": "1"
+            },
+            "messageAttributes": {},
+            "md5OfBody": "hash",
+            "eventSource": "aws:sqs",
+            "eventSourceARN": "arn:queue",
+            "awsRegion": "ap-east-1"
+          },
+          {
+            "messageId": "1",
+            "receiptHandle": "r",
+            "body": "{\"Subject\":null,\"TopicArn\":\"arn:topic\",\"Type\":\"Notification\",\"Message\":\"{\\\"id\\\":1,\\\"amount\\\":-1}\",\"MessageId\":\"1\",\"Timestamp\":\"2026-09-15T00:00:00Z\",\"MessageAttributes\":{\"tag\":{\"Type\":\"String\",\"Value\":\"value\"}},\"ignored\":true,\"UnsubscribeURL\":\"not a URL\",\"SigningCertURL\":\"https://example.test/cert\"}",
+            "attributes": {
+              "ApproximateReceiveCount": "1",
+              "ApproximateFirstReceiveTimestamp": "1",
+              "SenderId": "s",
+              "SentTimestamp": "1"
+            },
+            "messageAttributes": {},
+            "md5OfBody": "hash",
+            "eventSource": "aws:sqs",
+            "eventSourceARN": "arn:queue",
+            "awsRegion": "ap-east-1"
+          }
+        ]
+      },
+      "envelope": "snssqs",
+      "safe": false,
+      "expected": {
+        "success": false,
+        "thrown": true,
+        "error": "ParseError",
+        "issues": [
+          {
+            "code": "custom",
+            "message": "Invalid JSON - Expected property name or '}' in JSON at position 1 (line 1 column 2)",
+            "path": [
+              "Records",
+              0,
+              "body"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "kinesis-multiple-false",
+      "schema": "order",
+      "input": {
+        "Records": [
+          {
+            "eventSource": "aws:kinesis",
+            "eventVersion": "1",
+            "eventID": "1",
+            "eventName": "aws:kinesis:record",
+            "awsRegion": "ap-east-1",
+            "invokeIdentityArn": "arn:role",
+            "eventSourceARN": "arn:stream",
+            "kinesis": {
+              "kinesisSchemaVersion": "1",
+              "partitionKey": "key",
+              "sequenceNumber": "90071992547409930001",
+              "approximateArrivalTimestamp": 1,
+              "data": "eyJpZCI6MSwiYW1vdW50IjotMX0="
+            }
+          },
+          {
+            "eventSource": "aws:kinesis",
+            "eventVersion": "1",
+            "eventID": "1",
+            "eventName": "aws:kinesis:record",
+            "awsRegion": "ap-east-1",
+            "invokeIdentityArn": "arn:role",
+            "eventSourceARN": "arn:stream",
+            "kinesis": {
+              "kinesisSchemaVersion": "1",
+              "partitionKey": "key",
+              "sequenceNumber": "90071992547409930001",
+              "approximateArrivalTimestamp": 1,
+              "data": "eyJpZCI6MSwiYW1vdW50IjotMX0="
+            }
+          }
+        ]
+      },
+      "envelope": "kinesis",
+      "safe": false,
+      "expected": {
+        "success": false,
+        "thrown": true,
+        "error": "ParseError",
+        "issues": [
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected string, received number",
+            "path": [
+              "Records",
+              0,
+              "kinesis",
+              "data",
+              "id"
+            ],
+            "expected": "string"
+          },
+          {
+            "code": "custom",
+            "message": "amount must be non-negative",
+            "path": [
+              "Records",
+              0,
+              "kinesis",
+              "data",
+              "amount"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "firehose-multiple-false",
+      "schema": "json",
+      "input": {
+        "invocationId": "1",
+        "deliveryStreamArn": "arn:delivery",
+        "region": "ap-east-1",
+        "records": [
+          {
+            "recordId": "1",
+            "approximateArrivalTimestamp": 1,
+            "kinesisRecordMetadata": {
+              "shardId": "shard",
+              "partitionKey": "key",
+              "approximateArrivalTimestamp": 1,
+              "sequenceNumber": "1",
+              "subsequenceNumber": 0
+            },
+            "data": "eyJpZCI6MSwiYW1vdW50IjotMX0="
+          },
+          {
+            "recordId": "1",
+            "approximateArrivalTimestamp": 1,
+            "kinesisRecordMetadata": {
+              "shardId": "shard",
+              "partitionKey": "key",
+              "approximateArrivalTimestamp": 1,
+              "sequenceNumber": "1",
+              "subsequenceNumber": 0
+            },
+            "data": "eyJpZCI6MSwiYW1vdW50IjotMX0="
+          }
+        ]
+      },
+      "envelope": "firehose",
+      "safe": false,
+      "expected": {
+        "success": false,
+        "thrown": true,
+        "error": "ParseError",
+        "issues": [
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected string, received number",
+            "path": [
+              "records",
+              0,
+              "data",
+              "id"
+            ],
+            "expected": "string"
+          },
+          {
+            "code": "custom",
+            "message": "amount must be non-negative",
+            "path": [
+              "records",
+              0,
+              "data",
+              "amount"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "cloudwatch-multiple-false",
+      "schema": "json",
+      "input": {
+        "awslogs": {
+          "data": "H4sIAAAAAAAACqWOvQrCQBCE32Xqs7h2u4AxlVXSeUFOs4SD3A93G0VC3l0S9QmsZuZjBmaB51LsyN0rMQjHqquu57ptq6aGQnwGzqCvKkxxbHKcEwjjrjtqJbP1IJSPUSjzrdyzS+JiOLlJOBfQpd/b9YODbHGBG0DQUBDnuYj1CaTV7xIIi4EbzAYNrI9zEAM66BWr+mvdr29YSJ7N+QAAAA=="
+        }
+      },
+      "envelope": "cloudwatch",
+      "safe": false,
+      "expected": {
+        "success": false,
+        "thrown": true,
+        "error": "ParseError",
+        "issues": [
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected string, received number",
+            "path": [
+              "awslogs",
+              "data",
+              "logEvents",
+              0,
+              "message",
+              "id"
+            ],
+            "expected": "string"
+          },
+          {
+            "code": "custom",
+            "message": "amount must be non-negative",
+            "path": [
+              "awslogs",
+              "data",
+              "logEvents",
+              0,
+              "message",
+              "amount"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "dynamodb-multiple-false",
+      "schema": "order",
+      "input": {
+        "Records": [
+          {
+            "eventID": "1",
+            "eventName": "MODIFY",
+            "eventVersion": "1",
+            "eventSource": "aws:dynamodb",
+            "awsRegion": "ap-east-1",
+            "eventSourceARN": "arn:stream",
+            "dynamodb": {
+              "ApproximateCreationDateTime": 1,
+              "Keys": {
+                "id": {
+                  "S": "a"
+                }
+              },
+              "NewImage": {
+                "id": {
+                  "N": "1"
+                },
+                "amount": {
+                  "N": "-1"
+                }
+              },
+              "OldImage": {
+                "id": {
+                  "N": "1"
+                },
+                "amount": {
+                  "N": "-1"
+                }
+              },
+              "SequenceNumber": "90071992547409930001",
+              "SizeBytes": 10,
+              "StreamViewType": "NEW_AND_OLD_IMAGES"
+            },
+            "userIdentity": {
+              "type": "Service",
+              "principalId": "dynamodb.amazonaws.com"
+            }
+          },
+          {
+            "eventID": "1",
+            "eventName": "MODIFY",
+            "eventVersion": "1",
+            "eventSource": "aws:dynamodb",
+            "awsRegion": "ap-east-1",
+            "eventSourceARN": "arn:stream",
+            "dynamodb": {
+              "ApproximateCreationDateTime": 1,
+              "Keys": {
+                "id": {
+                  "S": "a"
+                }
+              },
+              "NewImage": {
+                "id": {
+                  "N": "1"
+                },
+                "amount": {
+                  "N": "-1"
+                }
+              },
+              "OldImage": {
+                "id": {
+                  "S": "old"
+                },
+                "amount": {
+                  "N": "0"
+                }
+              },
+              "SequenceNumber": "90071992547409930001",
+              "SizeBytes": 10,
+              "StreamViewType": "NEW_AND_OLD_IMAGES"
+            },
+            "userIdentity": {
+              "type": "Service",
+              "principalId": "dynamodb.amazonaws.com"
+            }
+          }
+        ]
+      },
+      "envelope": "dynamodb",
+      "safe": false,
+      "expected": {
+        "success": false,
+        "thrown": true,
+        "error": "ParseError",
+        "issues": [
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected string, received number",
+            "path": [
+              "Records",
+              0,
+              "dynamodb",
+              "NewImage",
+              "id"
+            ],
+            "expected": "string"
+          },
+          {
+            "code": "custom",
+            "message": "amount must be non-negative",
+            "path": [
+              "Records",
+              0,
+              "dynamodb",
+              "NewImage",
+              "amount"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "sns-no-implicit-json",
+      "schema": "order",
+      "input": {
+        "Records": [
+          {
+            "EventSource": "aws:sns",
+            "EventVersion": "1",
+            "EventSubscriptionArn": "arn:subscription",
+            "Sns": {
+              "Subject": null,
+              "TopicArn": "arn:topic",
+              "UnsubscribeUrl": "https://example.test/unsubscribe",
+              "SigningCertUrl": "https://example.test/cert",
+              "Type": "Notification",
+              "Message": "{\"id\":\"a\",\"amount\":1}",
+              "MessageId": "1",
+              "Timestamp": "2026-09-15T00:00:00Z",
+              "MessageAttributes": {
+                "tag": {
+                  "Type": "String",
+                  "Value": "value"
+                }
+              },
+              "ignored": true
+            }
+          }
+        ]
+      },
+      "envelope": "sns",
+      "safe": true,
+      "expected": {
+        "success": false,
+        "issues": [
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected object, received string",
+            "path": [
+              "Records",
+              0,
+              "Sns",
+              "Message"
+            ],
+            "expected": "object"
+          }
+        ],
+        "original": {
+          "Records": [
+            {
+              "EventSource": "aws:sns",
+              "EventVersion": "1",
+              "EventSubscriptionArn": "arn:subscription",
+              "Sns": {
+                "Subject": null,
+                "TopicArn": "arn:topic",
+                "UnsubscribeUrl": "https://example.test/unsubscribe",
+                "SigningCertUrl": "https://example.test/cert",
+                "Type": "Notification",
+                "Message": "{\"id\":\"a\",\"amount\":1}",
+                "MessageId": "1",
+                "Timestamp": "2026-09-15T00:00:00Z",
+                "MessageAttributes": {
+                  "tag": {
+                    "Type": "String",
+                    "Value": "value"
+                  }
+                },
+                "ignored": true
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "firehose-no-implicit-json",
+      "schema": "order",
+      "input": {
+        "invocationId": "1",
+        "deliveryStreamArn": "arn:delivery",
+        "region": "ap-east-1",
+        "records": [
+          {
+            "recordId": "1",
+            "approximateArrivalTimestamp": 1,
+            "kinesisRecordMetadata": {
+              "shardId": "shard",
+              "partitionKey": "key",
+              "approximateArrivalTimestamp": 1,
+              "sequenceNumber": "1",
+              "subsequenceNumber": 0
+            },
+            "data": "eyJpZCI6ImEiLCJhbW91bnQiOjF9"
+          }
+        ]
+      },
+      "envelope": "firehose",
+      "safe": true,
+      "expected": {
+        "success": false,
+        "issues": [
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected object, received string",
+            "path": [
+              "records",
+              0,
+              "data"
+            ],
+            "expected": "object"
+          }
+        ],
+        "original": {
+          "invocationId": "1",
+          "deliveryStreamArn": "arn:delivery",
+          "region": "ap-east-1",
+          "records": [
+            {
+              "recordId": "1",
+              "approximateArrivalTimestamp": 1,
+              "kinesisRecordMetadata": {
+                "shardId": "shard",
+                "partitionKey": "key",
+                "approximateArrivalTimestamp": 1,
+                "sequenceNumber": "1",
+                "subsequenceNumber": 0
+              },
+              "data": "eyJpZCI6ImEiLCJhbW91bnQiOjF9"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "cloudwatch-no-implicit-json",
+      "schema": "order",
+      "input": {
+        "awslogs": {
+          "data": "H4sIAAAAAAAACjWOPQ+CQBBE/8vU19BuRyJSWUHnEXPKhlzCfeR2wRjCfzeiVm/mZYrZEFjETdy/MoNwqvv6dmm6rm4bGKRn5AL60WBOU1vSkkGYDh6q08IugCDfYCDLXR7FZ/Upnv2sXAR0HY51s3LUT93gRxAqGKgPLOpCBlXmfwmEzcKPFmThLIyFC2mJakHVjn3Y3/pVpFe+AAAA"
+        }
+      },
+      "envelope": "cloudwatch",
+      "safe": true,
+      "expected": {
+        "success": false,
+        "issues": [
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected object, received string",
+            "path": [
+              "awslogs",
+              "data",
+              "logEvents",
+              0,
+              "message"
+            ],
+            "expected": "object"
+          }
+        ],
+        "original": {
+          "awslogs": {
+            "data": "H4sIAAAAAAAACjWOPQ+CQBBE/8vU19BuRyJSWUHnEXPKhlzCfeR2wRjCfzeiVm/mZYrZEFjETdy/MoNwqvv6dmm6rm4bGKRn5AL60WBOU1vSkkGYDh6q08IugCDfYCDLXR7FZ/Upnv2sXAR0HY51s3LUT93gRxAqGKgPLOpCBlXmfwmEzcKPFmThLIyFC2mJakHVjn3Y3/pVpFe+AAAA"
+          }
+        }
+      }
+    },
+    {
+      "name": "kinesis-text",
+      "schema": "text",
+      "input": {
+        "Records": [
+          {
+            "eventSource": "aws:kinesis",
+            "eventVersion": "1",
+            "eventID": "1",
+            "eventName": "aws:kinesis:record",
+            "awsRegion": "ap-east-1",
+            "invokeIdentityArn": "arn:role",
+            "eventSourceARN": "arn:stream",
+            "kinesis": {
+              "kinesisSchemaVersion": "1",
+              "partitionKey": "key",
+              "sequenceNumber": "90071992547409930001",
+              "approximateArrivalTimestamp": 1,
+              "data": "dGV4dA=="
+            }
+          }
+        ]
+      },
+      "envelope": "kinesis",
+      "safe": true,
+      "expected": {
+        "success": true,
+        "data": [
+          "text"
+        ]
+      }
+    },
+    {
+      "name": "kinesis-gzip",
+      "schema": "order",
+      "input": {
+        "Records": [
+          {
+            "eventSource": "aws:kinesis",
+            "eventVersion": "1",
+            "eventID": "1",
+            "eventName": "aws:kinesis:record",
+            "awsRegion": "ap-east-1",
+            "invokeIdentityArn": "arn:role",
+            "eventSourceARN": "arn:stream",
+            "kinesis": {
+              "kinesisSchemaVersion": "1",
+              "partitionKey": "key",
+              "sequenceNumber": "90071992547409930001",
+              "approximateArrivalTimestamp": 1,
+              "data": "H4sIAAAAAAAACqtWykxRslJKVNJRSszNL80rUbIyrAUAW4nnsRUAAAA="
+            }
+          }
+        ]
+      },
+      "envelope": "kinesis",
+      "safe": true,
+      "expected": {
+        "success": true,
+        "data": [
+          {
+            "id": "a",
+            "amount": 1,
+            "retry": 3
+          }
+        ]
+      }
+    },
+    {
+      "name": "kinesis-ddb-empty",
+      "schema": "KinesisDynamoDBStreamSchema",
+      "input": {
+        "Records": []
+      },
+      "safe": true,
+      "expected": {
+        "success": true,
+        "data": {
+          "Records": []
+        }
+      }
+    },
+    {
+      "name": "kinesis-empty",
+      "schema": "KinesisDataStreamSchema",
+      "input": {
+        "Records": []
+      },
+      "safe": true,
+      "expected": {
+        "success": false,
+        "issues": [
+          {
+            "code": "too_small",
+            "message": "Too small: expected array to have >=1 items",
+            "path": [
+              "Records"
+            ]
+          }
+        ],
+        "original": {
+          "Records": []
+        }
+      }
+    },
+    {
+      "name": "ddb-keys-only",
+      "schema": "order",
+      "input": {
+        "Records": [
+          {
+            "eventID": "1",
+            "eventName": "MODIFY",
+            "eventVersion": "1",
+            "eventSource": "aws:dynamodb",
+            "awsRegion": "ap-east-1",
+            "eventSourceARN": "arn:stream",
+            "dynamodb": {
+              "Keys": {
+                "id": {
+                  "S": "a"
+                }
+              },
+              "SequenceNumber": "1",
+              "SizeBytes": 1,
+              "StreamViewType": "KEYS_ONLY"
+            },
+            "userIdentity": {
+              "type": "Service",
+              "principalId": "dynamodb.amazonaws.com"
+            }
+          }
+        ]
+      },
+      "envelope": "dynamodb",
+      "safe": true,
+      "expected": {
+        "success": true,
+        "data": [
+          {}
+        ]
+      }
+    },
+    {
+      "name": "ddb-bad-Keys",
+      "schema": "DynamoDBStreamSchema",
+      "input": {
+        "Records": [
+          {
+            "eventID": "1",
+            "eventName": "MODIFY",
+            "eventVersion": "1",
+            "eventSource": "aws:dynamodb",
+            "awsRegion": "ap-east-1",
+            "eventSourceARN": "arn:stream",
+            "dynamodb": {
+              "ApproximateCreationDateTime": 1,
+              "Keys": {
+                "id": {
+                  "INVALID": true
+                }
+              },
+              "NewImage": {
+                "id": {
+                  "S": "a"
+                },
+                "amount": {
+                  "N": "1"
+                }
+              },
+              "OldImage": {
+                "id": {
+                  "S": "old"
+                },
+                "amount": {
+                  "N": "0"
+                }
+              },
+              "SequenceNumber": "90071992547409930001",
+              "SizeBytes": 10,
+              "StreamViewType": "NEW_AND_OLD_IMAGES"
+            },
+            "userIdentity": {
+              "type": "Service",
+              "principalId": "dynamodb.amazonaws.com"
+            }
+          }
+        ]
+      },
+      "safe": true,
+      "expected": {
+        "success": false,
+        "issues": [
+          {
+            "code": "custom",
+            "message": "Could not unmarshall Keys in DynamoDB stream record",
+            "path": [
+              "Records",
+              0,
+              "dynamodb",
+              "Keys"
+            ]
+          }
+        ],
+        "original": {
+          "Records": [
+            {
+              "eventID": "1",
+              "eventName": "MODIFY",
+              "eventVersion": "1",
+              "eventSource": "aws:dynamodb",
+              "awsRegion": "ap-east-1",
+              "eventSourceARN": "arn:stream",
+              "dynamodb": {
+                "ApproximateCreationDateTime": 1,
+                "Keys": {
+                  "id": {
+                    "INVALID": true
+                  }
+                },
+                "NewImage": {
+                  "id": {
+                    "S": "a"
+                  },
+                  "amount": {
+                    "N": "1"
+                  }
+                },
+                "OldImage": {
+                  "id": {
+                    "S": "old"
+                  },
+                  "amount": {
+                    "N": "0"
+                  }
+                },
+                "SequenceNumber": "90071992547409930001",
+                "SizeBytes": 10,
+                "StreamViewType": "NEW_AND_OLD_IMAGES"
+              },
+              "userIdentity": {
+                "type": "Service",
+                "principalId": "dynamodb.amazonaws.com"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "ddb-bad-NewImage",
+      "schema": "DynamoDBStreamSchema",
+      "input": {
+        "Records": [
+          {
+            "eventID": "1",
+            "eventName": "MODIFY",
+            "eventVersion": "1",
+            "eventSource": "aws:dynamodb",
+            "awsRegion": "ap-east-1",
+            "eventSourceARN": "arn:stream",
+            "dynamodb": {
+              "ApproximateCreationDateTime": 1,
+              "Keys": {
+                "id": {
+                  "S": "a"
+                }
+              },
+              "NewImage": {
+                "id": {
+                  "INVALID": true
+                }
+              },
+              "OldImage": {
+                "id": {
+                  "S": "old"
+                },
+                "amount": {
+                  "N": "0"
+                }
+              },
+              "SequenceNumber": "90071992547409930001",
+              "SizeBytes": 10,
+              "StreamViewType": "NEW_AND_OLD_IMAGES"
+            },
+            "userIdentity": {
+              "type": "Service",
+              "principalId": "dynamodb.amazonaws.com"
+            }
+          }
+        ]
+      },
+      "safe": true,
+      "expected": {
+        "success": false,
+        "issues": [
+          {
+            "code": "custom",
+            "message": "Could not unmarshall NewImage in DynamoDB stream record",
+            "path": [
+              "Records",
+              0,
+              "dynamodb",
+              "NewImage"
+            ]
+          }
+        ],
+        "original": {
+          "Records": [
+            {
+              "eventID": "1",
+              "eventName": "MODIFY",
+              "eventVersion": "1",
+              "eventSource": "aws:dynamodb",
+              "awsRegion": "ap-east-1",
+              "eventSourceARN": "arn:stream",
+              "dynamodb": {
+                "ApproximateCreationDateTime": 1,
+                "Keys": {
+                  "id": {
+                    "S": "a"
+                  }
+                },
+                "NewImage": {
+                  "id": {
+                    "INVALID": true
+                  }
+                },
+                "OldImage": {
+                  "id": {
+                    "S": "old"
+                  },
+                  "amount": {
+                    "N": "0"
+                  }
+                },
+                "SequenceNumber": "90071992547409930001",
+                "SizeBytes": 10,
+                "StreamViewType": "NEW_AND_OLD_IMAGES"
+              },
+              "userIdentity": {
+                "type": "Service",
+                "principalId": "dynamodb.amazonaws.com"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "ddb-bad-OldImage",
+      "schema": "DynamoDBStreamSchema",
+      "input": {
+        "Records": [
+          {
+            "eventID": "1",
+            "eventName": "MODIFY",
+            "eventVersion": "1",
+            "eventSource": "aws:dynamodb",
+            "awsRegion": "ap-east-1",
+            "eventSourceARN": "arn:stream",
+            "dynamodb": {
+              "ApproximateCreationDateTime": 1,
+              "Keys": {
+                "id": {
+                  "S": "a"
+                }
+              },
+              "NewImage": {
+                "id": {
+                  "S": "a"
+                },
+                "amount": {
+                  "N": "1"
+                }
+              },
+              "OldImage": {
+                "id": {
+                  "INVALID": true
+                }
+              },
+              "SequenceNumber": "90071992547409930001",
+              "SizeBytes": 10,
+              "StreamViewType": "NEW_AND_OLD_IMAGES"
+            },
+            "userIdentity": {
+              "type": "Service",
+              "principalId": "dynamodb.amazonaws.com"
+            }
+          }
+        ]
+      },
+      "safe": true,
+      "expected": {
+        "success": false,
+        "issues": [
+          {
+            "code": "custom",
+            "message": "Could not unmarshall OldImage in DynamoDB stream record",
+            "path": [
+              "Records",
+              0,
+              "dynamodb",
+              "OldImage"
+            ]
+          }
+        ],
+        "original": {
+          "Records": [
+            {
+              "eventID": "1",
+              "eventName": "MODIFY",
+              "eventVersion": "1",
+              "eventSource": "aws:dynamodb",
+              "awsRegion": "ap-east-1",
+              "eventSourceARN": "arn:stream",
+              "dynamodb": {
+                "ApproximateCreationDateTime": 1,
+                "Keys": {
+                  "id": {
+                    "S": "a"
+                  }
+                },
+                "NewImage": {
+                  "id": {
+                    "S": "a"
+                  },
+                  "amount": {
+                    "N": "1"
+                  }
+                },
+                "OldImage": {
+                  "id": {
+                    "INVALID": true
+                  }
+                },
+                "SequenceNumber": "90071992547409930001",
+                "SizeBytes": 10,
+                "StreamViewType": "NEW_AND_OLD_IMAGES"
+              },
+              "userIdentity": {
+                "type": "Service",
+                "principalId": "dynamodb.amazonaws.com"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "ddb-invalid-enums",
+      "schema": "DynamoDBStreamRecord",
+      "input": {
+        "eventID": "1",
+        "eventName": "OTHER",
+        "eventVersion": "1",
+        "eventSource": "aws:dynamodb",
+        "awsRegion": "ap-east-1",
+        "eventSourceARN": "arn:stream",
+        "dynamodb": {
+          "ApproximateCreationDateTime": 1,
+          "Keys": {
+            "id": {
+              "S": "a"
+            }
+          },
+          "NewImage": {
+            "id": {
+              "S": "a"
+            },
+            "amount": {
+              "N": "1"
+            }
+          },
+          "OldImage": {
+            "id": {
+              "S": "old"
+            },
+            "amount": {
+              "N": "0"
+            }
+          },
+          "SequenceNumber": "90071992547409930001",
+          "SizeBytes": 10,
+          "StreamViewType": "OTHER"
+        },
+        "userIdentity": {
+          "type": "Other",
+          "principalId": "x"
+        }
+      },
+      "safe": true,
+      "expected": {
+        "success": false,
+        "issues": [
+          {
+            "code": "invalid_value",
+            "message": "Invalid option: expected one of \"INSERT\"|\"MODIFY\"|\"REMOVE\"",
+            "path": [
+              "eventName"
+            ]
+          },
+          {
+            "code": "invalid_value",
+            "message": "Invalid option: expected one of \"NEW_IMAGE\"|\"OLD_IMAGE\"|\"NEW_AND_OLD_IMAGES\"|\"KEYS_ONLY\"",
+            "path": [
+              "dynamodb",
+              "StreamViewType"
+            ]
+          },
+          {
+            "code": "invalid_value",
+            "message": "Invalid input: expected \"Service\"",
+            "path": [
+              "userIdentity",
+              "type"
+            ]
+          },
+          {
+            "code": "invalid_value",
+            "message": "Invalid input: expected \"dynamodb.amazonaws.com\"",
+            "path": [
+              "userIdentity",
+              "principalId"
+            ]
+          }
+        ],
+        "original": {
+          "eventID": "1",
+          "eventName": "OTHER",
+          "eventVersion": "1",
+          "eventSource": "aws:dynamodb",
+          "awsRegion": "ap-east-1",
+          "eventSourceARN": "arn:stream",
+          "dynamodb": {
+            "ApproximateCreationDateTime": 1,
+            "Keys": {
+              "id": {
+                "S": "a"
+              }
+            },
+            "NewImage": {
+              "id": {
+                "S": "a"
+              },
+              "amount": {
+                "N": "1"
+              }
+            },
+            "OldImage": {
+              "id": {
+                "S": "old"
+              },
+              "amount": {
+                "N": "0"
+              }
+            },
+            "SequenceNumber": "90071992547409930001",
+            "SizeBytes": 10,
+            "StreamViewType": "OTHER"
+          },
+          "userIdentity": {
+            "type": "Other",
+            "principalId": "x"
+          }
+        }
+      }
+    },
+    {
+      "name": "ddb-window",
+      "schema": "DynamoDBStreamSchema",
+      "input": {
+        "Records": [
+          {
+            "eventID": "1",
+            "eventName": "MODIFY",
+            "eventVersion": "1",
+            "eventSource": "aws:dynamodb",
+            "awsRegion": "ap-east-1",
+            "eventSourceARN": "arn:stream",
+            "dynamodb": {
+              "ApproximateCreationDateTime": 1,
+              "Keys": {
+                "id": {
+                  "S": "a"
+                }
+              },
+              "NewImage": {
+                "id": {
+                  "S": "a"
+                },
+                "amount": {
+                  "N": "1"
+                }
+              },
+              "OldImage": {
+                "id": {
+                  "S": "old"
+                },
+                "amount": {
+                  "N": "0"
+                }
+              },
+              "SequenceNumber": "90071992547409930001",
+              "SizeBytes": 10,
+              "StreamViewType": "NEW_AND_OLD_IMAGES"
+            },
+            "userIdentity": {
+              "type": "Service",
+              "principalId": "dynamodb.amazonaws.com"
+            }
+          }
+        ],
+        "window": {
+          "start": "2026-09-15T00:00Z",
+          "end": "2026-09-15T00:01Z"
+        },
+        "state": {
+          "key": "value"
+        },
+        "shardId": "s",
+        "eventSourceARN": "arn",
+        "isFinalInvokeForWindow": false,
+        "isWindowTerminatedEarly": true
+      },
+      "safe": true,
+      "expected": {
+        "success": true,
+        "data": {
+          "Records": [
+            {
+              "eventID": "1",
+              "eventName": "MODIFY",
+              "eventVersion": "1",
+              "eventSource": "aws:dynamodb",
+              "awsRegion": "ap-east-1",
+              "eventSourceARN": "arn:stream",
+              "dynamodb": {
+                "ApproximateCreationDateTime": 1,
+                "Keys": {
+                  "id": "a"
+                },
+                "NewImage": {
+                  "id": "a",
+                  "amount": 1
+                },
+                "OldImage": {
+                  "id": "old",
+                  "amount": 0
+                },
+                "SequenceNumber": "90071992547409930001",
+                "SizeBytes": 10,
+                "StreamViewType": "NEW_AND_OLD_IMAGES"
+              },
+              "userIdentity": {
+                "type": "Service",
+                "principalId": "dynamodb.amazonaws.com"
+              }
+            }
+          ],
+          "window": {
+            "start": "2026-09-15T00:00Z",
+            "end": "2026-09-15T00:01Z"
+          },
+          "state": {
+            "key": "value"
+          },
+          "shardId": "s",
+          "eventSourceARN": "arn",
+          "isFinalInvokeForWindow": false,
+          "isWindowTerminatedEarly": true
+        }
+      }
+    },
+    {
+      "name": "kinesis-window",
+      "schema": "KinesisDataStreamSchema",
+      "input": {
+        "Records": [
+          {
+            "eventSource": "aws:kinesis",
+            "eventVersion": "1",
+            "eventID": "1",
+            "eventName": "aws:kinesis:record",
+            "awsRegion": "ap-east-1",
+            "invokeIdentityArn": "arn:role",
+            "eventSourceARN": "arn:stream",
+            "kinesis": {
+              "kinesisSchemaVersion": "1",
+              "partitionKey": "key",
+              "sequenceNumber": "90071992547409930001",
+              "approximateArrivalTimestamp": 1,
+              "data": "eyJpZCI6ImEiLCJhbW91bnQiOjF9"
+            }
+          }
+        ],
+        "state": {
+          "key": {
+            "nested": 1
+          }
+        },
+        "window": {
+          "start": "2026-09-15T00:00Z",
+          "end": "2026-09-15T00:01Z"
+        }
+      },
+      "safe": true,
+      "expected": {
+        "success": true,
+        "data": {
+          "Records": [
+            {
+              "eventSource": "aws:kinesis",
+              "eventVersion": "1",
+              "eventID": "1",
+              "eventName": "aws:kinesis:record",
+              "awsRegion": "ap-east-1",
+              "invokeIdentityArn": "arn:role",
+              "eventSourceARN": "arn:stream",
+              "kinesis": {
+                "kinesisSchemaVersion": "1",
+                "partitionKey": "key",
+                "sequenceNumber": "90071992547409930001",
+                "approximateArrivalTimestamp": 1,
+                "data": {
+                  "id": "a",
+                  "amount": 1
+                }
+              }
+            }
+          ],
+          "window": {
+            "start": "2026-09-15T00:00Z",
+            "end": "2026-09-15T00:01Z"
+          },
+          "state": {
+            "key": {
+              "nested": 1
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "firehose-base64-!",
+      "schema": "KinesisFirehoseRecordSchema",
+      "input": {
+        "recordId": "1",
+        "approximateArrivalTimestamp": 1,
+        "kinesisRecordMetadata": {
+          "shardId": "shard",
+          "partitionKey": "key",
+          "approximateArrivalTimestamp": 1,
+          "sequenceNumber": "1",
+          "subsequenceNumber": 0
+        },
+        "data": "!"
+      },
+      "safe": true,
+      "expected": {
+        "success": false,
+        "issues": [
+          {
+            "code": "invalid_format",
+            "message": "Invalid base64-encoded string",
+            "path": [
+              "data"
+            ]
+          }
+        ],
+        "original": {
+          "recordId": "1",
+          "approximateArrivalTimestamp": 1,
+          "kinesisRecordMetadata": {
+            "shardId": "shard",
+            "partitionKey": "key",
+            "approximateArrivalTimestamp": 1,
+            "sequenceNumber": "1",
+            "subsequenceNumber": 0
+          },
+          "data": "!"
+        }
+      }
+    },
+    {
+      "name": "cloudwatch-data-!",
+      "schema": "CloudWatchLogsSchema",
+      "input": {
+        "awslogs": {
+          "data": "!"
+        }
+      },
+      "safe": true,
+      "expected": {
+        "success": false,
+        "issues": [
+          {
+            "code": "invalid_format",
+            "message": "Invalid base64-encoded string",
+            "path": [
+              "awslogs",
+              "data"
+            ]
+          }
+        ],
+        "original": {
+          "awslogs": {
+            "data": "!"
+          }
+        }
+      }
+    },
+    {
+      "name": "firehose-base64-abcd",
+      "schema": "KinesisFirehoseRecordSchema",
+      "input": {
+        "recordId": "1",
+        "approximateArrivalTimestamp": 1,
+        "kinesisRecordMetadata": {
+          "shardId": "shard",
+          "partitionKey": "key",
+          "approximateArrivalTimestamp": 1,
+          "sequenceNumber": "1",
+          "subsequenceNumber": 0
+        },
+        "data": "abcd"
+      },
+      "safe": true,
+      "expected": {
+        "success": true,
+        "data": {
+          "recordId": "1",
+          "approximateArrivalTimestamp": 1,
+          "kinesisRecordMetadata": {
+            "shardId": "shard",
+            "partitionKey": "key",
+            "approximateArrivalTimestamp": 1,
+            "sequenceNumber": "1",
+            "subsequenceNumber": 0
+          },
+          "data": "i�\u001d"
+        }
+      }
+    },
+    {
+      "name": "cloudwatch-data-abcd",
+      "schema": "CloudWatchLogsSchema",
+      "input": {
+        "awslogs": {
+          "data": "abcd"
+        }
+      },
+      "safe": true,
+      "expected": {
+        "success": false,
+        "issues": [
+          {
+            "code": "custom",
+            "message": "Failed to decompress CloudWatch log data",
+            "path": [
+              "awslogs",
+              "data"
+            ]
+          }
+        ],
+        "original": {
+          "awslogs": {
+            "data": "abcd"
+          }
+        }
+      }
+    },
+    {
+      "name": "firehose-base64-YWJj",
+      "schema": "KinesisFirehoseRecordSchema",
+      "input": {
+        "recordId": "1",
+        "approximateArrivalTimestamp": 1,
+        "kinesisRecordMetadata": {
+          "shardId": "shard",
+          "partitionKey": "key",
+          "approximateArrivalTimestamp": 1,
+          "sequenceNumber": "1",
+          "subsequenceNumber": 0
+        },
+        "data": "YWJj"
+      },
+      "safe": true,
+      "expected": {
+        "success": true,
+        "data": {
+          "recordId": "1",
+          "approximateArrivalTimestamp": 1,
+          "kinesisRecordMetadata": {
+            "shardId": "shard",
+            "partitionKey": "key",
+            "approximateArrivalTimestamp": 1,
+            "sequenceNumber": "1",
+            "subsequenceNumber": 0
+          },
+          "data": "abc"
+        }
+      }
+    },
+    {
+      "name": "cloudwatch-data-YWJj",
+      "schema": "CloudWatchLogsSchema",
+      "input": {
+        "awslogs": {
+          "data": "YWJj"
+        }
+      },
+      "safe": true,
+      "expected": {
+        "success": false,
+        "issues": [
+          {
+            "code": "custom",
+            "message": "Failed to decompress CloudWatch log data",
+            "path": [
+              "awslogs",
+              "data"
+            ]
+          }
+        ],
+        "original": {
+          "awslogs": {
+            "data": "YWJj"
+          }
+        }
+      }
+    },
+    {
+      "name": "firehose-base64-YQ==",
+      "schema": "KinesisFirehoseRecordSchema",
+      "input": {
+        "recordId": "1",
+        "approximateArrivalTimestamp": 1,
+        "kinesisRecordMetadata": {
+          "shardId": "shard",
+          "partitionKey": "key",
+          "approximateArrivalTimestamp": 1,
+          "sequenceNumber": "1",
+          "subsequenceNumber": 0
+        },
+        "data": "YQ=="
+      },
+      "safe": true,
+      "expected": {
+        "success": true,
+        "data": {
+          "recordId": "1",
+          "approximateArrivalTimestamp": 1,
+          "kinesisRecordMetadata": {
+            "shardId": "shard",
+            "partitionKey": "key",
+            "approximateArrivalTimestamp": 1,
+            "sequenceNumber": "1",
+            "subsequenceNumber": 0
+          },
+          "data": "a"
+        }
+      }
+    },
+    {
+      "name": "cloudwatch-data-YQ==",
+      "schema": "CloudWatchLogsSchema",
+      "input": {
+        "awslogs": {
+          "data": "YQ=="
+        }
+      },
+      "safe": true,
+      "expected": {
+        "success": false,
+        "issues": [
+          {
+            "code": "custom",
+            "message": "Failed to decompress CloudWatch log data",
+            "path": [
+              "awslogs",
+              "data"
+            ]
+          }
+        ],
+        "original": {
+          "awslogs": {
+            "data": "YQ=="
+          }
+        }
+      }
+    },
+    {
+      "name": "firehose-zero",
+      "schema": "KinesisFirehoseRecordSchema",
+      "input": {
+        "recordId": "1",
+        "approximateArrivalTimestamp": 0,
+        "kinesisRecordMetadata": {
+          "shardId": "shard",
+          "partitionKey": "key",
+          "approximateArrivalTimestamp": -1,
+          "sequenceNumber": "1",
+          "subsequenceNumber": 0
+        },
+        "data": "eyJpZCI6ImEiLCJhbW91bnQiOjF9"
+      },
+      "safe": true,
+      "expected": {
+        "success": false,
+        "issues": [
+          {
+            "code": "too_small",
+            "message": "Too small: expected number to be >0",
+            "path": [
+              "approximateArrivalTimestamp"
+            ]
+          },
+          {
+            "code": "too_small",
+            "message": "Too small: expected number to be >0",
+            "path": [
+              "kinesisRecordMetadata",
+              "approximateArrivalTimestamp"
+            ]
+          }
+        ],
+        "original": {
+          "recordId": "1",
+          "approximateArrivalTimestamp": 0,
+          "kinesisRecordMetadata": {
+            "shardId": "shard",
+            "partitionKey": "key",
+            "approximateArrivalTimestamp": -1,
+            "sequenceNumber": "1",
+            "subsequenceNumber": 0
+          },
+          "data": "eyJpZCI6ImEiLCJhbW91bnQiOjF9"
+        }
+      }
+    },
+    {
+      "name": "firehose-sqs-invalid",
+      "schema": "KinesisFirehoseSqsRecordSchema",
+      "input": {
+        "recordId": "1",
+        "approximateArrivalTimestamp": 1,
+        "kinesisRecordMetadata": {
+          "shardId": "shard",
+          "partitionKey": "key",
+          "approximateArrivalTimestamp": 1,
+          "sequenceNumber": "1",
+          "subsequenceNumber": 0
+        },
+        "data": "e30="
+      },
+      "safe": true,
+      "expected": {
+        "success": false,
+        "issues": [
+          {
+            "code": "custom",
+            "message": "Failed to parse SQS record",
+            "path": [
+              "data"
+            ]
+          }
+        ],
+        "original": {
+          "recordId": "1",
+          "approximateArrivalTimestamp": 1,
+          "kinesisRecordMetadata": {
+            "shardId": "shard",
+            "partitionKey": "key",
+            "approximateArrivalTimestamp": 1,
+            "sequenceNumber": "1",
+            "subsequenceNumber": 0
+          },
+          "data": "e30="
+        }
+      }
+    },
+    {
+      "name": "firehose-sqs-unpadded",
+      "schema": "KinesisFirehoseSqsRecordSchema",
+      "input": {
+        "recordId": "1",
+        "approximateArrivalTimestamp": 1,
+        "kinesisRecordMetadata": {
+          "shardId": "shard",
+          "partitionKey": "key",
+          "approximateArrivalTimestamp": 1,
+          "sequenceNumber": "1",
+          "subsequenceNumber": 0
+        },
+        "data": "eyJtZXNzYWdlSWQiOiIxIiwicmVjZWlwdEhhbmRsZSI6InIiLCJib2R5Ijoie1wiU3ViamVjdFwiOm51bGwsXCJUb3BpY0FyblwiOlwiYXJuOnRvcGljXCIsXCJUeXBlXCI6XCJOb3RpZmljYXRpb25cIixcIk1lc3NhZ2VcIjpcIntcXFwiaWRcXFwiOlxcXCJhXFxcIixcXFwiYW1vdW50XFxcIjoxfVwiLFwiTWVzc2FnZUlkXCI6XCIxXCIsXCJUaW1lc3RhbXBcIjpcIjIwMjYtMDktMTVUMDA6MDA6MDBaXCIsXCJNZXNzYWdlQXR0cmlidXRlc1wiOntcInRhZ1wiOntcIlR5cGVcIjpcIlN0cmluZ1wiLFwiVmFsdWVcIjpcInZhbHVlXCJ9fSxcImlnbm9yZWRcIjp0cnVlLFwiVW5zdWJzY3JpYmVVUkxcIjpcIm5vdCBhIFVSTFwiLFwiU2lnbmluZ0NlcnRVUkxcIjpcImh0dHBzOi8vZXhhbXBsZS50ZXN0L2NlcnRcIn0iLCJhdHRyaWJ1dGVzIjp7IkFwcHJveGltYXRlUmVjZWl2ZUNvdW50IjoiMSIsIkFwcHJveGltYXRlRmlyc3RSZWNlaXZlVGltZXN0YW1wIjoiMSIsIlNlbmRlcklkIjoicyIsIlNlbnRUaW1lc3RhbXAiOiIxIn0sIm1lc3NhZ2VBdHRyaWJ1dGVzIjp7fSwibWQ1T2ZCb2R5IjoiaGFzaCIsImV2ZW50U291cmNlIjoiYXdzOnNxcyIsImV2ZW50U291cmNlQVJOIjoiYXJuOnF1ZXVlIiwiYXdzUmVnaW9uIjoiYXAtZWFzdC0xIn0"
+      },
+      "safe": true,
+      "expected": {
+        "success": true,
+        "data": {
+          "recordId": "1",
+          "approximateArrivalTimestamp": 1,
+          "kinesisRecordMetadata": {
+            "shardId": "shard",
+            "partitionKey": "key",
+            "approximateArrivalTimestamp": 1,
+            "sequenceNumber": "1",
+            "subsequenceNumber": 0
+          },
+          "data": {
+            "messageId": "1",
+            "receiptHandle": "r",
+            "body": "{\"Subject\":null,\"TopicArn\":\"arn:topic\",\"Type\":\"Notification\",\"Message\":\"{\\\"id\\\":\\\"a\\\",\\\"amount\\\":1}\",\"MessageId\":\"1\",\"Timestamp\":\"2026-09-15T00:00:00Z\",\"MessageAttributes\":{\"tag\":{\"Type\":\"String\",\"Value\":\"value\"}},\"ignored\":true,\"UnsubscribeURL\":\"not a URL\",\"SigningCertURL\":\"https://example.test/cert\"}",
+            "attributes": {
+              "ApproximateReceiveCount": "1",
+              "ApproximateFirstReceiveTimestamp": "1",
+              "SenderId": "s",
+              "SentTimestamp": "1"
+            },
+            "messageAttributes": {},
+            "md5OfBody": "hash",
+            "eventSource": "aws:sqs",
+            "eventSourceARN": "arn:queue",
+            "awsRegion": "ap-east-1"
+          }
+        }
+      }
+    },
+    {
+      "name": "cloudwatch-empty-log-events",
+      "schema": "CloudWatchLogsSchema",
+      "input": {
+        "awslogs": {
+          "data": "H4sIAAAAAAAACi2KQQqDMBBF7/LXOcHsAkZXruKulGJlCAFNwkysiPTuQtrV++/zLmysOgeezsIgdHayr9F5bwcHg3wkFtCfBmsOg+S9gBAa2+Wr8LyBoL9hoPtbF4mlxpz6uFYWBT2erXYfTrXp9wYWD/R/fgAAAA=="
+        }
+      },
+      "safe": true,
+      "expected": {
+        "success": false,
+        "issues": [
+          {
+            "code": "custom",
+            "message": "Failed to decompress CloudWatch log data",
+            "path": [
+              "awslogs",
+              "data"
+            ]
+          }
+        ],
+        "original": {
+          "awslogs": {
+            "data": "H4sIAAAAAAAACi2KQQqDMBBF7/LXOcHsAkZXruKulGJlCAFNwkysiPTuQtrV++/zLmysOgeezsIgdHayr9F5bwcHg3wkFtCfBmsOg+S9gBAa2+Wr8LyBoL9hoPtbF4mlxpz6uFYWBT2erXYfTrXp9wYWD/R/fgAAAA=="
+          }
+        }
+      }
+    },
+    {
+      "name": "sns-invalid-url-time",
+      "schema": "SnsNotificationSchema",
+      "input": {
+        "Subject": null,
+        "TopicArn": "arn:topic",
+        "UnsubscribeUrl": "relative",
+        "SigningCertUrl": "https://example.test/cert",
+        "Type": "Notification",
+        "Message": "{\"id\":\"a\",\"amount\":1}",
+        "MessageId": "1",
+        "Timestamp": "bad",
+        "MessageAttributes": {
+          "tag": {
+            "Type": "String",
+            "Value": "value"
+          }
+        },
+        "ignored": true
+      },
+      "safe": true,
+      "expected": {
+        "success": false,
+        "issues": [
+          {
+            "code": "invalid_format",
+            "message": "Invalid URL",
+            "path": [
+              "UnsubscribeUrl"
+            ]
+          },
+          {
+            "code": "invalid_format",
+            "message": "Invalid ISO datetime",
+            "path": [
+              "Timestamp"
+            ]
+          }
+        ],
+        "original": {
+          "Subject": null,
+          "TopicArn": "arn:topic",
+          "UnsubscribeUrl": "relative",
+          "SigningCertUrl": "https://example.test/cert",
+          "Type": "Notification",
+          "Message": "{\"id\":\"a\",\"amount\":1}",
+          "MessageId": "1",
+          "Timestamp": "bad",
+          "MessageAttributes": {
+            "tag": {
+              "Type": "String",
+              "Value": "value"
+            }
+          },
+          "ignored": true
+        }
+      }
+    },
+    {
+      "name": "sns-uppercase-only",
+      "schema": "SnsNotificationSchema",
+      "input": {
+        "Subject": null,
+        "TopicArn": "arn:topic",
+        "Type": "Notification",
+        "Message": "{\"id\":\"a\",\"amount\":1}",
+        "MessageId": "1",
+        "Timestamp": "2026-09-15T00:00:00Z",
+        "MessageAttributes": {
+          "tag": {
+            "Type": "String",
+            "Value": "value"
+          }
+        },
+        "ignored": true,
+        "UnsubscribeURL": "not a URL",
+        "SigningCertURL": "https://example.test/cert"
+      },
+      "safe": true,
+      "expected": {
+        "success": false,
+        "issues": [
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected string, received undefined",
+            "path": [
+              "UnsubscribeUrl"
+            ],
+            "expected": "string"
+          },
+          {
+            "code": "invalid_format",
+            "message": "Invalid URL",
+            "path": [
+              "UnsubscribeURL"
+            ]
+          }
+        ],
+        "original": {
+          "Subject": null,
+          "TopicArn": "arn:topic",
+          "Type": "Notification",
+          "Message": "{\"id\":\"a\",\"amount\":1}",
+          "MessageId": "1",
+          "Timestamp": "2026-09-15T00:00:00Z",
+          "MessageAttributes": {
+            "tag": {
+              "Type": "String",
+              "Value": "value"
+            }
+          },
+          "ignored": true,
+          "UnsubscribeURL": "not a URL",
+          "SigningCertURL": "https://example.test/cert"
+        }
+      }
+    },
+    {
+      "name": "ddb-helper",
+      "schema": "marshalled",
+      "input": {
+        "id": {
+          "S": "a"
+        },
+        "amount": {
+          "N": "1"
+        }
+      },
+      "safe": true,
+      "expected": {
+        "success": true,
+        "data": {
+          "id": "a",
+          "amount": 1,
+          "retry": 3
+        }
+      }
+    },
+    {
+      "name": "ddb-helper-invalid",
+      "schema": "marshalled",
+      "input": {
+        "id": {
+          "INVALID": true
+        }
+      },
+      "safe": true,
+      "expected": {
+        "success": false,
+        "issues": [
+          {
+            "code": "custom",
+            "message": "Could not unmarshall DynamoDB stream record"
+          }
+        ],
+        "original": {
+          "id": {
+            "INVALID": true
+          }
+        }
+      }
+    },
+    {
+      "name": "ddb-helper-invalid-output",
+      "schema": "marshalled",
+      "input": {
+        "id": {
+          "N": "1"
+        },
+        "amount": {
+          "N": "-1"
+        }
+      },
+      "safe": true,
+      "expected": {
+        "success": false,
+        "issues": [
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected string, received number",
+            "path": [
+              "id"
+            ],
+            "expected": "string"
+          },
+          {
+            "code": "custom",
+            "message": "amount must be non-negative",
+            "path": [
+              "amount"
+            ]
+          }
+        ],
+        "original": {
+          "id": {
+            "N": "1"
+          },
+          "amount": {
+            "N": "-1"
+          }
+        }
+      }
+    },
+    {
+      "name": "ddb-helper-bigint",
+      "schema": "rawMarshalled",
+      "input": {
+        "large": {
+          "N": "9007199254740993"
+        },
+        "raw": {
+          "B": "YQ=="
+        },
+        "set": {
+          "SS": [
+            "a",
+            "a",
+            "b"
+          ]
+        },
+        "nested": {
+          "M": {
+            "x": {
+              "NULL": true
+            }
+          }
+        }
+      },
+      "safe": true,
+      "expected": {
+        "success": true,
+        "data": {
+          "large": {
+            "bigint": "9007199254740993"
+          },
+          "raw": "YQ==",
+          "set": [
+            "a",
+            "b"
+          ],
+          "nested": {
+            "x": null
+          }
+        }
+      }
+    }
+  ]
+}

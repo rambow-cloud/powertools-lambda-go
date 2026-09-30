@@ -1,0 +1,17 @@
+// Package lambdacomponents supplies only the components used by this integration test.
+package lambdacomponents
+
+import (
+ "github.com/open-telemetry/opentelemetry-collector-contrib/exporter/awsxrayexporter"
+ "go.opentelemetry.io/collector/otelcol"
+ "go.opentelemetry.io/collector/receiver/otlpreceiver"
+ "go.opentelemetry.io/collector/service/telemetry/otelconftelemetry"
+)
+
+func Components(extensionID string) (otelcol.Factories, error) {
+ receivers, err := otelcol.MakeFactoryMap(otlpreceiver.NewFactory())
+ if err != nil { return otelcol.Factories{}, err }
+ exporters, err := otelcol.MakeFactoryMap(awsxrayexporter.NewFactory())
+ if err != nil { return otelcol.Factories{}, err }
+ return otelcol.Factories{Receivers: receivers, Exporters: exporters, Telemetry: otelconftelemetry.NewFactory()}, nil
+}
