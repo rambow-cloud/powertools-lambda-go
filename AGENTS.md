@@ -9,7 +9,7 @@
 - Keep packages cohesive and loosely coupled. Reuse established primitives, keep interfaces small, and avoid speculative abstractions or duplicate wrappers.
 - Maintain independent Go modules listed in `tools/modules.json` and `go.work`. Keep root Commons free of external dependencies and preserve the single shared invocation identity. Do not add local `replace` directives to module files.
 - Use `uv run python tools/modules.py tidy` to maintain unpublished internal dependencies and `uv run python tools/modules.py check` to verify packaged modules with `GOWORK=off`. Root `go test ./...` does not cover nested modules. All Go subprocesses must keep CGO disabled.
-- Track implemented and verified work in `docs/CHECKLIST.md`. Check an item only after its acceptance criteria pass. Do not update the checklist for documentation-only fixes.
+- Track implemented and verified work in `docs/CHECKLIST.md`. Check an item only after its acceptance criteria pass. Keep it as the project progress record. Do not add entries for routine wording/link fixes; record verified feature audits and acceptance milestones.
 - Avoid redundant validation and repeated retries. Repeat a check only after a relevant change or a newly understood failure.
 - When a result can be verified in a browser, provide the exact page and verification steps to the user instead of issuing command-line HTTP probes.
 - For DNS validation, use CloudFormation status and outputs as the source of truth. Do not perform local DNS validation.

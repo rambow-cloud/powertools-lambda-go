@@ -1,25 +1,67 @@
 # Bedrock Agent function resolver
 
-`eventhandler/bedrock` implements the function-based action-group contract from
-Powertools TypeScript v2.35.0. It is an independent module whose only dependency
-is root Commons. This API does not implement an OpenAPI action-group router.
+The Bedrock function resolver routes function-based Action Group invocations to registered Go tools. Import `github.com/rambow-cloud/powertools-lambda-go/eventhandler/bedrock`. It does not implement an OpenAPI Action Group router or call a model.
 
-```go
-app := bedrock.New(bedrock.Options{})
-app.Tool(func(ctx context.Context, params *bedrock.Parameters, event bedrock.Event) (any, error) {
-    return fmt.Sprintf("Hello, %v", params.Get("name")), nil
-}, bedrock.Configuration{Name: "greeting", Description: "Greet a person"})
-lambda.Start(app.Resolve)
-```
+See [installation](MODULES.md) and the [compatibility baseline](COMPATIBILITY.md).
 
-See the [native Lambda example](https://github.com/rambow-cloud/powertools-lambda-go/blob/main/examples/bedrock/main.go). `Resolve` accepts
-JSON-decoded `map[string]any` events and preserves unknown fields and the original
-context. Malformed event shapes return a concrete `*bedrock.Error`, including the
-ordinary JavaScript `Error` name in the Go Lambda SDK's Runtime API error response.
-Configure tools before serving requests. Registry access is synchronized; handlers
-and diagnostic callbacks execute outside locks. Concurrent invocations receive
-separate parameter objects. Input event maps and explicit response attributes are
-passed by reference; ownership stays with the caller.
+## Complete example
+
+Build the complete example at `./examples/bedrock` with `CGO_ENABLED=0`. Configure a function-based Action Group whose `greeting` function supplies a `name` parameter.
+
+~~~go
+--8<-- "examples/bedrock/main.go"
+~~~
+
+## Input and output
+
+For the input below, the resolver returns the Bedrock envelope with `messageVersion: "1.0"`, the same `actionGroup` and `function`, and `response.functionResponse.responseBody.TEXT.body` containing `"Hello, Ada"` (including its quote characters). The inner quotes are part of that body because an ordinary Go string result is JSON-encoded. Return `NewFunctionResponse("Hello, Ada")` when the body should be verbatim text. The example writes no successful business log.
+
+~~~json
+{
+  "messageVersion": "1.0",
+  "agent": {
+    "name": "orders-agent",
+    "id": "AGENT12345",
+    "alias": "ALIAS12345",
+    "version": "DRAFT"
+  },
+  "inputText": "Greet Ada",
+  "sessionId": "example-session",
+  "actionGroup": "orders",
+  "function": "greeting",
+  "parameters": [
+    {
+      "name": "name",
+      "type": "string",
+      "value": "Ada"
+    }
+  ],
+  "sessionAttributes": {},
+  "promptSessionAttributes": {}
+}
+~~~
+
+## Objects and lifecycle
+
+| Object | Responsibility |
+| --- | --- |
+| `app` | Reusable tool registry; `Tool` binds a function name to a callback. |
+| `parameters` | Ordered converted parameters; `Get` reads a value, `Has` distinguishes missing from null. |
+| `FunctionResponse` | Explicit body, session attributes and `Failure`/`Reprompt` response state. |
+
+## TypeScript feature coverage
+
+Compared with the [official v2.35.0 bedrock-agents guide](https://github.com/aws-powertools/powertools-lambda-typescript/blob/7bcc27b1574493f9452688673658f52b80c53847/docs/features/event-handler/bedrock-agents.md) and the pinned npm implementation. The table maps capabilities; it does not certify every native type or service behavior.
+
+| TypeScript feature | Go API or approach | Compatibility scope |
+| --- | --- | --- |
+| Tools / parameter conversion | `Tool`, `Parameters` | Function-name routing; covered JavaScript number/boolean conversion. |
+| Context / event access | Callback `ctx` and `Event` | Request-owned parameter objects; input ownership documented below. |
+| Error handling | Execution error bodies, named errors and response states | Not all failures propagate as a Lambda error. |
+| Session attributes | `FunctionResponse` | Explicit session and prompt-session updates. |
+| Logging | `Options.Diagnostic` | Optional sink; successful tool output is not a log record. |
+
+Executable evidence: [eventhandler/bedrock/reference_test.go](https://github.com/rambow-cloud/powertools-lambda-go/blob/main/eventhandler/bedrock/reference_test.go). See [the verification scope](FEATURE_PARITY.md) and [project progress](CHECKLIST.md) for open gates.
 
 ## Public mapping
 

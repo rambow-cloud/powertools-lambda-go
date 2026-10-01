@@ -1,6 +1,8 @@
-# Compatibility contract for the first Go implementation
+# Compatibility contract
 
-Reference: TypeScript v2.35.0, commit `7bcc27b1574493f9452688673658f52b80c53847`. The long-term goal remains feature and observable-behavior parity. This first implementation is explicitly partial. A checked implementation item does not imply exhaustive reference parity.
+Reference: TypeScript v2.35.0, commit `7bcc27b1574493f9452688673658f52b80c53847`. The goal is feature and observable-behavior parity within the maintained scope. Implementation and scoped verification exist across the current utility families; exhaustive parity remains unfinished. A checked implementation item does not imply exhaustive reference parity.
+
+Start with the [complete feature comparison and evidence map](FEATURE_PARITY.md). Each utility guide has a TypeScript feature table, complete example, output explanation and boundaries. [Usage patterns](USAGE_PATTERNS.md) maps decorators, middleware and objects to Go; [environment variables](ENVIRONMENT_VARIABLES.md) records supported configuration. [CHECKLIST.md](CHECKLIST.md) describes project progress.
 
 Scope adjustment (2026-09-13): feature parity work now prioritizes Logger and OpenTelemetry. Exhaustive legacy X-Ray SDK behavior and native document parity are outside the maintained compatibility scope. The adapter's known DynamoDB enrichment gap is retained as a documented limitation, not an active release requirement.
 
@@ -71,7 +73,8 @@ Logger adds `trace_id`, `span_id`, and a formatted `xray_trace_id` from a valid 
 - Tracer decorators/Middy-equivalent options, complete OTel error/HTTP/SDK parity, non-HTTP event extraction, and collector/X-Ray document fixtures. Opt-in HTTP event-envelope extraction is implemented; legacy native segment compatibility is frozen.
 - Managed Instances lifecycle validation, durable execution semantics, and event streaming behavior.
 - Exhaustive Lambda integration, hard-timeout/freeze recovery, performance/cold-start benchmarks, size budgets, and release/license audit. The scoped Hong Kong deployment results are in [AWS_VALIDATION.md](AWS_VALIDATION.md).
-- Metrics numeric timestamp input, native/metadata encoding and remaining type boundaries, exhaustive fixtures and real CloudWatch extraction. Store, warning, cold-start, configuration and numeric/object-key behavior have scoped reference/runtime evidence in [METRICS.md](METRICS.md). SingleMetric returns (*Metrics, error); callers must handle fresh-construction failures.
-- Parameters providers and convenience helpers are implemented with scoped SDK, reference, and Docker coverage. Numeric/invalid-input/diagnostic boundaries and service acceptance remain open; see [PARAMETERS.md](PARAMETERS.md). Subsequent packages follow [ROADMAP.md](ROADMAP.md).
+- Metrics native/metadata encoding, remaining type boundaries, exhaustive framework lifecycle and real CloudWatch extraction. Numeric/Date timestamp input and clock reads are implemented and verified, alongside store, warning, cold-start, configuration, values and wrapper error precedence. See [METRICS.md](METRICS.md). SingleMetric returns (*Metrics, error); callers must handle fresh-construction failures.
+- Parameters providers and convenience helpers are implemented with scoped SDK, reference, and Docker coverage. Numeric/invalid-input/diagnostic boundaries and service acceptance remain open; see [PARAMETERS.md](PARAMETERS.md).
+- Batch, Idempotency, Parser, Validation, event handlers, Kafka, Data Masking, Signer, JMESPath and Metadata have implementations and scoped reference/native/runtime evidence. Remaining gates are mapped in [FEATURE_PARITY.md](FEATURE_PARITY.md). Optional KMS masking is uncached; TypeScript data-key caching remains unsupported. HTTP OpenAPI generation was not implemented in the pinned TypeScript baseline.
 
 `CGO_ENABLED=0` is mandatory. Race-detector execution is excluded because it requires CGO. Concurrent functional tests do run, but are not a substitute for a race detector.

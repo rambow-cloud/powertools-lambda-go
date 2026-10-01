@@ -1,22 +1,79 @@
 # AppSync Events
 
-The independent `eventhandler/appsyncevents` module implements the pinned TypeScript v2.35.0 AppSync Events router and resolver contracts. It depends only on Commons and the Go standard library. The core uses Commons' 100-entry LRU and environment-string parsing; it does not import Parser, Logger, Tracer, HTTP routing or an AWS SDK.
+AppSync Events handles publish and subscribe invocations with channel routing, authorization and optional aggregate processing. Import `github.com/rambow-cloud/powertools-lambda-go/eventhandler/appsyncevents`. It does not publish messages to AppSync by itself.
 
-```go
-app := appsyncevents.New(appsyncevents.Options{WarnOnLargePayload: true})
-app.OnPublish("/orders/*", func(ctx context.Context, payload any, event appsyncevents.Event) (any, error) {
-    return payload, nil
-})
-app.OnSubscribe("/orders/private", func(ctx context.Context, event appsyncevents.Event) error {
-    if event["identity"] == nil {
-        return &appsyncevents.UnauthorizedError{Message: "Authentication required"}
+See [installation](MODULES.md) and the [compatibility baseline](COMPATIBILITY.md).
+
+## Complete example
+
+Build the complete example at `./examples/appsyncevents` with `CGO_ENABLED=0`. Its `/orders/*` publish route returns each payload unchanged; `/orders/private` requires an identity for subscriptions.
+
+~~~go
+--8<-- "examples/appsyncevents/main.go"
+~~~
+
+## Input and output
+
+For the publish input below, the resolver returns `{"events":[{"id":"e1","payload":{"id":"ORD-123"}}]}`. Each ID is preserved. An individual callback error produces that item's `error` instead of its payload. A private subscription without an identity raises `UnauthorizedException`; it is not a successful null response. The example does not write successful application logs. Large-payload warnings use the diagnostic sink and do not truncate output.
+
+~~~json
+{
+  "info": {
+    "operation": "PUBLISH",
+    "channel": {
+      "path": "/orders/created",
+      "segments": [
+        "orders",
+        "created"
+      ]
+    },
+    "channelNamespace": {
+      "name": "orders"
     }
-    return nil
-})
-lambda.Start(app.Resolve)
-```
+  },
+  "events": [
+    {
+      "id": "e1",
+      "payload": {
+        "id": "ORD-123"
+      }
+    }
+  ],
+  "identity": null,
+  "result": null,
+  "error": null,
+  "prev": null,
+  "request": {
+    "headers": {},
+    "domainName": null
+  },
+  "stash": {},
+  "outErrors": []
+}
+~~~
 
-The [complete Go Lambda example](https://github.com/rambow-cloud/powertools-lambda-go/blob/main/examples/appsyncevents/main.go) includes imports. A Go method value or closure provides the reference's decorated method/scope binding without an additional wrapper or dependency.
+## Objects and lifecycle
+
+| Object | Responsibility |
+| --- | --- |
+| `app` | Reusable route registry and match cache; handlers are registered once. |
+| `payload` / `event` | One publish payload and the full invocation event; aggregate mode passes all items. |
+| `ctx` | Original Lambda context; pass to optional Logger/Tracer and downstream calls. |
+
+## TypeScript feature coverage
+
+Compared with the [official v2.35.0 appsync-events guide](https://github.com/aws-powertools/powertools-lambda-typescript/blob/7bcc27b1574493f9452688673658f52b80c53847/docs/features/event-handler/appsync-events.md) and the pinned npm implementation. The table maps capabilities; it does not certify every native type or service behavior.
+
+| TypeScript feature | Go API or approach | Compatibility scope |
+| --- | --- | --- |
+| Publish / subscribe | `OnPublish`, `OnSubscribe`, `Resolve` | Per-item publishing or authorization callback. |
+| Wildcards / routing | Channel patterns and separate publish/subscribe registries | Reference specificity and match caching. |
+| Aggregated processing | `OnPublish` with `PublishOptions{Aggregate: true}` | Whole-batch callback; output order remains explicit. |
+| Oversize detection | `WarnOnLargePayload` | Warns above 245760 bytes; no drop/truncation. |
+| Errors / unauthorized operations | Named errors and `UnauthorizedError` | Individual error items versus propagated authorization errors. |
+| Lambda context / logging | `Options.Diagnostic` | Concurrency-safe callbacks; no automatic business logs. |
+
+Executable evidence: [eventhandler/appsyncevents/reference_test.go](https://github.com/rambow-cloud/powertools-lambda-go/blob/main/eventhandler/appsyncevents/reference_test.go). See [the verification scope](FEATURE_PARITY.md) and [project progress](CHECKLIST.md) for open gates.
 
 ## Event and handler mapping
 

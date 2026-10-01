@@ -1,18 +1,42 @@
 # JMESPath
 
-The independent `github.com/rambow-cloud/powertools-lambda-go/jmespath` module implements JSON query evaluation, reusable expressions, custom functions, and all thirteen pinned Powertools envelopes. It uses `github.com/jmespath-community/go-jmespath v1.1.1` for parsing/interpreting and Commons for Base64, result snapshots, and the bounded syntax cache. It has no AWS or OpenTelemetry dependency.
+JMESPath queries JSON documents, decodes Powertools envelopes and supports custom functions. Import `github.com/rambow-cloud/powertools-lambda-go/jmespath`. It is optional for Logger and does not contact AWS.
 
-```go
-query, err := jmespath.Compile("items[?enabled].id")
-if err != nil {
-    return err
-}
-result, err := query.Search(event)
-```
+See [installation](MODULES.md) and the [compatibility baseline](COMPATIBILITY.md).
 
-`Search(expression, data, options...)` is the one-shot form; `MustCompile` is intended for static application expressions. Inputs may be JSON-shaped values or typed Go events with JSON tags. Each search creates a private JSON snapshot and uses float64 numeric semantics. Returned JSON collections are also snapshots, so mutating a result cannot corrupt cached literals or another invocation. Custom callbacks must be concurrency-safe and must not mutate or retain their arguments. Callbacks should return JSON-shaped values with float64 numbers.
+## Complete example
 
-`Compile` caches up to 128 syntax trees with the shared Commons LRU. `PurgeCache` clears that cache without invalidating existing expressions. Unlike the reference's random eviction, LRU is deterministic. Function definitions are snapshotted and bound per compiled expression; registrations do not leak between expressions. Standard functions are enabled by default. Community-only functions and grammar extensions are not automatically exposed.
+Run this complete offline example with `go run ./examples/query` and `CGO_ENABLED=0`. It decodes the JSON string inside an SQS body, then uses a compiled expression to set Logger's correlation ID.
+
+~~~go
+--8<-- "examples/query/main.go"
+~~~
+
+## Input and output
+
+The first stdout line is Go's printed result, `[map[orderId:order-1]]`; it is not JSON. The next line is an `INFO` JSON record with `message: "order received"`, `correlation_id: "order-1"` and default `service: "service_undefined"`. Its timestamp varies. The wrapped callback returns `"ok"` separately. Compile expressions once when reused; inspect the returned `any` or marshal it to JSON for an application response.
+
+## Objects and lifecycle
+
+| Object | Responsibility |
+| --- | --- |
+| `query` | `Compile` returns an expression or syntax error; `Search` evaluates it against one input. |
+| `payloads` | Decoded query result, not the original event wrapper. |
+| `CorrelationExtractor` | Logger consumes the small `Search(any)` interface; this module is installed only when your app imports it. |
+
+## TypeScript feature coverage
+
+Compared with the [official v2.35.0 jmespath guide](https://github.com/aws-powertools/powertools-lambda-typescript/blob/7bcc27b1574493f9452688673658f52b80c53847/docs/features/jmespath.md) and the pinned npm implementation. The table maps capabilities; it does not certify every native type or service behavior.
+
+| TypeScript feature | Go API or approach | Compatibility scope |
+| --- | --- | --- |
+| Extraction / reusable queries | `Search`, `Compile`, `MustCompile` | Snapshots inputs/results; syntax cache uses deterministic LRU. |
+| Built-in envelopes | `ExtractDataFromEnvelope`, thirteen constants | Reference expressions preserved, including first-record selections. |
+| Decode functions | `WithPowertoolsFunctions` | JSON/Base64/gzip; Go surfaces decoder errors instead of swallowing them. |
+| Custom functions | `WithFunctions`, `Function` | Typed signatures and concurrency-safe callbacks replace subclassing. |
+| Logger correlation | Compiled `CorrelationExtractor` | Dependency-free integration interface. |
+
+Executable evidence: [jmespath/jmespath_test.go](https://github.com/rambow-cloud/powertools-lambda-go/blob/main/jmespath/jmespath_test.go). See [the verification scope](FEATURE_PARITY.md) and [project progress](CHECKLIST.md) for open gates.
 
 ## Powertools functions and envelopes
 

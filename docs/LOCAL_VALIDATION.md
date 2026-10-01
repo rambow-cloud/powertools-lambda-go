@@ -1,5 +1,7 @@
 # Local Docker validation
 
+Documentation and feature audit (2026-10-01): compared seventeen official TypeScript v2.35.0 guides with Go contracts and restructured eighteen Go guides, including Commons. Verified nineteen complete programs by compilation and eighteen local programs/direct handler executions; the DynamoDB Idempotency entry is compile-only, with persistence covered by the maintained fixture. All 31 modules and 28 public consumers passed packaged acceptance with CGO disabled and GOWORK off. Dependency download failures required phased continuation; passed modules were reused, and tested Go source bytes match current files. Both Linux builds and 868/868 amd64 RIE, 95/95 streaming and 14/14 saved Batch checks passed, with cleanup. No AWS resources were used. [DOCUMENTATION_ACCEPTANCE.json](DOCUMENTATION_ACCEPTANCE.json) records the combined scope; [LOCAL_ACCEPTANCE.json](LOCAL_ACCEPTANCE.json), [STREAMING_ACCEPTANCE.json](STREAMING_ACCEPTANCE.json) and [BATCH_ACCEPTANCE.json](BATCH_ACCEPTANCE.json) identify runtime evidence. Browser review and exhaustive parity remain open.
+
 ## Optional AWS Encryption SDK acceptance (2026-09-24)
 
 Implemented datamasking/kms as an independent, uncached provider backed by the official Go Encryption SDK and Materials Providers Library v0.4.0. It reuses Commons Base64/UTF-8/key ordering and AWS request identity; plain masking remains independent of encryption dependencies.

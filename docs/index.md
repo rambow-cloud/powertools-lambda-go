@@ -10,6 +10,8 @@ Follow the [first Lambda guide](GETTING_STARTED.md) to compose Logger and Tracer
 
 Use **Go 1.26 or newer**, target **arm64 or x86_64**, and keep **CGO disabled**. Start from the local workspace until module releases are available. The [module guide](MODULES.md) explains dependencies, imports, and independent versioning.
 
+Before choosing a utility, read [usage patterns](USAGE_PATTERNS.md) for object and wrapper lifetimes, and [environment variables](ENVIRONMENT_VARIABLES.md) for configuration. Every main utility guide shows a complete example, expected output and its TypeScript mapping.
+
 ## Features
 
 Choose the utilities your application needs. Each feature has its own Go module; adding one utility does not install the entire toolkit.
@@ -29,7 +31,7 @@ Choose the utilities your application needs. Each feature has its own Go module;
 | [Data Masking](DATAMASKING.md) | Erase or transform selected fields, with optional regex and KMS providers. |
 | [Kafka](KAFKA.md) | Decode Kafka events with JSON, Avro, or Protobuf payloads. |
 | [Signer](SIGNER.md) | Sign HTTP requests with AWS Signature Version 4. |
-| [Commons and Metadata](COMMONS.md) | Reuse runtime primitives and retrieve Lambda execution-environment metadata. |
+| [Commons](COMMONS.md) and [Metadata](METADATA.md) | Reuse runtime primitives and retrieve Lambda execution-environment metadata. |
 
 The manifest contains 31 modules, including 28 public modules. The legacy X-Ray SDK adapter is included in that count but is deprecated and frozen. Follow the [OpenTelemetry migration guide](XRAY_MIGRATION.md) for maintained X-Ray support.
 
@@ -43,6 +45,6 @@ The [quickstart](GETTING_STARTED.md#create-utilities-once) includes a complete G
 
 ## Project status
 
-Use the [completion checklist](CHECKLIST.md) and [roadmap](ROADMAP.md) to distinguish implemented behavior from remaining compatibility and release work. [Local acceptance records](LOCAL_VALIDATION.md) describe the scope of previous verification; they do not establish exhaustive parity or cloud acceptance.
+Use the [TypeScript feature comparison](FEATURE_PARITY.md), [project progress](CHECKLIST.md) and [roadmap](ROADMAP.md) to distinguish implemented behavior from remaining compatibility and release work. [Local acceptance records](LOCAL_VALIDATION.md) describe the scope of previous verification; they do not establish exhaustive parity or cloud acceptance.
 
 Original contributions are licensed under [MIT](https://github.com/rambow-cloud/powertools-lambda-go/blob/main/LICENSE). Third-party content retains its [original attribution](https://github.com/rambow-cloud/powertools-lambda-go/blob/main/THIRD_PARTY_NOTICES.md). This project is not an official AWS distribution.

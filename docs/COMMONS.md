@@ -2,6 +2,55 @@
 
 The foundation is implemented against the installed TypeScript v2.35.0 distribution. Pure helpers live in `commons`; AWS-specific helpers live in `commons/awssdk` and `commons/dynamodb`; HTTP metadata retrieval lives in `commons/metadata`. Existing invocation lifecycle ownership remains in `internal/invocation`. No package performs network requests or modifies AWS environment variables merely because it is imported.
 
+## Complete example
+
+This complete offline program uses the shared Base64 decoder. Save it in an empty directory inside the checkout and run `go run main.go` with `CGO_ENABLED=0`.
+
+~~~go
+package main
+
+import (
+	"fmt"
+	stdlog "log"
+
+	"github.com/rambow-cloud/powertools-lambda-go/commons"
+)
+
+func main() {
+	value, err := commons.FromBase64("SGVsbG8=", "base64")
+	if err != nil {
+		stdlog.Fatal(err)
+	}
+	fmt.Println(string(value))
+}
+~~~
+
+## Input and output
+
+Stdout is `Hello` followed by a newline. `FromBase64` returns bytes; select `"base64"` explicitly to decode them, then convert to a string for text output. Its default `"utf8"` mode returns the validated input's UTF-8 bytes, retaining the pinned TypeScript helper's behavior despite its name. Invalid standard-alphabet/padding input returns an error. This is ordinary output from `fmt.Println`, not a structured log. No utility is initialized merely by importing Commons.
+
+## Objects and lifecycle
+
+| Object | Responsibility |
+| --- | --- |
+| `commons` | Stateless helpers plus explicitly created Utility/LRU objects; root module has no third-party dependencies |
+| Invocation identity | Shared private runtime identity reused by handler wrappers; no separate cold-start state per wrapper |
+| Optional `commons/*` modules | SDK, DynamoDB, Metadata and regex dependencies installed only when used |
+
+## TypeScript feature coverage
+
+The [public contract map](#public-contract-map) below comes from the pinned [Commons exports](https://github.com/aws-powertools/powertools-lambda-typescript/tree/7bcc27b1574493f9452688673658f52b80c53847/packages/commons/src). See the separate [Metadata guide](METADATA.md) for the user-facing LMDS feature.
+
+| TypeScript feature | Go API or approach | Compatibility scope |
+| --- | --- | --- |
+| Environment / runtime helpers | StringEnv, NumberEnv, BoolEnv, Utility and context helpers | Strict/extended modes and shared invocation identity |
+| Encoding / merge / LRU | FromBase64, DeepMerge, NewLRUCache | Reference indexed merging; Go snapshots and typed generics |
+| DynamoDB conversion | SDK-free raw conversion and optional SDK module | Number-preserving native values; Sets become slices |
+| SDK identity | Optional API middleware | One marker, no global AWS_SDK_UA_APP_ID mutation |
+| Regex / metadata | Optional modules and explicit clients | Documented extensions and ownership differences |
+
+[Shared tests](https://github.com/rambow-cloud/powertools-lambda-go/blob/main/commons/commons_test.go) and independent adapter tests provide scoped evidence. [Reuse audit](COMMONS_REUSE.md) explains which utilities consume these primitives. See [feature comparison](FEATURE_PARITY.md) for remaining native/type/service gates.
+
 ## Public contract map
 
 | Reference export | Go equivalent |

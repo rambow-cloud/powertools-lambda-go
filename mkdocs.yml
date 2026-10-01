@@ -74,7 +74,7 @@ validation:
   invalid_link_anchors: true
 
 watch:
-  - examples/basic/main.go
+  - examples
 
 extra:
   generator: false
@@ -84,7 +84,10 @@ nav:
   - Getting started:
       - First Lambda: GETTING_STARTED.md
       - Modules and installation: MODULES.md
+      - Usage patterns: USAGE_PATTERNS.md
+      - Environment variables: ENVIRONMENT_VARIABLES.md
       - Compatibility: COMPATIBILITY.md
+      - TypeScript feature comparison: FEATURE_PARITY.md
   - Tracer: TRACER.md
   - Logger: LOGGER.md
   - Metrics: METRICS.md
@@ -129,12 +132,13 @@ nav:
   - Signer: SIGNER.md
   - Commons and Metadata:
       - Overview: COMMONS.md
+      - Metadata: METADATA.md
       - Regular expressions: REGEX.md
       - Reuse audit: COMMONS_REUSE.md
   - Resources:
       - X-Ray migration: XRAY_MIGRATION.md
       - Roadmap: ROADMAP.md
-      - Completion checklist: CHECKLIST.md
+      - Project progress: CHECKLIST.md
       - Publication: PUBLICATION.md
       - Release plan: PUBLISHING_PLAN.md
   - Development:

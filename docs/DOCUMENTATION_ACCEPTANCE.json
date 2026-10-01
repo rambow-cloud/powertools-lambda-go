@@ -1,0 +1,110 @@
+{
+  "date": "2026-10-01",
+  "reference": {
+    "version": "TypeScript v2.35.0",
+    "commit": "7bcc27b1574493f9452688673658f52b80c53847",
+    "official_guides_inspected": 17
+  },
+  "documentation": {
+    "utility_guides": 18,
+    "guide_coverage": true,
+    "navigation_coverage": true,
+    "strict_build": true,
+    "browser_visual_acceptance": false
+  },
+  "examples": {
+    "complete_programs_compiled": 19,
+    "local_programs_or_direct_handlers_executed": 18,
+    "logger_prior_results_reused": true,
+    "lambda_examples_use_direct_handler_simulation": true,
+    "idempotency_example": "compiled; persistence covered by maintained module and Docker fixture",
+    "normalization": [
+      "illustrative timestamps",
+      "EMF dimension-name array order"
+    ],
+    "guides": [
+      "TRACER",
+      "METRICS",
+      "PARAMETERS",
+      "BATCH",
+      "IDEMPOTENCY",
+      "JMESPATH",
+      "PARSER",
+      "JSON_SCHEMA_VALIDATION",
+      "HTTP",
+      "APPSYNC_EVENTS",
+      "APPSYNC_GRAPHQL",
+      "BEDROCK",
+      "KAFKA",
+      "DATAMASKING",
+      "SIGNER",
+      "METADATA",
+      "COMMONS",
+      "LOGGER"
+    ]
+  },
+  "module_acceptance": {
+    "cgo_enabled": false,
+    "workspace": "off",
+    "verified_modules": 31,
+    "standalone_public_consumers": 28,
+    "completed_modules_per_phase": [
+      1,
+      12,
+      11,
+      1,
+      6
+    ],
+    "passed_phases_reused_after_dependency_download_failures": true,
+    "go_source_files_match_tested_archives": 293,
+    "directories": [
+      ".",
+      "batch",
+      "commons/awssdk",
+      "commons/dynamodb",
+      "commons/metadata",
+      "commons/regex",
+      "datamasking",
+      "datamasking/kms",
+      "eventhandler/appsyncevents",
+      "eventhandler/appsyncgraphql",
+      "eventhandler/bedrock",
+      "eventhandler/http",
+      "eventhandler/http/metrics",
+      "eventhandler/http/tracer",
+      "examples",
+      "idempotency",
+      "idempotency/cache",
+      "integration",
+      "jmespath",
+      "kafka",
+      "kafka/avro",
+      "kafka/protobuf",
+      "logger",
+      "metrics",
+      "parameters",
+      "parser",
+      "signer",
+      "tools",
+      "tracer",
+      "tracer/xray",
+      "validation"
+    ]
+  },
+  "runtime": {
+    "runtime_architecture": "amd64",
+    "build_architectures": [
+      "amd64",
+      "arm64"
+    ],
+    "cgo_enabled": false,
+    "lambda_assertions": 868,
+    "streaming_assertions": 95,
+    "batch_artifact_assertions": 14,
+    "passed": true,
+    "temporary_resources_cleaned": true,
+    "aws_resources_used": false,
+    "module_checks": "completed in prior audit phases; reused by runtime runner"
+  },
+  "exhaustive_typescript_parity": false
+}

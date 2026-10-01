@@ -4,6 +4,68 @@ The independent `github.com/rambow-cloud/powertools-lambda-go/eventhandler/http`
 
 This is an initial implementation against Powertools TypeScript v2.35.0, not a full-parity claim. Remaining requirements are tracked in [HTTP_PLAN.md](HTTP_PLAN.md).
 
+## Complete example
+
+The complete handler below composes routes, CORS/compression, Logger and optional Metrics/OTel middleware. Build `./examples/http` with `CGO_ENABLED=0`. The core router also works without observability modules.
+
+~~~go
+--8<-- "examples/http/main.go"
+~~~
+
+## Input and output
+
+Send an API Gateway v2/Function URL event such as:
+
+~~~json
+{
+  "version": "2.0",
+  "rawPath": "/orders/ORD-123",
+  "rawQueryString": "",
+  "headers": {},
+  "requestContext": {
+    "domainName": "example.test",
+    "stage": "$default",
+    "http": {
+      "method": "GET",
+      "path": "/orders/ORD-123",
+      "protocol": "HTTP/1.1",
+      "sourceIp": "127.0.0.1",
+      "userAgent": "docs"
+    }
+  },
+  "routeKey": "$default",
+  "isBase64Encoded": false
+}
+~~~
+
+The handler returns status 200 and the string-valued proxy `body` containing `{"id":"ORD-123"}`. Proxy headers/cookies and Base64 selection are part of the response envelope. The route additionally writes an INFO JSON record with `message: "Get order"` and `order_id: "ORD-123"`; Metrics middleware emits EMF separately. Tracing requires the configured enabled provider/collector. A response body is not itself a log record. Unknown routes produce 404; handler errors follow the registered error policy.
+
+## Objects and lifecycle
+
+| Object | Responsibility |
+| --- | --- |
+| `app` | Reusable registry; register routes and middleware before serving requests |
+| `request` | One RequestContext with invocation context, native HTTP request, parameters, response and request store |
+| `requestLog` / `requestMetrics` in this example | Root utility objects despite their variable names; binding/scoping happens per request |
+| `app.Shared` / request Store | Warm shared state versus one request's state; mutable values remain application-owned |
+
+## TypeScript feature coverage
+
+Compared with the [official v2.35.0 HTTP guide](https://github.com/aws-powertools/powertools-lambda-typescript/blob/7bcc27b1574493f9452688673658f52b80c53847/docs/features/event-handler/http.md). The detailed [public contract map](#public-contract-map) below records core APIs and native differences.
+
+| TypeScript feature | Go API or approach | Compatibility scope |
+| --- | --- | --- |
+| Route events / dynamic routes / methods | `New`, verb methods, `Handle`, `HandleRegex`, `Resolve` | API Gateway v1/v2, Function URL and ALB adapters |
+| Prefixes / split routers / store | `Options.Prefix`, `IncludeRouter`, request Store and Shared | Explicit Go context and inclusion snapshots |
+| Middleware / CORS / compression | `Use`, `Next`, `CORS`, `Compress` | Synchronous middleware and owned bodies; encoded bytes differ by runtime |
+| Request details / data validation | `RequestContext`, `Validate`, `Check` | Explicit Standard Schema adapter without forced Parser/Validation dependencies |
+| Errors / debug | `HTTPError`, `OnError`, Debug and Diagnostic options | Go errors/panics versus JS inheritance/stacks |
+| Native / binary / streaming responses | Response conversion, `ResolveStream`, `Streamify` | Owned-reader transfer; live streaming platform gates remain |
+| Metrics / Tracer | Separate optional HTTP observability modules | Per-request EMF and OTel scopes |
+| OpenAPI | Not an implemented v2.35.0 upstream capability | Official guide labels it Coming soon; not a Go parity failure |
+
+[Core reference tests](https://github.com/rambow-cloud/powertools-lambda-go/blob/main/eventhandler/http/reference_test.go), middleware/streaming suites and optional module tests provide scoped evidence. See [feature comparison](FEATURE_PARITY.md), [observability](HTTP_OBSERVABILITY.md) and [streaming](HTTP_STREAMING.md).
+
 ## Native Lambda usage
 
 ```go

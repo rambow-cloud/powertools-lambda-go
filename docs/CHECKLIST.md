@@ -1,6 +1,14 @@
-# First Go implementation checklist
+# Project progress
 
-Scope: Logger, Tracer, Metrics, Parameters, Commons foundation, Metadata, Signer, JMESPath, Batch, Idempotency, Parser and initial JSON Schema Validation contracts against TypeScript v2.35.0. Check only completed, verified items. Comprehensive parity remains a separate gate in the original `porting/` plan. Follow [ROADMAP.md](ROADMAP.md) for subsequent packages.
+Scope: the implemented Go utilities, TypeScript v2.35.0 compatibility, verification and delivery. This is the project's progress record. Check an item only after its stated acceptance criteria pass. Existing IDs and dated evidence retain their original scope; later work does not turn a historical checkpoint into fresh acceptance.
+
+Usage belongs in the utility guides. [Feature comparison](FEATURE_PARITY.md) maps TypeScript capabilities and verification boundaries; [ROADMAP.md](ROADMAP.md) records remaining priorities. Ordinary wording/link repairs do not need progress entries. Feature audits, implementation and newly verified acceptance do.
+
+## Documentation and feature audit
+
+- [x] DOC-12: Audit the seventeen pinned TypeScript utility guides against Go APIs and reference evidence; give every corresponding Go guide a complete example, input/output explanation, object lifecycle and feature map. Correct stale completed-versus-open claims. Preserve explicit OTel/native and unsupported data-key-cache boundaries. Guide/source coverage for eighteen Go guides, navigation and clean strict build passed (2026-10-01). Evidence: [DOCUMENTATION_ACCEPTANCE.json](DOCUMENTATION_ACCEPTANCE.json).
+- [x] DOC-13: Execute the maintained packaged-module/reference and local Docker acceptance scope for the audited implementation; record reused phases and both build architectures. Verify documentation examples and documented response/output shapes. Verified 31 modules/28 consumers across resumed phases, 19 compiled programs/18 executed local programs or direct handlers, both Linux builds, 868/868 RIE, 95/95 streaming and 14/14 saved Batch checks (2026-10-01). No exhaustive parity, arm64 execution or new AWS run is claimed. Evidence: [DOCUMENTATION_ACCEPTANCE.json](DOCUMENTATION_ACCEPTANCE.json).
+
 
 ## Foundation
 
@@ -197,7 +205,7 @@ Parameters acceptance (2026-09-14): see [PARAMETERS.md](PARAMETERS.md) for the e
 - [x] MASK-LOCAL: Verify all 29 packaged modules and 26 standalone consumers with GOWORK=off, tests/vet/tidy and dependency isolation. The final Data Masking source passes a subsequent scoped package check and matches all eight archive files. Both CGO-disabled Linux builds passed; a runtime-only retry passed 847/847 RIE, 95/95 streaming and 14/14 Batch checks using the previously built binaries and corrected UTF-8 assertions. Docker executed amd64; arm64 was cross-compiled. Resources were cleaned and no AWS resources were used. Provider probes are not cryptographic interoperability.
 - [x] MASK-REGEX-CORE: Verify the optional shared commons/regex module and Validation/Data Masking composition: 7,671 Node replacement cases, 19 invalid patterns, 30 actual TypeScript masking scenarios and all 23,071 existing Validation cases pass. Combined packaged checks cover 30 modules/27 independent consumers, followed by both CGO-disabled Linux builds, 856/856 RIE, 95/95 streaming and 14/14 Batch checks. See REGEX.md, MODULE_ACCEPTANCE_REGEX.json and LOCAL_VALIDATION.md. Full ECMAScript parity remains open.
 - [x] MASK-KMS-CORE: Implement and verify the optional uncached official AWS Encryption SDK provider: 39 TypeScript ciphertext cases, five malformed/tampered rejections, 108 Go-to-TypeScript assertions, multiple keys, authenticated context, 32 concurrent callers and cancellation/deadline/context preservation. Combined accepted checkpoints cover 31 modules/28 independent consumers; both CGO-disabled Linux builds, 868/868 RIE, 95/95 streaming and 14/14 Batch checks pass (2026-09-24). Docker executes amd64; arm64 is cross-compiled. Cache, full key/algorithm/error parity and actual KMS service acceptance remain open. See DATAMASKING_KMS.md and MODULE_ACCEPTANCE_KMS.json.
-- [ ] MASK-COMPLETE: Complete remaining JavaScript regex parity and the optional AWS Encryption SDK provider, resolve data-key cache compatibility, close native/schema/serialization boundaries and complete service/performance/release gates. See [DATAMASKING_PLAN.md](DATAMASKING_PLAN.md).
+- [ ] MASK-COMPLETE: Complete remaining JavaScript regex and optional AWS Encryption SDK provider parity, resolve data-key cache compatibility, close native/schema/serialization boundaries and complete service/performance/release gates. See [DATAMASKING_PLAN.md](DATAMASKING_PLAN.md).
 
 ## Delivery
 

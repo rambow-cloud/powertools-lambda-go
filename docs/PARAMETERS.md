@@ -1,6 +1,85 @@
 # Parameters
 
-Native Go configuration retrieval against TypeScript v2.35.0. The implementation includes SSM, Secrets Manager, DynamoDB, AppConfig Data, and AppConfig Agent, plus shared caching and transforms. Each adapter is a separate package. The shared `parameters` package has no AWS SDK, Logger, Metrics, or Tracer dependency.
+Parameters retrieves configuration from SSM, Secrets Manager, DynamoDB, AppConfig Data and AppConfig Agent. Shared caching and JSON/Base64 transforms live in `github.com/rambow-cloud/powertools-lambda-go/parameters`; service adapters are subpackages of that module.
+
+See [installation](MODULES.md) and the [compatibility baseline](COMPATIBILITY.md).
+
+## Complete example
+
+This complete offline example demonstrates the shared cache with an application retrieval callback. It makes no AWS request. Save it in an empty directory inside the checkout and run `go run main.go` with `CGO_ENABLED=0`. For an actual SSM client, use [SSM usage](#ssm-usage) below; create the provider once before serving Lambda invocations.
+
+~~~go
+package main
+
+import (
+	"context"
+	"encoding/json"
+	"fmt"
+	stdlog "log"
+	"time"
+
+	"github.com/rambow-cloud/powertools-lambda-go/parameters"
+)
+
+func main() {
+	cache := parameters.NewCache(time.Now)
+	fetches := 0
+	fetch := func(context.Context) (any, error) {
+		fetches++
+		return `{"enabled":true,"limit":3}`, nil
+	}
+	options := parameters.Options{
+		Transform: parameters.JSON,
+		MaxAge:    parameters.Age(30 * time.Second),
+	}
+	for range 2 {
+		value, err := cache.Get(context.Background(), "/orders/config", options, fetch)
+		if err != nil {
+			stdlog.Fatal(err)
+		}
+		encoded, err := json.Marshal(value)
+		if err != nil {
+			stdlog.Fatal(err)
+		}
+		fmt.Println(string(encoded))
+	}
+	fmt.Printf("fetches=%d\n", fetches)
+}
+~~~
+
+## Input and output
+
+Stdout is exactly the following. Both calls return the decoded object, but the callback runs only once because the second call uses the still-valid cache entry. Setting `options.ForceFetch = true` before the second call would invoke it again. `cache.ClearCache()` removes cached values; it does not change the underlying configuration service. With an AWS provider, SDK errors are returned to your handler rather than logged as successful values.
+
+~~~text
+{"enabled":true,"limit":3}
+{"enabled":true,"limit":3}
+fetches=1
+~~~
+
+## Objects and lifecycle
+
+| Object | Responsibility |
+| --- | --- |
+| `cache` / explicit provider | Keep one instance across warm invocations to retain cached values; no background polling. |
+| `options` | Per-call transform, TTL, force-fetch and missing/error policy. |
+| `value` | `any`: JSON objects are `map[string]any`, arrays are `[]any`, numbers are `float64`; inspect or decode explicitly. |
+| `ctx` | Caller cancellation/deadline reaches retrieval and SDK operations. |
+
+## TypeScript feature coverage
+
+Compared with the [official v2.35.0 parameters guide](https://github.com/aws-powertools/powertools-lambda-typescript/blob/7bcc27b1574493f9452688673658f52b80c53847/docs/features/parameters.md) and the pinned npm implementation. The table maps capabilities; it does not certify every native type or service behavior.
+
+| TypeScript feature | Go API or approach | Compatibility scope |
+| --- | --- | --- |
+| SSM read / path / named batch / write | `ssm.New`, provider methods and convenience helpers | Pagination, decryption and reference batch quirks documented below. |
+| Secrets / DynamoDB | Explicit providers or Secrets helper | SDK v2 clients; DynamoDB decoding preserves large integers. |
+| AppConfig / Agent | Data provider or Agent `GetConfig` | Data sessions retain tokens; Agent has no additional cache. |
+| TTL / fresh values / clearing | `MaxAge`, `ForceFetch`, `ClearCache`, `ClearCaches` | Five-second ordinary default; duration/native edges differ. |
+| Transforms / missing values | `JSON`, `Binary`, `Auto`, `ThrowOnMissing` | Explicit Go results/errors; snapshots isolate cached objects. |
+| Custom provider / SDK arguments | `Cache.Get`, injected service interfaces and inputs | Callbacks replace inheritance; callers supply region/credentials/permissions. |
+
+Executable evidence: [parameters/parameters_test.go](https://github.com/rambow-cloud/powertools-lambda-go/blob/main/parameters/parameters_test.go), [parameters/providers_test.go](https://github.com/rambow-cloud/powertools-lambda-go/blob/main/parameters/providers_test.go). See [the verification scope](FEATURE_PARITY.md) and [project progress](CHECKLIST.md) for open gates.
 
 ## API map
 

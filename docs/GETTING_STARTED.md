@@ -21,7 +21,9 @@ The example below is included directly from the maintained `examples/basic/main.
 --8<-- "examples/basic/main.go"
 ~~~
 
-Create Logger and Tracer before `lambda.Start` so configuration is reused across invocations. Put Tracer outside Logger, pass the invocation context into operations, and obtain a request logger through `l.WithContext(ctx)`. Both wrappers reuse the same Commons invocation identity.
+Create Logger and Tracer before `lambda.Start` so configuration is reused across invocations. `appLog` is the Powertools Logger object; `stdlog` is Go's standard `log` package, used only for fallback error messages. Inside the handler, `requestLog := appLog.WithContext(ctx)` creates the invocation-bound Logger object used for `Info` calls. Put Tracer outside Logger and pass the invocation context into operations. Both wrappers reuse the same Commons invocation identity.
+
+With the default `INFO` level, an event such as `{"name":"Ada"}` writes one structured application record with `message: "Handling request"`, `service: "hello"`, and `name: "Ada"`, plus timestamp, Lambda identity, and active tracing fields. The handler returns `{"message":"Hello, Ada"}` separately; that response is not a log record. See [the Logger examples and JSON output](LOGGER.md#write-your-first-log) for the complete record shape and method usage.
 
 Response capture is disabled in this example. Logging and trace metadata are explicit application decisions; avoid placing secrets in either.
 

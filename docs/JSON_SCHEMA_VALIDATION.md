@@ -1,6 +1,44 @@
 # JSON Schema Validation
 
-The independent `github.com/rambow-cloud/powertools-lambda-go/validation` module implements manual validation, reusable compiled schemas, input/output Lambda wrappers, JMESPath extraction, custom formats, registered references and an injectable compiler. The reference is Powertools TypeScript v2.35.0 with AJV v8.20.0. This is an initial implementation; the exhaustive compatibility gates in [VALIDATION_PLAN.md](VALIDATION_PLAN.md) remain open.
+Validation checks events and responses against JSON Schema. Import `github.com/rambow-cloud/powertools-lambda-go/validation`. Use it for schema documents shared with other systems; choose [Parser](PARSER.md) when composing typed Go schemas and event transformations. The reference uses Powertools v2.35.0 with AJV v8.20.0.
+
+See [installation](MODULES.md) and the [compatibility baseline](COMPATIBILITY.md).
+
+## Complete example
+
+This complete Lambda example compiles inbound and outbound schemas once. Build `./examples/validation` with `CGO_ENABLED=0`. It accepts an order, returns its ID, and validates that the response is a nonempty string.
+
+~~~go
+--8<-- "examples/validation/main.go"
+~~~
+
+## Input and output
+
+Input `{"id":"ORD-123","amount":42}` returns the JSON string `"ORD-123"`. Input `{"id":"","amount":0}` produces `Inbound schema validation failed` with issues for `id` and `amount`, before business code runs. A successful business result violating the outbound schema produces `Outbound schema validation failed`. The example writes no successful application log record. Compilation errors are handled during initialization, separately from request errors.
+
+## Objects and lifecycle
+
+| Object | Responsibility |
+| --- | --- |
+| `inbound` / `outbound` | Reusable compiled validators; nil disables a wrapper stage. |
+| `input` | Typed order decoded after inbound validation; the wrapper applies JSON snapshot ownership. |
+| `SchemaValidationError` | Carries ordered issues; use `errors.As` to inspect paths, keywords and parameters. |
+
+## TypeScript feature coverage
+
+Compared with the [official v2.35.0 validation guide](https://github.com/aws-powertools/powertools-lambda-typescript/blob/7bcc27b1574493f9452688673658f52b80c53847/docs/features/validation.md) and the pinned npm implementation. The table maps capabilities; it does not certify every native type or service behavior.
+
+| TypeScript feature | Go API or approach | Compatibility scope |
+| --- | --- | --- |
+| Standalone / decorators / middleware | `Validate`, `Compile`, `WrapHandler` | Compiled typed wrapper; business errors/panics are preserved. |
+| Event extraction / envelopes | `Options.Envelope` | JMESPath extraction on input only. |
+| Decode query functions | `Options.QueryOptions` | Opt in to Powertools functions explicitly. |
+| Custom formats | `Formats`, `NumberFormats` | No implicit email-format support; callbacks must be concurrency-safe. |
+| External references | `ExternalRefs`, `ExternalSchemas` | Registered locally; no remote schema loading. |
+| Custom AJV instance | `Options.Compiler` interface | Go compiler/validator injection, not an AJV object. |
+| Keywords / errors / Unicode regex | Pure-Go Draft 7 adapter and issue mapping | Scoped reference coverage; complete AJV parity remains open. |
+
+Executable evidence: [validation/reference_test.go](https://github.com/rambow-cloud/powertools-lambda-go/blob/main/validation/reference_test.go). See [the verification scope](FEATURE_PARITY.md) and [project progress](CHECKLIST.md) for open gates.
 
 ## Usage
 

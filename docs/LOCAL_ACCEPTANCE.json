@@ -1,5 +1,5 @@
 {
-  "date": "2026-09-24",
+  "date": "2026-10-01",
   "runtime": "AWS Lambda Runtime Interface Emulator",
   "utilities": [
     "logger",
@@ -3509,12 +3509,12 @@
     }
   ],
   "sha256": {
-    "report.json": "5f99efb522c89292261009fb68920db96f0dd70be64e01c07fe661ea3588525b",
-    "otlp.json": "26fed08d072a7a0ba374ad695e3d98ca7caa807eadb907a3382e793a448b6b00",
-    "lambda.log": "849e13dffb92738343d5926597d9c3ab5f96f89a4ea8ce402aba68be724ea6bd",
-    "amd64/bootstrap": "85a54a8a193e4a40e5bec2bf9e24bdea36ee0a314f99363ea3f464a46828eb76",
-    "arm64/bootstrap": "2dc131ed585a97d3b8c2b7fb634a966cd94796ae168106e9807e906fcef401e5",
-    "amd64/capture": "7287b8e4b37c4a64b48a2fddc4b5fb50c373a9d84f2a78b4c008965c5ae2b5a9"
+    "report.json": "b5b3f0d7292d3a71aa84ff2e5dcb0e3d6a22dd306ace4f693f06e05c3115aacf",
+    "otlp.json": "ac447986bf55deb125c1f765885f4a0baf9cde25b503ca969bc17ff900b3ef79",
+    "lambda.log": "ea16f405220921088dcce76fa3797301848d04dad64ea332207db13ec4f2dfa0",
+    "amd64/bootstrap": "348ab78c9bf403b6ba5bc14c1acfbdb3b65535b1c3ce922178e4e74dab2fc41b",
+    "arm64/bootstrap": "e82fb0e3d9ec2b43cb57bd526ba5a7765923e379785544ff5525eab1c9165c36",
+    "amd64/capture": "3a1961ff8c108df19bc6f57215d76f57e7427bc98eb163e5fceeb264bce3f6f3"
   },
   "cache_image": "valkey/valkey@sha256:d2e18f3410b6f616de1417f570fa55261af2898b9c5b2cfb6781ce2373ea43d1",
   "cache_interop": {

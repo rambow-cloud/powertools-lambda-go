@@ -35,6 +35,8 @@ jobs:
         run: uv lock --project website --check
       - name: Validate navigation coverage and targets
         run: uv run --project website --frozen python website/check_navigation.py
+      - name: Validate utility guide coverage and referenced source
+        run: uv run --project website --frozen python website/check_guides.py
       - name: Build and validate links and snippets
         run: uv run --project website --frozen zensical build --clean --strict --config-file mkdocs.yml
       - name: Upload site

@@ -2,6 +2,46 @@
 
 Reference: TypeScript v2.35.0. The Go implementation provides an independent module with a generic operation manager, typed Lambda wrappers, an optional local response cache, and a DynamoDB adapter. Redis/Valkey persistence is available through the separate [cache module](IDEMPOTENCY_CACHE.md). Full compatibility gates remain unfinished; see [IDEMPOTENCY_PLAN.md](IDEMPOTENCY_PLAN.md).
 
+## Complete example
+
+The complete Lambda example below creates a DynamoDB store and manager once. Build `./examples/idempotency` with `CGO_ENABLED=0`. Set `IDEMPOTENCY_TABLE` to an existing table with a String partition key `id` and supply normal AWS SDK region/credentials. The execution role needs the operations used by this store: GetItem, PutItem, UpdateItem and DeleteItem. Optional DynamoDB TTL cleanup uses `expiration`; the library also checks logical expiry itself.
+
+~~~go
+--8<-- "examples/idempotency/main.go"
+~~~
+
+## Input and output
+
+Invoke with `{"id":"ORD-123","amount":42}`. The handler returns `{"order_id":"ORD-123"}` and stores the completed result. A later request with the same ID and amount, while the record is valid, replays that response without executing the business callback. A different amount for the same ID fails payload validation. An overlapping in-progress request fails instead of running the same callback concurrently. There is no successful business log in this example; persistence errors are separate from response output.
+
+For a missing ID, `ThrowOnNoKey: true` rejects the request. Business errors trigger cleanup of the in-progress record; hard process termination cannot run cleanup, so execution leases and expiry matter. Use [the local Docker fixture](LOCAL_INTEGRATION.md) for synthetic persistence acceptance; this example requires a real or explicitly supplied compatible DynamoDB endpoint and is not an offline program.
+
+## Objects and lifecycle
+
+| Object | Responsibility |
+| --- | --- |
+| SDK `client` | Caller-owned service configuration, credentials, endpoint and transport |
+| `store` | Persistence implementation; core also accepts a custom store or optional Redis/Valkey adapter |
+| `manager` | Reusable key projections, TTL, replay and local-cache policy |
+| Business callback | Runs after acquisition; obeys context cancellation/deadline and returns a serializable result |
+
+## TypeScript feature coverage
+
+Compared with the [official v2.35.0 Idempotency guide](https://github.com/aws-powertools/powertools-lambda-typescript/blob/7bcc27b1574493f9452688673658f52b80c53847/docs/features/idempotency.md).
+
+| TypeScript feature | Go API or approach | Compatibility scope |
+| --- | --- | --- |
+| Function wrapper / decorator / middleware | `Execute`, `WrapHandler` | Typed functions, explicit payload and context |
+| Payload subset / required key / prefix | JMESPath/query options, ThrowOnNoKey and KeyPrefix | Native JSON/canonicalization boundaries below |
+| Persistence / custom store | DynamoDB adapter, optional cache module, store interface | Explicit clients; full live service gates remain |
+| Timeout / concurrency / expiry | Context lease, atomic acquisition, ExpiresAfter | Cooperative cancellation; no transactional fencing for stale workers |
+| Payload validation / local cache | Validation projection and optional completed-response cache | Snapshotted results; cache does not delete persistence records |
+| Custom functions / SDK / composite key | Query options, SDK injection and configurable attributes | Explicit Go configuration |
+| Batch integration / replay response | Application composition and replay hooks | Implemented local composition; full cross-language/native response gates remain |
+| Disable utility | POWERTOOLS_IDEMPOTENCY_DISABLED | Configuration read at construction |
+
+[Core key/lifecycle tests](https://github.com/rambow-cloud/powertools-lambda-go/blob/main/idempotency/idempotency_test.go), SDK wire tests and real local Valkey exchanges provide scoped evidence. See [feature comparison](FEATURE_PARITY.md) and [cache differences](IDEMPOTENCY_CACHE.md).
+
 ## Usage and dependency boundaries
 
 Import `github.com/rambow-cloud/powertools-lambda-go/idempotency` for the lifecycle and `github.com/rambow-cloud/powertools-lambda-go/idempotency/dynamodb` for DynamoDB persistence. Both packages share one feature module/version. Core package imports use Commons and JMESPath; the DynamoDB package adds the service SDK and shared request identity middleware. Logger, Tracer, and Batch are composed by callers and are not module dependencies.

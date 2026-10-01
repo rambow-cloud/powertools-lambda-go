@@ -13,6 +13,14 @@ The site uses [Zensical](https://zensical.org/docs/) with its default modern the
 
 Every guide belongs in navigation. Builds fail on missing navigation targets, broken local links, unknown anchors, or missing included snippets. Existing implementation plans and sanitized acceptance records remain available under Development.
 
+## Utility guide contract
+
+The [feature comparison](FEATURE_PARITY.md) fixes the TypeScript baseline and maps implementation and evidence across all utility families. Main guides begin with a complete local or maintained Lambda example, explain input and observable output, identify objects and their lifetimes, and map the pinned TypeScript capabilities to Go. Advanced contract details follow those sections. Incomplete fragments must identify their required application symbols.
+
+`website/check_guides.py` checks those sections, complete example presence, fixed-source attribution and referenced source-file existence for eighteen guides, including Commons. It checks documentation structure, not functional parity. Packaged tests and [the maintained Docker runner](LOCAL_INTEGRATION.md) establish the stated behavioral scope. Verify changed executable examples and compare their documented results before claiming acceptance.
+
+Use site-local links for usage and verification pages. Use source links for code, fixtures and the fixed upstream version. Keep historical dates/counts in acceptance records or plans and link to them from user guides; do not mix past milestones into configuration instructions. [CHECKLIST.md](CHECKLIST.md) remains the project progress record: ordinary wording repairs need no entry, but verified feature audits and acceptance milestones do.
+
 ## Visual design
 
 Zensical's bundled modern theme owns typography, spacing, title permalinks, page-edit actions, search, code copying, and responsive navigation. The previous custom CSS and template overrides have been removed. The configuration uses the theme's default fonts and icons, with the standard system/light/dark palette toggle.
@@ -42,6 +50,7 @@ For the same strict build used in CI:
 ~~~sh
 uv lock --project website --check
 uv run --project website --frozen python website/check_navigation.py
+uv run --project website --frozen python website/check_guides.py
 uv run --project website --frozen zensical build --clean --strict --config-file mkdocs.yml
 ~~~
 

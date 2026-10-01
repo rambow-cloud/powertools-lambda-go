@@ -1,15 +1,81 @@
 # Data Masking
 
-The independent datamasking module depends only on root Commons. It provides selected-field erasure and orchestration around an application-supplied encryption provider. ECMAScript string replacement is available through the optional commons/regex module. An optional uncached AWS Encryption SDK provider is implemented in datamasking/kms; see [its contract and platform requirements](DATAMASKING_KMS.md). Data-key cache parity remains open. See DATAMASKING_PLAN.md for the complete remaining scope.
+Data Masking erases selected fields or transforms them through an encryption provider. Import `github.com/rambow-cloud/powertools-lambda-go/datamasking`. Erasure is built in; regex and KMS encryption are separate optional modules.
 
-```go
-masker := datamasking.New(datamasking.Config{})
-masked, err := masker.Erase(ctx, payload, datamasking.EraseOptions{
-    Fields: []string{"customers[*].ssn", "payment.card"},
-})
-```
+See [installation](MODULES.md) and the [compatibility baseline](COMPATIBILITY.md).
 
-The default mask is *****. Missing selected fields return an Error whose ErrorName is DataMaskingFieldNotFoundError. Config.IgnoreMissing converts these failures to Warn callbacks (stderr by default). Warnings and supplied callbacks must support concurrent callers. Erase does not mutate input. Default whole-payload erasure does not inspect contents, including opaque or cyclic objects; selected/rule operations normalize JSON-shaped inputs into an isolated private tree.
+## Complete example
+
+This complete offline program masks a customer SSN without changing the input object. Save it in an empty directory inside the checkout and run `go run main.go` with `CGO_ENABLED=0`. It requires no provider or AWS credentials.
+
+~~~go
+package main
+
+import (
+	"context"
+	"encoding/json"
+	"fmt"
+	stdlog "log"
+
+	"github.com/rambow-cloud/powertools-lambda-go/datamasking"
+)
+
+func main() {
+	payload := map[string]any{
+		"customer": map[string]any{"name": "Ada", "ssn": "123-45-6789"},
+		"order_id": "ORD-123",
+	}
+	masker := datamasking.New(datamasking.Config{})
+	masked, err := masker.Erase(context.Background(), payload, datamasking.EraseOptions{
+		Fields: []string{"customer.ssn"},
+	})
+	if err != nil {
+		stdlog.Fatal(err)
+	}
+	encoded, err := json.Marshal(masked)
+	if err != nil {
+		stdlog.Fatal(err)
+	}
+	fmt.Println(string(encoded))
+}
+~~~
+
+## Input and output
+
+Stdout contains the following JSON. Only `customer.ssn` changes; the original `payload` remains unchanged. The program prints only the masked copy. Missing selected fields return an error by default; `IgnoreMissing` warns and continues. Erasure is irreversible and does not need KMS. Encryption produces ciphertext and requires a compatible provider; do not treat a mask string as encrypted data.
+
+~~~json
+{
+  "customer": {
+    "name": "Ada",
+    "ssn": "*****"
+  },
+  "order_id": "ORD-123"
+}
+~~~
+
+## Objects and lifecycle
+
+| Object | Responsibility |
+| --- | --- |
+| `masker` | Reusable masking policy and optional provider. |
+| `EraseOptions` | Select fields, ordered rules and custom/dynamic masks for one operation. |
+| `masked` | Returned private result; print/store this value instead of the original payload. |
+| `Provider` | Context-aware Encrypt/Decrypt interface; optional real KMS provider is uncached. |
+
+## TypeScript feature coverage
+
+Compared with the [official v2.35.0 data-masking guide](https://github.com/aws-powertools/powertools-lambda-typescript/blob/7bcc27b1574493f9452688673658f52b80c53847/docs/features/data-masking.md) and the pinned npm implementation. The table maps capabilities; it does not certify every native type or service behavior.
+
+| TypeScript feature | Go API or approach | Compatibility scope |
+| --- | --- | --- |
+| Erasure / field selection | `Erase`, `Fields`, `Rules` | Whole payload, dot paths, wildcards, custom/dynamic masks. |
+| Regex replacement | Optional `commons/regex` replacer | Shared ECMAScript adapter; complete regex boundaries remain open. |
+| Encrypt / decrypt | `Provider`, `Encrypt`, `Decrypt` | Caller-supplied provider; field-level and whole-payload paths. |
+| Encryption context / multiple keys | `TransformOptions.Context`, KMS provider `Keys` | Real SDK interoperability checked with synthetic local key wrapping. |
+| Provider / data-key caching | `datamasking/kms` | Uncached provider implemented; TypeScript data-key caching remains unsupported. |
+
+Executable evidence: [datamasking/masking_test.go](https://github.com/rambow-cloud/powertools-lambda-go/blob/main/datamasking/masking_test.go). See [the verification scope](FEATURE_PARITY.md) and [project progress](CHECKLIST.md) for open gates.
 
 ## Rules and selectors
 

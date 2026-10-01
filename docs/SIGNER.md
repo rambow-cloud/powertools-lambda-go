@@ -1,25 +1,47 @@
 # Signer
 
-The independent `github.com/rambow-cloud/powertools-lambda-go/signer` module signs HTTP requests with AWS SDK for Go v2 SigV4. It does not depend on Commons, Logger, Tracer, AWS config loading, or the X-Ray SDK. All builds keep `CGO_ENABLED=0`.
+Signer adds AWS Signature Version 4 authentication to HTTP requests. Import `github.com/rambow-cloud/powertools-lambda-go/signer`. Standalone signing does not send a request; `HTTPClient` provides a signed transport.
 
-```go
-s, err := signer.New(signer.Config{Service: "execute-api"})
-if err != nil {
-    return err
-}
-client := signer.HTTPClient(s, &http.Client{Timeout: 5 * time.Second})
-request, err := http.NewRequestWithContext(ctx, http.MethodGet, endpoint, nil)
-if err != nil {
-    return err
-}
-response, err := client.Do(request)
-if err != nil {
-    return err
-}
-defer response.Body.Close()
-```
+See [installation](MODULES.md) and the [compatibility baseline](COMPATIBILITY.md).
 
-Use `Service: "execute-api"` for IAM API Gateway, `"lambda"` for IAM Lambda function URLs, and `"appsync"` for IAM AppSync requests. For S3 set `DisableURIPathEscaping: true`. The offline [signing example](https://github.com/rambow-cloud/powertools-lambda-go/blob/main/examples/signing/main.go) demonstrates all three IAM endpoint families using synthetic credentials without sending requests.
+## Complete example
+
+Run the complete example with `go run ./examples/signing` and `CGO_ENABLED=0`. It uses synthetic credentials and signs API Gateway, Lambda Function URL and AppSync requests without sending them.
+
+~~~go
+--8<-- "examples/signing/main.go"
+~~~
+
+## Input and output
+
+Stdout is exactly the following. `true` means the signed copy contains an Authorization header. These lines are ordinary program output, not structured Logger records. The example prints neither credentials nor signatures and does not establish service-side authorization.
+
+~~~text
+execute-api true
+lambda true
+appsync true
+~~~
+
+## Objects and lifecycle
+
+| Object | Responsibility |
+| --- | --- |
+| `s` | Reusable service, region, clock and credentials-provider configuration. |
+| `request` / `signed` | `Sign` returns a signed copy; the caller owns body closure and request replay rules. |
+| `HTTPClient` | Copied client with a signing transport; credentials, retries and redirects stay explicit. |
+
+## TypeScript feature coverage
+
+Compared with the [official v2.35.0 signer guide](https://github.com/aws-powertools/powertools-lambda-typescript/blob/7bcc27b1574493f9452688673658f52b80c53847/docs/features/signer.md) and the pinned npm implementation. The table maps capabilities; it does not certify every native type or service behavior.
+
+| TypeScript feature | Go API or approach | Compatibility scope |
+| --- | --- | --- |
+| Signed fetch / other clients | `Sign`, `Transport`, `HTTPClient` | Go request/transport interfaces replace fetch. |
+| Region / credentials | `Config.Region`, `Credentials` | Environment or injected SDK provider; no automatic config-loader network calls. |
+| Errors | `ConfigError`, `SigningError` | Unwrap causes/cancellation; unsigned request is not sent on failure. |
+| Bodies / redirects | Replayable signed copies and client policy | Ownership and trusted redirect policy differ from JavaScript Request. |
+
+Executable evidence: [signer/signer_test.go](https://github.com/rambow-cloud/powertools-lambda-go/blob/main/signer/signer_test.go). See [the verification scope](FEATURE_PARITY.md) and [project progress](CHECKLIST.md) for open gates.
 
 ## Configuration and errors
 

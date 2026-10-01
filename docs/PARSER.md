@@ -1,8 +1,60 @@
 # Parser
 
-Parser is an independent Go module for validating and transforming Lambda events. It depends only on the shared Commons module and the Go standard library. It does not install Zod, an AWS SDK, a query engine, or a telemetry implementation. Reference behavior is pinned to TypeScript Powertools v2.35.0 with Zod v4.1.12.
+Parser validates and transforms Lambda event data into typed Go values. Import `github.com/rambow-cloud/powertools-lambda-go/parser`; built-in schemas and envelopes are subpackages. It does not require Zod at runtime. The reference uses Powertools v2.35.0 and Zod v4.1.12.
 
-The implementation contains the schema contract, parsing wrappers, composition helpers, all 24 initial event schema families and fourteen envelopes. Models cover streams, notifications, HTTP, service events, AppSync/shared, AppSync Events and Cognito. All 90 unique public runtime schema names have Go definitions. Complete type and behavior parity remains open in [PARSER_PLAN.md](PARSER_PLAN.md); implementation coverage alone does not establish complete Parser parity.
+See [installation](MODULES.md) and the [compatibility baseline](COMPATIBILITY.md).
+
+## Complete example
+
+The complete Lambda example validates EventBridge metadata and an order in `detail`, then passes a typed order to the business handler. Build `./examples/parser` with `CGO_ENABLED=0`.
+
+~~~go
+--8<-- "examples/parser/main.go"
+~~~
+
+## Input and output
+
+For the valid input below, the handler returns the JSON string `"ORD-123"`. It does not print a log record. Changing `amount` to `-1` produces a `ParseError` before business code runs. Its top-level message is `Failed to parse EventBridge envelope`; inspect its issues for the `detail.amount` path and `amount must be non-negative` message. The detailed issues are not automatically printed. An absent field differs from explicit JSON null. Use `SafeParse` or `WrapSafeHandler` when the application should decide how to respond to validation failures.
+
+~~~json
+{
+  "version": "0",
+  "id": "00000000-0000-4000-8000-000000000001",
+  "detail-type": "OrderCreated",
+  "source": "com.example.orders",
+  "account": "123456789012",
+  "time": "2026-10-01T00:00:00Z",
+  "region": "ap-east-1",
+  "resources": [],
+  "detail": {
+    "id": "ORD-123",
+    "amount": 42
+  }
+}
+~~~
+
+## Objects and lifecycle
+
+| Object | Responsibility |
+| --- | --- |
+| `payload` | Reusable schema; object fields, refinements and typed output are composed before serving requests. |
+| `input` | Validated `order`, not the raw EventBridge event. |
+| `Result[T]` / `ParseError` | Safe parsing keeps validation failures separate from operational/cancellation errors. |
+
+## TypeScript feature coverage
+
+Compared with the [official v2.35.0 parser guide](https://github.com/aws-powertools/powertools-lambda-typescript/blob/7bcc27b1574493f9452688673658f52b80c53847/docs/features/parser.md) and the pinned npm implementation. The table maps capabilities; it does not certify every native type or service behavior.
+
+| TypeScript feature | Go API or approach | Compatibility scope |
+| --- | --- | --- |
+| Manual / handler parsing | `Parse`, `WrapHandler` | Typed callbacks replace decorators/Middy. |
+| Safe / inline handling | `SafeParse`, `WrapSafeHandler` | Non-nil issues indicate rejection; operational errors still propagate. |
+| Built-in schemas | `parser/schemas` | 90 runtime schema definitions mapped; inferred-type parity remains open. |
+| Envelopes | `parser/envelopes` | Fourteen envelopes; source-specific decoding and failure paths. |
+| Custom validation / types | `SchemaFunc`, `Typed`, `Refine`, `Transform`, `Pipe` | Synchronous context-aware Go validators; no Zod/Promise runtime. |
+| Parse errors / unions | `Issue`, `ParseError`, `Union` | Recursive branch diagnostics; native/metadata boundaries remain. |
+
+Executable evidence: [parser/reference_test.go](https://github.com/rambow-cloud/powertools-lambda-go/blob/main/parser/reference_test.go), [parser/identity_reference_test.go](https://github.com/rambow-cloud/powertools-lambda-go/blob/main/parser/identity_reference_test.go), [parser/union_reference_test.go](https://github.com/rambow-cloud/powertools-lambda-go/blob/main/parser/union_reference_test.go). See [the verification scope](FEATURE_PARITY.md) and [project progress](CHECKLIST.md) for open gates.
 
 ## Schema contract
 

@@ -1,30 +1,114 @@
 # Metrics
 
-The `metrics` package emits CloudWatch Embedded Metric Format (EMF) documents through an `io.Writer`, defaulting to stdout. It does not import Logger, Tracer, or an AWS SDK client. It reuses Commons configuration/string helpers and shared invocation identity, which keeps cold-start state consistent across wrappers. There is no network exporter in this package.
+Metrics emits CloudWatch Embedded Metric Format (EMF) JSON to stdout or an `io.Writer`. CloudWatch extracts metrics from these documents when they arrive in a suitable log group; this package does not call a CloudWatch API. Import `github.com/rambow-cloud/powertools-lambda-go/metrics`.
 
-```go
-m, err := metrics.New(
-    metrics.WithNamespace("Orders"),
-    metrics.WithServiceName("checkout"),
-    metrics.WithDefaultDimensions(metrics.Dimensions{"environment": "production"}),
-    metrics.WithErrorHandler(func(err error) { log.Printf("metrics flush: %v", err) }),
+See [installation](MODULES.md) and the [compatibility baseline](COMPATIBILITY.md).
+
+## Complete example
+
+This complete local program adds one count and explicitly flushes it. Save it in an empty directory inside the checkout and run `go run main.go` with `CGO_ENABLED=0`. Under Lambda, replace the explicit flush with [the invocation wrapper](#lambda-example).
+
+~~~go
+package main
+
+import (
+	stdlog "log"
+
+	"github.com/rambow-cloud/powertools-lambda-go/metrics"
 )
-if err != nil {
-    log.Fatal(err)
-}
 
+func main() {
+	appMetrics, err := metrics.New(
+		metrics.WithNamespace("Orders"),
+		metrics.WithServiceName("checkout"),
+		metrics.WithDefaultDimensions(metrics.Dimensions{"environment": "demo"}),
+	)
+	if err != nil {
+		stdlog.Fatal(err)
+	}
+	if err := appMetrics.AddMetric("OrdersReceived", metrics.Count, 1); err != nil {
+		stdlog.Fatal(err)
+	}
+	if err := appMetrics.Flush(); err != nil {
+		stdlog.Fatal(err)
+	}
+}
+~~~
+
+## Input and output
+
+With emission enabled, stdout contains one EMF document, shown below with an illustrative timestamp and dimension-name order. `OrdersReceived` is the metric value; `_aws` tells CloudWatch its namespace, unit and dimension set. `AddMetric` buffers values, so the explicit `Flush` produces the output. It also clears request state. `POWERTOOLS_DEV=true` disables output unless an explicit metrics setting overrides it. This local result verifies JSON emission; it does not verify CloudWatch ingestion.
+
+~~~json
+{
+  "_aws": {
+    "Timestamp": 1790812800000,
+    "CloudWatchMetrics": [
+      {
+        "Namespace": "Orders",
+        "Dimensions": [
+          [
+            "service",
+            "environment"
+          ]
+        ],
+        "Metrics": [
+          {
+            "Name": "OrdersReceived",
+            "Unit": "Count"
+          }
+        ]
+      }
+    ]
+  },
+  "service": "checkout",
+  "environment": "demo",
+  "OrdersReceived": 1
+}
+~~~
+
+## Objects and lifecycle
+
+| Object | Responsibility |
+| --- | --- |
+| `appMetrics` | Reusable configuration and root store. `New` returns an error for invalid configuration. |
+| `requestMetrics` | `appMetrics.WithContext(ctx)` inside `WrapHandler`; dimensions, values and metadata belong to this invocation. |
+| `single` | `SingleMetric()` returns a separate instance and an error; each addition emits immediately. |
+
+## TypeScript feature coverage
+
+Compared with the [official v2.35.0 metrics guide](https://github.com/aws-powertools/powertools-lambda-typescript/blob/7bcc27b1574493f9452688673658f52b80c53847/docs/features/metrics.md) and the pinned npm implementation. The table maps capabilities; it does not certify every native type or service behavior.
+
+| TypeScript feature | Go API or approach | Compatibility scope |
+| --- | --- | --- |
+| Metrics, units and resolution | `AddMetric` | All 27 units; standard/high resolution and automatic limits. |
+| Multiple values / dimension sets | Repeated `AddMetric`, `AddDimensionSet` | Accumulates values; independent dimension combinations. |
+| Defaults / metadata | `SetDefaultDimensions`, `AddMetadata` | Metadata is a JSON snapshot, not a shared JavaScript object. |
+| Custom timestamp | `SetTimestamp`, `SetTimestampMillis` | Date/numeric cases already verified; extreme encoding boundaries remain. |
+| Flush / empty policy | `Flush`, `Clear`, `SetThrowOnEmptyMetrics` | Explicit errors and warning callbacks. |
+| Cold start | `CaptureColdStartMetric`, `HandlerOptions.CaptureColdStart` | Separate document; on-demand initialization only. |
+| Single metrics | `SingleMetric`, `WithSingleMetric` | Fresh configuration; callers handle construction errors. |
+| Middleware / custom diagnostics | `WrapHandler`, `WrapHandlers`, warning/error options | Scope isolation; `PropagateErrors` opts into reference error precedence. |
+
+Executable evidence: [metrics/metrics_test.go](https://github.com/rambow-cloud/powertools-lambda-go/blob/main/metrics/metrics_test.go), [metrics/timestamp_test.go](https://github.com/rambow-cloud/powertools-lambda-go/blob/main/metrics/timestamp_test.go), [metrics/lambda_test.go](https://github.com/rambow-cloud/powertools-lambda-go/blob/main/metrics/lambda_test.go). See [the verification scope](FEATURE_PARITY.md) and [project progress](CHECKLIST.md) for open gates.
+
+## Lambda example
+
+Create Metrics before `lambda.Start`, obtain `appMetrics.WithContext(ctx)` inside the handler, and wrap the handler to flush and close request state:
+
+~~~go
 handler := func(ctx context.Context, event Event) (Response, error) {
-    requestMetrics := m.WithContext(ctx)
+    requestMetrics := appMetrics.WithContext(ctx)
     if err := requestMetrics.AddMetric("OrdersReceived", metrics.Count, 1); err != nil {
         return Response{}, err
     }
     return process(ctx, event)
 }
+lambda.Start(metrics.WrapHandler(appMetrics, handler,
+    metrics.HandlerOptions{CaptureColdStart: true}))
+~~~
 
-lambda.Start(metrics.WrapHandler(m, handler, metrics.HandlerOptions{CaptureColdStart: true}))
-```
-
-The excerpt assumes application-defined `Event`, `Response`, and `process` symbols. The complete executable composition with Logger and Tracer is in [the integration handler](https://github.com/rambow-cloud/powertools-lambda-go/blob/main/integration/lambda/main.go).
+This adaptation requires your `Event`, `Response`, `process`, `context` and Lambda imports. It emits the request metric at completion and a separate ColdStart document on the first on-demand invocation. Configure `WithErrorHandler` during construction to observe wrapper flush failures; its default callback ignores them. [Wrapper options](#lambda-wrapper-options-and-multiple-instances) describe error propagation and multiple Metrics instances.
 
 ## Behavior
 
@@ -43,8 +127,6 @@ The excerpt assumes application-defined `Event`, `Response`, and `process` symbo
 - Wrapper flush failures are reported through `WithErrorHandler`; the default preserves the original handler result, error, or panic, while `HandlerOptions.PropagateErrors` enables reference publication-error precedence. `WithRequireMetrics(true)` makes an empty explicit `Flush` return `ErrEmptyMetrics`; the wrapper reports that error through the same callback.
 
 ## Configuration
-
-Configuration milestone: Verified 532 actual TypeScript configuration cases, exact custom getter order/errors, strict environment validation, single-metric reconstruction and constructor publication mode; all 22 packaged modules/19 consumers, both CGO-disabled Linux builds, 673/673 RIE assertions, 95/95 streaming Runtime API checks and 14/14 Batch artifact checks passed (2026-09-22). Docker ran amd64; arm64 was cross-compiled. No AWS resources were used.
 
 | Setting | Behavior |
 | --- | --- |
@@ -83,15 +165,13 @@ This replaces the previous one-result `SingleMetric()` signature. Closed scopes 
 
 ## Reference coverage and remaining gaps
 
-Store lifecycle milestone: Verified 104 actual TypeScript store lifecycle scenarios, 64 concurrent scope policies, late-write rejection, all 22 packaged modules/19 consumers, both CGO-disabled Linux builds, 631/631 RIE assertions, 95/95 streaming Runtime API checks and 14/14 Batch artifact checks (2026-09-22). Docker ran amd64; arm64 was cross-compiled. No AWS resources were used. The 104 scenarios compare all timestamps and values with an injected clock, sorting only dimension-name arrays and mapping the specific empty-buffer error. Diagnostics have their own fixture and acceptance gate below.
-
 The development-only `.mjs` generator executes `@aws-lambda-powertools/metrics@2.35.0`. Go compares eight actual emitted documents across four scenarios: dimensions/flush, 100-metric boundary, 100-value boundary, and isolated single metrics. Normalization removes timestamps and sorts dimension-name arrays only. Neither Node.js nor these generators are included in a Lambda deployment.
 
 The first implementation has known differences that remain parity work:
 
 - Go dimension arguments are typed strings. Non-string JavaScript arguments have no direct Go equivalent. Non-index keys in map batches use lexical order because Go maps cannot retain JavaScript insertion order.
 - `_aws` now follows reference overwrite precedence, including output that no longer has a valid EMF envelope. Metadata still uses Go JSON serialization and snapshot timing rather than mutable JavaScript references.
-- Wrapper instrumentation errors are reported rather than replacing business errors. Go functional options and explicit context binding replace decorators and automatic disposal.
+- Wrapper instrumentation errors are reported by default; `PropagateErrors` selects reference publication-error precedence. Go functional options and explicit context binding replace decorators and automatic disposal.
 - Selective clears, runtime policy, manual cold-start APIs, custom configuration, single-metric reconstruction and numeric/Date timestamp inputs are implemented. Internal store getters are not public Metrics APIs. Remaining decorator/framework lifecycle differences, exported-type/metadata encoding and service acceptance gates remain in [METRICS_PLAN.md](METRICS_PLAN.md).
 - Exhaustive exported-symbol and invalid-input differential coverage, performance budgets, and real CloudWatch metric extraction for this new package remain pending.
 
@@ -103,8 +183,6 @@ The Docker suite checks emitted EMF, cold-start isolation, and error/panic flush
 
 ## Diagnostics
 
-Diagnostic milestone: Verified 203 actual TypeScript diagnostic scenarios, Unicode whitespace reuse, callback reentrancy/concurrent scopes, automatic flush and failed-output delivery, all 22 packaged modules/19 consumers, both CGO-disabled Linux builds, 646/646 RIE assertions, 95/95 streaming Runtime API checks and 14/14 Batch artifact checks (2026-09-22). Docker ran amd64; arm64 was cross-compiled. No AWS resources were used.
-
 Empty or whitespace-only dimension names/values are skipped with warnings. Commons supplies JavaScript-compatible whitespace checks, including BOM removal and preservation of U+0085 and U+200B; accepted values retain their original whitespace. Duplicate dimensions and metadata/dimension collisions report the reference precedence. Metric collisions remain errors. An empty namespace warns when serialized and uses `default_namespace`. Empty non-strict flushes warn even when emission is disabled. Strict empty serialization returns `ErrEmptyMetrics` before namespace diagnostics.
 
 `SetTimestamp` stores timestamps outside the inclusive window from fourteen days before the clock to two hours after it and emits the reference warning. It does not silently replace the supplied timestamp. CloudWatch acceptance of such documents is outside the local fixture's scope.
@@ -115,8 +193,6 @@ The warning generator records 203 actual TypeScript v2.35.0 scenarios covering i
 
 ## Manual cold-start metrics
 
-Cold-start milestone: Verified 302 actual TypeScript cold-start cases, 64 concurrent captures, failed-write consumption, scoped function-name isolation and closed-scope rejection; all 22 packaged modules/19 consumers, both CGO-disabled Linux builds, 658/658 RIE assertions, 95/95 streaming Runtime API checks and 14/14 Batch artifact checks passed (2026-09-22). Docker ran amd64; arm64 was cross-compiled. No AWS resources were used.
-
 Call `m.WithContext(ctx).CaptureColdStartMetric("fallback-name")` inside an invocation scope, or `m.CaptureColdStartMetric()` for a standalone instance. It uses `commons.Utility` to consume the instance's on-demand cold-start decision once. Scope-bound calls additionally honor shared invocation identity, so constructing another Metrics instance in a warm handler does not turn that invocation cold. The wrapper calls this same method with the Lambda function name as its fallback. Manual calls after wrapper capture do not duplicate the metric.
 
 Capture emits a separate `ColdStart` count using default dimensions, without consuming parent metrics, request dimensions, metadata or the parent's explicit timestamp. Repeated and concurrent calls on one instance emit at most once. The decision is consumed before output, including disabled output and failed writes; there is no automatic retry. A separately created `SingleMetric` has its own cold-start helper, matching the reference's new-instance behavior, while sharing invocation closure.
@@ -126,8 +202,6 @@ Function-name precedence is the configured constructor/environment name, then th
 302 actual v2.35.0 cases compare full EMF documents and warning strings across constructor/environment/setter/argument combinations, Unicode whitespace, initialization types, disabled output, clearing, repeated captures and derived single metrics. Go functional tests additionally exercise concurrent capture, failed-output/construction consumption and scope-name isolation. Another 532 configuration cases cover fresh environment/default reconstruction, constructor validation, custom getter order/errors and immediate-publication mode. Only dimension-name order is normalized; complete documents, warning strings and constructor errors are compared.
 
 ## Metric values and object keys
-
-Value milestone: Verified 641 actual TypeScript value/error/key scenarios, exact warning/configuration error messages, shared key-order regression through Parser/Validation, all 22 packaged modules/19 consumers, both CGO-disabled Linux builds, 688/688 RIE assertions, 95/95 streaming Runtime API checks and 14/14 Batch artifact checks (2026-09-22). Docker ran amd64; arm64 was cross-compiled. No AWS resources were used.
 
 The pinned implementation accepts NaN and positive/negative infinity as metric numbers. Go retains these values in the buffer and emits null in scalar and accumulated JSON values. This mirrors reference serialization; it does not establish CloudWatch ingestion for those values. Metric names use UTF-16 length and exact reference name/unit/resolution/conflicting-unit errors. The existing ErrEmptyMetrics and ErrDimensionLimit identities remain usable with errors.Is; their messages now match the reference directly.
 

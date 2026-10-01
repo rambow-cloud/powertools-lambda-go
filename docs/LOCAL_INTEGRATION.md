@@ -1,6 +1,6 @@
 # Local Docker integration runner
 
-Latest recorded runtime acceptance (2026-09-24): 868/868 Lambda RIE assertions, 95/95 streaming checks and 14/14 saved Batch checks. Normal and streaming handlers were built for Linux amd64/arm64 with CGO disabled; Docker executed amd64. Module verification was reused from accepted checkpoints covering 31 modules and 28 public consumers, while both architecture builds were executed. See [the acceptance history](LOCAL_VALIDATION.md), [runtime evidence](LOCAL_ACCEPTANCE.json) and [combined module evidence](MODULE_ACCEPTANCE_KMS.json). Subsequent publication cleanup and license work has targeted verification and is not a new full runtime run. Historical coverage below retains its original scope.
+Latest recorded runtime acceptance (2026-10-01): 868/868 Lambda RIE assertions, 95/95 streaming checks and 14/14 saved Batch checks. Normal and streaming handlers were built for Linux amd64/arm64 with CGO disabled; Docker executed amd64. All 31 modules and 28 public consumers passed packaged acceptance in resumed phases before this runtime run; the runtime runner reused those results and executed both architecture builds. See [the audit scope](DOCUMENTATION_ACCEPTANCE.json), [acceptance history](LOCAL_VALIDATION.md) and [runtime evidence](LOCAL_ACCEPTANCE.json). No AWS resources were used; exhaustive parity and browser review remain separate gates.
 
 Run from the repository root with local Go, Python 3.10+ (or `uv`), Node.js with the pinned reference dependencies, and Docker Desktop using Linux containers:
 

@@ -1,25 +1,55 @@
 # AppSync GraphQL
 
-The independent `eventhandler/appsyncgraphql` module maps the public resolver,
-router, exceptions and scalar helpers from Powertools TypeScript v2.35.0. Its only
-module dependency is root Commons, used for environment whitespace/configuration.
-Parser, Logger and Tracer remain optional application dependencies.
+AppSync GraphQL routes resolver events and batches to Go callbacks. Import `github.com/rambow-cloud/powertools-lambda-go/eventhandler/appsyncgraphql`. Register queries, mutations and other type/field pairs before serving invocations.
 
-```go
-app := appsyncgraphql.New(appsyncgraphql.Options{})
-app.OnQuery("hello", func(ctx context.Context, arguments, event any) (any, error) {
-    return map[string]any{"message": "Hello", "arguments": arguments}, nil
-})
-lambda.Start(app.Resolve)
-```
+See [installation](MODULES.md) and the [compatibility baseline](COMPATIBILITY.md).
 
-See the runnable [example](https://github.com/rambow-cloud/powertools-lambda-go/blob/main/examples/appsyncgraphql/main.go). `Resolve` accepts
-ordinary JSON-decoded events, `[]any` batches and `[]Event` batches. It preserves
-the caller's context and passes event maps directly without copying. Handlers own
-their mutations; callers must not concurrently mutate shared input maps. Register
-routes before serving invocations. Registry access is synchronized and callbacks
-run without registry locks. Inclusion snapshots routes, so later registrations in
-the included router do not change the destination.
+## Complete example
+
+Build this complete Lambda example at `./examples/appsyncgraphql` with `CGO_ENABLED=0`. Configure AppSync to send its resolver event to the Lambda data source; the example registers `Query.hello`.
+
+~~~go
+--8<-- "examples/appsyncgraphql/main.go"
+~~~
+
+## Input and output
+
+The full AppSync event below returns `{"arguments":{"name":"Ada"},"message":"Hello"}`. This is the resolver value, not an HTTP proxy response or a log line. The callback receives both the `arguments` object and complete event. A missing route raises `ResolverNotFoundException`. Successful resolution does not automatically write an application log. Sending only `arguments` and the route names is not a valid resolver envelope.
+
+~~~json
+{
+  "arguments": {"name": "Ada"},
+  "identity": null,
+  "source": null,
+  "prev": null,
+  "stash": {},
+  "request": {"headers": {}, "domainName": null},
+  "info": {"parentTypeName": "Query", "fieldName": "hello", "variables": {}}
+}
+~~~
+
+## Objects and lifecycle
+
+| Object | Responsibility |
+| --- | --- |
+| `app` | Reusable route/exception registry; no service client. |
+| Callback arguments | `arguments` is the field argument value; `event` retains identity, source and resolver context. |
+| `Router` | Split registrations into modules and include snapshots into the resolver. |
+
+## TypeScript feature coverage
+
+Compared with the [official v2.35.0 appsync-graphql guide](https://github.com/aws-powertools/powertools-lambda-typescript/blob/7bcc27b1574493f9452688673658f52b80c53847/docs/features/event-handler/appsync-graphql.md) and the pinned npm implementation. The table maps capabilities; it does not certify every native type or service behavior.
+
+| TypeScript feature | Go API or approach | Compatibility scope |
+| --- | --- | --- |
+| Resolver / nested mappings | `OnQuery`, `OnMutation`, `OnResolver` | Explicit type/field keys replace decorators and scope binding. |
+| Split routers | `NewRouter`, `IncludeRouter` | Snapshots included routes. |
+| Batch resolution | `OnBatchResolver`, batch options | Aggregated or sequential individual processing with explicit error policy. |
+| Exception handling | `OnException`, named errors | Errors remain distinct from resolver-not-found/invalid-batch exceptions. |
+| Scalars | `AWSDate`, `AWSTime`, `AWSDateTime`, `AWSTimestamp`, `MakeID` | Explicit Go clock values; native Date boundaries differ. |
+| Lambda context / logging | Callback `ctx`, `Options.Diagnostic` | Optional Logger; no implicit structured business log. |
+
+Executable evidence: [eventhandler/appsyncgraphql/reference_test.go](https://github.com/rambow-cloud/powertools-lambda-go/blob/main/eventhandler/appsyncgraphql/reference_test.go). See [the verification scope](FEATURE_PARITY.md) and [project progress](CHECKLIST.md) for open gates.
 
 ## Public mapping
 
