@@ -33,6 +33,8 @@ jobs:
           cache-dependency-glob: website/uv.lock
       - name: Verify locked documentation dependencies
         run: uv lock --project website --check
+      - name: Test contribution workflow and issue forms
+        run: uv run --project website --frozen python tools/test_contribution_workflow.py
       - name: Validate navigation coverage and targets
         run: uv run --project website --frozen python website/check_navigation.py
       - name: Validate utility guide coverage and referenced source

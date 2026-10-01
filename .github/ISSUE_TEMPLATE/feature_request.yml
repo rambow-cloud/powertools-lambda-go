@@ -1,0 +1,60 @@
+name: Feature proposal
+description: Agree on a new capability or a behavior change before implementation.
+title: "[Feature]: "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Describe the problem before the solution. For large API or dependency
+        changes, wait for scope agreement before implementing. This is an
+        independent community project with a pinned TypeScript reference.
+  - type: input
+    id: area
+    attributes:
+      label: Affected module or area
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem and use case
+      description: Who needs this, and what is difficult with the current behavior?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed behavior
+      description: Include example inputs/outputs or a proposed Go API when useful.
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: Include current workarounds, or explain why none fit.
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance criteria
+      description: List observable outcomes or tests. State what is outside the scope.
+    validations:
+      required: true
+  - type: textarea
+    id: compatibility
+    attributes:
+      label: Compatibility and dependencies
+      description: Note breaking changes, new dependencies, and relevant TypeScript v2.35.0 references. State unknowns explicitly.
+    validations:
+      required: true
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Before submitting
+      options:
+        - label: I searched existing issues and the roadmap for this proposal.
+          required: true
+        - label: I removed credentials and private data from examples.
+          required: true

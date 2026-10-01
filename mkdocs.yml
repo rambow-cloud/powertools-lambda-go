@@ -142,6 +142,8 @@ nav:
       - Publication: PUBLICATION.md
       - Release plan: PUBLISHING_PLAN.md
   - Development:
+      - Contributing: CONTRIBUTING.md
+      - Maintainer setup: MAINTAINING.md
       - Documentation and CI: DOCUMENTATION.md
       - Verification:
           - Overview: VALIDATION.md

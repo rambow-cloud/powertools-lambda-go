@@ -1,0 +1,121 @@
+name: Contribution policy
+
+on:
+  pull_request:
+    branches: [main]
+    types: [opened, edited, synchronize, reopened, ready_for_review]
+
+permissions:
+  contents: read
+  issues: read
+  pull-requests: read
+
+concurrency:
+  group: contribution-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+env:
+  CGO_ENABLED: '0'
+  PYTHONDONTWRITEBYTECODE: '1'
+
+jobs:
+  policy:
+    name: PR contribution policy
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      # No checkout: PR titles/bodies are data, never shell or Python source.
+      - name: Validate issue reference and PR description
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python3 - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+          import re
+          from urllib.error import HTTPError, URLError
+          from urllib.request import Request, urlopen
+
+          def without_comments(text):
+              return re.sub(r"<!--.*?(?:-->|\Z)", "", text, flags=re.S)
+
+          def issue_numbers(body, repository):
+              # References must be real prose, not template examples or comments.
+              text = without_comments(body)
+              text = re.sub(r"(?is)<(pre|code)\b[^>]*>.*?(?:</\1\s*>|\Z)", "", text)
+              lines = []
+              fence = None
+              for line in text.splitlines():
+                  marker = re.match(r"^ {0,3}(`{3,}|~{3,})(.*)$", line)
+                  if fence:
+                      if marker and marker[1][0] == fence[0] and len(marker[1]) >= len(fence) and not marker[2].strip():
+                          fence = None
+                  elif marker:
+                      fence = marker[1]
+                  else:
+                      lines.append(line)
+              text = "\n".join(lines)
+              target = re.escape(repository)
+              reference = rf"(?:#|{target}#|https://github\.com/{target}/issues/)([1-9][0-9]*)"
+              pattern = rf"(?im)^ {{0,3}}(?:[-*] )?(?:close[sd]?|fix(?:es|ed)?|resolve[sd]?|refs)\s+{reference}[ \t]*[.]?[ \t]*$"
+              return sorted({int(match) for match in re.findall(pattern, text)})
+
+          def section(body, heading):
+              text = without_comments(body)
+              match = re.search(rf"(?im)^## {heading}[ \t]*\n", text)
+              if not match:
+                  return ""
+              return re.split(r"(?m)^## ", text[match.end():], maxsplit=1)[0].strip()
+
+          def validate(pr, repository, fetch_issue):
+              body = pr.get("body") or ""
+              errors = []
+              for heading in ("Summary", "Testing"):
+                  if not re.search(r"[A-Za-z0-9]", section(body, heading)):
+                      errors.append(f"Fill in the '## {heading}' section with meaningful details.")
+              numbers = issue_numbers(body, repository)
+              if not numbers:
+                  errors.append("Add 'Closes #123' (or 'Refs #123' for partial work), using a real issue in this repository, on its own line outside comments/code blocks.")
+              elif len(numbers) > 10:
+                  errors.append("Keep this PR focused: reference at most 10 tracking issues.")
+              else:
+                  for number in numbers:
+                      issue = fetch_issue(number)
+                      if "pull_request" in issue:
+                          errors.append(f"#{number} is a pull request; reference its tracking issue instead.")
+              return errors
+
+          def read_api(path):
+              request = Request(
+                  f"{os.environ['GITHUB_API_URL']}/repos/{os.environ['GITHUB_REPOSITORY']}/{path}",
+                  headers={
+                      "Authorization": f"Bearer {os.environ['GH_TOKEN']}",
+                      "Accept": "application/vnd.github+json",
+                      "X-GitHub-Api-Version": "2022-11-28",
+                  },
+              )
+              try:
+                  with urlopen(request, timeout=30) as response:
+                      return json.load(response)
+              except HTTPError as error:
+                  raise RuntimeError(f"GitHub API could not read {path} (HTTP {error.code}). Verify the issue exists and is accessible; rerun after resolving an API outage or rate limit.") from None
+              except (URLError, TimeoutError):
+                  raise RuntimeError("GitHub API is unavailable. Rerun the policy check when connectivity recovers.") from None
+
+          def main():
+              event = json.loads(Path(os.environ["GITHUB_EVENT_PATH"]).read_text())
+              number = int(event["pull_request"]["number"])
+              # Fetch current text so a manual rerun does not validate an old body.
+              pr = read_api(f"pulls/{number}")
+              errors = validate(pr, os.environ["GITHUB_REPOSITORY"], lambda issue: read_api(f"issues/{issue}"))
+              if errors:
+                  raise RuntimeError("\n".join(errors))
+              print("PR description and same-repository tracking issue verified.")
+
+          if __name__ == "__main__":
+              try:
+                  main()
+              except (RuntimeError, KeyError, ValueError) as error:
+                  raise SystemExit(str(error)) from None
+          PY
