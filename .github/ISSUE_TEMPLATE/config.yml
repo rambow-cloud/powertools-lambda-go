@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Documentation and usage guides
+    url: https://powertools-lambda-go.rambow.cloud/
+    about: Check the quickstart, utility guides, and compatibility boundaries first.
+  - name: Contribution guide
+    url: https://github.com/rambow-cloud/powertools-lambda-go/blob/main/CONTRIBUTING.md
+    about: Learn the issue-to-PR process and required checks.

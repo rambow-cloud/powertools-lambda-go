@@ -12,6 +12,10 @@ The English documentation site uses Zensical's default modern theme, with search
 
 The configured GitHub Pages address is https://rambow-cloud.github.io/powertools-lambda-go/; it becomes available after the first source push and successful documentation deployment. See [local preview, CI, and Pages setup](docs/DOCUMENTATION.md).
 
+## Contributing
+
+Start with the [contribution guide](CONTRIBUTING.md) to report an issue or propose a change. Contributors and maintainers use the same issue, feature-branch, pull-request, and CI process.
+
 ## Local development
 
 Signer provides standalone SigV4 signing and composable HTTP clients; see [Signer usage and compatibility](docs/SIGNER.md). JMESPath provides standard queries, custom functions, all thirteen envelopes, and optional compiled Logger correlation expressions; see [JMESPath usage and compatibility](docs/JMESPATH.md). Both have independent module dependencies and version targets. Logger alone does not import the query engine.
