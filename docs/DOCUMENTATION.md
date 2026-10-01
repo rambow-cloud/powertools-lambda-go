@@ -121,7 +121,7 @@ Under the Pages project's **Custom domains**, associate `powertools-lambda-go.ra
 
 Use Cloudflare's deployment and custom-domain status to verify publication and certificate activation. Open the canonical homepage, Logger and feature comparison pages in a browser to review rendering, search, internal navigation and source links. A local strict build does not establish custom-domain activation. Verified publication milestones belong in [project progress](CHECKLIST.md); browser acceptance remains separate.
 
-The first successful publication and active domain/certificate status were verified on 2026-10-02. See the sanitized [Cloudflare acceptance record](CLOUDFLARE_ACCEPTANCE.json). The initial deployment was started manually; production builds are enabled for subsequent pushes to `main`.
+The first successful publication and active domain/certificate status were verified on 2026-10-02. See the sanitized [Cloudflare acceptance record](CLOUDFLARE_ACCEPTANCE.json). The initial deployment was started manually. Automatic publication was subsequently verified with an actual `github:push` deployment for commit `a39d92fac53cd13b66f6efd6abc864e48a9e9813`; its dependency, navigation, guide, strict-build and deployment checks all passed. Subsequent pushes to `main` publish automatically.
 
 ### Verify automatic publication
 
