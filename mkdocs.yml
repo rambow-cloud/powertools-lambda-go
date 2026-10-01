@@ -1,6 +1,6 @@
 site_name: Powertools for AWS Lambda (Go)
 site_description: Independent Go utilities for AWS Lambda, with OpenTelemetry tracing and independently versioned modules.
-site_url: https://rambow-cloud.github.io/powertools-lambda-go/
+site_url: https://powertools-lambda-go.rambow.cloud/
 repo_url: https://github.com/rambow-cloud/powertools-lambda-go
 repo_name: GitHub
 edit_uri: edit/main/docs/

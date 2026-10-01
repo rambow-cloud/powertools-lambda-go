@@ -43,7 +43,7 @@ Install uv and run from the repository root:
 uv run --project website --frozen zensical serve --config-file mkdocs.yml
 ~~~
 
-Open **http://127.0.0.1:8000/**. Zensical serves the local preview at the root path; the published site retains `/powertools-lambda-go/`. Check the desktop/mobile navigation, search for Logger and Parameters, switch themes, and follow the quickstart and source links.
+Open **http://127.0.0.1:8000/**. Zensical serves the local preview at the root path. The canonical Cloudflare site also uses the root path; the GitHub Pages mirror uses `/powertools-lambda-go/`. Check the desktop/mobile navigation, search for Logger and Parameters, switch themes, and follow the quickstart and source links.
 
 For the same strict build used in CI:
 
@@ -78,7 +78,7 @@ Every job sets `CGO_ENABLED=0`. The harness disables the development workspace w
 
 The deployment job alone receives `pages: write` and `id-token: write`. It uses the official Pages configuration, artifact, and deployment actions. No personal access token is stored in the workflow, and no `gh-pages` branch is needed.
 
-The canonical repository was configured with `build_type=workflow` on 2026-09-30. Its first source upload and deployment are still pending. To reproduce or inspect the setup:
+The canonical repository was configured with `build_type=workflow` on 2026-09-30. Go CI and Documentation, including GitHub Pages deployment, succeeded for commit `adc8f28` on 2026-10-02. To reproduce or inspect the setup:
 
 1. Open [Settings > Pages](https://github.com/rambow-cloud/powertools-lambda-go/settings/pages).
 2. Under Build and deployment, set Source to **GitHub Actions**.
@@ -86,9 +86,38 @@ The canonical repository was configured with `build_type=workflow` on 2026-09-30
 4. Open [Actions](https://github.com/rambow-cloud/powertools-lambda-go/actions) and inspect the **Documentation** run and its **Deploy GitHub Pages** job.
 5. Open **https://rambow-cloud.github.io/powertools-lambda-go/** after a successful deployment.
 
-The initial source upload is separate from local setup. A successful local build does not mean the site is published, and the Pages URL is not available until the first successful deployment. No release tags are created by these workflows.
+A successful local build does not establish remote deployment or browser acceptance. Inspect the deployment job for publication status and review the rendered site separately. No release tags are created by these workflows.
 
 For another repository, update `site_url`, `repo_url`, `repo_name`, and the deployment repository guard together. Protect `main` and the deployment environment according to the organization's review policy.
+
+## Cloudflare Pages
+
+The canonical site URL is **https://powertools-lambda-go.rambow.cloud/**. The Pages project is `powertools-lambda-go`, with Git integration for `rambow-cloud/powertools-lambda-go` and production branch `main`. Zensical generates static HTML, so the site needs no Pages Functions or Go runtime in Cloudflare.
+
+Use the following project build settings:
+
+| Setting | Value |
+| --- | --- |
+| Framework preset | None |
+| Repository root | Repository root; leave the dashboard field empty |
+| Build output directory | `dist/site` |
+| Build image | v3 |
+| `PYTHON_VERSION` | `3.14` |
+| `SKIP_DEPENDENCY_INSTALL` | `1` |
+| `CGO_ENABLED` | `0` |
+| `PYTHONDONTWRITEBYTECODE` | `1` |
+
+The build command installs the fixed build tool and runs the same lock, navigation, utility-guide and strict build checks used by GitHub Actions:
+
+~~~sh
+python -m pip install uv==0.12.21 && uv lock --project website --check && uv run --project website --frozen python website/check_navigation.py && uv run --project website --frozen python website/check_guides.py && uv run --project website --frozen zensical build --clean --strict --config-file mkdocs.yml
+~~~
+
+Install the Cloudflare Workers and Pages GitHub application with access to this repository before creating the Git-integrated project. Production pushes then build and deploy in Cloudflare independently of GitHub Actions. GitHub Pages remains a mirror. Git integration does not require a Cloudflare API token in GitHub Actions. Keep account identifiers and credentials out of the repository.
+
+Under the Pages project's **Custom domains**, associate `powertools-lambda-go.rambow.cloud`. Then create the host's CNAME to the project's actual `*.pages.dev` address, or accept the record created by the dashboard. Associating the custom domain is required even when the CNAME already exists. See [Cloudflare's custom domain guide](https://developers.cloudflare.com/pages/configuration/custom-domains/).
+
+Use Cloudflare's deployment and custom-domain status to verify publication and certificate activation. Open the canonical homepage, Logger and feature comparison pages in a browser to review rendering, search, internal navigation and source links. A local strict build does not establish custom-domain activation. Verified publication milestones belong in [project progress](CHECKLIST.md); browser acceptance remains separate.
 
 ## Action versions and updates
 
