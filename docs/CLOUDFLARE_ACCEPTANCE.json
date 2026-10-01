@@ -1,0 +1,41 @@
+{
+  "date": "2026-10-02",
+  "provider": "Cloudflare Pages",
+  "project": "powertools-lambda-go",
+  "site_url": "https://powertools-lambda-go.rambow.cloud/",
+  "pages_url": "https://powertools-lambda-go.pages.dev/",
+  "source": {
+    "type": "github",
+    "repository": "rambow-cloud/powertools-lambda-go",
+    "branch": "main",
+    "initial_verified_commit": "5dac031c600c19ebb6939b3a117fe34c85ad5cab",
+    "initial_deployment_trigger": "ad_hoc",
+    "automatic_production_deployments_enabled": true
+  },
+  "build": {
+    "image_major_version": 3,
+    "python_version": "3.14.3",
+    "uv_version": "0.12.21",
+    "zensical_version": "0.0.67",
+    "output_directory": "dist/site",
+    "dependency_lock_check": true,
+    "navigation_coverage": true,
+    "utility_guide_coverage": true,
+    "utility_guides": 18,
+    "clean_strict_build": true,
+    "cgo_enabled": false,
+    "uv_invocation": "Python module"
+  },
+  "publication": {
+    "deployment_status": "success",
+    "published_at_utc": "2026-10-01T16:53:59.71279Z",
+    "custom_domain_status": "active",
+    "ownership_verification_status": "active",
+    "certificate_validation_status": "active",
+    "certificate_authority": "google",
+    "cname_target": "powertools-lambda-go.pages.dev",
+    "verification_source": "Cloudflare control-plane status and build logs",
+    "browser_visual_acceptance": false,
+    "local_dns_queries_performed": false
+  }
+}

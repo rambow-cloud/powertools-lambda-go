@@ -110,14 +110,18 @@ Use the following project build settings:
 The build command installs the fixed build tool and runs the same lock, navigation, utility-guide and strict build checks used by GitHub Actions:
 
 ~~~sh
-python -m pip install uv==0.12.21 && uv lock --project website --check && uv run --project website --frozen python website/check_navigation.py && uv run --project website --frozen python website/check_guides.py && uv run --project website --frozen zensical build --clean --strict --config-file mkdocs.yml
+python -m pip install uv==0.12.21 && python -m uv lock --project website --check && python -m uv run --project website --frozen python website/check_navigation.py && python -m uv run --project website --frozen python website/check_guides.py && python -m uv run --project website --frozen zensical build --clean --strict --config-file mkdocs.yml
 ~~~
+
+Calling uv through its Python module also works when the Pages build environment does not add newly installed commands to `PATH`.
 
 Install the Cloudflare Workers and Pages GitHub application with access to this repository before creating the Git-integrated project. Production pushes then build and deploy in Cloudflare independently of GitHub Actions. GitHub Pages remains a mirror. Git integration does not require a Cloudflare API token in GitHub Actions. Keep account identifiers and credentials out of the repository.
 
 Under the Pages project's **Custom domains**, associate `powertools-lambda-go.rambow.cloud`. Then create the host's CNAME to the project's actual `*.pages.dev` address, or accept the record created by the dashboard. Associating the custom domain is required even when the CNAME already exists. See [Cloudflare's custom domain guide](https://developers.cloudflare.com/pages/configuration/custom-domains/).
 
 Use Cloudflare's deployment and custom-domain status to verify publication and certificate activation. Open the canonical homepage, Logger and feature comparison pages in a browser to review rendering, search, internal navigation and source links. A local strict build does not establish custom-domain activation. Verified publication milestones belong in [project progress](CHECKLIST.md); browser acceptance remains separate.
+
+The first successful publication and active domain/certificate status were verified on 2026-10-02. See the sanitized [Cloudflare acceptance record](CLOUDFLARE_ACCEPTANCE.json). The initial deployment was started manually; production builds are enabled for subsequent pushes to `main`.
 
 ## Action versions and updates
 
