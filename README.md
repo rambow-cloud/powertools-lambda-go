@@ -8,7 +8,7 @@ Data Masking provides default/dynamic/custom field erasure and concurrent applic
 
 ## Documentation
 
-The English documentation site uses MkDocs Material, with searchable utility guides, light/dark themes, and native Go Lambda examples. Start with the [quickstart](docs/GETTING_STARTED.md), [Logger](docs/LOGGER.md), or [OpenTelemetry Tracer](docs/TRACER.md).
+The English documentation site uses Zensical's default modern theme, with searchable utility guides, light/dark themes, and native Go Lambda examples. Start with the [quickstart](docs/GETTING_STARTED.md), [Logger](docs/LOGGER.md), or [OpenTelemetry Tracer](docs/TRACER.md).
 
 The configured GitHub Pages address is https://rambow-cloud.github.io/powertools-lambda-go/; it becomes available after the first source push and successful documentation deployment. See [local preview, CI, and Pages setup](docs/DOCUMENTATION.md).
 

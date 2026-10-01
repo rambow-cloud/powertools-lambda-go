@@ -9,7 +9,7 @@ The current identity uses the user-selected rambow.cloud ram, cloud, and wordmar
 - Both assets are transparent PNGs, produced using the built-in image generation tool on 2026-09-30.
 - The full logo edits the user-supplied brand artwork. The compact version removes the wordmark and reframes the emblem with the same tool.
 - `theme.logo` and `theme.favicon` in `mkdocs.yml` reference the compact asset. Its new filename avoids retaining the previous favicon in browser caches.
-- `website/overrides/partials/logo.html` supplies project-name alternative text; `docs/stylesheets/powertools.css` controls display size.
+- Zensical's default modern theme renders and sizes the logo; no project template or CSS override is used.
 
 ## Gopher attribution
 

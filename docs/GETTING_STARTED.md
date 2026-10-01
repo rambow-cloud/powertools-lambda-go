@@ -72,7 +72,7 @@ Deploy the matching ZIP using your infrastructure tooling with runtime `provided
 
 ## Local verification
 
-The default runtime acceptance environment uses Docker. Follow the maintained [local integration runner](https://github.com/rambow-cloud/powertools-lambda-go/blob/main/integration/local/README.md) and [local acceptance scope](LOCAL_VALIDATION.md).
+The default runtime acceptance environment uses Docker. Follow the maintained [local integration runner](LOCAL_INTEGRATION.md) and [local acceptance scope](LOCAL_VALIDATION.md).
 
 Outside Lambda, tracing is disabled unless you explicitly supply `tracer.WithLocalTracing(true)`. A local collector is still required to export spans. `POWERTOOLS_DEV=true` enables readable local logs and disables tracing.
 

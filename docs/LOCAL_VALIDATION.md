@@ -116,6 +116,6 @@ Historical Parser union milestone: the completed command ran full module verific
 
 The local response fixtures are not DynamoDB Local, LMDS, or real AWS services. Parent headers are explicitly supplied by the fixture extractor. The emulator returned HTTP 502 with `Runtime.ExitError` for panic; the original panic was separately verified in runtime logs, and the error spans were exported before process exit. This result does not verify IAM, real service/LMDS semantics, native AWS parent injection, freeze/thaw, hard timeouts, or collector-to-X-Ray delivery.
 
-Reproduce with `uv run python integration/local/run.py`; see [runner documentation](https://github.com/rambow-cloud/powertools-lambda-go/blob/main/integration/local/README.md). Raw evidence remains in ignored `dist/local/report.json`, `dist/local/otlp.json`, and `dist/local/lambda.log`. [LOCAL_ACCEPTANCE.json](LOCAL_ACCEPTANCE.json) preserves assertion results and artifact hashes.
+Reproduce with `uv run python integration/local/run.py`; see [runner documentation](LOCAL_INTEGRATION.md). Raw evidence remains in ignored `dist/local/report.json`, `dist/local/otlp.json`, and `dist/local/lambda.log`. [LOCAL_ACCEPTANCE.json](LOCAL_ACCEPTANCE.json) preserves assertion results and artifact hashes.
 
 The runner uses sequential package compilation, a low Go heap target, and build/cache paths under D: to limit local resource pressure. Node.js is used to regenerate reference fixtures and execute the local TypeScript/Go cache bridge; the Lambda executable and ordinary Go module tests do not require it.

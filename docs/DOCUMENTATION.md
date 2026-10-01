@@ -2,10 +2,11 @@
 
 ## Documentation structure
 
-The site uses [MkDocs Material](https://squidfunk.github.io/mkdocs-material/), following the utility-oriented structure of the [TypeScript documentation](https://docs.aws.amazon.com/powertools/typescript/latest/). The English Markdown sources in `docs/` remain the source of truth.
+The site uses [Zensical](https://zensical.org/docs/) with its default modern theme and utility-oriented navigation. The English Markdown sources in `docs/` remain the source of truth.
 
-- `mkdocs.yml` defines navigation, search, themes, code rendering, and strict validation.
+- `mkdocs.yml` remains the configuration file supported by Zensical and defines navigation, search, themes, code rendering, and strict validation.
 - `website/pyproject.toml` and `website/uv.lock` isolate and lock documentation dependencies.
+- `website/check_navigation.py` checks that every Markdown guide appears exactly once in navigation and that every target exists inside `docs/`.
 - `dist/site/` contains generated HTML and is ignored by Git.
 - The quickstart includes the actual Go example through a checked snippet, avoiding a second copy.
 - Links within the site use Markdown file paths; links to source outside `docs/` use GitHub URLs.
@@ -14,14 +15,9 @@ Every guide belongs in navigation. Builds fail on missing navigation targets, br
 
 ## Visual design
 
-The theme follows the current TypeScript site's developer-guide layout: a slim dark utility bar, a white header, a persistent utility navigation tree, a readable article column, and an "On this page" rail. It uses the reference's 16px body / 42px page-heading scale and blue links, with coordinated light and dark palettes.
+Zensical's bundled modern theme owns typography, spacing, title permalinks, page-edit actions, search, code copying, and responsive navigation. The previous custom CSS and template overrides have been removed. The configuration uses the theme's default fonts and icons, with the standard system/light/dark palette toggle.
 
-The reference is the [TypeScript documentation theme at commit 267c907](https://github.com/aws-powertools/powertools-lambda-typescript/tree/267c907a278fe3d5ee0e85b88bfe4b689923bca4/docs/stylesheets), inspected on 2026-09-30. The project-owned CSS and small Jinja template retain Material's existing search, theme selection, copy buttons, and responsive drawer instead of introducing a second UI framework.
-
-- `docs/stylesheets/powertools.css` owns colors, typography, spacing, navigation rails, tables, code blocks, and responsive adjustments.
-- `website/overrides/main.html` adds the organization bar, breadcrumbs, and guide label.
-- `mkdocs.yml` keeps all utilities in one navigation tree; implementation plans stay inside Development.
-- System Arial/Helvetica fonts replace Amazon Ember. No AWS logo, proprietary font, external stylesheet, or AWS portal script is bundled or hotlinked.
+`mkdocs.yml` keeps all utilities in one navigation tree; implementation plans stay inside Development. The project emblem and attribution remain configured through the theme's standard logo, favicon, and copyright settings.
 
 Preview the homepage, Logger, and Getting Started pages. At desktop width, inspect the three-column layout and section highlighting; at a 390px mobile width, inspect the drawer, search overlay, code/table scrolling, and theme toggle. Check keyboard focus and copy controls. Browser visual acceptance is separate from the strict build and remains pending until a rendered review is performed.
 
@@ -36,21 +32,24 @@ The Gopher is adapted from Renee French's design under [CC BY 4.0](https://creat
 Install uv and run from the repository root:
 
 ~~~sh
-uv run --project website --frozen mkdocs serve --config-file mkdocs.yml
+uv run --project website --frozen zensical serve --config-file mkdocs.yml
 ~~~
 
-Open **http://127.0.0.1:8000/powertools-lambda-go/**. Check the desktop/mobile navigation, search for Logger and Parameters, switch themes, and follow the quickstart and source links.
+Open **http://127.0.0.1:8000/**. Zensical serves the local preview at the root path; the published site retains `/powertools-lambda-go/`. Check the desktop/mobile navigation, search for Logger and Parameters, switch themes, and follow the quickstart and source links.
 
 For the same strict build used in CI:
 
 ~~~sh
 uv lock --project website --check
-uv run --project website --frozen mkdocs build --strict --config-file mkdocs.yml
+uv run --project website --frozen python website/check_navigation.py
+uv run --project website --frozen zensical build --clean --strict --config-file mkdocs.yml
 ~~~
 
 Python 3.14 is required for the isolated documentation environment. uv can provision it when permitted. The Go runtime library has no Python dependency.
 
-To update the theme, change its exact version in `website/pyproject.toml`, run `uv lock --project website`, and review the resulting lockfile before running the strict build.
+Zensical 0.0.67 is pinned in `website/pyproject.toml`; the lockfile includes its Windows and Linux wheels. To update the builder and bundled theme, change its exact version, run `uv lock --project website`, and review the resulting lockfile before running the clean strict build.
+
+The migration retains `mkdocs.yml`, page URLs, and the checked Go snippet. The site now uses Zensical's default modern theme without custom CSS or template overrides. Zensical replaces the MkDocs and Material packages, so the Material warning about MkDocs 2.0 no longer applies. Link validation uses Zensical's `invalid_links` and `invalid_link_anchors` settings. Zensical does not implement MkDocs' navigation validation, so the navigation checker runs separately in CI. The snippets extension uses the repository root as its base path; run all documentation commands from that directory. Zensical is still in its 0.0.x release series; validate upgrades before deploying them. See the [official migration guide](https://zensical.org/docs/compatibility/mkdocs/migration/).
 
 ## Go CI
 

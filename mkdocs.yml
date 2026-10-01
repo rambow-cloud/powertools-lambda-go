@@ -13,29 +13,25 @@ site_dir: dist/site
 strict: true
 
 theme:
-  name: material
-  custom_dir: website/overrides
+  variant: modern
   language: en
-  font: false
   logo: assets/logo-ram-gopher.png
   favicon: assets/logo-ram-gopher.png
-  icon:
-    repo: fontawesome/brands/github
   palette:
+    - media: "(prefers-color-scheme)"
+      toggle:
+        icon: lucide/sun-moon
+        name: Switch to light mode
     - media: "(prefers-color-scheme: light)"
       scheme: default
-      primary: custom
-      accent: custom
       toggle:
-        icon: material/weather-night
+        icon: lucide/sun
         name: Switch to dark mode
     - media: "(prefers-color-scheme: dark)"
       scheme: slate
-      primary: custom
-      accent: custom
       toggle:
-        icon: material/weather-sunny
-        name: Switch to light mode
+        icon: lucide/moon
+        name: Switch to system preference
   features:
     - navigation.indexes
     - navigation.tracking
@@ -66,7 +62,7 @@ markdown_extensions:
   - pymdownx.inlinehilite
   - pymdownx.superfences
   - pymdownx.snippets:
-      base_path: [!relative $config_dir]
+      base_path: [.] # Documentation commands run from the repository root.
       check_paths: true
   - pymdownx.tabbed:
       alternate_style: true
@@ -74,22 +70,11 @@ markdown_extensions:
       custom_checkbox: true
 
 validation:
-  nav:
-    omitted_files: warn
-    not_found: warn
-    absolute_links: warn
-  links:
-    not_found: warn
-    anchors: warn
-    unrecognized_links: warn
-    absolute_links: warn
-
-extra_css:
-  - stylesheets/powertools.css
+  invalid_links: true
+  invalid_link_anchors: true
 
 watch:
   - examples/basic/main.go
-  - website/overrides
 
 extra:
   generator: false
@@ -156,6 +141,7 @@ nav:
       - Documentation and CI: DOCUMENTATION.md
       - Verification:
           - Overview: VALIDATION.md
+          - Local integration runner: LOCAL_INTEGRATION.md
           - Local acceptance: LOCAL_VALIDATION.md
           - Historical AWS acceptance: AWS_VALIDATION.md
       - Design and remaining work:
