@@ -6,6 +6,8 @@ Usage belongs in the utility guides. [Feature comparison](FEATURE_PARITY.md) map
 
 ## Documentation and feature audit
 
+- [ ] DOC-15: Verify automatic Cloudflare Pages production publication from an actual `main` push: observe a `github:push` deployment for the pushed commit, successful locked-dependency/guide/strict-build checks and a successful deployment. Enabled configuration alone does not satisfy acceptance; retain the observed commit and trigger in sanitized evidence.
+
 - [x] DOC-14: Publish the static documentation with Cloudflare Pages Git integration on `main`, using the existing locked dependency, navigation, guide and strict build checks. Associate `powertools-lambda-go.rambow.cloud`, configure its CNAME and verify a successful deployment plus active custom-domain/certificate status. All build checks and control-plane publication checks passed (2026-10-02). Keep credentials and private account identifiers out of Git. Evidence: [CLOUDFLARE_ACCEPTANCE.json](CLOUDFLARE_ACCEPTANCE.json). Browser review remains separate under DOC-06.
 
 - [x] DOC-12: Audit the seventeen pinned TypeScript utility guides against Go APIs and reference evidence; give every corresponding Go guide a complete example, input/output explanation, object lifecycle and feature map. Correct stale completed-versus-open claims. Preserve explicit OTel/native and unsupported data-key-cache boundaries. Guide/source coverage for eighteen Go guides, navigation and clean strict build passed (2026-10-01). Evidence: [DOCUMENTATION_ACCEPTANCE.json](DOCUMENTATION_ACCEPTANCE.json).

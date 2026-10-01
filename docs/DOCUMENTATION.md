@@ -123,6 +123,12 @@ Use Cloudflare's deployment and custom-domain status to verify publication and c
 
 The first successful publication and active domain/certificate status were verified on 2026-10-02. See the sanitized [Cloudflare acceptance record](CLOUDFLARE_ACCEPTANCE.json). The initial deployment was started manually; production builds are enabled for subsequent pushes to `main`.
 
+### Verify automatic publication
+
+Push a reviewed documentation change to `main`, then inspect the Pages project's production deployments. The new deployment must show source `github:push`, the pushed commit SHA, and successful build and deploy stages. An enabled production-build setting or a successful manually started deployment does not establish that GitHub push events reach Pages.
+
+The Cloudflare Workers and Pages GitHub application must include this repository in its repository access. An organization Owner manages that authorization. A CLI user's inability to manage or query the installation does not establish whether the application's access has already been granted. After an authorization change, verify the actual push-to-deployment path before checking the automatic-publication progress item.
+
 ## Action versions and updates
 
 Actions are pinned to the complete commit for the latest official stable release checked on **2026-09-30**:
