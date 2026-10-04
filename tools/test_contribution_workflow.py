@@ -145,7 +145,8 @@ class IssueFormTests(unittest.TestCase):
                     self.assertIs(form["blank_issues_enabled"], False)
                     continue
                 self.assertTrue(form["name"] and form["description"])
-                self.assertNotIn("labels", form)
+                expected_labels = {"bug_report.yml": ["bug"], "feature_request.yml": ["enhancement"]}
+                self.assertEqual(form.get("labels", []), expected_labels.get(path.name, []))
                 self.assertNotIn("assignees", form)
                 fields = [field for field in form["body"] if field["type"] != "markdown"]
                 ids = [field["id"] for field in fields]

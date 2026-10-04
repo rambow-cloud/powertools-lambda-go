@@ -18,6 +18,11 @@ and the [roadmap](ROADMAP.md) first, then choose a form in
 - **Documentation, maintenance, or question:** the affected page/tool,
   requested change or question, and what would resolve it
 
+The Bug report form assigns the existing red `bug` label; Feature proposal
+assigns `enhancement`. When creating an issue with `gh issue create`, pass
+`--label bug` or `--label enhancement` explicitly: CLI/API creation with a body
+does not apply the web form defaults.
+
 Track one independently verifiable outcome per issue, not one issue per commit.
 The owner can self-triage and assign their own work. Several commits or partial
 PRs may share a tracking issue; questions and ideas do not have to become
