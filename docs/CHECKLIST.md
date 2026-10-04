@@ -34,6 +34,11 @@ Usage belongs in the utility guides. [Feature comparison](FEATURE_PARITY.md) map
 
 ## Logger
 
+- [x] L-17: Preserve separate child persistent/temporary snapshots, inherited temporary precedence and reset/removal semantics; verify 12 actual TypeScript scenarios plus native invocation closure and ownership tests. Tracks #3 (2026-10-04).
+- [x] L-18: Remove top-level empty strings/nulls after map-shaped formatting and before replacement; preserve nested empties, zero/false, collections, caller ownership and native marshaler/error behavior. Verify 18 TypeScript scenarios and native Go regressions. Tracks #4 (2026-10-04).
+- [x] L-19: Match active-trace flush/clear, sequential trace replacement and oversized-entry error details; verify 18 TypeScript scenarios including exact UTF-8 capacities, native sampled/unsampled OTel span/trace changes, 40 concurrent parent/child invocations and output-error preservation. Tracks #5 (2026-10-04). Full configuration/diagnostic/serialization parity remains open under L-08/L-09.
+- [x] L-20: Verify #3/#4/#5 in the maintained Lambda fixture, including actual request context, separate child stores, shallow cleanup, unsampled trace replacement and overflow fallback. Combined packaged checks passed 31 modules/28 consumers; both Linux architectures built with CGO disabled, then runtime-only acceptance reused those binaries after fixing the container timezone. Passed 889/889 RIE, 95/95 streaming and 14/14 saved Batch assertions with cleanup and no AWS resources (2026-10-04). Evidence: [MODULE_ACCEPTANCE_LOGGER.json](MODULE_ACCEPTANCE_LOGGER.json), [LOCAL_ACCEPTANCE.json](LOCAL_ACCEPTANCE.json), [STREAMING_ACCEPTANCE.json](STREAMING_ACCEPTANCE.json) and [BATCH_ACCEPTANCE.json](BATCH_ACCEPTANCE.json).
+
 - [x] L-15: Apply descendant replacers to struct/custom-marshaler JSON without duplicate root callbacks, preserving field tags and large numeric tokens. Verify redaction, omission, and precision.
 - [x] L-16: Accept compiled correlation extractors through a dependency-free interface. Verify callback precedence, diagnostic error reporting, business-result preservation, and request cleanup; Logger's dependency graph excludes JMESPath.
 

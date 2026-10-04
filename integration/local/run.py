@@ -97,6 +97,8 @@ def main():
         containers.append(capture)
         settings = {
             "LOCAL_TEST": "true", "TRACE_BACKEND": "otel", "AWS_REGION": "ap-east-1",
+            # Keep constructor diagnostics separate from behavioral probe records.
+            "TZ": "UTC",
             "AWS_ACCESS_KEY_ID": "LOCALTESTONLY", "AWS_SECRET_ACCESS_KEY": "local-test-only",
             "AWS_EC2_METADATA_DISABLED": "true", "TEST_TABLE": "local-orders",
             "AWS_LAMBDA_FUNCTION_NAME": "powertools-local", "AWS_LAMBDA_FUNCTION_MEMORY_SIZE": "256", "AWS_LAMBDA_INITIALIZATION_TYPE": "on-demand",
@@ -129,6 +131,17 @@ def main():
                 check(f"{test_id}: request identity", response.get("id") == test_id and bool(response.get("request_id")))
                 check(f"{test_id}: trace identity", response.get("trace_id") == root.replace("-", "")[1:])
                 check(f"{test_id}: sampling", response.get("sampled") == sampled)
+                logger_parity = response.get("logger_parity", {})
+                child_records = logger_parity.get("child_records", [])
+                check(f"{test_id}: Logger child persistent snapshot", logger_parity.get("child_persistent") == {"shared": "child"})
+                check(f"{test_id}: Logger inherited temporary precedence", len(child_records) == 4 and child_records[0].get("shared") == "temporary" and child_records[0].get("request") == "original")
+                check(f"{test_id}: Logger child reset and parent isolation", len(child_records) == 4 and child_records[1].get("shared") == "child" and "request" not in child_records[1] and child_records[2].get("shared") == "temporary" and child_records[2].get("request") == "original")
+                check(f"{test_id}: Logger shallow empty cleanup", len(child_records) == 4 and all(key not in child_records[3] for key in ("message", "empty", "null_value")) and child_records[3].get("zero") == 0 and child_records[3].get("flag") is False and child_records[3].get("nested") == {"empty": "", "null_value": None})
+                check(f"{test_id}: Logger probe Lambda context", len(child_records) == 4 and all(item.get("function_request_id") == response.get("request_id") and item.get("trace_id") == response.get("trace_id") for item in child_records))
+                trace_records = logger_parity.get("trace_records", [])
+                check(f"{test_id}: Logger buffer trace isolation", logger_parity.get("wrong_trace_no_output") is True and len(trace_records) == 1 and trace_records[0].get("message") == "new trace" and trace_records[0].get("trace_id") == "87654321123456789012345678901234")
+                overflow_records = logger_parity.get("overflow_records", [])
+                check(f"{test_id}: Logger overflow diagnostic and fallback", len(overflow_records) == 2 and overflow_records[0].get("level") == "WARN" and overflow_records[0].get("error", {}).get("message") == "Item too big" and overflow_records[1].get("level") == "DEBUG" and overflow_records[1].get("message") == "oversize")
                 stores = response.get("metrics_stores", {})
                 check(f"{test_id}: Metrics store presence and empty policy", stores.get("before_clear") is True and stores.get("after_clear") is False and stores.get("empty_error") is True)
                 document = stores.get("serialized", {})

@@ -3,6 +3,7 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "fixtures:logger:parity": "node generate-logger-parity.mjs",
     "fixtures:graphql": "node generate-appsync-graphql.mjs",
     "fixtures:bedrock": "node generate-bedrock.mjs",
     "postfixtures": "node generate-appsync-graphql.mjs && node generate-bedrock.mjs && node generate-kafka.mjs && node generate-kafka-avro.mjs && node generate-kafka-protobuf.mjs && node generate-kafka-modes.mjs && node generate-datamasking.mjs && node generate-regex.mjs && node generate-datamasking-kms.mjs",

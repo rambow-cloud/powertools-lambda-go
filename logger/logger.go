@@ -50,6 +50,7 @@ type state struct {
 	persistent, temporary Fields
 	level                 Level
 	buffer                []entry
+	bufferTrace           string
 	bytes                 int
 	evicted               bool
 	closed                bool
@@ -107,15 +108,14 @@ func (l *Logger) WithContext(ctx context.Context) *Logger {
 	return &copy
 }
 
-// Child creates an independent logger using a snapshot of the parent's attributes.
+// Child creates an independent logger with separate snapshots of the parent's
+// persistent and temporary attributes, retaining temporary-field precedence.
 // Child loggers share the output lock and participate in the same wrapper cleanup.
 func (l *Logger) Child(options ...Option) *Logger {
 	l.current.mu.Lock()
 	c := l.cfg
 	c.persistent = cloneFields(l.current.persistent)
-	for k, v := range l.current.temporary {
-		c.persistent[k] = v
-	}
+	temporary := cloneFields(l.current.temporary)
 	c.level = l.current.level
 	l.current.mu.Unlock()
 	for _, option := range options {
@@ -127,6 +127,7 @@ func (l *Logger) Child(options ...Option) *Logger {
 	s := &state{persistent: cloneFields(c.persistent), temporary: Fields{}, level: c.level}
 	child := &Logger{cfg: c, base: s, current: s, sink: &output{mu: l.sink.mu, stdout: c.stdout, stderr: c.stderr}, ctx: l.ctx}
 	child.sampleInitialLevel()
+	mergeFields(s.temporary, temporary)
 	return child.WithContext(l.ctx)
 }
 
@@ -309,8 +310,8 @@ func (l *Logger) Log(level Level, message string, extra ...any) error {
 	if l.cfg.buffer.MaxBytes > 0 && !l.cfg.buffer.DisableFlushOnError && level >= ErrorLevel {
 		flushErr = l.FlushBuffer()
 	}
-	hasTrace := trace.SpanContextFromContext(l.ctx).IsValid() || invocation.TraceID(l.ctx) != ""
-	buffer := l.cfg.buffer.MaxBytes > 0 && hasTrace && level <= l.cfg.buffer.BufferAt
+	traceID := l.bufferTraceID()
+	buffer := l.cfg.buffer.MaxBytes > 0 && traceID != "" && level <= l.cfg.buffer.BufferAt
 	if !buffer && level < threshold {
 		return flushErr
 	}
@@ -318,28 +319,39 @@ func (l *Logger) Log(level Level, message string, extra ...any) error {
 	if err != nil {
 		return errors.Join(flushErr, err)
 	}
-	if buffer && len(data) <= l.cfg.buffer.MaxBytes {
+	if buffer {
 		s := l.current
 		s.mu.Lock()
-		defer s.mu.Unlock()
 		if s.closed {
+			s.mu.Unlock()
 			return ErrInvocationClosed
 		}
-		for len(s.buffer) > 0 && s.bytes+len(data) >= l.cfg.buffer.MaxBytes {
-			s.bytes -= len(s.buffer[0].data)
-			s.buffer[0] = entry{}
-			s.buffer = s.buffer[1:]
-			s.evicted = true
+		// A new sequential trace discards the previous trace's pending records,
+		// including when the new record is too large to buffer.
+		if s.bufferTrace != traceID {
+			s.buffer = nil
+			s.bytes = 0
+			s.evicted = false
+			s.bufferTrace = traceID
 		}
-		s.buffer = append(s.buffer, entry{level, data, l.sink})
-		s.bytes += len(data)
-		return flushErr
+		if len(data) <= l.cfg.buffer.MaxBytes {
+			for len(s.buffer) > 0 && s.bytes+len(data) >= l.cfg.buffer.MaxBytes {
+				s.bytes -= len(s.buffer[0].data)
+				s.buffer[0] = entry{}
+				s.buffer = s.buffer[1:]
+				s.evicted = true
+			}
+			s.buffer = append(s.buffer, entry{level, data, l.sink})
+			s.bytes += len(data)
+			s.mu.Unlock()
+			return flushErr
+		}
+		s.mu.Unlock()
 	}
+	var warning []byte
 	if buffer {
-		warning, e := encode(l.record(WarnLevel, "Unable to buffer log: Item too big"), l.cfg)
-		if e == nil {
-			e = l.sink.write(WarnLevel, warning)
-		}
+		var e error
+		warning, e = encode(l.record(WarnLevel, "Unable to buffer log: Item too big", errors.New("Item too big")), l.cfg)
 		flushErr = errors.Join(flushErr, e)
 	}
 	// Serialize output against invocation closure, including concurrent log writers.
@@ -348,16 +360,33 @@ func (l *Logger) Log(level Level, message string, extra ...any) error {
 	if l.current.closed {
 		return ErrInvocationClosed
 	}
+	if warning != nil {
+		flushErr = errors.Join(flushErr, l.sink.write(WarnLevel, warning))
+	}
 	return errors.Join(flushErr, l.sink.write(level, data))
 }
 
-// FlushBuffer emits buffered entries without applying the current level threshold.
+// bufferTraceID uses the same OTel precedence as log record correlation. Span
+// changes within a trace retain the buffer, including for unsampled contexts.
+func (l *Logger) bufferTraceID() string {
+	if span := trace.SpanContextFromContext(l.ctx); span.IsValid() {
+		return commons.FormatXRayTraceID(span.TraceID().String())
+	}
+	return invocation.TraceID(l.ctx)
+}
+
+// FlushBuffer emits the active trace's entries without applying the level threshold.
+// Without an active trace, or when another trace owns the buffer, it does nothing.
 func (l *Logger) FlushBuffer() error {
 	s := l.current
 	s.mu.Lock()
 	if s.closed {
 		s.mu.Unlock()
 		return ErrInvocationClosed
+	}
+	if traceID := l.bufferTraceID(); traceID == "" || s.bufferTrace != traceID {
+		s.mu.Unlock()
+		return nil
 	}
 	var result error
 	for _, item := range s.buffer {
@@ -367,6 +396,7 @@ func (l *Logger) FlushBuffer() error {
 	s.buffer = nil
 	s.bytes = 0
 	s.evicted = false
+	s.bufferTrace = ""
 	s.mu.Unlock()
 	if evicted {
 		data, err := encode(l.record(WarnLevel, "Some logs are not displayed because they were evicted from the buffer. Increase buffer size to store more logs in the buffer"), l.cfg)
@@ -378,10 +408,15 @@ func (l *Logger) FlushBuffer() error {
 	return result
 }
 
+// ClearBuffer discards only the active trace's pending entries.
 func (l *Logger) ClearBuffer() {
 	l.current.mu.Lock()
+	defer l.current.mu.Unlock()
+	if traceID := l.bufferTraceID(); traceID == "" || l.current.bufferTrace != traceID {
+		return
+	}
 	l.current.buffer = nil
 	l.current.bytes = 0
 	l.current.evicted = false
-	l.current.mu.Unlock()
+	l.current.bufferTrace = ""
 }

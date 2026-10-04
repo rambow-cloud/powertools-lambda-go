@@ -182,13 +182,21 @@ Compared with the [official v2.35.0 Logger guide](https://github.com/aws-powerto
 | Formatter / JSON replacer | `WithFormatter`, `WithReplacer` | Go callbacks and JSON representation |
 | Test output | `WithOutput`, `WithClock` | Writer injection instead of console spies |
 
-[JSON reference tests](https://github.com/rambow-cloud/powertools-lambda-go/blob/main/logger/reference_test.go), [sampling tests](https://github.com/rambow-cloud/powertools-lambda-go/blob/main/logger/sampling_test.go) and native regressions provide scoped evidence. See [feature comparison](FEATURE_PARITY.md) and [Logger progress](CHECKLIST.md#logger).
+[JSON reference tests](https://github.com/rambow-cloud/powertools-lambda-go/blob/main/logger/reference_test.go), [sampling tests](https://github.com/rambow-cloud/powertools-lambda-go/blob/main/logger/sampling_test.go), [48 child/empty-field/buffer scenarios](https://github.com/rambow-cloud/powertools-lambda-go/blob/main/logger/parity_reference_test.go) and [native context/ownership/concurrency regressions](https://github.com/rambow-cloud/powertools-lambda-go/blob/main/logger/parity_test.go) provide scoped evidence. See [feature comparison](FEATURE_PARITY.md) and [Logger progress](CHECKLIST.md#logger).
 
 ### Event logging and child configuration
 
 Event logging is disabled by default. With `POWERTOOLS_LOGGER_LOG_EVENT=true`, the wrapper emits an additional event record before your business logs; it can include the entire payload. Set this before constructing `appLog`, or select the handler option. It does not change what `Info` means.
 
 Create `componentLog := appLog.Child(logger.WithPersistentKeys(logger.Fields{"component":"payments"}))` when a component needs a stable field and independent settings. In a wrapped handler, bind it with `componentLog.WithContext(ctx)`. Child level/key changes do not mutate the parent's configuration. Treat retained nested values as immutable.
+
+`Child` snapshots persistent and temporary fields separately. Child persistent
+options merge into the persistent snapshot; inherited temporary values keep their
+usual precedence. For example, if the parent has persistent `shared: "parent"`
+and temporary `shared: "request"`, a child configured with persistent
+`shared: "child"` initially logs `"request"`. After the child's `ResetKeys`, it
+logs `"child"`. Inherited request-only keys disappear on reset and are excluded
+from `PersistentKeys`. Resetting a child does not change the parent.
 
 Use `WithRecordOrder("message", "level", "timestamp")` to put selected keys first. A formatter changes the record envelope; a replacer changes individual JSON values. Both callbacks must be concurrency-safe. Serialization failures return from the log call. These hooks do not emulate every JavaScript JSON.stringify value or stack diagnostic.
 
@@ -214,6 +222,13 @@ Use `AppendKeys` for fields reused by subsequent records and `logger.Fields` on 
 
 For the same field name, a call's fields override temporary fields, which override persistent fields. Logger owns the reserved `level`, `message`, `timestamp`, `service`, and `sampling_rate` properties; attempts to override them are dropped with a warning.
 
+Before JSON replacement, Logger removes top-level empty strings and null values
+from a map-shaped formatted document, including an empty `message`. Zero, false,
+nonnil empty collections, and nested empty/null values remain. A replacer can
+still produce empty strings or null values: cleanup has already happened at that
+point. Cleanup does not mutate caller or formatter maps. Custom JSON marshalers
+and struct-shaped formatter results retain their Go encoding rules.
+
 Set `logger.HandlerOptions.CorrelationSource` to a built-in source such as `logger.APIGatewayREST` or `logger.EventBridge`. For custom extraction, supply `CorrelationID`, or use a compiled [JMESPath](JMESPATH.md) expression as `CorrelationExtractor`. A callback takes precedence over an extractor, which takes precedence over a built-in source.
 
 An active OpenTelemetry context supplies `trace_id`, `span_id`, and X-Ray-formatted `xray_trace_id`. This does not require the legacy X-Ray SDK.
@@ -235,6 +250,36 @@ appLog := logger.New(
 ~~~
 
 Buffering needs a valid OpenTelemetry context or a Lambda X-Ray root ID. Unsampled OTel contexts are supported. Errors flush buffered logs by default; successful invocations discard remaining buffered entries. Use `FlushBuffer` or `ClearBuffer` for explicit control and `HandlerOptions.FlushBufferOnError` for handler-error flushing.
+
+The pending buffer belongs to a trace. `FlushBuffer` and `ClearBuffer` operate
+only on that active trace and do nothing when the trace is absent or differs.
+The first buffered record for a new trace discards the previous trace's leftovers,
+including its eviction flag. Span changes within one OTel trace retain pending
+records; OTel trace identity takes precedence over runtime headers. Separate
+wrapped invocations and child loggers keep independent buffers. Unwrapped root
+loggers share process state, so use `WrapHandler` and `WithContext` for concurrent
+requests.
+
+Capacity counts serialized UTF-8 bytes without the trailing newline. An entry
+larger than `MaxBytes` emits a warning containing an `error` with message
+`"Item too big"`, followed by the original record even below the application
+threshold. Error names and locations follow Go conventions. Sink failures remain
+returned errors; wrapper diagnostics preserve the original handler result.
+
+### Source parity fixes
+
+The pinned-source audit identified these independently observable differences:
+
+| Issue | Previous Go behavior | Current behavior |
+| --- | --- | --- |
+| [#3](https://github.com/rambow-cloud/powertools-lambda-go/issues/3) | Child inherited temporary keys as persistent keys | Separate snapshots preserve reset/removal and temporary precedence |
+| [#4](https://github.com/rambow-cloud/powertools-lambda-go/issues/4) | Empty top-level strings/null values were emitted | Shallow cleanup runs after formatting and before replacement |
+| [#5](https://github.com/rambow-cloud/powertools-lambda-go/issues/5) | Flush/clear ignored trace changes; oversize warnings omitted the error | Active-trace lifecycle and overflow error details follow the reference |
+
+The development-only corpus is regenerated with `npm run fixtures:logger:parity`
+from `tools/reference`. It fixes the clock for byte-capacity checks and normalizes
+timestamps and native overflow-error details as described in
+[the fixture notes](https://github.com/rambow-cloud/powertools-lambda-go/blob/main/logger/testdata/README.md).
 
 ## Error handling and boundaries
 

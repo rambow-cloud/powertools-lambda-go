@@ -53,6 +53,8 @@ func (s *scope) finish(flush bool, handlerErr error) {
 		l.current.closed = true
 		l.current.buffer = nil
 		l.current.bytes = 0
+		l.current.evicted = false
+		l.current.bufferTrace = ""
 		l.current.mu.Unlock()
 	}
 }

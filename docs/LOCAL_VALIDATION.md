@@ -1,5 +1,27 @@
 # Local Docker validation
 
+Logger source parity acceptance (2026-10-04): fixed separate child attribute stores,
+shallow empty-field cleanup and active-trace buffer lifecycle from issues #3/#4/#5.
+The corpus executes 48 actual TypeScript v2.35.0 scenarios; native tests cover
+typed/nil values, formatter ownership, sampled/unsampled OTel contexts, output
+failures and 40 concurrent parent/child invocations. Combined packaged acceptance
+passed all 31 modules and 28 standalone consumers with CGO disabled and GOWORK
+off. The initial workspace check verified 30 modules before an integration
+dependency classification failure; the corrected integration uses the existing
+Tracer extraction API. Final Logger and integration checkpoints complete the
+scope without repeating unchanged modules. See
+[MODULE_ACCEPTANCE_LOGGER.json](MODULE_ACCEPTANCE_LOGGER.json).
+
+Both Linux amd64/arm64 normal and streaming handlers were rebuilt. A constructor
+warning from the image's `TZ=:/etc/localtime` interfered with probe record counts;
+the fixture now explicitly uses UTC. Runtime-only acceptance reused the completed
+binaries and passed 889/889 RIE assertions, including 21 new Logger assertions,
+95/95 streaming and 14/14 saved Batch checks. Docker executed amd64; arm64 was
+cross-compiled. Containers and networks were cleaned without errors. No AWS
+resources were used. Successful runtime evidence accurately records reused
+module checks and builds; complete Logger configuration/serialization parity
+remains open.
+
 Documentation and feature audit (2026-10-01): compared seventeen official TypeScript v2.35.0 guides with Go contracts and restructured eighteen Go guides, including Commons. Verified nineteen complete programs by compilation and eighteen local programs/direct handler executions; the DynamoDB Idempotency entry is compile-only, with persistence covered by the maintained fixture. All 31 modules and 28 public consumers passed packaged acceptance with CGO disabled and GOWORK off. Dependency download failures required phased continuation; passed modules were reused, and tested Go source bytes match current files. Both Linux builds and 868/868 amd64 RIE, 95/95 streaming and 14/14 saved Batch checks passed, with cleanup. No AWS resources were used. [DOCUMENTATION_ACCEPTANCE.json](DOCUMENTATION_ACCEPTANCE.json) records the combined scope; [LOCAL_ACCEPTANCE.json](LOCAL_ACCEPTANCE.json), [STREAMING_ACCEPTANCE.json](STREAMING_ACCEPTANCE.json) and [BATCH_ACCEPTANCE.json](BATCH_ACCEPTANCE.json) identify runtime evidence. Browser review and exhaustive parity remain open.
 
 ## Optional AWS Encryption SDK acceptance (2026-09-24)
