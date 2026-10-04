@@ -2,7 +2,9 @@ package signer
 
 import (
 	"fmt"
+	"io"
 	"net/http"
+	"sync"
 )
 
 // Signer separates request signing from sending and permits custom algorithms.
@@ -21,9 +23,14 @@ func (t *Transport) RoundTrip(request *http.Request) (*http.Response, error) {
 	if request == nil {
 		return nil, &SigningError{fmt.Errorf("request is required")}
 	}
-	// A RoundTripper owns its input body, including error paths. Sign may restore it.
+	// Signers may retain or wrap the input body. Share idempotent closure across
+	// those aliases without comparing application ReadClosers, which may not be comparable.
+	if request.Body != nil && request.Body != http.NoBody {
+		request.Body = &transportBody{ReadCloser: request.Body}
+	}
+	handedOff := false
 	defer func() {
-		if request.Body != nil {
+		if !handedOff && request.Body != nil {
 			_ = request.Body.Close()
 		}
 	}()
@@ -41,7 +48,37 @@ func (t *Transport) RoundTrip(request *http.Request) (*http.Response, error) {
 	if base == nil {
 		base = http.DefaultTransport
 	}
+	if signed.Body == nil || signed.Body == http.NoBody {
+		// Preserve net/http's empty-body framing. There is no upload to wait for.
+		if request.Body != nil {
+			_ = request.Body.Close()
+		}
+	} else {
+		// A base transport may finish the upload after RoundTrip returns, including
+		// error paths. Release both bodies only when that transport closes its body.
+		signed.Body = &transportBody{ReadCloser: signed.Body, input: request.Body}
+	}
+	handedOff = true
 	return base.RoundTrip(signed)
+}
+
+type transportBody struct {
+	io.ReadCloser
+	input io.Closer
+	once  sync.Once
+	err   error
+}
+
+func (b *transportBody) Close() error {
+	b.once.Do(func() {
+		b.err = b.ReadCloser.Close()
+		if b.input != nil {
+			if err := b.input.Close(); b.err == nil {
+				b.err = err
+			}
+		}
+	})
+	return b.err
 }
 
 // HTTPClient copies a client and installs signing without changing its owner.
