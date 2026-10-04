@@ -57,7 +57,8 @@ class FakeAPI:
         self.calls.append((path, kwargs))
         if kwargs.get("method", "GET") != "GET":
             return {"id": 1, "draft": True, "html_url": "https://example.com/release"} if path == "releases" else {}
-        return self.responses.get(path)
+        value = self.responses.get(path)
+        return None if path.startswith("releases/tags/") and value and value.get("draft") else value
 
     def pages(self, path):
         self.calls.append((path, {}))
@@ -190,7 +191,9 @@ class PublicationTests(unittest.TestCase):
         stack.enter_context(patch.object(release, "git", return_value=""))
         def cli(directory, selected, args, output, config, token=None, draft=True):
             if token and api:
-                api.responses["releases/tags/logger%2Fv0.1.1"] = {"draft": draft, "html_url": "https://example.com/release", "name": "logger/v0.1.1", "body": selected["notes"], "prerelease": False}
+                record = {"tag_name": "logger/v0.1.1", "draft": draft, "html_url": "https://example.com/release", "name": "logger/v0.1.1", "body": selected["notes"], "prerelease": False}
+                api.responses["releases/tags/logger%2Fv0.1.1"] = record
+                api.responses["releases"] = [record]
         stack.enter_context(patch.object(release, "run_goreleaser", side_effect=cli))
         return stack
 
@@ -241,6 +244,21 @@ class PublicationTests(unittest.TestCase):
         api = FakeAPI({f"commits/{B}/check-runs?per_page=100&page=1": {"check_runs": checks}})
         with self.assertRaisesRegex(ValueError, "has not passed"):
             release.check_runs(api, B, ["Build documentation"])
+
+    def test_draft_lookup_uses_authenticated_listing_and_rejects_duplicates(self):
+        draft = {"tag_name": "logger/v0.1.1", "draft": True}
+        api = FakeAPI({"releases": [{"tag_name": "metrics/v0.1.0", "draft": True}, draft]})
+        self.assertEqual(release.release_for_tag(api, "logger/v0.1.1"), draft)
+        self.assertEqual([path for path, _ in api.calls], ["releases/tags/logger%2Fv0.1.1", "releases"])
+        api.responses["releases"].append(draft.copy())
+        with self.assertRaisesRegex(ValueError, "Multiple Releases"):
+            release.release_for_tag(api, "logger/v0.1.1")
+
+    def test_published_release_lookup_needs_no_draft_listing(self):
+        published = {"tag_name": "logger/v0.1.1", "draft": False}
+        api = FakeAPI({"releases/tags/logger%2Fv0.1.1": published})
+        self.assertEqual(release.release_for_tag(api, "logger/v0.1.1"), published)
+        self.assertEqual(len(api.calls), 1)
 
     def test_annotated_tags_are_peeled(self):
         api = FakeAPI({"git/ref/tags/logger/v0.1.0": {"object": {"type": "tag", "sha": A}}, f"git/tags/{A}": {"object": {"type": "commit", "sha": B}}})
@@ -424,7 +442,9 @@ class GoReleaserTests(unittest.TestCase):
                 elif path.endswith("/releases"):
                     self.respond(200, [state["release"]] if state else [])
                 elif "/releases/tags/" in path:
-                    self.respond(200 if state else 404, state.get("release", {"message": "Not Found"}))
+                    published = state.get("release")
+                    found = published and not published["draft"]
+                    self.respond(200 if found else 404, published if found else {"message": "Not Found"})
                 elif path == "/repos/" + release.REPOSITORY:
                     self.respond(200, {"full_name": release.REPOSITORY, "permissions": {"push": True}, "archived": False})
                 else:

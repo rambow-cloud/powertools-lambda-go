@@ -271,6 +271,17 @@ def remote_tag(api, tag):
     return obj["sha"]
 
 
+def release_for_tag(api, tag):
+    """GitHub's tag endpoint returns published Releases, not drafts."""
+    published = api.repo("releases/tags/" + quote(tag, safe=""), missing=True)
+    if published:
+        return published
+    drafts = [item for item in api.pages("releases") if item["tag_name"] == tag]
+    if len(drafts) > 1:
+        raise ValueError(f"Multiple Releases match {tag}; resolve the conflict before publishing.")
+    return drafts[0] if drafts else None
+
+
 def check_existing(directory, item, sha, existing, release):
     tag = tag_name(directory, item["version"])
     if existing and existing != sha:
@@ -333,7 +344,7 @@ def preflight(args, api):
             if not any(requirement["Path"] == update["path"] and requirement["Version"] == update["to"] for requirement in requirements[directory]):
                 raise ValueError("Reviewed dependency updates disagree with go.mod.")
     def available(tag):
-        release = api.repo("releases/tags/" + quote(tag, safe=""), missing=True)
+        release = release_for_tag(api, tag)
         return bool(release and not release["draft"] and remote_tag(api, tag))
     order = dependency_order(selected, modules, requirements, available)
     releases = list(api.pages("releases"))
@@ -347,7 +358,7 @@ def preflight(args, api):
         if git("tag", "--list", tag) and commit_of_tag(tag) != args.sha:
             raise ValueError(f"Local tag {tag} conflicts with the reviewed SHA.")
         existing = remote_tag(api, tag)
-        release = api.repo("releases/tags/" + quote(tag, safe=""), missing=True)
+        release = release_for_tag(api, tag)
         check_existing(directory, item, args.sha, existing, release)
         if issue["state"] != "open" and not (existing and release and not release["draft"]):
             raise ValueError("Release tracking issue is closed before publication completed.")
@@ -464,11 +475,11 @@ def publish(args, api):
                 api.repo("git/refs", method="POST", data={"ref": "refs/tags/" + tag, "sha": args.sha})
             record["tag_created"] = True
             write_json(output / "progress.json", report)
-            release = api.repo("releases/tags/" + quote(tag, safe=""), missing=True)
+            release = release_for_tag(api, tag)
             check_existing(directory, item, args.sha, args.sha, release)
             if not release:
                 run_goreleaser(directory, item, args, output, configs[directory], token=api.token)
-                release = api.repo("releases/tags/" + quote(tag, safe=""))
+                release = release_for_tag(api, tag)
                 check_existing(directory, item, args.sha, args.sha, release)
                 if not release or not release["draft"]:
                     raise ValueError(f"GoReleaser did not create the expected draft: {tag}")
@@ -477,7 +488,7 @@ def publish(args, api):
             write_json(output / "progress.json", report)
             if release["draft"]:
                 run_goreleaser(directory, item, args, output, configs[directory], token=api.token, draft=False)
-                release = api.repo("releases/tags/" + quote(tag, safe=""))
+                release = release_for_tag(api, tag)
                 check_existing(directory, item, args.sha, args.sha, release)
                 if not release or release["draft"]:
                     raise ValueError(f"GoReleaser did not publish the expected Release: {tag}")
