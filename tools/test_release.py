@@ -260,6 +260,33 @@ class PublicationTests(unittest.TestCase):
         self.assertEqual(release.release_for_tag(api, "logger/v0.1.1"), published)
         self.assertEqual(len(api.calls), 1)
 
+    def test_release_phase_waits_for_delayed_draft_and_finalization(self):
+        selected = item()
+        draft = {"tag_name": "logger/v0.1.1", "draft": True, "name": "logger/v0.1.1", "body": selected["notes"], "prerelease": False}
+        published = {**draft, "draft": False}
+        for phase, observations, expected in ((True, [None, draft], draft), (False, [draft, published], published)):
+            with self.subTest(draft=phase), patch.object(release, "release_for_tag", side_effect=observations) as lookup, patch.object(release.time, "sleep") as sleep:
+                self.assertEqual(release.await_release_phase(FakeAPI(), "logger", selected, B, phase), expected)
+                self.assertEqual(lookup.call_count, 2)
+                sleep.assert_called_once()
+
+    def test_release_phase_timeout_preserves_objects(self):
+        with patch.object(release, "release_for_tag", return_value=None) as lookup, patch.object(release.time, "sleep") as sleep:
+            with self.assertRaisesRegex(ValueError, "preserve existing objects"):
+                release.await_release_phase(FakeAPI(), "logger", item(), B, True, wait_seconds=0)
+            lookup.assert_called_once()
+            sleep.assert_not_called()
+
+    def test_release_phase_errors_and_conflicts_are_not_retried(self):
+        selected = item()
+        conflict = {"name": "logger/v0.1.1", "body": "Unreviewed notes", "prerelease": False, "draft": True}
+        for observation in (RuntimeError("API unavailable"), conflict):
+            with self.subTest(observation=observation), patch.object(release, "release_for_tag", side_effect=[observation]) as lookup, patch.object(release.time, "sleep") as sleep:
+                with self.assertRaises((RuntimeError, ValueError)):
+                    release.await_release_phase(FakeAPI(), "logger", selected, B, True)
+                lookup.assert_called_once()
+                sleep.assert_not_called()
+
     def test_annotated_tags_are_peeled(self):
         api = FakeAPI({"git/ref/tags/logger/v0.1.0": {"object": {"type": "tag", "sha": A}}, f"git/tags/{A}": {"object": {"type": "commit", "sha": B}}})
         self.assertEqual(release.remote_tag(api, "logger/v0.1.0"), B)
