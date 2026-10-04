@@ -5,7 +5,6 @@ import (
 	"compress/gzip"
 	"encoding/json"
 	"io"
-	"strings"
 
 	"github.com/rambow-cloud/powertools-lambda-go/commons"
 )
@@ -58,7 +57,7 @@ func WithPowertoolsFunctions() Option {
 				// TextDecoder strips a leading UTF-8 BOM; Buffer.toString does not.
 				decoded = bytes.TrimPrefix(decoded, []byte{0xef, 0xbb, 0xbf})
 			}
-			return strings.ToValidUTF8(string(decoded), "\ufffd"), nil
+			return commons.DecodeUTF8(decoded), nil
 		}})
 	}
 	return WithFunctions(functions...)

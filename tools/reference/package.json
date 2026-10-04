@@ -3,6 +3,7 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "fixtures:utf8": "node generate-utf8-decoding.mjs",
     "fixtures:logger:parity": "node generate-logger-parity.mjs",
     "fixtures:graphql": "node generate-appsync-graphql.mjs",
     "fixtures:bedrock": "node generate-bedrock.mjs",

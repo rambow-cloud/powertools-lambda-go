@@ -3,8 +3,9 @@ package parameters
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/rambow-cloud/powertools-lambda-go/commons"
 	"strings"
+
+	"github.com/rambow-cloud/powertools-lambda-go/commons"
 )
 
 type Transform string
@@ -36,7 +37,7 @@ func TransformValue(name string, value any, transform Transform) (any, error) {
 	case string:
 		raw = v
 	case []byte:
-		raw = strings.ToValidUTF8(string(v), "\ufffd")
+		raw = strings.TrimPrefix(commons.DecodeUTF8(v), "\ufeff")
 	default:
 		return value, nil
 	}
@@ -59,7 +60,7 @@ func TransformValue(name string, value any, transform Transform) (any, error) {
 	case string(Binary):
 		var decoded []byte
 		decoded, err = commons.FromBase64(raw, "base64")
-		result = strings.ToValidUTF8(string(decoded), "\ufffd")
+		result = strings.TrimPrefix(commons.DecodeUTF8(decoded), "\ufeff")
 	default:
 		err = fmt.Errorf("unsupported transform %q", transform)
 	}

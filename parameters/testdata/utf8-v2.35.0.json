@@ -1,0 +1,103 @@
+{
+  "reference": "2.35.0",
+  "cases": [
+    {
+      "name": "plain",
+      "kind": "binary",
+      "input": "aGVsbG8=",
+      "expected": "hello"
+    },
+    {
+      "name": "valid-unicode",
+      "kind": "binary",
+      "input": "5L2g5aW98J+YgA==",
+      "expected": "你好😀"
+    },
+    {
+      "name": "invalid-bytes",
+      "kind": "binary",
+      "input": "//4=",
+      "expected": "��"
+    },
+    {
+      "name": "truncated-sequence",
+      "kind": "binary",
+      "input": "4oI=",
+      "expected": "�"
+    },
+    {
+      "name": "surrogate",
+      "kind": "binary",
+      "input": "7aCA",
+      "expected": "���"
+    },
+    {
+      "name": "bom-text",
+      "kind": "binary",
+      "input": "77u/aGVsbG8=",
+      "expected": "hello"
+    },
+    {
+      "name": "double-bom",
+      "kind": "binary",
+      "input": "77u/77u/aGVsbG8=",
+      "expected": "﻿hello"
+    },
+    {
+      "name": "bom-json",
+      "kind": "binary",
+      "input": "77u/eyJpZCI6MX0=",
+      "expected": "{\"id\":1}"
+    },
+    {
+      "name": "bom-json",
+      "kind": "json-bytes",
+      "input": "77u/eyJpZCI6MX0=",
+      "expected": {
+        "id": 1
+      }
+    },
+    {
+      "name": "invalid-json-string",
+      "kind": "binary",
+      "input": "Iv/+Ig==",
+      "expected": "\"��\""
+    },
+    {
+      "name": "invalid-json-string",
+      "kind": "json-bytes",
+      "input": "Iv/+Ig==",
+      "expected": "��"
+    },
+    {
+      "name": "partial-json-string",
+      "kind": "binary",
+      "input": "IuKCIg==",
+      "expected": "\"�\""
+    },
+    {
+      "name": "partial-json-string",
+      "kind": "json-bytes",
+      "input": "IuKCIg==",
+      "expected": "�"
+    },
+    {
+      "name": "bom-base64-input-invalid-bytes",
+      "kind": "binary-bytes",
+      "input": "77u/Ly80PQ==",
+      "expected": "��"
+    },
+    {
+      "name": "bom-base64-input-bom-text",
+      "kind": "binary-bytes",
+      "input": "77u/Nzd1L2FHVnNiRzg9",
+      "expected": "hello"
+    },
+    {
+      "name": "bom-base64-input-double-bom",
+      "kind": "binary-bytes",
+      "input": "77u/Nzd1Lzc3dS9hR1ZzYkc4PQ==",
+      "expected": "﻿hello"
+    }
+  ]
+}

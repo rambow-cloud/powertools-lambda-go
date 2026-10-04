@@ -177,6 +177,8 @@ The cache protects maps with a mutex and copies supported mutable decoded values
 
 Transform names ignore case. Single-value failures return `*parameters.TransformParameterError`. Multiple retrievals retain failed entries as nil by default; `ThrowOnTransformError` returns the error. Non-string/non-byte values pass through. JSON null and missing values both map to nil; successfully decoded JSON null can still be cached by ordinary `Get`.
 
+Byte input and Base64-decoded binary output follow `TextDecoder`: each maximal malformed UTF-8 subpart becomes a separate replacement character, and exactly one leading BOM is stripped at each decoding boundary. BOM-prefixed byte JSON therefore parses normally. Unset transforms preserve raw bytes. Sixteen pinned reference cases cover these boundaries, including Auto transforms, in `testdata/utf8-v2.35.0.json`.
+
 `ThrowOnMissing` returns `*parameters.ParameterNotFoundError` for absent raw values. SSM/Secrets Manager normalize SDK not-found exceptions only with this option enabled; otherwise those exceptions remain available under `*parameters.GetParameterError`. Use `errors.As` for types and `errors.Is` for cancellation/deadlines. Writes return `*parameters.SetParameterError` on failure.
 
 ## Other providers
