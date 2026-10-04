@@ -4,6 +4,12 @@ on:
   pull_request:
     branches: [main]
     types: [opened, edited, synchronize, reopened, ready_for_review]
+  workflow_dispatch:
+    inputs:
+      pr:
+        description: Same-repository PR number to validate at this branch's SHA
+        required: true
+        type: string
 
 permissions:
   contents: read
@@ -11,7 +17,7 @@ permissions:
   pull-requests: read
 
 concurrency:
-  group: contribution-${{ github.event.pull_request.number }}
+  group: contribution-${{ github.event.pull_request.number || inputs.pr || github.ref }}
   cancel-in-progress: true
 
 env:
@@ -28,6 +34,7 @@ jobs:
       - name: Validate issue reference and PR description
         env:
           GH_TOKEN: ${{ github.token }}
+          DISPATCH_PR: ${{ inputs.pr }}
         run: |
           python3 - <<'PY'
           import json
@@ -111,9 +118,17 @@ jobs:
 
           def main():
               event = json.loads(Path(os.environ["GITHUB_EVENT_PATH"]).read_text())
-              number = int(event["pull_request"]["number"])
+              if os.environ.get("GITHUB_EVENT_NAME") == "workflow_dispatch":
+                  supplied = os.environ.get("DISPATCH_PR", "")
+                  if not re.fullmatch(r"[1-9][0-9]*", supplied):
+                      raise ValueError("Use a positive PR number.")
+                  number = int(supplied)
+              else:
+                  number = int(event["pull_request"]["number"])
               # Fetch current text so a manual rerun does not validate an old body.
               pr = read_api(f"pulls/{number}")
+              if os.environ.get("GITHUB_EVENT_NAME") == "workflow_dispatch" and (pr["head"]["sha"] != os.environ["GITHUB_SHA"] or pr["head"]["repo"]["full_name"] != os.environ["GITHUB_REPOSITORY"]):
+                  raise ValueError("Dispatched policy checks must run at this same-repository PR's exact head SHA.")
               errors = validate(pr, os.environ["GITHUB_REPOSITORY"], lambda issue: read_api(f"issues/{issue}"))
               if errors:
                   raise RuntimeError("\n".join(errors))

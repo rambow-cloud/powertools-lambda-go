@@ -53,8 +53,9 @@ Optional parser/schema and Kafka codec integrations should use explicit adapters
 ## Release checklist
 
 The implemented [release workflow](RELEASING.md) defines release tracking,
-per-module PR summaries, reviewed plans, manual publication, and failure
-recovery. Installing it does not close remaining compatibility or real
+per-module PR summaries, automatic version/dependency preparation, reviewed
+plans, publication after authorized merges, and manual failure recovery.
+Installing it does not close remaining compatibility or real
 version-retrieval gates below.
 
 - [x] PUB-00: Compare Python extras, TypeScript package publication, and Go package/module semantics; audit current dependency and invocation boundaries.

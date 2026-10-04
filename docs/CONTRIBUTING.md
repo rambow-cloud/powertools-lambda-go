@@ -94,6 +94,7 @@ For documentation or contribution-workflow changes:
 uv lock --project website --check
 uv run --project website --frozen python tools/test_contribution_workflow.py
 uv run --project website --frozen python tools/test_release.py
+uv run --project website --frozen python tools/test_release_automation.py
 uv run --project website --frozen python website/check_navigation.py
 uv run --project website --frozen python website/check_guides.py
 uv run --project website --frozen zensical build --clean --strict --config-file mkdocs.yml

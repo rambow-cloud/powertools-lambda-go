@@ -31,6 +31,10 @@ jobs:
           python-version: '3.14'
           enable-cache: true
           cache-dependency-glob: website/uv.lock
+      - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
+        with:
+          go-version-file: go.mod
+          cache: false
       - name: Verify locked documentation dependencies
         run: uv lock --project website --check
       - name: Test contribution workflow and issue forms
@@ -43,6 +47,8 @@ jobs:
           install-only: true
       - name: Test release notes and publication safeguards
         run: uv run --project website --frozen python tools/test_release.py
+      - name: Test automatic release preparation and completion
+        run: uv run --project website --frozen python tools/test_release_automation.py
       - name: Validate navigation coverage and targets
         run: uv run --project website --frozen python website/check_navigation.py
       - name: Validate utility guide coverage and referenced source

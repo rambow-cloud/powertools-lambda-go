@@ -1,0 +1,84 @@
+name: Prepare release
+
+on:
+  workflow_dispatch:
+    inputs:
+      scope:
+        description: Module directory, comma-separated directories, or all
+        required: true
+        default: all
+        type: string
+      bump:
+        description: Version increment (auto uses accumulated release notes)
+        required: true
+        default: auto
+        type: choice
+        options: [auto, patch, minor, major]
+      auto_publish:
+        description: Publish automatically after the preparation PR merges and main checks pass
+        required: true
+        default: true
+        type: boolean
+
+permissions:
+  contents: read
+
+concurrency:
+  group: module-publication
+  cancel-in-progress: false
+
+env:
+  CGO_ENABLED: '0'
+  PYTHONDONTWRITEBYTECODE: '1'
+
+jobs:
+  prepare:
+    name: Prepare reviewed module versions
+    if: github.repository == 'rambow-cloud/powertools-lambda-go' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    permissions:
+      contents: write
+      issues: write
+      pull-requests: write
+      actions: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
+        with:
+          go-version-file: go.mod
+          cache: false
+      - name: Prepare metadata, tracking issue, and PR
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_SCOPE: ${{ inputs.scope }}
+          RELEASE_BUMP: ${{ inputs.bump }}
+          RELEASE_AUTOMATIC: ${{ inputs.auto_publish }}
+        run: |
+          python3 - <<'PY'
+          import os
+          import subprocess
+          scope = os.environ['RELEASE_SCOPE'].strip()
+          command = ['python3', 'tools/release.py', 'prepare', '--bump', os.environ['RELEASE_BUMP']]
+          if scope == 'all':
+              command.append('--all')
+          else:
+              for directory in scope.split(','):
+                  if not directory.strip():
+                      raise SystemExit('Select module directories or all.')
+                  command.extend(['--module', directory.strip()])
+          if os.environ['RELEASE_AUTOMATIC'] == 'true':
+              command.append('--auto-publish')
+          subprocess.run(command, check=True)
+          PY
+      - name: Upload preparation plan
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: release-preparation-${{ github.run_id }}
+          path: releases/auto-*.json
+          if-no-files-found: ignore
+          retention-days: 30

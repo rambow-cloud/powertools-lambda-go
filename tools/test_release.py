@@ -330,7 +330,9 @@ class WorkflowTests(unittest.TestCase):
     def test_publication_is_manual_and_serialized(self):
         workflow = yaml.safe_load((ROOT / ".github/workflows/release.yml").read_text())
         events = workflow.get("on", workflow.get(True))
-        self.assertEqual(set(events), {"workflow_dispatch"})
+        self.assertEqual(set(events), {"workflow_dispatch", "workflow_run"})
+        self.assertEqual(set(events["workflow_dispatch"]["inputs"]), {"pr", "publish"})
+        self.assertEqual(events["workflow_run"]["workflows"], ["Go CI", "Documentation"])
         self.assertIs(events["workflow_dispatch"]["inputs"]["publish"]["default"], False)
         self.assertFalse(workflow["concurrency"]["cancel-in-progress"])
         self.assertEqual(workflow["env"]["CGO_ENABLED"], "0")

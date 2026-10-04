@@ -40,57 +40,100 @@ previous stable releases; prereleases may compare against previous prereleases.
 Only published GitHub Releases on the source ancestry are release boundaries,
 not draft Releases or unrelated module tags.
 
-## Track and prepare a release
+## Prepare one component or all components
 
-1. Open a **Release tracking** issue from the
-   [issue chooser](https://github.com/rambow-cloud/powertools-lambda-go/issues/new/choose).
-   Agree on selected modules, target versions, compatibility, dependency order,
-   and publication acceptance. Initial releases must describe the supported
-   capabilities and remaining compatibility boundaries.
-2. Fetch `origin` and its tags. Start a preparation branch from current
-   `origin/main`. Update selected versions in `tools/modules.json`, relevant
-   internal requirements, and workspace mappings. Use
-   `uv run --no-project python tools/modules.py tidy` when dependencies change.
-   All Go commands use `CGO_ENABLED=0`. Development modules (`examples`,
-   `integration`, `tools`) and the frozen `tracer/xray` adapter are excluded.
-3. Generate a plan. Select unpublished internal dependencies explicitly; the
-   publisher verifies requirements and orders dependencies before consumers.
-   It does not silently expand release scope.
-4. Review `releases/NAME.json` in a preparation PR using `Refs #ISSUE`, keeping
-   the tracking issue open. The plan freezes versions, previous tags, reviewed
-   and excluded PRs, historical acknowledgements, and rendered notes. Later
-   edits to merged PR descriptions do not alter that snapshot. Update structured
-   entries and their rendered notes together if review changes the wording.
-5. Run offline release and documentation checks. Wait for the three existing
-   required PR checks. The preparation PR may change only its plan and
-   module/dependency/license metadata; merge code and tooling changes earlier.
-6. Refresh the plan if `main` advances. Squash or merge the preparation PR so
-   the release commit's first parent equals the plan's source SHA. Do not
-   rebase-merge a preparation PR with multiple commits. Wait for main's module
-   and documentation checks on the merged SHA; the publisher reuses those runs.
+After the workflows are merged, open
+[Actions: Prepare release](https://github.com/rambow-cloud/powertools-lambda-go/actions/workflows/prepare-release.yml)
+and choose **Run workflow** on `main`:
 
-After updating the selected module metadata:
+| Input | Value |
+|---|---|
+| `scope` | A module directory such as `logger`, several comma-separated directories such as `logger,metrics`, or `all` |
+| `bump` | Leave `auto` for note-based versioning, or select `patch`, `minor`, or `major` |
+| `auto_publish` | Leave checked to publish after the preparation PR merges and main checks pass |
+
+The workflow creates a Release tracking issue and a preparation PR. It computes
+versions, includes unpublished internal dependencies transitively, synchronizes
+manifest versions and internal `go.mod` requirements, rebuilds `go.work` version
+mappings, tidies dependency sums, and freezes each module's accumulated notes.
+No manual version-file edits, module-list script, issue number, SHA, or plan name
+are required. `all` selects all maintained public modules, including Commons;
+development modules and the frozen `tracer/xray` adapter are excluded.
+
+Review the generated PR's module/version table, included dependencies, notes,
+initial compatibility statements, and automatic-publication setting. Required
+checks are dispatched explicitly on its branch using the built-in GitHub token.
+Merge the preparation PR with squash or merge after the checks pass. The
+recorded source must still be its first parent; if main advances first, rerun
+preparation against current main and use the newly generated PR.
+
+With automatic publication enabled, merging this preparation PR authorizes its
+frozen release batch. After both required main checks pass, GoReleaser publishes
+in dependency order and the tracking issue closes after public consumer checks.
+Ordinary feature/bug PR merges do not publish modules.
+
+The repository's **Settings → Actions → General → Workflow permissions** must
+allow **GitHub Actions to create and approve pull requests** for automated PR
+creation. The preparation workflow does not approve or merge PRs. Its explicit
+job permissions grant the built-in token only the operations needed for issue,
+branch, PR, and check creation; no additional secret is required.
+
+## Automatic versions and dependency metadata
+
+| Situation | Default target |
+|---|---|
+| First public release | The configured initial version, normally `v0.1.0` |
+| Fix, maintenance, documentation, or an explicit batch with no module notes | Next patch version |
+| Feature | Next minor version |
+| Breaking change while on v0 | Next minor version |
+| Breaking change while on v1 | Stop for a separately reviewed v2 module-path migration |
+
+For example, Logger fixes produce `v0.1.0 → v0.1.1`; a Logger feature produces
+`v0.1.0 → v0.2.0`. Each selected module uses its own previous release and can
+have a different version. Reserved tags, including drafts or tags without
+Releases, are never reused; preparation advances beyond reserved versions.
+An explicit `major` increment can move v0 to v1; v2+ paths are not automated.
+
+Versions live in the manifest and Git tags. The automation updates internal
+dependency requirements and workspace mappings while preserving module paths
+and Go language-version directives. Workspace consumer `go.mod` files are
+synchronized too; publication scope is the requested components plus required
+unpublished dependencies. Dependency changes appear in the plan and selected
+modules' notes, and other consumers receive preparation-PR notes for their next
+release. Go commands keep `CGO_ENABLED=0`; no module-file replacements are added.
+Tidy uses the existing local module fixtures before published external modules.
+
+Maintainers who prefer the CLI can start from a clean checkout of current
+`origin/main`, authenticate `gh`, and run either command:
 
 ```sh
-export CGO_ENABLED=0
-git fetch origin --tags
-uv run --no-project python tools/release.py prepare \
-  --issue 123 --plan logger-v0-1-1 --module logger
+uv run --no-project python tools/release.py prepare --module logger --auto-publish
+uv run --no-project python tools/release.py prepare --all --auto-publish
 ```
 
-Repeat `--module` to select more modules. Include `--module .` for initial Commons
-publication when required. In PowerShell, use `$env:CGO_ENABLED='0'` and put the
-command on one line instead of shell continuation backslashes. Preparation
-creates no public tags, Releases, comments, or issue state changes.
+These commands create the issue, branch, and PR automatically. Repeat `--module`
+to select several components and use `--bump patch` to override the version
+policy. CLI preparation enables automatic publication only with `--auto-publish`.
+For local metadata/plan generation with no GitHub writes, pass `--local --issue
+123`; `--issue` otherwise reuses an existing open tracking issue. `--plan` and
+`--overrides` are optional advanced controls. All tracked metadata is restored
+if preparation/tidy fails before the branch is committed.
 
 ## Historical PRs and first releases
 
-Missing historical notes fail preparation. Supply reviewed JSON overrides;
-there is no silent PR-title fallback. Each `pull_requests` value contains the
-release-note section's content without its heading. Acknowledge commits with
-no merged PR explicitly and declare their affected modules; matching commits
-appear in their own section of the notes. Repository-only acknowledgements stay
-in the reviewed plan and are excluded from module notes.
+Current PRs require structured release notes. Detailed entries are preserved
+and grouped by module and category. Historical PRs without that section use
+their actual titles and changed module paths; the full file-count coverage is
+checked, and the plan identifies inferred summaries for review. Malformed
+structured notes still fail rather than being silently replaced. Direct commits
+are acknowledged using their subjects and affected modules. Initial releases
+receive a conservative scope statement referring to module documentation.
+
+The first release therefore needs no hand-authored overrides file. Maintainers
+can improve generated historical summaries and initial capability statements in
+the preparation PR, or supply optional JSON overrides for preparation. Each
+`pull_requests` value contains the release-note section without its heading.
+Repository-only entries stay out of module notes.
 
 ```json
 {
@@ -116,20 +159,36 @@ an ignored file such as `.tmp/release-overrides.json`, then pass
 the reviewed plan. Historical overrides do not rewrite merged PR descriptions.
 First release notes include both a capability/compatibility summary and PR changes.
 
-## Preflight and publish
+## Automatic publication and manual recovery
 
-Open [Actions: Publish Go modules](https://github.com/rambow-cloud/powertools-lambda-go/actions/workflows/release.yml),
-choose **Run workflow** on `main`, and enter the tracking issue, merged preparation
-PR, complete 40-character merge SHA, and plan name without directory or `.json`.
-Leave **publish** unchecked for preflight. Review its notes/progress artifact,
-then run the same inputs with **publish** checked to authorize publication.
-Maintainers can also dispatch using `gh workflow run release.yml`.
+Automatic publication listens for completed **Go CI** and **Documentation**
+workflows on main push commits. It resolves the merged preparation PR and its
+exact plan, requires the plan's `auto_publish: true`, and rechecks the latest
+required main checks. If another check is still pending or failed, it makes no
+publication writes; the next completion event re-evaluates the batch. Fork and
+PR-check events are excluded. A closed tracking issue prevents duplicate
+automatic completion from repeating an already finished batch.
 
-Preflight checks caller write permission, Issue/PR association, merged SHA,
-reviewed plan, required Actions checks, module paths/versions, previous release
-boundaries, dependency order, and tag/Release conflicts. It creates local output
-artifacts only, including a nonpublishing GoReleaser run for each selected module.
-Publication runs are serialized and never canceled by a newer run.
+For a plan prepared with automatic publication disabled, or to resume after a
+failure, open
+[Actions: Publish Go modules](https://github.com/rambow-cloud/powertools-lambda-go/actions/workflows/release.yml)
+and choose **Run workflow** on `main`. Enter only the merged preparation PR number.
+Leave `publish` unchecked for preflight or check it to publish/resume. Issue,
+SHA, and plan are resolved from the merged PR; they need no manual copying.
+
+The equivalent CLI commands are:
+
+```sh
+uv run --no-project python tools/release.py publish --pr 456
+uv run --no-project python tools/release.py publish --pr 456 --publish
+```
+
+Publication checks caller write permission, Issue/PR association, merged SHA,
+clean checkout, reviewed plan, required PR/main checks, module paths/versions,
+dependency metadata, previous release boundaries, dependency order, and
+tag/Release conflicts. Preflight writes local artifacts only, including a
+nonpublishing GoReleaser run for every selected module. Publication is serialized
+and an active run is not canceled by a newer request.
 
 For each module, publication creates a tag at the selected SHA and uses
 GoReleaser to create its draft GitHub Release with the reviewed notes. After a
@@ -189,6 +248,7 @@ For local offline checks, install GoReleaser OSS v2.18.2 on `PATH`, then run:
 ```sh
 goreleaser check --config .goreleaser.json
 uv run --project website --frozen python tools/test_release.py
+uv run --project website --frozen python tools/test_release_automation.py
 ```
 
 The real CLI regression creates an isolated temporary Git repository and checks
@@ -197,30 +257,39 @@ the pinned CLI and runs this regression. A second real CLI regression uses a
 local GitHub API fixture to verify draft creation, draft reuse/finalization,
 notes, tag targets, stable/prerelease flags, and the latest-release setting.
 These CLI regressions skip locally only when the CLI is absent.
+Automation regressions use isolated Git repositories, real Go metadata/tidy
+commands, and a fake GitHub API; they do not create real issues, tags, or Releases.
 Updating the pinned version requires updating the workflow, tool version
 gate, and CLI compatibility coverage together.
 
 ## Failure and recovery
 
-Inspect workflow logs and the `release-progress-RUN_ID` artifact, including
-per-module GoReleaser configuration, metadata, and preflight/draft/publish logs.
-Failed consumer
-checks preserve tags/draft Releases and leave the tracking issue open. A tag
-already makes a Go version publicly addressable; a draft Release is not rollback.
-Never delete, move, or rewrite a conflicting published version.
+For preparation failures, rerun **Prepare release** with the same inputs on
+the same main source. An existing preparation PR is reused; only missing or
+failed checks are redispatched. A pushed preparation branch whose PR creation
+failed is reused after its source/request identity is verified. It is never
+force-pushed. Local metadata is restored on generation/tidy failures. If main
+advances, preparation creates a fresh plan and PR for the new source.
 
-Consumer checks make one attempt. If the proxy is not ready, stop and rerun the same
-reviewed plan after resolving the condition. Matching tags/Releases are reused;
-public consumers are checked in a fresh cache and missing steps are completed.
-Existing notes are not overwritten. Changed source or scope needs a new version
-and preparation PR. Installing the workflow does not claim hosted publication;
-the first real release needs separate authorization and actual public results.
+For publication failures, inspect workflow logs and the
+`release-progress-RUN_ID` artifact, including per-module GoReleaser phase
+configurations, metadata, and logs. Failed consumer checks preserve tags/drafts
+and leave the tracking issue open. A tag already makes a Go version publicly
+addressable; a draft Release is not rollback. Never delete, move, or rewrite a
+conflicting version.
+
+Consumer checks make one attempt. If the proxy is not ready, resolve the
+condition and rerun **Publish Go modules** with the same preparation PR and
+`publish` checked. Matching tags/Releases are reused and incomplete steps resume;
+notes are never overwritten. Changed source or scope needs a new preparation PR
+and version. Workflow installation does not publish the first real version;
+hosted acceptance requires an approved preparation PR and actual public results.
 
 ## Sources
 
 - [Go multiple-module source and tag rules](https://go.dev/doc/modules/managing-source)
 - [Go module publication](https://go.dev/doc/modules/publishing)
+- [Go module/workspace editing](https://go.dev/ref/mod)
 - [GoReleaser library releases](https://goreleaser.com/resources/cookbooks/release-a-library/)
 - [GoReleaser custom release notes and draft reuse](https://goreleaser.com/customization/publish/scm/)
-- [GitHub generated release notes](https://docs.github.com/en/repositories/releasing-projects-on-github/automatically-generated-release-notes)
-- [GitHub workflow triggers](https://docs.github.com/en/actions/how-tos/write-workflows/choose-when-workflows-run/trigger-a-workflow)
+- [GitHub workflow triggers and token behavior](https://docs.github.com/en/actions/how-tos/write-workflows/choose-when-workflows-run/trigger-a-workflow)

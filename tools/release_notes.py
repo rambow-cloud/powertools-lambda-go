@@ -52,7 +52,7 @@ def validate_direct_note(value, directories):
         raise ValueError("Direct-commit notes contain unknown or repeated modules.")
 
 
-def render_notes(repository, module, version, previous_tag, entries, initial_summary=None, untracked_commits=None):
+def render_notes(repository, module, version, previous_tag, entries, initial_summary=None, untracked_commits=None, dependency_updates=None):
     tag = version if module == "." else f"{module}/{version}"
     lines = [f"# {tag}", ""]
     if previous_tag is None:
@@ -74,6 +74,11 @@ def render_notes(repository, module, version, previous_tag, entries, initial_sum
         lines += ["## Changes without a pull request", ""]
         for sha, note in sorted(direct.items()):
             lines.append(f"- {note['description']} ([{sha[:7]}](https://github.com/{repository}/commit/{sha}))")
+        lines.append("")
+    if dependency_updates:
+        lines += ["## Internal dependency updates", ""]
+        for update in dependency_updates:
+            lines.append(f"- `{update['path']}`: `{update['from']}` → `{update['to']}`.")
         lines.append("")
     if previous_tag:
         lines += [f"**Full changelog:** https://github.com/{repository}/compare/{previous_tag}...{tag}", ""]

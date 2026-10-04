@@ -12,7 +12,7 @@ from urllib.error import HTTPError, URLError
 from urllib.parse import quote
 from urllib.request import Request, urlopen
 
-from release_notes import CATEGORIES, parse_notes, render_notes, validate_direct_note
+from release_notes import CATEGORIES, render_notes, validate_direct_note
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -156,63 +156,11 @@ def write_json(path, data):
     temporary.replace(path)
 
 
-def prepare(args, api):
-    modules = manifest()
-    target = git("rev-parse", "HEAD")
-    if target != git("rev-parse", "origin/main"):
-        raise ValueError("Prepare from an up-to-date main checkout; fetch origin first.")
-    issue = api.repo(f"issues/{args.issue}")
-    if "pull_request" in issue or issue["state"] != "open":
-        raise ValueError("Release tracking issue must be a real, open issue.")
-    overrides = json.loads(Path(args.overrides).read_text(encoding="utf-8")) if args.overrides else {}
-    releases = list(api.pages("releases"))
-    plan = {"schema_version": 1, "issue": args.issue, "source_sha": target, "modules": []}
-    seen, history_cache = set(), {}
-    for directory in args.module:
-        if directory in seen:
-            raise ValueError(f"Repeated module: {directory}")
-        seen.add(directory)
-        module = modules.get(directory)
-        if not module or not module["public"] or module.get("status") == "deprecated-frozen":
-            raise ValueError(f"Not a maintained public release module: {directory}")
-        version = module["version"]
-        version_key(version)
-        previous = previous_release(directory, target, releases, prerelease="-" in version)
-        if previous and version_key(version) <= version_key(previous.rsplit("/", 1)[-1]):
-            raise ValueError(f"Bump {directory} above {previous} before preparing.")
-        prs, uncovered = merged_prs(api, commit_of_tag(previous) if previous else None, target, history_cache)
-        entries, ignored = [], []
-        for pr in prs:
-            number = pr["number"]
-            replacement = overrides.get("pull_requests", {}).get(str(number))
-            body = pr.get("body") or ""
-            if replacement is not None:
-                body = "## Release notes\n\n" + replacement
-            try:
-                parsed = parse_notes(body, modules)
-            except ValueError as error:
-                raise ValueError(f"PR #{number}: {error} Supply a reviewed pull_requests override; no title fallback is used.") from None
-            entries.extend({**entry, "pr": number} for entry in parsed)
-            if not any(entry["module"] == directory for entry in parsed):
-                ignored.append(number)
-        acknowledgement = overrides.get("untracked_commits", {})
-        for sha in uncovered:
-            if sha not in acknowledgement:
-                raise ValueError(f"Commit {sha} has no merged PR; document it in untracked_commits overrides.")
-            validate_direct_note(acknowledgement[sha], modules)
-        initial = overrides.get("initial_summaries", {}).get(directory)
-        acknowledged = {sha: acknowledgement[sha] for sha in uncovered}
-        notes = render_notes(REPOSITORY, directory, version, previous, entries, initial, acknowledged)
-        plan["modules"].append({"directory": directory, "version": version, "previous_tag": previous, "initial_summary": initial, "entries": [entry for entry in entries if entry["module"] == directory], "reviewed_prs": [pr["number"] for pr in prs], "excluded_prs": ignored, "untracked_commits": {sha: acknowledgement[sha] for sha in uncovered}, "notes": notes})
-    if not plan["modules"]:
-        raise ValueError("Select at least one module.")
-    write_json(plan_path(args.plan), plan)
-    print(f"Prepared releases/{args.plan}.json. Review it in a preparation PR using Refs #{args.issue}; no tags or Releases were created.")
-
-
 def validate_plan(plan, modules):
     if plan.get("schema_version") != 1 or not isinstance(plan.get("issue"), int) or plan["issue"] < 1 or not SHA.fullmatch(plan.get("source_sha", "")):
         raise ValueError("Invalid release plan identity.")
+    if not isinstance(plan.get("auto_publish", False), bool):
+        raise ValueError("Automatic publication authorization must be a boolean.")
     selected = {}
     for item in plan.get("modules", []):
         directory = item["directory"]
@@ -238,7 +186,16 @@ def validate_plan(plan, modules):
             if not SHA.fullmatch(sha):
                 raise ValueError("Invalid untracked commit SHA.")
             validate_direct_note(note, modules)
-        expected = render_notes(REPOSITORY, directory, item["version"], previous, item["entries"], item["initial_summary"], item["untracked_commits"])
+        updates = item.get("dependency_updates", [])
+        for update in updates:
+            if not isinstance(update, dict) or not update.get("path", "").startswith("github.com/" + REPOSITORY):
+                raise ValueError("Invalid internal dependency update.")
+            dependency = update["path"].removeprefix("github.com/" + REPOSITORY).removeprefix("/") or "."
+            if dependency not in modules or update["to"] != modules[dependency]["version"]:
+                raise ValueError("Dependency update does not match module metadata.")
+            version_key(update["from"])
+            version_key(update["to"])
+        expected = render_notes(REPOSITORY, directory, item["version"], previous, item["entries"], item["initial_summary"], item["untracked_commits"], updates)
         if item["notes"] != expected:
             raise ValueError(f"Frozen notes do not match reviewed entries: {directory}")
         selected[directory] = item
@@ -278,7 +235,7 @@ def dependency_order(selected, modules, requirements, available):
     return result
 
 
-def check_runs(api, sha, names):
+def latest_checks(api, sha):
     runs = []
     page = 1
     while True:
@@ -287,9 +244,17 @@ def check_runs(api, sha, names):
         if len(response["check_runs"]) < 100:
             break
         page += 1
+    latest = {}
+    for check in runs:
+        if check["app"]["slug"] == "github-actions" and check["id"] > latest.get(check["name"], {}).get("id", -1):
+            latest[check["name"]] = check
+    return latest
+
+
+def check_runs(api, sha, names):
+    checks = latest_checks(api, sha)
     for name in names:
-        matches = [check for check in runs if check["name"] == name and check["app"]["slug"] == "github-actions"]
-        latest = max(matches, key=lambda check: check["id"]) if matches else None
+        latest = checks.get(name)
         if not latest or latest["status"] != "completed" or latest["conclusion"] != "success":
             raise ValueError(f"Required check '{name}' has not passed for {sha}; wait for CI before dispatching.")
 
@@ -314,6 +279,14 @@ def check_existing(directory, item, sha, existing, release):
         raise ValueError(f"Existing Release conflicts with the reviewed plan: {tag}")
 
 
+def authorize_actor(api):
+    actor = os.environ.get("GITHUB_ACTOR") or api.request("user")["login"]
+    permission = api.repo(f"collaborators/{quote(actor, safe='')}/permission")["permission"]
+    if permission not in {"admin", "maintain", "write"}:
+        raise ValueError("Release automation requires repository write permission.")
+    return actor
+
+
 def preflight(args, api):
     if not SHA.fullmatch(args.sha):
         raise ValueError("Use the complete 40-character merged commit SHA.")
@@ -326,10 +299,7 @@ def preflight(args, api):
     selected = validate_plan(plan, modules)
     if plan["issue"] != args.issue:
         raise ValueError("Dispatch issue does not match the reviewed plan.")
-    actor = os.environ.get("GITHUB_ACTOR") or api.request("user")["login"]
-    permission = api.repo(f"collaborators/{quote(actor, safe='')}/permission")["permission"]
-    if permission not in {"admin", "maintain", "write"}:
-        raise ValueError("Publication requires repository write permission.")
+    authorize_actor(api)
     pr = api.repo(f"pulls/{args.pr}")
     if not pr["merged"] or pr["base"]["ref"] != "main" or pr["base"]["repo"]["full_name"] != REPOSITORY or pr["merge_commit_sha"] != args.sha:
         raise ValueError("Expected a preparation PR merged into this repository's main at the supplied SHA.")
@@ -359,6 +329,9 @@ def preflight(args, api):
         if data["Module"]["Path"] != expected or data.get("Replace"):
             raise ValueError(f"Invalid module path or replace directives: {directory}")
         requirements[directory] = data.get("Require") or []
+        for update in selected[directory].get("dependency_updates", []):
+            if not any(requirement["Path"] == update["path"] and requirement["Version"] == update["to"] for requirement in requirements[directory]):
+                raise ValueError("Reviewed dependency updates disagree with go.mod.")
     def available(tag):
         release = api.repo("releases/tags/" + quote(tag, safe=""), missing=True)
         return bool(release and not release["draft"] and remote_tag(api, tag))
@@ -527,22 +500,37 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     commands = parser.add_subparsers(dest="command", required=True)
     prepare_parser = commands.add_parser("prepare", help="Write a reviewed plan without publishing")
-    prepare_parser.add_argument("--issue", type=int, required=True)
-    prepare_parser.add_argument("--module", action="append", required=True)
-    prepare_parser.add_argument("--plan", required=True)
+    prepare_parser.add_argument("--issue", type=int, help="Reuse an open release tracking issue; otherwise create one")
+    scope = prepare_parser.add_mutually_exclusive_group(required=True)
+    scope.add_argument("--module", action="append", help="Module directory; repeat to select several")
+    scope.add_argument("--all", action="store_true", help="All maintained public modules")
+    prepare_parser.add_argument("--plan", help="Optional plan name; generated by default")
+    prepare_parser.add_argument("--bump", choices=("auto", "patch", "minor", "major"), default="auto")
+    prepare_parser.add_argument("--auto-publish", action="store_true", help="Authorize publication after this preparation PR merges and main CI passes")
+    prepare_parser.add_argument("--local", action="store_true", help="Only write metadata/plan; requires an existing issue")
     prepare_parser.add_argument("--overrides", help="Reviewed historical summaries and initial release scope (JSON)")
     publish_parser = commands.add_parser("publish", help="Preflight by default; --publish explicitly creates tags/Releases")
-    publish_parser.add_argument("--issue", type=int, required=True)
+    publish_parser.add_argument("--issue", type=int)
     publish_parser.add_argument("--pr", type=int, required=True)
-    publish_parser.add_argument("--sha", required=True)
-    publish_parser.add_argument("--plan", required=True)
+    publish_parser.add_argument("--sha")
+    publish_parser.add_argument("--plan")
     publish_parser.add_argument("--publish", action="store_true")
     args = parser.parse_args()
     try:
         api = GitHub()
         if args.command == "prepare":
+            from release_prepare import prepare
             prepare(args, api)
         else:
+            if not all((args.issue, args.sha, args.plan)):
+                from release_automation import resolve_preparation, checkout_preparation
+                resolved, _ = resolve_preparation(args.pr, api)
+                for field in ("issue", "sha", "plan"):
+                    supplied = getattr(args, field)
+                    if supplied is not None and supplied != getattr(resolved, field):
+                        raise ValueError("Publication input conflicts with the merged preparation PR.")
+                    setattr(args, field, getattr(resolved, field))
+                checkout_preparation(args.sha)
             publish(args, api)
     except (RuntimeError, ValueError, KeyError, OSError, TypeError) as error:
         raise SystemExit(str(error)) from None
