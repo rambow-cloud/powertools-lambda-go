@@ -7,6 +7,7 @@ import os
 from pathlib import PurePosixPath
 import re
 import sys
+import time
 from urllib.parse import quote
 
 import release
@@ -242,7 +243,7 @@ Historical notes inferred from PR titles and changed paths: {history}. Review th
 
 ## Testing
 
-Internal dependency metadata was tidied with CGO disabled and no module-file replacements. Required contribution, module, and documentation checks are dispatched on this branch; review their results before merging.
+Internal dependency metadata was tidied with CGO disabled and no module-file replacements. Native contribution, module, and documentation PR checks are activated for this exact head; review their results before merging. If GitHub requires maintainer authorization, select **Approve workflows to run** in this PR.
 
 ## Risks and compatibility
 
@@ -254,22 +255,46 @@ Automatic publication after merge and successful main checks: **{'enabled' if au
 """
 
 
-def dispatch_checks(pr, branch, api, resume=False):
-    checks = release.latest_checks(api, pr["head"]["sha"]) if resume else {}
-    workflows = (("contribution.yml", "PR contribution policy", {"pr": str(pr["number"])}),
-                 ("ci.yml", "Modules and Lambda artifacts", {}), ("docs.yml", "Build documentation", {}))
-    for workflow, name, inputs in workflows:
-        existing = checks.get(name)
-        if existing and (existing["status"] != "completed" or existing["conclusion"] == "success"):
-            continue
-        api.repo(f"actions/workflows/{workflow}/dispatches", method="POST", data={"ref": branch, "inputs": inputs})
+def start_pr_checks(pr, api, resume=False, wait_seconds=60):
+    """Native PR events satisfy rulesets; workflow_dispatch job checks do not."""
+    expected = {".github/workflows/" + filename for filename in ("contribution.yml", "ci.yml", "docs.yml")}
+    deadline = time.monotonic() + wait_seconds
+    while True:
+        latest, page = {}, 1
+        while True:
+            runs = api.repo(f"actions/runs?event=pull_request&head_sha={pr['head']['sha']}&per_page=100&page={page}")["workflow_runs"]
+            for run in runs:
+                path = run["path"].split("@", 1)[0]
+                if (path in expected and run["event"] == "pull_request" and run["head_sha"] == pr["head"]["sha"]
+                        and run["head_repository"]["full_name"] == release.REPOSITORY
+                        and any(item["number"] == pr["number"] for item in run["pull_requests"])
+                        and run["id"] > latest.get(path, {}).get("id", -1)):
+                    latest[path] = run
+            if len(runs) < 100:
+                break
+            page += 1
+        if set(latest) == expected:
+            break
+        if time.monotonic() >= deadline:
+            raise ValueError("Native PR checks have not appeared yet. Open the preparation PR, approve workflows if requested, then rerun preparation to resume; dispatch checks cannot replace required PR checks.")
+        time.sleep(2)
+    for run in latest.values():
+        if run["conclusion"] == "action_required":
+            try:
+                api.repo(f"actions/runs/{run['id']}/approve", method="POST", data={})
+            except RuntimeError as error:
+                if "HTTP 403" not in str(error):
+                    raise
+                raise ValueError("GitHub requires maintainer authorization: open the preparation PR and select Approve workflows to run. Existing native checks were retained; no substitute checks were dispatched.") from None
+        elif resume and run["status"] == "completed" and run["conclusion"] in {"failure", "cancelled", "timed_out"}:
+            api.repo(f"actions/runs/{run['id']}/rerun", method="POST", data={})
 
 
 def open_preparation(plan, name, branch, api):
     pr = api.repo("pulls", method="POST", data={"title": "chore(release): prepare " + name, "head": branch, "base": "main", "body": preparation_body(plan, name)})
     print("Preparation PR: " + pr["html_url"])
-    dispatch_checks(pr, branch, api)
-    print("Required checks dispatched. Review and merge the preparation PR.")
+    start_pr_checks(pr, api)
+    print("Native PR checks activated. Review and merge the preparation PR.")
 
 
 def prepare(args, api):
@@ -290,7 +315,7 @@ def prepare(args, api):
         existing = list(api.pages("pulls?state=open&head=" + quote(release.REPOSITORY.split("/")[0] + ":" + branch, safe="")))
         if existing:
             print(f"Preparation already exists: {existing[0]['html_url']}")
-            dispatch_checks(existing[0], branch, api, resume=True)
+            start_pr_checks(existing[0], api, resume=True)
             return
         remote_branch = api.repo("git/ref/heads/" + branch, missing=True)
         if remote_branch:

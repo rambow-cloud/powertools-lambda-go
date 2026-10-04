@@ -23,12 +23,21 @@ ROOT = Path(__file__).resolve().parents[1]
 BASE = "github.com/" + release.REPOSITORY
 
 
+def native_runs(sha, conclusion="success"):
+    return [{"id": number, "path": ".github/workflows/" + filename, "event": "pull_request", "head_sha": sha,
+             "head_repository": {"full_name": release.REPOSITORY}, "pull_requests": [{"number": 21}],
+             "status": "completed", "conclusion": conclusion}
+            for number, filename in enumerate(("contribution.yml", "ci.yml", "docs.yml"), 101)]
+
+
 class API:
     def __init__(self):
         self.releases, self.tags, self.prs, self.files, self.associations = [], [], {}, {}, {}
         self.writes = []
         self.open_prs = []
         self.issue_state = "open"
+        self.native = None
+        self.pr_head = None
 
     def request(self, path, **kwargs):
         return {"login": "maintainer"}
@@ -39,7 +48,9 @@ class API:
             if path == "issues":
                 return {"number": 20, "state": "open"}
             if path == "pulls":
-                return {"number": 21, "html_url": "https://example.com/pull/21"}
+                sha = self.pr_head or release.git("rev-parse", "HEAD")
+                self.native = native_runs(sha, "action_required")
+                return {"number": 21, "html_url": "https://example.com/pull/21", "head": {"sha": sha}}
             return None
         if path.startswith("collaborators/"):
             return {"permission": "admin"}
@@ -49,6 +60,9 @@ class API:
             return self.prs[int(path.split("/")[1])]
         if path.startswith("git/ref/heads/"):
             return None
+        if path.startswith("actions/runs?"):
+            sha = path.split("head_sha=", 1)[1].split("&", 1)[0]
+            return {"workflow_runs": self.native if self.native is not None else native_runs(sha)}
         if path.startswith("commits/") and "/check-runs?" in path:
             return {"check_runs": [{"id": number, "name": name, "app": {"slug": "github-actions"}, "status": "completed", "conclusion": "success"} for number, name in enumerate(("PR contribution policy", "Modules and Lambda artifacts", "Build documentation"))]}
         if path.startswith("git/ref/tags/"):
@@ -240,12 +254,12 @@ class PreparationTests(unittest.TestCase):
                 return original_git(*command)
             with patch.object(release, "git", side_effect=git):
                 preparation.prepare(args(issue=None, local=False, auto_publish=True), api)
-            self.assertEqual([path for path, _ in api.writes], ["issues", "pulls", "actions/workflows/contribution.yml/dispatches", "actions/workflows/ci.yml/dispatches", "actions/workflows/docs.yml/dispatches"])
+            self.assertEqual([path for path, _ in api.writes], ["issues", "pulls", "actions/runs/101/approve", "actions/runs/102/approve", "actions/runs/103/approve"])
             pr = api.writes[1][1]
             self.assertEqual(pr["base"], "main")
             self.assertIn("Refs #20", pr["body"])
             self.assertIn("**enabled**", pr["body"])
-            self.assertEqual(api.writes[2][1]["inputs"], {"pr": "21"})
+            self.assertEqual(api.writes[2][1], {})
             self.assertEqual(command(root, "git", "rev-parse", "HEAD^1"), source)
             self.assertEqual(command(root, "git", "status", "--porcelain"), "")
 
@@ -269,6 +283,7 @@ class PreparationTests(unittest.TestCase):
                 result = original_repo(path, **kwargs)
                 if path == "pulls" and not saved:
                     saved["sha"] = command(root, "git", "rev-parse", "HEAD")
+                    api.pr_head = saved["sha"]
                     raise RuntimeError("Synthetic PR creation failure")
                 return result
             with patch.object(release, "git", side_effect=git), patch.object(api, "repo", side_effect=repo):
@@ -289,6 +304,61 @@ class PreparationTests(unittest.TestCase):
                 preparation.prepare(args(local=False), api)
             metadata.assert_not_called()
             self.assertEqual(api.writes, [])
+
+
+class NativeCheckTests(unittest.TestCase):
+    pr = {"number": 21, "head": {"sha": "b" * 40}}
+
+    def test_only_this_pr_head_and_native_events_are_eligible(self):
+        for mismatch in ("event", "head_sha", "repository", "pr"):
+            api = API()
+            api.native = native_runs(self.pr["head"]["sha"])
+            invalid = api.native[0]
+            if mismatch == "repository":
+                invalid["head_repository"]["full_name"] = "external/fork"
+            elif mismatch == "pr":
+                invalid["pull_requests"][0]["number"] = 22
+            else:
+                invalid[mismatch] = "workflow_dispatch" if mismatch == "event" else "a" * 40
+            with self.subTest(mismatch=mismatch), self.assertRaisesRegex(ValueError, "Native PR checks have not appeared"):
+                preparation.start_pr_checks(self.pr, api, wait_seconds=0)
+            self.assertEqual(api.writes, [])
+
+    def test_successful_and_pending_runs_are_retained(self):
+        api = API()
+        api.native = native_runs(self.pr["head"]["sha"])
+        for index, status in ((1, "in_progress"), (2, "queued")):
+            api.native[index].update(status=status, conclusion=None)
+        preparation.start_pr_checks(self.pr, api, resume=True)
+        self.assertEqual(api.writes, [])
+
+    def test_approval_and_failure_recovery_keep_native_event_association(self):
+        api = API()
+        api.native = native_runs(self.pr["head"]["sha"])
+        api.native[0]["conclusion"] = "action_required"
+        api.native[1]["conclusion"] = "failure"
+        api.native.append({**api.native[2], "id": 50, "conclusion": "failure"})
+        preparation.start_pr_checks(self.pr, api, resume=True)
+        self.assertEqual([path for path, _ in api.writes], ["actions/runs/101/approve", "actions/runs/102/rerun"])
+
+    def test_asynchronous_native_run_creation_is_awaited(self):
+        api = API()
+        responses = [{"workflow_runs": []}, {"workflow_runs": native_runs(self.pr["head"]["sha"])}]
+        with patch.object(api, "repo", side_effect=responses), patch.object(preparation.time, "sleep") as sleep:
+            preparation.start_pr_checks(self.pr, api)
+        sleep.assert_called_once_with(2)
+
+    def test_forbidden_approval_reports_the_actual_maintainer_action(self):
+        api = API()
+        api.native = native_runs(self.pr["head"]["sha"], "action_required")
+        original = api.repo
+        def repo(path, **kwargs):
+            if path.endswith("/approve"):
+                raise RuntimeError("GitHub request failed (HTTP 403)")
+            return original(path, **kwargs)
+        with patch.object(api, "repo", side_effect=repo), self.assertRaisesRegex(ValueError, "Approve workflows to run"):
+            preparation.start_pr_checks(self.pr, api)
+        self.assertEqual(api.writes, [])
 
 
 class CompletionTests(unittest.TestCase):

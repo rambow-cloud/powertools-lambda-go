@@ -62,7 +62,11 @@ development modules and the frozen `tracer/xray` adapter are excluded.
 
 Review the generated PR's module/version table, included dependencies, notes,
 initial compatibility statements, and automatic-publication setting. Required
-checks are dispatched explicitly on its branch using the built-in GitHub token.
+checks use the native PR workflows. Preparation waits for those runs to appear
+and attempts to authorize pending runs with its Actions write permission. If
+GitHub requires maintainer authorization, select **Approve workflows to run**
+in the PR. A manually dispatched job check does not satisfy PR rulesets, even
+when it passes on the same commit; see [required-check troubleshooting](https://docs.github.com/en/pull-requests/how-tos/merge-and-close-pull-requests/troubleshooting-required-status-checks).
 Merge the preparation PR with squash or merge after the checks pass. The
 recorded source must still be its first parent; if main advances first, rerun
 preparation against current main and use the newly generated PR.
@@ -76,7 +80,7 @@ The repository's **Settings → Actions → General → Workflow permissions** m
 allow **GitHub Actions to create and approve pull requests** for automated PR
 creation. The preparation workflow does not approve or merge PRs. Its explicit
 job permissions grant the built-in token only the operations needed for issue,
-branch, PR, and check creation; no additional secret is required.
+branch, PR, and native workflow activation; no additional secret is required.
 
 An organization or enterprise policy can prohibit that repository setting.
 If GitHub reports that the organization does not allow Actions to create or
@@ -273,8 +277,11 @@ gate, and CLI compatibility coverage together.
 ## Failure and recovery
 
 For preparation failures, rerun **Prepare release** with the same inputs on
-the same main source. An existing preparation PR is reused; only missing or
-failed checks are redispatched. A pushed preparation branch whose PR creation
+the same main source. An existing preparation PR is reused; successful and
+pending native checks are retained, runs needing authorization are activated,
+and failed native runs are rerun while preserving their PR event association.
+If automatic authorization is forbidden, approve workflows in the PR and use
+the existing runs. A pushed preparation branch whose PR creation
 failed is reused after its source/request identity is verified. It is never
 force-pushed. Local metadata is restored on generation/tidy failures. If main
 advances, preparation creates a fresh plan and PR for the new source.
