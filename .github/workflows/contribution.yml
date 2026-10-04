@@ -74,6 +74,12 @@ jobs:
               for heading in ("Summary", "Testing"):
                   if not re.search(r"[A-Za-z0-9]", section(body, heading)):
                       errors.append(f"Fill in the '## {heading}' section with meaningful details.")
+              notes = section(body, "Release notes")
+              if not re.fullmatch(r"None: [^\n]*[A-Za-z0-9][^\n]*", notes):
+                  lines = [line for line in notes.splitlines() if line.strip()]
+                  pattern = r"- (?:\.|[A-Za-z0-9_-]+(?:/[A-Za-z0-9_-]+)*) \| (?:breaking|feature|fix|documentation|maintenance) \| \S.*"
+                  if not lines or any(not re.fullmatch(pattern, line) for line in lines):
+                      errors.append("Fill in '## Release notes' with '- MODULE | TYPE | Description.' entries, or 'None: <reason>'.")
               numbers = issue_numbers(body, repository)
               if not numbers:
                   errors.append("Add 'Closes #123' (or 'Refs #123' for partial work), using a real issue in this repository, on its own line outside comments/code blocks.")

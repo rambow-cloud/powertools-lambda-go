@@ -83,6 +83,12 @@ and [required-check troubleshooting](https://docs.github.com/en/pull-requests/ho
 
 ## Rollout verification
 
+For independent version publication, follow [Releasing modules](RELEASING.md).
+The manual publisher reuses required checks, binds a reviewed release plan to
+the merged preparation SHA, and keeps the tracking issue open until public
+consumers pass. PRs require structured Release notes or an explained absence;
+edit dependency-bot descriptions using the same rule as other PRs.
+
 Verify both an owner branch PR and a fork PR. Check the three job names on the
 latest commit, verify description edits refresh the policy check, and confirm
 only `main` deploys. Keep one deliberately missing issue reference long enough

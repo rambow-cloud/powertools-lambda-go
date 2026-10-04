@@ -144,6 +144,7 @@ nav:
   - Development:
       - Contributing: CONTRIBUTING.md
       - Maintainer setup: MAINTAINING.md
+      - Releasing modules: RELEASING.md
       - Documentation and CI: DOCUMENTATION.md
       - Verification:
           - Overview: VALIDATION.md

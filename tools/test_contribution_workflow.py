@@ -18,7 +18,7 @@ REPOSITORY = "rambow-cloud/powertools-lambda-go"
 
 
 def body(reference="Closes #123", summary="Fix the issue.", testing="Tests passed."):
-    return f"## Issue\n\n{reference}\n\n## Summary\n\n{summary}\n\n## Testing\n\n{testing}\n"
+    return f"## Issue\n\n{reference}\n\n## Summary\n\n{summary}\n\n## Testing\n\n{testing}\n\n## Release notes\n\n- logger | fix | Correct the reported behavior.\n"
 
 
 class ContributionPolicyTests(unittest.TestCase):
@@ -113,11 +113,18 @@ class ContributionPolicyTests(unittest.TestCase):
         self.assertEqual(WORKFLOW["env"]["CGO_ENABLED"], "0")
         self.assertNotIn("${{", RUN)
 
+    def test_release_notes_are_required_and_structured(self):
+        for notes in ("", "<!-- - logger | fix | Example. -->", "```\n- logger | fix | Example.\n```", "- logger | unknown | Example.", "None:"):
+            with self.subTest(notes=notes):
+                self.assertTrue(self.validate(body().split("## Release notes")[0] + "## Release notes\n\n" + notes)[0])
+        for notes in ("None: Tests only; no runtime behavior changes.", "- . | fix | Correct shared invocation state.\n- logger | feature | Add configuration."):
+            self.assertEqual(self.validate(body().split("## Release notes")[0] + "## Release notes\n\n" + notes), ([], [123]))
+
 
 class IssueFormTests(unittest.TestCase):
     def test_forms_have_unique_fields_and_required_inputs(self):
         forms = sorted((ROOT / ".github/ISSUE_TEMPLATE").glob("*.yml"))
-        self.assertEqual(len(forms), 4)
+        self.assertEqual(len(forms), 5)
         for path in forms:
             with self.subTest(path=path.name):
                 form = yaml.safe_load(path.read_text())
@@ -135,7 +142,7 @@ class IssueFormTests(unittest.TestCase):
     def test_unfilled_pr_template_does_not_pass(self):
         text = (ROOT / ".github/PULL_REQUEST_TEMPLATE.md").read_text()
         errors = NAMESPACE["validate"]({"body": text}, REPOSITORY, lambda number: {})
-        self.assertEqual(len(errors), 3)
+        self.assertEqual(len(errors), 4)
 
 
 if __name__ == "__main__":

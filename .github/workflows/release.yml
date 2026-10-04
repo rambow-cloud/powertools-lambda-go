@@ -1,0 +1,106 @@
+name: Publish Go modules
+
+on:
+  workflow_dispatch:
+    inputs:
+      issue:
+        description: Release tracking issue number
+        required: true
+        type: string
+      pr:
+        description: Merged preparation PR number
+        required: true
+        type: string
+      sha:
+        description: Complete merged preparation commit SHA
+        required: true
+        type: string
+      plan:
+        description: Reviewed plan name (releases/NAME.json)
+        required: true
+        type: string
+      publish:
+        description: Create public tags and Releases (false runs preflight only)
+        required: true
+        default: false
+        type: boolean
+
+permissions:
+  contents: read
+
+concurrency:
+  group: module-publication
+  cancel-in-progress: false
+
+env:
+  CGO_ENABLED: '0'
+  PYTHONDONTWRITEBYTECODE: '1'
+
+jobs:
+  release:
+    name: Reviewed module publication
+    if: github.repository == 'rambow-cloud/powertools-lambda-go' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    permissions:
+      contents: write
+      issues: write
+      pull-requests: read
+      checks: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Validate dispatch input and checkout the reviewed commit
+        env:
+          RELEASE_ISSUE: ${{ inputs.issue }}
+          RELEASE_PR: ${{ inputs.pr }}
+          RELEASE_SHA: ${{ inputs.sha }}
+          RELEASE_PLAN: ${{ inputs.plan }}
+        run: |
+          python3 - <<'PY'
+          import os
+          import re
+          import subprocess
+          for name in ('RELEASE_ISSUE', 'RELEASE_PR'):
+              if not re.fullmatch(r'[1-9][0-9]*', os.environ[name]):
+                  raise SystemExit('Issue and PR must be positive integers.')
+          if not re.fullmatch(r'[0-9a-f]{40}', os.environ['RELEASE_SHA']):
+              raise SystemExit('Use a complete merged commit SHA.')
+          if not re.fullmatch(r'[a-z0-9][a-z0-9-]{0,79}', os.environ['RELEASE_PLAN']):
+              raise SystemExit('Plan name must be a lowercase slug.')
+          subprocess.run(['git', 'merge-base', '--is-ancestor', os.environ['RELEASE_SHA'], 'origin/main'], check=True)
+          subprocess.run(['git', 'checkout', '--detach', os.environ['RELEASE_SHA']], check=True)
+          PY
+      - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
+        with:
+          go-version-file: go.mod
+          cache: false
+      - name: Validate and optionally publish the reviewed plan
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_ISSUE: ${{ inputs.issue }}
+          RELEASE_PR: ${{ inputs.pr }}
+          RELEASE_SHA: ${{ inputs.sha }}
+          RELEASE_PLAN: ${{ inputs.plan }}
+          RELEASE_PUBLISH: ${{ inputs.publish }}
+        run: |
+          python3 - <<'PY'
+          import os
+          import subprocess
+          command = ['python3', 'tools/release.py', 'publish',
+                     '--issue', os.environ['RELEASE_ISSUE'], '--pr', os.environ['RELEASE_PR'],
+                     '--sha', os.environ['RELEASE_SHA'], '--plan', os.environ['RELEASE_PLAN']]
+          if os.environ['RELEASE_PUBLISH'] == 'true':
+              command.append('--publish')
+          subprocess.run(command, check=True)
+          PY
+      - name: Upload publication progress and reviewed notes
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: release-progress-${{ github.run_id }}
+          path: dist/releases/
+          if-no-files-found: ignore
+          retention-days: 30

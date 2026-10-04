@@ -19,6 +19,17 @@ Root go test ./... does not cover nested modules. Keep CGO_ENABLED=0. -->
 <!-- Note API/dependency changes, operational effects, and remaining limitations.
 Write "None identified" if appropriate. -->
 
+## Release notes
+
+<!-- One user-visible change per line, using a directory from tools/modules.json:
+- logger | fix | Preserve temporary attribute lifetimes in child loggers.
+Types: breaking, feature, fix, documentation, maintenance.
+Use '.' for the root Commons module and 'repository' for repository-only work.
+One PR can describe several changes in several modules. Write English summaries
+for users, without test logs. If there is no release impact, use:
+None: Explain why this change has no user-visible release impact.
+Entries are collected when a module is released, not whenever a PR merges. -->
+
 ## Checklist
 
 - [ ] The issue records the scope and acceptance criteria
