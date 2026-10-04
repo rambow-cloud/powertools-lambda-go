@@ -4,6 +4,15 @@ Latest recorded runtime acceptance (2026-10-04, Logger TextMarshaler follow-up):
 
 ## GitHub Actions
 
+First hosted runtime acceptance (2026-10-05): PR #32's native
+[Go CI run](https://github.com/rambow-cloud/powertools-lambda-go/actions/runs/37233122495)
+passed all 31 packaged modules, 28 public consumers, 904 RIE/Valkey assertions,
+95 streaming checks, 14 Batch checks, and 108 KMS reverse-interop checks.
+The runtime rebuilt both architectures, executed amd64, preserved checked-in
+reports, and cleaned up without errors. The [acceptance summary](CI_RUNTIME_ACCEPTANCE.json)
+records the tested PR merge SHA, run/attempt, suite counts, and six binary hashes;
+it is distinct from the historical local acceptance above.
+
 Go CI runs **Runtime simulation** on every pull request, main push, and manual
 dispatch after **Modules and Lambda artifacts** passes. It installs Node.js
 22.21.1 and reference dependencies with `npm ci`, then uses

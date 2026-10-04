@@ -1,0 +1,46 @@
+{
+  "execution": {
+    "source_sha": "bf024a84d1317262d80da2f94d664d6a5d048a91",
+    "run_id": "37233122495",
+    "run_attempt": "1"
+  },
+  "runtime_architecture": "amd64",
+  "binary_architectures": [
+    "amd64",
+    "arm64"
+  ],
+  "cgo_enabled": false,
+  "module_checks": "reused from prerequisite Modules and Lambda artifacts job",
+  "suites": {
+    "Lambda RIE and Valkey": {
+      "passed": true,
+      "assertions": 904
+    },
+    "Streaming": {
+      "passed": true,
+      "assertions": 95
+    },
+    "Batch logs and spans": {
+      "passed": true,
+      "assertions": 14
+    },
+    "Go to TypeScript KMS": {
+      "passed": true,
+      "assertions": 108
+    }
+  },
+  "binary_sha256": {
+    "amd64/bootstrap": "165758ad2d24e7e4288cbf34ec173ea8ba7da4a033634c319041836af9893c90",
+    "amd64/stream-bootstrap": "ab01acbad6032dcdeeb7d6932fc95482dfd66fa0202c3c9eaf0841be451ec53a",
+    "arm64/bootstrap": "752fbe75ae5ad7b0427a458f158b07cb78000ec446943bd65ab6e5a4fef78eb3",
+    "arm64/stream-bootstrap": "6e7a7f5f19ea98a64dc21c89821ecd2bb50b6f55bc708aab1abf2a4bfc4bcc01",
+    "amd64/capture": "474b5493d9b79476cfa66396c0935a7447e3a68937821981fe18bf88cd98d50d",
+    "amd64/kmsinterop": "eb184304aa6f626ad6971a4c34ae88220d01f7d74c5b28c7d6a773fd9c117ac4"
+  },
+  "errors": [],
+  "passed": true,
+  "recorded_at": "2026-10-05",
+  "workflow_url": "https://github.com/rambow-cloud/powertools-lambda-go/actions/runs/37233122495",
+  "pull_request": 32,
+  "pull_request_head_sha": "e1b7b21c04c055eba4f430f98742eea6c69002d2"
+}
