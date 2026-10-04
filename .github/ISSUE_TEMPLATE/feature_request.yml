@@ -1,6 +1,7 @@
 name: Feature proposal
 description: Agree on a new capability or a behavior change before implementation.
 title: "[Feature]: "
+labels: [enhancement]
 body:
   - type: markdown
     attributes:
