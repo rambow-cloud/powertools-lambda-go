@@ -235,6 +235,11 @@ creates exact tags, verifies public consumers, and completes the tracking issue.
 GitHub's by-tag API returns published Releases. The adapter finds matching
 drafts through authenticated release listing, rejects duplicate matches, and
 validates existing notes/tag targets before resuming.
+After a successful GoReleaser write, the publisher waits up to 30 seconds for
+the requested draft or published state to become visible. It checks reviewed
+content on every observed Release and stops immediately on conflicts or API
+errors. This bounded read-after-write wait never repeats a publication write.
+If visibility does not converge, existing objects are preserved for recovery.
 It passes each frozen Markdown file using `--release-notes`; GoReleaser does not
 replace it with a repository-wide commit changelog. Existing notes are kept;
 conflict detection tolerates only terminal newline formatting differences.

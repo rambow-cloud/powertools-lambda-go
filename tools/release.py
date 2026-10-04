@@ -8,6 +8,7 @@ from pathlib import Path
 import re
 import subprocess
 import tempfile
+import time
 from urllib.error import HTTPError, URLError
 from urllib.parse import quote
 from urllib.request import Request, urlopen
@@ -282,6 +283,22 @@ def release_for_tag(api, tag):
     return drafts[0] if drafts else None
 
 
+def await_release_phase(api, directory, item, sha, draft, wait_seconds=30):
+    """Wait for a successful GoReleaser write to become visible to API reads."""
+    tag = tag_name(directory, item["version"])
+    deadline = time.monotonic() + wait_seconds
+    while True:
+        observed = release_for_tag(api, tag)
+        check_existing(directory, item, sha, sha, observed)
+        if observed and observed["draft"] == draft:
+            return observed
+        remaining = deadline - time.monotonic()
+        if remaining <= 0:
+            phase = "draft" if draft else "published Release"
+            raise ValueError(f"GoReleaser's expected {phase} is not visible after {wait_seconds}s: {tag}; preserve existing objects and resume after investigating.")
+        time.sleep(min(2, remaining))
+
+
 def check_existing(directory, item, sha, existing, release):
     tag = tag_name(directory, item["version"])
     if existing and existing != sha:
@@ -479,19 +496,13 @@ def publish(args, api):
             check_existing(directory, item, args.sha, args.sha, release)
             if not release:
                 run_goreleaser(directory, item, args, output, configs[directory], token=api.token)
-                release = release_for_tag(api, tag)
-                check_existing(directory, item, args.sha, args.sha, release)
-                if not release or not release["draft"]:
-                    raise ValueError(f"GoReleaser did not create the expected draft: {tag}")
+                release = await_release_phase(api, directory, item, args.sha, draft=True)
             evidence = verify_consumer(directory, item, modules[directory], session)
             record.update(consumer_verified=True, evidence=evidence)
             write_json(output / "progress.json", report)
             if release["draft"]:
                 run_goreleaser(directory, item, args, output, configs[directory], token=api.token, draft=False)
-                release = release_for_tag(api, tag)
-                check_existing(directory, item, args.sha, args.sha, release)
-                if not release or release["draft"]:
-                    raise ValueError(f"GoReleaser did not publish the expected Release: {tag}")
+                release = await_release_phase(api, directory, item, args.sha, draft=False)
             record.update(release_published=True, url=release["html_url"])
             write_json(output / "progress.json", report)
         report["completed"] = True
