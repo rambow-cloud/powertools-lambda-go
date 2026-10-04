@@ -121,7 +121,7 @@ def fixture():
                 imported = required if package == "examples" else BASE + "/commons"
                 identifier = "logger" if package == "examples" else "commons"
                 (directory / "value.go").write_text(f'package {package}\n\nimport "{imported}"\n\nconst Value = {identifier}.Value\n', encoding="utf-8")
-        (root / "tools/modules.json").write_text(json.dumps({"base": BASE, "modules": modules}), encoding="utf-8")
+        (root / "tools/modules.json").write_text(json.dumps({"base": BASE, "release_version": "v0.1.0", "modules": modules}), encoding="utf-8")
         shutil.copyfile(ROOT / "tools/modules.py", root / "tools/modules.py")
         (root / "go.work").write_text("go 1.26\n\nuse (\n" + "\n".join("\t" + ("." if module["directory"] == "." else "./" + module["directory"]) for module in modules) + "\n)\n", encoding="utf-8")
         (root / ".gitignore").write_text("dist/\n__pycache__/\n", encoding="utf-8")
@@ -139,10 +139,19 @@ def fixture():
 
 
 def args(**changes):
-    return SimpleNamespace(**{**dict(module=["logger"], all=False, issue=20, plan="fixture", overrides=None, bump="auto", local=True, auto_publish=False), **changes})
+    return SimpleNamespace(**{**dict(module=None, all=True, issue=20, plan="fixture", overrides=None, bump="auto", local=True, auto_publish=False), **changes})
 
 
 class VersionTests(unittest.TestCase):
+    def test_unified_increment_uses_all_changes_and_all_reserved_component_tags(self):
+        with fixture():
+            modules = release.manifest()
+            previous = {directory: release.tag_name(directory, "v0.1.0") for directory in (".", "logger", "metrics")}
+            self.assertEqual(preparation.unified_version(modules, previous, "auto", [{"type": "feature"}], []), "v0.2.0")
+            self.assertEqual(preparation.unified_version(modules, previous, "patch", [], ["metrics/v0.1.1", "tracer/xray/v0.9.0"]), "v0.1.2")
+            previous["logger"] = "logger/v0.2.3"
+            self.assertEqual(preparation.unified_version(modules, previous, "patch", [], []), "v0.2.4")
+
     def test_automatic_and_explicit_version_policy(self):
         cases = [
             ("v0.1.0", None, "auto", [], (), "v0.1.0"),
@@ -170,13 +179,15 @@ class VersionTests(unittest.TestCase):
 
 
 class PreparationTests(unittest.TestCase):
-    def test_first_component_release_includes_unpublished_dependencies_and_generates_history(self):
+    def test_first_unified_release_includes_all_modules_and_generates_history(self):
         with fixture() as (root, api, source):
             preparation.prepare(args(auto_publish=True), api)
-            plan = json.loads((root / "releases/fixture.json").read_text())
-            self.assertEqual(plan["requested_modules"], ["logger"])
-            self.assertEqual(plan["included_dependencies"], ["."])
-            self.assertEqual({item["directory"]: item["version"] for item in plan["modules"]}, {"logger": "v0.1.0", ".": "v0.1.0"})
+            plan = json.loads((root / "releases/fixture.json").read_text(encoding="utf-8"))
+            self.assertEqual(plan["schema_version"], 2)
+            self.assertEqual(plan["release_version"], "v0.1.0")
+            self.assertEqual(plan["requested_modules"], [".", "logger", "metrics"])
+            self.assertEqual(plan["included_dependencies"], [])
+            self.assertEqual({item["directory"]: item["version"] for item in plan["modules"]}, {"logger": "v0.1.0", ".": "v0.1.0", "metrics": "v0.1.0"})
             self.assertTrue(plan["auto_publish"])
             self.assertTrue(all(item["initial_summary"] for item in plan["modules"]))
             self.assertEqual(plan["modules"][0]["untracked_commits"][source]["description"], "Import modules")
@@ -185,7 +196,7 @@ class PreparationTests(unittest.TestCase):
 
     def test_patch_release_synchronizes_go_mod_go_work_and_development_consumers(self):
         with fixture() as (root, api, source):
-            for tag in ("v0.1.0", "logger/v0.1.0"):
+            for tag in ("v0.1.0", "logger/v0.1.0", "metrics/v0.1.0"):
                 command(root, "git", "tag", tag)
                 api.tag_shas[tag] = source
                 api.releases.append({"tag_name": tag, "draft": False, "prerelease": False})
@@ -197,21 +208,26 @@ class PreparationTests(unittest.TestCase):
             pr = {"number": 11, "title": "fix(logger): fix fields", "body": "## Release notes\n\n- logger | fix | Preserve temporary fields.\n", "merged_at": "2026-10-04T00:00:00Z", "merge_commit_sha": target, "base": {"ref": "main", "repo": {"full_name": release.REPOSITORY}}}
             api.associations[target] = [pr]
             preparation.prepare(args(), api)
-            plan = json.loads((root / "releases/fixture.json").read_text())
-            self.assertEqual([item["directory"] for item in plan["modules"]], ["logger"])
-            self.assertEqual(plan["modules"][0]["version"], "v0.1.1")
+            plan = json.loads((root / "releases/fixture.json").read_text(encoding="utf-8"))
+            self.assertEqual([item["directory"] for item in plan["modules"]], [".", "logger", "metrics"])
+            self.assertEqual({item["version"] for item in plan["modules"]}, {"v0.1.1"})
             self.assertIn("pull/11", plan["modules"][0]["notes"])
-            self.assertIn(BASE + "/logger v0.1.1", (root / "examples/go.mod").read_text())
+            self.assertNotIn("pull/11", plan["modules"][2]["notes"])
+            self.assertIn("Dependency alignment", plan["modules"][0]["notes"])
+            self.assertIn(BASE + " v0.1.1", (root / "metrics/go.mod").read_text(encoding="utf-8"))
+            self.assertIn(BASE + "/logger v0.1.1", (root / "examples/go.mod").read_text(encoding="utf-8"))
             workspace = json.loads(command(root, "go", "work", "edit", "-json", str(root / "go.work")))
             mappings = {(item["Old"]["Path"], item["Old"].get("Version")): item["New"]["Path"] for item in workspace["Replace"]}
             self.assertIn((BASE + "/logger", "v0.1.1"), mappings)
-            self.assertEqual(release.manifest()["metrics"]["version"], "v0.1.0")
+            self.assertEqual(release.manifest()["metrics"]["version"], "v0.1.1")
+            self.assertEqual(release.manifest()["tracer/xray"]["version"], "v0.1.0")
+            self.assertEqual(release.manifest_version(), "v0.1.1")
             self.assertIn("examples", plan["metadata_updates"])
 
     def test_all_prepares_every_maintained_component(self):
         with fixture() as (root, api, _):
             preparation.prepare(args(module=None, all=True), api)
-            plan = json.loads((root / "releases/fixture.json").read_text())
+            plan = json.loads((root / "releases/fixture.json").read_text(encoding="utf-8"))
             self.assertEqual({item["directory"] for item in plan["modules"]}, {".", "logger", "metrics"})
             self.assertEqual(plan["included_dependencies"], [])
 
@@ -263,11 +279,12 @@ class PreparationTests(unittest.TestCase):
             self.assertEqual(command(root, "git", "rev-parse", "HEAD^1"), source)
             self.assertEqual(command(root, "git", "status", "--porcelain"), "")
 
-    def test_unpublished_dependencies_are_expanded_transitively(self):
-        modules = {directory: {"public": True} for directory in ("logger", "metrics", ".")}
-        requirements = {"logger": [{"Path": BASE + "/metrics", "Version": "v0.1.0"}], "metrics": [{"Path": BASE, "Version": "v0.1.0"}], ".": []}
-        self.assertEqual(preparation.select_dependencies(["logger"], modules, requirements, lambda tag: False), ["logger", "metrics", "."])
-        self.assertEqual(preparation.select_dependencies(["logger"], modules, requirements, lambda tag: tag == "v0.1.0"), ["logger", "metrics"])
+    def test_partial_request_is_rejected_before_metadata_or_github_writes(self):
+        with fixture() as (root, api, _):
+            with self.assertRaisesRegex(ValueError, "component selection"):
+                preparation.prepare(args(module=["logger"], all=False), api)
+            self.assertEqual(command(root, "git", "status", "--porcelain"), "")
+            self.assertEqual(api.writes, [])
 
     def test_pushed_preparation_branch_recovers_after_pr_creation_failure(self):
         with fixture() as (root, api, source):
@@ -362,8 +379,23 @@ class NativeCheckTests(unittest.TestCase):
 
 
 class CompletionTests(unittest.TestCase):
+    def test_legacy_schema_one_plan_can_still_be_resolved_for_recovery(self):
+        with fixture() as (root, api, source):
+            event = self.merged(root, api, source)
+            # Supply frozen legacy contents at the original immutable commit.
+            original_git = release.git
+            legacy = {"schema_version": 1, "issue": 20, "source_sha": source, "modules": []}
+            def git(*arguments):
+                if arguments[0] == "show":
+                    return json.dumps(legacy)
+                return original_git(*arguments)
+            with patch.object(release, "git", side_effect=git):
+                resolved, data = completion.resolve_preparation(21, api)
+            self.assertEqual(data["schema_version"], 1)
+            self.assertEqual(resolved.sha, event["workflow_run"]["head_sha"])
+
     def merged(self, root, api, source, automatic=True):
-        plan = {"schema_version": 1, "issue": 20, "source_sha": source, "auto_publish": automatic, "modules": []}
+        plan = {"schema_version": 2, "release_version": "v0.1.0", "issue": 20, "source_sha": source, "auto_publish": automatic, "modules": []}
         (root / "releases").mkdir()
         (root / "releases/fixture.json").write_text(json.dumps(plan), encoding="utf-8")
         command(root, "git", "add", ".")
@@ -409,10 +441,10 @@ class CompletionTests(unittest.TestCase):
 
 class WorkflowTests(unittest.TestCase):
     def test_preparation_and_completion_need_no_additional_secret(self):
-        workflow = yaml.safe_load((ROOT / ".github/workflows/prepare-release.yml").read_text())
+        workflow = yaml.safe_load((ROOT / ".github/workflows/prepare-release.yml").read_text(encoding="utf-8"))
         events = workflow.get("on", workflow.get(True))
         self.assertEqual(set(events), {"workflow_dispatch"})
-        self.assertEqual(set(events["workflow_dispatch"]["inputs"]), {"scope", "bump", "auto_publish"})
+        self.assertEqual(set(events["workflow_dispatch"]["inputs"]), {"bump", "auto_publish"})
         self.assertTrue(events["workflow_dispatch"]["inputs"]["auto_publish"]["default"])
         self.assertFalse(workflow["concurrency"]["cancel-in-progress"])
         self.assertEqual(workflow["jobs"]["prepare"]["permissions"]["actions"], "write")

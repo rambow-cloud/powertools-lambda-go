@@ -1,6 +1,6 @@
 # Optional utilities and Go publishing
 
-Assessment date: 2026-09-14; publication identity updated 2026-09-27. Feature modules have independent dependencies and versions in one repository. Module boundaries are implemented; see [MODULES.md](MODULES.md) for the actual layout and maintenance commands. The selected repository path is `github.com/rambow-cloud/powertools-lambda-go`. The 27 maintained public modules were published as `v0.1.0` on 2026-10-04; see [public release acceptance](RELEASE_ACCEPTANCE.json). The frozen X-Ray adapter was excluded.
+Assessment date: 2026-09-14; publication identity updated 2026-09-27; unified version policy adopted 2026-10-05. Feature modules have independent dependencies and one shared release version in this repository. Module boundaries are implemented; see [MODULES.md](MODULES.md) for the actual layout and maintenance commands. The selected repository path is `github.com/rambow-cloud/powertools-lambda-go`. The 27 maintained public modules were published as `v0.1.0` on 2026-10-04; see [public release acceptance](RELEASE_ACCEPTANCE.json). The frozen X-Ray adapter was excluded.
 
 ## Consumer experience
 
@@ -27,9 +27,9 @@ The example uses the publicly verified Parser `v0.1.0` release. The existing uti
 | Compile utility packages absent from the application's transitive imports | Not required | Not required |
 | Source download boundary | Entire containing module | Selected modules and required dependencies |
 | Dependency requirements and minimum Go version | Shared `go.mod` | Each module owns its requirements |
-| Select independent utility versions | No | Yes |
+| Release version policy | One version | One shared version across independent modules |
 | Version tag for Parser v0.1.0 | `v0.1.0` | `parser/v0.1.0` |
-| Maintenance | One release/test boundary | Per-module releases and consumer compatibility checks |
+| Maintenance | One release/test boundary | One release cohort with per-module consumer compatibility checks |
 
 A single module does not automatically compile or link every listed dependency into a Lambda binary. Conversely, importing one package does not make the module's dependency metadata, source archive, or version independent. Graph pruning and lazy loading can avoid some unrelated dependency retrieval; they are not an extras mechanism or a guarantee that unrelated dependency metadata is never consulted.
 
@@ -46,7 +46,7 @@ The split follows these boundaries:
 3. Keep exactly one shared invocation context key and cold-start state. Feature modules under the existing repository import prefix can still access the root `internal/invocation` package: Go's `internal` rule is based on the parent import path, not simply on module boundaries. Moving it to `commons/internal` would prevent sibling utility imports; copying it would break wrapper composition. The root core must not import feature modules, including through tests.
 4. Isolate `tracer/xray` from the OTel Tracer module to keep the deferred legacy SDK optional at the module level. Initially keep the Parameters providers together; consider finer provider modules only if consumer dependency budgets justify them.
 5. Move examples and integration programs into development modules so their combined imports do not pull every utility back into the core module. Use `go.work` for local composition. Release verification must also work with `GOWORK=off` and published dependency versions, without local `replace` paths.
-6. Keep a consistent initial release version if helpful, but issue a tag for each changed module (`parser/v0.1.0`, `signer/v0.1.0`, and so on). Publish shared dependencies first. A future major v2 requires the corresponding `/v2` module/import suffix. Do not promise a transparent split after consumers already depend on root-module versions; perform it before initial publication.
+6. Release every maintained public module at one shared version, with its required tag (`parser/v0.1.1`, `signer/v0.1.1`, and so on). Publish shared dependencies first and finalize the root unified summary last. A future major v2 requires the corresponding `/v2` module/import suffix. The module split predates public publication; the unified version policy preserves those module paths and boundaries.
 
 Optional parser/schema and Kafka codec integrations should use explicit adapters with small interfaces, not feature build tags or a root package that imports all utilities. Build tags do not offer equivalent dependency isolation because module maintenance considers files across build tags.
 

@@ -1,5 +1,5 @@
 name: Release tracking
-description: Agree on module versions, release scope, and compatibility before publication.
+description: Track one version for all maintained public components.
 title: "[Release]: "
 body:
   - type: markdown
@@ -7,14 +7,14 @@ body:
       value: |
         Follow docs/RELEASING.md. Keep this issue open through the preparation
         PR using Refs, then close it only after publication and consumer checks.
-        This community project publishes modules independently; merging source
-        does not publish a version.
-  - type: textarea
-    id: modules
+        All maintained public modules release together at one version. Merging
+        an ordinary source PR does not publish a version.
+  - type: input
+    id: version
     attributes:
-      label: Modules and target versions
-      description: List each directory and version, including unpublished internal dependencies. Development and deprecated frozen modules are excluded.
-      placeholder: "logger v0.1.0; . v0.1.0"
+      label: Unified release version
+      description: State the shared target or auto/patch/minor/major increment. Every maintained public module is included; development and frozen modules are excluded.
+      placeholder: "patch (all maintained components)"
     validations:
       required: true
   - type: textarea
@@ -28,7 +28,7 @@ body:
     id: history
     attributes:
       label: Previous versions and accumulated changes
-      description: Each module uses its own previous published tag. Link relevant PRs and identify missing historical summaries or commits without PRs.
+      description: Link the previous project version and relevant PRs. The root Release groups actual changes by component and shows the full version table.
     validations:
       required: true
   - type: textarea
@@ -43,7 +43,7 @@ body:
     attributes:
       label: Before publication
       options:
-        - label: I understand that publication needs an explicit Actions dispatch after the preparation PR is merged.
+        - label: I understand that merging a preparation PR with automatic publication enabled authorizes the full unified release after checks pass; manual publication remains available.
           required: true
         - label: I removed credentials and private data from release scope and evidence.
           required: true
