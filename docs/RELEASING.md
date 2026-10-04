@@ -75,7 +75,8 @@ recorded source must still be its first parent; if main advances first, rerun
 preparation against current main and use the newly generated PR.
 
 With automatic publication enabled, merging this preparation PR authorizes its
-frozen release batch. After both required main checks pass, GoReleaser publishes
+frozen release batch. After all three required main checks pass (Modules and Lambda
+artifacts, Runtime simulation, and Build documentation), GoReleaser publishes
 in dependency order and the tracking issue closes after public consumer checks.
 Ordinary feature/bug PR merges do not publish modules.
 

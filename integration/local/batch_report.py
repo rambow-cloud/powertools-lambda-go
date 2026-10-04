@@ -5,6 +5,8 @@ import hashlib
 import json
 from pathlib import Path
 
+from run import acceptance_path, execution_identity
+
 root = Path(__file__).resolve().parents[2]
 directory = root / "dist/local"
 report = json.loads((directory / "report.json").read_text(encoding="utf-8"))
@@ -48,7 +50,8 @@ for invocation in report["invocations"]:
 
 check("three successful invocation probes", sum("batch" in value["response"] for value in report["invocations"]) == 3)
 summary = {"source": "existing local Docker artifacts; no additional invocations", "passed": all(item["passed"] for item in checks), "checks": checks, "sha256": {name: hashlib.sha256((directory / name).read_bytes()).hexdigest() for name in ("report.json", "otlp.json", "lambda.log")}}
-(root / "docs/BATCH_ACCEPTANCE.json").write_text(json.dumps(summary, indent=2) + "\n", encoding="utf-8")
+summary["execution"] = execution_identity()
+acceptance_path("BATCH_ACCEPTANCE.json").write_text(json.dumps(summary, indent=2) + "\n", encoding="utf-8")
 failed = [item["name"] for item in checks if not item["passed"]]
 print(f"Batch composition: {len(checks) - len(failed)}/{len(checks)} checks passed")
 if failed:

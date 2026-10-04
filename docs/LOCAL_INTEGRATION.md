@@ -2,6 +2,45 @@
 
 Latest recorded runtime acceptance (2026-10-04, Logger TextMarshaler follow-up): 904/904 Lambda RIE assertions, 95/95 streaming checks and 14/14 saved Batch checks, including six new assertions for empty-string TextMarshaler values/errors. All 31 packaged modules and 28 public consumers passed one complete check; the same flow rebuilt normal and streaming handlers for Linux amd64/arm64 with CGO disabled. Docker executed amd64. Docker Desktop was restarted before validation after an engine HTTP 500; a private temporary container kept the engine active during the complete run and was removed afterward. Runtime metadata records that module checks and builds both executed. See [packaged evidence](MODULE_ACCEPTANCE_LOGGER.json), [acceptance history](LOCAL_VALIDATION.md) and [runtime evidence](LOCAL_ACCEPTANCE.json). No AWS resources were used; exhaustive parity and browser review remain separate gates.
 
+## GitHub Actions
+
+First hosted runtime acceptance (2026-10-05): PR #32's native
+[Go CI run](https://github.com/rambow-cloud/powertools-lambda-go/actions/runs/37233122495)
+passed all 31 packaged modules, 28 public consumers, 904 RIE/Valkey assertions,
+95 streaming checks, 14 Batch checks, and 108 KMS reverse-interop checks.
+The runtime rebuilt both architectures, executed amd64, preserved checked-in
+reports, and cleaned up without errors. The [acceptance summary](CI_RUNTIME_ACCEPTANCE.json)
+records the tested PR merge SHA, run/attempt, suite counts, and six binary hashes;
+it is distinct from the historical local acceptance above.
+
+Go CI runs **Runtime simulation** on every pull request, main push, and manual
+dispatch after **Modules and Lambda artifacts** passes. It installs Node.js
+22.21.1 and reference dependencies with `npm ci`, then uses
+`integration/local/run.py --skip-module-checks`: module tests are reused from
+the prerequisite job while normal and streaming fixtures are freshly built for
+Linux amd64 and arm64. Docker executes amd64 Lambda RIE, streaming, and the live
+TypeScript/Go Valkey bridge. Batch checks consume that same run's logs/spans;
+the separate KMS executable emits Go ciphertext for the pinned TypeScript
+provider's reverse interoperability checks. All endpoints and credentials are
+synthetic; no AWS secrets or cloud resources are required.
+
+CI sets `POWERTOOLS_ACCEPTANCE_DIR` to the ignored `dist/runtime-acceptance`
+directory so Streaming, Batch, and KMS reports preserve the checked-in local
+acceptance history. Each report identifies its commit, workflow run, and attempt.
+`integration/local/ci_report.py` rejects missing/empty/failed suites, stale
+identity, reused builds, missing binaries, Batch artifact hash mismatches, and
+cleanup errors. It writes a job summary and SHA-256 hashes for all six binaries.
+The `runtime-simulation-SHA-RUN-ATTEMPT` artifact retains reports and diagnostic
+logs for seven days, including on failure; build caches and binaries are excluded.
+
+Both merge protection and release publication must require **Runtime simulation**.
+See [maintainer setup](MAINTAINING.md) for rollout. Checked-in Go reference
+corpora run in the module job; the full Node fixture regeneration command remains
+a deliberate development operation when reference versions or generators change.
+Runtime simulation does not establish arm64 execution or live AWS acceptance.
+
+## Local execution
+
 Run from the repository root with local Go, Python 3.10+ (or `uv`), Node.js with the pinned reference dependencies, and Docker Desktop using Linux containers:
 
 ```powershell

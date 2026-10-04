@@ -8,7 +8,7 @@ import time
 import uuid
 from pathlib import Path
 
-from run import IMAGE, OUT, ROOT, prepare, run
+from run import IMAGE, OUT, ROOT, acceptance_path, execution_identity, prepare, run
 
 
 def main():
@@ -23,6 +23,7 @@ def main():
     network, capture, function = prefix, prefix + '-capture', prefix + '-lambda'
     containers = []
     report = {'scope': 'real aws-lambda-go SDK against a local Runtime API fixture; not AWS service acceptance', 'completed': False, 'cgo_enabled': False, 'runtime_architecture': 'amd64', 'binary_architectures': ['amd64', 'arm64'], 'image': IMAGE, 'checks': [], 'invocations': [], 'cleanup_errors': []}
+    report['execution'] = execution_identity()
 
     def check(name, passed):
         report['checks'].append({'name': name, 'passed': bool(passed)})
@@ -128,7 +129,7 @@ def main():
     if not report['passed']:
         raise RuntimeError(f"Stream acceptance failures: {[check['name'] for check in report['checks'] if not check['passed']]}; cleanup: {report['cleanup_errors']}")
     report['assertion_count'] = len(report['checks'])
-    (ROOT / 'docs/STREAMING_ACCEPTANCE.json').write_text(json.dumps(report, indent=2) + '\n', encoding='utf-8', newline='\n')
+    acceptance_path('STREAMING_ACCEPTANCE.json').write_text(json.dumps(report, indent=2) + '\n', encoding='utf-8', newline='\n')
     print(f"Streaming: {len(report['checks'])}/{len(report['checks'])} checks passed; real Go Lambda SDK, local Runtime API fixture")
 
 

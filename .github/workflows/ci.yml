@@ -66,3 +66,65 @@ jobs:
           path: dist/modules/check-*/progress.json
           if-no-files-found: ignore
           retention-days: 7
+
+  runtime:
+    name: Runtime simulation
+    needs: test
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    env:
+      POWERTOOLS_ACCEPTANCE_DIR: ${{ github.workspace }}/dist/runtime-acceptance
+      GOMAXPROCS: '2'
+      GOFLAGS: '-p=1'
+      GOMEMLIMIT: 128MiB
+      GOGC: '20'
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
+        with:
+          go-version-file: go.mod
+          cache-dependency-path: '**/go.sum'
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: '22.21.1'
+      - uses: astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7 # v10.2.0
+        with:
+          python-version: '3.14'
+          enable-cache: false
+      - name: Test runtime evidence safeguards
+        run: uv run --no-project python tools/test_runtime_ci.py
+      - name: Install pinned TypeScript reference dependencies
+        run: npm ci --prefix tools/reference
+      - name: Build both architectures and run Lambda, streaming, and Valkey simulations
+        run: uv run --no-project python integration/local/run.py --skip-module-checks
+      - name: Verify Batch logs and spans from this run
+        run: uv run --no-project python integration/local/batch_report.py
+      - name: Build KMS interoperability executable
+        run: go build -trimpath -o dist/local/amd64/kmsinterop ./integration/kmsinterop
+        env:
+          GOOS: linux
+          GOARCH: amd64
+      - name: Verify Go ciphertext with the pinned TypeScript provider
+        working-directory: tools/reference
+        run: node generate-datamasking-kms.mjs --verify-go ../../dist/local/amd64/kmsinterop
+      - name: Validate and summarize current-commit runtime evidence
+        if: always()
+        run: uv run --no-project python integration/local/ci_report.py
+      - name: Ensure simulations preserve checked-in acceptance history
+        run: git diff --exit-code
+      - name: Upload runtime acceptance and diagnostics
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: runtime-simulation-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            dist/runtime-acceptance/*.json
+            dist/runtime-acceptance/*.md
+            dist/local/*.json
+            dist/local/*.log
+            dist/local/streaming/*.json
+            dist/local/streaming/*.log
+          if-no-files-found: warn
+          retention-days: 7

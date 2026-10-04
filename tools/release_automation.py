@@ -62,7 +62,7 @@ def automatic_preparation(event, api):
         print("No publication: the release tracking issue is already closed.")
         return None
     try:
-        release.check_runs(api, sha, ["Modules and Lambda artifacts", "Build documentation"])
+        release.check_runs(api, sha, release.MAIN_CHECKS)
     except ValueError:
         print("No publication yet: required main checks have not all passed. Their next completion event will re-evaluate this batch.")
         return None
