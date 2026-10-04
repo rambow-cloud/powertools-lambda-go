@@ -232,6 +232,9 @@ the shared configuration defaults to draft releases.
 GoReleaser owns GitHub Release creation and finalization. The Python tooling
 prepares accumulated PR notes, enforces the reviewed plan, orders dependencies,
 creates exact tags, verifies public consumers, and completes the tracking issue.
+GitHub's by-tag API returns published Releases. The adapter finds matching
+drafts through authenticated release listing, rejects duplicate matches, and
+validates existing notes/tag targets before resuming.
 It passes each frozen Markdown file using `--release-notes`; GoReleaser does not
 replace it with a repository-wide commit changelog. Existing notes are kept;
 conflict detection tolerates only terminal newline formatting differences.
@@ -288,8 +291,9 @@ advances, preparation creates a fresh plan and PR for the new source.
 
 For publication failures, inspect workflow logs and the
 `release-progress-RUN_ID` artifact, including per-module GoReleaser phase
-configurations, metadata, and logs. Failed consumer checks preserve tags/drafts
-and leave the tracking issue open. A tag already makes a Go version publicly
+configurations, metadata, and logs. Public-consumer dependency/build caches
+stay on the runner. Failed consumer checks preserve tags/drafts and leave the
+tracking issue open. A tag already makes a Go version publicly
 addressable; a draft Release is not rollback. Never delete, move, or rewrite a
 conflicting version.
 
