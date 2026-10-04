@@ -23,6 +23,16 @@ var loggerProbeMarshalError = errors.New("probe marshaler failed")
 
 func (loggerProbeErrorString) MarshalJSON() ([]byte, error) { return nil, loggerProbeMarshalError }
 
+type loggerProbeText string
+
+func (loggerProbeText) MarshalText() ([]byte, error) { return []byte("custom text"), nil }
+
+type loggerProbeErrorText string
+
+var loggerProbeTextError = errors.New("probe text marshaler failed")
+
+func (loggerProbeErrorText) MarshalText() ([]byte, error) { return nil, loggerProbeTextError }
+
 // loggerParityProbe exercises the public Logger APIs with actual Lambda context
 // and invocation scope. Private output keeps probe records out of business logs.
 func loggerParityProbe(ctx context.Context) (map[string]any, error) {
@@ -134,5 +144,15 @@ func loggerParityProbe(ctx context.Context) (map[string]any, error) {
 	result["marshaler_records"] = documents
 	marshalErr := parent.Info("custom string error", logger.Fields{"payload": loggerProbeErrorString("")})
 	result["marshaler_error_preserved"] = errors.Is(marshalErr, loggerProbeMarshalError) && output.Len() == 0
+	if err := parent.Info("custom text", logger.Fields{"payload": loggerProbeText("")}); err != nil {
+		return nil, err
+	}
+	documents, err = read()
+	if err != nil {
+		return nil, err
+	}
+	result["text_marshaler_records"] = documents
+	textErr := parent.Info("custom text error", logger.Fields{"payload": loggerProbeErrorText("")})
+	result["text_marshaler_error_preserved"] = errors.Is(textErr, loggerProbeTextError) && output.Len() == 0
 	return result, nil
 }

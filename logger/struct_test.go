@@ -18,14 +18,39 @@ var emptyStringJSONError = errors.New("custom string marshaling failed")
 
 func (failingEmptyStringJSON) MarshalJSON() ([]byte, error) { return nil, emptyStringJSONError }
 
+type emptyStringText string
+
+func (emptyStringText) MarshalText() ([]byte, error) { return []byte("custom text"), nil }
+
+type failingEmptyStringText string
+
+var emptyStringTextError = errors.New("custom text marshaling failed")
+
+func (failingEmptyStringText) MarshalText() ([]byte, error) { return nil, emptyStringTextError }
+
+type emptyTextOutput string
+
+func (emptyTextOutput) MarshalText() ([]byte, error) { return []byte{}, nil }
+
+type dualEmptyString string
+
+func (dualEmptyString) MarshalJSON() ([]byte, error) { return []byte(`"json value"`), nil }
+func (dualEmptyString) MarshalText() ([]byte, error) { return nil, emptyStringTextError }
+
 func TestEmptyStringAttributeMarshalers(t *testing.T) {
 	cleanEnv(t)
 	for _, tc := range []struct {
-		name  string
-		value any
+		name        string
+		value       any
+		wantPayload string
+		wantErr     error
 	}{
-		{"value", emptyStringJSON("")},
-		{"error", failingEmptyStringJSON("")},
+		{"value", emptyStringJSON(""), "custom value", nil},
+		{"error", failingEmptyStringJSON(""), "", emptyStringJSONError},
+		{"text-value", emptyStringText(""), "custom text", nil},
+		{"text-error", failingEmptyStringText(""), "", emptyStringTextError},
+		{"text-empty", emptyTextOutput(""), "", nil},
+		{"dual", dualEmptyString(""), "json value", nil},
 	} {
 		for _, source := range []string{"extra", "persistent", "temporary", "formatter"} {
 			for _, replace := range []bool{false, true} {
@@ -61,9 +86,9 @@ func TestEmptyStringAttributeMarshalers(t *testing.T) {
 						l.AppendKeys(fields)
 					}
 					err := l.Info("record", extra...)
-					if tc.name == "error" {
+					if tc.wantErr != nil {
 						var marshalErr *json.MarshalerError
-						if !errors.Is(err, emptyStringJSONError) || !errors.As(err, &marshalErr) || output.Len() != 0 {
+						if !errors.Is(err, tc.wantErr) || !errors.As(err, &marshalErr) || output.Len() != 0 {
 							t.Fatalf("marshaler error lost: output=%s error=%v", &output, err)
 						}
 					} else {
@@ -71,7 +96,7 @@ func TestEmptyStringAttributeMarshalers(t *testing.T) {
 							t.Fatal(err)
 						}
 						got := records(t, &output)[0]
-						if got["payload"] != "custom value" {
+						if got["payload"] != tc.wantPayload {
 							t.Fatalf("marshaler value lost: %v", got)
 						}
 						if _, ok := got["empty"]; ok {

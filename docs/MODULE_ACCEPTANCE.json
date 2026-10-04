@@ -5,22 +5,39 @@
   "completed": true,
   "modules": [
     {
+      "path": "github.com/rambow-cloud/powertools-lambda-go",
       "directory": ".",
       "public": true,
       "version": "v0.1.0",
-      "archive_sha256": "69df2f189ae033953f2cc62fb8f078aa72398ea27967281b3ee3e70abf26948e",
+      "archive_sha256": "4d17d1aeb505f74f3075c211b5828845f46d18dde1e1bb8bdd98ac6c6a925380",
       "tests": true,
       "vet": true,
       "tidy": true,
       "consumer_build": true,
       "external_modules": [],
-      "binary_bytes": 2580992
+      "binary_bytes": 2613248
     },
     {
+      "path": "github.com/rambow-cloud/powertools-lambda-go/commons/regex",
+      "directory": "commons/regex",
+      "public": true,
+      "version": "v0.1.0",
+      "archive_sha256": "78222edd2996f33202375a6a51fdada0b134d01d2d0a056f85006aa814d8fc1f",
+      "tests": true,
+      "vet": true,
+      "tidy": true,
+      "consumer_build": true,
+      "external_modules": [
+        "github.com/dlclark/regexp2/v2"
+      ],
+      "binary_bytes": 4669952
+    },
+    {
+      "path": "github.com/rambow-cloud/powertools-lambda-go/signer",
       "directory": "signer",
       "public": true,
       "version": "v0.1.0",
-      "archive_sha256": "d2166cca3e15a0edba3ce08794e7cb63fed2a95aa168355dcebee21ac853e351",
+      "archive_sha256": "2c0ee5c1826f05e8df5d9dd9a356839e535872a11fdd88ddbac37cd9778e25de",
       "tests": true,
       "vet": true,
       "tidy": true,
@@ -29,23 +46,25 @@
         "github.com/aws/aws-sdk-go-v2",
         "github.com/aws/smithy-go"
       ],
-      "binary_bytes": 5282304
+      "binary_bytes": 5602304
     },
     {
+      "path": "github.com/rambow-cloud/powertools-lambda-go/tools",
       "directory": "tools",
       "public": false,
       "version": "v0.1.0",
-      "archive_sha256": "a0329426be428ce6df3886e154b6707341d4b1aee1314770095d33889029cc58",
+      "archive_sha256": "02b23d45db4aac32656bba57b3066611674a442b739f7d9405bbd479539301bc",
       "tests": true,
       "vet": true,
       "tidy": true,
       "external_modules": []
     },
     {
+      "path": "github.com/rambow-cloud/powertools-lambda-go/batch",
       "directory": "batch",
       "public": true,
       "version": "v0.1.0",
-      "archive_sha256": "3e485612090075d1ead0973be3cbfcfb10d0c956d968a34225fbe820be6b62b0",
+      "archive_sha256": "3ff8b40789d03c658990761ae54703b479c67d512a82743285fb3ece4a805c13",
       "tests": true,
       "vet": true,
       "tidy": true,
@@ -57,13 +76,14 @@
         "github.com/stretchr/testify",
         "gopkg.in/yaml.v3"
       ],
-      "binary_bytes": 5531648
+      "binary_bytes": 5855232
     },
     {
+      "path": "github.com/rambow-cloud/powertools-lambda-go/commons/awssdk",
       "directory": "commons/awssdk",
       "public": true,
       "version": "v0.1.0",
-      "archive_sha256": "6a838eaf08577cd575dec64f5740b92d622bbf0b1c920c6762860376860c009c",
+      "archive_sha256": "94b439998204f8f02afa920c1ba16769832d8d0315d4d83d5ef9d23358ba67b1",
       "tests": true,
       "vet": true,
       "tidy": true,
@@ -75,13 +95,14 @@
         "github.com/aws/aws-sdk-go-v2/service/ssm",
         "github.com/aws/smithy-go"
       ],
-      "binary_bytes": 5548032
+      "binary_bytes": 5877760
     },
     {
+      "path": "github.com/rambow-cloud/powertools-lambda-go/commons/dynamodb",
       "directory": "commons/dynamodb",
       "public": true,
       "version": "v0.1.0",
-      "archive_sha256": "997d3aa222ec21d7943fc40c3c5fe9d24205d252b1e3e25242087b907fff5136",
+      "archive_sha256": "b374e4a8e3681fb260f7414f55b4dcc45f54248b2d98d0e9517c18508b6566a8",
       "tests": true,
       "vet": true,
       "tidy": true,
@@ -97,85 +118,92 @@
         "github.com/aws/aws-sdk-go-v2/service/internal/endpoint-discovery",
         "github.com/aws/smithy-go"
       ],
-      "binary_bytes": 2740224
+      "binary_bytes": 3164160
     },
     {
+      "path": "github.com/rambow-cloud/powertools-lambda-go/commons/metadata",
       "directory": "commons/metadata",
       "public": true,
       "version": "v0.1.0",
-      "archive_sha256": "70c4d583f4d292267005c6573bfb732182e120c574a197c42c1012b13e55a4aa",
+      "archive_sha256": "8aac8b9fe97edfe705d22cb62f297453d4a88bcae11adcafbdfa47cfc79ced9e",
       "tests": true,
       "vet": true,
       "tidy": true,
       "consumer_build": true,
       "external_modules": [],
-      "binary_bytes": 5532672
+      "binary_bytes": 5859328
     },
     {
+      "path": "github.com/rambow-cloud/powertools-lambda-go/datamasking",
       "directory": "datamasking",
       "public": true,
       "version": "v0.1.0",
-      "archive_sha256": "1140476275864561d072c893b6d904366b2c9f5f2f5b9e1060421f83aacfef9a",
+      "archive_sha256": "a0af3350e9bde0c4d46a521e1274c938afc3cb24fab9257409955dfc16e122cb",
       "tests": true,
       "vet": true,
       "tidy": true,
       "consumer_build": true,
       "external_modules": [],
-      "binary_bytes": 2626560
+      "binary_bytes": 3155968
     },
     {
+      "path": "github.com/rambow-cloud/powertools-lambda-go/eventhandler/appsyncevents",
       "directory": "eventhandler/appsyncevents",
       "public": true,
       "version": "v0.1.0",
-      "archive_sha256": "e741c90a715120818548e27e873ebdd8b8f4def54fc9a01adec63a0c0a579007",
+      "archive_sha256": "d873f72f5496c14c6bcf669def78a88c97c2ae9d48f7cad90c2cae14842f1ded",
       "tests": true,
       "vet": true,
       "tidy": true,
       "consumer_build": true,
       "external_modules": [],
-      "binary_bytes": 2627584
+      "binary_bytes": 3161088
     },
     {
+      "path": "github.com/rambow-cloud/powertools-lambda-go/eventhandler/appsyncgraphql",
       "directory": "eventhandler/appsyncgraphql",
       "public": true,
       "version": "v0.1.0",
-      "archive_sha256": "26a9bf3c3ea330ebb3244db6a27fadd2a001b058720869913713ebcea1888299",
+      "archive_sha256": "859a311c3cc428a27358c7ab2a156d94b3a6f4c78e69950e419cb5e42fd01ba4",
       "tests": true,
       "vet": true,
       "tidy": true,
       "consumer_build": true,
       "external_modules": [],
-      "binary_bytes": 2784256
+      "binary_bytes": 2815488
     },
     {
+      "path": "github.com/rambow-cloud/powertools-lambda-go/eventhandler/bedrock",
       "directory": "eventhandler/bedrock",
       "public": true,
       "version": "v0.1.0",
-      "archive_sha256": "8720b7e84ed897be512d08d2d4783109eab080febfa8ef57f49c0a22074d09bb",
+      "archive_sha256": "a2a0c89936007fb9396a57932d18a0c95ee99163584f6b6ee9bf83f53e497cf7",
       "tests": true,
       "vet": true,
       "tidy": true,
       "consumer_build": true,
       "external_modules": [],
-      "binary_bytes": 2627072
+      "binary_bytes": 3155968
     },
     {
+      "path": "github.com/rambow-cloud/powertools-lambda-go/eventhandler/http",
       "directory": "eventhandler/http",
       "public": true,
       "version": "v0.1.0",
-      "archive_sha256": "5624be070e6244e80cec9ed29eefa898fd975539ab6ee1fcd2372ad261995e0b",
+      "archive_sha256": "5e62d66311aabcd8a4941c8baa046746067caf7b201d531c5cfc89c244b137c8",
       "tests": true,
       "vet": true,
       "tidy": true,
       "consumer_build": true,
       "external_modules": [],
-      "binary_bytes": 5531648
+      "binary_bytes": 5858304
     },
     {
+      "path": "github.com/rambow-cloud/powertools-lambda-go/jmespath",
       "directory": "jmespath",
       "public": true,
       "version": "v0.1.0",
-      "archive_sha256": "20b596992c2276805729450606f7df8232380bd69b30d5c80d4d18280cb37843",
+      "archive_sha256": "f254d8c663a3b4a9b84384998cb6517f3c44aa4004ecfa7368d52cf8e57c1ddc",
       "tests": true,
       "vet": true,
       "tidy": true,
@@ -192,25 +220,27 @@
         "golang.org/x/tools",
         "gopkg.in/yaml.v3"
       ],
-      "binary_bytes": 2672640
+      "binary_bytes": 3223040
     },
     {
+      "path": "github.com/rambow-cloud/powertools-lambda-go/kafka",
       "directory": "kafka",
       "public": true,
       "version": "v0.1.0",
-      "archive_sha256": "4eafe77d8db597861ac389abd277f7a8ecf934261bb4264f964c3da8237cd76d",
+      "archive_sha256": "63cce9360d920e296350e6880204455d805b6608384a9adf5a7a06ad1946f6f4",
       "tests": true,
       "vet": true,
       "tidy": true,
       "consumer_build": true,
       "external_modules": [],
-      "binary_bytes": 2626560
+      "binary_bytes": 3160576
     },
     {
+      "path": "github.com/rambow-cloud/powertools-lambda-go/logger",
       "directory": "logger",
       "public": true,
       "version": "v0.1.0",
-      "archive_sha256": "e48fb13ec401c6c503103f4194876dd313293ee6752dd5f78015b60d593140fc",
+      "archive_sha256": "bfd62613dd2eb7c63afb04f4447c062b6f6870d6daf10351de793aab1a98a81f",
       "tests": true,
       "vet": true,
       "tidy": true,
@@ -231,49 +261,96 @@
         "go.yaml.in/yaml/v3",
         "gopkg.in/yaml.v3"
       ],
-      "binary_bytes": 3565056
+      "binary_bytes": 3761152
     },
     {
+      "path": "github.com/rambow-cloud/powertools-lambda-go/metrics",
       "directory": "metrics",
       "public": true,
       "version": "v0.1.0",
-      "archive_sha256": "888190935317b68315be27271d008b04c1fadbb21f6436edaba5c6af3561b697",
+      "archive_sha256": "0e54bf02fc1c175c726d29397fd1eb728053e3513d1f6a1bb9f45e86b3cc1a88",
       "tests": true,
       "vet": true,
       "tidy": true,
       "consumer_build": true,
       "external_modules": [],
-      "binary_bytes": 2726400
+      "binary_bytes": 3187200
     },
     {
+      "path": "github.com/rambow-cloud/powertools-lambda-go/parser",
       "directory": "parser",
       "public": true,
       "version": "v0.1.0",
-      "archive_sha256": "a676ad61c0a96c1f04428ded9d8d2f2793216559e3498aa0bc9381d4509803cd",
+      "archive_sha256": "ad0a9d640a88d0b01049749730d9b04d4eadef06be22bd4a60f5fe683947d8af",
       "tests": true,
       "vet": true,
       "tidy": true,
       "consumer_build": true,
       "external_modules": [],
-      "binary_bytes": 3682304
+      "binary_bytes": 4546560
     },
     {
+      "path": "github.com/rambow-cloud/powertools-lambda-go/datamasking/kms",
+      "directory": "datamasking/kms",
+      "public": true,
+      "version": "v0.1.0",
+      "archive_sha256": "9d182bb54263202aaec36fca520c9a6cf054b39de26ec8aeca170acdb96e7f4a",
+      "tests": true,
+      "vet": true,
+      "tidy": true,
+      "binary_os": "linux",
+      "binary_architecture": "amd64",
+      "tests_runtime": "docker-linux-amd64",
+      "consumer_build": true,
+      "external_modules": [
+        "github.com/aws/aws-cryptographic-material-providers-library/releases/go/dynamodb",
+        "github.com/aws/aws-cryptographic-material-providers-library/releases/go/kms",
+        "github.com/aws/aws-cryptographic-material-providers-library/releases/go/mpl",
+        "github.com/aws/aws-cryptographic-material-providers-library/releases/go/primitives",
+        "github.com/aws/aws-cryptographic-material-providers-library/releases/go/smithy-dafny-standard-library",
+        "github.com/aws/aws-encryption-sdk/releases/go/encryption-sdk",
+        "github.com/aws/aws-sdk-go-v2",
+        "github.com/aws/aws-sdk-go-v2/config",
+        "github.com/aws/aws-sdk-go-v2/credentials",
+        "github.com/aws/aws-sdk-go-v2/feature/ec2/imds",
+        "github.com/aws/aws-sdk-go-v2/internal/configsources",
+        "github.com/aws/aws-sdk-go-v2/internal/endpoints/v2",
+        "github.com/aws/aws-sdk-go-v2/internal/v4a",
+        "github.com/aws/aws-sdk-go-v2/service/dynamodb",
+        "github.com/aws/aws-sdk-go-v2/service/internal/accept-encoding",
+        "github.com/aws/aws-sdk-go-v2/service/internal/endpoint-discovery",
+        "github.com/aws/aws-sdk-go-v2/service/internal/presigned-url",
+        "github.com/aws/aws-sdk-go-v2/service/kms",
+        "github.com/aws/aws-sdk-go-v2/service/signin",
+        "github.com/aws/aws-sdk-go-v2/service/ssm",
+        "github.com/aws/aws-sdk-go-v2/service/sso",
+        "github.com/aws/aws-sdk-go-v2/service/ssooidc",
+        "github.com/aws/aws-sdk-go-v2/service/sts",
+        "github.com/aws/smithy-go",
+        "github.com/dafny-lang/DafnyRuntimeGo/v4",
+        "github.com/google/uuid"
+      ],
+      "binary_bytes": 6448071
+    },
+    {
+      "path": "github.com/rambow-cloud/powertools-lambda-go/eventhandler/http/metrics",
       "directory": "eventhandler/http/metrics",
       "public": true,
       "version": "v0.1.0",
-      "archive_sha256": "ca78fc41b8466a966257900709e9b7252e10f56a19f8898cee554232c82a65a0",
+      "archive_sha256": "f3ec4b843a955435986a62d760f7c84c290d50339ff3e7a00a97cb890905f565",
       "tests": true,
       "vet": true,
       "tidy": true,
       "consumer_build": true,
       "external_modules": [],
-      "binary_bytes": 5536256
+      "binary_bytes": 5862400
     },
     {
+      "path": "github.com/rambow-cloud/powertools-lambda-go/idempotency",
       "directory": "idempotency",
       "public": true,
       "version": "v0.1.0",
-      "archive_sha256": "2c6babe08c38a40ca6018944e049dda0a0d3f8a356a630a9bd89d080f7d5acc3",
+      "archive_sha256": "e431df1c0b45fef376fc8c83abc472a20248f4eb8bcc47039570a497a07c35ca",
       "tests": true,
       "vet": true,
       "tidy": true,
@@ -299,13 +376,14 @@
         "golang.org/x/tools",
         "gopkg.in/yaml.v3"
       ],
-      "binary_bytes": 3026432
+      "binary_bytes": 3513856
     },
     {
+      "path": "github.com/rambow-cloud/powertools-lambda-go/kafka/avro",
       "directory": "kafka/avro",
       "public": true,
       "version": "v0.1.0",
-      "archive_sha256": "df9100c21896cc87cd4799f6167758cf00a81f0b967809e002ec1c3fbb8c3e02",
+      "archive_sha256": "f6fa552d2d4e725ccc5ee15c9746417555f90ef62981231ebff4df828051e532",
       "tests": true,
       "vet": true,
       "tidy": true,
@@ -329,13 +407,14 @@
         "golang.org/x/tools",
         "gopkg.in/yaml.v3"
       ],
-      "binary_bytes": 4351488
+      "binary_bytes": 4491776
     },
     {
+      "path": "github.com/rambow-cloud/powertools-lambda-go/kafka/protobuf",
       "directory": "kafka/protobuf",
       "public": true,
       "version": "v0.1.0",
-      "archive_sha256": "b22e1650c4f0955780638135daab68547697629f0077465e691117d144028fde",
+      "archive_sha256": "23ff3f1a277828cc0e557962652d3eb139e0ea9ac3e51a526f5ac7fb1b471168",
       "tests": true,
       "vet": true,
       "tidy": true,
@@ -345,13 +424,14 @@
         "github.com/google/go-cmp",
         "google.golang.org/protobuf"
       ],
-      "binary_bytes": 3312640
+      "binary_bytes": 3550720
     },
     {
+      "path": "github.com/rambow-cloud/powertools-lambda-go/parameters",
       "directory": "parameters",
       "public": true,
       "version": "v0.1.0",
-      "archive_sha256": "c3eaf11ac7d90e16a85f5e95d21847452cb2d7ad86a44253f578fd19ab191b64",
+      "archive_sha256": "522febcf800a202d5a55018df68fc39fee965d9335c72540b95b73f4fd6c8d0a",
       "tests": true,
       "vet": true,
       "tidy": true,
@@ -379,13 +459,14 @@
         "github.com/aws/aws-sdk-go-v2/service/sts",
         "github.com/aws/smithy-go"
       ],
-      "binary_bytes": 2626560
+      "binary_bytes": 3157504
     },
     {
+      "path": "github.com/rambow-cloud/powertools-lambda-go/tracer",
       "directory": "tracer",
       "public": true,
       "version": "v0.1.0",
-      "archive_sha256": "cc632a7f5551c83167368b62fafa6123923b0d806bef6c38405a9a187c8b9a1f",
+      "archive_sha256": "42f24cbd1f3321fd21819468e2c0a1a32989d55cb031b5c1128df01cd857a9d7",
       "tests": true,
       "vet": true,
       "tidy": true,
@@ -500,13 +581,14 @@
         "gopkg.in/check.v1",
         "gopkg.in/yaml.v3"
       ],
-      "binary_bytes": 17710592
+      "binary_bytes": 18644480
     },
     {
+      "path": "github.com/rambow-cloud/powertools-lambda-go/validation",
       "directory": "validation",
       "public": true,
       "version": "v0.1.0",
-      "archive_sha256": "b83553ea8cb8f1603293b6705a6edee074070b7c0ee711da6923c400a9e06150",
+      "archive_sha256": "0d435e8c11e6bf27b58287c4427352bc34c9e61e4859913cc0c3fa3f75560707",
       "tests": true,
       "vet": true,
       "tidy": true,
@@ -527,13 +609,14 @@
         "golang.org/x/tools",
         "gopkg.in/yaml.v3"
       ],
-      "binary_bytes": 5568000
+      "binary_bytes": 6418432
     },
     {
+      "path": "github.com/rambow-cloud/powertools-lambda-go/eventhandler/http/tracer",
       "directory": "eventhandler/http/tracer",
       "public": true,
       "version": "v0.1.0",
-      "archive_sha256": "80a23f0bedf53ae4355529246d313b4744fbb91c5343b9d071f5c20a3bfabe8d",
+      "archive_sha256": "8f40f6760fa805b42f2afc013ce2d16d02ea360a3b02d7b00848f04b34ec813d",
       "tests": true,
       "vet": true,
       "tidy": true,
@@ -648,13 +731,14 @@
         "gopkg.in/check.v1",
         "gopkg.in/yaml.v3"
       ],
-      "binary_bytes": 17714688
+      "binary_bytes": 18651136
     },
     {
+      "path": "github.com/rambow-cloud/powertools-lambda-go/idempotency/cache",
       "directory": "idempotency/cache",
       "public": true,
       "version": "v0.1.0",
-      "archive_sha256": "e0f2044b191ec71abdf92c54796b6049e2c0c504f606967e292dcc01be044221",
+      "archive_sha256": "3e9b07bdbb3d210306316c9f4feeac5c4a165d8d492c7edfbbc033279e204b80",
       "tests": true,
       "vet": true,
       "tidy": true,
@@ -687,13 +771,14 @@
         "golang.org/x/tools",
         "gopkg.in/yaml.v3"
       ],
-      "binary_bytes": 4769792
+      "binary_bytes": 5964800
     },
     {
+      "path": "github.com/rambow-cloud/powertools-lambda-go/tracer/xray",
       "directory": "tracer/xray",
       "public": true,
       "version": "v0.1.0",
-      "archive_sha256": "3919e9910070e5c806d1cf9f6e4062e9ae1e226cf51e8ecda37cd275debb3075",
+      "archive_sha256": "80481f3190bb2823a9619b85d2a8e1a1a3aa99d816a08e779374b165847e7b90",
       "tests": true,
       "vet": true,
       "tidy": true,
@@ -818,13 +903,14 @@
         "gopkg.in/check.v1",
         "gopkg.in/yaml.v3"
       ],
-      "binary_bytes": 20091392
+      "binary_bytes": 21027840
     },
     {
+      "path": "github.com/rambow-cloud/powertools-lambda-go/examples",
       "directory": "examples",
       "public": false,
       "version": "v0.1.0",
-      "archive_sha256": "6523858ec08b4cb64904eef44d3e35328857b3bb1b9bd1475e178675a3dc0578",
+      "archive_sha256": "cba613f664937be4f5b4895177228f2e60a0bc278dd0055ec080d4af17cd5bfb",
       "tests": true,
       "vet": true,
       "tidy": true,
@@ -954,19 +1040,29 @@
       ]
     },
     {
+      "path": "github.com/rambow-cloud/powertools-lambda-go/integration",
       "directory": "integration",
       "public": false,
       "version": "v0.1.0",
-      "archive_sha256": "c88e85d9a0b572dfdcddbc1d3be2538a8bb66da407331123916068db27abd135",
+      "archive_sha256": "bf423d372589ad9b9a5d6cc17c7f6757e5bc84706eaddf04a2553356e2e4e233",
       "tests": true,
       "vet": true,
       "tidy": true,
+      "binary_os": "linux",
+      "binary_architecture": "amd64",
+      "tests_runtime": "docker-linux-amd64",
       "external_modules": [
         "cel.dev/expr",
         "cloud.google.com/go/auth",
         "cloud.google.com/go/compute/metadata",
         "github.com/GoogleCloudPlatform/opentelemetry-operations-go/detectors/gcp",
         "github.com/apapsch/go-jsonmerge/v2",
+        "github.com/aws/aws-cryptographic-material-providers-library/releases/go/dynamodb",
+        "github.com/aws/aws-cryptographic-material-providers-library/releases/go/kms",
+        "github.com/aws/aws-cryptographic-material-providers-library/releases/go/mpl",
+        "github.com/aws/aws-cryptographic-material-providers-library/releases/go/primitives",
+        "github.com/aws/aws-cryptographic-material-providers-library/releases/go/smithy-dafny-standard-library",
+        "github.com/aws/aws-encryption-sdk/releases/go/encryption-sdk",
         "github.com/aws/aws-lambda-go",
         "github.com/aws/aws-sdk-go-v2",
         "github.com/aws/aws-sdk-go-v2/aws/protocol/eventstream",
@@ -985,6 +1081,7 @@
         "github.com/aws/aws-sdk-go-v2/service/internal/endpoint-discovery",
         "github.com/aws/aws-sdk-go-v2/service/internal/presigned-url",
         "github.com/aws/aws-sdk-go-v2/service/internal/s3shared",
+        "github.com/aws/aws-sdk-go-v2/service/kms",
         "github.com/aws/aws-sdk-go-v2/service/route53",
         "github.com/aws/aws-sdk-go-v2/service/s3",
         "github.com/aws/aws-sdk-go-v2/service/secretsmanager",
@@ -1001,6 +1098,7 @@
         "github.com/cenkalti/backoff/v5",
         "github.com/cespare/xxhash/v2",
         "github.com/cncf/xds/go",
+        "github.com/dafny-lang/DafnyRuntimeGo/v4",
         "github.com/davecgh/go-spew",
         "github.com/dlclark/regexp2",
         "github.com/dlclark/regexp2/v2",
@@ -1103,7 +1201,5 @@
         "gopkg.in/yaml.v3"
       ]
     }
-  ],
-  "record_scope": "Results describe the recorded source checkpoint; subsequent publication-only changes do not constitute a new runtime run.",
-  "module_identity": "Historical modules are identified by directory; the previous repository namespace is omitted."
+  ]
 }

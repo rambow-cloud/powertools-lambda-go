@@ -2,17 +2,12 @@
   "cgo_enabled": false,
   "workspace": "off",
   "completed": true,
-  "source": "Local module proxy fixtures; combined completed checks, not one repeated full pass",
+  "source": "Local module proxy fixtures; one completed full-workspace pass after TextMarshaler fix",
   "verification_phases": [
     {
-      "session": "check-ukfnf5km",
-      "scope": "full workspace checkpoints before Docker engine failure in integration",
-      "verified_modules": 30
-    },
-    {
-      "session": "check-4o44asga",
-      "scope": "final integration",
-      "verified_modules": 1
+      "session": "check-hlxmwwvr",
+      "scope": "full workspace after TextMarshaler fix",
+      "verified_modules": 31
     }
   ],
   "module_count": 31,
@@ -23,7 +18,7 @@
       "directory": ".",
       "public": true,
       "version": "v0.1.0",
-      "archive_sha256": "a85ea52eef5c6c4d28334ca6f184d742cb9cdbd767fac256b7a253e2535aabe8",
+      "archive_sha256": "4d17d1aeb505f74f3075c211b5828845f46d18dde1e1bb8bdd98ac6c6a925380",
       "tests": true,
       "vet": true,
       "tidy": true,
@@ -106,7 +101,7 @@
       "directory": "logger",
       "public": true,
       "version": "v0.1.0",
-      "archive_sha256": "82936c8350b589494cbb1197aa709ab1d4c699491686a1bee857ced67cab7abb",
+      "archive_sha256": "bfd62613dd2eb7c63afb04f4447c062b6f6870d6daf10351de793aab1a98a81f",
       "tests": true,
       "vet": true,
       "tidy": true,
@@ -127,7 +122,7 @@
         "go.yaml.in/yaml/v3",
         "gopkg.in/yaml.v3"
       ],
-      "binary_bytes": 3761664
+      "binary_bytes": 3761152
     },
     {
       "path": "github.com/rambow-cloud/powertools-lambda-go/metrics",
@@ -1047,7 +1042,7 @@
       "directory": "integration",
       "public": false,
       "version": "v0.1.0",
-      "archive_sha256": "76b0e5c94b46ca250ea6b16ff8f92d5d8529a530438845e54633920ffb0849a7",
+      "archive_sha256": "bf423d372589ad9b9a5d6cc17c7f6757e5bc84706eaddf04a2553356e2e4e233",
       "tests": true,
       "vet": true,
       "tidy": true,

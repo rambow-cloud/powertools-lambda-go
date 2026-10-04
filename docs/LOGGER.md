@@ -228,8 +228,10 @@ nonnil empty collections, and nested empty/null values remain. A replacer can
 still produce empty strings or null values: cleanup has already happened at that
 point. Cleanup does not mutate caller or formatter maps. Custom JSON marshalers
 and struct-shaped formatter results retain their Go encoding rules.
-An attribute implementing `json.Marshaler` is preserved even when its underlying
-string is empty; its custom JSON value or serialization error is still observed.
+An attribute implementing `json.Marshaler` or `encoding.TextMarshaler` is preserved
+even when its underlying string is empty; its custom value or serialization error
+is still observed. Explicitly marshaled empty text remains a JSON empty string.
+When both interfaces are implemented, `MarshalJSON` takes precedence.
 
 Set `logger.HandlerOptions.CorrelationSource` to a built-in source such as `logger.APIGatewayREST` or `logger.EventBridge`. For custom extraction, supply `CorrelationID`, or use a compiled [JMESPath](JMESPATH.md) expression as `CorrelationExtractor`. A callback takes precedence over an extractor, which takes precedence over a built-in source.
 

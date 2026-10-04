@@ -2,6 +2,7 @@ package logger
 
 import (
 	"bytes"
+	"encoding"
 	"encoding/json"
 	"fmt"
 	"github.com/rambow-cloud/powertools-lambda-go/commons"
@@ -191,7 +192,9 @@ func prepareForPrint(value any) any {
 		}
 		// A custom marshaler's JSON value or error cannot be inferred from its
 		// underlying Go value. Preserve it for the normal encoding traversal.
-		if _, custom := item.(json.Marshaler); !custom {
+		_, jsonCustom := item.(json.Marshaler)
+		_, textCustom := item.(encoding.TextMarshaler)
+		if !jsonCustom && !textCustom {
 			field := reflect.ValueOf(item)
 			switch field.Kind() {
 			case reflect.String:

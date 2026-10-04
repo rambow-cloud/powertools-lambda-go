@@ -28,10 +28,10 @@
   "image": "public.ecr.aws/lambda/provided@sha256:0b17e5c778aef6ed7f61cbfa5dd416e17540e127846250646fceb712e0e7be5f",
   "runtime_architecture": "amd64",
   "cgo_enabled": false,
-  "module_checks_executed_in_runtime_run": false,
+  "module_checks_executed_in_runtime_run": true,
   "builds_executed": true,
   "invocation_count": 5,
-  "assertion_count": 898,
+  "assertion_count": 904,
   "passed": true,
   "cleanup_errors": [],
   "checks": [
@@ -97,6 +97,14 @@
     },
     {
       "name": "local-0-success: Logger empty-string custom marshaler error",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Logger empty-string text marshaler value",
+      "passed": true
+    },
+    {
+      "name": "local-0-success: Logger empty-string text marshaler error",
       "passed": true
     },
     {
@@ -1133,6 +1141,14 @@
     },
     {
       "name": "local-1-success: Logger empty-string custom marshaler error",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Logger empty-string text marshaler value",
+      "passed": true
+    },
+    {
+      "name": "local-1-success: Logger empty-string text marshaler error",
       "passed": true
     },
     {
@@ -2177,6 +2193,14 @@
     },
     {
       "name": "local-3-unsampled: Logger empty-string custom marshaler error",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Logger empty-string text marshaler value",
+      "passed": true
+    },
+    {
+      "name": "local-3-unsampled: Logger empty-string text marshaler error",
       "passed": true
     },
     {
@@ -3629,12 +3653,12 @@
     }
   ],
   "sha256": {
-    "report.json": "950ede9573eb248b0845d55c96cf89b2e7af7e43142614bd3b15e02e13d338b8",
-    "otlp.json": "659c371f91af3bf0498a80217b3ed541aa1522b958721427673590cfc76e9697",
-    "lambda.log": "7b4a2b6f61d209c1fc26b770c8ed85781c43d1a607639adf09c26b1773719956",
-    "amd64/bootstrap": "155a0b6847c52a4d4e8d7d24c564249fa308cea4dd239e4f866045b6cda1ae20",
-    "arm64/bootstrap": "b3ceb2f21ce14ce06d85ae19f12598ab59a1b68cdaf34e14511bc644cf450a69",
-    "amd64/capture": "a2856efc95d6b07a168e5faa765bb29e380783405d92836be3c76657babf2124"
+    "report.json": "6d61cfcc7214e0b6dab9427b1168fa797ac20322e4927097d63400a585d2168b",
+    "otlp.json": "62489e9743bdf8e5062fa173317f7e496e30f486ca66ee5bb9146efafa3cad2f",
+    "lambda.log": "8144868b2ec16f207333720464b5f3b504d8e02bd34dc9f39b5fee9e424e184e",
+    "amd64/bootstrap": "ded83245c8460f5598c7e7df4a8feb6e1d5ecac1fc8af9d21690d64922ee08fd",
+    "arm64/bootstrap": "6b3d1e05ed1b670295c51962a110ffa206fd9ec138f62dff1f119089aa09c56d",
+    "amd64/capture": "4e397d66bff659e633f2981bd41ec98e243114a5c50ba9ed42a9afd24074915b"
   },
   "cache_image": "valkey/valkey@sha256:d2e18f3410b6f616de1417f570fa55261af2898b9c5b2cfb6781ce2373ea43d1",
   "cache_interop": {

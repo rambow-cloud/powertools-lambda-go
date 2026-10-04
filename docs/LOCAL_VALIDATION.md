@@ -1,5 +1,28 @@
 # Local Docker validation
 
+Logger TextMarshaler acceptance (2026-10-04): top-level empty named-string
+attributes implementing encoding.TextMarshaler now bypass empty-value cleanup,
+preserving custom text, explicitly empty text and serialization errors through
+the existing encoder. MarshalJSON retains precedence when both interfaces are
+implemented. The attribute-source/replacer matrix now has 48 cases (32 added),
+covering four sources and both replacer configurations. Focused tests reproduced
+24 TextMarshaler failures before the fix; the final packaged Logger tests pass
+the complete matrix and the unchanged 48 TypeScript differential scenarios.
+
+One complete packaged check passed all 31 modules and 28 standalone consumers,
+including tests/vet/tidy and dependency isolation. The same validation flow built
+normal and streaming handlers for Linux amd64/arm64 with CGO disabled, then passed
+904/904 RIE assertions, 95/95 streaming and 14/14 saved Batch checks. Six new RIE
+assertions cover TextMarshaler values and errors. Docker executed amd64; arm64
+was cross-compiled. Before validation, Docker Desktop required a restart after
+an engine HTTP 500. Its five-minute resource saver was enabled; a private,
+networkless temporary container kept the engine active during validation and
+was removed afterward. Runtime containers/networks were cleaned without errors.
+No AWS resources were used. See
+[MODULE_ACCEPTANCE_LOGGER.json](MODULE_ACCEPTANCE_LOGGER.json) and
+[LOCAL_ACCEPTANCE.json](LOCAL_ACCEPTANCE.json). Earlier acceptance below retains
+its original scope.
+
 Logger review regression acceptance (2026-10-04): invocation cleanup now flushes
 its owned buffer even if the handler attached a new OTel trace after wrapper
 entry; public flush/clear still require the owning active trace. Top-level empty
