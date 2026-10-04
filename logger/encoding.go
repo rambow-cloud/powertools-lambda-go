@@ -189,15 +189,19 @@ func prepareForPrint(value any) any {
 		if item == nil {
 			continue
 		}
-		field := reflect.ValueOf(item)
-		switch field.Kind() {
-		case reflect.String:
-			if field.Len() == 0 {
-				continue
-			}
-		case reflect.Pointer, reflect.Map, reflect.Slice, reflect.Interface:
-			if field.IsNil() {
-				continue
+		// A custom marshaler's JSON value or error cannot be inferred from its
+		// underlying Go value. Preserve it for the normal encoding traversal.
+		if _, custom := item.(json.Marshaler); !custom {
+			field := reflect.ValueOf(item)
+			switch field.Kind() {
+			case reflect.String:
+				if field.Len() == 0 {
+					continue
+				}
+			case reflect.Pointer, reflect.Map, reflect.Slice, reflect.Interface:
+				if field.IsNil() {
+					continue
+				}
 			}
 		}
 		result.SetMapIndex(iter.Key(), iter.Value())

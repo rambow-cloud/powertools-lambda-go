@@ -1,5 +1,26 @@
 # Local Docker validation
 
+Logger review regression acceptance (2026-10-04): invocation cleanup now flushes
+its owned buffer even if the handler attached a new OTel trace after wrapper
+entry; public flush/clear still require the owning active trace. Top-level empty
+named-string attributes implementing json.Marshaler retain their custom values
+and serialization errors. Before the fixes, focused tests reproduced both
+regressions. All Logger tests now pass, including 24 sampled/unsampled parent and
+child cleanup cases and 16 attribute-source/replacer cases.
+
+The full packaged check passed 30 modules before integration encountered a
+Docker engine HTTP 500. After restarting Docker Desktop, only integration was
+repeated. Combined current acceptance covers all 31 modules and 28 consumers,
+with tests/vet/tidy and CGO disabled. The runtime command reused those module
+checks with --skip-module-checks, rebuilt normal and streaming handlers for Linux
+amd64/arm64, and passed 898/898 RIE assertions, 95/95 streaming checks and 14/14
+saved Batch checks. Nine new RIE assertions cover both review regressions. Docker
+executed amd64; arm64 was cross-compiled. Containers/networks were cleaned without
+errors and no AWS resources were used. See
+[MODULE_ACCEPTANCE_LOGGER.json](MODULE_ACCEPTANCE_LOGGER.json) and
+[LOCAL_ACCEPTANCE.json](LOCAL_ACCEPTANCE.json). The initial acceptance below
+retains its original scope.
+
 Logger source parity acceptance (2026-10-04): fixed separate child attribute stores,
 shallow empty-field cleanup and active-trace buffer lifecycle from issues #3/#4/#5.
 The corpus executes 48 actual TypeScript v2.35.0 scenarios; native tests cover

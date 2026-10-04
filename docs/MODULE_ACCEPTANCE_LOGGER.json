@@ -5,17 +5,12 @@
   "source": "Local module proxy fixtures; combined completed checks, not one repeated full pass",
   "verification_phases": [
     {
-      "session": "check-ucc3auhl",
-      "scope": "full workspace pass before integration correction",
+      "session": "check-ukfnf5km",
+      "scope": "full workspace checkpoints before Docker engine failure in integration",
       "verified_modules": 30
     },
     {
-      "session": "check-k5xg8g86",
-      "scope": "final logger",
-      "verified_modules": 1
-    },
-    {
-      "session": "check-ophufv4t",
+      "session": "check-4o44asga",
       "scope": "final integration",
       "verified_modules": 1
     }
@@ -28,7 +23,7 @@
       "directory": ".",
       "public": true,
       "version": "v0.1.0",
-      "archive_sha256": "8d8b0c00141b1f97f2ec35b40b183124f7d06441380fdeedd09e2cefd2e9acf6",
+      "archive_sha256": "a85ea52eef5c6c4d28334ca6f184d742cb9cdbd767fac256b7a253e2535aabe8",
       "tests": true,
       "vet": true,
       "tidy": true,
@@ -111,7 +106,7 @@
       "directory": "logger",
       "public": true,
       "version": "v0.1.0",
-      "archive_sha256": "2dc2394c74b14d61f7bfee0a3ae65a65c6be8c705e73c081686c883f5a58705b",
+      "archive_sha256": "82936c8350b589494cbb1197aa709ab1d4c699491686a1bee857ced67cab7abb",
       "tests": true,
       "vet": true,
       "tidy": true,
@@ -220,7 +215,7 @@
         "golang.org/x/tools",
         "gopkg.in/yaml.v3"
       ],
-      "binary_bytes": 3222528
+      "binary_bytes": 3223040
     },
     {
       "path": "github.com/rambow-cloud/powertools-lambda-go/datamasking/kms",
@@ -263,7 +258,7 @@
         "github.com/dafny-lang/DafnyRuntimeGo/v4",
         "github.com/google/uuid"
       ],
-      "binary_bytes": 6448063
+      "binary_bytes": 6448071
     },
     {
       "path": "github.com/rambow-cloud/powertools-lambda-go/datamasking",
@@ -337,7 +332,7 @@
       "tidy": true,
       "consumer_build": true,
       "external_modules": [],
-      "binary_bytes": 3160064
+      "binary_bytes": 3160576
     },
     {
       "path": "github.com/rambow-cloud/powertools-lambda-go/batch",
@@ -1052,7 +1047,7 @@
       "directory": "integration",
       "public": false,
       "version": "v0.1.0",
-      "archive_sha256": "c0b931c97d4801efac98dfd58a5a0271cd27725924ae102120e9906d70bc4aea",
+      "archive_sha256": "76b0e5c94b46ca250ea6b16ff8f92d5d8529a530438845e54633920ffb0849a7",
       "tests": true,
       "vet": true,
       "tidy": true,

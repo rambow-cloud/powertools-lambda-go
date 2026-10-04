@@ -378,13 +378,19 @@ func (l *Logger) bufferTraceID() string {
 // FlushBuffer emits the active trace's entries without applying the level threshold.
 // Without an active trace, or when another trace owns the buffer, it does nothing.
 func (l *Logger) FlushBuffer() error {
+	return l.flushBuffer(false)
+}
+
+// Invocation cleanup owns the isolated state and must flush even when the
+// handler attached a new trace after the scope saved this logger's context.
+func (l *Logger) flushBuffer(invocationOwned bool) error {
 	s := l.current
 	s.mu.Lock()
 	if s.closed {
 		s.mu.Unlock()
 		return ErrInvocationClosed
 	}
-	if traceID := l.bufferTraceID(); traceID == "" || s.bufferTrace != traceID {
+	if traceID := l.bufferTraceID(); !invocationOwned && (traceID == "" || s.bufferTrace != traceID) {
 		s.mu.Unlock()
 		return nil
 	}

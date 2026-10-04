@@ -46,7 +46,7 @@ func (s *scope) finish(flush bool, handlerErr error) {
 	s.mu.Unlock()
 	for _, l := range loggers {
 		if flush && handlerErr != nil {
-			l.report(l.FlushBuffer())
+			l.report(l.flushBuffer(true))
 			l.report(l.Error("Uncaught error detected, flushing log buffer before exit", handlerErr))
 		}
 		l.current.mu.Lock()

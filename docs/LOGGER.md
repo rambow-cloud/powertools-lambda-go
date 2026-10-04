@@ -228,6 +228,8 @@ nonnil empty collections, and nested empty/null values remain. A replacer can
 still produce empty strings or null values: cleanup has already happened at that
 point. Cleanup does not mutate caller or formatter maps. Custom JSON marshalers
 and struct-shaped formatter results retain their Go encoding rules.
+An attribute implementing `json.Marshaler` is preserved even when its underlying
+string is empty; its custom JSON value or serialization error is still observed.
 
 Set `logger.HandlerOptions.CorrelationSource` to a built-in source such as `logger.APIGatewayREST` or `logger.EventBridge`. For custom extraction, supply `CorrelationID`, or use a compiled [JMESPath](JMESPATH.md) expression as `CorrelationExtractor`. A callback takes precedence over an extractor, which takes precedence over a built-in source.
 
@@ -259,6 +261,12 @@ records; OTel trace identity takes precedence over runtime headers. Separate
 wrapped invocations and child loggers keep independent buffers. Unwrapped root
 loggers share process state, so use `WrapHandler` and `WithContext` for concurrent
 requests.
+
+With `FlushBufferOnError`, wrapper cleanup flushes the buffers owned by that
+invocation even if the handler attached a new OTel trace after wrapper entry.
+This also applies to participating child loggers and panic cleanup. The original
+handler result, error, or panic is preserved; successful invocations discard
+pending buffers.
 
 Capacity counts serialized UTF-8 bytes without the trailing newline. An entry
 larger than `MaxBytes` emits a warning containing an `error` with message
