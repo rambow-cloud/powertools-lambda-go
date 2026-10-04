@@ -18,7 +18,7 @@ REPOSITORY = "rambow-cloud/powertools-lambda-go"
 
 
 def body(reference="Closes #123", summary="Fix the issue.", testing="Tests passed."):
-    return f"## Issue\n\n{reference}\n\n## Summary\n\n{summary}\n\n## Testing\n\n{testing}\n"
+    return f"## Issue\n\n{reference}\n\n## Summary\n\n{summary}\n\n## Testing\n\n{testing}\n\n## Release notes\n\n- logger | fix | Correct the reported behavior.\n"
 
 
 class ContributionPolicyTests(unittest.TestCase):
@@ -105,7 +105,7 @@ class ContributionPolicyTests(unittest.TestCase):
         self.assertTrue(all("uses" not in step for step in WORKFLOW["jobs"]["policy"]["steps"]))
         # PyYAML treats the YAML 1.1 key 'on' as True; GitHub uses YAML 1.2.
         events = WORKFLOW.get("on", WORKFLOW.get(True))
-        self.assertEqual(set(events), {"pull_request"})
+        self.assertEqual(set(events), {"pull_request", "workflow_dispatch"})
         trigger = events["pull_request"]
         self.assertEqual(trigger["branches"], ["main"])
         self.assertEqual(set(trigger["types"]), {"opened", "edited", "synchronize", "reopened", "ready_for_review"})
@@ -113,11 +113,31 @@ class ContributionPolicyTests(unittest.TestCase):
         self.assertEqual(WORKFLOW["env"]["CGO_ENABLED"], "0")
         self.assertNotIn("${{", RUN)
 
+    def test_release_notes_are_required_and_structured(self):
+        for notes in ("", "<!-- - logger | fix | Example. -->", "```\n- logger | fix | Example.\n```", "- logger | unknown | Example.", "None:"):
+            with self.subTest(notes=notes):
+                self.assertTrue(self.validate(body().split("## Release notes")[0] + "## Release notes\n\n" + notes)[0])
+        for notes in ("None: Tests only; no runtime behavior changes.", "- . | fix | Correct shared invocation state.\n- logger | feature | Add configuration."):
+            self.assertEqual(self.validate(body().split("## Release notes")[0] + "## Release notes\n\n" + notes), ([], [123]))
+
+    def test_dispatched_policy_checks_are_bound_to_the_actual_pr_head(self):
+        environment = {"GITHUB_EVENT_NAME": "workflow_dispatch", "DISPATCH_PR": "123", "GITHUB_SHA": "b" * 40, "GITHUB_REPOSITORY": REPOSITORY, "GITHUB_EVENT_PATH": "event.json"}
+        for head_sha, repository in (("b" * 40, REPOSITORY), ("a" * 40, REPOSITORY), ("b" * 40, "external/fork")):
+            pr = {"body": body(), "head": {"sha": head_sha, "repo": {"full_name": repository}}}
+            def read_api(path):
+                return pr if path.startswith("pulls/") else {"number": 123}
+            with self.subTest(head=head_sha, repository=repository), patch.dict(NAMESPACE["os"].environ, environment), patch.dict(NAMESPACE, {"read_api": read_api}), patch.object(NAMESPACE["Path"], "read_text", return_value="{}"):
+                if head_sha == environment["GITHUB_SHA"] and repository == REPOSITORY:
+                    NAMESPACE["main"]()
+                else:
+                    with self.assertRaisesRegex(ValueError, "exact head SHA"):
+                        NAMESPACE["main"]()
+
 
 class IssueFormTests(unittest.TestCase):
     def test_forms_have_unique_fields_and_required_inputs(self):
         forms = sorted((ROOT / ".github/ISSUE_TEMPLATE").glob("*.yml"))
-        self.assertEqual(len(forms), 4)
+        self.assertEqual(len(forms), 5)
         for path in forms:
             with self.subTest(path=path.name):
                 form = yaml.safe_load(path.read_text())
@@ -135,7 +155,7 @@ class IssueFormTests(unittest.TestCase):
     def test_unfilled_pr_template_does_not_pass(self):
         text = (ROOT / ".github/PULL_REQUEST_TEMPLATE.md").read_text()
         errors = NAMESPACE["validate"]({"body": text}, REPOSITORY, lambda number: {})
-        self.assertEqual(len(errors), 3)
+        self.assertEqual(len(errors), 4)
 
 
 if __name__ == "__main__":

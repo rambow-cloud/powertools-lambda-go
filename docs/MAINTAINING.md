@@ -83,6 +83,16 @@ and [required-check troubleshooting](https://docs.github.com/en/pull-requests/ho
 
 ## Rollout verification
 
+For independent version publication, follow [Releasing modules](RELEASING.md).
+Preparation automatically generates module versions, dependency metadata,
+accumulated notes, a tracking issue, and a PR. The publisher reuses required
+checks, binds the reviewed plan to the merged preparation SHA, and keeps the
+tracking issue open until public consumers pass. With automatic publication
+enabled in that plan, merging the preparation PR authorizes publication after
+main checks pass; manual dispatch remains available for recovery. PRs require
+structured Release notes or an explained absence;
+edit dependency-bot descriptions using the same rule as other PRs.
+
 Verify both an owner branch PR and a fork PR. Check the three job names on the
 latest commit, verify description edits refresh the policy check, and confirm
 only `main` deploys. Keep one deliberately missing issue reference long enough

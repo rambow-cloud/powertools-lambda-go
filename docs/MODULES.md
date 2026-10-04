@@ -85,6 +85,10 @@ Run either the full flow or standalone module checks as appropriate; avoid runni
 
 ## Independent releases
 
+Use [Releasing modules](RELEASING.md) to accumulate PR summaries, review a
+per-module plan, and explicitly dispatch public tags and Releases. Local
+fixture verification does not publish or verify public versions.
+
 The module verifier keeps each writable module cache isolated. Its local fixture proxy takes precedence, followed by existing download caches from previous verification runs, and finally the public Go proxy. External checksums remain verified; cached synthetic versions never replace newly generated local fixture versions.
 
 For a future Logger-only release, update only Logger's version entry, for example to `v0.1.1`. Leave its Commons requirement at `v0.1.0` if it does not need newer Commons behavior. Its tag will be `logger/v0.1.1`; Metrics and Tracer do not need new tags. Update dependent module requirements only when they need the newer functionality.

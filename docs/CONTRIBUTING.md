@@ -93,6 +93,8 @@ For documentation or contribution-workflow changes:
 ```sh
 uv lock --project website --check
 uv run --project website --frozen python tools/test_contribution_workflow.py
+uv run --project website --frozen python tools/test_release.py
+uv run --project website --frozen python tools/test_release_automation.py
 uv run --project website --frozen python website/check_navigation.py
 uv run --project website --frozen python website/check_guides.py
 uv run --project website --frozen zensical build --clean --strict --config-file mkdocs.yml
@@ -127,7 +129,12 @@ HTML comments or code blocks do not count. GitHub closes issues from closing
 keywords when the PR is merged into the default branch; `Refs` does not auto-close.
 
 The **PR contribution policy** check verifies the issue reference and nonempty
-**Summary** and **Testing** sections. State the commands and results, or explain
+**Summary** and **Testing** sections, plus structured **Release notes**. Write
+one `- MODULE | TYPE | Description.` entry per user-visible change, or
+`None: <specific reason>` when there is no release impact. Use module directories
+from `tools/modules.json`; `repository` denotes repository-only work. See
+[Releasing modules](RELEASING.md) for types and examples. Notes accumulate until
+the relevant module is released. State the commands and results, or explain
 why a check is not applicable or blocked; do not claim unrun tests passed. This
 metadata check cannot judge scope agreement or test quality: maintainers still
 review both. Owner and dependency-bot PRs need the same tracking issue; a
@@ -157,4 +164,4 @@ active maintainer, administrators can require one independent approval.
 Prefer squash merging with a meaningful title. A completed issue closes through
 the PR's closing keyword; leave partial tracking issues open. Delete the merged
 feature branch when no longer needed. Merging source does not publish Go module
-versions; [releases](PUBLISHING_PLAN.md) remain a separate decision.
+versions; [releasing modules](RELEASING.md) remains a separate decision.

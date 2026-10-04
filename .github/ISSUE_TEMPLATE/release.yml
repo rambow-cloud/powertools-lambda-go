@@ -1,0 +1,49 @@
+name: Release tracking
+description: Agree on module versions, release scope, and compatibility before publication.
+title: "[Release]: "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Follow docs/RELEASING.md. Keep this issue open through the preparation
+        PR using Refs, then close it only after publication and consumer checks.
+        This community project publishes modules independently; merging source
+        does not publish a version.
+  - type: textarea
+    id: modules
+    attributes:
+      label: Modules and target versions
+      description: List each directory and version, including unpublished internal dependencies. Development and deprecated frozen modules are excluded.
+      placeholder: "logger v0.1.0; . v0.1.0"
+    validations:
+      required: true
+  - type: textarea
+    id: scope
+    attributes:
+      label: Release scope and compatibility
+      description: Describe supported behavior, limitations, breaking changes, migration guidance, and first-release scope if applicable.
+    validations:
+      required: true
+  - type: textarea
+    id: history
+    attributes:
+      label: Previous versions and accumulated changes
+      description: Each module uses its own previous published tag. Link relevant PRs and identify missing historical summaries or commits without PRs.
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Publication acceptance
+      description: Required checks, release-note review, dependency order, real public consumer verification, and any release-specific gates.
+    validations:
+      required: true
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Before publication
+      options:
+        - label: I understand that publication needs an explicit Actions dispatch after the preparation PR is merged.
+          required: true
+        - label: I removed credentials and private data from release scope and evidence.
+          required: true

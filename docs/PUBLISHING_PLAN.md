@@ -52,6 +52,12 @@ Optional parser/schema and Kafka codec integrations should use explicit adapters
 
 ## Release checklist
 
+The implemented [release workflow](RELEASING.md) defines release tracking,
+per-module PR summaries, automatic version/dependency preparation, reviewed
+plans, publication after authorized merges, and manual failure recovery.
+Installing it does not close remaining compatibility or real
+version-retrieval gates below.
+
 - [x] PUB-00: Compare Python extras, TypeScript package publication, and Go package/module semantics; audit current dependency and invocation boundaries.
 - [ ] PUB-01: Finalize the repository owner/path, distribution layout, supported Go versions, and feature dependency budgets before public release.
 - [x] PUB-01a: Select github.com/rambow-cloud/powertools-lambda-go and migrate all 31 local modules/import paths. All 31 packaged modules and 28 independent public consumers pass with CGO disabled, alongside fresh basic Lambda static builds/ZIPs for both architectures. See [migration evidence](MODULE_ACCEPTANCE_MIGRATION.json). Remote upload and real version retrieval remain open.
