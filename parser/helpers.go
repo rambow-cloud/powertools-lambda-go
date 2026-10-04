@@ -38,11 +38,12 @@ var base64Value = Pipe(String(), SchemaFunc[any](func(_ context.Context, input a
 	if reader, err := gzip.NewReader(bytes.NewReader(data)); err == nil {
 		decompressed, readErr := io.ReadAll(reader)
 		closeErr := reader.Close()
-		if readErr == nil && closeErr == nil && json.Unmarshal(decompressed, &decoded) == nil {
+		if readErr == nil && closeErr == nil && json.Unmarshal([]byte(commons.DecodeUTF8(decompressed)), &decoded) == nil {
 			return decoded, nil, nil
 		}
 	}
-	text := strings.ToValidUTF8(string(data), "\ufffd")
+	// TextDecoder strips one leading BOM; gzip's Buffer.toString above retains it.
+	text := strings.TrimPrefix(commons.DecodeUTF8(data), "\ufeff")
 	if json.Unmarshal([]byte(text), &decoded) != nil {
 		decoded = text
 	}

@@ -1,0 +1,125 @@
+{
+  "reference": "2.35.0",
+  "cases": [
+    {
+      "name": "plain",
+      "kind": "base64",
+      "input": "aGVsbG8=",
+      "expected": "hello"
+    },
+    {
+      "name": "plain",
+      "kind": "gzip",
+      "input": "H4sIAAAAAAAACstIzcnJBwCGphA2BQAAAA==",
+      "expected": "hello"
+    },
+    {
+      "name": "valid-unicode",
+      "kind": "base64",
+      "input": "5L2g5aW98J+YgA==",
+      "expected": "你好😀"
+    },
+    {
+      "name": "valid-unicode",
+      "kind": "gzip",
+      "input": "H4sIAAAAAAAACnuyd8HTpXs/zJ/RAAArqvIaCgAAAA==",
+      "expected": "你好😀"
+    },
+    {
+      "name": "invalid-bytes",
+      "kind": "base64",
+      "input": "//4=",
+      "expected": "��"
+    },
+    {
+      "name": "invalid-bytes",
+      "kind": "gzip",
+      "input": "H4sIAAAAAAAACvv/DwCWMPiIAgAAAA==",
+      "expected": "��"
+    },
+    {
+      "name": "truncated-sequence",
+      "kind": "base64",
+      "input": "4oI=",
+      "expected": "�"
+    },
+    {
+      "name": "truncated-sequence",
+      "kind": "gzip",
+      "input": "H4sIAAAAAAAACnvUBACdYScuAgAAAA==",
+      "expected": "�"
+    },
+    {
+      "name": "surrogate",
+      "kind": "base64",
+      "input": "7aCA",
+      "expected": "���"
+    },
+    {
+      "name": "surrogate",
+      "kind": "gzip",
+      "input": "H4sIAAAAAAAACnu7oAEAKKXEHQMAAAA=",
+      "expected": "���"
+    },
+    {
+      "name": "bom-text",
+      "kind": "base64",
+      "input": "77u/aGVsbG8=",
+      "expected": "hello"
+    },
+    {
+      "name": "bom-text",
+      "kind": "gzip",
+      "input": "H4sIAAAAAAAACnu/e39Gak5OPgDFAw4GCAAAAA==",
+      "expected": "﻿hello"
+    },
+    {
+      "name": "double-bom",
+      "kind": "base64",
+      "input": "77u/77u/aGVsbG8=",
+      "expected": "﻿hello"
+    },
+    {
+      "name": "double-bom",
+      "kind": "gzip",
+      "input": "H4sIAAAAAAAACnu/e//73fszUnNy8gGjRa1dCwAAAA==",
+      "expected": "﻿﻿hello"
+    },
+    {
+      "name": "bom-json",
+      "kind": "base64",
+      "input": "77u/eyJpZCI6MX0=",
+      "expected": "{\"id\":1}"
+    },
+    {
+      "name": "bom-json",
+      "kind": "gzip",
+      "input": "H4sIAAAAAAAACnu/e3+1UmaKkpVhLQCjvv4fCwAAAA==",
+      "expected": "﻿{\"id\":1}"
+    },
+    {
+      "name": "invalid-json-string",
+      "kind": "base64",
+      "input": "Iv/+Ig==",
+      "expected": "\"��\""
+    },
+    {
+      "name": "invalid-json-string",
+      "kind": "gzip",
+      "input": "H4sIAAAAAAAAClP6/08JAJMBuMoEAAAA",
+      "expected": "\"��\""
+    },
+    {
+      "name": "partial-json-string",
+      "kind": "base64",
+      "input": "IuKCIg==",
+      "expected": "\"�\""
+    },
+    {
+      "name": "partial-json-string",
+      "kind": "gzip",
+      "input": "H4sIAAAAAAAAClN61KQEAEoHzF0EAAAA",
+      "expected": "\"�\""
+    }
+  ]
+}

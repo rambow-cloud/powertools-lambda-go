@@ -148,6 +148,7 @@ nav:
       - Documentation and CI: DOCUMENTATION.md
       - Verification:
           - Overview: VALIDATION.md
+          - Module review (2026-10-05): MODULE_REVIEW_2026_10_05.md
           - Local integration runner: LOCAL_INTEGRATION.md
           - Local acceptance: LOCAL_VALIDATION.md
           - Historical AWS acceptance: AWS_VALIDATION.md

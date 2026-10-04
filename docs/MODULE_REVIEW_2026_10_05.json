@@ -1,0 +1,278 @@
+{
+  "date": "2026-10-05",
+  "baseline_commit": "6d4157d24f84f7fa2b8a1cdeb94ad5bac8359a93",
+  "scope": "26 maintained public modules excluding Logger; frozen tracer/xray regression evidence retained",
+  "local": {
+    "go": "1.27.1",
+    "platform": "windows/amd64",
+    "cgo_enabled": false,
+    "workspace": "off",
+    "module_count": 25,
+    "modules": [
+      {
+        "directory": ".",
+        "archive_sha256": "480e2dbebef7cdb9947e999a313533d1b582c88a38d2585f62ac10894b3cbe79",
+        "tests": true,
+        "vet": true,
+        "tidy": true,
+        "consumer_build": true
+      },
+      {
+        "directory": "commons/regex",
+        "archive_sha256": "cd229f91182c2ff3015384faaa4e3214dbb0896f09fe66eaa9c07004fd99ec55",
+        "tests": true,
+        "vet": true,
+        "tidy": true,
+        "consumer_build": true
+      },
+      {
+        "directory": "signer",
+        "archive_sha256": "473cc7dced621fa191f12cc4f5105646203ee3d4d46e5667bc9ccbe434c82217",
+        "tests": true,
+        "vet": true,
+        "tidy": true,
+        "consumer_build": true
+      },
+      {
+        "directory": "batch",
+        "archive_sha256": "c4bbc2f4e8c8a0e69ae9b10dcfd41a348bd60cda532706018a868d79922f0bc3",
+        "tests": true,
+        "vet": true,
+        "tidy": true,
+        "consumer_build": true
+      },
+      {
+        "directory": "commons/awssdk",
+        "archive_sha256": "ec1411bd3d705bfcc03ae078b4adb85a57ae6e601ff0c7310d20075c84077ec5",
+        "tests": true,
+        "vet": true,
+        "tidy": true,
+        "consumer_build": true
+      },
+      {
+        "directory": "commons/dynamodb",
+        "archive_sha256": "01a09d86bb4c90995ca10f6237ce0103a48fbe665cf966aabf8aace9e6264dca",
+        "tests": true,
+        "vet": true,
+        "tidy": true,
+        "consumer_build": true
+      },
+      {
+        "directory": "commons/metadata",
+        "archive_sha256": "8aac8b9fe97edfe705d22cb62f297453d4a88bcae11adcafbdfa47cfc79ced9e",
+        "tests": true,
+        "vet": true,
+        "tidy": true,
+        "consumer_build": true
+      },
+      {
+        "directory": "datamasking",
+        "archive_sha256": "a0af3350e9bde0c4d46a521e1274c938afc3cb24fab9257409955dfc16e122cb",
+        "tests": true,
+        "vet": true,
+        "tidy": true,
+        "consumer_build": true
+      },
+      {
+        "directory": "eventhandler/appsyncevents",
+        "archive_sha256": "d873f72f5496c14c6bcf669def78a88c97c2ae9d48f7cad90c2cae14842f1ded",
+        "tests": true,
+        "vet": true,
+        "tidy": true,
+        "consumer_build": true
+      },
+      {
+        "directory": "eventhandler/appsyncgraphql",
+        "archive_sha256": "859a311c3cc428a27358c7ab2a156d94b3a6f4c78e69950e419cb5e42fd01ba4",
+        "tests": true,
+        "vet": true,
+        "tidy": true,
+        "consumer_build": true
+      },
+      {
+        "directory": "eventhandler/bedrock",
+        "archive_sha256": "a2a0c89936007fb9396a57932d18a0c95ee99163584f6b6ee9bf83f53e497cf7",
+        "tests": true,
+        "vet": true,
+        "tidy": true,
+        "consumer_build": true
+      },
+      {
+        "directory": "eventhandler/http",
+        "archive_sha256": "5e62d66311aabcd8a4941c8baa046746067caf7b201d531c5cfc89c244b137c8",
+        "tests": true,
+        "vet": true,
+        "tidy": true,
+        "consumer_build": true
+      },
+      {
+        "directory": "jmespath",
+        "archive_sha256": "7bf2ec8c850435531fa6f460aea4bba17c01d66954999d07d22e8bf8c1534f9f",
+        "tests": true,
+        "vet": true,
+        "tidy": true,
+        "consumer_build": true
+      },
+      {
+        "directory": "kafka",
+        "archive_sha256": "63cce9360d920e296350e6880204455d805b6608384a9adf5a7a06ad1946f6f4",
+        "tests": true,
+        "vet": true,
+        "tidy": true,
+        "consumer_build": true
+      },
+      {
+        "directory": "metrics",
+        "archive_sha256": "0e54bf02fc1c175c726d29397fd1eb728053e3513d1f6a1bb9f45e86b3cc1a88",
+        "tests": true,
+        "vet": true,
+        "tidy": true,
+        "consumer_build": true
+      },
+      {
+        "directory": "parser",
+        "archive_sha256": "ad0a9d640a88d0b01049749730d9b04d4eadef06be22bd4a60f5fe683947d8af",
+        "tests": true,
+        "vet": true,
+        "tidy": true,
+        "consumer_build": true
+      },
+      {
+        "directory": "eventhandler/http/metrics",
+        "archive_sha256": "f3ec4b843a955435986a62d760f7c84c290d50339ff3e7a00a97cb890905f565",
+        "tests": true,
+        "vet": true,
+        "tidy": true,
+        "consumer_build": true
+      },
+      {
+        "directory": "idempotency",
+        "archive_sha256": "6e89d4fb28b8a6ff10f9b49f4e53cb89c94634ec724a0449fc061e27d6581d67",
+        "tests": true,
+        "vet": true,
+        "tidy": true,
+        "consumer_build": true
+      },
+      {
+        "directory": "kafka/avro",
+        "archive_sha256": "09f7d1ceae9e8a043b29fb890e5dfc21589394b3c579389989cdd29265fe1083",
+        "tests": true,
+        "vet": true,
+        "tidy": true,
+        "consumer_build": true
+      },
+      {
+        "directory": "kafka/protobuf",
+        "archive_sha256": "0037dad4873823fc7cc2cf8ca70a55a2468ad661af4a8ce7902d7b4acfab252b",
+        "tests": true,
+        "vet": true,
+        "tidy": true,
+        "consumer_build": true
+      },
+      {
+        "directory": "parameters",
+        "archive_sha256": "bd19af4a40ad71ba1dd8f249b68ab00d365eb286482a753d5df8e78ddae1bec2",
+        "tests": true,
+        "vet": true,
+        "tidy": true,
+        "consumer_build": true
+      },
+      {
+        "directory": "tracer",
+        "archive_sha256": "3dd558ab92d7b3f441ae1673014c17f5bdc6acf8af73ae43ea93edf5fa93bc5f",
+        "tests": true,
+        "vet": true,
+        "tidy": true,
+        "consumer_build": true
+      },
+      {
+        "directory": "validation",
+        "archive_sha256": "c3124787bce16f480efd7e207ecd3998e3408f9b3ea4a7881c3fc9ed89313eec",
+        "tests": true,
+        "vet": true,
+        "tidy": true,
+        "consumer_build": true
+      },
+      {
+        "directory": "eventhandler/http/tracer",
+        "archive_sha256": "dd0927202bafa506137ca91910c9b520eea67dedfc486cdcb7ef40bebf820fe5",
+        "tests": true,
+        "vet": true,
+        "tidy": true,
+        "consumer_build": true
+      },
+      {
+        "directory": "idempotency/cache",
+        "archive_sha256": "bb252f2f266ad78a4131f14ea7ad16ce4fe023716a618449811e9058696f055e",
+        "tests": true,
+        "vet": true,
+        "tidy": true,
+        "consumer_build": true
+      }
+    ]
+  },
+  "linux_baseline": {
+    "run": "https://github.com/rambow-cloud/powertools-lambda-go/actions/runs/37219502507",
+    "completed": true,
+    "module_count": 31,
+    "kms": true,
+    "frozen_xray": true
+  },
+  "findings": [
+    {
+      "issue": 25,
+      "module": "signer",
+      "problem": "premature shared request-body closure"
+    },
+    {
+      "issue": 26,
+      "module": "parser",
+      "problem": "UTF-8 replacement and BOM handling"
+    },
+    {
+      "issue": 27,
+      "module": "parameters",
+      "problem": "UTF-8 replacement and BOM handling"
+    },
+    {
+      "issue": 28,
+      "module": "jmespath",
+      "problem": "UTF-8 replacement"
+    }
+  ],
+  "local_limitations": [
+    "Linux Docker engine did not respond within a bounded probe.",
+    "Frozen X-Ray workspace test could not download a selected external dependency."
+  ],
+  "reference_case_count": 53,
+  "pre_fix_differences": {
+    "parser": 13,
+    "parameters": 8,
+    "jmespath": 6
+  },
+  "signer_fix": {
+    "pr": 29,
+    "merge_commit": "b02d8dc47e8529ca6b6b61e217bf37b2e819df34",
+    "required_checks": "passed before merge"
+  },
+  "utf8_regression_cases": {
+    "parser": 20,
+    "parameters": 16,
+    "jmespath": 20,
+    "total": 56
+  },
+  "utf8_packaged_verification": {
+    "selected_modules": [
+      "parser",
+      "parameters",
+      "jmespath"
+    ],
+    "completed": true,
+    "tests": true,
+    "vet": true,
+    "tidy": true,
+    "standalone_consumers": 3,
+    "cgo_enabled": false,
+    "workspace": "off"
+  }
+}

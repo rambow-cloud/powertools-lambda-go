@@ -95,6 +95,8 @@ orders, err := parser.Parse(ctx, event,
 
 `JSONStringified` requires a string and then validates decoded JSON. `Base64Encoded` accepts Base64 JSON, gzip-compressed Base64 JSON, or decoded text, matching the reference helper's fallback sequence. Base64 decoding reuses Commons. Malformed Base64 can produce an operational error. A malformed JSON issue retains the `Invalid JSON` prefix; the detailed syntax diagnostic comes from Go's decoder.
 
+`Base64Encoded` reuses Commons UTF-8 decoding, replacing each maximal malformed subpart separately. Plain input and the original-byte fallback strip exactly one leading BOM, matching `TextDecoder`. The gzip JSON path retains BOM, matching `Buffer.toString`; unsuccessful gzip JSON parsing still falls back to the original compressed bytes. Twenty pinned reference cases cover these paths, malformed byte runs, truncated sequences, single/double BOMs and valid Unicode in `testdata/utf8-v2.35.0.json`.
+
 ## Initial event contracts
 
 | Reference export | Go equivalent | Behavior |
