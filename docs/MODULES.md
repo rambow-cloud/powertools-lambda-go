@@ -1,6 +1,6 @@
 # Independent modules in one repository
 
-The implementation uses twenty-eight public modules and three development modules. Current module/import paths use the selected rambow-cloud repository namespace. Each module has its own `go.mod`, dependency requirements, and version entry in `tools/modules.json`. Versions are initial release targets, not published releases. Go 1.26 is the current supported baseline for all modules; CGO is always disabled. The count includes the deprecated, frozen X-Ray adapter. Current namespace verification is recorded in [MODULE_ACCEPTANCE_MIGRATION.json](MODULE_ACCEPTANCE_MIGRATION.json): all 31 packaged modules and 28 independent public consumers passed with GOWORK=off and CGO disabled on 2026-09-27. The report combines 13 accepted modules with an 18-module continuation. Non-documentation source matched the accepted archives at verification; later publication-only changes are checked separately. Earlier MODULE_ACCEPTANCE, REGEX and KMS records retain their original verification scope with historical module directories identified independently of repository ownership.
+The implementation uses twenty-eight public modules and three development modules. Current module/import paths use the selected rambow-cloud repository namespace. Each module has its own `go.mod`, dependency requirements, and version entry in `tools/modules.json`. The 27 maintained public modules were released as `v0.1.0` on 2026-10-04; fresh public consumer builds and checksums are recorded in [RELEASE_ACCEPTANCE.json](RELEASE_ACCEPTANCE.json). The frozen `tracer/xray` adapter was excluded from publication. Go 1.26 is the current supported baseline for all modules; CGO is always disabled. The count includes the deprecated, frozen X-Ray adapter. Current namespace verification is recorded in [MODULE_ACCEPTANCE_MIGRATION.json](MODULE_ACCEPTANCE_MIGRATION.json): all 31 packaged modules and 28 independent public consumers passed with GOWORK=off and CGO disabled on 2026-09-27. The report combines 13 accepted modules with an 18-module continuation. Non-documentation source matched the accepted archives at verification; later publication-only changes are checked separately. Earlier MODULE_ACCEPTANCE, REGEX and KMS records retain their original verification scope with historical module directories identified independently of repository ownership.
 
 ## Module boundaries
 
@@ -35,7 +35,7 @@ All module paths start with `github.com/rambow-cloud/powertools-lambda-go`.
 | `eventhandler/http/metrics` | Optional request-scoped EMF middleware | `eventhandler/http/metrics/v0.1.0` |
 | `eventhandler/http/tracer` | Optional OTel route spans and HTTP metadata | `eventhandler/http/tracer/v0.1.0` |
 | `tracer` | OpenTelemetry tracing and instrumentation | `tracer/v0.1.0` |
-| `tracer/xray` | Deprecated and frozen legacy SDK adapter | `tracer/xray/v0.1.0` (not recommended for new releases) |
+| `tracer/xray` | Deprecated and frozen legacy SDK adapter | Not released; deprecated and frozen |
 | `examples` | Development examples | Not published |
 | `integration` | Lambda and local capture fixtures | Not published |
 | `tools` | Packaging and development tooling | Not published |

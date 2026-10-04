@@ -1,12 +1,12 @@
 # Optional utilities and Go publishing
 
-Assessment date: 2026-09-14; publication identity updated 2026-09-27. Feature modules have independent dependencies and versions in one repository. Module boundaries are implemented; see [MODULES.md](MODULES.md) for the actual layout and maintenance commands. The selected repository path is `github.com/rambow-cloud/powertools-lambda-go`. No versions have been published.
+Assessment date: 2026-09-14; publication identity updated 2026-09-27. Feature modules have independent dependencies and versions in one repository. Module boundaries are implemented; see [MODULES.md](MODULES.md) for the actual layout and maintenance commands. The selected repository path is `github.com/rambow-cloud/powertools-lambda-go`. The 27 maintained public modules were published as `v0.1.0` on 2026-10-04; see [public release acceptance](RELEASE_ACCEPTANCE.json). The frozen X-Ray adapter was excluded.
 
 ## Consumer experience
 
 Python's `aws-lambda-powertools[parser]` is installation syntax for optional dependencies, including Pydantic. It does not create a separate Parser distribution or change Python import syntax. TypeScript instead publishes packages such as `@aws-lambda-powertools/parser`.
 
-Go has no bracket-based extras syntax. Consumers import a package path; `go get` selects the module that provides that package. The intended Go equivalent, after the repository/version are published, is:
+Go has no bracket-based extras syntax. Consumers import a package path; `go get` selects the module that provides that package. The published Go equivalent is:
 
 ```powershell
 $env:CGO_ENABLED='0'
@@ -17,7 +17,7 @@ go get github.com/rambow-cloud/powertools-lambda-go/parser@v0.1.0
 import "github.com/rambow-cloud/powertools-lambda-go/parser"
 ```
 
-These are future usage examples, not commands that work against a release today. The existing utilities have separate module/import paths such as `/logger` and `/metrics`; `/parameters/ssm` remains a package within the Parameters module. Lambda applications compile their selected packages into the Go executable; Node.js and Python reference tooling is not a runtime dependency.
+The example uses the publicly verified Parser `v0.1.0` release. The existing utilities have separate module/import paths such as `/logger` and `/metrics`; `/parameters/ssm` remains a package within the Parameters module. Lambda applications compile their selected packages into the Go executable; Node.js and Python reference tooling is not a runtime dependency.
 
 ## Package selection versus module isolation
 
@@ -65,12 +65,12 @@ version-retrieval gates below.
 - [x] PUB-03: Configure per-module CGO-disabled tests/vet and Lambda cross-builds; verify standalone Parser and Signer consumers. All 18 packaged modules and 15 public consumers passed; Parser has no external dependencies. Dependency graphs and consumer binary sizes are recorded in MODULE_ACCEPTANCE.json, with both Lambda architectures built (2026-09-15).
 - [x] PUB-03a: Complete the original module-split portion of PUB-03: CI definitions, 12 packaged-module checks, nine isolated consumer builds/dependency checks, and Linux amd64/arm64 builds with CGO disabled. Subsequent utilities including Parser extend verification to 18 modules and 15 independent consumers (2026-09-15). Consumer harness sizes are recorded; release performance benchmarks remain open.
 - [x] PUB-03c: Verify optional HTTP Metrics/OTel adapter modules without adding dependencies to HTTP core. Verified 176 Metrics and 128 Tracer middleware reference cases (2,066 HTTP cases across the three modules), scope/span concurrency and body lifecycle tests, all 22 packaged modules/19 independent consumers, both CGO-disabled Linux builds, 622/622 RIE assertions, 95/95 streaming Runtime API checks and 14/14 Batch artifact checks (2026-09-22, Asia/Shanghai). Docker ran amd64; arm64 was cross-compiled. No AWS resources were used. Versions remain local fixtures, not public releases.
-- [ ] PUB-04: Verify consumers with `GOWORK=off`, real version requirements, and no local replacements. Ensure core tests do not create module cycles.
+- [x] PUB-04: Verify all 27 maintained public consumers with real `v0.1.0` requirements, GOWORK=off, CGO disabled, fresh caches, public proxy/checksum retrieval, and no module replacements. Hosted module CI also passed before publication. See [RELEASE_ACCEPTANCE.json](RELEASE_ACCEPTANCE.json) (2026-10-04).
 - [x] PUB-03b: Extend the independent-module harness to 20 packaged modules and seventeen public consumers, including HTTP. Verify tests/vet/tidy, both CGO-disabled Linux builds and 501/501 Docker assertions (2026-09-16). Root Commons, Parser and HTTP have no third-party module dependencies. These checks use local fixture versions; public publication/retrieval remains open.
 - [x] PUB-04a: Verify GOWORK=off consumers through a local file-based module proxy with semver requirements and no go.mod replacements. Root Commons has no external dependencies; Metrics and Metadata only require core; OTel Tracer excludes the X-Ray SDK. Public repository/proxy retrieval remains pending under PUB-04.
 - [x] PUB-05a: Add the project MIT license and preserved upstream/source-data licenses, record direct dependency provenance, and verify LICENSE/NOTICE contents in all 31 independent module archives. CI verifies generated notices; see [THIRD_PARTY_NOTICES.md](https://github.com/rambow-cloud/powertools-lambda-go/blob/main/THIRD_PARTY_NOTICES.md). This does not claim a complete binary SBOM or public release.
 - [ ] PUB-05: Complete license/provenance notices, API docs, release notes, module tag automation, and public compatibility scope.
-- [ ] PUB-06: Publish the approved modules in dependency order and verify that consumers can resolve the documented versions. Publication has not been requested yet.
+- [x] PUB-06: Publish all 27 approved maintained modules in dependency order through GoReleaser OSS v2.18.2 and verify independent public consumers before finalizing each Release. Preparation PR #16 froze the source and notes; issue #15 completed after successful publication. See [RELEASE_ACCEPTANCE.json](RELEASE_ACCEPTANCE.json) (2026-10-04).
 
 ## Sources
 
