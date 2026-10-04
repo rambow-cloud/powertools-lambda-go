@@ -1,7 +1,9 @@
-# Releasing independent Go modules
+# Releasing Go modules at one version
 
 Several PRs can merge before a version is published. Source merges do not
-publish modules. Each module has its own version and release-note boundary.
+publish modules. All maintained public modules release together at one version,
+even when only one component changes. Go module boundaries and import paths stay
+independent; nested modules still require their own prefixed tags.
 The repository publishes Go source modules and GitHub Releases with GoReleaser
 OSS; Lambda ZIPs remain CI example artifacts. No cloud AWS account is needed.
 
@@ -20,7 +22,7 @@ description per line, with the module directory and change type:
 
 Use module directories from `tools/modules.json`, including `.` for root
 Commons. Use `repository` for repository-only tooling and contribution work;
-these entries do not appear in individual module notes. Types are `breaking`,
+these entries appear in the root version's unified summary. Types are `breaking`,
 `feature`, `fix`, `documentation`, and `maintenance`. A PR may describe several
 changes across several modules. For a change with no release impact, write
 `None: <specific reason>`. The contribution policy requires the section and
@@ -29,8 +31,10 @@ whether the declared modules and summaries accurately describe the changes.
 
 For Logger v0.1.1, the generator collects all merged PRs between
 `logger/v0.1.0` and the selected source commit, then includes only Logger entries.
-A Metrics release uses its own previous tag; it does not lose changes just
-because Logger was released first. One PR fixing three Logger behaviors can
+A Metrics component note uses its previous tag. The root `v0.1.1` Release groups
+all actual changes by component and includes repository notes and a full module
+version table. Modules with only dependency alignment are identified separately.
+One PR fixing three Logger behaviors can
 produce three notes with the same PR link. Notes group breaking changes,
 features, fixes, documentation, and maintenance in that order.
 
@@ -40,7 +44,7 @@ previous stable releases; prereleases may compare against previous prereleases.
 Only published GitHub Releases on the source ancestry are release boundaries,
 not draft Releases or unrelated module tags.
 
-## Prepare one component or all components
+## Prepare the unified release
 
 After the workflows are merged, open
 [Actions: Prepare release](https://github.com/rambow-cloud/powertools-lambda-go/actions/workflows/prepare-release.yml)
@@ -48,19 +52,18 @@ and choose **Run workflow** on `main`:
 
 | Input | Value |
 |---|---|
-| `scope` | A module directory such as `logger`, several comma-separated directories such as `logger,metrics`, or `all` |
 | `bump` | Leave `auto` for note-based versioning, or select `patch`, `minor`, or `major` |
 | `auto_publish` | Leave checked to publish after the preparation PR merges and main checks pass |
 
 The workflow creates a Release tracking issue and a preparation PR. It computes
-versions, includes unpublished internal dependencies transitively, synchronizes
+one shared version, includes every maintained public module, synchronizes
 manifest versions and internal `go.mod` requirements, rebuilds `go.work` version
 mappings, tidies dependency sums, and freezes each module's accumulated notes.
 No manual version-file edits, module-list script, issue number, SHA, or plan name
-are required. `all` selects all maintained public modules, including Commons;
+are required. Every release includes all maintained public modules and Commons;
 development modules and the frozen `tracer/xray` adapter are excluded.
 
-Review the generated PR's module/version table, included dependencies, notes,
+Review the generated PR's shared version, full module table, notes,
 initial compatibility statements, and automatic-publication setting. Required
 checks use the native PR workflows. Preparation waits for those runs to appear
 and attempts to authorize pending runs with its Actions write permission. If
@@ -101,30 +104,30 @@ authentication while the organization policy stays restricted.
 | Breaking change while on v1 | Stop for a separately reviewed v2 module-path migration |
 
 For example, Logger fixes produce `v0.1.0 → v0.1.1`; a Logger feature produces
-`v0.1.0 → v0.2.0`. Each selected module uses its own previous release and can
-have a different version. Reserved tags, including drafts or tags without
-Releases, are never reused; preparation advances beyond reserved versions.
+`v0.1.0 → v0.2.0` for every maintained component. The strongest accumulated change
+across components and repository notes determines one automatic increment.
+Reserved tags from any maintained module, including drafts or tags without
+Releases, are never reused; the entire cohort advances beyond reserved versions.
 An explicit `major` increment can move v0 to v1; v2+ paths are not automated.
 
-Versions live in the manifest and Git tags. The automation updates internal
+The project version lives in `tools/modules.json` as `release_version`; all
+maintained module entries must match it. The automation updates internal
 dependency requirements and workspace mappings while preserving module paths
 and Go language-version directives. Workspace consumer `go.mod` files are
-synchronized too; publication scope is the requested components plus required
-unpublished dependencies. Dependency changes appear in the plan and selected
-modules' notes, and other consumers receive preparation-PR notes for their next
-release. Go commands keep `CGO_ENABLED=0`; no module-file replacements are added.
+synchronized too. Publication always covers the full maintained cohort.
+Dependency changes appear in the frozen plan and component notes.
+Go commands keep `CGO_ENABLED=0`; no module-file replacements are added.
 Tidy uses the existing local module fixtures before published external modules.
 
 Maintainers who prefer the CLI can start from a clean checkout of current
-`origin/main`, authenticate `gh`, and run either command:
+`origin/main`, authenticate `gh`, and run:
 
 ```sh
-uv run --no-project python tools/release.py prepare --module logger --auto-publish
 uv run --no-project python tools/release.py prepare --all --auto-publish
 ```
 
-These commands create the issue, branch, and PR automatically. Repeat `--module`
-to select several components and use `--bump patch` to override the version
+This command creates the issue, branch, and PR automatically. Component selection
+is no longer supported. Use `--bump patch` to override the shared version
 policy. CLI preparation enables automatic publication only with `--auto-publish`.
 For local metadata/plan generation with no GitHub writes, pass `--local --issue
 123`; `--issue` otherwise reuses an existing open tracking issue. `--plan` and
@@ -145,7 +148,7 @@ The first release therefore needs no hand-authored overrides file. Maintainers
 can improve generated historical summaries and initial capability statements in
 the preparation PR, or supply optional JSON overrides for preparation. Each
 `pull_requests` value contains the release-note section without its heading.
-Repository-only entries stay out of module notes.
+Repository-only entries are included in the root unified summary.
 
 ```json
 {
@@ -205,7 +208,9 @@ and an active run is not canceled by a newer request.
 For each module, publication creates a tag at the selected SHA and uses
 GoReleaser to create its draft GitHub Release with the reviewed notes. After a
 real public consumer passes, a second GoReleaser invocation publishes that same
-draft before proceeding to the next module. Root Commons uses `vX.Y.Z`; Logger uses
+draft before proceeding to the next module. The root summary stays draft until
+every component consumer and Release succeeds, then is finalized last. It marks
+the stable project version as GitHub's Latest Release. Root Commons uses `vX.Y.Z`; Logger uses
 `logger/vX.Y.Z`. Consumers use fresh caches, `GOWORK=off`, `CGO_ENABLED=0`,
 the public Go proxy and checksum database, no local proxies/replacements, and
 a consumer build. This differs from synthetic local module verification.
@@ -213,12 +218,19 @@ After all selected modules pass, the workflow posts Release links and closes
 the tracking issue.
 
 The built-in GitHub token performs writes. Publication does not depend on a
-tag-triggered follow-up workflow. Independently versioned modules do not set
-a repository-wide latest Release label. Prerelease versions create prerelease
+tag-triggered follow-up workflow. Component Releases do not replace the root
+Latest label. Prerelease versions create prerelease
 Releases. v2+ module-path migrations need a separate feature and are rejected
 by this initial tool.
 
 ## GoReleaser configuration and independent tags
+
+New preparations use schema 2: the complete maintained module set, one version,
+aligned internal requirements, and frozen unified summary are required before
+publication writes. Immutable schema-1 plans from before this policy can still
+be recovered at their original commits, whose manifests lack `release_version`.
+They cannot be used to bypass the policy at a new preparation commit. Published
+`v0.1.0` tags, notes, and acceptance records are not rewritten by this change.
 
 The workflow installs GoReleaser OSS **v2.18.2** through a commit-pinned official
 action. `.goreleaser.json` is the shared configuration; GoReleaser accepts JSON

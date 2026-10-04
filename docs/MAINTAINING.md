@@ -83,7 +83,7 @@ and [required-check troubleshooting](https://docs.github.com/en/pull-requests/ho
 
 ## Rollout verification
 
-For independent version publication, follow [Releasing modules](RELEASING.md).
+For unified version publication across independent modules, follow [Releasing modules](RELEASING.md).
 Preparation automatically generates module versions, dependency metadata,
 accumulated notes, a tracking issue, and a PR. The publisher reuses required
 checks, binds the reviewed plan to the merged preparation SHA, and keeps the

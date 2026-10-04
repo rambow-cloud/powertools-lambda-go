@@ -11,7 +11,7 @@ import time
 from urllib.parse import quote
 
 import release
-from release_notes import parse_notes, render_notes, section, validate_direct_note
+from release_notes import parse_notes, render_notes, render_unified_notes, section, validate_direct_note
 
 
 def maintained(module):
@@ -19,16 +19,11 @@ def maintained(module):
 
 
 def scope_modules(modules, selected=None, all_modules=False):
-    if all_modules and selected:
-        raise ValueError("Choose --all or --module, not both.")
-    result = list(modules) if all_modules else list(selected or [])
-    if all_modules:
-        result = [directory for directory in result if maintained(modules[directory])]
-    if not result or len(result) != len(set(result)):
-        raise ValueError("Select unique module directories or --all.")
-    for directory in result:
-        if directory not in modules or not maintained(modules[directory]):
-            raise ValueError(f"Not a maintained public release module: {directory}")
+    if selected:
+        raise ValueError("Unified releases always include all maintained modules; component selection is no longer supported.")
+    result = [directory for directory in modules if maintained(modules[directory])]
+    if not result or "." not in result:
+        raise ValueError("Unified releases require a maintained root module.")
     return result
 
 
@@ -160,21 +155,18 @@ def module_requirements(modules):
     return result
 
 
-def select_dependencies(selected, modules, requirements, available):
-    paths = {"github.com/" + release.REPOSITORY + ("" if directory == "." else "/" + directory): directory for directory in modules}
-    result = list(selected)
-    for directory in result:
-        for requirement in requirements[directory]:
-            dependency = paths.get(requirement["Path"])
-            if dependency is None:
-                if requirement["Path"].startswith("github.com/" + release.REPOSITORY + "/"):
-                    raise ValueError(f"Unknown internal dependency: {requirement['Path']}")
-                continue
-            if not maintained(modules[dependency]):
-                raise ValueError(f"Unsupported release dependency: {dependency}")
-            if dependency not in result and not available(release.tag_name(dependency, requirement["Version"])):
-                result.append(dependency)
-    return result
+def unified_version(modules, previous, bump, entries, reserved_tags):
+    current = max((module["version"] for module in modules.values() if maintained(module)), key=release.version_key)
+    published = [tag.rsplit("/", 1)[-1] for tag in previous.values() if tag]
+    baseline = max([current, *published], key=release.version_key) if published else None
+    reserved = []
+    for tag in reserved_tags:
+        for directory, module in modules.items():
+            prefix = "" if directory == "." else directory + "/"
+            version = tag.removeprefix(prefix)
+            if maintained(module) and tag.startswith(prefix) and release.VERSION.fullmatch(version):
+                reserved.append(version)
+    return next_version(current, baseline, bump, entries, reserved)
 
 
 def synchronize_metadata(modules, selected, requirements):
@@ -196,6 +188,7 @@ def synchronize_metadata(modules, selected, requirements):
             updates[directory] = changed
     manifest_path = release.ROOT / "tools/modules.json"
     data = json.loads(manifest_path.read_text(encoding="utf-8"))
+    data["release_version"] = selected["."]["version"]
     for module in data["modules"]:
         if module["directory"] in selected:
             module["version"] = selected[module["directory"]]["version"]
@@ -237,7 +230,7 @@ Prepare `releases/{name}.json` from `{plan['source_sha']}`. Versions, internal r
 |---|---|---|
 {rows}
 
-Requested modules: {', '.join('`' + directory + '`' for directory in plan['requested_modules'])}. Automatically included dependencies: {', '.join('`' + directory + '`' for directory in plan['included_dependencies']) or 'None'}.
+Unified project version: **{plan['release_version']}**. All maintained public modules are included, even when only one component changes. The root Release groups accumulated component and repository changes and lists the full version table.
 
 Historical notes inferred from PR titles and changed paths: {history}. Review these summaries, initial scope statements, and direct-commit acknowledgements in the plan.
 
@@ -299,7 +292,7 @@ def open_preparation(plan, name, branch, api):
 
 def prepare(args, api):
     modules = release.manifest()
-    requested = scope_modules(modules, args.module, args.all)
+    requested = scope_modules(modules, getattr(args, "module", None), args.all)
     if args.issue is not None and args.issue < 1:
         raise ValueError("Use a positive release tracking issue number.")
     target = release.git("rev-parse", "HEAD")
@@ -307,7 +300,7 @@ def prepare(args, api):
         raise ValueError("Prepare from a clean checkout of current origin/main; no manual version edits are needed.")
     if args.local and not args.issue:
         raise ValueError("--local requires an existing --issue and creates no GitHub issue or PR.")
-    name = args.plan or "auto-" + hashlib.sha256((",".join(sorted(requested)) + ":" + args.bump + ":" + str(args.auto_publish)).encode()).hexdigest()[:10] + "-" + target[:12]
+    name = args.plan or "auto-" + hashlib.sha256(("unified:" + ",".join(sorted(requested)) + ":" + args.bump + ":" + str(args.auto_publish)).encode()).hexdigest()[:10] + "-" + target[:12]
     plan_path = release.plan_path(name)
     branch = "release/" + name
     if not args.local:
@@ -341,17 +334,18 @@ def prepare(args, api):
             available_cache[tag] = tag in published and bool(release.remote_tag(api, tag))
         return available_cache[tag]
     requirements = module_requirements(modules)
-    directories = select_dependencies(requested, modules, requirements, available)
+    directories = requested
     history = History(api, modules, target, overrides)
-    plan = {"schema_version": 1, "issue": args.issue or 1, "source_sha": target, "auto_publish": args.auto_publish,
+    previous_tags = {directory: release.previous_release(directory, target, releases) for directory in directories}
+    histories = {directory: history.notes(previous_tags[directory]) for directory in directories}
+    all_entries = [entry for entries, _, _, _ in histories.values() for entry in entries]
+    version = unified_version(modules, previous_tags, args.bump, all_entries, reserved_tags)
+    plan = {"schema_version": 2, "release_version": version, "repository_entries": [entry for entry in histories["."][0] if entry["module"] == "repository"], "issue": args.issue or 1, "source_sha": target, "auto_publish": args.auto_publish,
             "requested_modules": requested, "included_dependencies": [directory for directory in directories if directory not in requested], "bump": args.bump, "modules": []}
     for directory in directories:
-        previous = release.previous_release(directory, target, releases)
-        entries, reviewed, direct, generated = history.notes(previous)
+        previous = previous_tags[directory]
+        entries, reviewed, direct, generated = histories[directory]
         related = [entry for entry in entries if entry["module"] == directory]
-        prefix = "" if directory == "." else directory + "/"
-        reserved = [tag[len(prefix):] for tag in reserved_tags if tag.startswith(prefix) and release.VERSION.fullmatch(tag[len(prefix):])]
-        version = next_version(modules[directory]["version"], previous, args.bump, related, reserved)
         initial = overrides.get("initial_summaries", {}).get(directory)
         if previous is None and not initial:
             initial = f"Initial public source release of the {directory if directory != '.' else 'Commons'} module. Review supported behavior and compatibility limits in the module documentation; full cross-language parity is not implied."
@@ -378,12 +372,15 @@ def prepare(args, api):
         for item in plan["modules"]:
             item["dependency_updates"] = updates.get(item["directory"], [])
             item["notes"] = render_notes(release.REPOSITORY, item["directory"], item["version"], item["previous_tag"], item["entries"], item["initial_summary"], item["untracked_commits"], item["dependency_updates"])
-        release.validate_plan(plan, release.manifest())
+        selected["."]["notes"] = render_unified_notes(release.REPOSITORY, plan)
+        release.validate_plan(plan, release.manifest(), release.manifest_version())
         if not issue:
             versions = "\n".join(f"- `{item['directory']}`: `{item['version']}`" for item in plan["modules"])
-            body = f"## Modules and target versions\n\n{versions}\n\n## Release scope and compatibility\n\nRequested modules: {', '.join(requested)}. Unpublished dependencies are included automatically. Review initial capability statements and compatibility boundaries in the preparation PR.\n\n## Previous versions and accumulated changes\n\nSource: `{target}`. Each module uses its own previous published tag; the reviewed plan contains accumulated PR notes, generated historical summaries, and direct-commit acknowledgements.\n\n## Publication acceptance\n\nRequire contribution, module, and documentation checks; review the plan; merge the preparation PR; publish with GoReleaser and verify fresh public Go consumers. Keep this issue open until the entire batch succeeds. Automatic publication after merge: {'enabled' if args.auto_publish else 'disabled'}."
+            body = f"## Unified release version\n\n{version}\n\n## Modules and target versions\n\n{versions}\n\n## Release scope and compatibility\n\nAll maintained public modules are released together. Review capability statements and compatibility boundaries in the preparation PR.\n\n## Previous versions and accumulated changes\n\nSource: `{target}`. The root Release groups accumulated component/repository notes and links the full module version table.\n\n## Publication acceptance\n\nRequire contribution, module, and documentation checks; review the plan; merge the preparation PR; publish with GoReleaser and verify fresh public Go consumers. Keep this issue open until the entire batch succeeds. Automatic publication after merge: {'enabled' if args.auto_publish else 'disabled'}."
             issue = api.repo("issues", method="POST", data={"title": "[Release]: " + name, "body": body})
             plan["issue"] = issue["number"]
+        selected["."]["notes"] = render_unified_notes(release.REPOSITORY, plan)
+        release.validate_plan(plan, release.manifest(), release.manifest_version())
         release.write_json(plan_path, plan)
     except (RuntimeError, ValueError, KeyError, OSError, TypeError):
         for path, content in before.items():

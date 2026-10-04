@@ -13,7 +13,7 @@ from urllib.error import HTTPError, URLError
 from urllib.parse import quote
 from urllib.request import Request, urlopen
 
-from release_notes import CATEGORIES, render_notes, validate_direct_note
+from release_notes import CATEGORIES, render_notes, render_unified_notes, validate_direct_note
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -77,7 +77,16 @@ def manifest():
     data = json.loads((ROOT / "tools/modules.json").read_text(encoding="utf-8"))
     if data["base"] != "github.com/" + REPOSITORY:
         raise ValueError("Unexpected publication repository.")
-    return {module["directory"]: module for module in data["modules"]}
+    modules = {module["directory"]: module for module in data["modules"]}
+    if "release_version" in data:
+        version_key(data["release_version"])
+        if any(module["version"] != data["release_version"] for module in modules.values() if module["public"] and module.get("status") != "deprecated-frozen"):
+            raise ValueError("Maintained module versions must match the project release_version.")
+    return modules
+
+
+def manifest_version():
+    return json.loads((ROOT / "tools/modules.json").read_text(encoding="utf-8")).get("release_version")
 
 
 def tag_name(directory, version):
@@ -157,9 +166,21 @@ def write_json(path, data):
     temporary.replace(path)
 
 
-def validate_plan(plan, modules):
-    if plan.get("schema_version") != 1 or not isinstance(plan.get("issue"), int) or plan["issue"] < 1 or not SHA.fullmatch(plan.get("source_sha", "")):
+def validate_plan(plan, modules, project_version=None):
+    if plan.get("schema_version") not in {1, 2} or not isinstance(plan.get("issue"), int) or plan["issue"] < 1 or not SHA.fullmatch(plan.get("source_sha", "")):
         raise ValueError("Invalid release plan identity.")
+    unified = plan["schema_version"] == 2
+    if project_version is not None and (not unified or plan.get("release_version") != project_version):
+        raise ValueError("Current release policy requires a unified plan matching release_version.")
+    if unified:
+        version_key(plan.get("release_version", ""))
+        cohort = {directory for directory, module in modules.items() if module["public"] and module.get("status") != "deprecated-frozen"}
+        if "." not in cohort or {item["directory"] for item in plan.get("modules", [])} != cohort or any(item["version"] != plan["release_version"] for item in plan.get("modules", [])):
+            raise ValueError("Unified plans must include every maintained public module at one version.")
+        reviewed = next(item["reviewed_prs"] for item in plan["modules"] if item["directory"] == ".")
+        for entry in plan.get("repository_entries", []):
+            if entry["module"] != "repository" or entry["type"] not in CATEGORIES or entry["pr"] not in reviewed or not entry["description"].strip():
+                raise ValueError("Invalid reviewed repository note.")
     if not isinstance(plan.get("auto_publish", False), bool):
         raise ValueError("Automatic publication authorization must be a boolean.")
     selected = {}
@@ -197,6 +218,8 @@ def validate_plan(plan, modules):
             version_key(update["from"])
             version_key(update["to"])
         expected = render_notes(REPOSITORY, directory, item["version"], previous, item["entries"], item["initial_summary"], item["untracked_commits"], updates)
+        if unified and directory == ".":
+            expected = render_unified_notes(REPOSITORY, plan)
         if item["notes"] != expected:
             raise ValueError(f"Frozen notes do not match reviewed entries: {directory}")
         selected[directory] = item
@@ -234,6 +257,14 @@ def dependency_order(selected, modules, requirements, available):
         for dependencies in pending.values():
             dependencies.difference_update(ready)
     return result
+
+
+def validate_unified_requirements(version, requirements):
+    for values in requirements.values():
+        for requirement in values:
+            path = requirement["Path"]
+            if (path == "github.com/" + REPOSITORY or path.startswith("github.com/" + REPOSITORY + "/")) and requirement["Version"] != version:
+                raise ValueError("Unified internal requirements must use the cohort version.")
 
 
 def latest_checks(api, sha):
@@ -324,7 +355,7 @@ def preflight(args, api):
         raise ValueError("Release checkout must be clean; commit reviewed changes before preflight.")
     plan = json.loads(plan_path(args.plan).read_text(encoding="utf-8"))
     modules = manifest()
-    selected = validate_plan(plan, modules)
+    selected = validate_plan(plan, modules, manifest_version())
     if plan["issue"] != args.issue:
         raise ValueError("Dispatch issue does not match the reviewed plan.")
     authorize_actor(api)
@@ -360,6 +391,8 @@ def preflight(args, api):
         for update in selected[directory].get("dependency_updates", []):
             if not any(requirement["Path"] == update["path"] and requirement["Version"] == update["to"] for requirement in requirements[directory]):
                 raise ValueError("Reviewed dependency updates disagree with go.mod.")
+    if plan["schema_version"] == 2:
+        validate_unified_requirements(plan["release_version"], requirements)
     def available(tag):
         release = release_for_tag(api, tag)
         return bool(release and not release["draft"] and remote_tag(api, tag))
@@ -435,6 +468,7 @@ def run_goreleaser(directory, item, args, output, config, token=None, draft=True
     phase_config = config.parent / ("goreleaser-" + stage + ".json")
     configuration = json.loads(config.read_text(encoding="utf-8"))
     configuration["release"]["draft"] = draft
+    configuration["release"]["make_latest"] = bool(getattr(args, "unified", False) and directory == "." and not draft and "-" not in item["version"])
     write_json(phase_config, configuration)
     command = ["goreleaser", "release", "--clean", "--config", str(phase_config),
                "--release-notes", str(output / (name + ".md")),
@@ -452,6 +486,7 @@ def run_goreleaser(directory, item, args, output, config, token=None, draft=True
 
 def publish(args, api):
     plan, selected, modules, order = preflight(args, api)
+    args.unified = plan["schema_version"] == 2
     output = ROOT / "dist/releases" / args.plan
     output.mkdir(parents=True, exist_ok=True)
     digest = hashlib.sha256(plan_path(args.plan).read_bytes()).hexdigest()
@@ -475,6 +510,7 @@ def publish(args, api):
         print(report["publication"])
         return
     session = Path(tempfile.mkdtemp(prefix="consumer-", dir=output))
+    deferred_root = None
     try:
         for directory in order:
             item = selected[directory]
@@ -501,9 +537,17 @@ def publish(args, api):
             record.update(consumer_verified=True, evidence=evidence)
             write_json(output / "progress.json", report)
             if release["draft"]:
-                run_goreleaser(directory, item, args, output, configs[directory], token=api.token, draft=False)
-                release = await_release_phase(api, directory, item, args.sha, draft=False)
-            record.update(release_published=True, url=release["html_url"])
+                if plan["schema_version"] == 2 and directory == ".":
+                    deferred_root = record
+                else:
+                    run_goreleaser(directory, item, args, output, configs[directory], token=api.token, draft=False)
+                    release = await_release_phase(api, directory, item, args.sha, draft=False)
+            record.update(release_published=not release["draft"], url=release["html_url"])
+            write_json(output / "progress.json", report)
+        if deferred_root:
+            run_goreleaser(".", selected["."], args, output, configs["."], token=api.token, draft=False)
+            release = await_release_phase(api, ".", selected["."], args.sha, draft=False)
+            deferred_root.update(release_published=True, url=release["html_url"])
             write_json(output / "progress.json", report)
         report["completed"] = True
         write_json(output / "progress.json", report)
@@ -523,9 +567,7 @@ def main():
     commands = parser.add_subparsers(dest="command", required=True)
     prepare_parser = commands.add_parser("prepare", help="Write a reviewed plan without publishing")
     prepare_parser.add_argument("--issue", type=int, help="Reuse an open release tracking issue; otherwise create one")
-    scope = prepare_parser.add_mutually_exclusive_group(required=True)
-    scope.add_argument("--module", action="append", help="Module directory; repeat to select several")
-    scope.add_argument("--all", action="store_true", help="All maintained public modules")
+    prepare_parser.add_argument("--all", action="store_true", help="All maintained public modules (always selected)")
     prepare_parser.add_argument("--plan", help="Optional plan name; generated by default")
     prepare_parser.add_argument("--bump", choices=("auto", "patch", "minor", "major"), default="auto")
     prepare_parser.add_argument("--auto-publish", action="store_true", help="Authorize publication after this preparation PR merges and main CI passes")

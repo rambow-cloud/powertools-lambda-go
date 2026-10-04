@@ -43,6 +43,13 @@ def plan(items=None):
     return {"schema_version": 1, "issue": 20, "source_sha": A, "modules": items if items is not None else [item()]}
 
 
+def unified_plan():
+    data = plan([item(".", "v0.1.1", "v0.1.0"), item(), item("metrics", "v0.1.1", "metrics/v0.1.0")])
+    data.update(schema_version=2, release_version="v0.1.1", repository_entries=[])
+    data["modules"][0]["notes"] = release.render_unified_notes(release.REPOSITORY, data)
+    return data
+
+
 def pr(number, sha, base="main"):
     return {"number": number, "merged_at": f"2026-10-{number:02}T00:00:00Z", "merge_commit_sha": sha, "base": {"ref": base, "repo": {"full_name": release.REPOSITORY}}}
 
@@ -69,6 +76,20 @@ class FakeAPI:
 
 
 class NotesTests(unittest.TestCase):
+    def test_unified_summary_groups_actual_changes_and_preserves_unchanged_versions(self):
+        data = unified_plan()
+        for selected in (data["modules"][0], data["modules"][2]):
+            selected["entries"] = []
+        data["repository_entries"] = [entry("repository", "maintenance", "Unify release versions.", 10)]
+        notes = release.render_unified_notes(release.REPOSITORY, data)
+        self.assertIn("## logger\n\n### Fixes", notes)
+        self.assertIn("## Repository\n\n### Maintenance", notes)
+        self.assertNotIn("## metrics\n", notes)
+        self.assertIn("| `metrics` | [v0.1.1]", notes)
+        self.assertIn("No component changes", notes)
+        self.assertEqual(notes.count("Preserve field lifetimes."), 1)
+        self.assertIn("/pull/10", notes)
+
     def test_multiple_entries_and_modules(self):
         notes = parse_notes("## Release notes\n\n- logger | fix | Fix children.\n- metrics | feature | Add options.\n- logger | fix | Fix buffers.\n", MODULES)
         self.assertEqual([record["module"] for record in notes], ["logger", "metrics", "logger"])
@@ -144,6 +165,25 @@ class HistoryTests(unittest.TestCase):
 
 
 class PlanTests(unittest.TestCase):
+    def test_unified_internal_requirements_cannot_pin_older_components(self):
+        requirements = {"logger": [{"Path": "github.com/" + release.REPOSITORY, "Version": "v0.1.0"}]}
+        with self.assertRaisesRegex(ValueError, "cohort version"):
+            release.validate_unified_requirements("v0.1.1", requirements)
+        requirements["logger"][0]["Version"] = "v0.1.1"
+        requirements["logger"].append({"Path": "example.com/external", "Version": "v9.0.0"})
+        release.validate_unified_requirements("v0.1.1", requirements)
+
+    def test_unified_plans_reject_partial_mixed_and_legacy_policy_bypasses(self):
+        modules = {directory: {**module, "version": "v0.1.1"} for directory, module in MODULES.items()}
+        data = unified_plan()
+        self.assertEqual(set(release.validate_plan(data, modules, "v0.1.1")), {".", "logger", "metrics"})
+        for change in (lambda data: data["modules"].pop(), lambda data: data["modules"][1].update(version="v0.1.2"), lambda data: data.update(schema_version=1), lambda data: data.update(release_version="v0.1.2"), lambda data: data.update(repository_entries=[entry("repository", pr=999)])):
+            data = unified_plan()
+            change(data)
+            with self.assertRaises(ValueError):
+                release.validate_plan(data, modules, "v0.1.1")
+        self.assertEqual(list(release.validate_plan(plan(), MODULES)), ["logger"])
+
     def test_frozen_notes_and_manifest_versions(self):
         self.assertEqual(list(release.validate_plan(plan(), MODULES)), ["logger"])
         for change in (lambda data: data["modules"][0].update(version="v0.2.0"), lambda data: data["modules"][0].update(notes="Unreviewed text."), lambda data: data["modules"].append(data["modules"][0]), lambda data: data.update(source_sha="main"), lambda data: data["modules"][0].update(reviewed_prs=[])):
@@ -180,6 +220,37 @@ class PlanTests(unittest.TestCase):
 
 
 class PublicationTests(unittest.TestCase):
+    def test_unified_summary_stays_draft_on_failure_and_finalizes_last_on_resume(self):
+        data, api = unified_plan(), FakeAPI()
+        selected = {item["directory"]: item for item in data["modules"]}
+        modules = {directory: {**module, "version": "v0.1.1"} for directory, module in MODULES.items()}
+        calls = []
+        def cli(directory, selected, args, output, config, token=None, draft=True):
+            if token:
+                calls.append((directory, draft))
+                tag = release.tag_name(directory, selected["version"])
+                record = {"tag_name": tag, "draft": draft, "name": tag, "body": selected["notes"], "prerelease": False, "html_url": "https://example.com/" + tag}
+                api.responses["releases/tags/" + release.quote(tag, safe="")] = record
+                records = api.responses.setdefault("releases", [])
+                records[:] = [item for item in records if item["tag_name"] != tag] + [record]
+        with tempfile.TemporaryDirectory() as temporary, patch.object(release, "ROOT", Path(temporary)), patch.object(release, "preflight", return_value=(data, selected, modules, [".", "logger", "metrics"])), patch.object(release, "run", return_value="GitVersion: " + release.GORELEASER_VERSION), patch.object(release, "git", return_value=""), patch.object(release, "run_goreleaser", side_effect=cli), patch.object(release, "remote_tag", return_value=B):
+            Path(temporary, ".goreleaser.json").write_bytes((ROOT / ".goreleaser.json").read_bytes())
+            release.write_json(release.plan_path("logger-update"), data)
+            def consumer(directory, *args):
+                if directory == "metrics":
+                    raise RuntimeError("Consumer failed")
+                return {"sum": "h1:verified"}
+            with patch.object(release, "verify_consumer", side_effect=consumer), self.assertRaisesRegex(RuntimeError, "Consumer failed"):
+                release.publish(self.args(True), api)
+            self.assertTrue(api.responses["releases/tags/v0.1.1"]["draft"])
+            self.assertFalse(any(path.startswith("issues/") for path, kwargs in api.calls if kwargs.get("method", "GET") != "GET"))
+            with patch.object(release, "verify_consumer", return_value={"sum": "h1:verified"}):
+                release.publish(self.args(True), api)
+            report = json.loads(Path(temporary, "dist/releases/logger-update/progress.json").read_text(encoding="utf-8"))
+        self.assertEqual(calls, [(".", True), ("logger", True), ("logger", False), ("metrics", True), ("metrics", False), (".", False)])
+        self.assertTrue(report["completed"])
+        self.assertTrue(all(item["release_published"] for item in report["modules"]))
+
     def args(self, publish=False):
         return type("Args", (), {"issue": 20, "pr": 21, "sha": B, "plan": "logger-update", "publish": publish})()
 
@@ -202,7 +273,7 @@ class PublicationTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as temporary, patch.object(release, "ROOT", Path(temporary)), self.context(temporary, data), patch.object(release, "verify_consumer") as verify:
             release.write_json(release.plan_path("logger-update"), data)
             release.publish(self.args(), api)
-            result = json.loads((Path(temporary) / "dist/releases/logger-update/progress.json").read_text())
+            result = json.loads((Path(temporary) / "dist/releases/logger-update/progress.json").read_text(encoding="utf-8"))
         self.assertTrue(result["completed"])
         verify.assert_not_called()
         self.assertEqual(api.calls, [])
@@ -213,7 +284,7 @@ class PublicationTests(unittest.TestCase):
             release.write_json(release.plan_path("logger-update"), data)
             with self.assertRaisesRegex(RuntimeError, "proxy"):
                 release.publish(self.args(True), api)
-            result = json.loads((Path(temporary) / "dist/releases/logger-update/progress.json").read_text())
+            result = json.loads((Path(temporary) / "dist/releases/logger-update/progress.json").read_text(encoding="utf-8"))
         writes = [(path, values) for path, values in api.calls if values.get("method", "GET") != "GET"]
         self.assertEqual([path for path, _ in writes], ["git/refs"])
         self.assertTrue(api.responses["releases/tags/logger%2Fv0.1.1"]["draft"])
@@ -360,6 +431,7 @@ class PreflightTests(unittest.TestCase):
                         return "releases/logger-update.json\n" + ("logger/logger.go" if scenario == "library-change" else "tools/modules.json")
                     raise AssertionError(args)
                 args = PublicationTests().args()
+                release.write_json(Path(temporary) / "tools/modules.json", {"base": "github.com/" + release.REPOSITORY, "modules": list(MODULES.values())})
                 with patch.object(release, "ROOT", Path(temporary)), patch.object(release, "manifest", return_value=MODULES), patch.object(release, "git", side_effect=git), patch.object(release, "is_ancestor", return_value=True), patch.object(release, "run", return_value=json.dumps({"Module": {"Path": "github.com/" + release.REPOSITORY + "/logger"}, "Require": []})), patch.object(release, "check_runs", side_effect=ValueError("Check failed") if scenario == "check-failed" else None) as checks, patch.object(release, "previous_release", return_value="logger/v0.1.0"), patch.object(release, "remote_tag", return_value=None), patch.dict(os.environ, {"GITHUB_ACTOR": "maintainer"}):
                     release.write_json(release.plan_path("logger-update"), data)
                     if scenario == "valid":
@@ -373,7 +445,7 @@ class PreflightTests(unittest.TestCase):
 
 class WorkflowTests(unittest.TestCase):
     def test_publication_is_manual_and_serialized(self):
-        workflow = yaml.safe_load((ROOT / ".github/workflows/release.yml").read_text())
+        workflow = yaml.safe_load((ROOT / ".github/workflows/release.yml").read_text(encoding="utf-8"))
         events = workflow.get("on", workflow.get(True))
         self.assertEqual(set(events), {"workflow_dispatch", "workflow_run"})
         self.assertEqual(set(events["workflow_dispatch"]["inputs"]), {"pr", "publish"})
@@ -410,10 +482,10 @@ class GoReleaserTests(unittest.TestCase):
             self.assertEqual(dry.args[dry.args.index("--release-notes") + 1], str(output / "tracer-otlp.md"))
             release.run_goreleaser("tracer/otlp", selected, args, output, config, token="explicit", draft=False)
             publish = command.call_args
-            self.assertFalse(json.loads((config.parent / "goreleaser-publish.json").read_text())["release"]["draft"])
+            self.assertFalse(json.loads((config.parent / "goreleaser-publish.json").read_text(encoding="utf-8"))["release"]["draft"])
             self.assertIn("--skip=validate,announce", publish.args)
             self.assertEqual(publish.kwargs["env"]["GITHUB_TOKEN"], "explicit")
-            self.assertEqual((config.parent / "publish.log").read_text(), "CLI output\n")
+            self.assertEqual((config.parent / "publish.log").read_text(encoding="utf-8"), "CLI output\n")
 
     @unittest.skipUnless(shutil.which("goreleaser"), "Install pinned GoReleaser OSS to run offline CLI coverage.")
     def test_real_cli_preserves_root_nested_and_prerelease_tags_without_publishing(self):
@@ -433,17 +505,17 @@ class GoReleaserTests(unittest.TestCase):
                         selected = item(directory, version, None)
                         subprocess.run(["git", "tag", release.tag_name(directory, version)], cwd=fixture, check=True, capture_output=True)
                         config = release.goreleaser_config(directory, selected, output)
-                        self.assertEqual(json.loads(config.read_text())["release"]["prerelease"], str("-" in version).lower())
+                        self.assertEqual(json.loads(config.read_text(encoding="utf-8"))["release"]["prerelease"], str("-" in version).lower())
                         note = output / (config.parent.name + ".md")
                         note.write_text(selected["notes"], encoding="utf-8", newline="\n")
                         release.run("goreleaser", "check", "--config", str(config), cwd=fixture, env=env)
                         release.run_goreleaser(directory, selected, args, output, config)
-                        metadata = json.loads((config.parent / "artifacts/metadata.json").read_text())
+                        metadata = json.loads((config.parent / "artifacts/metadata.json").read_text(encoding="utf-8"))
                         self.assertEqual(metadata["tag"], release.tag_name(directory, version))
                         self.assertEqual(metadata["commit"], sha)
-                        artifacts = json.loads((config.parent / "artifacts/artifacts.json").read_text())
+                        artifacts = json.loads((config.parent / "artifacts/artifacts.json").read_text(encoding="utf-8"))
                         self.assertTrue(all(artifact["type"] == "Metadata" for artifact in artifacts))
-                        self.assertEqual(note.read_text(), selected["notes"])
+                        self.assertEqual(note.read_text(encoding="utf-8"), selected["notes"])
             self.assertEqual(subprocess.check_output(["git", "status", "--porcelain"], cwd=fixture, text=True), "")
 
     @unittest.skipUnless(shutil.which("goreleaser"), "Install pinned GoReleaser OSS to run offline CLI coverage.")
@@ -496,7 +568,7 @@ class GoReleaserTests(unittest.TestCase):
         try:
             with tempfile.TemporaryDirectory(prefix="goreleaser-api-fixture-") as temporary:
                 fixture = Path(temporary)
-                base = json.loads((ROOT / ".goreleaser.json").read_text())
+                base = json.loads((ROOT / ".goreleaser.json").read_text(encoding="utf-8"))
                 base["github_urls"] = {"api": f"http://127.0.0.1:{server.server_port}/", "download": "https://example.com/"}
                 (fixture / ".goreleaser.json").write_text(json.dumps(base), encoding="utf-8")
                 (fixture / ".gitignore").write_text("dist/\n", encoding="utf-8")
@@ -506,24 +578,25 @@ class GoReleaserTests(unittest.TestCase):
                 args = type("Args", (), {"sha": sha})()
                 output = fixture / "dist/releases/fixture"
                 with patch.object(release, "ROOT", fixture):
-                    for version in ("v0.1.0", "v0.1.1-rc.1"):
-                        with self.subTest(version=version):
+                    for directory, version in (("logger", "v0.1.0"), ("logger", "v0.1.1-rc.1"), (".", "v0.1.0"), (".", "v0.1.1-rc.1")):
+                        with self.subTest(directory=directory, version=version):
                             state.clear()
                             requests.clear()
-                            selected = item("logger", version, None)
-                            subprocess.run(["git", "tag", release.tag_name("logger", version)], cwd=fixture, check=True, capture_output=True)
-                            config = release.goreleaser_config("logger", selected, output)
-                            (output / "logger.md").write_text(selected["notes"], encoding="utf-8", newline="\n")
-                            release.run_goreleaser("logger", selected, args, output, config, token="local-fixture-token")
+                            args.unified = directory == "."
+                            selected = item(directory, version, None)
+                            subprocess.run(["git", "tag", release.tag_name(directory, version)], cwd=fixture, check=True, capture_output=True)
+                            config = release.goreleaser_config(directory, selected, output)
+                            (output / (config.parent.name + ".md")).write_text(selected["notes"], encoding="utf-8", newline="\n")
+                            release.run_goreleaser(directory, selected, args, output, config, token="local-fixture-token")
                             self.assertTrue(state["release"]["draft"])
-                            self.assertEqual(state["release"]["name"], "logger/" + version)
+                            self.assertEqual(state["release"]["name"], release.tag_name(directory, version))
                             self.assertEqual(state["release"]["prerelease"], "-" in version)
                             self.assertEqual(state["release"]["body"].rstrip("\r\n"), selected["notes"].rstrip("\r\n"))
-                            release.check_existing("logger", selected, sha, sha, state["release"])
-                            release.run_goreleaser("logger", selected, args, output, config, token="local-fixture-token", draft=False)
+                            release.check_existing(directory, selected, sha, sha, state["release"])
+                            release.run_goreleaser(directory, selected, args, output, config, token="local-fixture-token", draft=False)
                             self.assertFalse(state["release"]["draft"])
-                            release.check_existing("logger", selected, sha, sha, state["release"])
-                            self.assertEqual(state["release"]["make_latest"], "false")
+                            release.check_existing(directory, selected, sha, sha, state["release"])
+                            self.assertEqual(state["release"]["make_latest"], "true" if directory == "." and "-" not in version else "false")
                             self.assertEqual(state["release"]["target_commitish"], sha)
                             self.assertEqual(sum(request[0] == "POST" for request in requests), 1)
                             self.assertFalse(any(request[0] == "unexpected" for request in requests), requests)

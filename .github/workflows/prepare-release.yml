@@ -3,11 +3,6 @@ name: Prepare release
 on:
   workflow_dispatch:
     inputs:
-      scope:
-        description: Module directory, comma-separated directories, or all
-        required: true
-        default: all
-        type: string
       bump:
         description: Version increment (auto uses accumulated release notes)
         required: true
@@ -54,22 +49,13 @@ jobs:
       - name: Prepare metadata, tracking issue, and PR
         env:
           GH_TOKEN: ${{ github.token }}
-          RELEASE_SCOPE: ${{ inputs.scope }}
           RELEASE_BUMP: ${{ inputs.bump }}
           RELEASE_AUTOMATIC: ${{ inputs.auto_publish }}
         run: |
           python3 - <<'PY'
           import os
           import subprocess
-          scope = os.environ['RELEASE_SCOPE'].strip()
-          command = ['python3', 'tools/release.py', 'prepare', '--bump', os.environ['RELEASE_BUMP']]
-          if scope == 'all':
-              command.append('--all')
-          else:
-              for directory in scope.split(','):
-                  if not directory.strip():
-                      raise SystemExit('Select module directories or all.')
-                  command.extend(['--module', directory.strip()])
+          command = ['python3', 'tools/release.py', 'prepare', '--all', '--bump', os.environ['RELEASE_BUMP']]
           if os.environ['RELEASE_AUTOMATIC'] == 'true':
               command.append('--auto-publish')
           subprocess.run(command, check=True)

@@ -4,6 +4,12 @@ The implementation uses twenty-eight public modules and three development module
 
 ## Module boundaries
 
+Future releases use [one shared version](RELEASING.md) for all maintained public
+modules. `tools/modules.json` records the project `release_version`, and each
+maintained module version matches it. Fixing only Logger still releases the full
+cohort; the root version Release groups actual component changes and lists every
+module. Development modules and the frozen X-Ray adapter remain excluded.
+
 All module paths start with `github.com/rambow-cloud/powertools-lambda-go`.
 
 | Directory | Responsibility | Initial tag |

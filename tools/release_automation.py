@@ -24,7 +24,7 @@ def resolve_preparation(number, api):
     name = plans[0].removeprefix("releases/").removesuffix(".json")
     release.plan_path(name)
     plan = json.loads(release.git("show", f"{sha}:{plans[0]}"))
-    if plan.get("schema_version") != 1 or not isinstance(plan.get("issue"), int) or plan["issue"] < 1:
+    if plan.get("schema_version") not in {1, 2} or not isinstance(plan.get("issue"), int) or plan["issue"] < 1:
         raise ValueError("Invalid preparation plan identity.")
     if not isinstance(plan.get("auto_publish", False), bool):
         raise ValueError("Invalid automatic publication authorization.")
