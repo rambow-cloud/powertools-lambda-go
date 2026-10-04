@@ -17,20 +17,21 @@ from release_notes import CATEGORIES, parse_notes, render_notes, validate_direct
 
 ROOT = Path(__file__).resolve().parents[1]
 REPOSITORY = "rambow-cloud/powertools-lambda-go"
+GORELEASER_VERSION = "2.18.2"
 SHA = re.compile(r"[0-9a-f]{40}")
 NAME = re.compile(r"[a-z0-9][a-z0-9-]{0,79}")
 VERSION = re.compile(r"v(0|1)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)(?:-([0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*))?")
 
 
-def run(*args, cwd=ROOT, env=None, input=None):
+def run(*args, cwd=ROOT, env=None, input=None, include_stderr=False):
     result = subprocess.run(args, cwd=cwd, env=env, input=input, text=True, encoding="utf-8", capture_output=True)
     if result.returncode:
         raise RuntimeError(f"Command failed: {' '.join(args)}\n{result.stdout}\n{result.stderr}")
-    return result.stdout.strip()
+    return (result.stdout + result.stderr if include_stderr else result.stdout).strip()
 
 
 def git(*args):
-    return run("git", *args)
+    return run("git", *args, cwd=ROOT)
 
 
 class GitHub:
@@ -309,7 +310,7 @@ def check_existing(directory, item, sha, existing, release):
     tag = tag_name(directory, item["version"])
     if existing and existing != sha:
         raise ValueError(f"Existing tag {tag} points to a different commit; never rewrite it.")
-    if release and (not existing or release["body"] != item["notes"] or release["name"] != tag or release["prerelease"] != ("-" in item["version"])):
+    if release and (not existing or (release["body"] or "").rstrip("\r\n") != item["notes"].rstrip("\r\n") or release["name"] != tag or release["prerelease"] != ("-" in item["version"])):
         raise ValueError(f"Existing Release conflicts with the reviewed plan: {tag}")
 
 
@@ -318,6 +319,8 @@ def preflight(args, api):
         raise ValueError("Use the complete 40-character merged commit SHA.")
     if git("rev-parse", "HEAD") != args.sha:
         raise ValueError("Checkout the exact merged preparation SHA before preflight.")
+    if git("status", "--porcelain"):
+        raise ValueError("Release checkout must be clean; commit reviewed changes before preflight.")
     plan = json.loads(plan_path(args.plan).read_text(encoding="utf-8"))
     modules = manifest()
     selected = validate_plan(plan, modules)
@@ -368,6 +371,8 @@ def preflight(args, api):
         if previous_release(directory, plan["source_sha"], prior, prerelease="-" in item["version"]) != item["previous_tag"]:
             raise ValueError(f"Previous published release changed: {directory}; prepare a fresh plan.")
         tag = tag_name(directory, item["version"])
+        if git("tag", "--list", tag) and commit_of_tag(tag) != args.sha:
+            raise ValueError(f"Local tag {tag} conflicts with the reviewed SHA.")
         existing = remote_tag(api, tag)
         release = api.repo("releases/tags/" + quote(tag, safe=""), missing=True)
         check_existing(directory, item, args.sha, existing, release)
@@ -403,6 +408,47 @@ def verify_consumer(directory, item, module, session):
     return {"module": directory, "version": item["version"], "sum": downloaded["Sum"], "go_mod_sum": downloaded["GoModSum"], "consumer_build": True, "checksum_verification": True}
 
 
+def goreleaser_config(directory, item, output):
+    """Derive project/output paths and explicit prerelease status from the reviewed plan."""
+    name = "commons" if directory == "." else directory.replace("/", "-")
+    config = json.loads((ROOT / ".goreleaser.json").read_text(encoding="utf-8"))
+    config.update(project_name=name, dist=str(output / name / "artifacts"))
+    config["release"]["prerelease"] = str("-" in item["version"]).lower()
+    path = output / name / "goreleaser.json"
+    write_json(path, config)
+    return path
+
+
+def run_goreleaser(directory, item, args, output, config, token=None, draft=True):
+    """The reviewed preflight replaces OSS's incompatible prefixed-tag validation."""
+    env = os.environ.copy()
+    for variable in ("GH_TOKEN", "GITHUB_TOKEN", "GITLAB_TOKEN", "GITEA_TOKEN", "GORELEASER_KEY"):
+        env.pop(variable, None)
+    env.update(CGO_ENABLED="0", GORELEASER_CURRENT_TAG=tag_name(directory, item["version"]),
+               GORELEASER_PREVIOUS_TAG=item["previous_tag"] or args.sha)
+    if token:
+        env["GITHUB_TOKEN"] = token
+    name = config.parent.name
+    stage = "preflight" if not token else "draft" if draft else "publish"
+    # --draft=false does not override draft:true in this pinned OSS version.
+    phase_config = config.parent / ("goreleaser-" + stage + ".json")
+    configuration = json.loads(config.read_text(encoding="utf-8"))
+    configuration["release"]["draft"] = draft
+    write_json(phase_config, configuration)
+    command = ["goreleaser", "release", "--clean", "--config", str(phase_config),
+               "--release-notes", str(output / (name + ".md")),
+               "--skip=validate,announce" if token else "--skip=validate,publish,announce",
+               "--fail-fast"]
+    log = config.parent / (stage + ".log")
+    try:
+        result = run(*command, cwd=ROOT, env=env, include_stderr=True)
+    except RuntimeError as error:
+        log.write_text(str(error) + "\n", encoding="utf-8")
+        raise
+    log.write_text(result + "\n", encoding="utf-8")
+    print(f"GoReleaser {stage}: {tag_name(directory, item['version'])}; output saved to {log}", flush=True)
+
+
 def publish(args, api):
     plan, selected, modules, order = preflight(args, api)
     output = ROOT / "dist/releases" / args.plan
@@ -410,11 +456,18 @@ def publish(args, api):
     digest = hashlib.sha256(plan_path(args.plan).read_bytes()).hexdigest()
     report = {"plan": args.plan, "plan_sha256": digest, "source_sha": args.sha, "issue": args.issue, "preparation_pr": args.pr, "publish": args.publish, "completed": False, "modules": []}
     write_json(output / "progress.json", report)
+    version = run("goreleaser", "--version")
+    if not re.search(rf"(?m)^GitVersion:\s+v?{re.escape(GORELEASER_VERSION)}\s*$", version):
+        raise ValueError(f"Install GoReleaser OSS v{GORELEASER_VERSION}; the release workflow pins this version.")
+    configs = {}
     for directory in order:
         item = selected[directory]
         print(f"{'Publish' if args.publish else 'Preflight'}: {tag_name(directory, item['version'])}", flush=True)
         note_path = output / (("commons" if directory == "." else directory.replace("/", "-")) + ".md")
-        note_path.write_text(item["notes"], encoding="utf-8")
+        note_path.write_text(item["notes"], encoding="utf-8", newline="\n")
+        configs[directory] = goreleaser_config(directory, item, output)
+        run("goreleaser", "check", "--config", str(configs[directory]))
+        run_goreleaser(directory, item, args, output, configs[directory])
     if not args.publish:
         report.update(completed=True, publication="No tags, Releases, or issue changes were made.")
         write_json(output / "progress.json", report)
@@ -429,6 +482,11 @@ def publish(args, api):
             report["modules"].append(record)
             existing = remote_tag(api, tag)
             check_existing(directory, item, args.sha, existing, None)
+            if git("tag", "--list", tag):
+                if commit_of_tag(tag) != args.sha:
+                    raise ValueError(f"Local tag {tag} conflicts with the reviewed SHA.")
+            else:
+                git("tag", tag, args.sha)
             if not existing:
                 api.repo("git/refs", method="POST", data={"ref": "refs/tags/" + tag, "sha": args.sha})
             record["tag_created"] = True
@@ -436,12 +494,20 @@ def publish(args, api):
             release = api.repo("releases/tags/" + quote(tag, safe=""), missing=True)
             check_existing(directory, item, args.sha, args.sha, release)
             if not release:
-                release = api.repo("releases", method="POST", data={"tag_name": tag, "target_commitish": args.sha, "name": tag, "body": item["notes"], "draft": True, "prerelease": "-" in item["version"], "make_latest": "false"})
+                run_goreleaser(directory, item, args, output, configs[directory], token=api.token)
+                release = api.repo("releases/tags/" + quote(tag, safe=""))
+                check_existing(directory, item, args.sha, args.sha, release)
+                if not release or not release["draft"]:
+                    raise ValueError(f"GoReleaser did not create the expected draft: {tag}")
             evidence = verify_consumer(directory, item, modules[directory], session)
             record.update(consumer_verified=True, evidence=evidence)
             write_json(output / "progress.json", report)
             if release["draft"]:
-                api.repo(f"releases/{release['id']}", method="PATCH", data={"draft": False, "make_latest": "false"})
+                run_goreleaser(directory, item, args, output, configs[directory], token=api.token, draft=False)
+                release = api.repo("releases/tags/" + quote(tag, safe=""))
+                check_existing(directory, item, args.sha, args.sha, release)
+                if not release or release["draft"]:
+                    raise ValueError(f"GoReleaser did not publish the expected Release: {tag}")
             record.update(release_published=True, url=release["html_url"])
             write_json(output / "progress.json", report)
         report["completed"] = True

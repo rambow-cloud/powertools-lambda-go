@@ -35,6 +35,12 @@ jobs:
         run: uv lock --project website --check
       - name: Test contribution workflow and issue forms
         run: uv run --project website --frozen python tools/test_contribution_workflow.py
+      - name: Install pinned GoReleaser OSS for offline CLI tests
+        uses: goreleaser/goreleaser-action@f06c13b6b1a9625abc9e6e439d9c05a8f2190e94 # v7.2.3
+        with:
+          distribution: goreleaser
+          version: v2.18.2
+          install-only: true
       - name: Test release notes and publication safeguards
         run: uv run --project website --frozen python tools/test_release.py
       - name: Validate navigation coverage and targets

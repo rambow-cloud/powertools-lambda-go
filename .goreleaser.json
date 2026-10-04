@@ -1,0 +1,19 @@
+{
+  "version": 2,
+  "project_name": "powertools-lambda-go",
+  "dist": "dist/goreleaser",
+  "builds": [{"skip": true}],
+  "checksum": {"disable": true},
+  "release": {
+    "github": {"owner": "rambow-cloud", "name": "powertools-lambda-go"},
+    "draft": true,
+    "use_existing_draft": true,
+    "replace_existing_draft": false,
+    "name_template": "{{ .Env.GORELEASER_CURRENT_TAG }}",
+    "target_commitish": "{{ .FullCommit }}",
+    "prerelease": "false",
+    "make_latest": false,
+    "mode": "keep-existing",
+    "skip_upload": true
+  }
+}

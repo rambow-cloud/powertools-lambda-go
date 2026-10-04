@@ -1,11 +1,17 @@
 """Offline release regressions; never create public tags or Releases."""
 
 import json
+from contextlib import ExitStack
+from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 import os
 from pathlib import Path
+import shutil
+import subprocess
 import tempfile
+import threading
 import unittest
 from unittest.mock import patch
+from urllib.parse import unquote, urlsplit
 
 import yaml
 
@@ -43,6 +49,7 @@ def pr(number, sha, base="main"):
 
 class FakeAPI:
     def __init__(self, responses=None):
+        self.token = "test-token"
         self.responses = responses or {}
         self.calls = []
 
@@ -175,8 +182,17 @@ class PublicationTests(unittest.TestCase):
     def args(self, publish=False):
         return type("Args", (), {"issue": 20, "pr": 21, "sha": B, "plan": "logger-update", "publish": publish})()
 
-    def context(self, temporary, data):
-        return patch.object(release, "preflight", return_value=(data, {"logger": data["modules"][0]}, MODULES, ["logger"]))
+    def context(self, temporary, data, api=None):
+        Path(temporary, ".goreleaser.json").write_bytes((ROOT / ".goreleaser.json").read_bytes())
+        stack = ExitStack()
+        stack.enter_context(patch.object(release, "preflight", return_value=(data, {"logger": data["modules"][0]}, MODULES, ["logger"])))
+        stack.enter_context(patch.object(release, "run", return_value="GitVersion:    " + release.GORELEASER_VERSION))
+        stack.enter_context(patch.object(release, "git", return_value=""))
+        def cli(directory, selected, args, output, config, token=None, draft=True):
+            if token and api:
+                api.responses["releases/tags/logger%2Fv0.1.1"] = {"draft": draft, "html_url": "https://example.com/release", "name": "logger/v0.1.1", "body": selected["notes"], "prerelease": False}
+        stack.enter_context(patch.object(release, "run_goreleaser", side_effect=cli))
+        return stack
 
     def test_preflight_never_writes_github_or_runs_unpublished_consumers(self):
         data, api = plan(), FakeAPI()
@@ -190,15 +206,27 @@ class PublicationTests(unittest.TestCase):
 
     def test_consumer_failure_keeps_tag_and_draft_and_issue_open(self):
         data, api = plan(), FakeAPI()
-        with tempfile.TemporaryDirectory() as temporary, patch.object(release, "ROOT", Path(temporary)), self.context(temporary, data), patch.object(release, "remote_tag", return_value=None), patch.object(release, "verify_consumer", side_effect=RuntimeError("Public proxy not ready.")):
+        with tempfile.TemporaryDirectory() as temporary, patch.object(release, "ROOT", Path(temporary)), self.context(temporary, data, api), patch.object(release, "remote_tag", return_value=None), patch.object(release, "verify_consumer", side_effect=RuntimeError("Public proxy not ready.")):
             release.write_json(release.plan_path("logger-update"), data)
             with self.assertRaisesRegex(RuntimeError, "proxy"):
                 release.publish(self.args(True), api)
             result = json.loads((Path(temporary) / "dist/releases/logger-update/progress.json").read_text())
         writes = [(path, values) for path, values in api.calls if values.get("method", "GET") != "GET"]
-        self.assertEqual([path for path, _ in writes], ["git/refs", "releases"])
-        self.assertTrue(writes[-1][1]["data"]["draft"])
+        self.assertEqual([path for path, _ in writes], ["git/refs"])
+        self.assertTrue(api.responses["releases/tags/logger%2Fv0.1.1"]["draft"])
         self.assertFalse(result["completed"])
+
+    def test_goreleaser_creates_draft_then_publishes_after_consumer(self):
+        data, api = plan(), FakeAPI()
+        with tempfile.TemporaryDirectory() as temporary, patch.object(release, "ROOT", Path(temporary)), self.context(temporary, data, api), patch.object(release, "remote_tag", return_value=None):
+            release.write_json(release.plan_path("logger-update"), data)
+            def consumer(*args):
+                self.assertTrue(api.responses["releases/tags/logger%2Fv0.1.1"]["draft"])
+                return {"sum": "h1:verified"}
+            with patch.object(release, "verify_consumer", side_effect=consumer):
+                release.publish(self.args(True), api)
+        self.assertFalse(api.responses["releases/tags/logger%2Fv0.1.1"]["draft"])
+        self.assertEqual([path for path, values in api.calls if values.get("method", "GET") != "GET"], ["git/refs", "issues/20/comments", "issues/20"])
 
     def test_resume_does_not_recreate_or_overwrite_existing_release(self):
         data = plan()
@@ -222,6 +250,7 @@ class PublicationTests(unittest.TestCase):
         selected = item()
         matching = {"name": "logger/v0.1.1", "body": selected["notes"], "prerelease": False}
         release.check_existing("logger", selected, B, B, matching)
+        release.check_existing("logger", selected, B, B, {**matching, "body": selected["notes"] + "\n"})
         for target, existing in ((A, None), (None, matching), (B, {**matching, "body": "Different notes."})):
             with self.subTest(target=target), self.assertRaises(ValueError):
                 release.check_existing("logger", selected, B, target, existing)
@@ -250,7 +279,7 @@ class PublicationTests(unittest.TestCase):
 
 class PreflightTests(unittest.TestCase):
     def test_authority_history_and_preparation_scope_before_any_writes(self):
-        scenarios = ("valid", "permission", "unmerged", "wrong-sha", "closes-issue", "source-changed", "library-change", "closed-issue", "check-failed")
+        scenarios = ("valid", "dirty", "local-tag", "permission", "unmerged", "wrong-sha", "closes-issue", "source-changed", "library-change", "closed-issue", "check-failed")
         for scenario in scenarios:
             with self.subTest(scenario=scenario), tempfile.TemporaryDirectory() as temporary:
                 data = plan()
@@ -274,6 +303,12 @@ class PreflightTests(unittest.TestCase):
                 def git(*args):
                     if args == ("rev-parse", "HEAD"):
                         return B
+                    if args == ("status", "--porcelain"):
+                        return " M logger/logger.go" if scenario == "dirty" else ""
+                    if args[:2] == ("tag", "--list"):
+                        return "logger/v0.1.1" if scenario == "local-tag" else ""
+                    if args == ("rev-parse", "--verify", "refs/tags/logger/v0.1.1^{commit}"):
+                        return A
                     if args == ("rev-parse", B + "^1"):
                         return C if scenario == "source-changed" else A
                     if args[0] == "diff":
@@ -303,6 +338,150 @@ class WorkflowTests(unittest.TestCase):
             if "run" in step:
                 self.assertNotIn("${{", step["run"])
         self.assertNotIn("secrets.", json.dumps(workflow))
+        installs = [step for step in workflow["jobs"]["release"]["steps"] if step.get("uses", "").startswith("goreleaser/goreleaser-action@")]
+        self.assertEqual(len(installs), 1)
+        self.assertEqual(installs[0]["with"], {"distribution": "goreleaser", "version": "v" + release.GORELEASER_VERSION, "install-only": True})
+
+
+class GoReleaserTests(unittest.TestCase):
+    def test_exact_tags_frozen_notes_and_credentials_are_passed_to_cli(self):
+        selected = item("tracer/otlp", "v0.1.1-rc.1", "tracer/otlp/v0.1.0")
+        with tempfile.TemporaryDirectory() as temporary, patch.object(release, "run", return_value="CLI output") as command, patch.dict(os.environ, {"GH_TOKEN": "inherited", "GITHUB_TOKEN": "inherited", "GORELEASER_KEY": "unused"}):
+            output = Path(temporary)
+            config = output / "tracer-otlp/goreleaser.json"
+            config.parent.mkdir()
+            config.write_bytes((ROOT / ".goreleaser.json").read_bytes())
+            args = PublicationTests().args()
+            release.run_goreleaser("tracer/otlp", selected, args, output, config)
+            dry = command.call_args
+            self.assertIn("--skip=validate,publish,announce", dry.args)
+            self.assertNotIn("GITHUB_TOKEN", dry.kwargs["env"])
+            self.assertNotIn("GH_TOKEN", dry.kwargs["env"])
+            self.assertNotIn("GORELEASER_KEY", dry.kwargs["env"])
+            self.assertEqual(dry.kwargs["env"]["GORELEASER_CURRENT_TAG"], "tracer/otlp/v0.1.1-rc.1")
+            self.assertEqual(dry.kwargs["env"]["GORELEASER_PREVIOUS_TAG"], "tracer/otlp/v0.1.0")
+            self.assertEqual(dry.args[dry.args.index("--release-notes") + 1], str(output / "tracer-otlp.md"))
+            release.run_goreleaser("tracer/otlp", selected, args, output, config, token="explicit", draft=False)
+            publish = command.call_args
+            self.assertFalse(json.loads((config.parent / "goreleaser-publish.json").read_text())["release"]["draft"])
+            self.assertIn("--skip=validate,announce", publish.args)
+            self.assertEqual(publish.kwargs["env"]["GITHUB_TOKEN"], "explicit")
+            self.assertEqual((config.parent / "publish.log").read_text(), "CLI output\n")
+
+    @unittest.skipUnless(shutil.which("goreleaser"), "Install pinned GoReleaser OSS to run offline CLI coverage.")
+    def test_real_cli_preserves_root_nested_and_prerelease_tags_without_publishing(self):
+        with tempfile.TemporaryDirectory(prefix="goreleaser-fixture-") as temporary:
+            fixture = Path(temporary)
+            (fixture / ".goreleaser.json").write_bytes((ROOT / ".goreleaser.json").read_bytes())
+            (fixture / ".gitignore").write_text("dist/\n", encoding="utf-8")
+            env = {**os.environ, "CGO_ENABLED": "0"}
+            for command in (("git", "init"), ("git", "config", "user.name", "Fixture"), ("git", "config", "user.email", "fixture@example.com"), ("git", "remote", "add", "origin", "https://github.com/" + release.REPOSITORY + ".git"), ("git", "add", "."), ("git", "commit", "-m", "fixture")):
+                subprocess.run(command, cwd=fixture, env=env, check=True, capture_output=True)
+            sha = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=fixture, text=True).strip()
+            args = type("Args", (), {"sha": sha})()
+            output = fixture / "dist/releases/fixture"
+            with patch.object(release, "ROOT", fixture):
+                for directory, version in ((".", "v0.1.0"), ("logger", "v0.1.1"), ("tracer/otlp", "v0.1.0-rc.1")):
+                    with self.subTest(directory=directory):
+                        selected = item(directory, version, None)
+                        subprocess.run(["git", "tag", release.tag_name(directory, version)], cwd=fixture, check=True, capture_output=True)
+                        config = release.goreleaser_config(directory, selected, output)
+                        self.assertEqual(json.loads(config.read_text())["release"]["prerelease"], str("-" in version).lower())
+                        note = output / (config.parent.name + ".md")
+                        note.write_text(selected["notes"], encoding="utf-8", newline="\n")
+                        release.run("goreleaser", "check", "--config", str(config), cwd=fixture, env=env)
+                        release.run_goreleaser(directory, selected, args, output, config)
+                        metadata = json.loads((config.parent / "artifacts/metadata.json").read_text())
+                        self.assertEqual(metadata["tag"], release.tag_name(directory, version))
+                        self.assertEqual(metadata["commit"], sha)
+                        artifacts = json.loads((config.parent / "artifacts/artifacts.json").read_text())
+                        self.assertTrue(all(artifact["type"] == "Metadata" for artifact in artifacts))
+                        self.assertEqual(note.read_text(), selected["notes"])
+            self.assertEqual(subprocess.check_output(["git", "status", "--porcelain"], cwd=fixture, text=True), "")
+
+    @unittest.skipUnless(shutil.which("goreleaser"), "Install pinned GoReleaser OSS to run offline CLI coverage.")
+    def test_real_cli_draft_and_finalization_against_local_github_fixture(self):
+        state, requests = {}, []
+        class Handler(BaseHTTPRequestHandler):
+            def log_message(self, *args):
+                pass
+
+            def respond(self, code, body):
+                encoded = json.dumps(body).encode()
+                self.send_response(code)
+                self.send_header("Content-Type", "application/json")
+                self.send_header("Content-Length", str(len(encoded)))
+                self.end_headers()
+                self.wfile.write(encoded)
+
+            def do_GET(self):
+                path = unquote(urlsplit(self.path).path).removeprefix("/api/v3")
+                if path == "/rate_limit":
+                    rate = {"limit": 5000, "remaining": 5000, "reset": 4102444800}
+                    self.respond(200, {"resources": {"core": rate}, "rate": rate})
+                elif path.endswith("/releases"):
+                    self.respond(200, [state["release"]] if state else [])
+                elif "/releases/tags/" in path:
+                    self.respond(200 if state else 404, state.get("release", {"message": "Not Found"}))
+                elif path == "/repos/" + release.REPOSITORY:
+                    self.respond(200, {"full_name": release.REPOSITORY, "permissions": {"push": True}, "archived": False})
+                else:
+                    requests.append(("unexpected", path))
+                    self.respond(404, {"message": "Not Found"})
+
+            def do_POST(self):
+                body = json.loads(self.rfile.read(int(self.headers["Content-Length"])))
+                requests.append(("POST", self.path, body))
+                state["release"] = {**body, "id": 7, "html_url": "https://example.com/release", "upload_url": "https://example.com/assets{?name,label}"}
+                self.respond(201, state["release"])
+
+            def do_PATCH(self):
+                body = json.loads(self.rfile.read(int(self.headers["Content-Length"])))
+                requests.append(("PATCH", self.path, body))
+                state["release"].update(body)
+                self.respond(200, state["release"])
+
+        server = ThreadingHTTPServer(("127.0.0.1", 0), Handler)
+        thread = threading.Thread(target=server.serve_forever, daemon=True)
+        thread.start()
+        try:
+            with tempfile.TemporaryDirectory(prefix="goreleaser-api-fixture-") as temporary:
+                fixture = Path(temporary)
+                base = json.loads((ROOT / ".goreleaser.json").read_text())
+                base["github_urls"] = {"api": f"http://127.0.0.1:{server.server_port}/", "download": "https://example.com/"}
+                (fixture / ".goreleaser.json").write_text(json.dumps(base), encoding="utf-8")
+                (fixture / ".gitignore").write_text("dist/\n", encoding="utf-8")
+                for command in (("git", "init"), ("git", "config", "user.name", "Fixture"), ("git", "config", "user.email", "fixture@example.com"), ("git", "remote", "add", "origin", "https://github.com/" + release.REPOSITORY + ".git"), ("git", "add", "."), ("git", "commit", "-m", "fixture")):
+                    subprocess.run(command, cwd=fixture, check=True, capture_output=True)
+                sha = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=fixture, text=True).strip()
+                args = type("Args", (), {"sha": sha})()
+                output = fixture / "dist/releases/fixture"
+                with patch.object(release, "ROOT", fixture):
+                    for version in ("v0.1.0", "v0.1.1-rc.1"):
+                        with self.subTest(version=version):
+                            state.clear()
+                            requests.clear()
+                            selected = item("logger", version, None)
+                            subprocess.run(["git", "tag", release.tag_name("logger", version)], cwd=fixture, check=True, capture_output=True)
+                            config = release.goreleaser_config("logger", selected, output)
+                            (output / "logger.md").write_text(selected["notes"], encoding="utf-8", newline="\n")
+                            release.run_goreleaser("logger", selected, args, output, config, token="local-fixture-token")
+                            self.assertTrue(state["release"]["draft"])
+                            self.assertEqual(state["release"]["name"], "logger/" + version)
+                            self.assertEqual(state["release"]["prerelease"], "-" in version)
+                            self.assertEqual(state["release"]["body"].rstrip("\r\n"), selected["notes"].rstrip("\r\n"))
+                            release.check_existing("logger", selected, sha, sha, state["release"])
+                            release.run_goreleaser("logger", selected, args, output, config, token="local-fixture-token", draft=False)
+                            self.assertFalse(state["release"]["draft"])
+                            release.check_existing("logger", selected, sha, sha, state["release"])
+                            self.assertEqual(state["release"]["make_latest"], "false")
+                            self.assertEqual(state["release"]["target_commitish"], sha)
+                            self.assertEqual(sum(request[0] == "POST" for request in requests), 1)
+                            self.assertFalse(any(request[0] == "unexpected" for request in requests), requests)
+        finally:
+            server.shutdown()
+            server.server_close()
+            thread.join()
 
 
 if __name__ == "__main__":

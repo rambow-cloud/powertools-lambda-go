@@ -2,8 +2,8 @@
 
 Several PRs can merge before a version is published. Source merges do not
 publish modules. Each module has its own version and release-note boundary.
-The repository publishes Go source modules and GitHub Releases; Lambda ZIPs
-remain CI example artifacts. No model API key or cloud AWS account is needed.
+The repository publishes Go source modules and GitHub Releases with GoReleaser
+OSS; Lambda ZIPs remain CI example artifacts. No cloud AWS account is needed.
 
 ## Contribution notes accumulate until publication
 
@@ -128,11 +128,13 @@ Maintainers can also dispatch using `gh workflow run release.yml`.
 Preflight checks caller write permission, Issue/PR association, merged SHA,
 reviewed plan, required Actions checks, module paths/versions, previous release
 boundaries, dependency order, and tag/Release conflicts. It creates local output
-artifacts only. Publication runs are serialized and never canceled by a newer run.
+artifacts only, including a nonpublishing GoReleaser run for each selected module.
+Publication runs are serialized and never canceled by a newer run.
 
-For each module, publication creates a tag at the selected SHA, creates its
-draft GitHub Release, verifies a real public consumer, and publishes the Release
-before proceeding to the next module. Root Commons uses `vX.Y.Z`; Logger uses
+For each module, publication creates a tag at the selected SHA and uses
+GoReleaser to create its draft GitHub Release with the reviewed notes. After a
+real public consumer passes, a second GoReleaser invocation publishes that same
+draft before proceeding to the next module. Root Commons uses `vX.Y.Z`; Logger uses
 `logger/vX.Y.Z`. Consumers use fresh caches, `GOWORK=off`, `CGO_ENABLED=0`,
 the public Go proxy and checksum database, no local proxies/replacements, and
 a consumer build. This differs from synthetic local module verification.
@@ -145,14 +147,69 @@ a repository-wide latest Release label. Prerelease versions create prerelease
 Releases. v2+ module-path migrations need a separate feature and are rejected
 by this initial tool.
 
+## GoReleaser configuration and independent tags
+
+The workflow installs GoReleaser OSS **v2.18.2** through a commit-pinned official
+action. `.goreleaser.json` is the shared configuration; GoReleaser accepts JSON
+through its YAML parser. The publisher derives per-module configurations under
+`dist/releases/NAME/MODULE/`, changing the project name, output directory, and
+explicit prerelease status from the reviewed plan.
+Library releases skip binary builds, checksums, and artifact uploads.
+Each invocation saves a phase configuration with the required draft state;
+the shared configuration defaults to draft releases.
+
+GoReleaser owns GitHub Release creation and finalization. The Python tooling
+prepares accumulated PR notes, enforces the reviewed plan, orders dependencies,
+creates exact tags, verifies public consumers, and completes the tracking issue.
+It passes each frozen Markdown file using `--release-notes`; GoReleaser does not
+replace it with a repository-wide commit changelog. Existing notes are kept;
+conflict detection tolerates only terminal newline formatting differences.
+
+[Native monorepo tag-prefix support](https://goreleaser.com/customization/monorepo/)
+requires GoReleaser Pro. This source-library integration uses the OSS release
+command with `GORELEASER_CURRENT_TAG` set to the complete reviewed tag and
+`--skip=validate`. It is a compatibility adapter, rather than native OSS
+monorepo support. The publisher replaces those skipped checks: the checkout
+must be clean at the exact merged SHA, the module version must be valid and
+agree with the manifest, and local/remote tags must identify that SHA. It also
+checks required CI and the preparation PR before writes. Prerelease status is
+set explicitly from the reviewed version; no artifact templates use GoReleaser's
+semantic-version fields for prefixed tags.
+
+Preflight additionally skips `publish` and `announce`, removes inherited SCM
+tokens from the GoReleaser environment, and creates no public tags or Releases.
+For first releases, the selected SHA fills the previous-tag environment field;
+PR history boundaries still come exclusively from the reviewed plan.
+Use the documented workflow or `tools/release.py publish` entry point rather
+than publishing directly with GoReleaser: the entry point supplies these gates,
+notes, tag context, and dependency ordering.
+
+For local offline checks, install GoReleaser OSS v2.18.2 on `PATH`, then run:
+
+```sh
+goreleaser check --config .goreleaser.json
+uv run --project website --frozen python tools/test_release.py
+```
+
+The real CLI regression creates an isolated temporary Git repository and checks
+root, nested-module, and prerelease tags with publication disabled. CI installs
+the pinned CLI and runs this regression. A second real CLI regression uses a
+local GitHub API fixture to verify draft creation, draft reuse/finalization,
+notes, tag targets, stable/prerelease flags, and the latest-release setting.
+These CLI regressions skip locally only when the CLI is absent.
+Updating the pinned version requires updating the workflow, tool version
+gate, and CLI compatibility coverage together.
+
 ## Failure and recovery
 
-Inspect workflow logs and the `release-progress-RUN_ID` artifact. Failed consumer
+Inspect workflow logs and the `release-progress-RUN_ID` artifact, including
+per-module GoReleaser configuration, metadata, and preflight/draft/publish logs.
+Failed consumer
 checks preserve tags/draft Releases and leave the tracking issue open. A tag
 already makes a Go version publicly addressable; a draft Release is not rollback.
 Never delete, move, or rewrite a conflicting published version.
 
-Checks make one attempt. If the proxy is not ready, stop and rerun the same
+Consumer checks make one attempt. If the proxy is not ready, stop and rerun the same
 reviewed plan after resolving the condition. Matching tags/Releases are reused;
 public consumers are checked in a fresh cache and missing steps are completed.
 Existing notes are not overwritten. Changed source or scope needs a new version
@@ -163,5 +220,7 @@ the first real release needs separate authorization and actual public results.
 
 - [Go multiple-module source and tag rules](https://go.dev/doc/modules/managing-source)
 - [Go module publication](https://go.dev/doc/modules/publishing)
+- [GoReleaser library releases](https://goreleaser.com/resources/cookbooks/release-a-library/)
+- [GoReleaser custom release notes and draft reuse](https://goreleaser.com/customization/publish/scm/)
 - [GitHub generated release notes](https://docs.github.com/en/repositories/releasing-projects-on-github/automatically-generated-release-notes)
 - [GitHub workflow triggers](https://docs.github.com/en/actions/how-tos/write-workflows/choose-when-workflows-run/trigger-a-workflow)
