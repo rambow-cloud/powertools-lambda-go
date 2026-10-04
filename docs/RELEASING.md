@@ -78,6 +78,14 @@ creation. The preparation workflow does not approve or merge PRs. Its explicit
 job permissions grant the built-in token only the operations needed for issue,
 branch, PR, and check creation; no additional secret is required.
 
+An organization or enterprise policy can prohibit that repository setting.
+If GitHub reports that the organization does not allow Actions to create or
+approve PRs, an organization owner must first permit it under **Organization
+Settings → Actions → General → Workflow permissions**. Then enable the
+repository setting above. See [GitHub's organization policy documentation](https://docs.github.com/en/organizations/managing-organization-settings/disabling-or-limiting-github-actions-for-your-organization).
+The CLI preparation commands below can use a maintainer's existing `gh`
+authentication while the organization policy stays restricted.
+
 ## Automatic versions and dependency metadata
 
 | Situation | Default target |
