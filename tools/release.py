@@ -19,6 +19,8 @@ from release_notes import CATEGORIES, render_notes, render_unified_notes, valida
 ROOT = Path(__file__).resolve().parents[1]
 REPOSITORY = "rambow-cloud/powertools-lambda-go"
 GORELEASER_VERSION = "2.18.2"
+MAIN_CHECKS = ("Modules and Lambda artifacts", "Runtime simulation", "Build documentation")
+PR_CHECKS = ("PR contribution policy", *MAIN_CHECKS)
 SHA = re.compile(r"[0-9a-f]{40}")
 NAME = re.compile(r"[a-z0-9][a-z0-9-]{0,79}")
 VERSION = re.compile(r"v(0|1)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)(?:-([0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*))?")
@@ -377,8 +379,8 @@ def preflight(args, api):
     changed = set(git("diff", "--name-only", plan["source_sha"], args.sha).splitlines())
     if not changed <= allowed or f"releases/{args.plan}.json" not in changed:
         raise ValueError("Preparation PR must only change its release plan and module/dependency/license metadata; ship code changes in earlier PRs.")
-    check_runs(api, pr["head"]["sha"], ["PR contribution policy", "Modules and Lambda artifacts", "Build documentation"])
-    check_runs(api, args.sha, ["Modules and Lambda artifacts", "Build documentation"])
+    check_runs(api, pr["head"]["sha"], PR_CHECKS)
+    check_runs(api, args.sha, MAIN_CHECKS)
     requirements = {}
     env = os.environ.copy()
     env.update(CGO_ENABLED="0", GOWORK="off")

@@ -17,6 +17,19 @@ OUT = ROOT / "dist" / "local"
 IMAGE = "public.ecr.aws/lambda/provided@sha256:0b17e5c778aef6ed7f61cbfa5dd416e17540e127846250646fceb712e0e7be5f"
 
 
+def execution_identity():
+    return {key: os.environ[name] for key, name in (
+        ("source_sha", "GITHUB_SHA"), ("run_id", "GITHUB_RUN_ID"),
+        ("run_attempt", "GITHUB_RUN_ATTEMPT"),
+    ) if os.environ.get(name)}
+
+
+def acceptance_path(name):
+    directory = Path(os.environ.get("POWERTOOLS_ACCEPTANCE_DIR", ROOT / "docs"))
+    directory.mkdir(parents=True, exist_ok=True)
+    return directory / name
+
+
 def run(*args, env=None):
     result = subprocess.run(args, cwd=ROOT, env=env, text=True, encoding="utf-8", capture_output=True)
     if result.returncode:
@@ -72,6 +85,7 @@ def main():
     network, capture, function, cache = prefix, prefix + "-capture", prefix + "-lambda", prefix + "-cache"
     containers = []
     report = {"cgo_enabled": False, "image": IMAGE, "runtime_architecture": "amd64", "go_validation_executed": not args.runtime_only and not args.skip_module_checks, "builds_executed": not args.runtime_only, "binary_architectures": ["amd64", "arm64"], "checks": [], "invocations": [], "completed": False}
+    report["execution"] = execution_identity()
 
     def check(name, ok):
         report["checks"].append({"name": name, "passed": bool(ok)})

@@ -38,6 +38,7 @@ class API:
         self.issue_state = "open"
         self.native = None
         self.pr_head = None
+        self.runtime_check = {"status": "completed", "conclusion": "success"}
 
     def request(self, path, **kwargs):
         return {"login": "maintainer"}
@@ -64,7 +65,10 @@ class API:
             sha = path.split("head_sha=", 1)[1].split("&", 1)[0]
             return {"workflow_runs": self.native if self.native is not None else native_runs(sha)}
         if path.startswith("commits/") and "/check-runs?" in path:
-            return {"check_runs": [{"id": number, "name": name, "app": {"slug": "github-actions"}, "status": "completed", "conclusion": "success"} for number, name in enumerate(("PR contribution policy", "Modules and Lambda artifacts", "Build documentation"))]}
+            checks = [{"id": number, "name": name, "app": {"slug": "github-actions"}, "status": "completed", "conclusion": "success"} for number, name in enumerate(("PR contribution policy", "Modules and Lambda artifacts", "Build documentation"))]
+            if self.runtime_check is not None:
+                checks.append({"id": 4, "name": "Runtime simulation", "app": {"slug": "github-actions"}, **self.runtime_check})
+            return {"check_runs": checks}
         if path.startswith("git/ref/tags/"):
             sha = self.tag_shas.get(path.removeprefix("git/ref/tags/"))
             return {"object": {"type": "commit", "sha": sha}} if sha else None
@@ -379,6 +383,19 @@ class NativeCheckTests(unittest.TestCase):
 
 
 class CompletionTests(unittest.TestCase):
+    def test_publication_waits_for_successful_runtime_simulation(self):
+        with fixture() as (root, api, source):
+            event = self.merged(root, api, source)
+            for check in (None, {"status": "in_progress", "conclusion": None},
+                          {"status": "completed", "conclusion": "failure"},
+                          {"status": "completed", "conclusion": "skipped"},
+                          {"status": "completed", "conclusion": "success"}):
+                with self.subTest(check=check):
+                    api.runtime_check = check
+                    result = completion.automatic_preparation(event, api)
+                    self.assertEqual(result is not None, check is not None and check["conclusion"] == "success")
+                    self.assertEqual(api.writes, [])
+
     def test_legacy_schema_one_plan_can_still_be_resolved_for_recovery(self):
         with fixture() as (root, api, source):
             event = self.merged(root, api, source)

@@ -3,7 +3,7 @@ import { randomBytes } from 'node:crypto';
 import { createRequire } from 'node:module';
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { spawnSync } from 'node:child_process';
-import { resolve } from 'node:path';
+import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { isDeepStrictEqual } from 'node:util';
 const key = 'arn:aws:kms:ap-east-1:111122223333:key/11111111-1111-4111-8111-111111111111';
@@ -62,7 +62,15 @@ try {
       checks.push({ name: item.name + ': context mismatch', passed: wrong.error?.name === 'DataMaskingEncryptionError' && wrong.error.message === "Encryption context mismatch for key 'missing'" });
     }
     const report = { scope: 'Actual AWS Encryption SDK messages through local KMS fixtures; no real KMS/cache acceptance', typescript: '2.35.0', clientNode: '5.0.2', goSDK: '0.4.0', completed: checks.every(check => check.passed), requests, checks };
-    writeFileSync('../../docs/DATAMASKING_KMS_INTEROP.json', JSON.stringify(report, null, 2) + '\n');
+    report.execution = Object.fromEntries([
+      ['source_sha', process.env.GITHUB_SHA], ['run_id', process.env.GITHUB_RUN_ID],
+      ['run_attempt', process.env.GITHUB_RUN_ATTEMPT],
+    ].filter(([, value]) => value));
+    const reportPath = process.env.POWERTOOLS_ACCEPTANCE_DIR
+      ? resolve(process.env.POWERTOOLS_ACCEPTANCE_DIR, 'DATAMASKING_KMS_INTEROP.json')
+      : '../../docs/DATAMASKING_KMS_INTEROP.json';
+    mkdirSync(dirname(reportPath), { recursive: true });
+    writeFileSync(reportPath, JSON.stringify(report, null, 2) + '\n');
     if (!report.completed) throw new Error('Go/TypeScript interoperability failed');
     console.log(`${checks.length}/${checks.length} Go-to-TypeScript checks passed`);
   } else {

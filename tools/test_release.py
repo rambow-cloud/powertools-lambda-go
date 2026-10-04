@@ -437,6 +437,7 @@ class PreflightTests(unittest.TestCase):
                     if scenario == "valid":
                         self.assertEqual(release.preflight(args, api)[3], ["logger"])
                         self.assertEqual([call.args[1] for call in checks.call_args_list], [C, B])
+                        self.assertTrue(all("Runtime simulation" in call.args[2] for call in checks.call_args_list))
                     else:
                         with self.assertRaises(ValueError):
                             release.preflight(args, api)

@@ -14,10 +14,10 @@ merge requirements. This guide does not claim those settings are already active.
    that issue, Summary, and Testing filled in. There is no special owner,
    `no-issue`, label, or bootstrap bypass in the policy check.
 3. Verify the first **PR contribution policy**, **Modules and Lambda artifacts**,
-   and **Build documentation** runs on that PR's latest revision. Inspect the
+   **Runtime simulation**, and **Build documentation** runs on that PR's latest revision. Inspect the
    workflow diff before approving a fork workflow run.
 4. Configure the protection below **before merging the bootstrap PR**, selecting
-   the three checks from their observed successful runs. Do not require a check
+   the four checks from their observed successful runs. Do not require a check
    that has never run or was renamed. Confirm the PR's merge box applies the rules.
 5. Merge the reviewed bootstrap PR through the protected PR interface. Forms
    become available once they are on the default branch; verify the New issue
@@ -38,8 +38,8 @@ needed for basic PR and status-check protection.
   only one active maintainer. Do not enable code-owner or last-push approval
   requirements until another eligible reviewer is available
 - Require conversation resolution and these exact, stable status-check job names:
-  **PR contribution policy**, **Modules and Lambda artifacts**, and
-  **Build documentation**. Select GitHub Actions as the expected source where
+  **PR contribution policy**, **Modules and Lambda artifacts**,
+  **Runtime simulation**, and **Build documentation**. Select GitHub Actions as the expected source where
   available, and require the branch to be up to date before merging
 - Block force pushes and deletion of `main`
 - Leave the bypass list empty, including repository administrators. For classic
@@ -55,6 +55,14 @@ replace a required human approval. See GitHub's
 and [author review limitation](https://docs.github.com/en/pull-requests/how-tos/review-pull-requests/approving-a-pull-request-with-required-reviews).
 
 ## Triage and safe CI
+
+When introducing **Runtime simulation** to an existing protected repository,
+first verify its native PR run and commit-associated artifacts. Then add that
+exact job name to the existing main ruleset's required status checks, selecting
+GitHub Actions as the expected source. Preserve every existing rule and bypass
+setting. Enable the check before merging the CI rollout PR. The publication
+tool also requires runtime success on both the preparation PR and its exact
+merged main commit; missing, pending, failed, or skipped checks cannot publish.
 
 Use issue comments to record accepted scope and remaining questions. Optional
 labels are organizational only; no custom label creation, project board,
