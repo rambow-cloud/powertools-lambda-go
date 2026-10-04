@@ -1,5 +1,71 @@
 # Local Docker validation
 
+Logger TextMarshaler acceptance (2026-10-04): top-level empty named-string
+attributes implementing encoding.TextMarshaler now bypass empty-value cleanup,
+preserving custom text, explicitly empty text and serialization errors through
+the existing encoder. MarshalJSON retains precedence when both interfaces are
+implemented. The attribute-source/replacer matrix now has 48 cases (32 added),
+covering four sources and both replacer configurations. Focused tests reproduced
+24 TextMarshaler failures before the fix; the final packaged Logger tests pass
+the complete matrix and the unchanged 48 TypeScript differential scenarios.
+
+One complete packaged check passed all 31 modules and 28 standalone consumers,
+including tests/vet/tidy and dependency isolation. The same validation flow built
+normal and streaming handlers for Linux amd64/arm64 with CGO disabled, then passed
+904/904 RIE assertions, 95/95 streaming and 14/14 saved Batch checks. Six new RIE
+assertions cover TextMarshaler values and errors. Docker executed amd64; arm64
+was cross-compiled. Before validation, Docker Desktop required a restart after
+an engine HTTP 500. Its five-minute resource saver was enabled; a private,
+networkless temporary container kept the engine active during validation and
+was removed afterward. Runtime containers/networks were cleaned without errors.
+No AWS resources were used. See
+[MODULE_ACCEPTANCE_LOGGER.json](MODULE_ACCEPTANCE_LOGGER.json) and
+[LOCAL_ACCEPTANCE.json](LOCAL_ACCEPTANCE.json). Earlier acceptance below retains
+its original scope.
+
+Logger review regression acceptance (2026-10-04): invocation cleanup now flushes
+its owned buffer even if the handler attached a new OTel trace after wrapper
+entry; public flush/clear still require the owning active trace. Top-level empty
+named-string attributes implementing json.Marshaler retain their custom values
+and serialization errors. Before the fixes, focused tests reproduced both
+regressions. All Logger tests now pass, including 24 sampled/unsampled parent and
+child cleanup cases and 16 attribute-source/replacer cases.
+
+The full packaged check passed 30 modules before integration encountered a
+Docker engine HTTP 500. After restarting Docker Desktop, only integration was
+repeated. Combined current acceptance covers all 31 modules and 28 consumers,
+with tests/vet/tidy and CGO disabled. The runtime command reused those module
+checks with --skip-module-checks, rebuilt normal and streaming handlers for Linux
+amd64/arm64, and passed 898/898 RIE assertions, 95/95 streaming checks and 14/14
+saved Batch checks. Nine new RIE assertions cover both review regressions. Docker
+executed amd64; arm64 was cross-compiled. Containers/networks were cleaned without
+errors and no AWS resources were used. See
+[MODULE_ACCEPTANCE_LOGGER.json](MODULE_ACCEPTANCE_LOGGER.json) and
+[LOCAL_ACCEPTANCE.json](LOCAL_ACCEPTANCE.json). The initial acceptance below
+retains its original scope.
+
+Logger source parity acceptance (2026-10-04): fixed separate child attribute stores,
+shallow empty-field cleanup and active-trace buffer lifecycle from issues #3/#4/#5.
+The corpus executes 48 actual TypeScript v2.35.0 scenarios; native tests cover
+typed/nil values, formatter ownership, sampled/unsampled OTel contexts, output
+failures and 40 concurrent parent/child invocations. Combined packaged acceptance
+passed all 31 modules and 28 standalone consumers with CGO disabled and GOWORK
+off. The initial workspace check verified 30 modules before an integration
+dependency classification failure; the corrected integration uses the existing
+Tracer extraction API. Final Logger and integration checkpoints complete the
+scope without repeating unchanged modules. See
+[MODULE_ACCEPTANCE_LOGGER.json](MODULE_ACCEPTANCE_LOGGER.json).
+
+Both Linux amd64/arm64 normal and streaming handlers were rebuilt. A constructor
+warning from the image's `TZ=:/etc/localtime` interfered with probe record counts;
+the fixture now explicitly uses UTC. Runtime-only acceptance reused the completed
+binaries and passed 889/889 RIE assertions, including 21 new Logger assertions,
+95/95 streaming and 14/14 saved Batch checks. Docker executed amd64; arm64 was
+cross-compiled. Containers and networks were cleaned without errors. No AWS
+resources were used. Successful runtime evidence accurately records reused
+module checks and builds; complete Logger configuration/serialization parity
+remains open.
+
 Documentation and feature audit (2026-10-01): compared seventeen official TypeScript v2.35.0 guides with Go contracts and restructured eighteen Go guides, including Commons. Verified nineteen complete programs by compilation and eighteen local programs/direct handler executions; the DynamoDB Idempotency entry is compile-only, with persistence covered by the maintained fixture. All 31 modules and 28 public consumers passed packaged acceptance with CGO disabled and GOWORK off. Dependency download failures required phased continuation; passed modules were reused, and tested Go source bytes match current files. Both Linux builds and 868/868 amd64 RIE, 95/95 streaming and 14/14 saved Batch checks passed, with cleanup. No AWS resources were used. [DOCUMENTATION_ACCEPTANCE.json](DOCUMENTATION_ACCEPTANCE.json) records the combined scope; [LOCAL_ACCEPTANCE.json](LOCAL_ACCEPTANCE.json), [STREAMING_ACCEPTANCE.json](STREAMING_ACCEPTANCE.json) and [BATCH_ACCEPTANCE.json](BATCH_ACCEPTANCE.json) identify runtime evidence. Browser review and exhaustive parity remain open.
 
 ## Optional AWS Encryption SDK acceptance (2026-09-24)

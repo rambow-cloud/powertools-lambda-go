@@ -60,8 +60,8 @@
     }
   ],
   "sha256": {
-    "report.json": "b5b3f0d7292d3a71aa84ff2e5dcb0e3d6a22dd306ace4f693f06e05c3115aacf",
-    "otlp.json": "ac447986bf55deb125c1f765885f4a0baf9cde25b503ca969bc17ff900b3ef79",
-    "lambda.log": "ea16f405220921088dcce76fa3797301848d04dad64ea332207db13ec4f2dfa0"
+    "report.json": "6d61cfcc7214e0b6dab9427b1168fa797ac20322e4927097d63400a585d2168b",
+    "otlp.json": "62489e9743bdf8e5062fa173317f7e496e30f486ca66ee5bb9146efafa3cad2f",
+    "lambda.log": "8144868b2ec16f207333720464b5f3b504d8e02bd34dc9f39b5fee9e424e184e"
   }
 }

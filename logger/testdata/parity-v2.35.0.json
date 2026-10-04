@@ -1,0 +1,5526 @@
+{
+  "upstream": "2.35.0",
+  "timestamp": "2026-10-04T00:00:00.000Z",
+  "cases": [
+    {
+      "name": "child-scalar-inherit",
+      "category": "child",
+      "persistent": {
+        "shared": "persistent",
+        "nested": {
+          "parent": true
+        }
+      },
+      "steps": [
+        {
+          "op": "append",
+          "fields": {
+            "shared": "temporary",
+            "request": "original",
+            "correlation_id": "correlation"
+          }
+        },
+        {
+          "op": "child",
+          "name": "child",
+          "fields": {}
+        },
+        {
+          "op": "snapshot",
+          "target": "child"
+        },
+        {
+          "op": "info",
+          "target": "child",
+          "message": "before"
+        },
+        {
+          "op": "child",
+          "target": "child",
+          "name": "grandchild",
+          "fields": {
+            "component": "grandchild"
+          }
+        },
+        {
+          "op": "append",
+          "fields": {
+            "request": "parent-later"
+          }
+        },
+        {
+          "op": "info",
+          "target": "child",
+          "message": "snapshot"
+        },
+        {
+          "op": "remove",
+          "target": "child",
+          "keys": [
+            "shared",
+            "zero",
+            "request",
+            "correlation_id"
+          ]
+        },
+        {
+          "op": "info",
+          "target": "child",
+          "message": "removed"
+        },
+        {
+          "op": "snapshot",
+          "target": "child"
+        },
+        {
+          "op": "append",
+          "target": "child",
+          "fields": {
+            "request": "child-later"
+          }
+        },
+        {
+          "op": "reset",
+          "target": "child"
+        },
+        {
+          "op": "info",
+          "target": "child",
+          "message": "reset"
+        },
+        {
+          "op": "persistent",
+          "target": "child",
+          "fields": {
+            "nested": {
+              "child": true
+            }
+          }
+        },
+        {
+          "op": "info",
+          "target": "child",
+          "message": "merged"
+        },
+        {
+          "op": "removePersistent",
+          "target": "child",
+          "keys": [
+            "shared"
+          ]
+        },
+        {
+          "op": "info",
+          "target": "child",
+          "message": "persistent removed"
+        },
+        {
+          "op": "info",
+          "target": "grandchild",
+          "message": "grandchild snapshot"
+        },
+        {
+          "op": "info",
+          "message": "parent unchanged"
+        },
+        {
+          "op": "snapshot"
+        }
+      ],
+      "records": [
+        {
+          "level": "INFO",
+          "message": "before",
+          "service": "orders",
+          "sampling_rate": 0,
+          "shared": "temporary",
+          "nested": {
+            "parent": true
+          },
+          "request": "original",
+          "correlation_id": "correlation"
+        },
+        {
+          "level": "INFO",
+          "message": "snapshot",
+          "service": "orders",
+          "sampling_rate": 0,
+          "shared": "temporary",
+          "nested": {
+            "parent": true
+          },
+          "request": "original",
+          "correlation_id": "correlation"
+        },
+        {
+          "level": "INFO",
+          "message": "removed",
+          "service": "orders",
+          "sampling_rate": 0,
+          "shared": "persistent",
+          "nested": {
+            "parent": true
+          }
+        },
+        {
+          "level": "INFO",
+          "message": "reset",
+          "service": "orders",
+          "sampling_rate": 0,
+          "shared": "persistent",
+          "nested": {
+            "parent": true
+          }
+        },
+        {
+          "level": "INFO",
+          "message": "merged",
+          "service": "orders",
+          "sampling_rate": 0,
+          "shared": "persistent",
+          "nested": {
+            "parent": true,
+            "child": true
+          }
+        },
+        {
+          "level": "INFO",
+          "message": "persistent removed",
+          "service": "orders",
+          "sampling_rate": 0,
+          "nested": {
+            "parent": true,
+            "child": true
+          }
+        },
+        {
+          "level": "INFO",
+          "message": "grandchild snapshot",
+          "service": "orders",
+          "sampling_rate": 0,
+          "shared": "temporary",
+          "nested": {
+            "parent": true
+          },
+          "component": "grandchild",
+          "request": "original",
+          "correlation_id": "correlation"
+        },
+        {
+          "level": "INFO",
+          "message": "parent unchanged",
+          "service": "orders",
+          "sampling_rate": 0,
+          "shared": "temporary",
+          "nested": {
+            "parent": true
+          },
+          "request": "parent-later",
+          "correlation_id": "correlation"
+        }
+      ],
+      "snapshots": [
+        {
+          "target": "child",
+          "persistent": {
+            "shared": "persistent",
+            "nested": {
+              "parent": true
+            }
+          },
+          "correlation": "correlation"
+        },
+        {
+          "target": "child",
+          "persistent": {
+            "shared": "persistent",
+            "nested": {
+              "parent": true
+            }
+          },
+          "correlation": null
+        },
+        {
+          "target": "parent",
+          "persistent": {
+            "shared": "persistent",
+            "nested": {
+              "parent": true
+            }
+          },
+          "correlation": "correlation"
+        }
+      ],
+      "byteSizes": [
+        209,
+        211,
+        159,
+        157,
+        171,
+        161,
+        247,
+        223
+      ]
+    },
+    {
+      "name": "child-scalar-override",
+      "category": "child",
+      "persistent": {
+        "shared": "persistent",
+        "nested": {
+          "parent": true
+        }
+      },
+      "steps": [
+        {
+          "op": "append",
+          "fields": {
+            "shared": "temporary",
+            "request": "original",
+            "correlation_id": "correlation"
+          }
+        },
+        {
+          "op": "child",
+          "name": "child",
+          "fields": {
+            "shared": "child"
+          }
+        },
+        {
+          "op": "snapshot",
+          "target": "child"
+        },
+        {
+          "op": "info",
+          "target": "child",
+          "message": "before"
+        },
+        {
+          "op": "child",
+          "target": "child",
+          "name": "grandchild",
+          "fields": {
+            "component": "grandchild"
+          }
+        },
+        {
+          "op": "append",
+          "fields": {
+            "request": "parent-later"
+          }
+        },
+        {
+          "op": "info",
+          "target": "child",
+          "message": "snapshot"
+        },
+        {
+          "op": "remove",
+          "target": "child",
+          "keys": [
+            "shared",
+            "zero",
+            "request",
+            "correlation_id"
+          ]
+        },
+        {
+          "op": "info",
+          "target": "child",
+          "message": "removed"
+        },
+        {
+          "op": "snapshot",
+          "target": "child"
+        },
+        {
+          "op": "append",
+          "target": "child",
+          "fields": {
+            "request": "child-later"
+          }
+        },
+        {
+          "op": "reset",
+          "target": "child"
+        },
+        {
+          "op": "info",
+          "target": "child",
+          "message": "reset"
+        },
+        {
+          "op": "persistent",
+          "target": "child",
+          "fields": {
+            "nested": {
+              "child": true
+            }
+          }
+        },
+        {
+          "op": "info",
+          "target": "child",
+          "message": "merged"
+        },
+        {
+          "op": "removePersistent",
+          "target": "child",
+          "keys": [
+            "shared"
+          ]
+        },
+        {
+          "op": "info",
+          "target": "child",
+          "message": "persistent removed"
+        },
+        {
+          "op": "info",
+          "target": "grandchild",
+          "message": "grandchild snapshot"
+        },
+        {
+          "op": "info",
+          "message": "parent unchanged"
+        },
+        {
+          "op": "snapshot"
+        }
+      ],
+      "records": [
+        {
+          "level": "INFO",
+          "message": "before",
+          "service": "orders",
+          "sampling_rate": 0,
+          "shared": "temporary",
+          "nested": {
+            "parent": true
+          },
+          "request": "original",
+          "correlation_id": "correlation"
+        },
+        {
+          "level": "INFO",
+          "message": "snapshot",
+          "service": "orders",
+          "sampling_rate": 0,
+          "shared": "temporary",
+          "nested": {
+            "parent": true
+          },
+          "request": "original",
+          "correlation_id": "correlation"
+        },
+        {
+          "level": "INFO",
+          "message": "removed",
+          "service": "orders",
+          "sampling_rate": 0,
+          "shared": "child",
+          "nested": {
+            "parent": true
+          }
+        },
+        {
+          "level": "INFO",
+          "message": "reset",
+          "service": "orders",
+          "sampling_rate": 0,
+          "shared": "child",
+          "nested": {
+            "parent": true
+          }
+        },
+        {
+          "level": "INFO",
+          "message": "merged",
+          "service": "orders",
+          "sampling_rate": 0,
+          "shared": "child",
+          "nested": {
+            "parent": true,
+            "child": true
+          }
+        },
+        {
+          "level": "INFO",
+          "message": "persistent removed",
+          "service": "orders",
+          "sampling_rate": 0,
+          "nested": {
+            "parent": true,
+            "child": true
+          }
+        },
+        {
+          "level": "INFO",
+          "message": "grandchild snapshot",
+          "service": "orders",
+          "sampling_rate": 0,
+          "shared": "temporary",
+          "nested": {
+            "parent": true
+          },
+          "component": "grandchild",
+          "request": "original",
+          "correlation_id": "correlation"
+        },
+        {
+          "level": "INFO",
+          "message": "parent unchanged",
+          "service": "orders",
+          "sampling_rate": 0,
+          "shared": "temporary",
+          "nested": {
+            "parent": true
+          },
+          "request": "parent-later",
+          "correlation_id": "correlation"
+        }
+      ],
+      "snapshots": [
+        {
+          "target": "child",
+          "persistent": {
+            "shared": "child",
+            "nested": {
+              "parent": true
+            }
+          },
+          "correlation": "correlation"
+        },
+        {
+          "target": "child",
+          "persistent": {
+            "shared": "child",
+            "nested": {
+              "parent": true
+            }
+          },
+          "correlation": null
+        },
+        {
+          "target": "parent",
+          "persistent": {
+            "shared": "persistent",
+            "nested": {
+              "parent": true
+            }
+          },
+          "correlation": "correlation"
+        }
+      ],
+      "byteSizes": [
+        209,
+        211,
+        154,
+        152,
+        166,
+        161,
+        247,
+        223
+      ]
+    },
+    {
+      "name": "child-nested-inherit",
+      "category": "child",
+      "persistent": {
+        "shared": {
+          "base": 1,
+          "keep": true
+        },
+        "nested": {
+          "parent": true
+        }
+      },
+      "steps": [
+        {
+          "op": "append",
+          "fields": {
+            "shared": {
+              "temporary": 2
+            },
+            "request": "original",
+            "correlation_id": "correlation"
+          }
+        },
+        {
+          "op": "child",
+          "name": "child",
+          "fields": {}
+        },
+        {
+          "op": "snapshot",
+          "target": "child"
+        },
+        {
+          "op": "info",
+          "target": "child",
+          "message": "before"
+        },
+        {
+          "op": "child",
+          "target": "child",
+          "name": "grandchild",
+          "fields": {
+            "component": "grandchild"
+          }
+        },
+        {
+          "op": "append",
+          "fields": {
+            "request": "parent-later"
+          }
+        },
+        {
+          "op": "info",
+          "target": "child",
+          "message": "snapshot"
+        },
+        {
+          "op": "remove",
+          "target": "child",
+          "keys": [
+            "shared",
+            "zero",
+            "request",
+            "correlation_id"
+          ]
+        },
+        {
+          "op": "info",
+          "target": "child",
+          "message": "removed"
+        },
+        {
+          "op": "snapshot",
+          "target": "child"
+        },
+        {
+          "op": "append",
+          "target": "child",
+          "fields": {
+            "request": "child-later"
+          }
+        },
+        {
+          "op": "reset",
+          "target": "child"
+        },
+        {
+          "op": "info",
+          "target": "child",
+          "message": "reset"
+        },
+        {
+          "op": "persistent",
+          "target": "child",
+          "fields": {
+            "nested": {
+              "child": true
+            }
+          }
+        },
+        {
+          "op": "info",
+          "target": "child",
+          "message": "merged"
+        },
+        {
+          "op": "removePersistent",
+          "target": "child",
+          "keys": [
+            "shared"
+          ]
+        },
+        {
+          "op": "info",
+          "target": "child",
+          "message": "persistent removed"
+        },
+        {
+          "op": "info",
+          "target": "grandchild",
+          "message": "grandchild snapshot"
+        },
+        {
+          "op": "info",
+          "message": "parent unchanged"
+        },
+        {
+          "op": "snapshot"
+        }
+      ],
+      "records": [
+        {
+          "level": "INFO",
+          "message": "before",
+          "service": "orders",
+          "sampling_rate": 0,
+          "shared": {
+            "temporary": 2
+          },
+          "nested": {
+            "parent": true
+          },
+          "request": "original",
+          "correlation_id": "correlation"
+        },
+        {
+          "level": "INFO",
+          "message": "snapshot",
+          "service": "orders",
+          "sampling_rate": 0,
+          "shared": {
+            "temporary": 2
+          },
+          "nested": {
+            "parent": true
+          },
+          "request": "original",
+          "correlation_id": "correlation"
+        },
+        {
+          "level": "INFO",
+          "message": "removed",
+          "service": "orders",
+          "sampling_rate": 0,
+          "shared": {
+            "base": 1,
+            "keep": true
+          },
+          "nested": {
+            "parent": true
+          }
+        },
+        {
+          "level": "INFO",
+          "message": "reset",
+          "service": "orders",
+          "sampling_rate": 0,
+          "shared": {
+            "base": 1,
+            "keep": true
+          },
+          "nested": {
+            "parent": true
+          }
+        },
+        {
+          "level": "INFO",
+          "message": "merged",
+          "service": "orders",
+          "sampling_rate": 0,
+          "shared": {
+            "base": 1,
+            "keep": true
+          },
+          "nested": {
+            "parent": true,
+            "child": true
+          }
+        },
+        {
+          "level": "INFO",
+          "message": "persistent removed",
+          "service": "orders",
+          "sampling_rate": 0,
+          "nested": {
+            "parent": true,
+            "child": true
+          }
+        },
+        {
+          "level": "INFO",
+          "message": "grandchild snapshot",
+          "service": "orders",
+          "sampling_rate": 0,
+          "shared": {
+            "temporary": 2
+          },
+          "nested": {
+            "parent": true
+          },
+          "component": "grandchild",
+          "request": "original",
+          "correlation_id": "correlation"
+        },
+        {
+          "level": "INFO",
+          "message": "parent unchanged",
+          "service": "orders",
+          "sampling_rate": 0,
+          "shared": {
+            "temporary": 2
+          },
+          "nested": {
+            "parent": true
+          },
+          "request": "parent-later",
+          "correlation_id": "correlation"
+        }
+      ],
+      "snapshots": [
+        {
+          "target": "child",
+          "persistent": {
+            "shared": {
+              "base": 1,
+              "keep": true
+            },
+            "nested": {
+              "parent": true
+            }
+          },
+          "correlation": "correlation"
+        },
+        {
+          "target": "child",
+          "persistent": {
+            "shared": {
+              "base": 1,
+              "keep": true
+            },
+            "nested": {
+              "parent": true
+            }
+          },
+          "correlation": null
+        },
+        {
+          "target": "parent",
+          "persistent": {
+            "shared": {
+              "base": 1,
+              "keep": true
+            },
+            "nested": {
+              "parent": true
+            }
+          },
+          "correlation": "correlation"
+        }
+      ],
+      "byteSizes": [
+        213,
+        215,
+        169,
+        167,
+        181,
+        161,
+        251,
+        227
+      ]
+    },
+    {
+      "name": "child-nested-override",
+      "category": "child",
+      "persistent": {
+        "shared": {
+          "base": 1,
+          "keep": true
+        },
+        "nested": {
+          "parent": true
+        }
+      },
+      "steps": [
+        {
+          "op": "append",
+          "fields": {
+            "shared": {
+              "temporary": 2
+            },
+            "request": "original",
+            "correlation_id": "correlation"
+          }
+        },
+        {
+          "op": "child",
+          "name": "child",
+          "fields": {
+            "shared": {
+              "child": 3
+            }
+          }
+        },
+        {
+          "op": "snapshot",
+          "target": "child"
+        },
+        {
+          "op": "info",
+          "target": "child",
+          "message": "before"
+        },
+        {
+          "op": "child",
+          "target": "child",
+          "name": "grandchild",
+          "fields": {
+            "component": "grandchild"
+          }
+        },
+        {
+          "op": "append",
+          "fields": {
+            "request": "parent-later"
+          }
+        },
+        {
+          "op": "info",
+          "target": "child",
+          "message": "snapshot"
+        },
+        {
+          "op": "remove",
+          "target": "child",
+          "keys": [
+            "shared",
+            "zero",
+            "request",
+            "correlation_id"
+          ]
+        },
+        {
+          "op": "info",
+          "target": "child",
+          "message": "removed"
+        },
+        {
+          "op": "snapshot",
+          "target": "child"
+        },
+        {
+          "op": "append",
+          "target": "child",
+          "fields": {
+            "request": "child-later"
+          }
+        },
+        {
+          "op": "reset",
+          "target": "child"
+        },
+        {
+          "op": "info",
+          "target": "child",
+          "message": "reset"
+        },
+        {
+          "op": "persistent",
+          "target": "child",
+          "fields": {
+            "nested": {
+              "child": true
+            }
+          }
+        },
+        {
+          "op": "info",
+          "target": "child",
+          "message": "merged"
+        },
+        {
+          "op": "removePersistent",
+          "target": "child",
+          "keys": [
+            "shared"
+          ]
+        },
+        {
+          "op": "info",
+          "target": "child",
+          "message": "persistent removed"
+        },
+        {
+          "op": "info",
+          "target": "grandchild",
+          "message": "grandchild snapshot"
+        },
+        {
+          "op": "info",
+          "message": "parent unchanged"
+        },
+        {
+          "op": "snapshot"
+        }
+      ],
+      "records": [
+        {
+          "level": "INFO",
+          "message": "before",
+          "service": "orders",
+          "sampling_rate": 0,
+          "shared": {
+            "temporary": 2
+          },
+          "nested": {
+            "parent": true
+          },
+          "request": "original",
+          "correlation_id": "correlation"
+        },
+        {
+          "level": "INFO",
+          "message": "snapshot",
+          "service": "orders",
+          "sampling_rate": 0,
+          "shared": {
+            "temporary": 2
+          },
+          "nested": {
+            "parent": true
+          },
+          "request": "original",
+          "correlation_id": "correlation"
+        },
+        {
+          "level": "INFO",
+          "message": "removed",
+          "service": "orders",
+          "sampling_rate": 0,
+          "shared": {
+            "base": 1,
+            "keep": true,
+            "child": 3
+          },
+          "nested": {
+            "parent": true
+          }
+        },
+        {
+          "level": "INFO",
+          "message": "reset",
+          "service": "orders",
+          "sampling_rate": 0,
+          "shared": {
+            "base": 1,
+            "keep": true,
+            "child": 3
+          },
+          "nested": {
+            "parent": true
+          }
+        },
+        {
+          "level": "INFO",
+          "message": "merged",
+          "service": "orders",
+          "sampling_rate": 0,
+          "shared": {
+            "base": 1,
+            "keep": true,
+            "child": 3
+          },
+          "nested": {
+            "parent": true,
+            "child": true
+          }
+        },
+        {
+          "level": "INFO",
+          "message": "persistent removed",
+          "service": "orders",
+          "sampling_rate": 0,
+          "nested": {
+            "parent": true,
+            "child": true
+          }
+        },
+        {
+          "level": "INFO",
+          "message": "grandchild snapshot",
+          "service": "orders",
+          "sampling_rate": 0,
+          "shared": {
+            "temporary": 2
+          },
+          "nested": {
+            "parent": true
+          },
+          "component": "grandchild",
+          "request": "original",
+          "correlation_id": "correlation"
+        },
+        {
+          "level": "INFO",
+          "message": "parent unchanged",
+          "service": "orders",
+          "sampling_rate": 0,
+          "shared": {
+            "temporary": 2
+          },
+          "nested": {
+            "parent": true
+          },
+          "request": "parent-later",
+          "correlation_id": "correlation"
+        }
+      ],
+      "snapshots": [
+        {
+          "target": "child",
+          "persistent": {
+            "shared": {
+              "base": 1,
+              "keep": true,
+              "child": 3
+            },
+            "nested": {
+              "parent": true
+            }
+          },
+          "correlation": "correlation"
+        },
+        {
+          "target": "child",
+          "persistent": {
+            "shared": {
+              "base": 1,
+              "keep": true,
+              "child": 3
+            },
+            "nested": {
+              "parent": true
+            }
+          },
+          "correlation": null
+        },
+        {
+          "target": "parent",
+          "persistent": {
+            "shared": {
+              "base": 1,
+              "keep": true
+            },
+            "nested": {
+              "parent": true
+            }
+          },
+          "correlation": "correlation"
+        }
+      ],
+      "byteSizes": [
+        213,
+        215,
+        179,
+        177,
+        191,
+        161,
+        251,
+        227
+      ]
+    },
+    {
+      "name": "child-arrays-inherit",
+      "category": "child",
+      "persistent": {
+        "shared": [
+          {
+            "base": 1
+          },
+          2,
+          3
+        ],
+        "nested": {
+          "parent": true
+        }
+      },
+      "steps": [
+        {
+          "op": "append",
+          "fields": {
+            "shared": [
+              {
+                "temporary": 2
+              },
+              4
+            ],
+            "request": "original",
+            "correlation_id": "correlation"
+          }
+        },
+        {
+          "op": "child",
+          "name": "child",
+          "fields": {}
+        },
+        {
+          "op": "snapshot",
+          "target": "child"
+        },
+        {
+          "op": "info",
+          "target": "child",
+          "message": "before"
+        },
+        {
+          "op": "child",
+          "target": "child",
+          "name": "grandchild",
+          "fields": {
+            "component": "grandchild"
+          }
+        },
+        {
+          "op": "append",
+          "fields": {
+            "request": "parent-later"
+          }
+        },
+        {
+          "op": "info",
+          "target": "child",
+          "message": "snapshot"
+        },
+        {
+          "op": "remove",
+          "target": "child",
+          "keys": [
+            "shared",
+            "zero",
+            "request",
+            "correlation_id"
+          ]
+        },
+        {
+          "op": "info",
+          "target": "child",
+          "message": "removed"
+        },
+        {
+          "op": "snapshot",
+          "target": "child"
+        },
+        {
+          "op": "append",
+          "target": "child",
+          "fields": {
+            "request": "child-later"
+          }
+        },
+        {
+          "op": "reset",
+          "target": "child"
+        },
+        {
+          "op": "info",
+          "target": "child",
+          "message": "reset"
+        },
+        {
+          "op": "persistent",
+          "target": "child",
+          "fields": {
+            "nested": {
+              "child": true
+            }
+          }
+        },
+        {
+          "op": "info",
+          "target": "child",
+          "message": "merged"
+        },
+        {
+          "op": "removePersistent",
+          "target": "child",
+          "keys": [
+            "shared"
+          ]
+        },
+        {
+          "op": "info",
+          "target": "child",
+          "message": "persistent removed"
+        },
+        {
+          "op": "info",
+          "target": "grandchild",
+          "message": "grandchild snapshot"
+        },
+        {
+          "op": "info",
+          "message": "parent unchanged"
+        },
+        {
+          "op": "snapshot"
+        }
+      ],
+      "records": [
+        {
+          "level": "INFO",
+          "message": "before",
+          "service": "orders",
+          "sampling_rate": 0,
+          "shared": [
+            {
+              "temporary": 2
+            },
+            4
+          ],
+          "nested": {
+            "parent": true
+          },
+          "request": "original",
+          "correlation_id": "correlation"
+        },
+        {
+          "level": "INFO",
+          "message": "snapshot",
+          "service": "orders",
+          "sampling_rate": 0,
+          "shared": [
+            {
+              "temporary": 2
+            },
+            4
+          ],
+          "nested": {
+            "parent": true
+          },
+          "request": "original",
+          "correlation_id": "correlation"
+        },
+        {
+          "level": "INFO",
+          "message": "removed",
+          "service": "orders",
+          "sampling_rate": 0,
+          "shared": [
+            {
+              "base": 1
+            },
+            2,
+            3
+          ],
+          "nested": {
+            "parent": true
+          }
+        },
+        {
+          "level": "INFO",
+          "message": "reset",
+          "service": "orders",
+          "sampling_rate": 0,
+          "shared": [
+            {
+              "base": 1
+            },
+            2,
+            3
+          ],
+          "nested": {
+            "parent": true
+          }
+        },
+        {
+          "level": "INFO",
+          "message": "merged",
+          "service": "orders",
+          "sampling_rate": 0,
+          "shared": [
+            {
+              "base": 1
+            },
+            2,
+            3
+          ],
+          "nested": {
+            "parent": true,
+            "child": true
+          }
+        },
+        {
+          "level": "INFO",
+          "message": "persistent removed",
+          "service": "orders",
+          "sampling_rate": 0,
+          "nested": {
+            "parent": true,
+            "child": true
+          }
+        },
+        {
+          "level": "INFO",
+          "message": "grandchild snapshot",
+          "service": "orders",
+          "sampling_rate": 0,
+          "shared": [
+            {
+              "temporary": 2
+            },
+            4
+          ],
+          "nested": {
+            "parent": true
+          },
+          "component": "grandchild",
+          "request": "original",
+          "correlation_id": "correlation"
+        },
+        {
+          "level": "INFO",
+          "message": "parent unchanged",
+          "service": "orders",
+          "sampling_rate": 0,
+          "shared": [
+            {
+              "temporary": 2
+            },
+            4
+          ],
+          "nested": {
+            "parent": true
+          },
+          "request": "parent-later",
+          "correlation_id": "correlation"
+        }
+      ],
+      "snapshots": [
+        {
+          "target": "child",
+          "persistent": {
+            "shared": [
+              {
+                "base": 1
+              },
+              2,
+              3
+            ],
+            "nested": {
+              "parent": true
+            }
+          },
+          "correlation": "correlation"
+        },
+        {
+          "target": "child",
+          "persistent": {
+            "shared": [
+              {
+                "base": 1
+              },
+              2,
+              3
+            ],
+            "nested": {
+              "parent": true
+            }
+          },
+          "correlation": null
+        },
+        {
+          "target": "parent",
+          "persistent": {
+            "shared": [
+              {
+                "base": 1
+              },
+              2,
+              3
+            ],
+            "nested": {
+              "parent": true
+            }
+          },
+          "correlation": "correlation"
+        }
+      ],
+      "byteSizes": [
+        217,
+        219,
+        163,
+        161,
+        175,
+        161,
+        255,
+        231
+      ]
+    },
+    {
+      "name": "child-arrays-override",
+      "category": "child",
+      "persistent": {
+        "shared": [
+          {
+            "base": 1
+          },
+          2,
+          3
+        ],
+        "nested": {
+          "parent": true
+        }
+      },
+      "steps": [
+        {
+          "op": "append",
+          "fields": {
+            "shared": [
+              {
+                "temporary": 2
+              },
+              4
+            ],
+            "request": "original",
+            "correlation_id": "correlation"
+          }
+        },
+        {
+          "op": "child",
+          "name": "child",
+          "fields": {
+            "shared": [
+              {
+                "child": 3
+              },
+              5
+            ]
+          }
+        },
+        {
+          "op": "snapshot",
+          "target": "child"
+        },
+        {
+          "op": "info",
+          "target": "child",
+          "message": "before"
+        },
+        {
+          "op": "child",
+          "target": "child",
+          "name": "grandchild",
+          "fields": {
+            "component": "grandchild"
+          }
+        },
+        {
+          "op": "append",
+          "fields": {
+            "request": "parent-later"
+          }
+        },
+        {
+          "op": "info",
+          "target": "child",
+          "message": "snapshot"
+        },
+        {
+          "op": "remove",
+          "target": "child",
+          "keys": [
+            "shared",
+            "zero",
+            "request",
+            "correlation_id"
+          ]
+        },
+        {
+          "op": "info",
+          "target": "child",
+          "message": "removed"
+        },
+        {
+          "op": "snapshot",
+          "target": "child"
+        },
+        {
+          "op": "append",
+          "target": "child",
+          "fields": {
+            "request": "child-later"
+          }
+        },
+        {
+          "op": "reset",
+          "target": "child"
+        },
+        {
+          "op": "info",
+          "target": "child",
+          "message": "reset"
+        },
+        {
+          "op": "persistent",
+          "target": "child",
+          "fields": {
+            "nested": {
+              "child": true
+            }
+          }
+        },
+        {
+          "op": "info",
+          "target": "child",
+          "message": "merged"
+        },
+        {
+          "op": "removePersistent",
+          "target": "child",
+          "keys": [
+            "shared"
+          ]
+        },
+        {
+          "op": "info",
+          "target": "child",
+          "message": "persistent removed"
+        },
+        {
+          "op": "info",
+          "target": "grandchild",
+          "message": "grandchild snapshot"
+        },
+        {
+          "op": "info",
+          "message": "parent unchanged"
+        },
+        {
+          "op": "snapshot"
+        }
+      ],
+      "records": [
+        {
+          "level": "INFO",
+          "message": "before",
+          "service": "orders",
+          "sampling_rate": 0,
+          "shared": [
+            {
+              "temporary": 2
+            },
+            4
+          ],
+          "nested": {
+            "parent": true
+          },
+          "request": "original",
+          "correlation_id": "correlation"
+        },
+        {
+          "level": "INFO",
+          "message": "snapshot",
+          "service": "orders",
+          "sampling_rate": 0,
+          "shared": [
+            {
+              "temporary": 2
+            },
+            4
+          ],
+          "nested": {
+            "parent": true
+          },
+          "request": "original",
+          "correlation_id": "correlation"
+        },
+        {
+          "level": "INFO",
+          "message": "removed",
+          "service": "orders",
+          "sampling_rate": 0,
+          "shared": [
+            {
+              "base": 1,
+              "child": 3
+            },
+            5,
+            3
+          ],
+          "nested": {
+            "parent": true
+          }
+        },
+        {
+          "level": "INFO",
+          "message": "reset",
+          "service": "orders",
+          "sampling_rate": 0,
+          "shared": [
+            {
+              "base": 1,
+              "child": 3
+            },
+            5,
+            3
+          ],
+          "nested": {
+            "parent": true
+          }
+        },
+        {
+          "level": "INFO",
+          "message": "merged",
+          "service": "orders",
+          "sampling_rate": 0,
+          "shared": [
+            {
+              "base": 1,
+              "child": 3
+            },
+            5,
+            3
+          ],
+          "nested": {
+            "parent": true,
+            "child": true
+          }
+        },
+        {
+          "level": "INFO",
+          "message": "persistent removed",
+          "service": "orders",
+          "sampling_rate": 0,
+          "nested": {
+            "parent": true,
+            "child": true
+          }
+        },
+        {
+          "level": "INFO",
+          "message": "grandchild snapshot",
+          "service": "orders",
+          "sampling_rate": 0,
+          "shared": [
+            {
+              "temporary": 2
+            },
+            4
+          ],
+          "nested": {
+            "parent": true
+          },
+          "component": "grandchild",
+          "request": "original",
+          "correlation_id": "correlation"
+        },
+        {
+          "level": "INFO",
+          "message": "parent unchanged",
+          "service": "orders",
+          "sampling_rate": 0,
+          "shared": [
+            {
+              "temporary": 2
+            },
+            4
+          ],
+          "nested": {
+            "parent": true
+          },
+          "request": "parent-later",
+          "correlation_id": "correlation"
+        }
+      ],
+      "snapshots": [
+        {
+          "target": "child",
+          "persistent": {
+            "shared": [
+              {
+                "base": 1,
+                "child": 3
+              },
+              5,
+              3
+            ],
+            "nested": {
+              "parent": true
+            }
+          },
+          "correlation": "correlation"
+        },
+        {
+          "target": "child",
+          "persistent": {
+            "shared": [
+              {
+                "base": 1,
+                "child": 3
+              },
+              5,
+              3
+            ],
+            "nested": {
+              "parent": true
+            }
+          },
+          "correlation": null
+        },
+        {
+          "target": "parent",
+          "persistent": {
+            "shared": [
+              {
+                "base": 1
+              },
+              2,
+              3
+            ],
+            "nested": {
+              "parent": true
+            }
+          },
+          "correlation": "correlation"
+        }
+      ],
+      "byteSizes": [
+        217,
+        219,
+        173,
+        171,
+        185,
+        161,
+        255,
+        231
+      ]
+    },
+    {
+      "name": "child-false-zero-inherit",
+      "category": "child",
+      "persistent": {
+        "shared": false,
+        "zero": 0,
+        "nested": {
+          "parent": true
+        }
+      },
+      "steps": [
+        {
+          "op": "append",
+          "fields": {
+            "shared": 0,
+            "zero": false,
+            "request": "original",
+            "correlation_id": "correlation"
+          }
+        },
+        {
+          "op": "child",
+          "name": "child",
+          "fields": {}
+        },
+        {
+          "op": "snapshot",
+          "target": "child"
+        },
+        {
+          "op": "info",
+          "target": "child",
+          "message": "before"
+        },
+        {
+          "op": "child",
+          "target": "child",
+          "name": "grandchild",
+          "fields": {
+            "component": "grandchild"
+          }
+        },
+        {
+          "op": "append",
+          "fields": {
+            "request": "parent-later"
+          }
+        },
+        {
+          "op": "info",
+          "target": "child",
+          "message": "snapshot"
+        },
+        {
+          "op": "remove",
+          "target": "child",
+          "keys": [
+            "shared",
+            "zero",
+            "request",
+            "correlation_id"
+          ]
+        },
+        {
+          "op": "info",
+          "target": "child",
+          "message": "removed"
+        },
+        {
+          "op": "snapshot",
+          "target": "child"
+        },
+        {
+          "op": "append",
+          "target": "child",
+          "fields": {
+            "request": "child-later"
+          }
+        },
+        {
+          "op": "reset",
+          "target": "child"
+        },
+        {
+          "op": "info",
+          "target": "child",
+          "message": "reset"
+        },
+        {
+          "op": "persistent",
+          "target": "child",
+          "fields": {
+            "nested": {
+              "child": true
+            }
+          }
+        },
+        {
+          "op": "info",
+          "target": "child",
+          "message": "merged"
+        },
+        {
+          "op": "removePersistent",
+          "target": "child",
+          "keys": [
+            "shared"
+          ]
+        },
+        {
+          "op": "info",
+          "target": "child",
+          "message": "persistent removed"
+        },
+        {
+          "op": "info",
+          "target": "grandchild",
+          "message": "grandchild snapshot"
+        },
+        {
+          "op": "info",
+          "message": "parent unchanged"
+        },
+        {
+          "op": "snapshot"
+        }
+      ],
+      "records": [
+        {
+          "level": "INFO",
+          "message": "before",
+          "service": "orders",
+          "sampling_rate": 0,
+          "shared": 0,
+          "zero": false,
+          "nested": {
+            "parent": true
+          },
+          "request": "original",
+          "correlation_id": "correlation"
+        },
+        {
+          "level": "INFO",
+          "message": "snapshot",
+          "service": "orders",
+          "sampling_rate": 0,
+          "shared": 0,
+          "zero": false,
+          "nested": {
+            "parent": true
+          },
+          "request": "original",
+          "correlation_id": "correlation"
+        },
+        {
+          "level": "INFO",
+          "message": "removed",
+          "service": "orders",
+          "sampling_rate": 0,
+          "shared": false,
+          "zero": 0,
+          "nested": {
+            "parent": true
+          }
+        },
+        {
+          "level": "INFO",
+          "message": "reset",
+          "service": "orders",
+          "sampling_rate": 0,
+          "shared": false,
+          "zero": 0,
+          "nested": {
+            "parent": true
+          }
+        },
+        {
+          "level": "INFO",
+          "message": "merged",
+          "service": "orders",
+          "sampling_rate": 0,
+          "shared": false,
+          "zero": 0,
+          "nested": {
+            "parent": true,
+            "child": true
+          }
+        },
+        {
+          "level": "INFO",
+          "message": "persistent removed",
+          "service": "orders",
+          "sampling_rate": 0,
+          "zero": 0,
+          "nested": {
+            "parent": true,
+            "child": true
+          }
+        },
+        {
+          "level": "INFO",
+          "message": "grandchild snapshot",
+          "service": "orders",
+          "sampling_rate": 0,
+          "shared": 0,
+          "zero": false,
+          "nested": {
+            "parent": true
+          },
+          "component": "grandchild",
+          "request": "original",
+          "correlation_id": "correlation"
+        },
+        {
+          "level": "INFO",
+          "message": "parent unchanged",
+          "service": "orders",
+          "sampling_rate": 0,
+          "shared": 0,
+          "zero": false,
+          "nested": {
+            "parent": true
+          },
+          "request": "parent-later",
+          "correlation_id": "correlation"
+        }
+      ],
+      "snapshots": [
+        {
+          "target": "child",
+          "persistent": {
+            "shared": false,
+            "zero": 0,
+            "nested": {
+              "parent": true
+            }
+          },
+          "correlation": "correlation"
+        },
+        {
+          "target": "child",
+          "persistent": {
+            "shared": false,
+            "zero": 0,
+            "nested": {
+              "parent": true
+            }
+          },
+          "correlation": null
+        },
+        {
+          "target": "parent",
+          "persistent": {
+            "shared": false,
+            "zero": 0,
+            "nested": {
+              "parent": true
+            }
+          },
+          "correlation": "correlation"
+        }
+      ],
+      "byteSizes": [
+        212,
+        214,
+        161,
+        159,
+        173,
+        170,
+        250,
+        226
+      ]
+    },
+    {
+      "name": "child-false-zero-override",
+      "category": "child",
+      "persistent": {
+        "shared": false,
+        "zero": 0,
+        "nested": {
+          "parent": true
+        }
+      },
+      "steps": [
+        {
+          "op": "append",
+          "fields": {
+            "shared": 0,
+            "zero": false,
+            "request": "original",
+            "correlation_id": "correlation"
+          }
+        },
+        {
+          "op": "child",
+          "name": "child",
+          "fields": {
+            "shared": true
+          }
+        },
+        {
+          "op": "snapshot",
+          "target": "child"
+        },
+        {
+          "op": "info",
+          "target": "child",
+          "message": "before"
+        },
+        {
+          "op": "child",
+          "target": "child",
+          "name": "grandchild",
+          "fields": {
+            "component": "grandchild"
+          }
+        },
+        {
+          "op": "append",
+          "fields": {
+            "request": "parent-later"
+          }
+        },
+        {
+          "op": "info",
+          "target": "child",
+          "message": "snapshot"
+        },
+        {
+          "op": "remove",
+          "target": "child",
+          "keys": [
+            "shared",
+            "zero",
+            "request",
+            "correlation_id"
+          ]
+        },
+        {
+          "op": "info",
+          "target": "child",
+          "message": "removed"
+        },
+        {
+          "op": "snapshot",
+          "target": "child"
+        },
+        {
+          "op": "append",
+          "target": "child",
+          "fields": {
+            "request": "child-later"
+          }
+        },
+        {
+          "op": "reset",
+          "target": "child"
+        },
+        {
+          "op": "info",
+          "target": "child",
+          "message": "reset"
+        },
+        {
+          "op": "persistent",
+          "target": "child",
+          "fields": {
+            "nested": {
+              "child": true
+            }
+          }
+        },
+        {
+          "op": "info",
+          "target": "child",
+          "message": "merged"
+        },
+        {
+          "op": "removePersistent",
+          "target": "child",
+          "keys": [
+            "shared"
+          ]
+        },
+        {
+          "op": "info",
+          "target": "child",
+          "message": "persistent removed"
+        },
+        {
+          "op": "info",
+          "target": "grandchild",
+          "message": "grandchild snapshot"
+        },
+        {
+          "op": "info",
+          "message": "parent unchanged"
+        },
+        {
+          "op": "snapshot"
+        }
+      ],
+      "records": [
+        {
+          "level": "INFO",
+          "message": "before",
+          "service": "orders",
+          "sampling_rate": 0,
+          "shared": 0,
+          "zero": false,
+          "nested": {
+            "parent": true
+          },
+          "request": "original",
+          "correlation_id": "correlation"
+        },
+        {
+          "level": "INFO",
+          "message": "snapshot",
+          "service": "orders",
+          "sampling_rate": 0,
+          "shared": 0,
+          "zero": false,
+          "nested": {
+            "parent": true
+          },
+          "request": "original",
+          "correlation_id": "correlation"
+        },
+        {
+          "level": "INFO",
+          "message": "removed",
+          "service": "orders",
+          "sampling_rate": 0,
+          "shared": true,
+          "zero": 0,
+          "nested": {
+            "parent": true
+          }
+        },
+        {
+          "level": "INFO",
+          "message": "reset",
+          "service": "orders",
+          "sampling_rate": 0,
+          "shared": true,
+          "zero": 0,
+          "nested": {
+            "parent": true
+          }
+        },
+        {
+          "level": "INFO",
+          "message": "merged",
+          "service": "orders",
+          "sampling_rate": 0,
+          "shared": true,
+          "zero": 0,
+          "nested": {
+            "parent": true,
+            "child": true
+          }
+        },
+        {
+          "level": "INFO",
+          "message": "persistent removed",
+          "service": "orders",
+          "sampling_rate": 0,
+          "zero": 0,
+          "nested": {
+            "parent": true,
+            "child": true
+          }
+        },
+        {
+          "level": "INFO",
+          "message": "grandchild snapshot",
+          "service": "orders",
+          "sampling_rate": 0,
+          "shared": 0,
+          "zero": false,
+          "nested": {
+            "parent": true
+          },
+          "component": "grandchild",
+          "request": "original",
+          "correlation_id": "correlation"
+        },
+        {
+          "level": "INFO",
+          "message": "parent unchanged",
+          "service": "orders",
+          "sampling_rate": 0,
+          "shared": 0,
+          "zero": false,
+          "nested": {
+            "parent": true
+          },
+          "request": "parent-later",
+          "correlation_id": "correlation"
+        }
+      ],
+      "snapshots": [
+        {
+          "target": "child",
+          "persistent": {
+            "shared": true,
+            "zero": 0,
+            "nested": {
+              "parent": true
+            }
+          },
+          "correlation": "correlation"
+        },
+        {
+          "target": "child",
+          "persistent": {
+            "shared": true,
+            "zero": 0,
+            "nested": {
+              "parent": true
+            }
+          },
+          "correlation": null
+        },
+        {
+          "target": "parent",
+          "persistent": {
+            "shared": false,
+            "zero": 0,
+            "nested": {
+              "parent": true
+            }
+          },
+          "correlation": "correlation"
+        }
+      ],
+      "byteSizes": [
+        212,
+        214,
+        160,
+        158,
+        172,
+        170,
+        250,
+        226
+      ]
+    },
+    {
+      "name": "child-null-inherit",
+      "category": "child",
+      "persistent": {
+        "shared": "persistent",
+        "nested": {
+          "parent": true
+        }
+      },
+      "steps": [
+        {
+          "op": "append",
+          "fields": {
+            "shared": null,
+            "request": "original",
+            "correlation_id": "correlation"
+          }
+        },
+        {
+          "op": "child",
+          "name": "child",
+          "fields": {}
+        },
+        {
+          "op": "snapshot",
+          "target": "child"
+        },
+        {
+          "op": "info",
+          "target": "child",
+          "message": "before"
+        },
+        {
+          "op": "child",
+          "target": "child",
+          "name": "grandchild",
+          "fields": {
+            "component": "grandchild"
+          }
+        },
+        {
+          "op": "append",
+          "fields": {
+            "request": "parent-later"
+          }
+        },
+        {
+          "op": "info",
+          "target": "child",
+          "message": "snapshot"
+        },
+        {
+          "op": "remove",
+          "target": "child",
+          "keys": [
+            "shared",
+            "zero",
+            "request",
+            "correlation_id"
+          ]
+        },
+        {
+          "op": "info",
+          "target": "child",
+          "message": "removed"
+        },
+        {
+          "op": "snapshot",
+          "target": "child"
+        },
+        {
+          "op": "append",
+          "target": "child",
+          "fields": {
+            "request": "child-later"
+          }
+        },
+        {
+          "op": "reset",
+          "target": "child"
+        },
+        {
+          "op": "info",
+          "target": "child",
+          "message": "reset"
+        },
+        {
+          "op": "persistent",
+          "target": "child",
+          "fields": {
+            "nested": {
+              "child": true
+            }
+          }
+        },
+        {
+          "op": "info",
+          "target": "child",
+          "message": "merged"
+        },
+        {
+          "op": "removePersistent",
+          "target": "child",
+          "keys": [
+            "shared"
+          ]
+        },
+        {
+          "op": "info",
+          "target": "child",
+          "message": "persistent removed"
+        },
+        {
+          "op": "info",
+          "target": "grandchild",
+          "message": "grandchild snapshot"
+        },
+        {
+          "op": "info",
+          "message": "parent unchanged"
+        },
+        {
+          "op": "snapshot"
+        }
+      ],
+      "records": [
+        {
+          "level": "INFO",
+          "message": "before",
+          "service": "orders",
+          "sampling_rate": 0,
+          "nested": {
+            "parent": true
+          },
+          "request": "original",
+          "correlation_id": "correlation"
+        },
+        {
+          "level": "INFO",
+          "message": "snapshot",
+          "service": "orders",
+          "sampling_rate": 0,
+          "nested": {
+            "parent": true
+          },
+          "request": "original",
+          "correlation_id": "correlation"
+        },
+        {
+          "level": "INFO",
+          "message": "removed",
+          "service": "orders",
+          "sampling_rate": 0,
+          "shared": "persistent",
+          "nested": {
+            "parent": true
+          }
+        },
+        {
+          "level": "INFO",
+          "message": "reset",
+          "service": "orders",
+          "sampling_rate": 0,
+          "shared": "persistent",
+          "nested": {
+            "parent": true
+          }
+        },
+        {
+          "level": "INFO",
+          "message": "merged",
+          "service": "orders",
+          "sampling_rate": 0,
+          "shared": "persistent",
+          "nested": {
+            "parent": true,
+            "child": true
+          }
+        },
+        {
+          "level": "INFO",
+          "message": "persistent removed",
+          "service": "orders",
+          "sampling_rate": 0,
+          "nested": {
+            "parent": true,
+            "child": true
+          }
+        },
+        {
+          "level": "INFO",
+          "message": "grandchild snapshot",
+          "service": "orders",
+          "sampling_rate": 0,
+          "nested": {
+            "parent": true
+          },
+          "component": "grandchild",
+          "request": "original",
+          "correlation_id": "correlation"
+        },
+        {
+          "level": "INFO",
+          "message": "parent unchanged",
+          "service": "orders",
+          "sampling_rate": 0,
+          "nested": {
+            "parent": true
+          },
+          "request": "parent-later",
+          "correlation_id": "correlation"
+        }
+      ],
+      "snapshots": [
+        {
+          "target": "child",
+          "persistent": {
+            "shared": "persistent",
+            "nested": {
+              "parent": true
+            }
+          },
+          "correlation": "correlation"
+        },
+        {
+          "target": "child",
+          "persistent": {
+            "shared": "persistent",
+            "nested": {
+              "parent": true
+            }
+          },
+          "correlation": null
+        },
+        {
+          "target": "parent",
+          "persistent": {
+            "shared": "persistent",
+            "nested": {
+              "parent": true
+            }
+          },
+          "correlation": "correlation"
+        }
+      ],
+      "byteSizes": [
+        188,
+        190,
+        159,
+        157,
+        171,
+        161,
+        226,
+        202
+      ]
+    },
+    {
+      "name": "child-null-override",
+      "category": "child",
+      "persistent": {
+        "shared": "persistent",
+        "nested": {
+          "parent": true
+        }
+      },
+      "steps": [
+        {
+          "op": "append",
+          "fields": {
+            "shared": null,
+            "request": "original",
+            "correlation_id": "correlation"
+          }
+        },
+        {
+          "op": "child",
+          "name": "child",
+          "fields": {
+            "shared": null
+          }
+        },
+        {
+          "op": "snapshot",
+          "target": "child"
+        },
+        {
+          "op": "info",
+          "target": "child",
+          "message": "before"
+        },
+        {
+          "op": "child",
+          "target": "child",
+          "name": "grandchild",
+          "fields": {
+            "component": "grandchild"
+          }
+        },
+        {
+          "op": "append",
+          "fields": {
+            "request": "parent-later"
+          }
+        },
+        {
+          "op": "info",
+          "target": "child",
+          "message": "snapshot"
+        },
+        {
+          "op": "remove",
+          "target": "child",
+          "keys": [
+            "shared",
+            "zero",
+            "request",
+            "correlation_id"
+          ]
+        },
+        {
+          "op": "info",
+          "target": "child",
+          "message": "removed"
+        },
+        {
+          "op": "snapshot",
+          "target": "child"
+        },
+        {
+          "op": "append",
+          "target": "child",
+          "fields": {
+            "request": "child-later"
+          }
+        },
+        {
+          "op": "reset",
+          "target": "child"
+        },
+        {
+          "op": "info",
+          "target": "child",
+          "message": "reset"
+        },
+        {
+          "op": "persistent",
+          "target": "child",
+          "fields": {
+            "nested": {
+              "child": true
+            }
+          }
+        },
+        {
+          "op": "info",
+          "target": "child",
+          "message": "merged"
+        },
+        {
+          "op": "removePersistent",
+          "target": "child",
+          "keys": [
+            "shared"
+          ]
+        },
+        {
+          "op": "info",
+          "target": "child",
+          "message": "persistent removed"
+        },
+        {
+          "op": "info",
+          "target": "grandchild",
+          "message": "grandchild snapshot"
+        },
+        {
+          "op": "info",
+          "message": "parent unchanged"
+        },
+        {
+          "op": "snapshot"
+        }
+      ],
+      "records": [
+        {
+          "level": "INFO",
+          "message": "before",
+          "service": "orders",
+          "sampling_rate": 0,
+          "nested": {
+            "parent": true
+          },
+          "request": "original",
+          "correlation_id": "correlation"
+        },
+        {
+          "level": "INFO",
+          "message": "snapshot",
+          "service": "orders",
+          "sampling_rate": 0,
+          "nested": {
+            "parent": true
+          },
+          "request": "original",
+          "correlation_id": "correlation"
+        },
+        {
+          "level": "INFO",
+          "message": "removed",
+          "service": "orders",
+          "sampling_rate": 0,
+          "nested": {
+            "parent": true
+          }
+        },
+        {
+          "level": "INFO",
+          "message": "reset",
+          "service": "orders",
+          "sampling_rate": 0,
+          "nested": {
+            "parent": true
+          }
+        },
+        {
+          "level": "INFO",
+          "message": "merged",
+          "service": "orders",
+          "sampling_rate": 0,
+          "nested": {
+            "parent": true,
+            "child": true
+          }
+        },
+        {
+          "level": "INFO",
+          "message": "persistent removed",
+          "service": "orders",
+          "sampling_rate": 0,
+          "nested": {
+            "parent": true,
+            "child": true
+          }
+        },
+        {
+          "level": "INFO",
+          "message": "grandchild snapshot",
+          "service": "orders",
+          "sampling_rate": 0,
+          "nested": {
+            "parent": true
+          },
+          "component": "grandchild",
+          "request": "original",
+          "correlation_id": "correlation"
+        },
+        {
+          "level": "INFO",
+          "message": "parent unchanged",
+          "service": "orders",
+          "sampling_rate": 0,
+          "nested": {
+            "parent": true
+          },
+          "request": "parent-later",
+          "correlation_id": "correlation"
+        }
+      ],
+      "snapshots": [
+        {
+          "target": "child",
+          "persistent": {
+            "shared": null,
+            "nested": {
+              "parent": true
+            }
+          },
+          "correlation": "correlation"
+        },
+        {
+          "target": "child",
+          "persistent": {
+            "shared": null,
+            "nested": {
+              "parent": true
+            }
+          },
+          "correlation": null
+        },
+        {
+          "target": "parent",
+          "persistent": {
+            "shared": "persistent",
+            "nested": {
+              "parent": true
+            }
+          },
+          "correlation": "correlation"
+        }
+      ],
+      "byteSizes": [
+        188,
+        190,
+        137,
+        135,
+        149,
+        161,
+        226,
+        202
+      ]
+    },
+    {
+      "name": "child-empty-inherit",
+      "category": "child",
+      "persistent": {
+        "shared": "persistent",
+        "nested": {
+          "parent": true
+        }
+      },
+      "steps": [
+        {
+          "op": "append",
+          "fields": {
+            "shared": "",
+            "request": "original",
+            "correlation_id": "correlation"
+          }
+        },
+        {
+          "op": "child",
+          "name": "child",
+          "fields": {}
+        },
+        {
+          "op": "snapshot",
+          "target": "child"
+        },
+        {
+          "op": "info",
+          "target": "child",
+          "message": "before"
+        },
+        {
+          "op": "child",
+          "target": "child",
+          "name": "grandchild",
+          "fields": {
+            "component": "grandchild"
+          }
+        },
+        {
+          "op": "append",
+          "fields": {
+            "request": "parent-later"
+          }
+        },
+        {
+          "op": "info",
+          "target": "child",
+          "message": "snapshot"
+        },
+        {
+          "op": "remove",
+          "target": "child",
+          "keys": [
+            "shared",
+            "zero",
+            "request",
+            "correlation_id"
+          ]
+        },
+        {
+          "op": "info",
+          "target": "child",
+          "message": "removed"
+        },
+        {
+          "op": "snapshot",
+          "target": "child"
+        },
+        {
+          "op": "append",
+          "target": "child",
+          "fields": {
+            "request": "child-later"
+          }
+        },
+        {
+          "op": "reset",
+          "target": "child"
+        },
+        {
+          "op": "info",
+          "target": "child",
+          "message": "reset"
+        },
+        {
+          "op": "persistent",
+          "target": "child",
+          "fields": {
+            "nested": {
+              "child": true
+            }
+          }
+        },
+        {
+          "op": "info",
+          "target": "child",
+          "message": "merged"
+        },
+        {
+          "op": "removePersistent",
+          "target": "child",
+          "keys": [
+            "shared"
+          ]
+        },
+        {
+          "op": "info",
+          "target": "child",
+          "message": "persistent removed"
+        },
+        {
+          "op": "info",
+          "target": "grandchild",
+          "message": "grandchild snapshot"
+        },
+        {
+          "op": "info",
+          "message": "parent unchanged"
+        },
+        {
+          "op": "snapshot"
+        }
+      ],
+      "records": [
+        {
+          "level": "INFO",
+          "message": "before",
+          "service": "orders",
+          "sampling_rate": 0,
+          "nested": {
+            "parent": true
+          },
+          "request": "original",
+          "correlation_id": "correlation"
+        },
+        {
+          "level": "INFO",
+          "message": "snapshot",
+          "service": "orders",
+          "sampling_rate": 0,
+          "nested": {
+            "parent": true
+          },
+          "request": "original",
+          "correlation_id": "correlation"
+        },
+        {
+          "level": "INFO",
+          "message": "removed",
+          "service": "orders",
+          "sampling_rate": 0,
+          "shared": "persistent",
+          "nested": {
+            "parent": true
+          }
+        },
+        {
+          "level": "INFO",
+          "message": "reset",
+          "service": "orders",
+          "sampling_rate": 0,
+          "shared": "persistent",
+          "nested": {
+            "parent": true
+          }
+        },
+        {
+          "level": "INFO",
+          "message": "merged",
+          "service": "orders",
+          "sampling_rate": 0,
+          "shared": "persistent",
+          "nested": {
+            "parent": true,
+            "child": true
+          }
+        },
+        {
+          "level": "INFO",
+          "message": "persistent removed",
+          "service": "orders",
+          "sampling_rate": 0,
+          "nested": {
+            "parent": true,
+            "child": true
+          }
+        },
+        {
+          "level": "INFO",
+          "message": "grandchild snapshot",
+          "service": "orders",
+          "sampling_rate": 0,
+          "nested": {
+            "parent": true
+          },
+          "component": "grandchild",
+          "request": "original",
+          "correlation_id": "correlation"
+        },
+        {
+          "level": "INFO",
+          "message": "parent unchanged",
+          "service": "orders",
+          "sampling_rate": 0,
+          "nested": {
+            "parent": true
+          },
+          "request": "parent-later",
+          "correlation_id": "correlation"
+        }
+      ],
+      "snapshots": [
+        {
+          "target": "child",
+          "persistent": {
+            "shared": "persistent",
+            "nested": {
+              "parent": true
+            }
+          },
+          "correlation": "correlation"
+        },
+        {
+          "target": "child",
+          "persistent": {
+            "shared": "persistent",
+            "nested": {
+              "parent": true
+            }
+          },
+          "correlation": null
+        },
+        {
+          "target": "parent",
+          "persistent": {
+            "shared": "persistent",
+            "nested": {
+              "parent": true
+            }
+          },
+          "correlation": "correlation"
+        }
+      ],
+      "byteSizes": [
+        188,
+        190,
+        159,
+        157,
+        171,
+        161,
+        226,
+        202
+      ]
+    },
+    {
+      "name": "child-empty-override",
+      "category": "child",
+      "persistent": {
+        "shared": "persistent",
+        "nested": {
+          "parent": true
+        }
+      },
+      "steps": [
+        {
+          "op": "append",
+          "fields": {
+            "shared": "",
+            "request": "original",
+            "correlation_id": "correlation"
+          }
+        },
+        {
+          "op": "child",
+          "name": "child",
+          "fields": {
+            "shared": ""
+          }
+        },
+        {
+          "op": "snapshot",
+          "target": "child"
+        },
+        {
+          "op": "info",
+          "target": "child",
+          "message": "before"
+        },
+        {
+          "op": "child",
+          "target": "child",
+          "name": "grandchild",
+          "fields": {
+            "component": "grandchild"
+          }
+        },
+        {
+          "op": "append",
+          "fields": {
+            "request": "parent-later"
+          }
+        },
+        {
+          "op": "info",
+          "target": "child",
+          "message": "snapshot"
+        },
+        {
+          "op": "remove",
+          "target": "child",
+          "keys": [
+            "shared",
+            "zero",
+            "request",
+            "correlation_id"
+          ]
+        },
+        {
+          "op": "info",
+          "target": "child",
+          "message": "removed"
+        },
+        {
+          "op": "snapshot",
+          "target": "child"
+        },
+        {
+          "op": "append",
+          "target": "child",
+          "fields": {
+            "request": "child-later"
+          }
+        },
+        {
+          "op": "reset",
+          "target": "child"
+        },
+        {
+          "op": "info",
+          "target": "child",
+          "message": "reset"
+        },
+        {
+          "op": "persistent",
+          "target": "child",
+          "fields": {
+            "nested": {
+              "child": true
+            }
+          }
+        },
+        {
+          "op": "info",
+          "target": "child",
+          "message": "merged"
+        },
+        {
+          "op": "removePersistent",
+          "target": "child",
+          "keys": [
+            "shared"
+          ]
+        },
+        {
+          "op": "info",
+          "target": "child",
+          "message": "persistent removed"
+        },
+        {
+          "op": "info",
+          "target": "grandchild",
+          "message": "grandchild snapshot"
+        },
+        {
+          "op": "info",
+          "message": "parent unchanged"
+        },
+        {
+          "op": "snapshot"
+        }
+      ],
+      "records": [
+        {
+          "level": "INFO",
+          "message": "before",
+          "service": "orders",
+          "sampling_rate": 0,
+          "nested": {
+            "parent": true
+          },
+          "request": "original",
+          "correlation_id": "correlation"
+        },
+        {
+          "level": "INFO",
+          "message": "snapshot",
+          "service": "orders",
+          "sampling_rate": 0,
+          "nested": {
+            "parent": true
+          },
+          "request": "original",
+          "correlation_id": "correlation"
+        },
+        {
+          "level": "INFO",
+          "message": "removed",
+          "service": "orders",
+          "sampling_rate": 0,
+          "nested": {
+            "parent": true
+          }
+        },
+        {
+          "level": "INFO",
+          "message": "reset",
+          "service": "orders",
+          "sampling_rate": 0,
+          "nested": {
+            "parent": true
+          }
+        },
+        {
+          "level": "INFO",
+          "message": "merged",
+          "service": "orders",
+          "sampling_rate": 0,
+          "nested": {
+            "parent": true,
+            "child": true
+          }
+        },
+        {
+          "level": "INFO",
+          "message": "persistent removed",
+          "service": "orders",
+          "sampling_rate": 0,
+          "nested": {
+            "parent": true,
+            "child": true
+          }
+        },
+        {
+          "level": "INFO",
+          "message": "grandchild snapshot",
+          "service": "orders",
+          "sampling_rate": 0,
+          "nested": {
+            "parent": true
+          },
+          "component": "grandchild",
+          "request": "original",
+          "correlation_id": "correlation"
+        },
+        {
+          "level": "INFO",
+          "message": "parent unchanged",
+          "service": "orders",
+          "sampling_rate": 0,
+          "nested": {
+            "parent": true
+          },
+          "request": "parent-later",
+          "correlation_id": "correlation"
+        }
+      ],
+      "snapshots": [
+        {
+          "target": "child",
+          "persistent": {
+            "shared": "",
+            "nested": {
+              "parent": true
+            }
+          },
+          "correlation": "correlation"
+        },
+        {
+          "target": "child",
+          "persistent": {
+            "shared": "",
+            "nested": {
+              "parent": true
+            }
+          },
+          "correlation": null
+        },
+        {
+          "target": "parent",
+          "persistent": {
+            "shared": "persistent",
+            "nested": {
+              "parent": true
+            }
+          },
+          "correlation": "correlation"
+        }
+      ],
+      "byteSizes": [
+        188,
+        190,
+        137,
+        135,
+        149,
+        161,
+        226,
+        202
+      ]
+    },
+    {
+      "name": "empty-call-default-plain",
+      "category": "empty",
+      "formatter": false,
+      "replacer": "",
+      "steps": [
+        {
+          "op": "info",
+          "message": "",
+          "fields": {
+            "empty": "",
+            "null_value": null,
+            "zero": 0,
+            "flag": false,
+            "list": [],
+            "object": {},
+            "nested": {
+              "empty": "",
+              "null_value": null
+            },
+            "null_after": "value",
+            "empty_after": "value"
+          }
+        },
+        {
+          "op": "info",
+          "message": "nonempty",
+          "fields": {
+            "empty": "",
+            "null_value": null,
+            "zero": 0,
+            "flag": false,
+            "list": [],
+            "object": {},
+            "nested": {
+              "empty": "",
+              "null_value": null
+            },
+            "null_after": "value",
+            "empty_after": "value"
+          }
+        }
+      ],
+      "records": [
+        {
+          "level": "INFO",
+          "service": "orders",
+          "sampling_rate": 0,
+          "zero": 0,
+          "flag": false,
+          "list": [],
+          "object": {},
+          "nested": {
+            "empty": "",
+            "null_value": null
+          },
+          "null_after": "value",
+          "empty_after": "value"
+        },
+        {
+          "level": "INFO",
+          "message": "nonempty",
+          "service": "orders",
+          "sampling_rate": 0,
+          "zero": 0,
+          "flag": false,
+          "list": [],
+          "object": {},
+          "nested": {
+            "empty": "",
+            "null_value": null
+          },
+          "null_after": "value",
+          "empty_after": "value"
+        }
+      ],
+      "snapshots": [],
+      "byteSizes": [
+        219,
+        240
+      ]
+    },
+    {
+      "name": "empty-call-default-values",
+      "category": "empty",
+      "formatter": false,
+      "replacer": "values",
+      "steps": [
+        {
+          "op": "info",
+          "message": "",
+          "fields": {
+            "empty": "",
+            "null_value": null,
+            "zero": 0,
+            "flag": false,
+            "list": [],
+            "object": {},
+            "nested": {
+              "empty": "",
+              "null_value": null
+            },
+            "null_after": "value",
+            "empty_after": "value"
+          }
+        },
+        {
+          "op": "info",
+          "message": "nonempty",
+          "fields": {
+            "empty": "",
+            "null_value": null,
+            "zero": 0,
+            "flag": false,
+            "list": [],
+            "object": {},
+            "nested": {
+              "empty": "",
+              "null_value": null
+            },
+            "null_after": "value",
+            "empty_after": "value"
+          }
+        }
+      ],
+      "records": [
+        {
+          "level": "INFO",
+          "service": "orders",
+          "sampling_rate": 0,
+          "zero": 0,
+          "flag": false,
+          "list": [],
+          "object": {},
+          "nested": {
+            "empty": "RESCUED",
+            "null_value": "RESCUED"
+          },
+          "null_after": null,
+          "empty_after": ""
+        },
+        {
+          "level": "INFO",
+          "message": "nonempty",
+          "service": "orders",
+          "sampling_rate": 0,
+          "zero": 0,
+          "flag": false,
+          "list": [],
+          "object": {},
+          "nested": {
+            "empty": "RESCUED",
+            "null_value": "RESCUED"
+          },
+          "null_after": null,
+          "empty_after": ""
+        }
+      ],
+      "snapshots": [],
+      "byteSizes": [
+        223,
+        244
+      ]
+    },
+    {
+      "name": "empty-call-default-root",
+      "category": "empty",
+      "formatter": false,
+      "replacer": "root",
+      "steps": [
+        {
+          "op": "info",
+          "message": "",
+          "fields": {
+            "empty": "",
+            "null_value": null,
+            "zero": 0,
+            "flag": false,
+            "list": [],
+            "object": {},
+            "nested": {
+              "empty": "",
+              "null_value": null
+            },
+            "null_after": "value",
+            "empty_after": "value"
+          }
+        },
+        {
+          "op": "info",
+          "message": "nonempty",
+          "fields": {
+            "empty": "",
+            "null_value": null,
+            "zero": 0,
+            "flag": false,
+            "list": [],
+            "object": {},
+            "nested": {
+              "empty": "",
+              "null_value": null
+            },
+            "null_after": "value",
+            "empty_after": "value"
+          }
+        }
+      ],
+      "records": [
+        {
+          "level": "INFO",
+          "service": "orders",
+          "sampling_rate": 0,
+          "zero": 0,
+          "flag": false,
+          "list": [],
+          "object": {},
+          "nested": {
+            "empty": "",
+            "null_value": null
+          },
+          "null_after": "value",
+          "empty_after": "value",
+          "replaced_empty": "",
+          "replaced_null": null
+        },
+        {
+          "level": "INFO",
+          "message": "nonempty",
+          "service": "orders",
+          "sampling_rate": 0,
+          "zero": 0,
+          "flag": false,
+          "list": [],
+          "object": {},
+          "nested": {
+            "empty": "",
+            "null_value": null
+          },
+          "null_after": "value",
+          "empty_after": "value",
+          "replaced_empty": "",
+          "replaced_null": null
+        }
+      ],
+      "snapshots": [],
+      "byteSizes": [
+        260,
+        281
+      ]
+    },
+    {
+      "name": "empty-call-custom-plain",
+      "category": "empty",
+      "formatter": true,
+      "replacer": "",
+      "steps": [
+        {
+          "op": "info",
+          "message": "",
+          "fields": {
+            "empty": "",
+            "null_value": null,
+            "zero": 0,
+            "flag": false,
+            "list": [],
+            "object": {},
+            "nested": {
+              "empty": "",
+              "null_value": null
+            },
+            "null_after": "value",
+            "empty_after": "value"
+          }
+        },
+        {
+          "op": "info",
+          "message": "nonempty",
+          "fields": {
+            "empty": "",
+            "null_value": null,
+            "zero": 0,
+            "flag": false,
+            "list": [],
+            "object": {},
+            "nested": {
+              "empty": "",
+              "null_value": null
+            },
+            "null_after": "value",
+            "empty_after": "value"
+          }
+        }
+      ],
+      "records": [
+        {
+          "nested": {
+            "empty": "",
+            "null_value": null,
+            "zero": 0,
+            "flag": false,
+            "list": [],
+            "object": {},
+            "nested": {
+              "empty": "",
+              "null_value": null
+            },
+            "null_after": "value",
+            "empty_after": "value"
+          }
+        },
+        {
+          "message": "nonempty",
+          "nested": {
+            "empty": "",
+            "null_value": null,
+            "zero": 0,
+            "flag": false,
+            "list": [],
+            "object": {},
+            "nested": {
+              "empty": "",
+              "null_value": null
+            },
+            "null_after": "value",
+            "empty_after": "value"
+          }
+        }
+      ],
+      "snapshots": [],
+      "byteSizes": [
+        168,
+        189
+      ]
+    },
+    {
+      "name": "empty-call-custom-values",
+      "category": "empty",
+      "formatter": true,
+      "replacer": "values",
+      "steps": [
+        {
+          "op": "info",
+          "message": "",
+          "fields": {
+            "empty": "",
+            "null_value": null,
+            "zero": 0,
+            "flag": false,
+            "list": [],
+            "object": {},
+            "nested": {
+              "empty": "",
+              "null_value": null
+            },
+            "null_after": "value",
+            "empty_after": "value"
+          }
+        },
+        {
+          "op": "info",
+          "message": "nonempty",
+          "fields": {
+            "empty": "",
+            "null_value": null,
+            "zero": 0,
+            "flag": false,
+            "list": [],
+            "object": {},
+            "nested": {
+              "empty": "",
+              "null_value": null
+            },
+            "null_after": "value",
+            "empty_after": "value"
+          }
+        }
+      ],
+      "records": [
+        {
+          "nested": {
+            "empty": "RESCUED",
+            "null_value": "RESCUED",
+            "zero": 0,
+            "flag": false,
+            "list": [],
+            "object": {},
+            "nested": {
+              "empty": "RESCUED",
+              "null_value": "RESCUED"
+            },
+            "null_after": null,
+            "empty_after": ""
+          }
+        },
+        {
+          "message": "nonempty",
+          "nested": {
+            "empty": "RESCUED",
+            "null_value": "RESCUED",
+            "zero": 0,
+            "flag": false,
+            "list": [],
+            "object": {},
+            "nested": {
+              "empty": "RESCUED",
+              "null_value": "RESCUED"
+            },
+            "null_after": null,
+            "empty_after": ""
+          }
+        }
+      ],
+      "snapshots": [],
+      "byteSizes": [
+        184,
+        205
+      ]
+    },
+    {
+      "name": "empty-call-custom-root",
+      "category": "empty",
+      "formatter": true,
+      "replacer": "root",
+      "steps": [
+        {
+          "op": "info",
+          "message": "",
+          "fields": {
+            "empty": "",
+            "null_value": null,
+            "zero": 0,
+            "flag": false,
+            "list": [],
+            "object": {},
+            "nested": {
+              "empty": "",
+              "null_value": null
+            },
+            "null_after": "value",
+            "empty_after": "value"
+          }
+        },
+        {
+          "op": "info",
+          "message": "nonempty",
+          "fields": {
+            "empty": "",
+            "null_value": null,
+            "zero": 0,
+            "flag": false,
+            "list": [],
+            "object": {},
+            "nested": {
+              "empty": "",
+              "null_value": null
+            },
+            "null_after": "value",
+            "empty_after": "value"
+          }
+        }
+      ],
+      "records": [
+        {
+          "nested": {
+            "empty": "",
+            "null_value": null,
+            "zero": 0,
+            "flag": false,
+            "list": [],
+            "object": {},
+            "nested": {
+              "empty": "",
+              "null_value": null
+            },
+            "null_after": "value",
+            "empty_after": "value"
+          },
+          "replaced_empty": "",
+          "replaced_null": null
+        },
+        {
+          "message": "nonempty",
+          "nested": {
+            "empty": "",
+            "null_value": null,
+            "zero": 0,
+            "flag": false,
+            "list": [],
+            "object": {},
+            "nested": {
+              "empty": "",
+              "null_value": null
+            },
+            "null_after": "value",
+            "empty_after": "value"
+          },
+          "replaced_empty": "",
+          "replaced_null": null
+        }
+      ],
+      "snapshots": [],
+      "byteSizes": [
+        209,
+        230
+      ]
+    },
+    {
+      "name": "empty-persistent-default-plain",
+      "category": "empty",
+      "formatter": false,
+      "replacer": "",
+      "persistent": {
+        "empty": "",
+        "null_value": null,
+        "zero": 0,
+        "flag": false,
+        "list": [],
+        "object": {},
+        "nested": {
+          "empty": "",
+          "null_value": null
+        },
+        "null_after": "value",
+        "empty_after": "value"
+      },
+      "steps": [
+        {
+          "op": "info",
+          "message": ""
+        },
+        {
+          "op": "info",
+          "message": "nonempty"
+        }
+      ],
+      "records": [
+        {
+          "level": "INFO",
+          "service": "orders",
+          "sampling_rate": 0,
+          "zero": 0,
+          "flag": false,
+          "list": [],
+          "object": {},
+          "nested": {
+            "empty": "",
+            "null_value": null
+          },
+          "null_after": "value",
+          "empty_after": "value"
+        },
+        {
+          "level": "INFO",
+          "message": "nonempty",
+          "service": "orders",
+          "sampling_rate": 0,
+          "zero": 0,
+          "flag": false,
+          "list": [],
+          "object": {},
+          "nested": {
+            "empty": "",
+            "null_value": null
+          },
+          "null_after": "value",
+          "empty_after": "value"
+        }
+      ],
+      "snapshots": [],
+      "byteSizes": [
+        219,
+        240
+      ]
+    },
+    {
+      "name": "empty-persistent-default-values",
+      "category": "empty",
+      "formatter": false,
+      "replacer": "values",
+      "persistent": {
+        "empty": "",
+        "null_value": null,
+        "zero": 0,
+        "flag": false,
+        "list": [],
+        "object": {},
+        "nested": {
+          "empty": "",
+          "null_value": null
+        },
+        "null_after": "value",
+        "empty_after": "value"
+      },
+      "steps": [
+        {
+          "op": "info",
+          "message": ""
+        },
+        {
+          "op": "info",
+          "message": "nonempty"
+        }
+      ],
+      "records": [
+        {
+          "level": "INFO",
+          "service": "orders",
+          "sampling_rate": 0,
+          "zero": 0,
+          "flag": false,
+          "list": [],
+          "object": {},
+          "nested": {
+            "empty": "RESCUED",
+            "null_value": "RESCUED"
+          },
+          "null_after": null,
+          "empty_after": ""
+        },
+        {
+          "level": "INFO",
+          "message": "nonempty",
+          "service": "orders",
+          "sampling_rate": 0,
+          "zero": 0,
+          "flag": false,
+          "list": [],
+          "object": {},
+          "nested": {
+            "empty": "RESCUED",
+            "null_value": "RESCUED"
+          },
+          "null_after": null,
+          "empty_after": ""
+        }
+      ],
+      "snapshots": [],
+      "byteSizes": [
+        223,
+        244
+      ]
+    },
+    {
+      "name": "empty-persistent-default-root",
+      "category": "empty",
+      "formatter": false,
+      "replacer": "root",
+      "persistent": {
+        "empty": "",
+        "null_value": null,
+        "zero": 0,
+        "flag": false,
+        "list": [],
+        "object": {},
+        "nested": {
+          "empty": "",
+          "null_value": null
+        },
+        "null_after": "value",
+        "empty_after": "value"
+      },
+      "steps": [
+        {
+          "op": "info",
+          "message": ""
+        },
+        {
+          "op": "info",
+          "message": "nonempty"
+        }
+      ],
+      "records": [
+        {
+          "level": "INFO",
+          "service": "orders",
+          "sampling_rate": 0,
+          "zero": 0,
+          "flag": false,
+          "list": [],
+          "object": {},
+          "nested": {
+            "empty": "",
+            "null_value": null
+          },
+          "null_after": "value",
+          "empty_after": "value",
+          "replaced_empty": "",
+          "replaced_null": null
+        },
+        {
+          "level": "INFO",
+          "message": "nonempty",
+          "service": "orders",
+          "sampling_rate": 0,
+          "zero": 0,
+          "flag": false,
+          "list": [],
+          "object": {},
+          "nested": {
+            "empty": "",
+            "null_value": null
+          },
+          "null_after": "value",
+          "empty_after": "value",
+          "replaced_empty": "",
+          "replaced_null": null
+        }
+      ],
+      "snapshots": [],
+      "byteSizes": [
+        260,
+        281
+      ]
+    },
+    {
+      "name": "empty-persistent-custom-plain",
+      "category": "empty",
+      "formatter": true,
+      "replacer": "",
+      "persistent": {
+        "empty": "",
+        "null_value": null,
+        "zero": 0,
+        "flag": false,
+        "list": [],
+        "object": {},
+        "nested": {
+          "empty": "",
+          "null_value": null
+        },
+        "null_after": "value",
+        "empty_after": "value"
+      },
+      "steps": [
+        {
+          "op": "info",
+          "message": ""
+        },
+        {
+          "op": "info",
+          "message": "nonempty"
+        }
+      ],
+      "records": [
+        {
+          "nested": {
+            "empty": "",
+            "null_value": null,
+            "zero": 0,
+            "flag": false,
+            "list": [],
+            "object": {},
+            "nested": {
+              "empty": "",
+              "null_value": null
+            },
+            "null_after": "value",
+            "empty_after": "value"
+          }
+        },
+        {
+          "message": "nonempty",
+          "nested": {
+            "empty": "",
+            "null_value": null,
+            "zero": 0,
+            "flag": false,
+            "list": [],
+            "object": {},
+            "nested": {
+              "empty": "",
+              "null_value": null
+            },
+            "null_after": "value",
+            "empty_after": "value"
+          }
+        }
+      ],
+      "snapshots": [],
+      "byteSizes": [
+        168,
+        189
+      ]
+    },
+    {
+      "name": "empty-persistent-custom-values",
+      "category": "empty",
+      "formatter": true,
+      "replacer": "values",
+      "persistent": {
+        "empty": "",
+        "null_value": null,
+        "zero": 0,
+        "flag": false,
+        "list": [],
+        "object": {},
+        "nested": {
+          "empty": "",
+          "null_value": null
+        },
+        "null_after": "value",
+        "empty_after": "value"
+      },
+      "steps": [
+        {
+          "op": "info",
+          "message": ""
+        },
+        {
+          "op": "info",
+          "message": "nonempty"
+        }
+      ],
+      "records": [
+        {
+          "nested": {
+            "empty": "RESCUED",
+            "null_value": "RESCUED",
+            "zero": 0,
+            "flag": false,
+            "list": [],
+            "object": {},
+            "nested": {
+              "empty": "RESCUED",
+              "null_value": "RESCUED"
+            },
+            "null_after": null,
+            "empty_after": ""
+          }
+        },
+        {
+          "message": "nonempty",
+          "nested": {
+            "empty": "RESCUED",
+            "null_value": "RESCUED",
+            "zero": 0,
+            "flag": false,
+            "list": [],
+            "object": {},
+            "nested": {
+              "empty": "RESCUED",
+              "null_value": "RESCUED"
+            },
+            "null_after": null,
+            "empty_after": ""
+          }
+        }
+      ],
+      "snapshots": [],
+      "byteSizes": [
+        184,
+        205
+      ]
+    },
+    {
+      "name": "empty-persistent-custom-root",
+      "category": "empty",
+      "formatter": true,
+      "replacer": "root",
+      "persistent": {
+        "empty": "",
+        "null_value": null,
+        "zero": 0,
+        "flag": false,
+        "list": [],
+        "object": {},
+        "nested": {
+          "empty": "",
+          "null_value": null
+        },
+        "null_after": "value",
+        "empty_after": "value"
+      },
+      "steps": [
+        {
+          "op": "info",
+          "message": ""
+        },
+        {
+          "op": "info",
+          "message": "nonempty"
+        }
+      ],
+      "records": [
+        {
+          "nested": {
+            "empty": "",
+            "null_value": null,
+            "zero": 0,
+            "flag": false,
+            "list": [],
+            "object": {},
+            "nested": {
+              "empty": "",
+              "null_value": null
+            },
+            "null_after": "value",
+            "empty_after": "value"
+          },
+          "replaced_empty": "",
+          "replaced_null": null
+        },
+        {
+          "message": "nonempty",
+          "nested": {
+            "empty": "",
+            "null_value": null,
+            "zero": 0,
+            "flag": false,
+            "list": [],
+            "object": {},
+            "nested": {
+              "empty": "",
+              "null_value": null
+            },
+            "null_after": "value",
+            "empty_after": "value"
+          },
+          "replaced_empty": "",
+          "replaced_null": null
+        }
+      ],
+      "snapshots": [],
+      "byteSizes": [
+        209,
+        230
+      ]
+    },
+    {
+      "name": "empty-temporary-default-plain",
+      "category": "empty",
+      "formatter": false,
+      "replacer": "",
+      "steps": [
+        {
+          "op": "append",
+          "fields": {
+            "empty": "",
+            "null_value": null,
+            "zero": 0,
+            "flag": false,
+            "list": [],
+            "object": {},
+            "nested": {
+              "empty": "",
+              "null_value": null
+            },
+            "null_after": "value",
+            "empty_after": "value"
+          }
+        },
+        {
+          "op": "info",
+          "message": ""
+        },
+        {
+          "op": "info",
+          "message": "nonempty"
+        }
+      ],
+      "records": [
+        {
+          "level": "INFO",
+          "service": "orders",
+          "sampling_rate": 0,
+          "zero": 0,
+          "flag": false,
+          "list": [],
+          "object": {},
+          "nested": {
+            "empty": "",
+            "null_value": null
+          },
+          "null_after": "value",
+          "empty_after": "value"
+        },
+        {
+          "level": "INFO",
+          "message": "nonempty",
+          "service": "orders",
+          "sampling_rate": 0,
+          "zero": 0,
+          "flag": false,
+          "list": [],
+          "object": {},
+          "nested": {
+            "empty": "",
+            "null_value": null
+          },
+          "null_after": "value",
+          "empty_after": "value"
+        }
+      ],
+      "snapshots": [],
+      "byteSizes": [
+        219,
+        240
+      ]
+    },
+    {
+      "name": "empty-temporary-default-values",
+      "category": "empty",
+      "formatter": false,
+      "replacer": "values",
+      "steps": [
+        {
+          "op": "append",
+          "fields": {
+            "empty": "",
+            "null_value": null,
+            "zero": 0,
+            "flag": false,
+            "list": [],
+            "object": {},
+            "nested": {
+              "empty": "",
+              "null_value": null
+            },
+            "null_after": "value",
+            "empty_after": "value"
+          }
+        },
+        {
+          "op": "info",
+          "message": ""
+        },
+        {
+          "op": "info",
+          "message": "nonempty"
+        }
+      ],
+      "records": [
+        {
+          "level": "INFO",
+          "service": "orders",
+          "sampling_rate": 0,
+          "zero": 0,
+          "flag": false,
+          "list": [],
+          "object": {},
+          "nested": {
+            "empty": "RESCUED",
+            "null_value": "RESCUED"
+          },
+          "null_after": null,
+          "empty_after": ""
+        },
+        {
+          "level": "INFO",
+          "message": "nonempty",
+          "service": "orders",
+          "sampling_rate": 0,
+          "zero": 0,
+          "flag": false,
+          "list": [],
+          "object": {},
+          "nested": {
+            "empty": "RESCUED",
+            "null_value": "RESCUED"
+          },
+          "null_after": null,
+          "empty_after": ""
+        }
+      ],
+      "snapshots": [],
+      "byteSizes": [
+        223,
+        244
+      ]
+    },
+    {
+      "name": "empty-temporary-default-root",
+      "category": "empty",
+      "formatter": false,
+      "replacer": "root",
+      "steps": [
+        {
+          "op": "append",
+          "fields": {
+            "empty": "",
+            "null_value": null,
+            "zero": 0,
+            "flag": false,
+            "list": [],
+            "object": {},
+            "nested": {
+              "empty": "",
+              "null_value": null
+            },
+            "null_after": "value",
+            "empty_after": "value"
+          }
+        },
+        {
+          "op": "info",
+          "message": ""
+        },
+        {
+          "op": "info",
+          "message": "nonempty"
+        }
+      ],
+      "records": [
+        {
+          "level": "INFO",
+          "service": "orders",
+          "sampling_rate": 0,
+          "zero": 0,
+          "flag": false,
+          "list": [],
+          "object": {},
+          "nested": {
+            "empty": "",
+            "null_value": null
+          },
+          "null_after": "value",
+          "empty_after": "value",
+          "replaced_empty": "",
+          "replaced_null": null
+        },
+        {
+          "level": "INFO",
+          "message": "nonempty",
+          "service": "orders",
+          "sampling_rate": 0,
+          "zero": 0,
+          "flag": false,
+          "list": [],
+          "object": {},
+          "nested": {
+            "empty": "",
+            "null_value": null
+          },
+          "null_after": "value",
+          "empty_after": "value",
+          "replaced_empty": "",
+          "replaced_null": null
+        }
+      ],
+      "snapshots": [],
+      "byteSizes": [
+        260,
+        281
+      ]
+    },
+    {
+      "name": "empty-temporary-custom-plain",
+      "category": "empty",
+      "formatter": true,
+      "replacer": "",
+      "steps": [
+        {
+          "op": "append",
+          "fields": {
+            "empty": "",
+            "null_value": null,
+            "zero": 0,
+            "flag": false,
+            "list": [],
+            "object": {},
+            "nested": {
+              "empty": "",
+              "null_value": null
+            },
+            "null_after": "value",
+            "empty_after": "value"
+          }
+        },
+        {
+          "op": "info",
+          "message": ""
+        },
+        {
+          "op": "info",
+          "message": "nonempty"
+        }
+      ],
+      "records": [
+        {
+          "nested": {
+            "empty": "",
+            "null_value": null,
+            "zero": 0,
+            "flag": false,
+            "list": [],
+            "object": {},
+            "nested": {
+              "empty": "",
+              "null_value": null
+            },
+            "null_after": "value",
+            "empty_after": "value"
+          }
+        },
+        {
+          "message": "nonempty",
+          "nested": {
+            "empty": "",
+            "null_value": null,
+            "zero": 0,
+            "flag": false,
+            "list": [],
+            "object": {},
+            "nested": {
+              "empty": "",
+              "null_value": null
+            },
+            "null_after": "value",
+            "empty_after": "value"
+          }
+        }
+      ],
+      "snapshots": [],
+      "byteSizes": [
+        168,
+        189
+      ]
+    },
+    {
+      "name": "empty-temporary-custom-values",
+      "category": "empty",
+      "formatter": true,
+      "replacer": "values",
+      "steps": [
+        {
+          "op": "append",
+          "fields": {
+            "empty": "",
+            "null_value": null,
+            "zero": 0,
+            "flag": false,
+            "list": [],
+            "object": {},
+            "nested": {
+              "empty": "",
+              "null_value": null
+            },
+            "null_after": "value",
+            "empty_after": "value"
+          }
+        },
+        {
+          "op": "info",
+          "message": ""
+        },
+        {
+          "op": "info",
+          "message": "nonempty"
+        }
+      ],
+      "records": [
+        {
+          "nested": {
+            "empty": "RESCUED",
+            "null_value": "RESCUED",
+            "zero": 0,
+            "flag": false,
+            "list": [],
+            "object": {},
+            "nested": {
+              "empty": "RESCUED",
+              "null_value": "RESCUED"
+            },
+            "null_after": null,
+            "empty_after": ""
+          }
+        },
+        {
+          "message": "nonempty",
+          "nested": {
+            "empty": "RESCUED",
+            "null_value": "RESCUED",
+            "zero": 0,
+            "flag": false,
+            "list": [],
+            "object": {},
+            "nested": {
+              "empty": "RESCUED",
+              "null_value": "RESCUED"
+            },
+            "null_after": null,
+            "empty_after": ""
+          }
+        }
+      ],
+      "snapshots": [],
+      "byteSizes": [
+        184,
+        205
+      ]
+    },
+    {
+      "name": "empty-temporary-custom-root",
+      "category": "empty",
+      "formatter": true,
+      "replacer": "root",
+      "steps": [
+        {
+          "op": "append",
+          "fields": {
+            "empty": "",
+            "null_value": null,
+            "zero": 0,
+            "flag": false,
+            "list": [],
+            "object": {},
+            "nested": {
+              "empty": "",
+              "null_value": null
+            },
+            "null_after": "value",
+            "empty_after": "value"
+          }
+        },
+        {
+          "op": "info",
+          "message": ""
+        },
+        {
+          "op": "info",
+          "message": "nonempty"
+        }
+      ],
+      "records": [
+        {
+          "nested": {
+            "empty": "",
+            "null_value": null,
+            "zero": 0,
+            "flag": false,
+            "list": [],
+            "object": {},
+            "nested": {
+              "empty": "",
+              "null_value": null
+            },
+            "null_after": "value",
+            "empty_after": "value"
+          },
+          "replaced_empty": "",
+          "replaced_null": null
+        },
+        {
+          "message": "nonempty",
+          "nested": {
+            "empty": "",
+            "null_value": null,
+            "zero": 0,
+            "flag": false,
+            "list": [],
+            "object": {},
+            "nested": {
+              "empty": "",
+              "null_value": null
+            },
+            "null_after": "value",
+            "empty_after": "value"
+          },
+          "replaced_empty": "",
+          "replaced_null": null
+        }
+      ],
+      "snapshots": [],
+      "byteSizes": [
+        209,
+        230
+      ]
+    },
+    {
+      "name": "buffer-trace-change-flush",
+      "category": "buffer",
+      "buffer": true,
+      "steps": [
+        {
+          "op": "trace",
+          "value": "Root=1-12345678-123456789012345678901234;Parent=1234567890123456;Sampled=1"
+        },
+        {
+          "op": "debug",
+          "message": "old"
+        },
+        {
+          "op": "trace",
+          "value": "Root=1-87654321-123456789012345678901234;Parent=1234567890123456;Sampled=0"
+        },
+        {
+          "op": "flush"
+        },
+        {
+          "op": "debug",
+          "message": "new"
+        },
+        {
+          "op": "flush"
+        }
+      ],
+      "records": [
+        {
+          "level": "DEBUG",
+          "message": "new",
+          "service": "orders",
+          "sampling_rate": 0,
+          "xray_trace_id": "1-87654321-123456789012345678901234"
+        }
+      ],
+      "snapshots": [],
+      "byteSizes": [
+        163
+      ]
+    },
+    {
+      "name": "buffer-trace-change-clear",
+      "category": "buffer",
+      "buffer": true,
+      "steps": [
+        {
+          "op": "trace",
+          "value": "Root=1-12345678-123456789012345678901234;Parent=1234567890123456;Sampled=1"
+        },
+        {
+          "op": "debug",
+          "message": "retained"
+        },
+        {
+          "op": "trace",
+          "value": "Root=1-87654321-123456789012345678901234;Parent=1234567890123456;Sampled=0"
+        },
+        {
+          "op": "clear"
+        },
+        {
+          "op": "trace",
+          "value": "Root=1-12345678-123456789012345678901234;Parent=1234567890123456;Sampled=1"
+        },
+        {
+          "op": "flush"
+        }
+      ],
+      "records": [
+        {
+          "level": "DEBUG",
+          "message": "retained",
+          "service": "orders",
+          "sampling_rate": 0,
+          "xray_trace_id": "1-12345678-123456789012345678901234"
+        }
+      ],
+      "snapshots": [],
+      "byteSizes": [
+        168
+      ]
+    },
+    {
+      "name": "buffer-missing-trace",
+      "category": "buffer",
+      "buffer": true,
+      "steps": [
+        {
+          "op": "trace",
+          "value": "Root=1-12345678-123456789012345678901234;Parent=1234567890123456;Sampled=1"
+        },
+        {
+          "op": "debug",
+          "message": "retained"
+        },
+        {
+          "op": "trace",
+          "value": ""
+        },
+        {
+          "op": "clear"
+        },
+        {
+          "op": "flush"
+        },
+        {
+          "op": "trace",
+          "value": "Root=1-12345678-123456789012345678901234;Parent=1234567890123456;Sampled=1"
+        },
+        {
+          "op": "flush"
+        }
+      ],
+      "records": [
+        {
+          "level": "DEBUG",
+          "message": "retained",
+          "service": "orders",
+          "sampling_rate": 0,
+          "xray_trace_id": "1-12345678-123456789012345678901234"
+        }
+      ],
+      "snapshots": [],
+      "byteSizes": [
+        168
+      ]
+    },
+    {
+      "name": "buffer-missing-trace-filtering",
+      "category": "buffer",
+      "buffer": true,
+      "steps": [
+        {
+          "op": "trace",
+          "value": ""
+        },
+        {
+          "op": "debug",
+          "message": "hidden"
+        },
+        {
+          "op": "info",
+          "message": "visible"
+        },
+        {
+          "op": "flush"
+        }
+      ],
+      "records": [
+        {
+          "level": "INFO",
+          "message": "visible",
+          "service": "orders",
+          "sampling_rate": 0
+        }
+      ],
+      "snapshots": [],
+      "byteSizes": [
+        112
+      ]
+    },
+    {
+      "name": "buffer-error-flush",
+      "category": "buffer",
+      "buffer": true,
+      "steps": [
+        {
+          "op": "trace",
+          "value": "Root=1-12345678-123456789012345678901234;Parent=1234567890123456;Sampled=1"
+        },
+        {
+          "op": "debug",
+          "message": "detail"
+        },
+        {
+          "op": "error",
+          "message": "failure"
+        },
+        {
+          "op": "flush"
+        }
+      ],
+      "records": [
+        {
+          "level": "DEBUG",
+          "message": "detail",
+          "service": "orders",
+          "sampling_rate": 0,
+          "xray_trace_id": "1-12345678-123456789012345678901234"
+        },
+        {
+          "level": "ERROR",
+          "message": "failure",
+          "service": "orders",
+          "sampling_rate": 0,
+          "xray_trace_id": "1-12345678-123456789012345678901234"
+        }
+      ],
+      "snapshots": [],
+      "byteSizes": [
+        166,
+        167
+      ]
+    },
+    {
+      "name": "buffer-critical-flush",
+      "category": "buffer",
+      "buffer": true,
+      "steps": [
+        {
+          "op": "trace",
+          "value": "Root=1-12345678-123456789012345678901234;Parent=1234567890123456;Sampled=1"
+        },
+        {
+          "op": "debug",
+          "message": "detail"
+        },
+        {
+          "op": "critical",
+          "message": "failure"
+        },
+        {
+          "op": "flush"
+        }
+      ],
+      "records": [
+        {
+          "level": "DEBUG",
+          "message": "detail",
+          "service": "orders",
+          "sampling_rate": 0,
+          "xray_trace_id": "1-12345678-123456789012345678901234"
+        },
+        {
+          "level": "CRITICAL",
+          "message": "failure",
+          "service": "orders",
+          "sampling_rate": 0,
+          "xray_trace_id": "1-12345678-123456789012345678901234"
+        }
+      ],
+      "snapshots": [],
+      "byteSizes": [
+        166,
+        170
+      ]
+    },
+    {
+      "name": "buffer-wrong-trace-error",
+      "category": "buffer",
+      "buffer": true,
+      "steps": [
+        {
+          "op": "trace",
+          "value": "Root=1-12345678-123456789012345678901234;Parent=1234567890123456;Sampled=1"
+        },
+        {
+          "op": "debug",
+          "message": "old"
+        },
+        {
+          "op": "trace",
+          "value": "Root=1-87654321-123456789012345678901234;Parent=1234567890123456;Sampled=0"
+        },
+        {
+          "op": "error",
+          "message": "new failure"
+        },
+        {
+          "op": "trace",
+          "value": "Root=1-12345678-123456789012345678901234;Parent=1234567890123456;Sampled=1"
+        },
+        {
+          "op": "flush"
+        }
+      ],
+      "records": [
+        {
+          "level": "ERROR",
+          "message": "new failure",
+          "service": "orders",
+          "sampling_rate": 0,
+          "xray_trace_id": "1-87654321-123456789012345678901234"
+        },
+        {
+          "level": "DEBUG",
+          "message": "old",
+          "service": "orders",
+          "sampling_rate": 0,
+          "xray_trace_id": "1-12345678-123456789012345678901234"
+        }
+      ],
+      "snapshots": [],
+      "byteSizes": [
+        171,
+        163
+      ]
+    },
+    {
+      "name": "buffer-clear-eviction",
+      "category": "buffer",
+      "buffer": true,
+      "maxBytes": 300,
+      "steps": [
+        {
+          "op": "trace",
+          "value": "Root=1-12345678-123456789012345678901234;Parent=1234567890123456;Sampled=1"
+        },
+        {
+          "op": "debug",
+          "message": "first"
+        },
+        {
+          "op": "debug",
+          "message": "second"
+        },
+        {
+          "op": "clear"
+        },
+        {
+          "op": "debug",
+          "message": "fresh"
+        },
+        {
+          "op": "flush"
+        }
+      ],
+      "records": [
+        {
+          "level": "DEBUG",
+          "message": "fresh",
+          "service": "orders",
+          "sampling_rate": 0,
+          "xray_trace_id": "1-12345678-123456789012345678901234"
+        }
+      ],
+      "snapshots": [],
+      "byteSizes": [
+        165
+      ]
+    },
+    {
+      "name": "buffer-eviction",
+      "category": "buffer",
+      "buffer": true,
+      "maxBytes": 300,
+      "steps": [
+        {
+          "op": "trace",
+          "value": "Root=1-12345678-123456789012345678901234;Parent=1234567890123456;Sampled=1"
+        },
+        {
+          "op": "debug",
+          "message": "first"
+        },
+        {
+          "op": "debug",
+          "message": "second"
+        },
+        {
+          "op": "debug",
+          "message": "third"
+        },
+        {
+          "op": "flush"
+        },
+        {
+          "op": "flush"
+        }
+      ],
+      "records": [
+        {
+          "level": "DEBUG",
+          "message": "third",
+          "service": "orders",
+          "sampling_rate": 0,
+          "xray_trace_id": "1-12345678-123456789012345678901234"
+        },
+        {
+          "level": "WARN",
+          "message": "Some logs are not displayed because they were evicted from the buffer. Increase buffer size to store more logs in the buffer",
+          "service": "orders",
+          "sampling_rate": 0,
+          "xray_trace_id": "1-12345678-123456789012345678901234"
+        }
+      ],
+      "snapshots": [],
+      "byteSizes": [
+        165,
+        283
+      ]
+    },
+    {
+      "name": "buffer-oversize",
+      "category": "buffer",
+      "buffer": true,
+      "maxBytes": 10,
+      "steps": [
+        {
+          "op": "trace",
+          "value": "Root=1-12345678-123456789012345678901234;Parent=1234567890123456;Sampled=1"
+        },
+        {
+          "op": "debug",
+          "message": "oversize"
+        },
+        {
+          "op": "flush"
+        }
+      ],
+      "records": [
+        {
+          "level": "WARN",
+          "message": "Unable to buffer log: Item too big",
+          "service": "orders",
+          "sampling_rate": 0,
+          "xray_trace_id": "1-12345678-123456789012345678901234",
+          "error": {
+            "message": "Item too big"
+          }
+        },
+        {
+          "level": "DEBUG",
+          "message": "oversize",
+          "service": "orders",
+          "sampling_rate": 0,
+          "xray_trace_id": "1-12345678-123456789012345678901234"
+        }
+      ],
+      "snapshots": [],
+      "byteSizes": [
+        1802,
+        168
+      ]
+    },
+    {
+      "name": "buffer-child-independent",
+      "category": "buffer",
+      "buffer": true,
+      "steps": [
+        {
+          "op": "trace",
+          "value": "Root=1-12345678-123456789012345678901234;Parent=1234567890123456;Sampled=1"
+        },
+        {
+          "op": "debug",
+          "message": "parent"
+        },
+        {
+          "op": "child",
+          "name": "child"
+        },
+        {
+          "op": "debug",
+          "target": "child",
+          "message": "child"
+        },
+        {
+          "op": "flush",
+          "target": "child"
+        },
+        {
+          "op": "flush"
+        }
+      ],
+      "records": [
+        {
+          "level": "DEBUG",
+          "message": "child",
+          "service": "orders",
+          "sampling_rate": 0,
+          "xray_trace_id": "1-12345678-123456789012345678901234"
+        },
+        {
+          "level": "DEBUG",
+          "message": "parent",
+          "service": "orders",
+          "sampling_rate": 0,
+          "xray_trace_id": "1-12345678-123456789012345678901234"
+        }
+      ],
+      "snapshots": [],
+      "byteSizes": [
+        165,
+        166
+      ]
+    },
+    {
+      "name": "buffer-disabled-error-flush",
+      "category": "buffer",
+      "buffer": true,
+      "disableFlush": true,
+      "steps": [
+        {
+          "op": "trace",
+          "value": "Root=1-12345678-123456789012345678901234;Parent=1234567890123456;Sampled=1"
+        },
+        {
+          "op": "debug",
+          "message": "detail"
+        },
+        {
+          "op": "error",
+          "message": "failure"
+        },
+        {
+          "op": "flush"
+        }
+      ],
+      "records": [
+        {
+          "level": "ERROR",
+          "message": "failure",
+          "service": "orders",
+          "sampling_rate": 0,
+          "xray_trace_id": "1-12345678-123456789012345678901234"
+        },
+        {
+          "level": "DEBUG",
+          "message": "detail",
+          "service": "orders",
+          "sampling_rate": 0,
+          "xray_trace_id": "1-12345678-123456789012345678901234"
+        }
+      ],
+      "snapshots": [],
+      "byteSizes": [
+        167,
+        166
+      ]
+    },
+    {
+      "name": "buffer-empty-buffered",
+      "category": "buffer",
+      "buffer": true,
+      "steps": [
+        {
+          "op": "trace",
+          "value": "Root=1-12345678-123456789012345678901234;Parent=1234567890123456;Sampled=1"
+        },
+        {
+          "op": "debug",
+          "message": "",
+          "fields": {
+            "empty": "",
+            "null_value": null,
+            "zero": 0,
+            "flag": false,
+            "list": [],
+            "object": {},
+            "nested": {
+              "empty": "",
+              "null_value": null
+            },
+            "null_after": "value",
+            "empty_after": "value"
+          }
+        },
+        {
+          "op": "flush"
+        }
+      ],
+      "records": [
+        {
+          "level": "DEBUG",
+          "service": "orders",
+          "sampling_rate": 0,
+          "xray_trace_id": "1-12345678-123456789012345678901234",
+          "zero": 0,
+          "flag": false,
+          "list": [],
+          "object": {},
+          "nested": {
+            "empty": "",
+            "null_value": null
+          },
+          "null_after": "value",
+          "empty_after": "value"
+        }
+      ],
+      "snapshots": [],
+      "byteSizes": [
+        274
+      ]
+    },
+    {
+      "name": "buffer-info-buffer",
+      "category": "buffer",
+      "buffer": true,
+      "bufferAt": "INFO",
+      "steps": [
+        {
+          "op": "trace",
+          "value": "Root=1-12345678-123456789012345678901234;Parent=1234567890123456;Sampled=1"
+        },
+        {
+          "op": "info",
+          "message": "deferred"
+        },
+        {
+          "op": "flush"
+        }
+      ],
+      "records": [
+        {
+          "level": "INFO",
+          "message": "deferred",
+          "service": "orders",
+          "sampling_rate": 0,
+          "xray_trace_id": "1-12345678-123456789012345678901234"
+        }
+      ],
+      "snapshots": [],
+      "byteSizes": [
+        167
+      ]
+    },
+    {
+      "name": "buffer-utf8-exact",
+      "category": "buffer",
+      "buffer": true,
+      "bufferAt": "INFO",
+      "maxBytes": 164,
+      "steps": [
+        {
+          "op": "trace",
+          "value": "Root=1-12345678-123456789012345678901234;Parent=1234567890123456;Sampled=1"
+        },
+        {
+          "op": "info",
+          "message": "界α"
+        },
+        {
+          "op": "flush"
+        }
+      ],
+      "records": [
+        {
+          "level": "INFO",
+          "message": "界α",
+          "service": "orders",
+          "sampling_rate": 0,
+          "xray_trace_id": "1-12345678-123456789012345678901234"
+        }
+      ],
+      "snapshots": [],
+      "byteSizes": [
+        164
+      ]
+    },
+    {
+      "name": "buffer-utf8-one-byte-small",
+      "category": "buffer",
+      "buffer": true,
+      "bufferAt": "INFO",
+      "maxBytes": 163,
+      "steps": [
+        {
+          "op": "trace",
+          "value": "Root=1-12345678-123456789012345678901234;Parent=1234567890123456;Sampled=1"
+        },
+        {
+          "op": "info",
+          "message": "界α"
+        },
+        {
+          "op": "flush"
+        }
+      ],
+      "records": [
+        {
+          "level": "WARN",
+          "message": "Unable to buffer log: Item too big",
+          "service": "orders",
+          "sampling_rate": 0,
+          "xray_trace_id": "1-12345678-123456789012345678901234",
+          "error": {
+            "message": "Item too big"
+          }
+        },
+        {
+          "level": "INFO",
+          "message": "界α",
+          "service": "orders",
+          "sampling_rate": 0,
+          "xray_trace_id": "1-12345678-123456789012345678901234"
+        }
+      ],
+      "snapshots": [],
+      "byteSizes": [
+        1801,
+        164
+      ]
+    },
+    {
+      "name": "buffer-utf8-two-exact",
+      "category": "buffer",
+      "buffer": true,
+      "bufferAt": "INFO",
+      "maxBytes": 328,
+      "steps": [
+        {
+          "op": "trace",
+          "value": "Root=1-12345678-123456789012345678901234;Parent=1234567890123456;Sampled=1"
+        },
+        {
+          "op": "info",
+          "message": "界α"
+        },
+        {
+          "op": "info",
+          "message": "界α"
+        },
+        {
+          "op": "flush"
+        }
+      ],
+      "records": [
+        {
+          "level": "INFO",
+          "message": "界α",
+          "service": "orders",
+          "sampling_rate": 0,
+          "xray_trace_id": "1-12345678-123456789012345678901234"
+        },
+        {
+          "level": "WARN",
+          "message": "Some logs are not displayed because they were evicted from the buffer. Increase buffer size to store more logs in the buffer",
+          "service": "orders",
+          "sampling_rate": 0,
+          "xray_trace_id": "1-12345678-123456789012345678901234"
+        }
+      ],
+      "snapshots": [],
+      "byteSizes": [
+        164,
+        283
+      ]
+    },
+    {
+      "name": "buffer-oversize-new-trace",
+      "category": "buffer",
+      "buffer": true,
+      "maxBytes": 300,
+      "steps": [
+        {
+          "op": "trace",
+          "value": "Root=1-12345678-123456789012345678901234;Parent=1234567890123456;Sampled=1"
+        },
+        {
+          "op": "debug",
+          "message": "old"
+        },
+        {
+          "op": "trace",
+          "value": "Root=1-87654321-123456789012345678901234;Parent=1234567890123456;Sampled=0"
+        },
+        {
+          "op": "debug",
+          "message": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+        },
+        {
+          "op": "trace",
+          "value": "Root=1-12345678-123456789012345678901234;Parent=1234567890123456;Sampled=1"
+        },
+        {
+          "op": "flush"
+        },
+        {
+          "op": "trace",
+          "value": "Root=1-87654321-123456789012345678901234;Parent=1234567890123456;Sampled=0"
+        },
+        {
+          "op": "flush"
+        }
+      ],
+      "records": [
+        {
+          "level": "WARN",
+          "message": "Unable to buffer log: Item too big",
+          "service": "orders",
+          "sampling_rate": 0,
+          "xray_trace_id": "1-87654321-123456789012345678901234",
+          "error": {
+            "message": "Item too big"
+          }
+        },
+        {
+          "level": "DEBUG",
+          "message": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+          "service": "orders",
+          "sampling_rate": 0,
+          "xray_trace_id": "1-87654321-123456789012345678901234"
+        }
+      ],
+      "snapshots": [],
+      "byteSizes": [
+        1802,
+        560
+      ]
+    }
+  ]
+}

@@ -2,6 +2,7 @@ package logger
 
 import (
 	"bytes"
+	"encoding"
 	"encoding/json"
 	"fmt"
 	"github.com/rambow-cloud/powertools-lambda-go/commons"
@@ -171,6 +172,46 @@ func marshal(value any) ([]byte, error) {
 	return bytes.TrimSuffix(out.Bytes(), []byte{'\n'}), nil
 }
 
+// prepareForPrint makes a shallow copy of a map-shaped document, omitting empty
+// strings and JSON null values before replacer traversal. Nested values and
+// nonnil empty collections remain intact; the formatter's document is not mutated.
+func prepareForPrint(value any) any {
+	if _, ok := value.(json.Marshaler); ok {
+		return value
+	}
+	v := reflect.ValueOf(value)
+	if !v.IsValid() || v.Kind() != reflect.Map || v.Type().Key().Kind() != reflect.String {
+		return value
+	}
+	result := reflect.MakeMapWithSize(v.Type(), v.Len())
+	iter := v.MapRange()
+	for iter.Next() {
+		item := iter.Value().Interface()
+		if item == nil {
+			continue
+		}
+		// A custom marshaler's JSON value or error cannot be inferred from its
+		// underlying Go value. Preserve it for the normal encoding traversal.
+		_, jsonCustom := item.(json.Marshaler)
+		_, textCustom := item.(encoding.TextMarshaler)
+		if !jsonCustom && !textCustom {
+			field := reflect.ValueOf(item)
+			switch field.Kind() {
+			case reflect.String:
+				if field.Len() == 0 {
+					continue
+				}
+			case reflect.Pointer, reflect.Map, reflect.Slice, reflect.Interface:
+				if field.IsNil() {
+					continue
+				}
+			}
+		}
+		result.SetMapIndex(iter.Key(), iter.Value())
+	}
+	return result.Interface()
+}
+
 func encode(fields Fields, c config) ([]byte, error) {
 	var value any = fields
 	var err error
@@ -180,7 +221,7 @@ func encode(fields Fields, c config) ([]byte, error) {
 			return nil, err
 		}
 	}
-	value = normalize("", value, c.replacer, map[visit]bool{}, 0)
+	value = normalize("", prepareForPrint(value), c.replacer, map[visit]bool{}, 0)
 	var data []byte
 	if object, ok := asFields(value); ok {
 		order := append(append([]string(nil), c.order...), standardOrder...)

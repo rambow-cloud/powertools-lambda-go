@@ -60,6 +60,7 @@ type Result struct {
 	Bedrock              map[string]any            `json:"bedrock,omitempty"`
 	Kafka                map[string]any            `json:"kafka,omitempty"`
 	DataMasking          map[string]any            `json:"datamasking,omitempty"`
+	LoggerParity         map[string]any            `json:"logger_parity,omitempty"`
 }
 
 func main() {
@@ -137,6 +138,13 @@ func main() {
 		lc, _ := lambdacontext.FromContext(ctx)
 		nativeHeader, _ := ctx.Value(runtimeHeaderKey{}).(bool)
 		result := Result{ID: event.ID, Instance: instance, Invocation: current, RequestID: lc.AwsRequestID, TraceID: tr.TraceID(ctx), Sampled: tr.IsTraceSampled(ctx), RuntimeHeaderPresent: nativeHeader}
+		if os.Getenv("LOCAL_TEST") == "true" {
+			var probeErr error
+			result.LoggerParity, probeErr = loggerParityProbe(ctx)
+			if probeErr != nil {
+				return result, probeErr
+			}
+		}
 		if event.QueryBody != "" {
 			var queryErr error
 			result.Query, queryErr = query.Search(event)
