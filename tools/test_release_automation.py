@@ -111,7 +111,10 @@ def fixture():
         shutil.copyfile(ROOT / "tools/modules.py", root / "tools/modules.py")
         (root / "go.work").write_text("go 1.26\n\nuse (\n" + "\n".join("\t" + ("." if module["directory"] == "." else "./" + module["directory"]) for module in modules) + "\n)\n", encoding="utf-8")
         (root / ".gitignore").write_text("dist/\n__pycache__/\n", encoding="utf-8")
-        for args in (("init",), ("config", "user.name", "Fixture"), ("config", "user.email", "fixture@example.com"), ("add", "."), ("commit", "-m", "Import modules")):
+        # Detached Git maintenance must not outlive a disposable fixture.
+        for args in (("init",), ("config", "maintenance.auto", "false"), ("config", "gc.auto", "0"),
+                     ("config", "user.name", "Fixture"), ("config", "user.email", "fixture@example.com"),
+                     ("add", "."), ("commit", "-m", "Import modules")):
             command(root, "git", *args)
         source = command(root, "git", "rev-parse", "HEAD")
         command(root, "git", "update-ref", "refs/remotes/origin/main", source)
