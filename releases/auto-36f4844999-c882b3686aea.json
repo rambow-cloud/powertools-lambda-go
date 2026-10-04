@@ -1,0 +1,3232 @@
+{
+  "schema_version": 1,
+  "issue": 15,
+  "source_sha": "c882b3686aeaf2ababa524a4b2fd3d439b99fa5e",
+  "auto_publish": true,
+  "requested_modules": [
+    ".",
+    "commons/awssdk",
+    "commons/dynamodb",
+    "commons/metadata",
+    "commons/regex",
+    "logger",
+    "metrics",
+    "parameters",
+    "signer",
+    "jmespath",
+    "datamasking/kms",
+    "datamasking",
+    "kafka/protobuf",
+    "kafka/avro",
+    "kafka",
+    "batch",
+    "idempotency",
+    "idempotency/cache",
+    "parser",
+    "validation",
+    "eventhandler/http",
+    "eventhandler/appsyncevents",
+    "eventhandler/appsyncgraphql",
+    "eventhandler/bedrock",
+    "eventhandler/http/metrics",
+    "eventhandler/http/tracer",
+    "tracer"
+  ],
+  "included_dependencies": [],
+  "bump": "auto",
+  "modules": [
+    {
+      "directory": ".",
+      "version": "v0.1.0",
+      "previous_tag": null,
+      "initial_summary": "Initial public source release of the Commons module. Review supported behavior and compatibility limits in the module documentation; full cross-language parity is not implied.",
+      "entries": [],
+      "reviewed_prs": [
+        2,
+        6,
+        9,
+        14
+      ],
+      "excluded_prs": [
+        2,
+        6,
+        9,
+        14
+      ],
+      "untracked_commits": {
+        "269415e88b2d19b6f72e7c18d32f0a8157be42e5": {
+          "modules": [
+            ".",
+            "batch",
+            "commons/awssdk",
+            "commons/dynamodb",
+            "commons/metadata",
+            "commons/regex",
+            "datamasking",
+            "datamasking/kms",
+            "eventhandler/appsyncevents",
+            "eventhandler/appsyncgraphql",
+            "eventhandler/bedrock",
+            "eventhandler/http",
+            "eventhandler/http/metrics",
+            "eventhandler/http/tracer",
+            "examples",
+            "idempotency",
+            "idempotency/cache",
+            "integration",
+            "jmespath",
+            "kafka",
+            "kafka/avro",
+            "kafka/protobuf",
+            "logger",
+            "metrics",
+            "parameters",
+            "parser",
+            "repository",
+            "signer",
+            "tools",
+            "tracer",
+            "tracer/xray",
+            "validation"
+          ],
+          "description": "Initial implementation of Powertools for AWS Lambda in Go"
+        },
+        "0c95b2e9ee13963adbc48c791ab9d9143a9811d1": {
+          "modules": [
+            "integration",
+            "repository"
+          ],
+          "description": "docs: migrate site to Zensical modern theme"
+        },
+        "adc8f284b2587738e7ef38db6a7c3da62cbb46f7": {
+          "modules": [
+            "examples",
+            "repository"
+          ],
+          "description": "docs: audit utility guides against TypeScript baseline"
+        },
+        "5dac031c600c19ebb6939b3a117fe34c85ad5cab": {
+          "modules": [
+            "repository"
+          ],
+          "description": "docs: configure Cloudflare Pages publishing"
+        },
+        "d6b6e97438767aa1d70b78749b2dc90e6723d572": {
+          "modules": [
+            "repository"
+          ],
+          "description": "docs: record Cloudflare publication acceptance"
+        },
+        "a39d92fac53cd13b66f6efd6abc864e48a9e9813": {
+          "modules": [
+            "repository"
+          ],
+          "description": "docs: document automatic Pages publication acceptance"
+        },
+        "703aa7c0a349f1142b3eb36b127c12e4c349fd11": {
+          "modules": [
+            "repository"
+          ],
+          "description": "docs: record verified automatic Cloudflare publication"
+        }
+      },
+      "generated_history": [
+        {
+          "pr": 2,
+          "source": "PR title and changed module paths",
+          "modules": [
+            "repository",
+            "tools"
+          ]
+        },
+        {
+          "pr": 6,
+          "source": "PR title and changed module paths",
+          "modules": [
+            "integration",
+            "logger",
+            "repository",
+            "tools"
+          ]
+        }
+      ],
+      "dependency_updates": [],
+      "notes": "# v0.1.0\n\n## Initial release\n\nInitial public source release of the Commons module. Review supported behavior and compatibility limits in the module documentation; full cross-language parity is not implied.\n\n## Changes without a pull request\n\n- Initial implementation of Powertools for AWS Lambda in Go ([269415e](https://github.com/rambow-cloud/powertools-lambda-go/commit/269415e88b2d19b6f72e7c18d32f0a8157be42e5))\n\n**Source:** https://github.com/rambow-cloud/powertools-lambda-go/tree/v0.1.0\n\n## Installation\n\n```sh\ngo get github.com/rambow-cloud/powertools-lambda-go@v0.1.0\n```\n"
+    },
+    {
+      "directory": "commons/awssdk",
+      "version": "v0.1.0",
+      "previous_tag": null,
+      "initial_summary": "Initial public source release of the commons/awssdk module. Review supported behavior and compatibility limits in the module documentation; full cross-language parity is not implied.",
+      "entries": [],
+      "reviewed_prs": [
+        2,
+        6,
+        9,
+        14
+      ],
+      "excluded_prs": [
+        2,
+        6,
+        9,
+        14
+      ],
+      "untracked_commits": {
+        "269415e88b2d19b6f72e7c18d32f0a8157be42e5": {
+          "modules": [
+            ".",
+            "batch",
+            "commons/awssdk",
+            "commons/dynamodb",
+            "commons/metadata",
+            "commons/regex",
+            "datamasking",
+            "datamasking/kms",
+            "eventhandler/appsyncevents",
+            "eventhandler/appsyncgraphql",
+            "eventhandler/bedrock",
+            "eventhandler/http",
+            "eventhandler/http/metrics",
+            "eventhandler/http/tracer",
+            "examples",
+            "idempotency",
+            "idempotency/cache",
+            "integration",
+            "jmespath",
+            "kafka",
+            "kafka/avro",
+            "kafka/protobuf",
+            "logger",
+            "metrics",
+            "parameters",
+            "parser",
+            "repository",
+            "signer",
+            "tools",
+            "tracer",
+            "tracer/xray",
+            "validation"
+          ],
+          "description": "Initial implementation of Powertools for AWS Lambda in Go"
+        },
+        "0c95b2e9ee13963adbc48c791ab9d9143a9811d1": {
+          "modules": [
+            "integration",
+            "repository"
+          ],
+          "description": "docs: migrate site to Zensical modern theme"
+        },
+        "adc8f284b2587738e7ef38db6a7c3da62cbb46f7": {
+          "modules": [
+            "examples",
+            "repository"
+          ],
+          "description": "docs: audit utility guides against TypeScript baseline"
+        },
+        "5dac031c600c19ebb6939b3a117fe34c85ad5cab": {
+          "modules": [
+            "repository"
+          ],
+          "description": "docs: configure Cloudflare Pages publishing"
+        },
+        "d6b6e97438767aa1d70b78749b2dc90e6723d572": {
+          "modules": [
+            "repository"
+          ],
+          "description": "docs: record Cloudflare publication acceptance"
+        },
+        "a39d92fac53cd13b66f6efd6abc864e48a9e9813": {
+          "modules": [
+            "repository"
+          ],
+          "description": "docs: document automatic Pages publication acceptance"
+        },
+        "703aa7c0a349f1142b3eb36b127c12e4c349fd11": {
+          "modules": [
+            "repository"
+          ],
+          "description": "docs: record verified automatic Cloudflare publication"
+        }
+      },
+      "generated_history": [
+        {
+          "pr": 2,
+          "source": "PR title and changed module paths",
+          "modules": [
+            "repository",
+            "tools"
+          ]
+        },
+        {
+          "pr": 6,
+          "source": "PR title and changed module paths",
+          "modules": [
+            "integration",
+            "logger",
+            "repository",
+            "tools"
+          ]
+        }
+      ],
+      "dependency_updates": [],
+      "notes": "# commons/awssdk/v0.1.0\n\n## Initial release\n\nInitial public source release of the commons/awssdk module. Review supported behavior and compatibility limits in the module documentation; full cross-language parity is not implied.\n\n## Changes without a pull request\n\n- Initial implementation of Powertools for AWS Lambda in Go ([269415e](https://github.com/rambow-cloud/powertools-lambda-go/commit/269415e88b2d19b6f72e7c18d32f0a8157be42e5))\n\n**Source:** https://github.com/rambow-cloud/powertools-lambda-go/tree/commons/awssdk/v0.1.0\n\n## Installation\n\n```sh\ngo get github.com/rambow-cloud/powertools-lambda-go/commons/awssdk@v0.1.0\n```\n"
+    },
+    {
+      "directory": "commons/dynamodb",
+      "version": "v0.1.0",
+      "previous_tag": null,
+      "initial_summary": "Initial public source release of the commons/dynamodb module. Review supported behavior and compatibility limits in the module documentation; full cross-language parity is not implied.",
+      "entries": [],
+      "reviewed_prs": [
+        2,
+        6,
+        9,
+        14
+      ],
+      "excluded_prs": [
+        2,
+        6,
+        9,
+        14
+      ],
+      "untracked_commits": {
+        "269415e88b2d19b6f72e7c18d32f0a8157be42e5": {
+          "modules": [
+            ".",
+            "batch",
+            "commons/awssdk",
+            "commons/dynamodb",
+            "commons/metadata",
+            "commons/regex",
+            "datamasking",
+            "datamasking/kms",
+            "eventhandler/appsyncevents",
+            "eventhandler/appsyncgraphql",
+            "eventhandler/bedrock",
+            "eventhandler/http",
+            "eventhandler/http/metrics",
+            "eventhandler/http/tracer",
+            "examples",
+            "idempotency",
+            "idempotency/cache",
+            "integration",
+            "jmespath",
+            "kafka",
+            "kafka/avro",
+            "kafka/protobuf",
+            "logger",
+            "metrics",
+            "parameters",
+            "parser",
+            "repository",
+            "signer",
+            "tools",
+            "tracer",
+            "tracer/xray",
+            "validation"
+          ],
+          "description": "Initial implementation of Powertools for AWS Lambda in Go"
+        },
+        "0c95b2e9ee13963adbc48c791ab9d9143a9811d1": {
+          "modules": [
+            "integration",
+            "repository"
+          ],
+          "description": "docs: migrate site to Zensical modern theme"
+        },
+        "adc8f284b2587738e7ef38db6a7c3da62cbb46f7": {
+          "modules": [
+            "examples",
+            "repository"
+          ],
+          "description": "docs: audit utility guides against TypeScript baseline"
+        },
+        "5dac031c600c19ebb6939b3a117fe34c85ad5cab": {
+          "modules": [
+            "repository"
+          ],
+          "description": "docs: configure Cloudflare Pages publishing"
+        },
+        "d6b6e97438767aa1d70b78749b2dc90e6723d572": {
+          "modules": [
+            "repository"
+          ],
+          "description": "docs: record Cloudflare publication acceptance"
+        },
+        "a39d92fac53cd13b66f6efd6abc864e48a9e9813": {
+          "modules": [
+            "repository"
+          ],
+          "description": "docs: document automatic Pages publication acceptance"
+        },
+        "703aa7c0a349f1142b3eb36b127c12e4c349fd11": {
+          "modules": [
+            "repository"
+          ],
+          "description": "docs: record verified automatic Cloudflare publication"
+        }
+      },
+      "generated_history": [
+        {
+          "pr": 2,
+          "source": "PR title and changed module paths",
+          "modules": [
+            "repository",
+            "tools"
+          ]
+        },
+        {
+          "pr": 6,
+          "source": "PR title and changed module paths",
+          "modules": [
+            "integration",
+            "logger",
+            "repository",
+            "tools"
+          ]
+        }
+      ],
+      "dependency_updates": [],
+      "notes": "# commons/dynamodb/v0.1.0\n\n## Initial release\n\nInitial public source release of the commons/dynamodb module. Review supported behavior and compatibility limits in the module documentation; full cross-language parity is not implied.\n\n## Changes without a pull request\n\n- Initial implementation of Powertools for AWS Lambda in Go ([269415e](https://github.com/rambow-cloud/powertools-lambda-go/commit/269415e88b2d19b6f72e7c18d32f0a8157be42e5))\n\n**Source:** https://github.com/rambow-cloud/powertools-lambda-go/tree/commons/dynamodb/v0.1.0\n\n## Installation\n\n```sh\ngo get github.com/rambow-cloud/powertools-lambda-go/commons/dynamodb@v0.1.0\n```\n"
+    },
+    {
+      "directory": "commons/metadata",
+      "version": "v0.1.0",
+      "previous_tag": null,
+      "initial_summary": "Initial public source release of the commons/metadata module. Review supported behavior and compatibility limits in the module documentation; full cross-language parity is not implied.",
+      "entries": [],
+      "reviewed_prs": [
+        2,
+        6,
+        9,
+        14
+      ],
+      "excluded_prs": [
+        2,
+        6,
+        9,
+        14
+      ],
+      "untracked_commits": {
+        "269415e88b2d19b6f72e7c18d32f0a8157be42e5": {
+          "modules": [
+            ".",
+            "batch",
+            "commons/awssdk",
+            "commons/dynamodb",
+            "commons/metadata",
+            "commons/regex",
+            "datamasking",
+            "datamasking/kms",
+            "eventhandler/appsyncevents",
+            "eventhandler/appsyncgraphql",
+            "eventhandler/bedrock",
+            "eventhandler/http",
+            "eventhandler/http/metrics",
+            "eventhandler/http/tracer",
+            "examples",
+            "idempotency",
+            "idempotency/cache",
+            "integration",
+            "jmespath",
+            "kafka",
+            "kafka/avro",
+            "kafka/protobuf",
+            "logger",
+            "metrics",
+            "parameters",
+            "parser",
+            "repository",
+            "signer",
+            "tools",
+            "tracer",
+            "tracer/xray",
+            "validation"
+          ],
+          "description": "Initial implementation of Powertools for AWS Lambda in Go"
+        },
+        "0c95b2e9ee13963adbc48c791ab9d9143a9811d1": {
+          "modules": [
+            "integration",
+            "repository"
+          ],
+          "description": "docs: migrate site to Zensical modern theme"
+        },
+        "adc8f284b2587738e7ef38db6a7c3da62cbb46f7": {
+          "modules": [
+            "examples",
+            "repository"
+          ],
+          "description": "docs: audit utility guides against TypeScript baseline"
+        },
+        "5dac031c600c19ebb6939b3a117fe34c85ad5cab": {
+          "modules": [
+            "repository"
+          ],
+          "description": "docs: configure Cloudflare Pages publishing"
+        },
+        "d6b6e97438767aa1d70b78749b2dc90e6723d572": {
+          "modules": [
+            "repository"
+          ],
+          "description": "docs: record Cloudflare publication acceptance"
+        },
+        "a39d92fac53cd13b66f6efd6abc864e48a9e9813": {
+          "modules": [
+            "repository"
+          ],
+          "description": "docs: document automatic Pages publication acceptance"
+        },
+        "703aa7c0a349f1142b3eb36b127c12e4c349fd11": {
+          "modules": [
+            "repository"
+          ],
+          "description": "docs: record verified automatic Cloudflare publication"
+        }
+      },
+      "generated_history": [
+        {
+          "pr": 2,
+          "source": "PR title and changed module paths",
+          "modules": [
+            "repository",
+            "tools"
+          ]
+        },
+        {
+          "pr": 6,
+          "source": "PR title and changed module paths",
+          "modules": [
+            "integration",
+            "logger",
+            "repository",
+            "tools"
+          ]
+        }
+      ],
+      "dependency_updates": [],
+      "notes": "# commons/metadata/v0.1.0\n\n## Initial release\n\nInitial public source release of the commons/metadata module. Review supported behavior and compatibility limits in the module documentation; full cross-language parity is not implied.\n\n## Changes without a pull request\n\n- Initial implementation of Powertools for AWS Lambda in Go ([269415e](https://github.com/rambow-cloud/powertools-lambda-go/commit/269415e88b2d19b6f72e7c18d32f0a8157be42e5))\n\n**Source:** https://github.com/rambow-cloud/powertools-lambda-go/tree/commons/metadata/v0.1.0\n\n## Installation\n\n```sh\ngo get github.com/rambow-cloud/powertools-lambda-go/commons/metadata@v0.1.0\n```\n"
+    },
+    {
+      "directory": "commons/regex",
+      "version": "v0.1.0",
+      "previous_tag": null,
+      "initial_summary": "Initial public source release of the commons/regex module. Review supported behavior and compatibility limits in the module documentation; full cross-language parity is not implied.",
+      "entries": [],
+      "reviewed_prs": [
+        2,
+        6,
+        9,
+        14
+      ],
+      "excluded_prs": [
+        2,
+        6,
+        9,
+        14
+      ],
+      "untracked_commits": {
+        "269415e88b2d19b6f72e7c18d32f0a8157be42e5": {
+          "modules": [
+            ".",
+            "batch",
+            "commons/awssdk",
+            "commons/dynamodb",
+            "commons/metadata",
+            "commons/regex",
+            "datamasking",
+            "datamasking/kms",
+            "eventhandler/appsyncevents",
+            "eventhandler/appsyncgraphql",
+            "eventhandler/bedrock",
+            "eventhandler/http",
+            "eventhandler/http/metrics",
+            "eventhandler/http/tracer",
+            "examples",
+            "idempotency",
+            "idempotency/cache",
+            "integration",
+            "jmespath",
+            "kafka",
+            "kafka/avro",
+            "kafka/protobuf",
+            "logger",
+            "metrics",
+            "parameters",
+            "parser",
+            "repository",
+            "signer",
+            "tools",
+            "tracer",
+            "tracer/xray",
+            "validation"
+          ],
+          "description": "Initial implementation of Powertools for AWS Lambda in Go"
+        },
+        "0c95b2e9ee13963adbc48c791ab9d9143a9811d1": {
+          "modules": [
+            "integration",
+            "repository"
+          ],
+          "description": "docs: migrate site to Zensical modern theme"
+        },
+        "adc8f284b2587738e7ef38db6a7c3da62cbb46f7": {
+          "modules": [
+            "examples",
+            "repository"
+          ],
+          "description": "docs: audit utility guides against TypeScript baseline"
+        },
+        "5dac031c600c19ebb6939b3a117fe34c85ad5cab": {
+          "modules": [
+            "repository"
+          ],
+          "description": "docs: configure Cloudflare Pages publishing"
+        },
+        "d6b6e97438767aa1d70b78749b2dc90e6723d572": {
+          "modules": [
+            "repository"
+          ],
+          "description": "docs: record Cloudflare publication acceptance"
+        },
+        "a39d92fac53cd13b66f6efd6abc864e48a9e9813": {
+          "modules": [
+            "repository"
+          ],
+          "description": "docs: document automatic Pages publication acceptance"
+        },
+        "703aa7c0a349f1142b3eb36b127c12e4c349fd11": {
+          "modules": [
+            "repository"
+          ],
+          "description": "docs: record verified automatic Cloudflare publication"
+        }
+      },
+      "generated_history": [
+        {
+          "pr": 2,
+          "source": "PR title and changed module paths",
+          "modules": [
+            "repository",
+            "tools"
+          ]
+        },
+        {
+          "pr": 6,
+          "source": "PR title and changed module paths",
+          "modules": [
+            "integration",
+            "logger",
+            "repository",
+            "tools"
+          ]
+        }
+      ],
+      "dependency_updates": [],
+      "notes": "# commons/regex/v0.1.0\n\n## Initial release\n\nInitial public source release of the commons/regex module. Review supported behavior and compatibility limits in the module documentation; full cross-language parity is not implied.\n\n## Changes without a pull request\n\n- Initial implementation of Powertools for AWS Lambda in Go ([269415e](https://github.com/rambow-cloud/powertools-lambda-go/commit/269415e88b2d19b6f72e7c18d32f0a8157be42e5))\n\n**Source:** https://github.com/rambow-cloud/powertools-lambda-go/tree/commons/regex/v0.1.0\n\n## Installation\n\n```sh\ngo get github.com/rambow-cloud/powertools-lambda-go/commons/regex@v0.1.0\n```\n"
+    },
+    {
+      "directory": "logger",
+      "version": "v0.1.0",
+      "previous_tag": null,
+      "initial_summary": "Initial public source release of the logger module. Review supported behavior and compatibility limits in the module documentation; full cross-language parity is not implied.",
+      "entries": [
+        {
+          "module": "logger",
+          "type": "fix",
+          "description": "fix(logger): align child fields, empty values and buffering",
+          "pr": 6
+        }
+      ],
+      "reviewed_prs": [
+        2,
+        6,
+        9,
+        14
+      ],
+      "excluded_prs": [
+        2,
+        9,
+        14
+      ],
+      "untracked_commits": {
+        "269415e88b2d19b6f72e7c18d32f0a8157be42e5": {
+          "modules": [
+            ".",
+            "batch",
+            "commons/awssdk",
+            "commons/dynamodb",
+            "commons/metadata",
+            "commons/regex",
+            "datamasking",
+            "datamasking/kms",
+            "eventhandler/appsyncevents",
+            "eventhandler/appsyncgraphql",
+            "eventhandler/bedrock",
+            "eventhandler/http",
+            "eventhandler/http/metrics",
+            "eventhandler/http/tracer",
+            "examples",
+            "idempotency",
+            "idempotency/cache",
+            "integration",
+            "jmespath",
+            "kafka",
+            "kafka/avro",
+            "kafka/protobuf",
+            "logger",
+            "metrics",
+            "parameters",
+            "parser",
+            "repository",
+            "signer",
+            "tools",
+            "tracer",
+            "tracer/xray",
+            "validation"
+          ],
+          "description": "Initial implementation of Powertools for AWS Lambda in Go"
+        },
+        "0c95b2e9ee13963adbc48c791ab9d9143a9811d1": {
+          "modules": [
+            "integration",
+            "repository"
+          ],
+          "description": "docs: migrate site to Zensical modern theme"
+        },
+        "adc8f284b2587738e7ef38db6a7c3da62cbb46f7": {
+          "modules": [
+            "examples",
+            "repository"
+          ],
+          "description": "docs: audit utility guides against TypeScript baseline"
+        },
+        "5dac031c600c19ebb6939b3a117fe34c85ad5cab": {
+          "modules": [
+            "repository"
+          ],
+          "description": "docs: configure Cloudflare Pages publishing"
+        },
+        "d6b6e97438767aa1d70b78749b2dc90e6723d572": {
+          "modules": [
+            "repository"
+          ],
+          "description": "docs: record Cloudflare publication acceptance"
+        },
+        "a39d92fac53cd13b66f6efd6abc864e48a9e9813": {
+          "modules": [
+            "repository"
+          ],
+          "description": "docs: document automatic Pages publication acceptance"
+        },
+        "703aa7c0a349f1142b3eb36b127c12e4c349fd11": {
+          "modules": [
+            "repository"
+          ],
+          "description": "docs: record verified automatic Cloudflare publication"
+        }
+      },
+      "generated_history": [
+        {
+          "pr": 2,
+          "source": "PR title and changed module paths",
+          "modules": [
+            "repository",
+            "tools"
+          ]
+        },
+        {
+          "pr": 6,
+          "source": "PR title and changed module paths",
+          "modules": [
+            "integration",
+            "logger",
+            "repository",
+            "tools"
+          ]
+        }
+      ],
+      "dependency_updates": [],
+      "notes": "# logger/v0.1.0\n\n## Initial release\n\nInitial public source release of the logger module. Review supported behavior and compatibility limits in the module documentation; full cross-language parity is not implied.\n\n## Fixes\n\n- fix(logger): align child fields, empty values and buffering ([#6](https://github.com/rambow-cloud/powertools-lambda-go/pull/6))\n\n## Changes without a pull request\n\n- Initial implementation of Powertools for AWS Lambda in Go ([269415e](https://github.com/rambow-cloud/powertools-lambda-go/commit/269415e88b2d19b6f72e7c18d32f0a8157be42e5))\n\n**Source:** https://github.com/rambow-cloud/powertools-lambda-go/tree/logger/v0.1.0\n\n## Installation\n\n```sh\ngo get github.com/rambow-cloud/powertools-lambda-go/logger@v0.1.0\n```\n"
+    },
+    {
+      "directory": "metrics",
+      "version": "v0.1.0",
+      "previous_tag": null,
+      "initial_summary": "Initial public source release of the metrics module. Review supported behavior and compatibility limits in the module documentation; full cross-language parity is not implied.",
+      "entries": [],
+      "reviewed_prs": [
+        2,
+        6,
+        9,
+        14
+      ],
+      "excluded_prs": [
+        2,
+        6,
+        9,
+        14
+      ],
+      "untracked_commits": {
+        "269415e88b2d19b6f72e7c18d32f0a8157be42e5": {
+          "modules": [
+            ".",
+            "batch",
+            "commons/awssdk",
+            "commons/dynamodb",
+            "commons/metadata",
+            "commons/regex",
+            "datamasking",
+            "datamasking/kms",
+            "eventhandler/appsyncevents",
+            "eventhandler/appsyncgraphql",
+            "eventhandler/bedrock",
+            "eventhandler/http",
+            "eventhandler/http/metrics",
+            "eventhandler/http/tracer",
+            "examples",
+            "idempotency",
+            "idempotency/cache",
+            "integration",
+            "jmespath",
+            "kafka",
+            "kafka/avro",
+            "kafka/protobuf",
+            "logger",
+            "metrics",
+            "parameters",
+            "parser",
+            "repository",
+            "signer",
+            "tools",
+            "tracer",
+            "tracer/xray",
+            "validation"
+          ],
+          "description": "Initial implementation of Powertools for AWS Lambda in Go"
+        },
+        "0c95b2e9ee13963adbc48c791ab9d9143a9811d1": {
+          "modules": [
+            "integration",
+            "repository"
+          ],
+          "description": "docs: migrate site to Zensical modern theme"
+        },
+        "adc8f284b2587738e7ef38db6a7c3da62cbb46f7": {
+          "modules": [
+            "examples",
+            "repository"
+          ],
+          "description": "docs: audit utility guides against TypeScript baseline"
+        },
+        "5dac031c600c19ebb6939b3a117fe34c85ad5cab": {
+          "modules": [
+            "repository"
+          ],
+          "description": "docs: configure Cloudflare Pages publishing"
+        },
+        "d6b6e97438767aa1d70b78749b2dc90e6723d572": {
+          "modules": [
+            "repository"
+          ],
+          "description": "docs: record Cloudflare publication acceptance"
+        },
+        "a39d92fac53cd13b66f6efd6abc864e48a9e9813": {
+          "modules": [
+            "repository"
+          ],
+          "description": "docs: document automatic Pages publication acceptance"
+        },
+        "703aa7c0a349f1142b3eb36b127c12e4c349fd11": {
+          "modules": [
+            "repository"
+          ],
+          "description": "docs: record verified automatic Cloudflare publication"
+        }
+      },
+      "generated_history": [
+        {
+          "pr": 2,
+          "source": "PR title and changed module paths",
+          "modules": [
+            "repository",
+            "tools"
+          ]
+        },
+        {
+          "pr": 6,
+          "source": "PR title and changed module paths",
+          "modules": [
+            "integration",
+            "logger",
+            "repository",
+            "tools"
+          ]
+        }
+      ],
+      "dependency_updates": [],
+      "notes": "# metrics/v0.1.0\n\n## Initial release\n\nInitial public source release of the metrics module. Review supported behavior and compatibility limits in the module documentation; full cross-language parity is not implied.\n\n## Changes without a pull request\n\n- Initial implementation of Powertools for AWS Lambda in Go ([269415e](https://github.com/rambow-cloud/powertools-lambda-go/commit/269415e88b2d19b6f72e7c18d32f0a8157be42e5))\n\n**Source:** https://github.com/rambow-cloud/powertools-lambda-go/tree/metrics/v0.1.0\n\n## Installation\n\n```sh\ngo get github.com/rambow-cloud/powertools-lambda-go/metrics@v0.1.0\n```\n"
+    },
+    {
+      "directory": "parameters",
+      "version": "v0.1.0",
+      "previous_tag": null,
+      "initial_summary": "Initial public source release of the parameters module. Review supported behavior and compatibility limits in the module documentation; full cross-language parity is not implied.",
+      "entries": [],
+      "reviewed_prs": [
+        2,
+        6,
+        9,
+        14
+      ],
+      "excluded_prs": [
+        2,
+        6,
+        9,
+        14
+      ],
+      "untracked_commits": {
+        "269415e88b2d19b6f72e7c18d32f0a8157be42e5": {
+          "modules": [
+            ".",
+            "batch",
+            "commons/awssdk",
+            "commons/dynamodb",
+            "commons/metadata",
+            "commons/regex",
+            "datamasking",
+            "datamasking/kms",
+            "eventhandler/appsyncevents",
+            "eventhandler/appsyncgraphql",
+            "eventhandler/bedrock",
+            "eventhandler/http",
+            "eventhandler/http/metrics",
+            "eventhandler/http/tracer",
+            "examples",
+            "idempotency",
+            "idempotency/cache",
+            "integration",
+            "jmespath",
+            "kafka",
+            "kafka/avro",
+            "kafka/protobuf",
+            "logger",
+            "metrics",
+            "parameters",
+            "parser",
+            "repository",
+            "signer",
+            "tools",
+            "tracer",
+            "tracer/xray",
+            "validation"
+          ],
+          "description": "Initial implementation of Powertools for AWS Lambda in Go"
+        },
+        "0c95b2e9ee13963adbc48c791ab9d9143a9811d1": {
+          "modules": [
+            "integration",
+            "repository"
+          ],
+          "description": "docs: migrate site to Zensical modern theme"
+        },
+        "adc8f284b2587738e7ef38db6a7c3da62cbb46f7": {
+          "modules": [
+            "examples",
+            "repository"
+          ],
+          "description": "docs: audit utility guides against TypeScript baseline"
+        },
+        "5dac031c600c19ebb6939b3a117fe34c85ad5cab": {
+          "modules": [
+            "repository"
+          ],
+          "description": "docs: configure Cloudflare Pages publishing"
+        },
+        "d6b6e97438767aa1d70b78749b2dc90e6723d572": {
+          "modules": [
+            "repository"
+          ],
+          "description": "docs: record Cloudflare publication acceptance"
+        },
+        "a39d92fac53cd13b66f6efd6abc864e48a9e9813": {
+          "modules": [
+            "repository"
+          ],
+          "description": "docs: document automatic Pages publication acceptance"
+        },
+        "703aa7c0a349f1142b3eb36b127c12e4c349fd11": {
+          "modules": [
+            "repository"
+          ],
+          "description": "docs: record verified automatic Cloudflare publication"
+        }
+      },
+      "generated_history": [
+        {
+          "pr": 2,
+          "source": "PR title and changed module paths",
+          "modules": [
+            "repository",
+            "tools"
+          ]
+        },
+        {
+          "pr": 6,
+          "source": "PR title and changed module paths",
+          "modules": [
+            "integration",
+            "logger",
+            "repository",
+            "tools"
+          ]
+        }
+      ],
+      "dependency_updates": [],
+      "notes": "# parameters/v0.1.0\n\n## Initial release\n\nInitial public source release of the parameters module. Review supported behavior and compatibility limits in the module documentation; full cross-language parity is not implied.\n\n## Changes without a pull request\n\n- Initial implementation of Powertools for AWS Lambda in Go ([269415e](https://github.com/rambow-cloud/powertools-lambda-go/commit/269415e88b2d19b6f72e7c18d32f0a8157be42e5))\n\n**Source:** https://github.com/rambow-cloud/powertools-lambda-go/tree/parameters/v0.1.0\n\n## Installation\n\n```sh\ngo get github.com/rambow-cloud/powertools-lambda-go/parameters@v0.1.0\n```\n"
+    },
+    {
+      "directory": "signer",
+      "version": "v0.1.0",
+      "previous_tag": null,
+      "initial_summary": "Initial public source release of the signer module. Review supported behavior and compatibility limits in the module documentation; full cross-language parity is not implied.",
+      "entries": [],
+      "reviewed_prs": [
+        2,
+        6,
+        9,
+        14
+      ],
+      "excluded_prs": [
+        2,
+        6,
+        9,
+        14
+      ],
+      "untracked_commits": {
+        "269415e88b2d19b6f72e7c18d32f0a8157be42e5": {
+          "modules": [
+            ".",
+            "batch",
+            "commons/awssdk",
+            "commons/dynamodb",
+            "commons/metadata",
+            "commons/regex",
+            "datamasking",
+            "datamasking/kms",
+            "eventhandler/appsyncevents",
+            "eventhandler/appsyncgraphql",
+            "eventhandler/bedrock",
+            "eventhandler/http",
+            "eventhandler/http/metrics",
+            "eventhandler/http/tracer",
+            "examples",
+            "idempotency",
+            "idempotency/cache",
+            "integration",
+            "jmespath",
+            "kafka",
+            "kafka/avro",
+            "kafka/protobuf",
+            "logger",
+            "metrics",
+            "parameters",
+            "parser",
+            "repository",
+            "signer",
+            "tools",
+            "tracer",
+            "tracer/xray",
+            "validation"
+          ],
+          "description": "Initial implementation of Powertools for AWS Lambda in Go"
+        },
+        "0c95b2e9ee13963adbc48c791ab9d9143a9811d1": {
+          "modules": [
+            "integration",
+            "repository"
+          ],
+          "description": "docs: migrate site to Zensical modern theme"
+        },
+        "adc8f284b2587738e7ef38db6a7c3da62cbb46f7": {
+          "modules": [
+            "examples",
+            "repository"
+          ],
+          "description": "docs: audit utility guides against TypeScript baseline"
+        },
+        "5dac031c600c19ebb6939b3a117fe34c85ad5cab": {
+          "modules": [
+            "repository"
+          ],
+          "description": "docs: configure Cloudflare Pages publishing"
+        },
+        "d6b6e97438767aa1d70b78749b2dc90e6723d572": {
+          "modules": [
+            "repository"
+          ],
+          "description": "docs: record Cloudflare publication acceptance"
+        },
+        "a39d92fac53cd13b66f6efd6abc864e48a9e9813": {
+          "modules": [
+            "repository"
+          ],
+          "description": "docs: document automatic Pages publication acceptance"
+        },
+        "703aa7c0a349f1142b3eb36b127c12e4c349fd11": {
+          "modules": [
+            "repository"
+          ],
+          "description": "docs: record verified automatic Cloudflare publication"
+        }
+      },
+      "generated_history": [
+        {
+          "pr": 2,
+          "source": "PR title and changed module paths",
+          "modules": [
+            "repository",
+            "tools"
+          ]
+        },
+        {
+          "pr": 6,
+          "source": "PR title and changed module paths",
+          "modules": [
+            "integration",
+            "logger",
+            "repository",
+            "tools"
+          ]
+        }
+      ],
+      "dependency_updates": [],
+      "notes": "# signer/v0.1.0\n\n## Initial release\n\nInitial public source release of the signer module. Review supported behavior and compatibility limits in the module documentation; full cross-language parity is not implied.\n\n## Changes without a pull request\n\n- Initial implementation of Powertools for AWS Lambda in Go ([269415e](https://github.com/rambow-cloud/powertools-lambda-go/commit/269415e88b2d19b6f72e7c18d32f0a8157be42e5))\n\n**Source:** https://github.com/rambow-cloud/powertools-lambda-go/tree/signer/v0.1.0\n\n## Installation\n\n```sh\ngo get github.com/rambow-cloud/powertools-lambda-go/signer@v0.1.0\n```\n"
+    },
+    {
+      "directory": "jmespath",
+      "version": "v0.1.0",
+      "previous_tag": null,
+      "initial_summary": "Initial public source release of the jmespath module. Review supported behavior and compatibility limits in the module documentation; full cross-language parity is not implied.",
+      "entries": [],
+      "reviewed_prs": [
+        2,
+        6,
+        9,
+        14
+      ],
+      "excluded_prs": [
+        2,
+        6,
+        9,
+        14
+      ],
+      "untracked_commits": {
+        "269415e88b2d19b6f72e7c18d32f0a8157be42e5": {
+          "modules": [
+            ".",
+            "batch",
+            "commons/awssdk",
+            "commons/dynamodb",
+            "commons/metadata",
+            "commons/regex",
+            "datamasking",
+            "datamasking/kms",
+            "eventhandler/appsyncevents",
+            "eventhandler/appsyncgraphql",
+            "eventhandler/bedrock",
+            "eventhandler/http",
+            "eventhandler/http/metrics",
+            "eventhandler/http/tracer",
+            "examples",
+            "idempotency",
+            "idempotency/cache",
+            "integration",
+            "jmespath",
+            "kafka",
+            "kafka/avro",
+            "kafka/protobuf",
+            "logger",
+            "metrics",
+            "parameters",
+            "parser",
+            "repository",
+            "signer",
+            "tools",
+            "tracer",
+            "tracer/xray",
+            "validation"
+          ],
+          "description": "Initial implementation of Powertools for AWS Lambda in Go"
+        },
+        "0c95b2e9ee13963adbc48c791ab9d9143a9811d1": {
+          "modules": [
+            "integration",
+            "repository"
+          ],
+          "description": "docs: migrate site to Zensical modern theme"
+        },
+        "adc8f284b2587738e7ef38db6a7c3da62cbb46f7": {
+          "modules": [
+            "examples",
+            "repository"
+          ],
+          "description": "docs: audit utility guides against TypeScript baseline"
+        },
+        "5dac031c600c19ebb6939b3a117fe34c85ad5cab": {
+          "modules": [
+            "repository"
+          ],
+          "description": "docs: configure Cloudflare Pages publishing"
+        },
+        "d6b6e97438767aa1d70b78749b2dc90e6723d572": {
+          "modules": [
+            "repository"
+          ],
+          "description": "docs: record Cloudflare publication acceptance"
+        },
+        "a39d92fac53cd13b66f6efd6abc864e48a9e9813": {
+          "modules": [
+            "repository"
+          ],
+          "description": "docs: document automatic Pages publication acceptance"
+        },
+        "703aa7c0a349f1142b3eb36b127c12e4c349fd11": {
+          "modules": [
+            "repository"
+          ],
+          "description": "docs: record verified automatic Cloudflare publication"
+        }
+      },
+      "generated_history": [
+        {
+          "pr": 2,
+          "source": "PR title and changed module paths",
+          "modules": [
+            "repository",
+            "tools"
+          ]
+        },
+        {
+          "pr": 6,
+          "source": "PR title and changed module paths",
+          "modules": [
+            "integration",
+            "logger",
+            "repository",
+            "tools"
+          ]
+        }
+      ],
+      "dependency_updates": [],
+      "notes": "# jmespath/v0.1.0\n\n## Initial release\n\nInitial public source release of the jmespath module. Review supported behavior and compatibility limits in the module documentation; full cross-language parity is not implied.\n\n## Changes without a pull request\n\n- Initial implementation of Powertools for AWS Lambda in Go ([269415e](https://github.com/rambow-cloud/powertools-lambda-go/commit/269415e88b2d19b6f72e7c18d32f0a8157be42e5))\n\n**Source:** https://github.com/rambow-cloud/powertools-lambda-go/tree/jmespath/v0.1.0\n\n## Installation\n\n```sh\ngo get github.com/rambow-cloud/powertools-lambda-go/jmespath@v0.1.0\n```\n"
+    },
+    {
+      "directory": "datamasking/kms",
+      "version": "v0.1.0",
+      "previous_tag": null,
+      "initial_summary": "Initial public source release of the datamasking/kms module. Review supported behavior and compatibility limits in the module documentation; full cross-language parity is not implied.",
+      "entries": [],
+      "reviewed_prs": [
+        2,
+        6,
+        9,
+        14
+      ],
+      "excluded_prs": [
+        2,
+        6,
+        9,
+        14
+      ],
+      "untracked_commits": {
+        "269415e88b2d19b6f72e7c18d32f0a8157be42e5": {
+          "modules": [
+            ".",
+            "batch",
+            "commons/awssdk",
+            "commons/dynamodb",
+            "commons/metadata",
+            "commons/regex",
+            "datamasking",
+            "datamasking/kms",
+            "eventhandler/appsyncevents",
+            "eventhandler/appsyncgraphql",
+            "eventhandler/bedrock",
+            "eventhandler/http",
+            "eventhandler/http/metrics",
+            "eventhandler/http/tracer",
+            "examples",
+            "idempotency",
+            "idempotency/cache",
+            "integration",
+            "jmespath",
+            "kafka",
+            "kafka/avro",
+            "kafka/protobuf",
+            "logger",
+            "metrics",
+            "parameters",
+            "parser",
+            "repository",
+            "signer",
+            "tools",
+            "tracer",
+            "tracer/xray",
+            "validation"
+          ],
+          "description": "Initial implementation of Powertools for AWS Lambda in Go"
+        },
+        "0c95b2e9ee13963adbc48c791ab9d9143a9811d1": {
+          "modules": [
+            "integration",
+            "repository"
+          ],
+          "description": "docs: migrate site to Zensical modern theme"
+        },
+        "adc8f284b2587738e7ef38db6a7c3da62cbb46f7": {
+          "modules": [
+            "examples",
+            "repository"
+          ],
+          "description": "docs: audit utility guides against TypeScript baseline"
+        },
+        "5dac031c600c19ebb6939b3a117fe34c85ad5cab": {
+          "modules": [
+            "repository"
+          ],
+          "description": "docs: configure Cloudflare Pages publishing"
+        },
+        "d6b6e97438767aa1d70b78749b2dc90e6723d572": {
+          "modules": [
+            "repository"
+          ],
+          "description": "docs: record Cloudflare publication acceptance"
+        },
+        "a39d92fac53cd13b66f6efd6abc864e48a9e9813": {
+          "modules": [
+            "repository"
+          ],
+          "description": "docs: document automatic Pages publication acceptance"
+        },
+        "703aa7c0a349f1142b3eb36b127c12e4c349fd11": {
+          "modules": [
+            "repository"
+          ],
+          "description": "docs: record verified automatic Cloudflare publication"
+        }
+      },
+      "generated_history": [
+        {
+          "pr": 2,
+          "source": "PR title and changed module paths",
+          "modules": [
+            "repository",
+            "tools"
+          ]
+        },
+        {
+          "pr": 6,
+          "source": "PR title and changed module paths",
+          "modules": [
+            "integration",
+            "logger",
+            "repository",
+            "tools"
+          ]
+        }
+      ],
+      "dependency_updates": [],
+      "notes": "# datamasking/kms/v0.1.0\n\n## Initial release\n\nInitial public source release of the datamasking/kms module. Review supported behavior and compatibility limits in the module documentation; full cross-language parity is not implied.\n\n## Changes without a pull request\n\n- Initial implementation of Powertools for AWS Lambda in Go ([269415e](https://github.com/rambow-cloud/powertools-lambda-go/commit/269415e88b2d19b6f72e7c18d32f0a8157be42e5))\n\n**Source:** https://github.com/rambow-cloud/powertools-lambda-go/tree/datamasking/kms/v0.1.0\n\n## Installation\n\n```sh\ngo get github.com/rambow-cloud/powertools-lambda-go/datamasking/kms@v0.1.0\n```\n"
+    },
+    {
+      "directory": "datamasking",
+      "version": "v0.1.0",
+      "previous_tag": null,
+      "initial_summary": "Initial public source release of the datamasking module. Review supported behavior and compatibility limits in the module documentation; full cross-language parity is not implied.",
+      "entries": [],
+      "reviewed_prs": [
+        2,
+        6,
+        9,
+        14
+      ],
+      "excluded_prs": [
+        2,
+        6,
+        9,
+        14
+      ],
+      "untracked_commits": {
+        "269415e88b2d19b6f72e7c18d32f0a8157be42e5": {
+          "modules": [
+            ".",
+            "batch",
+            "commons/awssdk",
+            "commons/dynamodb",
+            "commons/metadata",
+            "commons/regex",
+            "datamasking",
+            "datamasking/kms",
+            "eventhandler/appsyncevents",
+            "eventhandler/appsyncgraphql",
+            "eventhandler/bedrock",
+            "eventhandler/http",
+            "eventhandler/http/metrics",
+            "eventhandler/http/tracer",
+            "examples",
+            "idempotency",
+            "idempotency/cache",
+            "integration",
+            "jmespath",
+            "kafka",
+            "kafka/avro",
+            "kafka/protobuf",
+            "logger",
+            "metrics",
+            "parameters",
+            "parser",
+            "repository",
+            "signer",
+            "tools",
+            "tracer",
+            "tracer/xray",
+            "validation"
+          ],
+          "description": "Initial implementation of Powertools for AWS Lambda in Go"
+        },
+        "0c95b2e9ee13963adbc48c791ab9d9143a9811d1": {
+          "modules": [
+            "integration",
+            "repository"
+          ],
+          "description": "docs: migrate site to Zensical modern theme"
+        },
+        "adc8f284b2587738e7ef38db6a7c3da62cbb46f7": {
+          "modules": [
+            "examples",
+            "repository"
+          ],
+          "description": "docs: audit utility guides against TypeScript baseline"
+        },
+        "5dac031c600c19ebb6939b3a117fe34c85ad5cab": {
+          "modules": [
+            "repository"
+          ],
+          "description": "docs: configure Cloudflare Pages publishing"
+        },
+        "d6b6e97438767aa1d70b78749b2dc90e6723d572": {
+          "modules": [
+            "repository"
+          ],
+          "description": "docs: record Cloudflare publication acceptance"
+        },
+        "a39d92fac53cd13b66f6efd6abc864e48a9e9813": {
+          "modules": [
+            "repository"
+          ],
+          "description": "docs: document automatic Pages publication acceptance"
+        },
+        "703aa7c0a349f1142b3eb36b127c12e4c349fd11": {
+          "modules": [
+            "repository"
+          ],
+          "description": "docs: record verified automatic Cloudflare publication"
+        }
+      },
+      "generated_history": [
+        {
+          "pr": 2,
+          "source": "PR title and changed module paths",
+          "modules": [
+            "repository",
+            "tools"
+          ]
+        },
+        {
+          "pr": 6,
+          "source": "PR title and changed module paths",
+          "modules": [
+            "integration",
+            "logger",
+            "repository",
+            "tools"
+          ]
+        }
+      ],
+      "dependency_updates": [],
+      "notes": "# datamasking/v0.1.0\n\n## Initial release\n\nInitial public source release of the datamasking module. Review supported behavior and compatibility limits in the module documentation; full cross-language parity is not implied.\n\n## Changes without a pull request\n\n- Initial implementation of Powertools for AWS Lambda in Go ([269415e](https://github.com/rambow-cloud/powertools-lambda-go/commit/269415e88b2d19b6f72e7c18d32f0a8157be42e5))\n\n**Source:** https://github.com/rambow-cloud/powertools-lambda-go/tree/datamasking/v0.1.0\n\n## Installation\n\n```sh\ngo get github.com/rambow-cloud/powertools-lambda-go/datamasking@v0.1.0\n```\n"
+    },
+    {
+      "directory": "kafka/protobuf",
+      "version": "v0.1.0",
+      "previous_tag": null,
+      "initial_summary": "Initial public source release of the kafka/protobuf module. Review supported behavior and compatibility limits in the module documentation; full cross-language parity is not implied.",
+      "entries": [],
+      "reviewed_prs": [
+        2,
+        6,
+        9,
+        14
+      ],
+      "excluded_prs": [
+        2,
+        6,
+        9,
+        14
+      ],
+      "untracked_commits": {
+        "269415e88b2d19b6f72e7c18d32f0a8157be42e5": {
+          "modules": [
+            ".",
+            "batch",
+            "commons/awssdk",
+            "commons/dynamodb",
+            "commons/metadata",
+            "commons/regex",
+            "datamasking",
+            "datamasking/kms",
+            "eventhandler/appsyncevents",
+            "eventhandler/appsyncgraphql",
+            "eventhandler/bedrock",
+            "eventhandler/http",
+            "eventhandler/http/metrics",
+            "eventhandler/http/tracer",
+            "examples",
+            "idempotency",
+            "idempotency/cache",
+            "integration",
+            "jmespath",
+            "kafka",
+            "kafka/avro",
+            "kafka/protobuf",
+            "logger",
+            "metrics",
+            "parameters",
+            "parser",
+            "repository",
+            "signer",
+            "tools",
+            "tracer",
+            "tracer/xray",
+            "validation"
+          ],
+          "description": "Initial implementation of Powertools for AWS Lambda in Go"
+        },
+        "0c95b2e9ee13963adbc48c791ab9d9143a9811d1": {
+          "modules": [
+            "integration",
+            "repository"
+          ],
+          "description": "docs: migrate site to Zensical modern theme"
+        },
+        "adc8f284b2587738e7ef38db6a7c3da62cbb46f7": {
+          "modules": [
+            "examples",
+            "repository"
+          ],
+          "description": "docs: audit utility guides against TypeScript baseline"
+        },
+        "5dac031c600c19ebb6939b3a117fe34c85ad5cab": {
+          "modules": [
+            "repository"
+          ],
+          "description": "docs: configure Cloudflare Pages publishing"
+        },
+        "d6b6e97438767aa1d70b78749b2dc90e6723d572": {
+          "modules": [
+            "repository"
+          ],
+          "description": "docs: record Cloudflare publication acceptance"
+        },
+        "a39d92fac53cd13b66f6efd6abc864e48a9e9813": {
+          "modules": [
+            "repository"
+          ],
+          "description": "docs: document automatic Pages publication acceptance"
+        },
+        "703aa7c0a349f1142b3eb36b127c12e4c349fd11": {
+          "modules": [
+            "repository"
+          ],
+          "description": "docs: record verified automatic Cloudflare publication"
+        }
+      },
+      "generated_history": [
+        {
+          "pr": 2,
+          "source": "PR title and changed module paths",
+          "modules": [
+            "repository",
+            "tools"
+          ]
+        },
+        {
+          "pr": 6,
+          "source": "PR title and changed module paths",
+          "modules": [
+            "integration",
+            "logger",
+            "repository",
+            "tools"
+          ]
+        }
+      ],
+      "dependency_updates": [],
+      "notes": "# kafka/protobuf/v0.1.0\n\n## Initial release\n\nInitial public source release of the kafka/protobuf module. Review supported behavior and compatibility limits in the module documentation; full cross-language parity is not implied.\n\n## Changes without a pull request\n\n- Initial implementation of Powertools for AWS Lambda in Go ([269415e](https://github.com/rambow-cloud/powertools-lambda-go/commit/269415e88b2d19b6f72e7c18d32f0a8157be42e5))\n\n**Source:** https://github.com/rambow-cloud/powertools-lambda-go/tree/kafka/protobuf/v0.1.0\n\n## Installation\n\n```sh\ngo get github.com/rambow-cloud/powertools-lambda-go/kafka/protobuf@v0.1.0\n```\n"
+    },
+    {
+      "directory": "kafka/avro",
+      "version": "v0.1.0",
+      "previous_tag": null,
+      "initial_summary": "Initial public source release of the kafka/avro module. Review supported behavior and compatibility limits in the module documentation; full cross-language parity is not implied.",
+      "entries": [],
+      "reviewed_prs": [
+        2,
+        6,
+        9,
+        14
+      ],
+      "excluded_prs": [
+        2,
+        6,
+        9,
+        14
+      ],
+      "untracked_commits": {
+        "269415e88b2d19b6f72e7c18d32f0a8157be42e5": {
+          "modules": [
+            ".",
+            "batch",
+            "commons/awssdk",
+            "commons/dynamodb",
+            "commons/metadata",
+            "commons/regex",
+            "datamasking",
+            "datamasking/kms",
+            "eventhandler/appsyncevents",
+            "eventhandler/appsyncgraphql",
+            "eventhandler/bedrock",
+            "eventhandler/http",
+            "eventhandler/http/metrics",
+            "eventhandler/http/tracer",
+            "examples",
+            "idempotency",
+            "idempotency/cache",
+            "integration",
+            "jmespath",
+            "kafka",
+            "kafka/avro",
+            "kafka/protobuf",
+            "logger",
+            "metrics",
+            "parameters",
+            "parser",
+            "repository",
+            "signer",
+            "tools",
+            "tracer",
+            "tracer/xray",
+            "validation"
+          ],
+          "description": "Initial implementation of Powertools for AWS Lambda in Go"
+        },
+        "0c95b2e9ee13963adbc48c791ab9d9143a9811d1": {
+          "modules": [
+            "integration",
+            "repository"
+          ],
+          "description": "docs: migrate site to Zensical modern theme"
+        },
+        "adc8f284b2587738e7ef38db6a7c3da62cbb46f7": {
+          "modules": [
+            "examples",
+            "repository"
+          ],
+          "description": "docs: audit utility guides against TypeScript baseline"
+        },
+        "5dac031c600c19ebb6939b3a117fe34c85ad5cab": {
+          "modules": [
+            "repository"
+          ],
+          "description": "docs: configure Cloudflare Pages publishing"
+        },
+        "d6b6e97438767aa1d70b78749b2dc90e6723d572": {
+          "modules": [
+            "repository"
+          ],
+          "description": "docs: record Cloudflare publication acceptance"
+        },
+        "a39d92fac53cd13b66f6efd6abc864e48a9e9813": {
+          "modules": [
+            "repository"
+          ],
+          "description": "docs: document automatic Pages publication acceptance"
+        },
+        "703aa7c0a349f1142b3eb36b127c12e4c349fd11": {
+          "modules": [
+            "repository"
+          ],
+          "description": "docs: record verified automatic Cloudflare publication"
+        }
+      },
+      "generated_history": [
+        {
+          "pr": 2,
+          "source": "PR title and changed module paths",
+          "modules": [
+            "repository",
+            "tools"
+          ]
+        },
+        {
+          "pr": 6,
+          "source": "PR title and changed module paths",
+          "modules": [
+            "integration",
+            "logger",
+            "repository",
+            "tools"
+          ]
+        }
+      ],
+      "dependency_updates": [],
+      "notes": "# kafka/avro/v0.1.0\n\n## Initial release\n\nInitial public source release of the kafka/avro module. Review supported behavior and compatibility limits in the module documentation; full cross-language parity is not implied.\n\n## Changes without a pull request\n\n- Initial implementation of Powertools for AWS Lambda in Go ([269415e](https://github.com/rambow-cloud/powertools-lambda-go/commit/269415e88b2d19b6f72e7c18d32f0a8157be42e5))\n\n**Source:** https://github.com/rambow-cloud/powertools-lambda-go/tree/kafka/avro/v0.1.0\n\n## Installation\n\n```sh\ngo get github.com/rambow-cloud/powertools-lambda-go/kafka/avro@v0.1.0\n```\n"
+    },
+    {
+      "directory": "kafka",
+      "version": "v0.1.0",
+      "previous_tag": null,
+      "initial_summary": "Initial public source release of the kafka module. Review supported behavior and compatibility limits in the module documentation; full cross-language parity is not implied.",
+      "entries": [],
+      "reviewed_prs": [
+        2,
+        6,
+        9,
+        14
+      ],
+      "excluded_prs": [
+        2,
+        6,
+        9,
+        14
+      ],
+      "untracked_commits": {
+        "269415e88b2d19b6f72e7c18d32f0a8157be42e5": {
+          "modules": [
+            ".",
+            "batch",
+            "commons/awssdk",
+            "commons/dynamodb",
+            "commons/metadata",
+            "commons/regex",
+            "datamasking",
+            "datamasking/kms",
+            "eventhandler/appsyncevents",
+            "eventhandler/appsyncgraphql",
+            "eventhandler/bedrock",
+            "eventhandler/http",
+            "eventhandler/http/metrics",
+            "eventhandler/http/tracer",
+            "examples",
+            "idempotency",
+            "idempotency/cache",
+            "integration",
+            "jmespath",
+            "kafka",
+            "kafka/avro",
+            "kafka/protobuf",
+            "logger",
+            "metrics",
+            "parameters",
+            "parser",
+            "repository",
+            "signer",
+            "tools",
+            "tracer",
+            "tracer/xray",
+            "validation"
+          ],
+          "description": "Initial implementation of Powertools for AWS Lambda in Go"
+        },
+        "0c95b2e9ee13963adbc48c791ab9d9143a9811d1": {
+          "modules": [
+            "integration",
+            "repository"
+          ],
+          "description": "docs: migrate site to Zensical modern theme"
+        },
+        "adc8f284b2587738e7ef38db6a7c3da62cbb46f7": {
+          "modules": [
+            "examples",
+            "repository"
+          ],
+          "description": "docs: audit utility guides against TypeScript baseline"
+        },
+        "5dac031c600c19ebb6939b3a117fe34c85ad5cab": {
+          "modules": [
+            "repository"
+          ],
+          "description": "docs: configure Cloudflare Pages publishing"
+        },
+        "d6b6e97438767aa1d70b78749b2dc90e6723d572": {
+          "modules": [
+            "repository"
+          ],
+          "description": "docs: record Cloudflare publication acceptance"
+        },
+        "a39d92fac53cd13b66f6efd6abc864e48a9e9813": {
+          "modules": [
+            "repository"
+          ],
+          "description": "docs: document automatic Pages publication acceptance"
+        },
+        "703aa7c0a349f1142b3eb36b127c12e4c349fd11": {
+          "modules": [
+            "repository"
+          ],
+          "description": "docs: record verified automatic Cloudflare publication"
+        }
+      },
+      "generated_history": [
+        {
+          "pr": 2,
+          "source": "PR title and changed module paths",
+          "modules": [
+            "repository",
+            "tools"
+          ]
+        },
+        {
+          "pr": 6,
+          "source": "PR title and changed module paths",
+          "modules": [
+            "integration",
+            "logger",
+            "repository",
+            "tools"
+          ]
+        }
+      ],
+      "dependency_updates": [],
+      "notes": "# kafka/v0.1.0\n\n## Initial release\n\nInitial public source release of the kafka module. Review supported behavior and compatibility limits in the module documentation; full cross-language parity is not implied.\n\n## Changes without a pull request\n\n- Initial implementation of Powertools for AWS Lambda in Go ([269415e](https://github.com/rambow-cloud/powertools-lambda-go/commit/269415e88b2d19b6f72e7c18d32f0a8157be42e5))\n\n**Source:** https://github.com/rambow-cloud/powertools-lambda-go/tree/kafka/v0.1.0\n\n## Installation\n\n```sh\ngo get github.com/rambow-cloud/powertools-lambda-go/kafka@v0.1.0\n```\n"
+    },
+    {
+      "directory": "batch",
+      "version": "v0.1.0",
+      "previous_tag": null,
+      "initial_summary": "Initial public source release of the batch module. Review supported behavior and compatibility limits in the module documentation; full cross-language parity is not implied.",
+      "entries": [],
+      "reviewed_prs": [
+        2,
+        6,
+        9,
+        14
+      ],
+      "excluded_prs": [
+        2,
+        6,
+        9,
+        14
+      ],
+      "untracked_commits": {
+        "269415e88b2d19b6f72e7c18d32f0a8157be42e5": {
+          "modules": [
+            ".",
+            "batch",
+            "commons/awssdk",
+            "commons/dynamodb",
+            "commons/metadata",
+            "commons/regex",
+            "datamasking",
+            "datamasking/kms",
+            "eventhandler/appsyncevents",
+            "eventhandler/appsyncgraphql",
+            "eventhandler/bedrock",
+            "eventhandler/http",
+            "eventhandler/http/metrics",
+            "eventhandler/http/tracer",
+            "examples",
+            "idempotency",
+            "idempotency/cache",
+            "integration",
+            "jmespath",
+            "kafka",
+            "kafka/avro",
+            "kafka/protobuf",
+            "logger",
+            "metrics",
+            "parameters",
+            "parser",
+            "repository",
+            "signer",
+            "tools",
+            "tracer",
+            "tracer/xray",
+            "validation"
+          ],
+          "description": "Initial implementation of Powertools for AWS Lambda in Go"
+        },
+        "0c95b2e9ee13963adbc48c791ab9d9143a9811d1": {
+          "modules": [
+            "integration",
+            "repository"
+          ],
+          "description": "docs: migrate site to Zensical modern theme"
+        },
+        "adc8f284b2587738e7ef38db6a7c3da62cbb46f7": {
+          "modules": [
+            "examples",
+            "repository"
+          ],
+          "description": "docs: audit utility guides against TypeScript baseline"
+        },
+        "5dac031c600c19ebb6939b3a117fe34c85ad5cab": {
+          "modules": [
+            "repository"
+          ],
+          "description": "docs: configure Cloudflare Pages publishing"
+        },
+        "d6b6e97438767aa1d70b78749b2dc90e6723d572": {
+          "modules": [
+            "repository"
+          ],
+          "description": "docs: record Cloudflare publication acceptance"
+        },
+        "a39d92fac53cd13b66f6efd6abc864e48a9e9813": {
+          "modules": [
+            "repository"
+          ],
+          "description": "docs: document automatic Pages publication acceptance"
+        },
+        "703aa7c0a349f1142b3eb36b127c12e4c349fd11": {
+          "modules": [
+            "repository"
+          ],
+          "description": "docs: record verified automatic Cloudflare publication"
+        }
+      },
+      "generated_history": [
+        {
+          "pr": 2,
+          "source": "PR title and changed module paths",
+          "modules": [
+            "repository",
+            "tools"
+          ]
+        },
+        {
+          "pr": 6,
+          "source": "PR title and changed module paths",
+          "modules": [
+            "integration",
+            "logger",
+            "repository",
+            "tools"
+          ]
+        }
+      ],
+      "dependency_updates": [],
+      "notes": "# batch/v0.1.0\n\n## Initial release\n\nInitial public source release of the batch module. Review supported behavior and compatibility limits in the module documentation; full cross-language parity is not implied.\n\n## Changes without a pull request\n\n- Initial implementation of Powertools for AWS Lambda in Go ([269415e](https://github.com/rambow-cloud/powertools-lambda-go/commit/269415e88b2d19b6f72e7c18d32f0a8157be42e5))\n\n**Source:** https://github.com/rambow-cloud/powertools-lambda-go/tree/batch/v0.1.0\n\n## Installation\n\n```sh\ngo get github.com/rambow-cloud/powertools-lambda-go/batch@v0.1.0\n```\n"
+    },
+    {
+      "directory": "idempotency",
+      "version": "v0.1.0",
+      "previous_tag": null,
+      "initial_summary": "Initial public source release of the idempotency module. Review supported behavior and compatibility limits in the module documentation; full cross-language parity is not implied.",
+      "entries": [],
+      "reviewed_prs": [
+        2,
+        6,
+        9,
+        14
+      ],
+      "excluded_prs": [
+        2,
+        6,
+        9,
+        14
+      ],
+      "untracked_commits": {
+        "269415e88b2d19b6f72e7c18d32f0a8157be42e5": {
+          "modules": [
+            ".",
+            "batch",
+            "commons/awssdk",
+            "commons/dynamodb",
+            "commons/metadata",
+            "commons/regex",
+            "datamasking",
+            "datamasking/kms",
+            "eventhandler/appsyncevents",
+            "eventhandler/appsyncgraphql",
+            "eventhandler/bedrock",
+            "eventhandler/http",
+            "eventhandler/http/metrics",
+            "eventhandler/http/tracer",
+            "examples",
+            "idempotency",
+            "idempotency/cache",
+            "integration",
+            "jmespath",
+            "kafka",
+            "kafka/avro",
+            "kafka/protobuf",
+            "logger",
+            "metrics",
+            "parameters",
+            "parser",
+            "repository",
+            "signer",
+            "tools",
+            "tracer",
+            "tracer/xray",
+            "validation"
+          ],
+          "description": "Initial implementation of Powertools for AWS Lambda in Go"
+        },
+        "0c95b2e9ee13963adbc48c791ab9d9143a9811d1": {
+          "modules": [
+            "integration",
+            "repository"
+          ],
+          "description": "docs: migrate site to Zensical modern theme"
+        },
+        "adc8f284b2587738e7ef38db6a7c3da62cbb46f7": {
+          "modules": [
+            "examples",
+            "repository"
+          ],
+          "description": "docs: audit utility guides against TypeScript baseline"
+        },
+        "5dac031c600c19ebb6939b3a117fe34c85ad5cab": {
+          "modules": [
+            "repository"
+          ],
+          "description": "docs: configure Cloudflare Pages publishing"
+        },
+        "d6b6e97438767aa1d70b78749b2dc90e6723d572": {
+          "modules": [
+            "repository"
+          ],
+          "description": "docs: record Cloudflare publication acceptance"
+        },
+        "a39d92fac53cd13b66f6efd6abc864e48a9e9813": {
+          "modules": [
+            "repository"
+          ],
+          "description": "docs: document automatic Pages publication acceptance"
+        },
+        "703aa7c0a349f1142b3eb36b127c12e4c349fd11": {
+          "modules": [
+            "repository"
+          ],
+          "description": "docs: record verified automatic Cloudflare publication"
+        }
+      },
+      "generated_history": [
+        {
+          "pr": 2,
+          "source": "PR title and changed module paths",
+          "modules": [
+            "repository",
+            "tools"
+          ]
+        },
+        {
+          "pr": 6,
+          "source": "PR title and changed module paths",
+          "modules": [
+            "integration",
+            "logger",
+            "repository",
+            "tools"
+          ]
+        }
+      ],
+      "dependency_updates": [],
+      "notes": "# idempotency/v0.1.0\n\n## Initial release\n\nInitial public source release of the idempotency module. Review supported behavior and compatibility limits in the module documentation; full cross-language parity is not implied.\n\n## Changes without a pull request\n\n- Initial implementation of Powertools for AWS Lambda in Go ([269415e](https://github.com/rambow-cloud/powertools-lambda-go/commit/269415e88b2d19b6f72e7c18d32f0a8157be42e5))\n\n**Source:** https://github.com/rambow-cloud/powertools-lambda-go/tree/idempotency/v0.1.0\n\n## Installation\n\n```sh\ngo get github.com/rambow-cloud/powertools-lambda-go/idempotency@v0.1.0\n```\n"
+    },
+    {
+      "directory": "idempotency/cache",
+      "version": "v0.1.0",
+      "previous_tag": null,
+      "initial_summary": "Initial public source release of the idempotency/cache module. Review supported behavior and compatibility limits in the module documentation; full cross-language parity is not implied.",
+      "entries": [],
+      "reviewed_prs": [
+        2,
+        6,
+        9,
+        14
+      ],
+      "excluded_prs": [
+        2,
+        6,
+        9,
+        14
+      ],
+      "untracked_commits": {
+        "269415e88b2d19b6f72e7c18d32f0a8157be42e5": {
+          "modules": [
+            ".",
+            "batch",
+            "commons/awssdk",
+            "commons/dynamodb",
+            "commons/metadata",
+            "commons/regex",
+            "datamasking",
+            "datamasking/kms",
+            "eventhandler/appsyncevents",
+            "eventhandler/appsyncgraphql",
+            "eventhandler/bedrock",
+            "eventhandler/http",
+            "eventhandler/http/metrics",
+            "eventhandler/http/tracer",
+            "examples",
+            "idempotency",
+            "idempotency/cache",
+            "integration",
+            "jmespath",
+            "kafka",
+            "kafka/avro",
+            "kafka/protobuf",
+            "logger",
+            "metrics",
+            "parameters",
+            "parser",
+            "repository",
+            "signer",
+            "tools",
+            "tracer",
+            "tracer/xray",
+            "validation"
+          ],
+          "description": "Initial implementation of Powertools for AWS Lambda in Go"
+        },
+        "0c95b2e9ee13963adbc48c791ab9d9143a9811d1": {
+          "modules": [
+            "integration",
+            "repository"
+          ],
+          "description": "docs: migrate site to Zensical modern theme"
+        },
+        "adc8f284b2587738e7ef38db6a7c3da62cbb46f7": {
+          "modules": [
+            "examples",
+            "repository"
+          ],
+          "description": "docs: audit utility guides against TypeScript baseline"
+        },
+        "5dac031c600c19ebb6939b3a117fe34c85ad5cab": {
+          "modules": [
+            "repository"
+          ],
+          "description": "docs: configure Cloudflare Pages publishing"
+        },
+        "d6b6e97438767aa1d70b78749b2dc90e6723d572": {
+          "modules": [
+            "repository"
+          ],
+          "description": "docs: record Cloudflare publication acceptance"
+        },
+        "a39d92fac53cd13b66f6efd6abc864e48a9e9813": {
+          "modules": [
+            "repository"
+          ],
+          "description": "docs: document automatic Pages publication acceptance"
+        },
+        "703aa7c0a349f1142b3eb36b127c12e4c349fd11": {
+          "modules": [
+            "repository"
+          ],
+          "description": "docs: record verified automatic Cloudflare publication"
+        }
+      },
+      "generated_history": [
+        {
+          "pr": 2,
+          "source": "PR title and changed module paths",
+          "modules": [
+            "repository",
+            "tools"
+          ]
+        },
+        {
+          "pr": 6,
+          "source": "PR title and changed module paths",
+          "modules": [
+            "integration",
+            "logger",
+            "repository",
+            "tools"
+          ]
+        }
+      ],
+      "dependency_updates": [],
+      "notes": "# idempotency/cache/v0.1.0\n\n## Initial release\n\nInitial public source release of the idempotency/cache module. Review supported behavior and compatibility limits in the module documentation; full cross-language parity is not implied.\n\n## Changes without a pull request\n\n- Initial implementation of Powertools for AWS Lambda in Go ([269415e](https://github.com/rambow-cloud/powertools-lambda-go/commit/269415e88b2d19b6f72e7c18d32f0a8157be42e5))\n\n**Source:** https://github.com/rambow-cloud/powertools-lambda-go/tree/idempotency/cache/v0.1.0\n\n## Installation\n\n```sh\ngo get github.com/rambow-cloud/powertools-lambda-go/idempotency/cache@v0.1.0\n```\n"
+    },
+    {
+      "directory": "parser",
+      "version": "v0.1.0",
+      "previous_tag": null,
+      "initial_summary": "Initial public source release of the parser module. Review supported behavior and compatibility limits in the module documentation; full cross-language parity is not implied.",
+      "entries": [],
+      "reviewed_prs": [
+        2,
+        6,
+        9,
+        14
+      ],
+      "excluded_prs": [
+        2,
+        6,
+        9,
+        14
+      ],
+      "untracked_commits": {
+        "269415e88b2d19b6f72e7c18d32f0a8157be42e5": {
+          "modules": [
+            ".",
+            "batch",
+            "commons/awssdk",
+            "commons/dynamodb",
+            "commons/metadata",
+            "commons/regex",
+            "datamasking",
+            "datamasking/kms",
+            "eventhandler/appsyncevents",
+            "eventhandler/appsyncgraphql",
+            "eventhandler/bedrock",
+            "eventhandler/http",
+            "eventhandler/http/metrics",
+            "eventhandler/http/tracer",
+            "examples",
+            "idempotency",
+            "idempotency/cache",
+            "integration",
+            "jmespath",
+            "kafka",
+            "kafka/avro",
+            "kafka/protobuf",
+            "logger",
+            "metrics",
+            "parameters",
+            "parser",
+            "repository",
+            "signer",
+            "tools",
+            "tracer",
+            "tracer/xray",
+            "validation"
+          ],
+          "description": "Initial implementation of Powertools for AWS Lambda in Go"
+        },
+        "0c95b2e9ee13963adbc48c791ab9d9143a9811d1": {
+          "modules": [
+            "integration",
+            "repository"
+          ],
+          "description": "docs: migrate site to Zensical modern theme"
+        },
+        "adc8f284b2587738e7ef38db6a7c3da62cbb46f7": {
+          "modules": [
+            "examples",
+            "repository"
+          ],
+          "description": "docs: audit utility guides against TypeScript baseline"
+        },
+        "5dac031c600c19ebb6939b3a117fe34c85ad5cab": {
+          "modules": [
+            "repository"
+          ],
+          "description": "docs: configure Cloudflare Pages publishing"
+        },
+        "d6b6e97438767aa1d70b78749b2dc90e6723d572": {
+          "modules": [
+            "repository"
+          ],
+          "description": "docs: record Cloudflare publication acceptance"
+        },
+        "a39d92fac53cd13b66f6efd6abc864e48a9e9813": {
+          "modules": [
+            "repository"
+          ],
+          "description": "docs: document automatic Pages publication acceptance"
+        },
+        "703aa7c0a349f1142b3eb36b127c12e4c349fd11": {
+          "modules": [
+            "repository"
+          ],
+          "description": "docs: record verified automatic Cloudflare publication"
+        }
+      },
+      "generated_history": [
+        {
+          "pr": 2,
+          "source": "PR title and changed module paths",
+          "modules": [
+            "repository",
+            "tools"
+          ]
+        },
+        {
+          "pr": 6,
+          "source": "PR title and changed module paths",
+          "modules": [
+            "integration",
+            "logger",
+            "repository",
+            "tools"
+          ]
+        }
+      ],
+      "dependency_updates": [],
+      "notes": "# parser/v0.1.0\n\n## Initial release\n\nInitial public source release of the parser module. Review supported behavior and compatibility limits in the module documentation; full cross-language parity is not implied.\n\n## Changes without a pull request\n\n- Initial implementation of Powertools for AWS Lambda in Go ([269415e](https://github.com/rambow-cloud/powertools-lambda-go/commit/269415e88b2d19b6f72e7c18d32f0a8157be42e5))\n\n**Source:** https://github.com/rambow-cloud/powertools-lambda-go/tree/parser/v0.1.0\n\n## Installation\n\n```sh\ngo get github.com/rambow-cloud/powertools-lambda-go/parser@v0.1.0\n```\n"
+    },
+    {
+      "directory": "validation",
+      "version": "v0.1.0",
+      "previous_tag": null,
+      "initial_summary": "Initial public source release of the validation module. Review supported behavior and compatibility limits in the module documentation; full cross-language parity is not implied.",
+      "entries": [],
+      "reviewed_prs": [
+        2,
+        6,
+        9,
+        14
+      ],
+      "excluded_prs": [
+        2,
+        6,
+        9,
+        14
+      ],
+      "untracked_commits": {
+        "269415e88b2d19b6f72e7c18d32f0a8157be42e5": {
+          "modules": [
+            ".",
+            "batch",
+            "commons/awssdk",
+            "commons/dynamodb",
+            "commons/metadata",
+            "commons/regex",
+            "datamasking",
+            "datamasking/kms",
+            "eventhandler/appsyncevents",
+            "eventhandler/appsyncgraphql",
+            "eventhandler/bedrock",
+            "eventhandler/http",
+            "eventhandler/http/metrics",
+            "eventhandler/http/tracer",
+            "examples",
+            "idempotency",
+            "idempotency/cache",
+            "integration",
+            "jmespath",
+            "kafka",
+            "kafka/avro",
+            "kafka/protobuf",
+            "logger",
+            "metrics",
+            "parameters",
+            "parser",
+            "repository",
+            "signer",
+            "tools",
+            "tracer",
+            "tracer/xray",
+            "validation"
+          ],
+          "description": "Initial implementation of Powertools for AWS Lambda in Go"
+        },
+        "0c95b2e9ee13963adbc48c791ab9d9143a9811d1": {
+          "modules": [
+            "integration",
+            "repository"
+          ],
+          "description": "docs: migrate site to Zensical modern theme"
+        },
+        "adc8f284b2587738e7ef38db6a7c3da62cbb46f7": {
+          "modules": [
+            "examples",
+            "repository"
+          ],
+          "description": "docs: audit utility guides against TypeScript baseline"
+        },
+        "5dac031c600c19ebb6939b3a117fe34c85ad5cab": {
+          "modules": [
+            "repository"
+          ],
+          "description": "docs: configure Cloudflare Pages publishing"
+        },
+        "d6b6e97438767aa1d70b78749b2dc90e6723d572": {
+          "modules": [
+            "repository"
+          ],
+          "description": "docs: record Cloudflare publication acceptance"
+        },
+        "a39d92fac53cd13b66f6efd6abc864e48a9e9813": {
+          "modules": [
+            "repository"
+          ],
+          "description": "docs: document automatic Pages publication acceptance"
+        },
+        "703aa7c0a349f1142b3eb36b127c12e4c349fd11": {
+          "modules": [
+            "repository"
+          ],
+          "description": "docs: record verified automatic Cloudflare publication"
+        }
+      },
+      "generated_history": [
+        {
+          "pr": 2,
+          "source": "PR title and changed module paths",
+          "modules": [
+            "repository",
+            "tools"
+          ]
+        },
+        {
+          "pr": 6,
+          "source": "PR title and changed module paths",
+          "modules": [
+            "integration",
+            "logger",
+            "repository",
+            "tools"
+          ]
+        }
+      ],
+      "dependency_updates": [],
+      "notes": "# validation/v0.1.0\n\n## Initial release\n\nInitial public source release of the validation module. Review supported behavior and compatibility limits in the module documentation; full cross-language parity is not implied.\n\n## Changes without a pull request\n\n- Initial implementation of Powertools for AWS Lambda in Go ([269415e](https://github.com/rambow-cloud/powertools-lambda-go/commit/269415e88b2d19b6f72e7c18d32f0a8157be42e5))\n\n**Source:** https://github.com/rambow-cloud/powertools-lambda-go/tree/validation/v0.1.0\n\n## Installation\n\n```sh\ngo get github.com/rambow-cloud/powertools-lambda-go/validation@v0.1.0\n```\n"
+    },
+    {
+      "directory": "eventhandler/http",
+      "version": "v0.1.0",
+      "previous_tag": null,
+      "initial_summary": "Initial public source release of the eventhandler/http module. Review supported behavior and compatibility limits in the module documentation; full cross-language parity is not implied.",
+      "entries": [],
+      "reviewed_prs": [
+        2,
+        6,
+        9,
+        14
+      ],
+      "excluded_prs": [
+        2,
+        6,
+        9,
+        14
+      ],
+      "untracked_commits": {
+        "269415e88b2d19b6f72e7c18d32f0a8157be42e5": {
+          "modules": [
+            ".",
+            "batch",
+            "commons/awssdk",
+            "commons/dynamodb",
+            "commons/metadata",
+            "commons/regex",
+            "datamasking",
+            "datamasking/kms",
+            "eventhandler/appsyncevents",
+            "eventhandler/appsyncgraphql",
+            "eventhandler/bedrock",
+            "eventhandler/http",
+            "eventhandler/http/metrics",
+            "eventhandler/http/tracer",
+            "examples",
+            "idempotency",
+            "idempotency/cache",
+            "integration",
+            "jmespath",
+            "kafka",
+            "kafka/avro",
+            "kafka/protobuf",
+            "logger",
+            "metrics",
+            "parameters",
+            "parser",
+            "repository",
+            "signer",
+            "tools",
+            "tracer",
+            "tracer/xray",
+            "validation"
+          ],
+          "description": "Initial implementation of Powertools for AWS Lambda in Go"
+        },
+        "0c95b2e9ee13963adbc48c791ab9d9143a9811d1": {
+          "modules": [
+            "integration",
+            "repository"
+          ],
+          "description": "docs: migrate site to Zensical modern theme"
+        },
+        "adc8f284b2587738e7ef38db6a7c3da62cbb46f7": {
+          "modules": [
+            "examples",
+            "repository"
+          ],
+          "description": "docs: audit utility guides against TypeScript baseline"
+        },
+        "5dac031c600c19ebb6939b3a117fe34c85ad5cab": {
+          "modules": [
+            "repository"
+          ],
+          "description": "docs: configure Cloudflare Pages publishing"
+        },
+        "d6b6e97438767aa1d70b78749b2dc90e6723d572": {
+          "modules": [
+            "repository"
+          ],
+          "description": "docs: record Cloudflare publication acceptance"
+        },
+        "a39d92fac53cd13b66f6efd6abc864e48a9e9813": {
+          "modules": [
+            "repository"
+          ],
+          "description": "docs: document automatic Pages publication acceptance"
+        },
+        "703aa7c0a349f1142b3eb36b127c12e4c349fd11": {
+          "modules": [
+            "repository"
+          ],
+          "description": "docs: record verified automatic Cloudflare publication"
+        }
+      },
+      "generated_history": [
+        {
+          "pr": 2,
+          "source": "PR title and changed module paths",
+          "modules": [
+            "repository",
+            "tools"
+          ]
+        },
+        {
+          "pr": 6,
+          "source": "PR title and changed module paths",
+          "modules": [
+            "integration",
+            "logger",
+            "repository",
+            "tools"
+          ]
+        }
+      ],
+      "dependency_updates": [],
+      "notes": "# eventhandler/http/v0.1.0\n\n## Initial release\n\nInitial public source release of the eventhandler/http module. Review supported behavior and compatibility limits in the module documentation; full cross-language parity is not implied.\n\n## Changes without a pull request\n\n- Initial implementation of Powertools for AWS Lambda in Go ([269415e](https://github.com/rambow-cloud/powertools-lambda-go/commit/269415e88b2d19b6f72e7c18d32f0a8157be42e5))\n\n**Source:** https://github.com/rambow-cloud/powertools-lambda-go/tree/eventhandler/http/v0.1.0\n\n## Installation\n\n```sh\ngo get github.com/rambow-cloud/powertools-lambda-go/eventhandler/http@v0.1.0\n```\n"
+    },
+    {
+      "directory": "eventhandler/appsyncevents",
+      "version": "v0.1.0",
+      "previous_tag": null,
+      "initial_summary": "Initial public source release of the eventhandler/appsyncevents module. Review supported behavior and compatibility limits in the module documentation; full cross-language parity is not implied.",
+      "entries": [],
+      "reviewed_prs": [
+        2,
+        6,
+        9,
+        14
+      ],
+      "excluded_prs": [
+        2,
+        6,
+        9,
+        14
+      ],
+      "untracked_commits": {
+        "269415e88b2d19b6f72e7c18d32f0a8157be42e5": {
+          "modules": [
+            ".",
+            "batch",
+            "commons/awssdk",
+            "commons/dynamodb",
+            "commons/metadata",
+            "commons/regex",
+            "datamasking",
+            "datamasking/kms",
+            "eventhandler/appsyncevents",
+            "eventhandler/appsyncgraphql",
+            "eventhandler/bedrock",
+            "eventhandler/http",
+            "eventhandler/http/metrics",
+            "eventhandler/http/tracer",
+            "examples",
+            "idempotency",
+            "idempotency/cache",
+            "integration",
+            "jmespath",
+            "kafka",
+            "kafka/avro",
+            "kafka/protobuf",
+            "logger",
+            "metrics",
+            "parameters",
+            "parser",
+            "repository",
+            "signer",
+            "tools",
+            "tracer",
+            "tracer/xray",
+            "validation"
+          ],
+          "description": "Initial implementation of Powertools for AWS Lambda in Go"
+        },
+        "0c95b2e9ee13963adbc48c791ab9d9143a9811d1": {
+          "modules": [
+            "integration",
+            "repository"
+          ],
+          "description": "docs: migrate site to Zensical modern theme"
+        },
+        "adc8f284b2587738e7ef38db6a7c3da62cbb46f7": {
+          "modules": [
+            "examples",
+            "repository"
+          ],
+          "description": "docs: audit utility guides against TypeScript baseline"
+        },
+        "5dac031c600c19ebb6939b3a117fe34c85ad5cab": {
+          "modules": [
+            "repository"
+          ],
+          "description": "docs: configure Cloudflare Pages publishing"
+        },
+        "d6b6e97438767aa1d70b78749b2dc90e6723d572": {
+          "modules": [
+            "repository"
+          ],
+          "description": "docs: record Cloudflare publication acceptance"
+        },
+        "a39d92fac53cd13b66f6efd6abc864e48a9e9813": {
+          "modules": [
+            "repository"
+          ],
+          "description": "docs: document automatic Pages publication acceptance"
+        },
+        "703aa7c0a349f1142b3eb36b127c12e4c349fd11": {
+          "modules": [
+            "repository"
+          ],
+          "description": "docs: record verified automatic Cloudflare publication"
+        }
+      },
+      "generated_history": [
+        {
+          "pr": 2,
+          "source": "PR title and changed module paths",
+          "modules": [
+            "repository",
+            "tools"
+          ]
+        },
+        {
+          "pr": 6,
+          "source": "PR title and changed module paths",
+          "modules": [
+            "integration",
+            "logger",
+            "repository",
+            "tools"
+          ]
+        }
+      ],
+      "dependency_updates": [],
+      "notes": "# eventhandler/appsyncevents/v0.1.0\n\n## Initial release\n\nInitial public source release of the eventhandler/appsyncevents module. Review supported behavior and compatibility limits in the module documentation; full cross-language parity is not implied.\n\n## Changes without a pull request\n\n- Initial implementation of Powertools for AWS Lambda in Go ([269415e](https://github.com/rambow-cloud/powertools-lambda-go/commit/269415e88b2d19b6f72e7c18d32f0a8157be42e5))\n\n**Source:** https://github.com/rambow-cloud/powertools-lambda-go/tree/eventhandler/appsyncevents/v0.1.0\n\n## Installation\n\n```sh\ngo get github.com/rambow-cloud/powertools-lambda-go/eventhandler/appsyncevents@v0.1.0\n```\n"
+    },
+    {
+      "directory": "eventhandler/appsyncgraphql",
+      "version": "v0.1.0",
+      "previous_tag": null,
+      "initial_summary": "Initial public source release of the eventhandler/appsyncgraphql module. Review supported behavior and compatibility limits in the module documentation; full cross-language parity is not implied.",
+      "entries": [],
+      "reviewed_prs": [
+        2,
+        6,
+        9,
+        14
+      ],
+      "excluded_prs": [
+        2,
+        6,
+        9,
+        14
+      ],
+      "untracked_commits": {
+        "269415e88b2d19b6f72e7c18d32f0a8157be42e5": {
+          "modules": [
+            ".",
+            "batch",
+            "commons/awssdk",
+            "commons/dynamodb",
+            "commons/metadata",
+            "commons/regex",
+            "datamasking",
+            "datamasking/kms",
+            "eventhandler/appsyncevents",
+            "eventhandler/appsyncgraphql",
+            "eventhandler/bedrock",
+            "eventhandler/http",
+            "eventhandler/http/metrics",
+            "eventhandler/http/tracer",
+            "examples",
+            "idempotency",
+            "idempotency/cache",
+            "integration",
+            "jmespath",
+            "kafka",
+            "kafka/avro",
+            "kafka/protobuf",
+            "logger",
+            "metrics",
+            "parameters",
+            "parser",
+            "repository",
+            "signer",
+            "tools",
+            "tracer",
+            "tracer/xray",
+            "validation"
+          ],
+          "description": "Initial implementation of Powertools for AWS Lambda in Go"
+        },
+        "0c95b2e9ee13963adbc48c791ab9d9143a9811d1": {
+          "modules": [
+            "integration",
+            "repository"
+          ],
+          "description": "docs: migrate site to Zensical modern theme"
+        },
+        "adc8f284b2587738e7ef38db6a7c3da62cbb46f7": {
+          "modules": [
+            "examples",
+            "repository"
+          ],
+          "description": "docs: audit utility guides against TypeScript baseline"
+        },
+        "5dac031c600c19ebb6939b3a117fe34c85ad5cab": {
+          "modules": [
+            "repository"
+          ],
+          "description": "docs: configure Cloudflare Pages publishing"
+        },
+        "d6b6e97438767aa1d70b78749b2dc90e6723d572": {
+          "modules": [
+            "repository"
+          ],
+          "description": "docs: record Cloudflare publication acceptance"
+        },
+        "a39d92fac53cd13b66f6efd6abc864e48a9e9813": {
+          "modules": [
+            "repository"
+          ],
+          "description": "docs: document automatic Pages publication acceptance"
+        },
+        "703aa7c0a349f1142b3eb36b127c12e4c349fd11": {
+          "modules": [
+            "repository"
+          ],
+          "description": "docs: record verified automatic Cloudflare publication"
+        }
+      },
+      "generated_history": [
+        {
+          "pr": 2,
+          "source": "PR title and changed module paths",
+          "modules": [
+            "repository",
+            "tools"
+          ]
+        },
+        {
+          "pr": 6,
+          "source": "PR title and changed module paths",
+          "modules": [
+            "integration",
+            "logger",
+            "repository",
+            "tools"
+          ]
+        }
+      ],
+      "dependency_updates": [],
+      "notes": "# eventhandler/appsyncgraphql/v0.1.0\n\n## Initial release\n\nInitial public source release of the eventhandler/appsyncgraphql module. Review supported behavior and compatibility limits in the module documentation; full cross-language parity is not implied.\n\n## Changes without a pull request\n\n- Initial implementation of Powertools for AWS Lambda in Go ([269415e](https://github.com/rambow-cloud/powertools-lambda-go/commit/269415e88b2d19b6f72e7c18d32f0a8157be42e5))\n\n**Source:** https://github.com/rambow-cloud/powertools-lambda-go/tree/eventhandler/appsyncgraphql/v0.1.0\n\n## Installation\n\n```sh\ngo get github.com/rambow-cloud/powertools-lambda-go/eventhandler/appsyncgraphql@v0.1.0\n```\n"
+    },
+    {
+      "directory": "eventhandler/bedrock",
+      "version": "v0.1.0",
+      "previous_tag": null,
+      "initial_summary": "Initial public source release of the eventhandler/bedrock module. Review supported behavior and compatibility limits in the module documentation; full cross-language parity is not implied.",
+      "entries": [],
+      "reviewed_prs": [
+        2,
+        6,
+        9,
+        14
+      ],
+      "excluded_prs": [
+        2,
+        6,
+        9,
+        14
+      ],
+      "untracked_commits": {
+        "269415e88b2d19b6f72e7c18d32f0a8157be42e5": {
+          "modules": [
+            ".",
+            "batch",
+            "commons/awssdk",
+            "commons/dynamodb",
+            "commons/metadata",
+            "commons/regex",
+            "datamasking",
+            "datamasking/kms",
+            "eventhandler/appsyncevents",
+            "eventhandler/appsyncgraphql",
+            "eventhandler/bedrock",
+            "eventhandler/http",
+            "eventhandler/http/metrics",
+            "eventhandler/http/tracer",
+            "examples",
+            "idempotency",
+            "idempotency/cache",
+            "integration",
+            "jmespath",
+            "kafka",
+            "kafka/avro",
+            "kafka/protobuf",
+            "logger",
+            "metrics",
+            "parameters",
+            "parser",
+            "repository",
+            "signer",
+            "tools",
+            "tracer",
+            "tracer/xray",
+            "validation"
+          ],
+          "description": "Initial implementation of Powertools for AWS Lambda in Go"
+        },
+        "0c95b2e9ee13963adbc48c791ab9d9143a9811d1": {
+          "modules": [
+            "integration",
+            "repository"
+          ],
+          "description": "docs: migrate site to Zensical modern theme"
+        },
+        "adc8f284b2587738e7ef38db6a7c3da62cbb46f7": {
+          "modules": [
+            "examples",
+            "repository"
+          ],
+          "description": "docs: audit utility guides against TypeScript baseline"
+        },
+        "5dac031c600c19ebb6939b3a117fe34c85ad5cab": {
+          "modules": [
+            "repository"
+          ],
+          "description": "docs: configure Cloudflare Pages publishing"
+        },
+        "d6b6e97438767aa1d70b78749b2dc90e6723d572": {
+          "modules": [
+            "repository"
+          ],
+          "description": "docs: record Cloudflare publication acceptance"
+        },
+        "a39d92fac53cd13b66f6efd6abc864e48a9e9813": {
+          "modules": [
+            "repository"
+          ],
+          "description": "docs: document automatic Pages publication acceptance"
+        },
+        "703aa7c0a349f1142b3eb36b127c12e4c349fd11": {
+          "modules": [
+            "repository"
+          ],
+          "description": "docs: record verified automatic Cloudflare publication"
+        }
+      },
+      "generated_history": [
+        {
+          "pr": 2,
+          "source": "PR title and changed module paths",
+          "modules": [
+            "repository",
+            "tools"
+          ]
+        },
+        {
+          "pr": 6,
+          "source": "PR title and changed module paths",
+          "modules": [
+            "integration",
+            "logger",
+            "repository",
+            "tools"
+          ]
+        }
+      ],
+      "dependency_updates": [],
+      "notes": "# eventhandler/bedrock/v0.1.0\n\n## Initial release\n\nInitial public source release of the eventhandler/bedrock module. Review supported behavior and compatibility limits in the module documentation; full cross-language parity is not implied.\n\n## Changes without a pull request\n\n- Initial implementation of Powertools for AWS Lambda in Go ([269415e](https://github.com/rambow-cloud/powertools-lambda-go/commit/269415e88b2d19b6f72e7c18d32f0a8157be42e5))\n\n**Source:** https://github.com/rambow-cloud/powertools-lambda-go/tree/eventhandler/bedrock/v0.1.0\n\n## Installation\n\n```sh\ngo get github.com/rambow-cloud/powertools-lambda-go/eventhandler/bedrock@v0.1.0\n```\n"
+    },
+    {
+      "directory": "eventhandler/http/metrics",
+      "version": "v0.1.0",
+      "previous_tag": null,
+      "initial_summary": "Initial public source release of the eventhandler/http/metrics module. Review supported behavior and compatibility limits in the module documentation; full cross-language parity is not implied.",
+      "entries": [],
+      "reviewed_prs": [
+        2,
+        6,
+        9,
+        14
+      ],
+      "excluded_prs": [
+        2,
+        6,
+        9,
+        14
+      ],
+      "untracked_commits": {
+        "269415e88b2d19b6f72e7c18d32f0a8157be42e5": {
+          "modules": [
+            ".",
+            "batch",
+            "commons/awssdk",
+            "commons/dynamodb",
+            "commons/metadata",
+            "commons/regex",
+            "datamasking",
+            "datamasking/kms",
+            "eventhandler/appsyncevents",
+            "eventhandler/appsyncgraphql",
+            "eventhandler/bedrock",
+            "eventhandler/http",
+            "eventhandler/http/metrics",
+            "eventhandler/http/tracer",
+            "examples",
+            "idempotency",
+            "idempotency/cache",
+            "integration",
+            "jmespath",
+            "kafka",
+            "kafka/avro",
+            "kafka/protobuf",
+            "logger",
+            "metrics",
+            "parameters",
+            "parser",
+            "repository",
+            "signer",
+            "tools",
+            "tracer",
+            "tracer/xray",
+            "validation"
+          ],
+          "description": "Initial implementation of Powertools for AWS Lambda in Go"
+        },
+        "0c95b2e9ee13963adbc48c791ab9d9143a9811d1": {
+          "modules": [
+            "integration",
+            "repository"
+          ],
+          "description": "docs: migrate site to Zensical modern theme"
+        },
+        "adc8f284b2587738e7ef38db6a7c3da62cbb46f7": {
+          "modules": [
+            "examples",
+            "repository"
+          ],
+          "description": "docs: audit utility guides against TypeScript baseline"
+        },
+        "5dac031c600c19ebb6939b3a117fe34c85ad5cab": {
+          "modules": [
+            "repository"
+          ],
+          "description": "docs: configure Cloudflare Pages publishing"
+        },
+        "d6b6e97438767aa1d70b78749b2dc90e6723d572": {
+          "modules": [
+            "repository"
+          ],
+          "description": "docs: record Cloudflare publication acceptance"
+        },
+        "a39d92fac53cd13b66f6efd6abc864e48a9e9813": {
+          "modules": [
+            "repository"
+          ],
+          "description": "docs: document automatic Pages publication acceptance"
+        },
+        "703aa7c0a349f1142b3eb36b127c12e4c349fd11": {
+          "modules": [
+            "repository"
+          ],
+          "description": "docs: record verified automatic Cloudflare publication"
+        }
+      },
+      "generated_history": [
+        {
+          "pr": 2,
+          "source": "PR title and changed module paths",
+          "modules": [
+            "repository",
+            "tools"
+          ]
+        },
+        {
+          "pr": 6,
+          "source": "PR title and changed module paths",
+          "modules": [
+            "integration",
+            "logger",
+            "repository",
+            "tools"
+          ]
+        }
+      ],
+      "dependency_updates": [],
+      "notes": "# eventhandler/http/metrics/v0.1.0\n\n## Initial release\n\nInitial public source release of the eventhandler/http/metrics module. Review supported behavior and compatibility limits in the module documentation; full cross-language parity is not implied.\n\n## Changes without a pull request\n\n- Initial implementation of Powertools for AWS Lambda in Go ([269415e](https://github.com/rambow-cloud/powertools-lambda-go/commit/269415e88b2d19b6f72e7c18d32f0a8157be42e5))\n\n**Source:** https://github.com/rambow-cloud/powertools-lambda-go/tree/eventhandler/http/metrics/v0.1.0\n\n## Installation\n\n```sh\ngo get github.com/rambow-cloud/powertools-lambda-go/eventhandler/http/metrics@v0.1.0\n```\n"
+    },
+    {
+      "directory": "eventhandler/http/tracer",
+      "version": "v0.1.0",
+      "previous_tag": null,
+      "initial_summary": "Initial public source release of the eventhandler/http/tracer module. Review supported behavior and compatibility limits in the module documentation; full cross-language parity is not implied.",
+      "entries": [],
+      "reviewed_prs": [
+        2,
+        6,
+        9,
+        14
+      ],
+      "excluded_prs": [
+        2,
+        6,
+        9,
+        14
+      ],
+      "untracked_commits": {
+        "269415e88b2d19b6f72e7c18d32f0a8157be42e5": {
+          "modules": [
+            ".",
+            "batch",
+            "commons/awssdk",
+            "commons/dynamodb",
+            "commons/metadata",
+            "commons/regex",
+            "datamasking",
+            "datamasking/kms",
+            "eventhandler/appsyncevents",
+            "eventhandler/appsyncgraphql",
+            "eventhandler/bedrock",
+            "eventhandler/http",
+            "eventhandler/http/metrics",
+            "eventhandler/http/tracer",
+            "examples",
+            "idempotency",
+            "idempotency/cache",
+            "integration",
+            "jmespath",
+            "kafka",
+            "kafka/avro",
+            "kafka/protobuf",
+            "logger",
+            "metrics",
+            "parameters",
+            "parser",
+            "repository",
+            "signer",
+            "tools",
+            "tracer",
+            "tracer/xray",
+            "validation"
+          ],
+          "description": "Initial implementation of Powertools for AWS Lambda in Go"
+        },
+        "0c95b2e9ee13963adbc48c791ab9d9143a9811d1": {
+          "modules": [
+            "integration",
+            "repository"
+          ],
+          "description": "docs: migrate site to Zensical modern theme"
+        },
+        "adc8f284b2587738e7ef38db6a7c3da62cbb46f7": {
+          "modules": [
+            "examples",
+            "repository"
+          ],
+          "description": "docs: audit utility guides against TypeScript baseline"
+        },
+        "5dac031c600c19ebb6939b3a117fe34c85ad5cab": {
+          "modules": [
+            "repository"
+          ],
+          "description": "docs: configure Cloudflare Pages publishing"
+        },
+        "d6b6e97438767aa1d70b78749b2dc90e6723d572": {
+          "modules": [
+            "repository"
+          ],
+          "description": "docs: record Cloudflare publication acceptance"
+        },
+        "a39d92fac53cd13b66f6efd6abc864e48a9e9813": {
+          "modules": [
+            "repository"
+          ],
+          "description": "docs: document automatic Pages publication acceptance"
+        },
+        "703aa7c0a349f1142b3eb36b127c12e4c349fd11": {
+          "modules": [
+            "repository"
+          ],
+          "description": "docs: record verified automatic Cloudflare publication"
+        }
+      },
+      "generated_history": [
+        {
+          "pr": 2,
+          "source": "PR title and changed module paths",
+          "modules": [
+            "repository",
+            "tools"
+          ]
+        },
+        {
+          "pr": 6,
+          "source": "PR title and changed module paths",
+          "modules": [
+            "integration",
+            "logger",
+            "repository",
+            "tools"
+          ]
+        }
+      ],
+      "dependency_updates": [],
+      "notes": "# eventhandler/http/tracer/v0.1.0\n\n## Initial release\n\nInitial public source release of the eventhandler/http/tracer module. Review supported behavior and compatibility limits in the module documentation; full cross-language parity is not implied.\n\n## Changes without a pull request\n\n- Initial implementation of Powertools for AWS Lambda in Go ([269415e](https://github.com/rambow-cloud/powertools-lambda-go/commit/269415e88b2d19b6f72e7c18d32f0a8157be42e5))\n\n**Source:** https://github.com/rambow-cloud/powertools-lambda-go/tree/eventhandler/http/tracer/v0.1.0\n\n## Installation\n\n```sh\ngo get github.com/rambow-cloud/powertools-lambda-go/eventhandler/http/tracer@v0.1.0\n```\n"
+    },
+    {
+      "directory": "tracer",
+      "version": "v0.1.0",
+      "previous_tag": null,
+      "initial_summary": "Initial public source release of the tracer module. Review supported behavior and compatibility limits in the module documentation; full cross-language parity is not implied.",
+      "entries": [],
+      "reviewed_prs": [
+        2,
+        6,
+        9,
+        14
+      ],
+      "excluded_prs": [
+        2,
+        6,
+        9,
+        14
+      ],
+      "untracked_commits": {
+        "269415e88b2d19b6f72e7c18d32f0a8157be42e5": {
+          "modules": [
+            ".",
+            "batch",
+            "commons/awssdk",
+            "commons/dynamodb",
+            "commons/metadata",
+            "commons/regex",
+            "datamasking",
+            "datamasking/kms",
+            "eventhandler/appsyncevents",
+            "eventhandler/appsyncgraphql",
+            "eventhandler/bedrock",
+            "eventhandler/http",
+            "eventhandler/http/metrics",
+            "eventhandler/http/tracer",
+            "examples",
+            "idempotency",
+            "idempotency/cache",
+            "integration",
+            "jmespath",
+            "kafka",
+            "kafka/avro",
+            "kafka/protobuf",
+            "logger",
+            "metrics",
+            "parameters",
+            "parser",
+            "repository",
+            "signer",
+            "tools",
+            "tracer",
+            "tracer/xray",
+            "validation"
+          ],
+          "description": "Initial implementation of Powertools for AWS Lambda in Go"
+        },
+        "0c95b2e9ee13963adbc48c791ab9d9143a9811d1": {
+          "modules": [
+            "integration",
+            "repository"
+          ],
+          "description": "docs: migrate site to Zensical modern theme"
+        },
+        "adc8f284b2587738e7ef38db6a7c3da62cbb46f7": {
+          "modules": [
+            "examples",
+            "repository"
+          ],
+          "description": "docs: audit utility guides against TypeScript baseline"
+        },
+        "5dac031c600c19ebb6939b3a117fe34c85ad5cab": {
+          "modules": [
+            "repository"
+          ],
+          "description": "docs: configure Cloudflare Pages publishing"
+        },
+        "d6b6e97438767aa1d70b78749b2dc90e6723d572": {
+          "modules": [
+            "repository"
+          ],
+          "description": "docs: record Cloudflare publication acceptance"
+        },
+        "a39d92fac53cd13b66f6efd6abc864e48a9e9813": {
+          "modules": [
+            "repository"
+          ],
+          "description": "docs: document automatic Pages publication acceptance"
+        },
+        "703aa7c0a349f1142b3eb36b127c12e4c349fd11": {
+          "modules": [
+            "repository"
+          ],
+          "description": "docs: record verified automatic Cloudflare publication"
+        }
+      },
+      "generated_history": [
+        {
+          "pr": 2,
+          "source": "PR title and changed module paths",
+          "modules": [
+            "repository",
+            "tools"
+          ]
+        },
+        {
+          "pr": 6,
+          "source": "PR title and changed module paths",
+          "modules": [
+            "integration",
+            "logger",
+            "repository",
+            "tools"
+          ]
+        }
+      ],
+      "dependency_updates": [],
+      "notes": "# tracer/v0.1.0\n\n## Initial release\n\nInitial public source release of the tracer module. Review supported behavior and compatibility limits in the module documentation; full cross-language parity is not implied.\n\n## Changes without a pull request\n\n- Initial implementation of Powertools for AWS Lambda in Go ([269415e](https://github.com/rambow-cloud/powertools-lambda-go/commit/269415e88b2d19b6f72e7c18d32f0a8157be42e5))\n\n**Source:** https://github.com/rambow-cloud/powertools-lambda-go/tree/tracer/v0.1.0\n\n## Installation\n\n```sh\ngo get github.com/rambow-cloud/powertools-lambda-go/tracer@v0.1.0\n```\n"
+    }
+  ],
+  "metadata_updates": {}
+}
