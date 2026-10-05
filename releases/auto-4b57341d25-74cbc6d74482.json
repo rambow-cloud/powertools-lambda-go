@@ -1,0 +1,1973 @@
+{
+  "schema_version": 2,
+  "notes_format": 2,
+  "release_version": "v0.2.0",
+  "repository_entries": [
+    {
+      "module": "repository",
+      "type": "fix",
+      "description": "Activate native PR checks for prepared releases so successful checks satisfy protected-branch merge rules without duplicate manual dispatches.",
+      "pr": 18
+    },
+    {
+      "module": "repository",
+      "type": "fix",
+      "description": "Discover and reuse matching GitHub Release drafts during GoReleaser publication recovery instead of treating them as missing published releases.",
+      "pr": 18
+    },
+    {
+      "module": "repository",
+      "type": "fix",
+      "description": "Wait briefly for newly written Releases to become visible before continuing publication.",
+      "pr": 21
+    },
+    {
+      "module": "repository",
+      "type": "documentation",
+      "description": "Record the first verified public v0.1.0 release and available installation commands.",
+      "pr": 22
+    },
+    {
+      "module": "repository",
+      "type": "feature",
+      "description": "Release all maintained components at one shared version with a grouped project changelog and automatic dependency alignment.",
+      "pr": 24
+    },
+    {
+      "module": "repository",
+      "type": "maintenance",
+      "description": "Require synthetic Lambda runtime and cross-language data simulation checks before merging or releasing.",
+      "pr": 32
+    },
+    {
+      "module": "repository",
+      "type": "maintenance",
+      "description": "Automatically classify bug reports and feature proposals with standard category labels.",
+      "pr": 34
+    },
+    {
+      "module": "repository",
+      "type": "maintenance",
+      "description": "Route CI by changed files so documentation and metadata changes avoid unrelated Go builds and runtime simulations.",
+      "pr": 37
+    },
+    {
+      "module": "repository",
+      "type": "maintenance",
+      "description": "Add documented issue labels and dedicated documentation, CI/CD, maintenance and question forms with automatic category labels.",
+      "pr": 38
+    },
+    {
+      "module": "repository",
+      "type": "maintenance",
+      "description": "Show actual module updates separately from unified version bumps and generate source-bound release-notes previews.",
+      "pr": 40
+    },
+    {
+      "module": "repository",
+      "type": "documentation",
+      "description": "Use consistent project-qualified module names in unified release notes.",
+      "pr": 42
+    }
+  ],
+  "issue": 43,
+  "source_sha": "74cbc6d74482c5cf48b6fa70a49aeee305bfabe1",
+  "auto_publish": true,
+  "requested_modules": [
+    ".",
+    "commons/awssdk",
+    "commons/dynamodb",
+    "commons/metadata",
+    "commons/regex",
+    "logger",
+    "metrics",
+    "parameters",
+    "signer",
+    "jmespath",
+    "datamasking/kms",
+    "datamasking",
+    "kafka/protobuf",
+    "kafka/avro",
+    "kafka",
+    "batch",
+    "idempotency",
+    "idempotency/cache",
+    "parser",
+    "validation",
+    "eventhandler/http",
+    "eventhandler/appsyncevents",
+    "eventhandler/appsyncgraphql",
+    "eventhandler/bedrock",
+    "eventhandler/http/metrics",
+    "eventhandler/http/tracer",
+    "tracer"
+  ],
+  "included_dependencies": [],
+  "bump": "auto",
+  "modules": [
+    {
+      "directory": ".",
+      "version": "v0.2.0",
+      "previous_tag": "v0.1.0",
+      "initial_summary": null,
+      "entries": [],
+      "reviewed_prs": [
+        18,
+        21,
+        22,
+        24,
+        29,
+        30,
+        32,
+        34,
+        37,
+        38,
+        40,
+        42
+      ],
+      "excluded_prs": [
+        18,
+        21,
+        22,
+        24,
+        29,
+        30,
+        32,
+        34,
+        37,
+        38,
+        40,
+        42
+      ],
+      "untracked_commits": {},
+      "generated_history": [],
+      "dependency_updates": [],
+      "changed_files": [],
+      "notes": "# v0.2.0\n\nAll maintained public modules move to this version. Modules without file changes receive a version bump only.\n\n**Scope:** 4 modules with changes; 23 version bumps only.\n\n**Source:** [74cbc6d74482](https://github.com/rambow-cloud/powertools-lambda-go/tree/74cbc6d74482c5cf48b6fa70a49aeee305bfabe1)\n\n**Publication status:** https://github.com/rambow-cloud/powertools-lambda-go/issues/43\n\n## Updated modules\n\n### powertools-lambda-go/parameters\n\n#### Fixes\n\n- Preserve reference UTF-8 replacement and remove leading BOMs in byte and binary parameter transforms. ([#30](https://github.com/rambow-cloud/powertools-lambda-go/pull/30))\n\n<details><summary>Changed files (3)</summary>\n\n- `parameters/testdata/utf8-v2.35.0.json`\n- `parameters/transform.go`\n- `parameters/utf8_test.go`\n\n</details>\n\n### powertools-lambda-go/signer\n\n#### Fixes\n\n- Preserve request bodies until the base transport finishes asynchronous uploads when custom signers share the input body. ([#29](https://github.com/rambow-cloud/powertools-lambda-go/pull/29))\n\n<details><summary>Changed files (2)</summary>\n\n- `signer/transport.go`\n- `signer/transport_body_test.go`\n\n</details>\n\n### powertools-lambda-go/jmespath\n\n#### Fixes\n\n- Decode malformed UTF-8 subparts consistently in Powertools Base64 and gzip functions. ([#30](https://github.com/rambow-cloud/powertools-lambda-go/pull/30))\n\n<details><summary>Changed files (3)</summary>\n\n- `jmespath/envelopes.go`\n- `jmespath/testdata/utf8-v2.35.0.json`\n- `jmespath/utf8_test.go`\n\n</details>\n\n### powertools-lambda-go/parser\n\n#### Fixes\n\n- Match reference UTF-8 replacement and BOM handling when decoding Base64 text and gzip JSON. ([#30](https://github.com/rambow-cloud/powertools-lambda-go/pull/30))\n\n<details><summary>Changed files (3)</summary>\n\n- `parser/helpers.go`\n- `parser/testdata/utf8-v2.35.0.json`\n- `parser/utf8_test.go`\n\n</details>\n\n## Version bumps only\n\nNo module file changes; internal requirements will follow the unified version.\n\n- `powertools-lambda-go`: bumped to `v0.2.0`.\n- `powertools-lambda-go/commons/awssdk`: bumped to `v0.2.0`.\n- `powertools-lambda-go/commons/dynamodb`: bumped to `v0.2.0`.\n- `powertools-lambda-go/commons/metadata`: bumped to `v0.2.0`.\n- `powertools-lambda-go/commons/regex`: bumped to `v0.2.0`.\n- `powertools-lambda-go/logger`: bumped to `v0.2.0`.\n- `powertools-lambda-go/metrics`: bumped to `v0.2.0`.\n- `powertools-lambda-go/datamasking/kms`: bumped to `v0.2.0`.\n- `powertools-lambda-go/datamasking`: bumped to `v0.2.0`.\n- `powertools-lambda-go/kafka/protobuf`: bumped to `v0.2.0`.\n- `powertools-lambda-go/kafka/avro`: bumped to `v0.2.0`.\n- `powertools-lambda-go/kafka`: bumped to `v0.2.0`.\n- `powertools-lambda-go/batch`: bumped to `v0.2.0`.\n- `powertools-lambda-go/idempotency`: bumped to `v0.2.0`.\n- `powertools-lambda-go/idempotency/cache`: bumped to `v0.2.0`.\n- `powertools-lambda-go/validation`: bumped to `v0.2.0`.\n- `powertools-lambda-go/eventhandler/http`: bumped to `v0.2.0`.\n- `powertools-lambda-go/eventhandler/appsyncevents`: bumped to `v0.2.0`.\n- `powertools-lambda-go/eventhandler/appsyncgraphql`: bumped to `v0.2.0`.\n- `powertools-lambda-go/eventhandler/bedrock`: bumped to `v0.2.0`.\n- `powertools-lambda-go/eventhandler/http/metrics`: bumped to `v0.2.0`.\n- `powertools-lambda-go/eventhandler/http/tracer`: bumped to `v0.2.0`.\n- `powertools-lambda-go/tracer`: bumped to `v0.2.0`.\n\n## Repository\n\n### Features\n\n- Release all maintained components at one shared version with a grouped project changelog and automatic dependency alignment. ([#24](https://github.com/rambow-cloud/powertools-lambda-go/pull/24))\n\n### Fixes\n\n- Activate native PR checks for prepared releases so successful checks satisfy protected-branch merge rules without duplicate manual dispatches. ([#18](https://github.com/rambow-cloud/powertools-lambda-go/pull/18))\n- Discover and reuse matching GitHub Release drafts during GoReleaser publication recovery instead of treating them as missing published releases. ([#18](https://github.com/rambow-cloud/powertools-lambda-go/pull/18))\n- Wait briefly for newly written Releases to become visible before continuing publication. ([#21](https://github.com/rambow-cloud/powertools-lambda-go/pull/21))\n\n### Documentation\n\n- Record the first verified public v0.1.0 release and available installation commands. ([#22](https://github.com/rambow-cloud/powertools-lambda-go/pull/22))\n- Use consistent project-qualified module names in unified release notes. ([#42](https://github.com/rambow-cloud/powertools-lambda-go/pull/42))\n\n### Maintenance\n\n- Require synthetic Lambda runtime and cross-language data simulation checks before merging or releasing. ([#32](https://github.com/rambow-cloud/powertools-lambda-go/pull/32))\n- Automatically classify bug reports and feature proposals with standard category labels. ([#34](https://github.com/rambow-cloud/powertools-lambda-go/pull/34))\n- Route CI by changed files so documentation and metadata changes avoid unrelated Go builds and runtime simulations. ([#37](https://github.com/rambow-cloud/powertools-lambda-go/pull/37))\n- Add documented issue labels and dedicated documentation, CI/CD, maintenance and question forms with automatic category labels. ([#38](https://github.com/rambow-cloud/powertools-lambda-go/pull/38))\n- Show actual module updates separately from unified version bumps and generate source-bound release-notes previews. ([#40](https://github.com/rambow-cloud/powertools-lambda-go/pull/40))\n\n## Module versions\n\n<details><summary>All maintained modules (27)</summary>\n\n| Module | Version | Changes |\n|---|---|---|\n| `powertools-lambda-go` | [v0.2.0](https://github.com/rambow-cloud/powertools-lambda-go/releases/tag/v0.2.0) | Bumped to v0.2.0 only |\n| `powertools-lambda-go/commons/awssdk` | [v0.2.0](https://github.com/rambow-cloud/powertools-lambda-go/releases/tag/commons/awssdk/v0.2.0) | Bumped to v0.2.0 only |\n| `powertools-lambda-go/commons/dynamodb` | [v0.2.0](https://github.com/rambow-cloud/powertools-lambda-go/releases/tag/commons/dynamodb/v0.2.0) | Bumped to v0.2.0 only |\n| `powertools-lambda-go/commons/metadata` | [v0.2.0](https://github.com/rambow-cloud/powertools-lambda-go/releases/tag/commons/metadata/v0.2.0) | Bumped to v0.2.0 only |\n| `powertools-lambda-go/commons/regex` | [v0.2.0](https://github.com/rambow-cloud/powertools-lambda-go/releases/tag/commons/regex/v0.2.0) | Bumped to v0.2.0 only |\n| `powertools-lambda-go/logger` | [v0.2.0](https://github.com/rambow-cloud/powertools-lambda-go/releases/tag/logger/v0.2.0) | Bumped to v0.2.0 only |\n| `powertools-lambda-go/metrics` | [v0.2.0](https://github.com/rambow-cloud/powertools-lambda-go/releases/tag/metrics/v0.2.0) | Bumped to v0.2.0 only |\n| `powertools-lambda-go/parameters` | [v0.2.0](https://github.com/rambow-cloud/powertools-lambda-go/releases/tag/parameters/v0.2.0) | Updated |\n| `powertools-lambda-go/signer` | [v0.2.0](https://github.com/rambow-cloud/powertools-lambda-go/releases/tag/signer/v0.2.0) | Updated |\n| `powertools-lambda-go/jmespath` | [v0.2.0](https://github.com/rambow-cloud/powertools-lambda-go/releases/tag/jmespath/v0.2.0) | Updated |\n| `powertools-lambda-go/datamasking/kms` | [v0.2.0](https://github.com/rambow-cloud/powertools-lambda-go/releases/tag/datamasking/kms/v0.2.0) | Bumped to v0.2.0 only |\n| `powertools-lambda-go/datamasking` | [v0.2.0](https://github.com/rambow-cloud/powertools-lambda-go/releases/tag/datamasking/v0.2.0) | Bumped to v0.2.0 only |\n| `powertools-lambda-go/kafka/protobuf` | [v0.2.0](https://github.com/rambow-cloud/powertools-lambda-go/releases/tag/kafka/protobuf/v0.2.0) | Bumped to v0.2.0 only |\n| `powertools-lambda-go/kafka/avro` | [v0.2.0](https://github.com/rambow-cloud/powertools-lambda-go/releases/tag/kafka/avro/v0.2.0) | Bumped to v0.2.0 only |\n| `powertools-lambda-go/kafka` | [v0.2.0](https://github.com/rambow-cloud/powertools-lambda-go/releases/tag/kafka/v0.2.0) | Bumped to v0.2.0 only |\n| `powertools-lambda-go/batch` | [v0.2.0](https://github.com/rambow-cloud/powertools-lambda-go/releases/tag/batch/v0.2.0) | Bumped to v0.2.0 only |\n| `powertools-lambda-go/idempotency` | [v0.2.0](https://github.com/rambow-cloud/powertools-lambda-go/releases/tag/idempotency/v0.2.0) | Bumped to v0.2.0 only |\n| `powertools-lambda-go/idempotency/cache` | [v0.2.0](https://github.com/rambow-cloud/powertools-lambda-go/releases/tag/idempotency/cache/v0.2.0) | Bumped to v0.2.0 only |\n| `powertools-lambda-go/parser` | [v0.2.0](https://github.com/rambow-cloud/powertools-lambda-go/releases/tag/parser/v0.2.0) | Updated |\n| `powertools-lambda-go/validation` | [v0.2.0](https://github.com/rambow-cloud/powertools-lambda-go/releases/tag/validation/v0.2.0) | Bumped to v0.2.0 only |\n| `powertools-lambda-go/eventhandler/http` | [v0.2.0](https://github.com/rambow-cloud/powertools-lambda-go/releases/tag/eventhandler/http/v0.2.0) | Bumped to v0.2.0 only |\n| `powertools-lambda-go/eventhandler/appsyncevents` | [v0.2.0](https://github.com/rambow-cloud/powertools-lambda-go/releases/tag/eventhandler/appsyncevents/v0.2.0) | Bumped to v0.2.0 only |\n| `powertools-lambda-go/eventhandler/appsyncgraphql` | [v0.2.0](https://github.com/rambow-cloud/powertools-lambda-go/releases/tag/eventhandler/appsyncgraphql/v0.2.0) | Bumped to v0.2.0 only |\n| `powertools-lambda-go/eventhandler/bedrock` | [v0.2.0](https://github.com/rambow-cloud/powertools-lambda-go/releases/tag/eventhandler/bedrock/v0.2.0) | Bumped to v0.2.0 only |\n| `powertools-lambda-go/eventhandler/http/metrics` | [v0.2.0](https://github.com/rambow-cloud/powertools-lambda-go/releases/tag/eventhandler/http/metrics/v0.2.0) | Bumped to v0.2.0 only |\n| `powertools-lambda-go/eventhandler/http/tracer` | [v0.2.0](https://github.com/rambow-cloud/powertools-lambda-go/releases/tag/eventhandler/http/tracer/v0.2.0) | Bumped to v0.2.0 only |\n| `powertools-lambda-go/tracer` | [v0.2.0](https://github.com/rambow-cloud/powertools-lambda-go/releases/tag/tracer/v0.2.0) | Bumped to v0.2.0 only |\n\n</details>\n\n**Full changelog:** https://github.com/rambow-cloud/powertools-lambda-go/compare/v0.1.0...v0.2.0\n"
+    },
+    {
+      "directory": "commons/awssdk",
+      "version": "v0.2.0",
+      "previous_tag": "commons/awssdk/v0.1.0",
+      "initial_summary": null,
+      "entries": [],
+      "reviewed_prs": [
+        18,
+        21,
+        22,
+        24,
+        29,
+        30,
+        32,
+        34,
+        37,
+        38,
+        40,
+        42
+      ],
+      "excluded_prs": [
+        18,
+        21,
+        22,
+        24,
+        29,
+        30,
+        32,
+        34,
+        37,
+        38,
+        40,
+        42
+      ],
+      "untracked_commits": {},
+      "generated_history": [],
+      "dependency_updates": [
+        {
+          "path": "github.com/rambow-cloud/powertools-lambda-go",
+          "from": "v0.1.0",
+          "to": "v0.2.0"
+        }
+      ],
+      "changed_files": [],
+      "notes": "# commons/awssdk/v0.2.0\n\nBumped to `v0.2.0` only. No module file changes.\n\n**Full changelog:** https://github.com/rambow-cloud/powertools-lambda-go/compare/commons/awssdk/v0.1.0...commons/awssdk/v0.2.0\n\n## Installation\n\n```sh\ngo get github.com/rambow-cloud/powertools-lambda-go/commons/awssdk@v0.2.0\n```\n"
+    },
+    {
+      "directory": "commons/dynamodb",
+      "version": "v0.2.0",
+      "previous_tag": "commons/dynamodb/v0.1.0",
+      "initial_summary": null,
+      "entries": [],
+      "reviewed_prs": [
+        18,
+        21,
+        22,
+        24,
+        29,
+        30,
+        32,
+        34,
+        37,
+        38,
+        40,
+        42
+      ],
+      "excluded_prs": [
+        18,
+        21,
+        22,
+        24,
+        29,
+        30,
+        32,
+        34,
+        37,
+        38,
+        40,
+        42
+      ],
+      "untracked_commits": {},
+      "generated_history": [],
+      "dependency_updates": [
+        {
+          "path": "github.com/rambow-cloud/powertools-lambda-go",
+          "from": "v0.1.0",
+          "to": "v0.2.0"
+        }
+      ],
+      "changed_files": [],
+      "notes": "# commons/dynamodb/v0.2.0\n\nBumped to `v0.2.0` only. No module file changes.\n\n**Full changelog:** https://github.com/rambow-cloud/powertools-lambda-go/compare/commons/dynamodb/v0.1.0...commons/dynamodb/v0.2.0\n\n## Installation\n\n```sh\ngo get github.com/rambow-cloud/powertools-lambda-go/commons/dynamodb@v0.2.0\n```\n"
+    },
+    {
+      "directory": "commons/metadata",
+      "version": "v0.2.0",
+      "previous_tag": "commons/metadata/v0.1.0",
+      "initial_summary": null,
+      "entries": [],
+      "reviewed_prs": [
+        18,
+        21,
+        22,
+        24,
+        29,
+        30,
+        32,
+        34,
+        37,
+        38,
+        40,
+        42
+      ],
+      "excluded_prs": [
+        18,
+        21,
+        22,
+        24,
+        29,
+        30,
+        32,
+        34,
+        37,
+        38,
+        40,
+        42
+      ],
+      "untracked_commits": {},
+      "generated_history": [],
+      "dependency_updates": [
+        {
+          "path": "github.com/rambow-cloud/powertools-lambda-go",
+          "from": "v0.1.0",
+          "to": "v0.2.0"
+        }
+      ],
+      "changed_files": [],
+      "notes": "# commons/metadata/v0.2.0\n\nBumped to `v0.2.0` only. No module file changes.\n\n**Full changelog:** https://github.com/rambow-cloud/powertools-lambda-go/compare/commons/metadata/v0.1.0...commons/metadata/v0.2.0\n\n## Installation\n\n```sh\ngo get github.com/rambow-cloud/powertools-lambda-go/commons/metadata@v0.2.0\n```\n"
+    },
+    {
+      "directory": "commons/regex",
+      "version": "v0.2.0",
+      "previous_tag": "commons/regex/v0.1.0",
+      "initial_summary": null,
+      "entries": [],
+      "reviewed_prs": [
+        18,
+        21,
+        22,
+        24,
+        29,
+        30,
+        32,
+        34,
+        37,
+        38,
+        40,
+        42
+      ],
+      "excluded_prs": [
+        18,
+        21,
+        22,
+        24,
+        29,
+        30,
+        32,
+        34,
+        37,
+        38,
+        40,
+        42
+      ],
+      "untracked_commits": {},
+      "generated_history": [],
+      "dependency_updates": [],
+      "changed_files": [],
+      "notes": "# commons/regex/v0.2.0\n\nBumped to `v0.2.0` only. No module file changes.\n\n**Full changelog:** https://github.com/rambow-cloud/powertools-lambda-go/compare/commons/regex/v0.1.0...commons/regex/v0.2.0\n\n## Installation\n\n```sh\ngo get github.com/rambow-cloud/powertools-lambda-go/commons/regex@v0.2.0\n```\n"
+    },
+    {
+      "directory": "logger",
+      "version": "v0.2.0",
+      "previous_tag": "logger/v0.1.0",
+      "initial_summary": null,
+      "entries": [],
+      "reviewed_prs": [
+        18,
+        21,
+        22,
+        24,
+        29,
+        30,
+        32,
+        34,
+        37,
+        38,
+        40,
+        42
+      ],
+      "excluded_prs": [
+        18,
+        21,
+        22,
+        24,
+        29,
+        30,
+        32,
+        34,
+        37,
+        38,
+        40,
+        42
+      ],
+      "untracked_commits": {},
+      "generated_history": [],
+      "dependency_updates": [
+        {
+          "path": "github.com/rambow-cloud/powertools-lambda-go",
+          "from": "v0.1.0",
+          "to": "v0.2.0"
+        }
+      ],
+      "changed_files": [],
+      "notes": "# logger/v0.2.0\n\nBumped to `v0.2.0` only. No module file changes.\n\n**Full changelog:** https://github.com/rambow-cloud/powertools-lambda-go/compare/logger/v0.1.0...logger/v0.2.0\n\n## Installation\n\n```sh\ngo get github.com/rambow-cloud/powertools-lambda-go/logger@v0.2.0\n```\n"
+    },
+    {
+      "directory": "metrics",
+      "version": "v0.2.0",
+      "previous_tag": "metrics/v0.1.0",
+      "initial_summary": null,
+      "entries": [],
+      "reviewed_prs": [
+        18,
+        21,
+        22,
+        24,
+        29,
+        30,
+        32,
+        34,
+        37,
+        38,
+        40,
+        42
+      ],
+      "excluded_prs": [
+        18,
+        21,
+        22,
+        24,
+        29,
+        30,
+        32,
+        34,
+        37,
+        38,
+        40,
+        42
+      ],
+      "untracked_commits": {},
+      "generated_history": [],
+      "dependency_updates": [
+        {
+          "path": "github.com/rambow-cloud/powertools-lambda-go",
+          "from": "v0.1.0",
+          "to": "v0.2.0"
+        }
+      ],
+      "changed_files": [],
+      "notes": "# metrics/v0.2.0\n\nBumped to `v0.2.0` only. No module file changes.\n\n**Full changelog:** https://github.com/rambow-cloud/powertools-lambda-go/compare/metrics/v0.1.0...metrics/v0.2.0\n\n## Installation\n\n```sh\ngo get github.com/rambow-cloud/powertools-lambda-go/metrics@v0.2.0\n```\n"
+    },
+    {
+      "directory": "parameters",
+      "version": "v0.2.0",
+      "previous_tag": "parameters/v0.1.0",
+      "initial_summary": null,
+      "entries": [
+        {
+          "module": "parameters",
+          "type": "fix",
+          "description": "Preserve reference UTF-8 replacement and remove leading BOMs in byte and binary parameter transforms.",
+          "pr": 30
+        }
+      ],
+      "reviewed_prs": [
+        18,
+        21,
+        22,
+        24,
+        29,
+        30,
+        32,
+        34,
+        37,
+        38,
+        40,
+        42
+      ],
+      "excluded_prs": [
+        18,
+        21,
+        22,
+        24,
+        29,
+        32,
+        34,
+        37,
+        38,
+        40,
+        42
+      ],
+      "untracked_commits": {},
+      "generated_history": [],
+      "dependency_updates": [
+        {
+          "path": "github.com/rambow-cloud/powertools-lambda-go",
+          "from": "v0.1.0",
+          "to": "v0.2.0"
+        },
+        {
+          "path": "github.com/rambow-cloud/powertools-lambda-go/commons/awssdk",
+          "from": "v0.1.0",
+          "to": "v0.2.0"
+        },
+        {
+          "path": "github.com/rambow-cloud/powertools-lambda-go/commons/dynamodb",
+          "from": "v0.1.0",
+          "to": "v0.2.0"
+        }
+      ],
+      "changed_files": [
+        "parameters/testdata/utf8-v2.35.0.json",
+        "parameters/transform.go",
+        "parameters/utf8_test.go"
+      ],
+      "notes": "# parameters/v0.2.0\n\n## Fixes\n\n- Preserve reference UTF-8 replacement and remove leading BOMs in byte and binary parameter transforms. ([#30](https://github.com/rambow-cloud/powertools-lambda-go/pull/30))\n\n<details><summary>Changed files (3)</summary>\n\n- `parameters/testdata/utf8-v2.35.0.json`\n- `parameters/transform.go`\n- `parameters/utf8_test.go`\n\n</details>\n\n**Full changelog:** https://github.com/rambow-cloud/powertools-lambda-go/compare/parameters/v0.1.0...parameters/v0.2.0\n\n## Installation\n\n```sh\ngo get github.com/rambow-cloud/powertools-lambda-go/parameters@v0.2.0\n```\n"
+    },
+    {
+      "directory": "signer",
+      "version": "v0.2.0",
+      "previous_tag": "signer/v0.1.0",
+      "initial_summary": null,
+      "entries": [
+        {
+          "module": "signer",
+          "type": "fix",
+          "description": "Preserve request bodies until the base transport finishes asynchronous uploads when custom signers share the input body.",
+          "pr": 29
+        }
+      ],
+      "reviewed_prs": [
+        18,
+        21,
+        22,
+        24,
+        29,
+        30,
+        32,
+        34,
+        37,
+        38,
+        40,
+        42
+      ],
+      "excluded_prs": [
+        18,
+        21,
+        22,
+        24,
+        30,
+        32,
+        34,
+        37,
+        38,
+        40,
+        42
+      ],
+      "untracked_commits": {},
+      "generated_history": [],
+      "dependency_updates": [],
+      "changed_files": [
+        "signer/transport.go",
+        "signer/transport_body_test.go"
+      ],
+      "notes": "# signer/v0.2.0\n\n## Fixes\n\n- Preserve request bodies until the base transport finishes asynchronous uploads when custom signers share the input body. ([#29](https://github.com/rambow-cloud/powertools-lambda-go/pull/29))\n\n<details><summary>Changed files (2)</summary>\n\n- `signer/transport.go`\n- `signer/transport_body_test.go`\n\n</details>\n\n**Full changelog:** https://github.com/rambow-cloud/powertools-lambda-go/compare/signer/v0.1.0...signer/v0.2.0\n\n## Installation\n\n```sh\ngo get github.com/rambow-cloud/powertools-lambda-go/signer@v0.2.0\n```\n"
+    },
+    {
+      "directory": "jmespath",
+      "version": "v0.2.0",
+      "previous_tag": "jmespath/v0.1.0",
+      "initial_summary": null,
+      "entries": [
+        {
+          "module": "jmespath",
+          "type": "fix",
+          "description": "Decode malformed UTF-8 subparts consistently in Powertools Base64 and gzip functions.",
+          "pr": 30
+        }
+      ],
+      "reviewed_prs": [
+        18,
+        21,
+        22,
+        24,
+        29,
+        30,
+        32,
+        34,
+        37,
+        38,
+        40,
+        42
+      ],
+      "excluded_prs": [
+        18,
+        21,
+        22,
+        24,
+        29,
+        32,
+        34,
+        37,
+        38,
+        40,
+        42
+      ],
+      "untracked_commits": {},
+      "generated_history": [],
+      "dependency_updates": [
+        {
+          "path": "github.com/rambow-cloud/powertools-lambda-go",
+          "from": "v0.1.0",
+          "to": "v0.2.0"
+        }
+      ],
+      "changed_files": [
+        "jmespath/envelopes.go",
+        "jmespath/testdata/utf8-v2.35.0.json",
+        "jmespath/utf8_test.go"
+      ],
+      "notes": "# jmespath/v0.2.0\n\n## Fixes\n\n- Decode malformed UTF-8 subparts consistently in Powertools Base64 and gzip functions. ([#30](https://github.com/rambow-cloud/powertools-lambda-go/pull/30))\n\n<details><summary>Changed files (3)</summary>\n\n- `jmespath/envelopes.go`\n- `jmespath/testdata/utf8-v2.35.0.json`\n- `jmespath/utf8_test.go`\n\n</details>\n\n**Full changelog:** https://github.com/rambow-cloud/powertools-lambda-go/compare/jmespath/v0.1.0...jmespath/v0.2.0\n\n## Installation\n\n```sh\ngo get github.com/rambow-cloud/powertools-lambda-go/jmespath@v0.2.0\n```\n"
+    },
+    {
+      "directory": "datamasking/kms",
+      "version": "v0.2.0",
+      "previous_tag": "datamasking/kms/v0.1.0",
+      "initial_summary": null,
+      "entries": [],
+      "reviewed_prs": [
+        18,
+        21,
+        22,
+        24,
+        29,
+        30,
+        32,
+        34,
+        37,
+        38,
+        40,
+        42
+      ],
+      "excluded_prs": [
+        18,
+        21,
+        22,
+        24,
+        29,
+        30,
+        32,
+        34,
+        37,
+        38,
+        40,
+        42
+      ],
+      "untracked_commits": {},
+      "generated_history": [],
+      "dependency_updates": [
+        {
+          "path": "github.com/rambow-cloud/powertools-lambda-go",
+          "from": "v0.1.0",
+          "to": "v0.2.0"
+        },
+        {
+          "path": "github.com/rambow-cloud/powertools-lambda-go/commons/awssdk",
+          "from": "v0.1.0",
+          "to": "v0.2.0"
+        },
+        {
+          "path": "github.com/rambow-cloud/powertools-lambda-go/datamasking",
+          "from": "v0.1.0",
+          "to": "v0.2.0"
+        }
+      ],
+      "changed_files": [],
+      "notes": "# datamasking/kms/v0.2.0\n\nBumped to `v0.2.0` only. No module file changes.\n\n**Full changelog:** https://github.com/rambow-cloud/powertools-lambda-go/compare/datamasking/kms/v0.1.0...datamasking/kms/v0.2.0\n\n## Installation\n\n```sh\ngo get github.com/rambow-cloud/powertools-lambda-go/datamasking/kms@v0.2.0\n```\n"
+    },
+    {
+      "directory": "datamasking",
+      "version": "v0.2.0",
+      "previous_tag": "datamasking/v0.1.0",
+      "initial_summary": null,
+      "entries": [],
+      "reviewed_prs": [
+        18,
+        21,
+        22,
+        24,
+        29,
+        30,
+        32,
+        34,
+        37,
+        38,
+        40,
+        42
+      ],
+      "excluded_prs": [
+        18,
+        21,
+        22,
+        24,
+        29,
+        30,
+        32,
+        34,
+        37,
+        38,
+        40,
+        42
+      ],
+      "untracked_commits": {},
+      "generated_history": [],
+      "dependency_updates": [
+        {
+          "path": "github.com/rambow-cloud/powertools-lambda-go",
+          "from": "v0.1.0",
+          "to": "v0.2.0"
+        }
+      ],
+      "changed_files": [],
+      "notes": "# datamasking/v0.2.0\n\nBumped to `v0.2.0` only. No module file changes.\n\n**Full changelog:** https://github.com/rambow-cloud/powertools-lambda-go/compare/datamasking/v0.1.0...datamasking/v0.2.0\n\n## Installation\n\n```sh\ngo get github.com/rambow-cloud/powertools-lambda-go/datamasking@v0.2.0\n```\n"
+    },
+    {
+      "directory": "kafka/protobuf",
+      "version": "v0.2.0",
+      "previous_tag": "kafka/protobuf/v0.1.0",
+      "initial_summary": null,
+      "entries": [],
+      "reviewed_prs": [
+        18,
+        21,
+        22,
+        24,
+        29,
+        30,
+        32,
+        34,
+        37,
+        38,
+        40,
+        42
+      ],
+      "excluded_prs": [
+        18,
+        21,
+        22,
+        24,
+        29,
+        30,
+        32,
+        34,
+        37,
+        38,
+        40,
+        42
+      ],
+      "untracked_commits": {},
+      "generated_history": [],
+      "dependency_updates": [
+        {
+          "path": "github.com/rambow-cloud/powertools-lambda-go",
+          "from": "v0.1.0",
+          "to": "v0.2.0"
+        },
+        {
+          "path": "github.com/rambow-cloud/powertools-lambda-go/kafka",
+          "from": "v0.1.0",
+          "to": "v0.2.0"
+        }
+      ],
+      "changed_files": [],
+      "notes": "# kafka/protobuf/v0.2.0\n\nBumped to `v0.2.0` only. No module file changes.\n\n**Full changelog:** https://github.com/rambow-cloud/powertools-lambda-go/compare/kafka/protobuf/v0.1.0...kafka/protobuf/v0.2.0\n\n## Installation\n\n```sh\ngo get github.com/rambow-cloud/powertools-lambda-go/kafka/protobuf@v0.2.0\n```\n"
+    },
+    {
+      "directory": "kafka/avro",
+      "version": "v0.2.0",
+      "previous_tag": "kafka/avro/v0.1.0",
+      "initial_summary": null,
+      "entries": [],
+      "reviewed_prs": [
+        18,
+        21,
+        22,
+        24,
+        29,
+        30,
+        32,
+        34,
+        37,
+        38,
+        40,
+        42
+      ],
+      "excluded_prs": [
+        18,
+        21,
+        22,
+        24,
+        29,
+        30,
+        32,
+        34,
+        37,
+        38,
+        40,
+        42
+      ],
+      "untracked_commits": {},
+      "generated_history": [],
+      "dependency_updates": [
+        {
+          "path": "github.com/rambow-cloud/powertools-lambda-go",
+          "from": "v0.1.0",
+          "to": "v0.2.0"
+        },
+        {
+          "path": "github.com/rambow-cloud/powertools-lambda-go/kafka",
+          "from": "v0.1.0",
+          "to": "v0.2.0"
+        }
+      ],
+      "changed_files": [],
+      "notes": "# kafka/avro/v0.2.0\n\nBumped to `v0.2.0` only. No module file changes.\n\n**Full changelog:** https://github.com/rambow-cloud/powertools-lambda-go/compare/kafka/avro/v0.1.0...kafka/avro/v0.2.0\n\n## Installation\n\n```sh\ngo get github.com/rambow-cloud/powertools-lambda-go/kafka/avro@v0.2.0\n```\n"
+    },
+    {
+      "directory": "kafka",
+      "version": "v0.2.0",
+      "previous_tag": "kafka/v0.1.0",
+      "initial_summary": null,
+      "entries": [],
+      "reviewed_prs": [
+        18,
+        21,
+        22,
+        24,
+        29,
+        30,
+        32,
+        34,
+        37,
+        38,
+        40,
+        42
+      ],
+      "excluded_prs": [
+        18,
+        21,
+        22,
+        24,
+        29,
+        30,
+        32,
+        34,
+        37,
+        38,
+        40,
+        42
+      ],
+      "untracked_commits": {},
+      "generated_history": [],
+      "dependency_updates": [
+        {
+          "path": "github.com/rambow-cloud/powertools-lambda-go",
+          "from": "v0.1.0",
+          "to": "v0.2.0"
+        }
+      ],
+      "changed_files": [],
+      "notes": "# kafka/v0.2.0\n\nBumped to `v0.2.0` only. No module file changes.\n\n**Full changelog:** https://github.com/rambow-cloud/powertools-lambda-go/compare/kafka/v0.1.0...kafka/v0.2.0\n\n## Installation\n\n```sh\ngo get github.com/rambow-cloud/powertools-lambda-go/kafka@v0.2.0\n```\n"
+    },
+    {
+      "directory": "batch",
+      "version": "v0.2.0",
+      "previous_tag": "batch/v0.1.0",
+      "initial_summary": null,
+      "entries": [],
+      "reviewed_prs": [
+        18,
+        21,
+        22,
+        24,
+        29,
+        30,
+        32,
+        34,
+        37,
+        38,
+        40,
+        42
+      ],
+      "excluded_prs": [
+        18,
+        21,
+        22,
+        24,
+        29,
+        30,
+        32,
+        34,
+        37,
+        38,
+        40,
+        42
+      ],
+      "untracked_commits": {},
+      "generated_history": [],
+      "dependency_updates": [
+        {
+          "path": "github.com/rambow-cloud/powertools-lambda-go",
+          "from": "v0.1.0",
+          "to": "v0.2.0"
+        }
+      ],
+      "changed_files": [],
+      "notes": "# batch/v0.2.0\n\nBumped to `v0.2.0` only. No module file changes.\n\n**Full changelog:** https://github.com/rambow-cloud/powertools-lambda-go/compare/batch/v0.1.0...batch/v0.2.0\n\n## Installation\n\n```sh\ngo get github.com/rambow-cloud/powertools-lambda-go/batch@v0.2.0\n```\n"
+    },
+    {
+      "directory": "idempotency",
+      "version": "v0.2.0",
+      "previous_tag": "idempotency/v0.1.0",
+      "initial_summary": null,
+      "entries": [],
+      "reviewed_prs": [
+        18,
+        21,
+        22,
+        24,
+        29,
+        30,
+        32,
+        34,
+        37,
+        38,
+        40,
+        42
+      ],
+      "excluded_prs": [
+        18,
+        21,
+        22,
+        24,
+        29,
+        30,
+        32,
+        34,
+        37,
+        38,
+        40,
+        42
+      ],
+      "untracked_commits": {},
+      "generated_history": [],
+      "dependency_updates": [
+        {
+          "path": "github.com/rambow-cloud/powertools-lambda-go",
+          "from": "v0.1.0",
+          "to": "v0.2.0"
+        },
+        {
+          "path": "github.com/rambow-cloud/powertools-lambda-go/commons/awssdk",
+          "from": "v0.1.0",
+          "to": "v0.2.0"
+        },
+        {
+          "path": "github.com/rambow-cloud/powertools-lambda-go/jmespath",
+          "from": "v0.1.0",
+          "to": "v0.2.0"
+        }
+      ],
+      "changed_files": [],
+      "notes": "# idempotency/v0.2.0\n\nBumped to `v0.2.0` only. No module file changes.\n\n**Full changelog:** https://github.com/rambow-cloud/powertools-lambda-go/compare/idempotency/v0.1.0...idempotency/v0.2.0\n\n## Installation\n\n```sh\ngo get github.com/rambow-cloud/powertools-lambda-go/idempotency@v0.2.0\n```\n"
+    },
+    {
+      "directory": "idempotency/cache",
+      "version": "v0.2.0",
+      "previous_tag": "idempotency/cache/v0.1.0",
+      "initial_summary": null,
+      "entries": [],
+      "reviewed_prs": [
+        18,
+        21,
+        22,
+        24,
+        29,
+        30,
+        32,
+        34,
+        37,
+        38,
+        40,
+        42
+      ],
+      "excluded_prs": [
+        18,
+        21,
+        22,
+        24,
+        29,
+        30,
+        32,
+        34,
+        37,
+        38,
+        40,
+        42
+      ],
+      "untracked_commits": {},
+      "generated_history": [],
+      "dependency_updates": [
+        {
+          "path": "github.com/rambow-cloud/powertools-lambda-go/idempotency",
+          "from": "v0.1.0",
+          "to": "v0.2.0"
+        },
+        {
+          "path": "github.com/rambow-cloud/powertools-lambda-go",
+          "from": "v0.1.0",
+          "to": "v0.2.0"
+        },
+        {
+          "path": "github.com/rambow-cloud/powertools-lambda-go/jmespath",
+          "from": "v0.1.0",
+          "to": "v0.2.0"
+        }
+      ],
+      "changed_files": [],
+      "notes": "# idempotency/cache/v0.2.0\n\nBumped to `v0.2.0` only. No module file changes.\n\n**Full changelog:** https://github.com/rambow-cloud/powertools-lambda-go/compare/idempotency/cache/v0.1.0...idempotency/cache/v0.2.0\n\n## Installation\n\n```sh\ngo get github.com/rambow-cloud/powertools-lambda-go/idempotency/cache@v0.2.0\n```\n"
+    },
+    {
+      "directory": "parser",
+      "version": "v0.2.0",
+      "previous_tag": "parser/v0.1.0",
+      "initial_summary": null,
+      "entries": [
+        {
+          "module": "parser",
+          "type": "fix",
+          "description": "Match reference UTF-8 replacement and BOM handling when decoding Base64 text and gzip JSON.",
+          "pr": 30
+        }
+      ],
+      "reviewed_prs": [
+        18,
+        21,
+        22,
+        24,
+        29,
+        30,
+        32,
+        34,
+        37,
+        38,
+        40,
+        42
+      ],
+      "excluded_prs": [
+        18,
+        21,
+        22,
+        24,
+        29,
+        32,
+        34,
+        37,
+        38,
+        40,
+        42
+      ],
+      "untracked_commits": {},
+      "generated_history": [],
+      "dependency_updates": [
+        {
+          "path": "github.com/rambow-cloud/powertools-lambda-go",
+          "from": "v0.1.0",
+          "to": "v0.2.0"
+        }
+      ],
+      "changed_files": [
+        "parser/helpers.go",
+        "parser/testdata/utf8-v2.35.0.json",
+        "parser/utf8_test.go"
+      ],
+      "notes": "# parser/v0.2.0\n\n## Fixes\n\n- Match reference UTF-8 replacement and BOM handling when decoding Base64 text and gzip JSON. ([#30](https://github.com/rambow-cloud/powertools-lambda-go/pull/30))\n\n<details><summary>Changed files (3)</summary>\n\n- `parser/helpers.go`\n- `parser/testdata/utf8-v2.35.0.json`\n- `parser/utf8_test.go`\n\n</details>\n\n**Full changelog:** https://github.com/rambow-cloud/powertools-lambda-go/compare/parser/v0.1.0...parser/v0.2.0\n\n## Installation\n\n```sh\ngo get github.com/rambow-cloud/powertools-lambda-go/parser@v0.2.0\n```\n"
+    },
+    {
+      "directory": "validation",
+      "version": "v0.2.0",
+      "previous_tag": "validation/v0.1.0",
+      "initial_summary": null,
+      "entries": [],
+      "reviewed_prs": [
+        18,
+        21,
+        22,
+        24,
+        29,
+        30,
+        32,
+        34,
+        37,
+        38,
+        40,
+        42
+      ],
+      "excluded_prs": [
+        18,
+        21,
+        22,
+        24,
+        29,
+        30,
+        32,
+        34,
+        37,
+        38,
+        40,
+        42
+      ],
+      "untracked_commits": {},
+      "generated_history": [],
+      "dependency_updates": [
+        {
+          "path": "github.com/rambow-cloud/powertools-lambda-go",
+          "from": "v0.1.0",
+          "to": "v0.2.0"
+        },
+        {
+          "path": "github.com/rambow-cloud/powertools-lambda-go/commons/regex",
+          "from": "v0.1.0",
+          "to": "v0.2.0"
+        },
+        {
+          "path": "github.com/rambow-cloud/powertools-lambda-go/jmespath",
+          "from": "v0.1.0",
+          "to": "v0.2.0"
+        }
+      ],
+      "changed_files": [],
+      "notes": "# validation/v0.2.0\n\nBumped to `v0.2.0` only. No module file changes.\n\n**Full changelog:** https://github.com/rambow-cloud/powertools-lambda-go/compare/validation/v0.1.0...validation/v0.2.0\n\n## Installation\n\n```sh\ngo get github.com/rambow-cloud/powertools-lambda-go/validation@v0.2.0\n```\n"
+    },
+    {
+      "directory": "eventhandler/http",
+      "version": "v0.2.0",
+      "previous_tag": "eventhandler/http/v0.1.0",
+      "initial_summary": null,
+      "entries": [],
+      "reviewed_prs": [
+        18,
+        21,
+        22,
+        24,
+        29,
+        30,
+        32,
+        34,
+        37,
+        38,
+        40,
+        42
+      ],
+      "excluded_prs": [
+        18,
+        21,
+        22,
+        24,
+        29,
+        30,
+        32,
+        34,
+        37,
+        38,
+        40,
+        42
+      ],
+      "untracked_commits": {},
+      "generated_history": [],
+      "dependency_updates": [
+        {
+          "path": "github.com/rambow-cloud/powertools-lambda-go",
+          "from": "v0.1.0",
+          "to": "v0.2.0"
+        }
+      ],
+      "changed_files": [],
+      "notes": "# eventhandler/http/v0.2.0\n\nBumped to `v0.2.0` only. No module file changes.\n\n**Full changelog:** https://github.com/rambow-cloud/powertools-lambda-go/compare/eventhandler/http/v0.1.0...eventhandler/http/v0.2.0\n\n## Installation\n\n```sh\ngo get github.com/rambow-cloud/powertools-lambda-go/eventhandler/http@v0.2.0\n```\n"
+    },
+    {
+      "directory": "eventhandler/appsyncevents",
+      "version": "v0.2.0",
+      "previous_tag": "eventhandler/appsyncevents/v0.1.0",
+      "initial_summary": null,
+      "entries": [],
+      "reviewed_prs": [
+        18,
+        21,
+        22,
+        24,
+        29,
+        30,
+        32,
+        34,
+        37,
+        38,
+        40,
+        42
+      ],
+      "excluded_prs": [
+        18,
+        21,
+        22,
+        24,
+        29,
+        30,
+        32,
+        34,
+        37,
+        38,
+        40,
+        42
+      ],
+      "untracked_commits": {},
+      "generated_history": [],
+      "dependency_updates": [
+        {
+          "path": "github.com/rambow-cloud/powertools-lambda-go",
+          "from": "v0.1.0",
+          "to": "v0.2.0"
+        }
+      ],
+      "changed_files": [],
+      "notes": "# eventhandler/appsyncevents/v0.2.0\n\nBumped to `v0.2.0` only. No module file changes.\n\n**Full changelog:** https://github.com/rambow-cloud/powertools-lambda-go/compare/eventhandler/appsyncevents/v0.1.0...eventhandler/appsyncevents/v0.2.0\n\n## Installation\n\n```sh\ngo get github.com/rambow-cloud/powertools-lambda-go/eventhandler/appsyncevents@v0.2.0\n```\n"
+    },
+    {
+      "directory": "eventhandler/appsyncgraphql",
+      "version": "v0.2.0",
+      "previous_tag": "eventhandler/appsyncgraphql/v0.1.0",
+      "initial_summary": null,
+      "entries": [],
+      "reviewed_prs": [
+        18,
+        21,
+        22,
+        24,
+        29,
+        30,
+        32,
+        34,
+        37,
+        38,
+        40,
+        42
+      ],
+      "excluded_prs": [
+        18,
+        21,
+        22,
+        24,
+        29,
+        30,
+        32,
+        34,
+        37,
+        38,
+        40,
+        42
+      ],
+      "untracked_commits": {},
+      "generated_history": [],
+      "dependency_updates": [
+        {
+          "path": "github.com/rambow-cloud/powertools-lambda-go",
+          "from": "v0.1.0",
+          "to": "v0.2.0"
+        }
+      ],
+      "changed_files": [],
+      "notes": "# eventhandler/appsyncgraphql/v0.2.0\n\nBumped to `v0.2.0` only. No module file changes.\n\n**Full changelog:** https://github.com/rambow-cloud/powertools-lambda-go/compare/eventhandler/appsyncgraphql/v0.1.0...eventhandler/appsyncgraphql/v0.2.0\n\n## Installation\n\n```sh\ngo get github.com/rambow-cloud/powertools-lambda-go/eventhandler/appsyncgraphql@v0.2.0\n```\n"
+    },
+    {
+      "directory": "eventhandler/bedrock",
+      "version": "v0.2.0",
+      "previous_tag": "eventhandler/bedrock/v0.1.0",
+      "initial_summary": null,
+      "entries": [],
+      "reviewed_prs": [
+        18,
+        21,
+        22,
+        24,
+        29,
+        30,
+        32,
+        34,
+        37,
+        38,
+        40,
+        42
+      ],
+      "excluded_prs": [
+        18,
+        21,
+        22,
+        24,
+        29,
+        30,
+        32,
+        34,
+        37,
+        38,
+        40,
+        42
+      ],
+      "untracked_commits": {},
+      "generated_history": [],
+      "dependency_updates": [
+        {
+          "path": "github.com/rambow-cloud/powertools-lambda-go",
+          "from": "v0.1.0",
+          "to": "v0.2.0"
+        }
+      ],
+      "changed_files": [],
+      "notes": "# eventhandler/bedrock/v0.2.0\n\nBumped to `v0.2.0` only. No module file changes.\n\n**Full changelog:** https://github.com/rambow-cloud/powertools-lambda-go/compare/eventhandler/bedrock/v0.1.0...eventhandler/bedrock/v0.2.0\n\n## Installation\n\n```sh\ngo get github.com/rambow-cloud/powertools-lambda-go/eventhandler/bedrock@v0.2.0\n```\n"
+    },
+    {
+      "directory": "eventhandler/http/metrics",
+      "version": "v0.2.0",
+      "previous_tag": "eventhandler/http/metrics/v0.1.0",
+      "initial_summary": null,
+      "entries": [],
+      "reviewed_prs": [
+        18,
+        21,
+        22,
+        24,
+        29,
+        30,
+        32,
+        34,
+        37,
+        38,
+        40,
+        42
+      ],
+      "excluded_prs": [
+        18,
+        21,
+        22,
+        24,
+        29,
+        30,
+        32,
+        34,
+        37,
+        38,
+        40,
+        42
+      ],
+      "untracked_commits": {},
+      "generated_history": [],
+      "dependency_updates": [
+        {
+          "path": "github.com/rambow-cloud/powertools-lambda-go/eventhandler/http",
+          "from": "v0.1.0",
+          "to": "v0.2.0"
+        },
+        {
+          "path": "github.com/rambow-cloud/powertools-lambda-go/metrics",
+          "from": "v0.1.0",
+          "to": "v0.2.0"
+        },
+        {
+          "path": "github.com/rambow-cloud/powertools-lambda-go",
+          "from": "v0.1.0",
+          "to": "v0.2.0"
+        }
+      ],
+      "changed_files": [],
+      "notes": "# eventhandler/http/metrics/v0.2.0\n\nBumped to `v0.2.0` only. No module file changes.\n\n**Full changelog:** https://github.com/rambow-cloud/powertools-lambda-go/compare/eventhandler/http/metrics/v0.1.0...eventhandler/http/metrics/v0.2.0\n\n## Installation\n\n```sh\ngo get github.com/rambow-cloud/powertools-lambda-go/eventhandler/http/metrics@v0.2.0\n```\n"
+    },
+    {
+      "directory": "eventhandler/http/tracer",
+      "version": "v0.2.0",
+      "previous_tag": "eventhandler/http/tracer/v0.1.0",
+      "initial_summary": null,
+      "entries": [],
+      "reviewed_prs": [
+        18,
+        21,
+        22,
+        24,
+        29,
+        30,
+        32,
+        34,
+        37,
+        38,
+        40,
+        42
+      ],
+      "excluded_prs": [
+        18,
+        21,
+        22,
+        24,
+        29,
+        30,
+        32,
+        34,
+        37,
+        38,
+        40,
+        42
+      ],
+      "untracked_commits": {},
+      "generated_history": [],
+      "dependency_updates": [
+        {
+          "path": "github.com/rambow-cloud/powertools-lambda-go",
+          "from": "v0.1.0",
+          "to": "v0.2.0"
+        },
+        {
+          "path": "github.com/rambow-cloud/powertools-lambda-go/eventhandler/http",
+          "from": "v0.1.0",
+          "to": "v0.2.0"
+        },
+        {
+          "path": "github.com/rambow-cloud/powertools-lambda-go/tracer",
+          "from": "v0.1.0",
+          "to": "v0.2.0"
+        },
+        {
+          "path": "github.com/rambow-cloud/powertools-lambda-go/commons/awssdk",
+          "from": "v0.1.0",
+          "to": "v0.2.0"
+        }
+      ],
+      "changed_files": [],
+      "notes": "# eventhandler/http/tracer/v0.2.0\n\nBumped to `v0.2.0` only. No module file changes.\n\n**Full changelog:** https://github.com/rambow-cloud/powertools-lambda-go/compare/eventhandler/http/tracer/v0.1.0...eventhandler/http/tracer/v0.2.0\n\n## Installation\n\n```sh\ngo get github.com/rambow-cloud/powertools-lambda-go/eventhandler/http/tracer@v0.2.0\n```\n"
+    },
+    {
+      "directory": "tracer",
+      "version": "v0.2.0",
+      "previous_tag": "tracer/v0.1.0",
+      "initial_summary": null,
+      "entries": [],
+      "reviewed_prs": [
+        18,
+        21,
+        22,
+        24,
+        29,
+        30,
+        32,
+        34,
+        37,
+        38,
+        40,
+        42
+      ],
+      "excluded_prs": [
+        18,
+        21,
+        22,
+        24,
+        29,
+        30,
+        32,
+        34,
+        37,
+        38,
+        40,
+        42
+      ],
+      "untracked_commits": {},
+      "generated_history": [],
+      "dependency_updates": [
+        {
+          "path": "github.com/rambow-cloud/powertools-lambda-go",
+          "from": "v0.1.0",
+          "to": "v0.2.0"
+        },
+        {
+          "path": "github.com/rambow-cloud/powertools-lambda-go/commons/awssdk",
+          "from": "v0.1.0",
+          "to": "v0.2.0"
+        }
+      ],
+      "changed_files": [],
+      "notes": "# tracer/v0.2.0\n\nBumped to `v0.2.0` only. No module file changes.\n\n**Full changelog:** https://github.com/rambow-cloud/powertools-lambda-go/compare/tracer/v0.1.0...tracer/v0.2.0\n\n## Installation\n\n```sh\ngo get github.com/rambow-cloud/powertools-lambda-go/tracer@v0.2.0\n```\n"
+    }
+  ],
+  "metadata_updates": {
+    "commons/awssdk": [
+      {
+        "path": "github.com/rambow-cloud/powertools-lambda-go",
+        "from": "v0.1.0",
+        "to": "v0.2.0"
+      }
+    ],
+    "commons/dynamodb": [
+      {
+        "path": "github.com/rambow-cloud/powertools-lambda-go",
+        "from": "v0.1.0",
+        "to": "v0.2.0"
+      }
+    ],
+    "commons/metadata": [
+      {
+        "path": "github.com/rambow-cloud/powertools-lambda-go",
+        "from": "v0.1.0",
+        "to": "v0.2.0"
+      }
+    ],
+    "logger": [
+      {
+        "path": "github.com/rambow-cloud/powertools-lambda-go",
+        "from": "v0.1.0",
+        "to": "v0.2.0"
+      }
+    ],
+    "metrics": [
+      {
+        "path": "github.com/rambow-cloud/powertools-lambda-go",
+        "from": "v0.1.0",
+        "to": "v0.2.0"
+      }
+    ],
+    "parameters": [
+      {
+        "path": "github.com/rambow-cloud/powertools-lambda-go",
+        "from": "v0.1.0",
+        "to": "v0.2.0"
+      },
+      {
+        "path": "github.com/rambow-cloud/powertools-lambda-go/commons/awssdk",
+        "from": "v0.1.0",
+        "to": "v0.2.0"
+      },
+      {
+        "path": "github.com/rambow-cloud/powertools-lambda-go/commons/dynamodb",
+        "from": "v0.1.0",
+        "to": "v0.2.0"
+      }
+    ],
+    "jmespath": [
+      {
+        "path": "github.com/rambow-cloud/powertools-lambda-go",
+        "from": "v0.1.0",
+        "to": "v0.2.0"
+      }
+    ],
+    "datamasking/kms": [
+      {
+        "path": "github.com/rambow-cloud/powertools-lambda-go",
+        "from": "v0.1.0",
+        "to": "v0.2.0"
+      },
+      {
+        "path": "github.com/rambow-cloud/powertools-lambda-go/commons/awssdk",
+        "from": "v0.1.0",
+        "to": "v0.2.0"
+      },
+      {
+        "path": "github.com/rambow-cloud/powertools-lambda-go/datamasking",
+        "from": "v0.1.0",
+        "to": "v0.2.0"
+      }
+    ],
+    "datamasking": [
+      {
+        "path": "github.com/rambow-cloud/powertools-lambda-go",
+        "from": "v0.1.0",
+        "to": "v0.2.0"
+      }
+    ],
+    "kafka/protobuf": [
+      {
+        "path": "github.com/rambow-cloud/powertools-lambda-go",
+        "from": "v0.1.0",
+        "to": "v0.2.0"
+      },
+      {
+        "path": "github.com/rambow-cloud/powertools-lambda-go/kafka",
+        "from": "v0.1.0",
+        "to": "v0.2.0"
+      }
+    ],
+    "kafka/avro": [
+      {
+        "path": "github.com/rambow-cloud/powertools-lambda-go",
+        "from": "v0.1.0",
+        "to": "v0.2.0"
+      },
+      {
+        "path": "github.com/rambow-cloud/powertools-lambda-go/kafka",
+        "from": "v0.1.0",
+        "to": "v0.2.0"
+      }
+    ],
+    "kafka": [
+      {
+        "path": "github.com/rambow-cloud/powertools-lambda-go",
+        "from": "v0.1.0",
+        "to": "v0.2.0"
+      }
+    ],
+    "batch": [
+      {
+        "path": "github.com/rambow-cloud/powertools-lambda-go",
+        "from": "v0.1.0",
+        "to": "v0.2.0"
+      }
+    ],
+    "idempotency": [
+      {
+        "path": "github.com/rambow-cloud/powertools-lambda-go",
+        "from": "v0.1.0",
+        "to": "v0.2.0"
+      },
+      {
+        "path": "github.com/rambow-cloud/powertools-lambda-go/commons/awssdk",
+        "from": "v0.1.0",
+        "to": "v0.2.0"
+      },
+      {
+        "path": "github.com/rambow-cloud/powertools-lambda-go/jmespath",
+        "from": "v0.1.0",
+        "to": "v0.2.0"
+      }
+    ],
+    "idempotency/cache": [
+      {
+        "path": "github.com/rambow-cloud/powertools-lambda-go/idempotency",
+        "from": "v0.1.0",
+        "to": "v0.2.0"
+      },
+      {
+        "path": "github.com/rambow-cloud/powertools-lambda-go",
+        "from": "v0.1.0",
+        "to": "v0.2.0"
+      },
+      {
+        "path": "github.com/rambow-cloud/powertools-lambda-go/jmespath",
+        "from": "v0.1.0",
+        "to": "v0.2.0"
+      }
+    ],
+    "parser": [
+      {
+        "path": "github.com/rambow-cloud/powertools-lambda-go",
+        "from": "v0.1.0",
+        "to": "v0.2.0"
+      }
+    ],
+    "validation": [
+      {
+        "path": "github.com/rambow-cloud/powertools-lambda-go",
+        "from": "v0.1.0",
+        "to": "v0.2.0"
+      },
+      {
+        "path": "github.com/rambow-cloud/powertools-lambda-go/commons/regex",
+        "from": "v0.1.0",
+        "to": "v0.2.0"
+      },
+      {
+        "path": "github.com/rambow-cloud/powertools-lambda-go/jmespath",
+        "from": "v0.1.0",
+        "to": "v0.2.0"
+      }
+    ],
+    "eventhandler/http": [
+      {
+        "path": "github.com/rambow-cloud/powertools-lambda-go",
+        "from": "v0.1.0",
+        "to": "v0.2.0"
+      }
+    ],
+    "eventhandler/appsyncevents": [
+      {
+        "path": "github.com/rambow-cloud/powertools-lambda-go",
+        "from": "v0.1.0",
+        "to": "v0.2.0"
+      }
+    ],
+    "eventhandler/appsyncgraphql": [
+      {
+        "path": "github.com/rambow-cloud/powertools-lambda-go",
+        "from": "v0.1.0",
+        "to": "v0.2.0"
+      }
+    ],
+    "eventhandler/bedrock": [
+      {
+        "path": "github.com/rambow-cloud/powertools-lambda-go",
+        "from": "v0.1.0",
+        "to": "v0.2.0"
+      }
+    ],
+    "eventhandler/http/metrics": [
+      {
+        "path": "github.com/rambow-cloud/powertools-lambda-go/eventhandler/http",
+        "from": "v0.1.0",
+        "to": "v0.2.0"
+      },
+      {
+        "path": "github.com/rambow-cloud/powertools-lambda-go/metrics",
+        "from": "v0.1.0",
+        "to": "v0.2.0"
+      },
+      {
+        "path": "github.com/rambow-cloud/powertools-lambda-go",
+        "from": "v0.1.0",
+        "to": "v0.2.0"
+      }
+    ],
+    "eventhandler/http/tracer": [
+      {
+        "path": "github.com/rambow-cloud/powertools-lambda-go",
+        "from": "v0.1.0",
+        "to": "v0.2.0"
+      },
+      {
+        "path": "github.com/rambow-cloud/powertools-lambda-go/eventhandler/http",
+        "from": "v0.1.0",
+        "to": "v0.2.0"
+      },
+      {
+        "path": "github.com/rambow-cloud/powertools-lambda-go/tracer",
+        "from": "v0.1.0",
+        "to": "v0.2.0"
+      },
+      {
+        "path": "github.com/rambow-cloud/powertools-lambda-go/commons/awssdk",
+        "from": "v0.1.0",
+        "to": "v0.2.0"
+      }
+    ],
+    "tracer": [
+      {
+        "path": "github.com/rambow-cloud/powertools-lambda-go",
+        "from": "v0.1.0",
+        "to": "v0.2.0"
+      },
+      {
+        "path": "github.com/rambow-cloud/powertools-lambda-go/commons/awssdk",
+        "from": "v0.1.0",
+        "to": "v0.2.0"
+      }
+    ],
+    "tracer/xray": [
+      {
+        "path": "github.com/rambow-cloud/powertools-lambda-go",
+        "from": "v0.1.0",
+        "to": "v0.2.0"
+      },
+      {
+        "path": "github.com/rambow-cloud/powertools-lambda-go/tracer",
+        "from": "v0.1.0",
+        "to": "v0.2.0"
+      },
+      {
+        "path": "github.com/rambow-cloud/powertools-lambda-go/commons/awssdk",
+        "from": "v0.1.0",
+        "to": "v0.2.0"
+      }
+    ],
+    "examples": [
+      {
+        "path": "github.com/rambow-cloud/powertools-lambda-go/batch",
+        "from": "v0.1.0",
+        "to": "v0.2.0"
+      },
+      {
+        "path": "github.com/rambow-cloud/powertools-lambda-go/eventhandler/appsyncevents",
+        "from": "v0.1.0",
+        "to": "v0.2.0"
+      },
+      {
+        "path": "github.com/rambow-cloud/powertools-lambda-go/eventhandler/appsyncgraphql",
+        "from": "v0.1.0",
+        "to": "v0.2.0"
+      },
+      {
+        "path": "github.com/rambow-cloud/powertools-lambda-go/eventhandler/bedrock",
+        "from": "v0.1.0",
+        "to": "v0.2.0"
+      },
+      {
+        "path": "github.com/rambow-cloud/powertools-lambda-go/eventhandler/http",
+        "from": "v0.1.0",
+        "to": "v0.2.0"
+      },
+      {
+        "path": "github.com/rambow-cloud/powertools-lambda-go/eventhandler/http/metrics",
+        "from": "v0.1.0",
+        "to": "v0.2.0"
+      },
+      {
+        "path": "github.com/rambow-cloud/powertools-lambda-go/eventhandler/http/tracer",
+        "from": "v0.1.0",
+        "to": "v0.2.0"
+      },
+      {
+        "path": "github.com/rambow-cloud/powertools-lambda-go/idempotency",
+        "from": "v0.1.0",
+        "to": "v0.2.0"
+      },
+      {
+        "path": "github.com/rambow-cloud/powertools-lambda-go/jmespath",
+        "from": "v0.1.0",
+        "to": "v0.2.0"
+      },
+      {
+        "path": "github.com/rambow-cloud/powertools-lambda-go/kafka",
+        "from": "v0.1.0",
+        "to": "v0.2.0"
+      },
+      {
+        "path": "github.com/rambow-cloud/powertools-lambda-go/logger",
+        "from": "v0.1.0",
+        "to": "v0.2.0"
+      },
+      {
+        "path": "github.com/rambow-cloud/powertools-lambda-go/metrics",
+        "from": "v0.1.0",
+        "to": "v0.2.0"
+      },
+      {
+        "path": "github.com/rambow-cloud/powertools-lambda-go/parser",
+        "from": "v0.1.0",
+        "to": "v0.2.0"
+      },
+      {
+        "path": "github.com/rambow-cloud/powertools-lambda-go/signer",
+        "from": "v0.1.0",
+        "to": "v0.2.0"
+      },
+      {
+        "path": "github.com/rambow-cloud/powertools-lambda-go/tracer",
+        "from": "v0.1.0",
+        "to": "v0.2.0"
+      },
+      {
+        "path": "github.com/rambow-cloud/powertools-lambda-go/validation",
+        "from": "v0.1.0",
+        "to": "v0.2.0"
+      },
+      {
+        "path": "github.com/rambow-cloud/powertools-lambda-go",
+        "from": "v0.1.0",
+        "to": "v0.2.0"
+      },
+      {
+        "path": "github.com/rambow-cloud/powertools-lambda-go/commons/awssdk",
+        "from": "v0.1.0",
+        "to": "v0.2.0"
+      },
+      {
+        "path": "github.com/rambow-cloud/powertools-lambda-go/commons/regex",
+        "from": "v0.1.0",
+        "to": "v0.2.0"
+      }
+    ],
+    "integration": [
+      {
+        "path": "github.com/rambow-cloud/powertools-lambda-go/batch",
+        "from": "v0.1.0",
+        "to": "v0.2.0"
+      },
+      {
+        "path": "github.com/rambow-cloud/powertools-lambda-go/commons/metadata",
+        "from": "v0.1.0",
+        "to": "v0.2.0"
+      },
+      {
+        "path": "github.com/rambow-cloud/powertools-lambda-go/commons/regex",
+        "from": "v0.1.0",
+        "to": "v0.2.0"
+      },
+      {
+        "path": "github.com/rambow-cloud/powertools-lambda-go/datamasking",
+        "from": "v0.1.0",
+        "to": "v0.2.0"
+      },
+      {
+        "path": "github.com/rambow-cloud/powertools-lambda-go/datamasking/kms",
+        "from": "v0.1.0",
+        "to": "v0.2.0"
+      },
+      {
+        "path": "github.com/rambow-cloud/powertools-lambda-go/eventhandler/appsyncevents",
+        "from": "v0.1.0",
+        "to": "v0.2.0"
+      },
+      {
+        "path": "github.com/rambow-cloud/powertools-lambda-go/eventhandler/appsyncgraphql",
+        "from": "v0.1.0",
+        "to": "v0.2.0"
+      },
+      {
+        "path": "github.com/rambow-cloud/powertools-lambda-go/eventhandler/bedrock",
+        "from": "v0.1.0",
+        "to": "v0.2.0"
+      },
+      {
+        "path": "github.com/rambow-cloud/powertools-lambda-go/eventhandler/http",
+        "from": "v0.1.0",
+        "to": "v0.2.0"
+      },
+      {
+        "path": "github.com/rambow-cloud/powertools-lambda-go/eventhandler/http/metrics",
+        "from": "v0.1.0",
+        "to": "v0.2.0"
+      },
+      {
+        "path": "github.com/rambow-cloud/powertools-lambda-go/eventhandler/http/tracer",
+        "from": "v0.1.0",
+        "to": "v0.2.0"
+      },
+      {
+        "path": "github.com/rambow-cloud/powertools-lambda-go/idempotency",
+        "from": "v0.1.0",
+        "to": "v0.2.0"
+      },
+      {
+        "path": "github.com/rambow-cloud/powertools-lambda-go/idempotency/cache",
+        "from": "v0.1.0",
+        "to": "v0.2.0"
+      },
+      {
+        "path": "github.com/rambow-cloud/powertools-lambda-go/jmespath",
+        "from": "v0.1.0",
+        "to": "v0.2.0"
+      },
+      {
+        "path": "github.com/rambow-cloud/powertools-lambda-go/kafka",
+        "from": "v0.1.0",
+        "to": "v0.2.0"
+      },
+      {
+        "path": "github.com/rambow-cloud/powertools-lambda-go/kafka/avro",
+        "from": "v0.1.0",
+        "to": "v0.2.0"
+      },
+      {
+        "path": "github.com/rambow-cloud/powertools-lambda-go/kafka/protobuf",
+        "from": "v0.1.0",
+        "to": "v0.2.0"
+      },
+      {
+        "path": "github.com/rambow-cloud/powertools-lambda-go/logger",
+        "from": "v0.1.0",
+        "to": "v0.2.0"
+      },
+      {
+        "path": "github.com/rambow-cloud/powertools-lambda-go/metrics",
+        "from": "v0.1.0",
+        "to": "v0.2.0"
+      },
+      {
+        "path": "github.com/rambow-cloud/powertools-lambda-go/parameters",
+        "from": "v0.1.0",
+        "to": "v0.2.0"
+      },
+      {
+        "path": "github.com/rambow-cloud/powertools-lambda-go/parser",
+        "from": "v0.1.0",
+        "to": "v0.2.0"
+      },
+      {
+        "path": "github.com/rambow-cloud/powertools-lambda-go/signer",
+        "from": "v0.1.0",
+        "to": "v0.2.0"
+      },
+      {
+        "path": "github.com/rambow-cloud/powertools-lambda-go/tracer",
+        "from": "v0.1.0",
+        "to": "v0.2.0"
+      },
+      {
+        "path": "github.com/rambow-cloud/powertools-lambda-go/validation",
+        "from": "v0.1.0",
+        "to": "v0.2.0"
+      },
+      {
+        "path": "github.com/rambow-cloud/powertools-lambda-go",
+        "from": "v0.1.0",
+        "to": "v0.2.0"
+      },
+      {
+        "path": "github.com/rambow-cloud/powertools-lambda-go/commons/awssdk",
+        "from": "v0.1.0",
+        "to": "v0.2.0"
+      },
+      {
+        "path": "github.com/rambow-cloud/powertools-lambda-go/commons/dynamodb",
+        "from": "v0.1.0",
+        "to": "v0.2.0"
+      }
+    ]
+  }
+}

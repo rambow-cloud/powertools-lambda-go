@@ -7,8 +7,8 @@ require (
 	github.com/aws/aws-sdk-go-v2 v1.47.0
 	github.com/aws/aws-sdk-go-v2/service/dynamodb v1.68.0
 	github.com/aws/smithy-go v1.28.1
-	github.com/rambow-cloud/powertools-lambda-go v0.1.0
-	github.com/rambow-cloud/powertools-lambda-go/commons/awssdk v0.1.0
+	github.com/rambow-cloud/powertools-lambda-go v0.2.0
+	github.com/rambow-cloud/powertools-lambda-go/commons/awssdk v0.2.0
 	go.opentelemetry.io/contrib/instrumentation/github.com/aws/aws-sdk-go-v2/otelaws v0.71.0
 	go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp v0.71.0
 	go.opentelemetry.io/contrib/propagators/aws v1.46.0
