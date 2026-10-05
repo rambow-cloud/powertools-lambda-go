@@ -73,64 +73,79 @@ func (r *Router) MethodNotAllowed(handler ErrorHandler) { r.OnError("MethodNotAl
 
 func (r *Router) handleError(err error, request *RequestContext) (any, error) {
 	r.mu.RLock()
-	var handler ErrorHandler
-	name := errorName(err)
-	var failure *HTTPError
-	isHTTP := errors.As(err, &failure)
-	for _, candidate := range r.errors {
-		if candidate.name == name {
-			handler = candidate.handler
-			break
+	handlers := append([]errorHandler(nil), r.errors...)
+	r.mu.RUnlock()
+	visited := make(map[string]bool)
+	for {
+		if err := request.Context.Err(); err != nil {
+			return nil, err
 		}
-	}
-	if handler == nil {
-		for _, candidate := range r.errors {
-			if candidate.name == "Error" || candidate.name == "HttpError" && isHTTP {
+		var selected string
+		var handler ErrorHandler
+		name := errorName(err)
+		var failure *HTTPError
+		isHTTP := errors.As(err, &failure)
+		for _, candidate := range handlers {
+			if candidate.name == name {
 				handler = candidate.handler
+				selected = candidate.name
 				break
 			}
 		}
-	}
-	r.mu.RUnlock()
-	if handler != nil {
-		value, handlerErr := handler(err, request)
-		if handlerErr != nil {
-			var next *HTTPError
-			if errors.As(handlerErr, &next) && next != failure {
-				return r.handleError(handlerErr, request)
+		if handler == nil {
+			for _, candidate := range handlers {
+				if candidate.name == "Error" || candidate.name == "HttpError" && isHTTP {
+					handler = candidate.handler
+					selected = candidate.name
+					break
+				}
 			}
-			return r.defaultError(handlerErr), nil
 		}
-		switch value.(type) {
-		case Response, *nethttp.Response, []byte:
-			return value, nil
-		}
-		status := 500
-		if data, ok := value.(map[string]any); ok {
-			copy := make(map[string]any, len(data)+1)
-			for key, value := range data {
-				copy[key] = value
+		if handler != nil {
+			if visited[selected] {
+				return r.defaultError(err), nil
 			}
-			if current, ok := data["statusCode"].(int); ok {
-				status = current
-			} else if current, ok := data["statusCode"].(float64); ok {
-				status = int(current)
-			} else if isHTTP && (failure.StatusCode == 404 || failure.StatusCode == 405) {
-				status = failure.StatusCode
-				copy["statusCode"] = status
+			visited[selected] = true
+			value, handlerErr := handler(err, request)
+			if handlerErr != nil {
+				var next *HTTPError
+				if errors.As(handlerErr, &next) && next != failure {
+					err = handlerErr
+					continue
+				}
+				return r.defaultError(handlerErr), nil
 			}
-			value = copy
+			switch value.(type) {
+			case Response, *nethttp.Response, []byte:
+				return value, nil
+			}
+			status := 500
+			if data, ok := value.(map[string]any); ok {
+				copy := make(map[string]any, len(data)+1)
+				for key, value := range data {
+					copy[key] = value
+				}
+				if current, ok := data["statusCode"].(int); ok {
+					status = current
+				} else if current, ok := data["statusCode"].(float64); ok {
+					status = int(current)
+				} else if isHTTP && (failure.StatusCode == 404 || failure.StatusCode == 405) {
+					status = failure.StatusCode
+					copy["statusCode"] = status
+				}
+				value = copy
+			}
+			body, err := jsonBytes(value)
+			if err != nil {
+				return nil, err
+			}
+			return Response{StatusCode: status, Body: string(body)}, nil
 		}
-		body, err := jsonBytes(value)
-		if err != nil {
-			return nil, err
+		if isHTTP {
+			return Response{StatusCode: failure.StatusCode, Body: failure}, nil
 		}
-		return Response{StatusCode: status, Body: string(body)}, nil
+		return r.defaultError(err), nil
 	}
-	if isHTTP {
-		return Response{StatusCode: failure.StatusCode, Body: failure}, nil
-	}
-	return r.defaultError(err), nil
 }
 func (r *Router) defaultError(err error) Response {
 	enabled := commons.IsDevMode()
