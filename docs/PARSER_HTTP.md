@@ -24,7 +24,7 @@ The implementation reuses shared fields, dictionaries, method enums and certific
 - REST identity permits `test-invoke-source-ip` and an absent sourceIp. HTTP API v2 requires a valid IPv4/IPv6 address. WebSocket identity only requires a string.
 - REST request context permits a nonempty messageId only when eventType is MESSAGE.
 - ALB permits an arbitrary method string, while API Gateway and VPC Lattice use the reference seven-method enum.
-- VPC Lattice v2 timeEpoch is a string. Identity field casing, including X509SubjectCn and x509SanDns, is retained.
+- VPC Lattice v2 headers and query values are string arrays, including single values; v1 keeps scalar strings. V2 preserves an optional requestId, and timeEpoch remains a string. Identity recognizes the AWS spellings principalOrgID, x509SubjectCn, x509IssuerOu and x509SanNameCn, with legacy aliases retained. These intentionally correct the pinned TypeScript model against the [AWS service contract](https://docs.aws.amazon.com/vpc-lattice/latest/ug/lambda-functions.html#receive-event-from-service); requestId is optional, as reported in the [upstream event example](https://github.com/aws-powertools/powertools-lambda-typescript/issues/5764).
 
 ## Body envelopes
 
