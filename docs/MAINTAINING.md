@@ -13,11 +13,11 @@ merge requirements. This guide does not claim those settings are already active.
 2. Publish the contribution-workflow feature branch and open a draft PR with
    that issue, Summary, and Testing filled in. There is no special owner,
    `no-issue`, label, or bootstrap bypass in the policy check.
-3. Verify the first **PR contribution policy**, **Modules and Lambda artifacts**,
-   **Runtime simulation**, and **Build documentation** runs on that PR's latest revision. Inspect the
+3. Verify **PR contribution policy**, **CI gate**, and every selected suite on
+   that PR's latest revision. The routing rollout must select all suites. Inspect the
    workflow diff before approving a fork workflow run.
 4. Configure the protection below **before merging the bootstrap PR**, selecting
-   the four checks from their observed successful runs. Do not require a check
+   the two stable checks from their observed successful runs. Do not require a check
    that has never run or was renamed. Confirm the PR's merge box applies the rules.
 5. Merge the reviewed bootstrap PR through the protected PR interface. Forms
    become available once they are on the default branch; verify the New issue
@@ -38,8 +38,7 @@ needed for basic PR and status-check protection.
   only one active maintainer. Do not enable code-owner or last-push approval
   requirements until another eligible reviewer is available
 - Require conversation resolution and these exact, stable status-check job names:
-  **PR contribution policy**, **Modules and Lambda artifacts**,
-  **Runtime simulation**, and **Build documentation**. Select GitHub Actions as the expected source where
+  **PR contribution policy** and **CI gate**. Select GitHub Actions as the expected source where
   available, and require the branch to be up to date before merging
 - Block force pushes and deletion of `main`
 - Leave the bypass list empty, including repository administrators. For classic
@@ -56,13 +55,16 @@ and [author review limitation](https://docs.github.com/en/pull-requests/how-tos/
 
 ## Triage and safe CI
 
-When introducing **Runtime simulation** to an existing protected repository,
-first verify its native PR run and commit-associated artifacts. Then add that
-exact job name to the existing main ruleset's required status checks, selecting
-GitHub Actions as the expected source. Preserve every existing rule and bypass
-setting. Enable the check before merging the CI rollout PR. The publication
-tool also requires runtime success on both the preparation PR and its exact
-merged main commit; missing, pending, failed, or skipped checks cannot publish.
+When introducing selective CI to an existing protected repository, first verify
+the native full-suite PR run and **CI gate** on the latest commit. Replace the
+individual conditional job requirements with **CI gate**, retaining **PR
+contribution policy** and selecting GitHub Actions as the expected source.
+Preserve strict branch freshness, review rules and the empty bypass list. Apply
+the migration before merging the rollout PR. Follow with a metadata/documentation
+PR to verify successful selected jobs, skipped Go/runtime jobs and a green gate.
+The publication tool additionally requires actual module, runtime, documentation
+and release-tooling success on the preparation PR and exact main commit;
+missing, pending, failed, or skipped checks cannot publish.
 
 Use issue comments to record accepted scope and remaining questions. Optional
 labels are organizational only; no custom label creation, project board,
@@ -82,7 +84,7 @@ workflow edit: review changes to `.github/` and validation tools carefully.
 Do not replace this with `pull_request_target` that executes contributor code.
 
 The policy workflow includes description edits and ready-for-review events;
-Go and documentation workflows run for source updates. Avoid path filters on
+CI runs for source updates and calls the selected suites. Avoid path filters on
 required checks, because a skipped workflow can leave a PR waiting indefinitely.
 The existing main-only deployment boundary stays unchanged. Adding a future
 merge queue requires updating all required workflows for `merge_group` first.
@@ -101,7 +103,7 @@ main checks pass; manual dispatch remains available for recovery. PRs require
 structured Release notes or an explained absence;
 edit dependency-bot descriptions using the same rule as other PRs.
 
-Verify both an owner branch PR and a fork PR. Check the three job names on the
+Verify both an owner branch PR and a fork PR. Check the two required job names on the
 latest commit, verify description edits refresh the policy check, and confirm
 only `main` deploys. Keep one deliberately missing issue reference long enough
 to confirm merging is blocked, then correct it. Check that a PR number and an
