@@ -72,7 +72,19 @@ func TestTypeScriptReference(t *testing.T) {
 			if (item.Expected.Error != nil) != errors.As(err, &full) {
 				t.Fatalf("error=%v expected=%v", err, item.Expected.Error)
 			}
-			if !reflect.DeepEqual(report.Response, item.Expected.Response) || !reflect.DeepEqual(visited, item.Expected.Visited) {
+			expectedResponse := item.Expected.Response
+			if item.Expected.Error != nil {
+				// Issue #53 corrects the empty full-failure response in v2.35.0.
+				// Retain the upstream fixture and expect every retry identifier.
+				expectedResponse = Response{BatchItemFailures: []ItemFailure{}}
+				for _, record := range item.Records {
+					id := source.Identifier(record)
+					if id != "" || !source.OmitEmptyIdentifier {
+						expectedResponse.BatchItemFailures = append(expectedResponse.BatchItemFailures, ItemFailure{ItemIdentifier: id})
+					}
+				}
+			}
+			if !reflect.DeepEqual(report.Response, expectedResponse) || !reflect.DeepEqual(visited, item.Expected.Visited) {
 				t.Fatal(report.Response, visited, item.Expected)
 			}
 			successes, failures, errorTypes := []string{}, []string{}, []string{}
