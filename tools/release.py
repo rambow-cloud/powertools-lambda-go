@@ -170,6 +170,10 @@ def write_json(path, data):
 
 
 def validate_plan(plan, modules, project_version=None):
+    if plan.get("preview"):
+        raise ValueError("A notes preview is not a reviewed publication plan.")
+    if plan.get("notes_format", 1) not in (1, 2):
+        raise ValueError("Unsupported release-notes format.")
     if plan.get("schema_version") not in {1, 2} or not isinstance(plan.get("issue"), int) or plan["issue"] < 1 or not SHA.fullmatch(plan.get("source_sha", "")):
         raise ValueError("Invalid release plan identity.")
     unified = plan["schema_version"] == 2
@@ -220,7 +224,13 @@ def validate_plan(plan, modules, project_version=None):
                 raise ValueError("Dependency update does not match module metadata.")
             version_key(update["from"])
             version_key(update["to"])
-        expected = render_notes(REPOSITORY, directory, item["version"], previous, item["entries"], item["initial_summary"], item["untracked_commits"], updates)
+        changed_files = None
+        if plan.get("notes_format") == 2:
+            from release_prepare import module_changes
+            changed_files = item.get("changed_files")
+            if changed_files != module_changes(modules, directory, previous, plan["source_sha"]):
+                raise ValueError(f"Frozen module file changes do not match Git history: {directory}")
+        expected = render_notes(REPOSITORY, directory, item["version"], previous, item["entries"], item["initial_summary"], item["untracked_commits"], updates, changed_files)
         if unified and directory == ".":
             expected = render_unified_notes(REPOSITORY, plan)
         if item["notes"] != expected:
@@ -576,6 +586,11 @@ def main():
     prepare_parser.add_argument("--auto-publish", action="store_true", help="Authorize publication after this preparation PR merges and main CI passes")
     prepare_parser.add_argument("--local", action="store_true", help="Only write metadata/plan; requires an existing issue")
     prepare_parser.add_argument("--overrides", help="Reviewed historical summaries and initial release scope (JSON)")
+    preview_parser = commands.add_parser("preview", help="Preview notes without changing module metadata or publishing")
+    preview_parser.add_argument("--base", required=True, help="Published project version to compare against")
+    preview_parser.add_argument("--target", default="origin/main", help="Committed source revision, frozen to its SHA")
+    preview_parser.add_argument("--bump", choices=("auto", "patch", "minor", "major"), default="auto")
+    preview_parser.add_argument("--draft", action="store_true", help="Create/update a separate GitHub notes-preview draft")
     publish_parser = commands.add_parser("publish", help="Preflight by default; --publish explicitly creates tags/Releases")
     publish_parser.add_argument("--issue", type=int)
     publish_parser.add_argument("--pr", type=int, required=True)
@@ -588,6 +603,9 @@ def main():
         if args.command == "prepare":
             from release_prepare import prepare
             prepare(args, api)
+        elif args.command == "preview":
+            from release_preview import preview
+            preview(args, api)
         else:
             if not all((args.issue, args.sha, args.plan)):
                 from release_automation import resolve_preparation, checkout_preparation

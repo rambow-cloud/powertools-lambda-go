@@ -33,7 +33,25 @@ For Logger v0.1.1, the generator collects all merged PRs between
 `logger/v0.1.0` and the selected source commit, then includes only Logger entries.
 A Metrics component note uses its previous tag. The root `v0.1.1` Release groups
 all actual changes by component and includes repository notes and a full module
-version table. Modules with only dependency alignment are identified separately.
+version table. New plans freeze each module's actual changed-file list against
+its previous tag, before preparation writes version/dependency metadata.
+Nested modules own their files; repository documentation and tooling do not
+count as Commons changes. Deleted and renamed files are included, while a
+change that was fully reverted has no net file change.
+
+- **Updated modules:** show categorized PR/direct-commit summaries and an
+  expandable changed-file list. File changes remain visible even if a PR has
+  no user-facing summary.
+- **Version bumps only:** list `MODULE: bumped to VERSION` without empty feature
+  sections or generated dependency-update noise. Broad PR notes alone cannot
+  make an unchanged module appear updated.
+- **Initial release:** explicitly describe first publication when no previous
+  module Release exists; it is never described as an unchanged version bump.
+
+The module version table uses the same classification. New plans use
+`notes_format: 2`; publication verifies their frozen file lists against Git.
+Existing schema 1/2 plans without this field retain their original rendering
+so historical frozen plans remain readable and verifiable.
 One PR fixing three Logger behaviors can
 produce three notes with the same PR link. Notes group breaking changes,
 features, fixes, documentation, and maintenance in that order.
@@ -43,6 +61,33 @@ merge, and rebase histories are deduplicated. Stable releases compare against
 previous stable releases; prereleases may compare against previous prereleases.
 Only published GitHub Releases on the source ancestry are release boundaries,
 not draft Releases or unrelated module tags.
+
+## Preview the next release notes
+
+Generate notes against a published project version without editing `go.mod`,
+`go.work`, manifest versions, or a release preparation plan:
+
+```sh
+uv run --no-project python tools/release.py preview --base v0.1.0 --target origin/main
+```
+
+The target is resolved to an immutable source SHA. Notes and their input snapshot
+are saved under `dist/releases/previews/VERSION/SOURCE/`. `--bump patch|minor|major`
+can override the normal automatic candidate-version choice. Preview links point
+to the source comparison, not to component Releases that do not exist yet.
+
+Add `--draft` to create a reviewable GitHub Release draft:
+
+```sh
+uv run --no-project python tools/release.py preview --base v0.1.0 --target origin/main --draft
+```
+
+It uses the separate `notes-preview/VERSION` name, which does not reserve a Go
+module version. Repeating the command updates only a matching, tool-owned draft
+and saves its previous contents locally. Existing official Releases are retained.
+This draft contains documentation only: use **Prepare release** after reviewing
+the notes. Do not publish the notes-preview draft as a module release; its source
+has not gone through version preparation. Publication rejects preview snapshots.
 
 ## Prepare the unified release
 

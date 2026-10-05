@@ -52,7 +52,12 @@ def validate_direct_note(value, directories):
         raise ValueError("Direct-commit notes contain unknown or repeated modules.")
 
 
-def render_notes(repository, module, version, previous_tag, entries, initial_summary=None, untracked_commits=None, dependency_updates=None):
+def render_notes(repository, module, version, previous_tag, entries, initial_summary=None, untracked_commits=None, dependency_updates=None, changed_files=None):
+    if changed_files is not None:
+        item = dict(directory=module, version=version, previous_tag=previous_tag, entries=entries,
+                    initial_summary=initial_summary, untracked_commits=untracked_commits or {},
+                    dependency_updates=dependency_updates or [], changed_files=changed_files)
+        return render_component_notes(repository, item)
     tag = version if module == "." else f"{module}/{version}"
     lines = [f"# {tag}", ""]
     if previous_tag is None:
@@ -90,6 +95,8 @@ def render_notes(repository, module, version, previous_tag, entries, initial_sum
 
 def render_unified_notes(repository, plan):
     """Render the root version's complete, component-grouped release summary."""
+    if plan.get("notes_format") == 2:
+        return render_file_based_notes(repository, plan)
     version = plan["release_version"]
     lines = [f"# {version}", "", "All maintained public modules use this version.", "",
              f"**Publication status:** https://github.com/{repository}/issues/{plan['issue']}", ""]
@@ -134,3 +141,91 @@ def render_unified_notes(repository, plan):
     if root["previous_tag"]:
         lines += [f"**Full changelog:** https://github.com/{repository}/compare/{root['previous_tag']}...{version}", ""]
     return "\n".join(lines)
+
+
+def change_status(item):
+    if item["previous_tag"] is None:
+        return "Initial release"
+    return "Updated" if item["changed_files"] else f"Bumped to {item['version']} only"
+
+
+def details(repository, item, level, include_files=True):
+    """Render real changes only; a broad PR note cannot turn an empty diff into a feature."""
+    if include_files and item["previous_tag"] and not item["changed_files"]:
+        return [f"Bumped to `{item['version']}` only. No module file changes.", ""]
+    lines = []
+    if item["previous_tag"] is None:
+        if not item["initial_summary"]:
+            raise ValueError("First release needs an initial scope and compatibility summary.")
+        lines += [f"{level} Initial release", "", item["initial_summary"].strip(), ""]
+    for kind, title in CATEGORIES.items():
+        entries = [entry for entry in item["entries"] if entry["module"] == item["directory"] and entry["type"] == kind]
+        if entries:
+            lines += [f"{level} {title}", ""]
+            lines += [f"- {entry['description']} ([#{entry['pr']}](https://github.com/{repository}/pull/{entry['pr']}))" for entry in entries]
+            lines.append("")
+    direct = {sha: note for sha, note in item["untracked_commits"].items() if item["directory"] in note["modules"]}
+    if direct:
+        lines += [f"{level} Changes without a pull request", ""]
+        lines += [f"- {note['description']} ([{sha[:7]}](https://github.com/{repository}/commit/{sha}))" for sha, note in sorted(direct.items())]
+        lines.append("")
+    if include_files and item["changed_files"]:
+        lines += [f"<details><summary>Changed files ({len(item['changed_files'])})</summary>", ""]
+        lines += [f"- `{path}`" for path in item["changed_files"]]
+        lines += ["", "</details>", ""]
+    return lines
+
+
+def render_component_notes(repository, item):
+    directory, version = item["directory"], item["version"]
+    tag = version if directory == "." else directory + "/" + version
+    lines = [f"# {tag}", "", *details(repository, item, "##")]
+    if item["previous_tag"]:
+        lines += [f"**Full changelog:** https://github.com/{repository}/compare/{item['previous_tag']}...{tag}", ""]
+    else:
+        lines += [f"**Source:** https://github.com/{repository}/tree/{tag}", ""]
+    lines += ["## Installation", "", "```sh", f"go get github.com/{repository}{'' if directory == '.' else '/' + directory}@{version}", "```", ""]
+    return "\n".join(lines)
+
+
+def render_file_based_notes(repository, plan):
+    version = plan["release_version"]
+    preview = plan.get("preview", False)
+    target = plan["source_sha"] if preview else version
+    changed = [item for item in plan["modules"] if item["previous_tag"] is None or item["changed_files"]]
+    unchanged = [item for item in plan["modules"] if item["previous_tag"] and not item["changed_files"]]
+    lines = [f"# {version}" + (" — Release notes preview" if preview else ""), ""]
+    if preview:
+        lines += ["This is a documentation preview. Module versions and dependency metadata have not been prepared or published.",
+                  "Use the reviewed release preparation workflow to publish after checking these notes.", ""]
+    lines += ["All maintained public modules move to this version. Modules without file changes receive a version bump only.", "",
+              f"**Scope:** {len(changed)} modules with changes; {len(unchanged)} version bumps only.", "",
+              f"**Source:** [{plan['source_sha'][:12]}](https://github.com/{repository}/tree/{plan['source_sha']})", ""]
+    if not preview:
+        lines += [f"**Publication status:** https://github.com/{repository}/issues/{plan['issue']}", ""]
+    if changed:
+        lines += ["## Updated modules", ""]
+        for item in changed:
+            lines += ["### " + ("Commons" if item["directory"] == "." else item["directory"]), ""]
+            lines += details(repository, item, "####")
+    if unchanged:
+        lines += ["## Version bumps only", "", "No module file changes; internal requirements will follow the unified version.", ""]
+        lines += [f"- `{item['directory']}`: bumped to `{version}`." for item in unchanged]
+        lines.append("")
+    root = next(item for item in plan["modules"] if item["directory"] == ".")
+    repository_item = {**root, "directory": "repository", "previous_tag": root["previous_tag"] or "initial",
+                       "entries": plan.get("repository_entries", []), "changed_files": [], "initial_summary": None}
+    repository_details = details(repository, repository_item, "###", include_files=False)
+    if repository_details:
+        lines += ["## Repository", "", *repository_details]
+    lines += ["## Module versions", "", f"<details><summary>All maintained modules ({len(plan['modules'])})</summary>", "",
+              "| Module | Version | Changes |", "|---|---|---|"]
+    for item in plan["modules"]:
+        directory = item["directory"]
+        tag = version if directory == "." else directory + "/" + version
+        label = f"`{version}`" if preview else f"[{version}](https://github.com/{repository}/releases/tag/{tag})"
+        lines.append(f"| `{directory}` | {label} | {change_status(item)} |")
+    lines += ["", "</details>"]
+    if root["previous_tag"]:
+        lines += ["", f"**Full changelog:** https://github.com/{repository}/compare/{root['previous_tag']}...{target}"]
+    return "\n".join([*lines, ""])

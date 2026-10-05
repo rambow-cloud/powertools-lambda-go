@@ -76,6 +76,44 @@ class FakeAPI:
 
 
 class NotesTests(unittest.TestCase):
+    def test_file_based_notes_ignore_broad_notes_for_unchanged_modules(self):
+        data = unified_plan()
+        data.update(notes_format=2, preview=True)
+        for selected in data["modules"]:
+            selected["changed_files"] = ["logger/logger.go"] if selected["directory"] == "logger" else []
+        data["modules"][2]["entries"] = [entry("metrics", "feature", "Broad note with no actual change.")]
+        data["repository_entries"] = [entry("repository", "maintenance", "Improve CI.")]
+        notes = release.render_unified_notes(release.REPOSITORY, data)
+        self.assertIn("### logger\n\n#### Fixes", notes)
+        self.assertIn("logger/logger.go", notes)
+        self.assertIn("`metrics`: bumped to `v0.1.1`", notes)
+        self.assertNotIn("### metrics", notes)
+        self.assertNotIn("Broad note", notes)
+        self.assertIn("Improve CI.", notes)
+        self.assertIn("v0.1.0..." + A, notes)
+        self.assertNotIn("/releases/tag/", notes)
+
+    def test_component_bump_only_suppresses_dependency_noise(self):
+        notes = render_notes(release.REPOSITORY, "metrics", "v0.1.1", "metrics/v0.1.0", [entry("metrics")],
+                             dependency_updates=[{"path": "internal", "from": "v0.1.0", "to": "v0.1.1"}], changed_files=[])
+        self.assertIn("Bumped to `v0.1.1` only", notes)
+        self.assertNotIn("## Fixes", notes)
+        self.assertNotIn("Internal dependency updates", notes)
+
+    def test_file_changes_without_notes_and_initial_release_remain_visible(self):
+        notes = render_notes(release.REPOSITORY, "metrics", "v0.1.1", "metrics/v0.1.0", [], changed_files=["metrics/old.go", "metrics/new.go"])
+        self.assertIn("Changed files (2)", notes)
+        self.assertNotIn("Bumped", notes)
+        notes = render_notes(release.REPOSITORY, "metrics", "v0.1.0", None, [], "Initial supported scope.", changed_files=["metrics/go.mod"])
+        self.assertIn("## Initial release", notes)
+        self.assertNotIn("Bumped", notes)
+
+    def test_preview_cannot_be_used_as_a_publication_plan(self):
+        data = unified_plan()
+        data["preview"] = True
+        with self.assertRaisesRegex(ValueError, "preview is not"):
+            release.validate_plan(data, MODULES)
+
     def test_unified_summary_groups_actual_changes_and_preserves_unchanged_versions(self):
         data = unified_plan()
         for selected in (data["modules"][0], data["modules"][2]):

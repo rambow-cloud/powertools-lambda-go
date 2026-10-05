@@ -45,6 +45,40 @@ def affected_modules(paths, modules):
     return sorted(affected or {"repository"})
 
 
+def module_changes(modules, directory, previous, target):
+    """Compare committed module files before generated version metadata is written."""
+    if previous:
+        data = release.git("diff", "--name-only", "--no-renames", "-z", release.commit_of_tag(previous), target, "--")
+    else:
+        data = release.git("ls-tree", "-r", "--name-only", "-z", target)
+    return sorted(path for path in data.split("\0") if path and directory in affected_modules([path], modules))
+
+
+def build_notes_plan(api, modules, target, releases, overrides, bump, reserved_tags, issue=None, automatic=False):
+    directories = scope_modules(modules, all_modules=True)
+    history = History(api, modules, target, overrides)
+    previous_tags = {directory: release.previous_release(directory, target, releases) for directory in directories}
+    histories = {directory: history.notes(previous_tags[directory]) for directory in directories}
+    entries = [entry for records, _, _, _ in histories.values() for entry in records]
+    version = unified_version(modules, previous_tags, bump, entries, reserved_tags)
+    plan = {"schema_version": 2, "notes_format": 2, "release_version": version,
+            "repository_entries": [entry for entry in histories["."][0] if entry["module"] == "repository"],
+            "issue": issue or 1, "source_sha": target, "auto_publish": automatic,
+            "requested_modules": directories, "included_dependencies": [], "bump": bump, "modules": []}
+    for directory in directories:
+        previous = previous_tags[directory]
+        entries, reviewed, direct, generated = histories[directory]
+        related = [entry for entry in entries if entry["module"] == directory]
+        initial = overrides.get("initial_summaries", {}).get(directory)
+        if previous is None and not initial:
+            initial = f"Initial public source release of the {directory if directory != '.' else 'Commons'} module. Review supported behavior and compatibility limits in the module documentation; full cross-language parity is not implied."
+        plan["modules"].append({"directory": directory, "version": version, "previous_tag": previous, "initial_summary": initial,
+                                "entries": related, "reviewed_prs": reviewed, "excluded_prs": sorted(set(reviewed) - {entry["pr"] for entry in related}),
+                                "untracked_commits": direct, "generated_history": generated, "dependency_updates": [],
+                                "changed_files": module_changes(modules, directory, previous, target)})
+    return plan
+
+
 def title_kind(title):
     if re.match(r"^[a-z]+(?:\([^\n)]*\))?!:", title):
         return "breaking"
@@ -335,23 +369,8 @@ def prepare(args, api):
         return available_cache[tag]
     requirements = module_requirements(modules)
     directories = requested
-    history = History(api, modules, target, overrides)
-    previous_tags = {directory: release.previous_release(directory, target, releases) for directory in directories}
-    histories = {directory: history.notes(previous_tags[directory]) for directory in directories}
-    all_entries = [entry for entries, _, _, _ in histories.values() for entry in entries]
-    version = unified_version(modules, previous_tags, args.bump, all_entries, reserved_tags)
-    plan = {"schema_version": 2, "release_version": version, "repository_entries": [entry for entry in histories["."][0] if entry["module"] == "repository"], "issue": args.issue or 1, "source_sha": target, "auto_publish": args.auto_publish,
-            "requested_modules": requested, "included_dependencies": [directory for directory in directories if directory not in requested], "bump": args.bump, "modules": []}
-    for directory in directories:
-        previous = previous_tags[directory]
-        entries, reviewed, direct, generated = histories[directory]
-        related = [entry for entry in entries if entry["module"] == directory]
-        initial = overrides.get("initial_summaries", {}).get(directory)
-        if previous is None and not initial:
-            initial = f"Initial public source release of the {directory if directory != '.' else 'Commons'} module. Review supported behavior and compatibility limits in the module documentation; full cross-language parity is not implied."
-        plan["modules"].append({"directory": directory, "version": version, "previous_tag": previous, "initial_summary": initial,
-                                "entries": related, "reviewed_prs": reviewed, "excluded_prs": sorted(set(reviewed) - {entry["pr"] for entry in related}),
-                                "untracked_commits": direct, "generated_history": generated, "dependency_updates": []})
+    plan = build_notes_plan(api, modules, target, releases, overrides, args.bump, reserved_tags, args.issue, args.auto_publish)
+    version = plan["release_version"]
     selected = {item["directory"]: item for item in plan["modules"]}
     predicted = deepcopy(requirements)
     version_paths = {"github.com/" + release.REPOSITORY + ("" if directory == "." else "/" + directory): item["version"] for directory, item in selected.items()}
@@ -371,7 +390,7 @@ def prepare(args, api):
         plan["metadata_updates"] = updates
         for item in plan["modules"]:
             item["dependency_updates"] = updates.get(item["directory"], [])
-            item["notes"] = render_notes(release.REPOSITORY, item["directory"], item["version"], item["previous_tag"], item["entries"], item["initial_summary"], item["untracked_commits"], item["dependency_updates"])
+            item["notes"] = render_notes(release.REPOSITORY, item["directory"], item["version"], item["previous_tag"], item["entries"], item["initial_summary"], item["untracked_commits"], item["dependency_updates"], item["changed_files"])
         selected["."]["notes"] = render_unified_notes(release.REPOSITORY, plan)
         release.validate_plan(plan, release.manifest(), release.manifest_version())
         if not issue:
