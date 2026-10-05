@@ -1,0 +1,37 @@
+[
+  {
+    "name": "bug",
+    "color": "d73a4a",
+    "description": "Something isn't working"
+  },
+  {
+    "name": "enhancement",
+    "color": "a2eeef",
+    "description": "New feature or request"
+  },
+  {
+    "name": "documentation",
+    "color": "0075ca",
+    "description": "Improvements or additions to documentation"
+  },
+  {
+    "name": "cicd",
+    "color": "5319e7",
+    "description": "GitHub Actions, CI checks, and delivery workflows"
+  },
+  {
+    "name": "maintenance",
+    "color": "ededed",
+    "description": "Repository upkeep, tooling, and refactoring"
+  },
+  {
+    "name": "release",
+    "color": "0e8a16",
+    "description": "Version preparation and publication tracking"
+  },
+  {
+    "name": "question",
+    "color": "d876e3",
+    "description": "Further information is requested"
+  }
+]

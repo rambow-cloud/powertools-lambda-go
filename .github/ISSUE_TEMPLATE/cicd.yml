@@ -1,0 +1,35 @@
+name: CI/CD request
+description: Improve GitHub Actions, validation, build, or delivery workflows.
+title: "[CI/CD]: "
+labels: [cicd]
+body:
+  - type: input
+    id: area
+    attributes:
+      label: Affected page, module, or tool
+      description: Include a link or repository path if possible.
+    validations:
+      required: true
+  - type: textarea
+    id: request
+    attributes:
+      label: Request or question
+      description: Explain the problem, relevant context, and what you already tried.
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Completion criteria
+      description: What change or answer would resolve this? Keep maintenance tasks scoped.
+    validations:
+      required: true
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Before submitting
+      options:
+        - label: I searched existing issues and documentation.
+          required: true
+        - label: I removed credentials and private data from this request.
+          required: true

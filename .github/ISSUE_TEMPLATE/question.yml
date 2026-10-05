@@ -1,17 +1,8 @@
-name: Documentation, maintenance, or question
-description: Track documentation, tooling, refactoring, or a usage question.
-title: "[Task]: "
+name: Usage question
+description: Ask about supported behavior, usage, or compatibility.
+title: "[Question]: "
+labels: [question]
 body:
-  - type: dropdown
-    id: kind
-    attributes:
-      label: Request type
-      options:
-        - Documentation
-        - Maintenance or refactoring
-        - Question
-    validations:
-      required: true
   - type: input
     id: area
     attributes:
