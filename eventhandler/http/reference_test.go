@@ -278,6 +278,16 @@ func TestHTTPReference(t *testing.T) {
 			}
 			actual, _ := json.Marshal(result)
 			got, want := normalizedResponse(actual), normalizedResponse(item.Expected.Response)
+			// Issue #62: empty no-content responses retain their status. Keep the
+			// original TypeScript fixtures and correct only these pinned cases.
+			switch item.Name {
+			case "v1-proxy-45", "v2-proxy-132", "alb-proxy-219", "url-proxy-306":
+				response := want.(map[string]any)
+				response["statusCode"], response["body"] = float64(204), ""
+				if item.Name == "alb-proxy-219" {
+					response["statusDescription"] = "204 No Content"
+				}
+			}
 			if !reflect.DeepEqual(got, want) {
 				t.Fatalf("response: %s; want %s", actual, item.Expected.Response)
 			}
