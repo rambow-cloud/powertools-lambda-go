@@ -378,7 +378,7 @@ def main():
                 check(f"{test_id}: Parser Cognito input rejection before handler", identity.get("signup_calls") == 1 and [issue.get("path") for issue in identity.get("signup_issues", [])] == [["response", "autoConfirmUser"]])
                 token_v1, token_v3 = identity.get("token_v1", {}), identity.get("token_v3", {})
                 check(f"{test_id}: Parser Cognito token variants", "scopes" not in token_v1.get("request", {}) and token_v3.get("request", {}).get("scopes") == ["read"] and token_v3.get("response") == {})
-                check(f"{test_id}: Parser Cognito empty challenge session", [issue.get("path") for issue in identity.get("challenge_issues", [])] == [["request", "session"]])
+                check(f"{test_id}: Parser Cognito initial empty challenge session", "challenge_issues" not in identity)
                 validated = response.get("validation", {})
                 check(f"{test_id}: Validation typed response and outbound envelope bypass", validated.get("value") == "ok")
                 check(f"{test_id}: Validation inbound snapshot", validated.get("isolated") is True)
