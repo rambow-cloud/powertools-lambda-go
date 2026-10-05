@@ -357,7 +357,7 @@ def main():
                 check(f"{test_id}: Parser Kafka ordered typed records", services.get("kafka") == [{"id": "z", "amount": 1}, {"id": "a", "amount": 2}])
                 check(f"{test_id}: Parser Kafka safe issue paths", [issue.get("path") for issue in services.get("kafka_issues", [])] == [["records", "z-0", "id"], ["records", "z-0", "amount"], ["records", "a-0", "amount"]])
                 cfn = services.get("cloudformation", {})
-                check(f"{test_id}: Parser CloudFormation update fields", cfn.get("OldResourceProperties") == {"old": True} and cfn.get("RequestType") == "Update" and "PhysicalResourceId" not in cfn)
+                check(f"{test_id}: Parser CloudFormation update fields", cfn.get("OldResourceProperties") == {"old": True} and cfn.get("RequestType") == "Update" and cfn.get("PhysicalResourceId") == "stripped")
                 check(f"{test_id}: Parser Transfer IPv4", services.get("transfer", {}).get("sourceIp") == "127.0.0.1")
                 check(f"{test_id}: Parser Connect empty profiles", services.get("connect", {}).get("Items") == {"CustomerProfiles": []})
                 ses_records = services.get("ses", {}).get("Records", [])
