@@ -17,6 +17,7 @@ import yaml
 import release
 import release_automation as completion
 import release_prepare as preparation
+import release_preview
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -217,7 +218,14 @@ class PreparationTests(unittest.TestCase):
             self.assertEqual({item["version"] for item in plan["modules"]}, {"v0.1.1"})
             self.assertIn("pull/11", plan["modules"][0]["notes"])
             self.assertNotIn("pull/11", plan["modules"][2]["notes"])
-            self.assertIn("Dependency alignment", plan["modules"][0]["notes"])
+            self.assertIn("`metrics`: bumped to `v0.1.1`", plan["modules"][0]["notes"])
+            self.assertEqual(plan["modules"][0]["changed_files"], [])
+            self.assertEqual(plan["modules"][1]["changed_files"], ["logger/fix.go"])
+            self.assertEqual(plan["modules"][2]["changed_files"], [])
+            plan["modules"][2]["changed_files"] = ["metrics/go.mod"]
+            plan["modules"][0]["notes"] = release.render_unified_notes(release.REPOSITORY, plan)
+            with self.assertRaisesRegex(ValueError, "file changes do not match Git"):
+                release.validate_plan(plan, release.manifest())
             self.assertIn(BASE + " v0.1.1", (root / "metrics/go.mod").read_text(encoding="utf-8"))
             self.assertIn(BASE + "/logger v0.1.1", (root / "examples/go.mod").read_text(encoding="utf-8"))
             workspace = json.loads(command(root, "go", "work", "edit", "-json", str(root / "go.work")))
@@ -325,6 +333,68 @@ class PreparationTests(unittest.TestCase):
                 preparation.prepare(args(local=False), api)
             metadata.assert_not_called()
             self.assertEqual(api.writes, [])
+
+
+class FileChangeAndPreviewTests(unittest.TestCase):
+    def tag_baseline(self, root, api, source):
+        for tag in ("v0.1.0", "logger/v0.1.0", "metrics/v0.1.0"):
+            command(root, "git", "tag", tag)
+            api.tag_shas[tag] = source
+            api.releases.append({"tag_name": tag, "draft": False, "prerelease": False})
+
+    def test_deepest_module_ownership_deletions_and_renames(self):
+        with fixture() as (root, api, source):
+            self.tag_baseline(root, api, source)
+            modules = release.manifest()
+            modules["logger/nested"] = {"public": False}
+            (root / "logger/nested").mkdir()
+            (root / "logger/nested/new.go").write_text("package nested\n")
+            (root / "README.md").write_text("Repository documentation\n")
+            command(root, "git", "add", ".")
+            command(root, "git", "commit", "-m", "nested and documentation")
+            target = command(root, "git", "rev-parse", "HEAD")
+            self.assertEqual(preparation.module_changes(modules, "logger", "logger/v0.1.0", target), [])
+            self.assertEqual(preparation.module_changes(modules, ".", "v0.1.0", target), [])
+            command(root, "git", "mv", "logger/LICENSE", "metrics/moved.txt")
+            command(root, "git", "commit", "-m", "move file between modules")
+            target = command(root, "git", "rev-parse", "HEAD")
+            self.assertEqual(preparation.module_changes(modules, "logger", "logger/v0.1.0", target), ["logger/LICENSE"])
+            self.assertEqual(preparation.module_changes(modules, "metrics", "metrics/v0.1.0", target), ["metrics/moved.txt"])
+
+    def test_preview_is_read_only_and_draft_does_not_reserve_module_version(self):
+        with fixture() as (root, api, source):
+            self.tag_baseline(root, api, source)
+            (root / "logger/fix.go").write_text("package logger\n")
+            command(root, "git", "add", ".")
+            command(root, "git", "commit", "-m", "fix logger")
+            target = command(root, "git", "rev-parse", "HEAD")
+            before = {path: path.read_bytes() for path in root.rglob("go.mod")}
+            arguments = SimpleNamespace(base="v0.1.0", target=target, bump="patch", draft=False)
+            plan = release_preview.preview(arguments, api)
+            self.assertEqual(api.writes, [])
+            self.assertEqual(before, {path: path.read_bytes() for path in root.rglob("go.mod")})
+            self.assertEqual(plan["source_sha"], target)
+            self.assertEqual(plan["modules"][2]["changed_files"], [])
+            arguments.draft = True
+            original = api.repo
+            def repo(path, **kwargs):
+                result = original(path, **kwargs)
+                return {"html_url": "https://example.com/draft"} if path == "releases" and kwargs.get("method") == "POST" else result
+            with patch.object(api, "repo", side_effect=repo):
+                release_preview.preview(arguments, api)
+            self.assertEqual(len(api.writes), 1)
+            path, payload = api.writes[0]
+            self.assertEqual(path, "releases")
+            self.assertTrue(payload["draft"])
+            self.assertEqual(payload["tag_name"], "notes-preview/v0.1.1")
+            self.assertEqual(payload["target_commitish"], target)
+            modules = release.manifest()
+            previous = {directory: release.tag_name(directory, "v0.1.0") for directory in (".", "logger", "metrics")}
+            self.assertEqual(preparation.unified_version(modules, previous, "patch", [], [payload["tag_name"]]), "v0.1.1")
+            api.releases.append({**payload, "draft": False})
+            with self.assertRaisesRegex(ValueError, "unrelated or published"):
+                release_preview.preview(arguments, api)
+            self.assertEqual(len(api.writes), 1)
 
 
 class NativeCheckTests(unittest.TestCase):
