@@ -83,7 +83,9 @@ An omitted Fields slice differs from an explicit empty slice. With no fields/rul
 
 EraseOptions.Rules is an ordered []FieldRule. Rules run first; ordinary Fields skip matching concrete paths. Later rules can observe earlier changes. Rule.Replace propagates replacement errors. Bind a compiled commons/regex expression with Regexp.Replacer(format) to use the built-in ECMAScript adapter, or supply an application callback. See [REGEX.md](REGEX.md) for flags, shared lastIndex, UTF-16 handling and remaining boundaries. Precedence is Replace, CustomMask, DynamicMask, then the default mask.
 
-Paths support dot properties, numeric dot indices, * and [*]. They are not JMESPath or JSONPath: users[0].secret treats users[0] as a literal property, while users.0.secret selects an array item. Empty path segments are removed. Wildcards exclude __proto__, constructor and prototype object keys; explicit reserved-path behavior follows the covered source cases. An empty expression resolves the root but assignment to an empty path is a no-op. Missing per-field rules are silent.
+Both Rules and Fields return DataMaskingFieldNotFoundError when a selector matches no field, including unmatched wildcards; IgnoreMissing emits one warning per missing selector and continues. This corrects the pinned TypeScript missing-rule behavior.
+
+Paths support dot properties, numeric dot indices, * and [*]. They are not JMESPath or JSONPath: users[0].secret treats users[0] as a literal property, while users.0.secret selects an array item. Empty path segments are removed. Wildcards exclude __proto__, constructor and prototype object keys; explicit reserved-path behavior follows the covered source cases. An empty expression resolves the root but assignment to an empty path is a no-op.
 
 ## Encryption provider boundary
 
