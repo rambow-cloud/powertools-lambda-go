@@ -38,20 +38,22 @@ See [the AppSync Lambda example](https://github.com/rambow-cloud/powertools-lamb
 
 | Go exports | Contract |
 | --- | --- |
-| `CognitoTriggerBaseSchema` | Shared header/caller fields; optional user name; request/response strip unknown properties |
-| `PreSignupTriggerSchema` | Sign-up source, required nullable validation data and three literal-false response flags |
-| `PostConfirmationTriggerSchema` | Confirm-sign-up source and attributes/optional client metadata |
+| `CognitoTriggerBaseSchema` | Shared headers, required nullable caller client ID, optional user name; request/response strip unknown properties |
+| `PreSignupTriggerSchema` | Sign-up/admin-create/external-provider sources, required nullable validation data and three literal-false response flags |
+| `PostConfirmationTriggerSchema` | Confirm-sign-up/forgot-password sources and attributes/nullish client metadata |
 | `PreAuthenticationTriggerSchema`, `PostAuthenticationTriggerSchema` | Fixed authentication sources and their distinct request fields |
 | `PreTokenGenerationTriggerGroupConfigurationSchema`, `PreTokenGenerationTriggerRequestSchema` | Shared groups, roles, attributes and client metadata |
 | `PreTokenGenerationTriggerSchemaV1`, `PreTokenGenerationTriggerSchemaV2AndV3` | Token request variants; only V2/V3 retains optional scopes |
 | `MigrateUserTriggerSchema` | Required user name/password and required nullable migration response fields |
 | `CustomMessageTriggerSchema` | Code/link/username parameters and nullable custom message response fields |
-| `CustomEmailSenderTriggerSchema`, `CustomSMSSenderTriggerSchema` | Fixed sign-up source and matching request type, code and attributes |
+| `CustomEmailSenderTriggerSchema`, `CustomSMSSenderTriggerSchema` | Documented sender sources, matching request type/code/attributes and optional nullable response |
 | `ChallengeResultSchema` | Nine literal challenge names, result boolean and optional metadata |
-| `DefineAuthChallengeTriggerSchema`, `CreateAuthChallengeTriggerSchema` | Fixed sources, nonempty sessions and nullish response fields |
-| `VerifyAuthChallengeTriggerSchema` | Fixed source, challenge answer/private parameters and required answer-correct boolean |
+| `DefineAuthChallengeTriggerSchema`, `CreateAuthChallengeTriggerSchema` | Fixed sources, sessions including the initial empty array and nullish response fields |
+| `VerifyAuthChallengeTriggerSchema` | Fixed source, challenge answer/private parameters and required nullable answer-correct boolean |
 
-The pinned models do not accept every AWS trigger variant. PreSignup accepts only `PreSignUp_SignUp`; PostConfirmation accepts only `PostConfirmation_ConfirmSignUp`; custom senders accept only their sign-up sources. MigrateUser, CustomMessage and token-generation schemas inherit an unrestricted trigger-source string. The token schema names do not enforce the version string. These constraints and omissions match the source distribution rather than a broader AWS event catalog.
+The Go models intentionally correct the pinned schema limits for [documented trigger sources](https://docs.aws.amazon.com/cognito/latest/developerguide/cognito-user-pools-working-with-lambda-triggers.html): three PreSignup sources, two PostConfirmation sources, eight [email sender](https://docs.aws.amazon.com/cognito/latest/developerguide/user-pool-lambda-custom-email-sender.html) sources and seven [SMS sender](https://docs.aws.amazon.com/cognito/latest/developerguide/user-pool-lambda-custom-sms-sender.html) sources. Email alone supports AccountTakeOverNotification. Client metadata accepts absence/null but validates string-valued dictionaries when present. Sender response accepts absence/null and retains the existing supplied-object stripping behavior; other trigger responses remain required.
+
+The [upstream captured-event report](https://github.com/aws-powertools/powertools-lambda-typescript/issues/5770) also demonstrates nullable caller client IDs, initial empty challenge sessions and an unset/null answerCorrect before the handler fills it. Missing required clientId/answerCorrect and wrong present types still fail. These are synthetic Go regression cases, not live service acceptance. MigrateUser, CustomMessage and token-generation schemas retain an unrestricted trigger-source string; token schema names do not enforce the version string.
 
 PreSignup input response flags must be false. Input validation runs before business code and does not revalidate the returned response. A handler can change those flags according to its application policy. [The Cognito example](https://github.com/rambow-cloud/powertools-lambda-go/blob/main/examples/parser/cognito/main.go) validates raw JSON into the native AWS Go event type and applies a required-email rule while preserving the default confirmation flags.
 

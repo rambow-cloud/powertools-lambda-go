@@ -3,22 +3,22 @@ package schemas
 import "github.com/rambow-cloud/powertools-lambda-go/parser"
 
 var cognitoUserAttributes = field("userAttributes", parser.Dictionary(parser.String()))
-var cognitoClientMetadata = optional("clientMetadata", parser.Dictionary(parser.String()))
+var cognitoClientMetadata = nullish("clientMetadata", parser.Dictionary(parser.String()))
 var cognitoUserNotFound = optional("userNotFound", parser.Boolean())
 
 var CognitoTriggerBaseSchema = parser.Object(
 	field("version", parser.String()), field("triggerSource", parser.String()), field("region", parser.String()),
 	field("userPoolId", parser.String()), optional("userName", parser.String()),
-	field("callerContext", parser.Object(field("awsSdkVersion", parser.String()), field("clientId", parser.String()))),
+	field("callerContext", parser.Object(field("awsSdkVersion", parser.String()), field("clientId", parser.Nullable(parser.String())))),
 	field("request", parser.Object()), field("response", parser.Object()),
 )
 var PreSignupTriggerSchema = CognitoTriggerBaseSchema.Extend(
-	field("triggerSource", parser.Literal("PreSignUp_SignUp")),
+	field("triggerSource", parser.Enum("PreSignUp_SignUp", "PreSignUp_AdminCreateUser", "PreSignUp_ExternalProvider")),
 	field("request", parser.Object(cognitoUserAttributes, field("validationData", parser.Nullable(parser.Dictionary(parser.String()))), cognitoClientMetadata, cognitoUserNotFound)),
 	field("response", parser.Object(field("autoConfirmUser", parser.Literal(false)), field("autoVerifyEmail", parser.Literal(false)), field("autoVerifyPhone", parser.Literal(false)))),
 )
 var PostConfirmationTriggerSchema = CognitoTriggerBaseSchema.Extend(
-	field("triggerSource", parser.Literal("PostConfirmation_ConfirmSignUp")),
+	field("triggerSource", parser.Enum("PostConfirmation_ConfirmSignUp", "PostConfirmation_ConfirmForgotPassword")),
 	field("request", parser.Object(cognitoUserAttributes, cognitoClientMetadata)), field("response", parser.Object()),
 )
 var PreAuthenticationTriggerSchema = CognitoTriggerBaseSchema.Extend(
@@ -50,12 +50,14 @@ var CustomMessageTriggerSchema = CognitoTriggerBaseSchema.Extend(
 	field("response", parser.Object(field("smsMessage", parser.Nullable(parser.String())), field("emailMessage", parser.Nullable(parser.String())), field("emailSubject", parser.Nullable(parser.String())))),
 )
 var CustomEmailSenderTriggerSchema = CognitoTriggerBaseSchema.Extend(
-	field("triggerSource", parser.Literal("CustomEmailSender_SignUp")),
+	field("triggerSource", parser.Enum("CustomEmailSender_SignUp", "CustomEmailSender_Authentication", "CustomEmailSender_ForgotPassword", "CustomEmailSender_ResendCode", "CustomEmailSender_UpdateUserAttribute", "CustomEmailSender_VerifyUserAttribute", "CustomEmailSender_AdminCreateUser", "CustomEmailSender_AccountTakeOverNotification")),
 	field("request", parser.Object(field("type", parser.Literal("customEmailSenderRequestV1")), field("code", parser.String()), cognitoClientMetadata, cognitoUserAttributes)),
+	nullish("response", parser.Object()),
 )
 var CustomSMSSenderTriggerSchema = CognitoTriggerBaseSchema.Extend(
-	field("triggerSource", parser.Literal("CustomSMSSender_SignUp")),
+	field("triggerSource", parser.Enum("CustomSMSSender_SignUp", "CustomSMSSender_Authentication", "CustomSMSSender_ForgotPassword", "CustomSMSSender_ResendCode", "CustomSMSSender_UpdateUserAttribute", "CustomSMSSender_VerifyUserAttribute", "CustomSMSSender_AdminCreateUser")),
 	field("request", parser.Object(field("type", parser.Literal("customSMSSenderRequestV1")), field("code", parser.String()), cognitoClientMetadata, cognitoUserAttributes)),
+	nullish("response", parser.Object()),
 )
 var ChallengeResultSchema = parser.Object(
 	field("challengeName", parser.Union(
@@ -63,7 +65,7 @@ var ChallengeResultSchema = parser.Object(
 		parser.Literal("SOFTWARE_TOKEN_MFA"), parser.Literal("DEVICE_SRP_AUTH"), parser.Literal("DEVICE_PASSWORD_VERIFIER"), parser.Literal("ADMIN_NO_SRP_AUTH"),
 	)), field("challengeResult", parser.Boolean()), optional("challengeMetadata", parser.String()),
 )
-var cognitoSession = field("session", array(ChallengeResultSchema, 1))
+var cognitoSession = field("session", array(ChallengeResultSchema))
 var DefineAuthChallengeTriggerSchema = CognitoTriggerBaseSchema.Extend(
 	field("triggerSource", parser.Literal("DefineAuthChallenge_Authentication")),
 	field("request", parser.Object(cognitoUserAttributes, cognitoSession, cognitoClientMetadata, cognitoUserNotFound)),
@@ -77,5 +79,5 @@ var CreateAuthChallengeTriggerSchema = CognitoTriggerBaseSchema.Extend(
 var VerifyAuthChallengeTriggerSchema = CognitoTriggerBaseSchema.Extend(
 	field("triggerSource", parser.Literal("VerifyAuthChallengeResponse_Authentication")),
 	field("request", parser.Object(cognitoUserAttributes, field("privateChallengeParameters", parser.Dictionary(parser.String())), field("challengeAnswer", parser.String()), cognitoClientMetadata, cognitoUserNotFound)),
-	field("response", parser.Object(field("answerCorrect", parser.Boolean()))),
+	field("response", parser.Object(field("answerCorrect", parser.Nullable(parser.Boolean())))),
 )

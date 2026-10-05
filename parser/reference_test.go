@@ -175,8 +175,43 @@ func runReference(t *testing.T, path string, count int) {
 	if fixture.Version != "2.35.0" || len(fixture.Cases) != count {
 		t.Fatalf("unexpected reference corpus: %s/%d", fixture.Version, len(fixture.Cases))
 	}
+	validData := map[string]any{}
+	for _, item := range fixture.Cases {
+		if item.Name == item.Schema+"-valid" && item.Expected.Success {
+			validData[item.Schema] = item.Expected.Data
+		}
+	}
 	for _, item := range fixture.Cases {
 		t.Run(item.Name, func(t *testing.T) {
+			// Correct documented Cognito inputs independently of parsed output.
+			// Original fixtures and all other validation failures remain unchanged.
+			if data, corrected := correctedCognitoData(item.Name, item.Schema, item.Input, validData[item.Schema]); corrected {
+				if len(item.Expected.Issues) != 1 {
+					t.Fatal("Cognito correction must affect exactly one fixture failure")
+				}
+				item.Expected.Success, item.Expected.Thrown = true, false
+				item.Expected.Data, item.Expected.Original, item.Expected.Issues = data, nil, nil
+			}
+			if (item.Schema == "CustomEmailSenderTriggerSchema" || item.Schema == "CustomSMSSenderTriggerSchema") && item.Name == item.Schema+"-empty" {
+				remaining := make([]parser.Issue, 0, len(item.Expected.Issues))
+				for _, issue := range item.Expected.Issues {
+					if !reflect.DeepEqual(issue.Path, []any{"response"}) {
+						remaining = append(remaining, issue)
+					}
+				}
+				item.Expected.Issues = remaining
+			}
+			if sources, expanded := cognitoSources[item.Schema]; expanded {
+				values := make([]string, len(sources))
+				for i, source := range sources {
+					values[i] = "\"" + source + "\""
+				}
+				for i := range item.Expected.Issues {
+					if reflect.DeepEqual(item.Expected.Issues[i].Path, []any{"triggerSource"}) {
+						item.Expected.Issues[i].Message = "Invalid option: expected one of " + strings.Join(values, "|")
+					}
+				}
+			}
 			// AWS passes custom Lambda authorizer context through to REST handlers.
 			// Restore only those input fields in otherwise successful pinned cases.
 			if item.Expected.Success && (item.Schema == "APIGatewayEventRequestContextSchema" || item.Schema == "APIGatewayProxyEventSchema" || item.Schema == "APIGatewayRequestAuthorizerEventSchema") {
