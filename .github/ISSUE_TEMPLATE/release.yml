@@ -1,6 +1,7 @@
 name: Release tracking
 description: Track one version for all maintained public components.
 title: "[Release]: "
+labels: [release]
 body:
   - type: markdown
     attributes:

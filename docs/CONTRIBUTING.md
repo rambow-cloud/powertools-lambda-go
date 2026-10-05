@@ -15,13 +15,38 @@ and the [roadmap](ROADMAP.md) first, then choose a form in
   a minimal reproduction, expected behavior, and actual behavior
 - **Feature proposal:** the problem, proposed behavior, alternatives,
   compatibility impact, and observable acceptance criteria
-- **Documentation, maintenance, or question:** the affected page/tool,
-  requested change or question, and what would resolve it
+- **Documentation request:** the affected guide, example or site page and the requested correction
+- **CI/CD request:** the affected workflow, observed behavior and completion criteria
+- **Maintenance request:** the affected tool or repository area and a scoped change
+- **Usage question:** the module, what you tried and what answer would resolve it
+- **Release tracking:** the unified version, accumulated changes and publication acceptance
 
-The Bug report form assigns the existing red `bug` label; Feature proposal
-assigns `enhancement`. When creating an issue with `gh issue create`, pass
-`--label bug` or `--label enhancement` explicitly: CLI/API creation with a body
-does not apply the web form defaults.
+Each form assigns its matching label. The maintained definitions are in
+the [label catalog](https://github.com/rambow-cloud/powertools-lambda-go/blob/main/.github/labels.json):
+
+| Label | Color | Purpose |
+|---|---|---|
+| `bug` | Red `#d73a4a` | Incorrect behavior |
+| `enhancement` | Light blue `#a2eeef` | New capability or behavior |
+| `documentation` | Blue `#0075ca` | Guides, examples and the documentation site |
+| `cicd` | Purple `#5319e7` | GitHub Actions, CI checks and delivery workflows |
+| `maintenance` | Gray `#ededed` | Repository upkeep, tooling and refactoring |
+| `release` | Green `#0e8a16` | Version preparation and publication tracking |
+| `question` | Pink `#d876e3` | Usage and compatibility questions |
+
+Combine type and area labels when useful: a workflow bug can have `bug` and
+`cicd`; a documentation feature can have `enhancement` and `documentation`.
+Labels organize work; they do not select CI suites or authorize publication.
+
+When creating an issue with `gh issue create`, pass labels explicitly, for example
+`--label bug --label cicd`: CLI/API creation with a body does not apply web form
+defaults. Maintainers keep the catalog and repository labels in sync; unrelated
+standard labels such as `help wanted` are retained. To create or update a catalog
+label, use its name, color and description with `gh label create --force`, for example:
+
+```sh
+gh label create cicd --color 5319e7 --description "GitHub Actions, CI checks, and delivery workflows" --force
+```
 
 Track one independently verifiable outcome per issue, not one issue per commit.
 The owner can self-triage and assign their own work. Several commits or partial

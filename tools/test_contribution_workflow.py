@@ -1,5 +1,6 @@
 """Offline regression tests for the exact metadata script embedded in Actions."""
 
+import json
 from pathlib import Path
 import unittest
 from unittest.mock import patch
@@ -137,7 +138,7 @@ class ContributionPolicyTests(unittest.TestCase):
 class IssueFormTests(unittest.TestCase):
     def test_forms_have_unique_fields_and_required_inputs(self):
         forms = sorted((ROOT / ".github/ISSUE_TEMPLATE").glob("*.yml"))
-        self.assertEqual(len(forms), 5)
+        self.assertEqual(len(forms), 8)
         for path in forms:
             with self.subTest(path=path.name):
                 form = yaml.safe_load(path.read_text())
@@ -145,13 +146,32 @@ class IssueFormTests(unittest.TestCase):
                     self.assertIs(form["blank_issues_enabled"], False)
                     continue
                 self.assertTrue(form["name"] and form["description"])
-                expected_labels = {"bug_report.yml": ["bug"], "feature_request.yml": ["enhancement"]}
+                expected_labels = {
+                    "bug_report.yml": ["bug"], "feature_request.yml": ["enhancement"],
+                    "documentation.yml": ["documentation"], "cicd.yml": ["cicd"],
+                    "maintenance.yml": ["maintenance"], "question.yml": ["question"],
+                    "release.yml": ["release"],
+                }
                 self.assertEqual(form.get("labels", []), expected_labels.get(path.name, []))
                 self.assertNotIn("assignees", form)
                 fields = [field for field in form["body"] if field["type"] != "markdown"]
                 ids = [field["id"] for field in fields]
                 self.assertEqual(len(ids), len(set(ids)))
                 self.assertTrue(any(field.get("validations", {}).get("required") for field in fields))
+
+    def test_form_labels_exist_in_valid_catalog(self):
+        labels = json.loads((ROOT / ".github/labels.json").read_text(encoding="utf-8"))
+        names = [label["name"] for label in labels]
+        self.assertEqual(len(names), len(set(names)))
+        for label in labels:
+            with self.subTest(label=label["name"]):
+                self.assertRegex(label["name"], r"^[a-z][a-z ]+$")
+                self.assertRegex(label["color"], r"^[0-9a-f]{6}$")
+                self.assertTrue(0 < len(label["description"]) <= 100)
+        self.assertEqual(next(label["color"] for label in labels if label["name"] == "bug"), "d73a4a")
+        for path in (ROOT / ".github/ISSUE_TEMPLATE").glob("*.yml"):
+            form = yaml.safe_load(path.read_text())
+            self.assertTrue(set(form.get("labels", [])) <= set(names), path.name)
 
     def test_unfilled_pr_template_does_not_pass(self):
         text = (ROOT / ".github/PULL_REQUEST_TEMPLATE.md").read_text()

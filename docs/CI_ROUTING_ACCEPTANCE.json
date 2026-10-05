@@ -1,0 +1,80 @@
+{
+  "recorded_at": "2026-10-05",
+  "scope": "Native PR acceptance of changed-file routing using the issue-label feature after the routing feature merged.",
+  "full_suite": {
+    "pull_request": 37,
+    "head_sha": "95f377dfbf64654052453b62fa0fac1f3169f3f6",
+    "url": "https://github.com/rambow-cloud/powertools-lambda-go/actions/runs/37246526288",
+    "conclusion": "success",
+    "module_job_seconds": 433,
+    "runtime_job_seconds": 339
+  },
+  "fast_path": {
+    "pull_request": 38,
+    "conclusion": "success",
+    "event": "pull_request",
+    "head_sha": "4c1311b879fa6efde964bae1d7bdc2e0edb13469",
+    "html_url": "https://github.com/rambow-cloud/powertools-lambda-go/actions/runs/37247755678",
+    "id": 37247755678,
+    "run_started_at": "2026-10-05T00:30:03Z",
+    "updated_at": "2026-10-05T00:30:34Z",
+    "elapsed_seconds": 31,
+    "selection": {
+      "go": false,
+      "docs": true,
+      "automation": true,
+      "release": false
+    },
+    "jobs": [
+      {
+        "name": "Select CI suites",
+        "conclusion": "success",
+        "seconds": 4
+      },
+      {
+        "name": "Documentation / Build documentation",
+        "conclusion": "success",
+        "seconds": 16
+      },
+      {
+        "name": "Automation / Workflow and metadata checks",
+        "conclusion": "success",
+        "seconds": 14
+      },
+      {
+        "name": "Modules and Lambda artifacts",
+        "conclusion": "skipped",
+        "seconds": null
+      },
+      {
+        "name": "Automation / Release tooling",
+        "conclusion": "skipped",
+        "seconds": null
+      },
+      {
+        "name": "Runtime simulation",
+        "conclusion": "skipped",
+        "seconds": null
+      },
+      {
+        "name": "CI gate",
+        "conclusion": "success",
+        "seconds": 3
+      },
+      {
+        "name": "Documentation / Deploy GitHub Pages",
+        "conclusion": "skipped",
+        "seconds": null
+      }
+    ]
+  },
+  "required_checks": [
+    "PR contribution policy",
+    "CI gate"
+  ],
+  "limitations": [
+    "Records these observed runs, not a guaranteed duration.",
+    "Fork approval and live AWS execution were not exercised.",
+    "This evidence commit is validated by its own native PR run before merge."
+  ]
+}
