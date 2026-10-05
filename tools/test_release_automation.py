@@ -218,7 +218,7 @@ class PreparationTests(unittest.TestCase):
             self.assertEqual({item["version"] for item in plan["modules"]}, {"v0.1.1"})
             self.assertIn("pull/11", plan["modules"][0]["notes"])
             self.assertNotIn("pull/11", plan["modules"][2]["notes"])
-            self.assertIn("`metrics`: bumped to `v0.1.1`", plan["modules"][0]["notes"])
+            self.assertIn("`powertools-lambda-go/metrics`: bumped to `v0.1.1`", plan["modules"][0]["notes"])
             self.assertEqual(plan["modules"][0]["changed_files"], [])
             self.assertEqual(plan["modules"][1]["changed_files"], ["logger/fix.go"])
             self.assertEqual(plan["modules"][2]["changed_files"], [])

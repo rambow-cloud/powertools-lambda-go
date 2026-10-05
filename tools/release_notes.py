@@ -188,6 +188,11 @@ def render_component_notes(repository, item):
     return "\n".join(lines)
 
 
+def module_display_name(repository, directory):
+    project = repository.rsplit("/", 1)[-1]
+    return project if directory == "." else f"{project}/{directory}"
+
+
 def render_file_based_notes(repository, plan):
     version = plan["release_version"]
     preview = plan.get("preview", False)
@@ -206,11 +211,11 @@ def render_file_based_notes(repository, plan):
     if changed:
         lines += ["## Updated modules", ""]
         for item in changed:
-            lines += ["### " + ("Commons" if item["directory"] == "." else item["directory"]), ""]
+            lines += ["### " + module_display_name(repository, item["directory"]), ""]
             lines += details(repository, item, "####")
     if unchanged:
         lines += ["## Version bumps only", "", "No module file changes; internal requirements will follow the unified version.", ""]
-        lines += [f"- `{item['directory']}`: bumped to `{version}`." for item in unchanged]
+        lines += [f"- `{module_display_name(repository, item['directory'])}`: bumped to `{version}`." for item in unchanged]
         lines.append("")
     root = next(item for item in plan["modules"] if item["directory"] == ".")
     repository_item = {**root, "directory": "repository", "previous_tag": root["previous_tag"] or "initial",
@@ -224,7 +229,7 @@ def render_file_based_notes(repository, plan):
         directory = item["directory"]
         tag = version if directory == "." else directory + "/" + version
         label = f"`{version}`" if preview else f"[{version}](https://github.com/{repository}/releases/tag/{tag})"
-        lines.append(f"| `{directory}` | {label} | {change_status(item)} |")
+        lines.append(f"| `{module_display_name(repository, directory)}` | {label} | {change_status(item)} |")
     lines += ["", "</details>"]
     if root["previous_tag"]:
         lines += ["", f"**Full changelog:** https://github.com/{repository}/compare/{root['previous_tag']}...{target}"]
