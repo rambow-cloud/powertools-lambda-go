@@ -10,7 +10,11 @@ var gatewayEventIdentity = parser.Object(
 	nullish("user", parser.String()), nullish("userAgent", parser.String()), nullish("userArn", parser.String()), nullish("clientCert", APIGatewayCert),
 )
 var gatewayAuthorizer = parser.Union(
-	parser.Object(field("integrationLatency", parser.Number()), field("principalId", parser.String())),
+	parser.Refine[any](parser.Object(field("integrationLatency", parser.Number()), field("principalId", parser.String())).WithUnknownFields(parser.PreserveUnknown), func(input any) bool {
+		// Claims identify the Cognito branch, even when Lambda metadata is present.
+		_, claims := input.(map[string]any)["claims"]
+		return !claims
+	}, "claims must use the Cognito authorizer schema"),
 	parser.Object(field("claims", parser.Dictionary(parser.Unknown())), optional("scopes", APIGatewayStringArray)),
 )
 var gatewayRequestContext = parser.Object(
