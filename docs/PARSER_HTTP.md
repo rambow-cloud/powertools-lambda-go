@@ -20,6 +20,7 @@ These names are exported from the Go `parser/schemas` package with their referen
 The implementation reuses shared fields, dictionaries, method enums and certificates where the reference contracts agree. Differences are preserved:
 
 - REST query dictionaries and body permit explicit null but are required; several other REST dictionaries are optional and nullable.
+- REST Lambda authorizers preserve custom context values alongside integrationLatency/principalId, as specified by the [AWS authorizer contract](https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-lambda-authorizer-output.html). Contexts containing claims use the typed Cognito branch, including scopes validation, even when Lambda metadata is present. This corrects custom-field stripping in the pinned model; schemas validate shape rather than make authorization decisions.
 - HTTP API v2 body is optional but not nullable. Its version is a string; the REQUEST authorizer event specifically requires `2.0`.
 - REST identity permits `test-invoke-source-ip` and an absent sourceIp. HTTP API v2 requires a valid IPv4/IPv6 address. WebSocket identity only requires a string.
 - REST request context permits a nonempty messageId only when eventType is MESSAGE.

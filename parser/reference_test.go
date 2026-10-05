@@ -177,6 +177,20 @@ func runReference(t *testing.T, path string, count int) {
 	}
 	for _, item := range fixture.Cases {
 		t.Run(item.Name, func(t *testing.T) {
+			// AWS passes custom Lambda authorizer context through to REST handlers.
+			// Restore only those input fields in otherwise successful pinned cases.
+			if item.Expected.Success && (item.Schema == "APIGatewayEventRequestContextSchema" || item.Schema == "APIGatewayProxyEventSchema" || item.Schema == "APIGatewayRequestAuthorizerEventSchema") {
+				input := restContext(item.Input.(map[string]any))
+				if authorizer, custom := input["authorizer"].(map[string]any); custom {
+					if _, cognito := authorizer["claims"]; !cognito {
+						copy := make(map[string]any, len(authorizer))
+						for name, value := range authorizer {
+							copy[name] = value
+						}
+						restContext(item.Expected.Data.(map[string]any))["authorizer"] = copy
+					}
+				}
+			}
 			// Update/Delete require an existing resource ID in the AWS contract.
 			// Keep the pinned fixture intact and correct only this omitted field.
 			if item.Schema == "CloudFormationCustomResourceUpdateSchema" || item.Schema == "CloudFormationCustomResourceDeleteSchema" {
