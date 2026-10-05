@@ -4,8 +4,8 @@ go 1.26
 
 require (
 	github.com/hamba/avro/v2 v2.31.0
-	github.com/rambow-cloud/powertools-lambda-go v0.1.0
-	github.com/rambow-cloud/powertools-lambda-go/kafka v0.1.0
+	github.com/rambow-cloud/powertools-lambda-go v0.2.0
+	github.com/rambow-cloud/powertools-lambda-go/kafka v0.2.0
 )
 
 require (

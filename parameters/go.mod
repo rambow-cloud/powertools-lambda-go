@@ -9,9 +9,9 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/dynamodb v1.68.0
 	github.com/aws/aws-sdk-go-v2/service/secretsmanager v1.44.2
 	github.com/aws/aws-sdk-go-v2/service/ssm v1.78.0
-	github.com/rambow-cloud/powertools-lambda-go v0.1.0
-	github.com/rambow-cloud/powertools-lambda-go/commons/awssdk v0.1.0
-	github.com/rambow-cloud/powertools-lambda-go/commons/dynamodb v0.1.0
+	github.com/rambow-cloud/powertools-lambda-go v0.2.0
+	github.com/rambow-cloud/powertools-lambda-go/commons/awssdk v0.2.0
+	github.com/rambow-cloud/powertools-lambda-go/commons/dynamodb v0.2.0
 )
 
 require (

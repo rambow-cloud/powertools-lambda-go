@@ -5,7 +5,7 @@ go 1.26
 require (
 	github.com/aws/aws-sdk-go-v2/feature/dynamodb/attributevalue v1.21.4
 	github.com/aws/aws-sdk-go-v2/service/dynamodb v1.68.0
-	github.com/rambow-cloud/powertools-lambda-go v0.1.0
+	github.com/rambow-cloud/powertools-lambda-go v0.2.0
 )
 
 require (
