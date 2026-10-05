@@ -52,6 +52,10 @@ func TestHTTPStreamReference(t *testing.T) {
 	if err := json.Unmarshal(data, &corpus); err != nil {
 		t.Fatal(err)
 	}
+	metadataByName := make(map[string]map[string]any, len(corpus.Cases))
+	for _, item := range corpus.Cases {
+		metadataByName[item.Name] = item.Expected.Metadata
+	}
 	for _, item := range corpus.Cases {
 		t.Run(item.Name, func(t *testing.T) {
 			disabled := false
@@ -141,8 +145,19 @@ func TestHTTPStreamReference(t *testing.T) {
 			if item.Expected.Error != nil || !item.Expected.Ended {
 				t.Fatalf("unexpected reference failure: %+v", item.Expected)
 			}
-			if !reflect.DeepEqual(metadata, item.Expected.Metadata) {
-				t.Fatalf("metadata: %#v; want %#v", metadata, item.Expected.Metadata)
+			wantMetadata := item.Expected.Metadata
+			// Issue #65: every headers-only stream uses the same projection.
+			// Source corrected v1 expectations independently from the original
+			// matching v2 fixture, without changing either source fixture.
+			if strings.HasPrefix(item.Name, "v1-") && (item.CORS || strings.HasPrefix(item.Name, "v1-cookies-") || strings.HasPrefix(item.Name, "v1-proxyHeaders-")) {
+				var found bool
+				wantMetadata, found = metadataByName["v2-"+strings.TrimPrefix(item.Name, "v1-")]
+				if !found {
+					t.Fatal("missing corresponding v2 metadata fixture")
+				}
+			}
+			if !reflect.DeepEqual(metadata, wantMetadata) {
+				t.Fatalf("metadata: %#v; want %#v", metadata, wantMetadata)
 			}
 			want, err := base64.StdEncoding.DecodeString(item.Expected.Body)
 			if err != nil {
