@@ -151,14 +151,14 @@ func (p *Processor[T, R]) Process(ctx context.Context, records []T, handler Hand
 		close(jobs)
 		wg.Wait()
 	}
-	if len(report.Errors) > 0 && len(report.Errors) == len(records) && !p.options.SuppressFullBatchFailure {
-		return report, &FullBatchFailureError{RecordErrors: append([]error(nil), report.Errors...)}
-	}
 	for _, record := range report.Failures {
 		id := p.source.Identifier(record)
 		if id != "" || !p.source.OmitEmptyIdentifier {
 			report.Response.BatchItemFailures = append(report.Response.BatchItemFailures, ItemFailure{ItemIdentifier: id})
 		}
+	}
+	if len(report.Errors) > 0 && len(report.Errors) == len(records) && !p.options.SuppressFullBatchFailure {
+		return report, &FullBatchFailureError{RecordErrors: append([]error(nil), report.Errors...)}
 	}
 	return report, nil
 }

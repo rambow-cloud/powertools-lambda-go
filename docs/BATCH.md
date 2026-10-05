@@ -16,6 +16,8 @@ The complete Lambda example below parses each SQS body as an order, processes va
 
 For the input below, record `m1` succeeds and `m2` fails its `id` string validation. The handler returns `{"batchItemFailures":[{"itemIdentifier":"m2"}]}`. It does not return the successful business value `ORD-123` to SQS. `Report.Results` is available when calling `Process` directly. This program has no explicit application log call. If every record fails, the default is a `FullBatchFailureError` instead of this partial response.
 
+Even when every record fails, `Process` returns a populated `Report.Response` alongside `FullBatchFailureError`; Lambda wrappers return the same response alongside the error. This corrects the empty full-failure response in TypeScript v2.35.0. Set `SuppressFullBatchFailure: true` to return the failure response without that error. A Lambda invocation that returns an error still fails the entire batch. FIFO-skipped records remain in the retry list, and DynamoDB Streams entries without a sequence identifier remain omitted.
+
 ~~~json
 {
   "Records": [
