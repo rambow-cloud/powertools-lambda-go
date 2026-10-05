@@ -1,4 +1,4 @@
-name: Go CI
+name: CI
 
 on:
   push:
@@ -10,8 +10,8 @@ permissions:
   contents: read
 
 concurrency:
-  group: go-${{ github.event.pull_request.number || github.ref }}
-  cancel-in-progress: true
+  group: ci-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 env:
   CGO_ENABLED: '0'
@@ -19,8 +19,46 @@ env:
   GOCACHE: ${{ github.workspace }}/dist/integration/go-cache
 
 jobs:
+  changes:
+    name: Select CI suites
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    outputs:
+      go: ${{ steps.changes.outputs.go }}
+      docs: ${{ steps.changes.outputs.docs }}
+      automation: ${{ steps.changes.outputs.automation }}
+      release: ${{ steps.changes.outputs.release }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Select suites from the complete diff
+        id: changes
+        run: python3 tools/ci_changes.py
+
+  docs:
+    name: Documentation
+    needs: changes
+    if: needs.changes.outputs.docs == 'true'
+    uses: ./.github/workflows/docs.yml
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+
+  automation:
+    name: Automation
+    needs: changes
+    if: needs.changes.outputs.automation == 'true'
+    uses: ./.github/workflows/automation.yml
+    with:
+      release: ${{ needs.changes.outputs.release == 'true' }}
+
   test:
     name: Modules and Lambda artifacts
+    needs: changes
+    if: needs.changes.outputs.go == 'true'
     runs-on: ubuntu-24.04
     timeout-minutes: 90
     steps:
@@ -58,6 +96,7 @@ jobs:
           path: dist/lambda-*.zip
           if-no-files-found: error
           retention-days: 7
+
       - name: Upload module verification progress
         if: always()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
@@ -128,3 +167,37 @@ jobs:
             dist/local/streaming/*.log
           if-no-files-found: warn
           retention-days: 7
+
+  gate:
+    name: CI gate
+    if: always()
+    needs: [changes, test, runtime, docs, automation]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - name: Require every selected suite to succeed
+        env:
+          CI_NEEDS: ${{ toJSON(needs) }}
+        run: |
+          python3 - <<'PY'
+          import json
+          import os
+
+          def validate(needs):
+              if needs['changes']['result'] != 'success':
+                  raise ValueError('Change selection did not succeed')
+              selected = needs['changes']['outputs']
+              for suite in ('go', 'docs', 'automation', 'release'):
+                  if selected.get(suite) not in ('true', 'false'):
+                      raise ValueError(f'Missing or invalid selection: {suite}')
+              if selected['release'] == 'true' and selected['automation'] != 'true':
+                  raise ValueError('Release checks require the automation suite')
+              for job, suite in (('test', 'go'), ('runtime', 'go'), ('docs', 'docs'), ('automation', 'automation')):
+                  expected = 'success' if selected[suite] == 'true' else 'skipped'
+                  if needs[job]['result'] != expected:
+                      raise ValueError(f'{job}: expected {expected}, got {needs[job]["result"]}')
+              print('Every selected CI suite passed; unselected suites were skipped.')
+
+          if __name__ == '__main__':
+              validate(json.loads(os.environ['CI_NEEDS']))
+          PY

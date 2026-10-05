@@ -1,0 +1,70 @@
+name: Repository automation
+
+on:
+  workflow_call:
+    inputs:
+      release:
+        description: Run GoReleaser and release automation regressions
+        required: true
+        type: boolean
+
+permissions:
+  contents: read
+
+env:
+  CGO_ENABLED: '0'
+  PYTHONDONTWRITEBYTECODE: '1'
+
+jobs:
+  metadata:
+    name: Workflow and metadata checks
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7 # v10.2.0
+        with:
+          python-version: '3.14'
+          enable-cache: true
+          cache-dependency-glob: website/uv.lock
+      - name: Lint workflows with pinned actionlint
+        run: |
+          curl --fail --silent --show-error --location https://github.com/rhysd/actionlint/releases/download/v1.7.12/actionlint_1.7.12_linux_amd64.tar.gz --output "$RUNNER_TEMP/actionlint.tar.gz"
+          echo "8aca8db96f1b94770f1b0d72b6dddcb1ebb8123cb3712530b08cc387b349a3d8  $RUNNER_TEMP/actionlint.tar.gz" | sha256sum --check
+          tar -xzf "$RUNNER_TEMP/actionlint.tar.gz" -C "$RUNNER_TEMP" actionlint
+          "$RUNNER_TEMP/actionlint" -color
+      - name: Test contribution workflow and issue forms
+        run: uv run --project website --frozen python tools/test_contribution_workflow.py
+      - name: Test CI routing and required gate
+        run: uv run --project website --frozen python tools/test_ci_changes.py
+
+  release:
+    name: Release tooling
+    if: inputs.release
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
+        with:
+          go-version-file: go.mod
+          cache: false
+      - uses: astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7 # v10.2.0
+        with:
+          python-version: '3.14'
+          enable-cache: true
+          cache-dependency-glob: website/uv.lock
+      - name: Install pinned GoReleaser OSS for offline CLI tests
+        uses: goreleaser/goreleaser-action@f06c13b6b1a9625abc9e6e439d9c05a8f2190e94 # v7.2.3
+        with:
+          distribution: goreleaser
+          version: v2.18.2
+          install-only: true
+      - name: Test release notes and publication safeguards
+        run: uv run --project website --frozen python tools/test_release.py
+      - name: Test automatic release preparation and completion
+        run: uv run --project website --frozen python tools/test_release_automation.py

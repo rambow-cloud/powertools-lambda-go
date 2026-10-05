@@ -19,7 +19,8 @@ from release_notes import CATEGORIES, render_notes, render_unified_notes, valida
 ROOT = Path(__file__).resolve().parents[1]
 REPOSITORY = "rambow-cloud/powertools-lambda-go"
 GORELEASER_VERSION = "2.18.2"
-MAIN_CHECKS = ("Modules and Lambda artifacts", "Runtime simulation", "Build documentation")
+MAIN_CHECKS = ("CI gate", "Modules and Lambda artifacts", "Runtime simulation",
+               "Documentation / Build documentation", "Automation / Release tooling")
 PR_CHECKS = ("PR contribution policy", *MAIN_CHECKS)
 SHA = re.compile(r"[0-9a-f]{40}")
 NAME = re.compile(r"[a-z0-9][a-z0-9-]{0,79}")

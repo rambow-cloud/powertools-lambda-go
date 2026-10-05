@@ -27,7 +27,7 @@ def native_runs(sha, conclusion="success"):
     return [{"id": number, "path": ".github/workflows/" + filename, "event": "pull_request", "head_sha": sha,
              "head_repository": {"full_name": release.REPOSITORY}, "pull_requests": [{"number": 21}],
              "status": "completed", "conclusion": conclusion}
-            for number, filename in enumerate(("contribution.yml", "ci.yml", "docs.yml"), 101)]
+            for number, filename in enumerate(("contribution.yml", "ci.yml"), 101)]
 
 
 class API:
@@ -65,9 +65,9 @@ class API:
             sha = path.split("head_sha=", 1)[1].split("&", 1)[0]
             return {"workflow_runs": self.native if self.native is not None else native_runs(sha)}
         if path.startswith("commits/") and "/check-runs?" in path:
-            checks = [{"id": number, "name": name, "app": {"slug": "github-actions"}, "status": "completed", "conclusion": "success"} for number, name in enumerate(("PR contribution policy", "Modules and Lambda artifacts", "Build documentation"))]
+            checks = [{"id": number, "name": name, "app": {"slug": "github-actions"}, "status": "completed", "conclusion": "success"} for number, name in enumerate(tuple(name for name in release.PR_CHECKS if name != "Runtime simulation"))]
             if self.runtime_check is not None:
-                checks.append({"id": 4, "name": "Runtime simulation", "app": {"slug": "github-actions"}, **self.runtime_check})
+                checks.append({"id": 99, "name": "Runtime simulation", "app": {"slug": "github-actions"}, **self.runtime_check})
             return {"check_runs": checks}
         if path.startswith("git/ref/tags/"):
             sha = self.tag_shas.get(path.removeprefix("git/ref/tags/"))
@@ -274,7 +274,7 @@ class PreparationTests(unittest.TestCase):
                 return original_git(*command)
             with patch.object(release, "git", side_effect=git):
                 preparation.prepare(args(issue=None, local=False, auto_publish=True), api)
-            self.assertEqual([path for path, _ in api.writes], ["issues", "pulls", "actions/runs/101/approve", "actions/runs/102/approve", "actions/runs/103/approve"])
+            self.assertEqual([path for path, _ in api.writes], ["issues", "pulls", "actions/runs/101/approve", "actions/runs/102/approve"])
             pr = api.writes[1][1]
             self.assertEqual(pr["base"], "main")
             self.assertIn("Refs #20", pr["body"])
@@ -348,17 +348,17 @@ class NativeCheckTests(unittest.TestCase):
     def test_successful_and_pending_runs_are_retained(self):
         api = API()
         api.native = native_runs(self.pr["head"]["sha"])
-        for index, status in ((1, "in_progress"), (2, "queued")):
-            api.native[index].update(status=status, conclusion=None)
-        preparation.start_pr_checks(self.pr, api, resume=True)
-        self.assertEqual(api.writes, [])
+        for status in ("in_progress", "queued"):
+            api.native[1].update(status=status, conclusion=None)
+            preparation.start_pr_checks(self.pr, api, resume=True)
+            self.assertEqual(api.writes, [])
 
     def test_approval_and_failure_recovery_keep_native_event_association(self):
         api = API()
         api.native = native_runs(self.pr["head"]["sha"])
         api.native[0]["conclusion"] = "action_required"
         api.native[1]["conclusion"] = "failure"
-        api.native.append({**api.native[2], "id": 50, "conclusion": "failure"})
+        api.native.append({**api.native[1], "id": 50, "conclusion": "failure"})
         preparation.start_pr_checks(self.pr, api, resume=True)
         self.assertEqual([path for path, _ in api.writes], ["actions/runs/101/approve", "actions/runs/102/rerun"])
 
