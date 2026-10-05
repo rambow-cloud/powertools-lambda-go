@@ -33,5 +33,160 @@
     "name": "question",
     "color": "d876e3",
     "description": "Further information is requested"
+  },
+  {
+    "name": "module:powertools-lambda-go",
+    "color": "1d76db",
+    "description": "Issues affecting the powertools-lambda-go module"
+  },
+  {
+    "name": "module:commons/awssdk",
+    "color": "1d76db",
+    "description": "Issues affecting the commons/awssdk module"
+  },
+  {
+    "name": "module:commons/dynamodb",
+    "color": "1d76db",
+    "description": "Issues affecting the commons/dynamodb module"
+  },
+  {
+    "name": "module:commons/metadata",
+    "color": "1d76db",
+    "description": "Issues affecting the commons/metadata module"
+  },
+  {
+    "name": "module:commons/regex",
+    "color": "1d76db",
+    "description": "Issues affecting the commons/regex module"
+  },
+  {
+    "name": "module:logger",
+    "color": "1d76db",
+    "description": "Issues affecting the logger module"
+  },
+  {
+    "name": "module:metrics",
+    "color": "1d76db",
+    "description": "Issues affecting the metrics module"
+  },
+  {
+    "name": "module:parameters",
+    "color": "1d76db",
+    "description": "Issues affecting the parameters module"
+  },
+  {
+    "name": "module:signer",
+    "color": "1d76db",
+    "description": "Issues affecting the signer module"
+  },
+  {
+    "name": "module:jmespath",
+    "color": "1d76db",
+    "description": "Issues affecting the jmespath module"
+  },
+  {
+    "name": "module:datamasking/kms",
+    "color": "1d76db",
+    "description": "Issues affecting the datamasking/kms module"
+  },
+  {
+    "name": "module:datamasking",
+    "color": "1d76db",
+    "description": "Issues affecting the datamasking module"
+  },
+  {
+    "name": "module:kafka/protobuf",
+    "color": "1d76db",
+    "description": "Issues affecting the kafka/protobuf module"
+  },
+  {
+    "name": "module:kafka/avro",
+    "color": "1d76db",
+    "description": "Issues affecting the kafka/avro module"
+  },
+  {
+    "name": "module:kafka",
+    "color": "1d76db",
+    "description": "Issues affecting the kafka module"
+  },
+  {
+    "name": "module:batch",
+    "color": "1d76db",
+    "description": "Issues affecting the batch module"
+  },
+  {
+    "name": "module:idempotency",
+    "color": "1d76db",
+    "description": "Issues affecting the idempotency module"
+  },
+  {
+    "name": "module:idempotency/cache",
+    "color": "1d76db",
+    "description": "Issues affecting the idempotency/cache module"
+  },
+  {
+    "name": "module:parser",
+    "color": "1d76db",
+    "description": "Issues affecting the parser module"
+  },
+  {
+    "name": "module:validation",
+    "color": "1d76db",
+    "description": "Issues affecting the validation module"
+  },
+  {
+    "name": "module:eventhandler/http",
+    "color": "1d76db",
+    "description": "Issues affecting the eventhandler/http module"
+  },
+  {
+    "name": "module:eventhandler/appsyncevents",
+    "color": "1d76db",
+    "description": "Issues affecting the eventhandler/appsyncevents module"
+  },
+  {
+    "name": "module:eventhandler/appsyncgraphql",
+    "color": "1d76db",
+    "description": "Issues affecting the eventhandler/appsyncgraphql module"
+  },
+  {
+    "name": "module:eventhandler/bedrock",
+    "color": "1d76db",
+    "description": "Issues affecting the eventhandler/bedrock module"
+  },
+  {
+    "name": "module:eventhandler/http/metrics",
+    "color": "1d76db",
+    "description": "Issues affecting the eventhandler/http/metrics module"
+  },
+  {
+    "name": "module:eventhandler/http/tracer",
+    "color": "1d76db",
+    "description": "Issues affecting the eventhandler/http/tracer module"
+  },
+  {
+    "name": "module:tracer",
+    "color": "1d76db",
+    "description": "Issues affecting the tracer module"
+  },
+  {
+    "name": "module:tracer/xray",
+    "color": "1d76db",
+    "description": "Issues affecting the tracer/xray module"
+  },
+  {
+    "name": "module:examples",
+    "color": "1d76db",
+    "description": "Issues affecting the examples module"
+  },
+  {
+    "name": "module:integration",
+    "color": "1d76db",
+    "description": "Issues affecting the integration module"
+  },
+  {
+    "name": "module:tools",
+    "color": "1d76db",
+    "description": "Issues affecting the tools module"
   }
 ]

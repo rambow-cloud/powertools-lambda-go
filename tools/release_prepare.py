@@ -396,8 +396,10 @@ def prepare(args, api):
         if not issue:
             versions = "\n".join(f"- `{item['directory']}`: `{item['version']}`" for item in plan["modules"])
             body = f"## Unified release version\n\n{version}\n\n## Modules and target versions\n\n{versions}\n\n## Release scope and compatibility\n\nAll maintained public modules are released together. Review capability statements and compatibility boundaries in the preparation PR.\n\n## Previous versions and accumulated changes\n\nSource: `{target}`. The root Release groups accumulated component/repository notes and links the full module version table.\n\n## Publication acceptance\n\nRequire contribution, module, and documentation checks; review the plan; merge the preparation PR; publish with GoReleaser and verify fresh public Go consumers. Keep this issue open until the entire batch succeeds. Automatic publication after merge: {'enabled' if args.auto_publish else 'disabled'}."
-            issue = api.repo("issues", method="POST", data={"title": "[Release]: " + name, "body": body})
+            issue = api.repo("issues", method="POST", data={"title": "[Release]: " + name, "body": body, "labels": ["release"]})
             plan["issue"] = issue["number"]
+        elif not args.local and "release" not in {label["name"] for label in issue.get("labels", [])}:
+            api.repo(f"issues/{issue['number']}/labels", method="POST", data={"labels": ["release"]})
         selected["."]["notes"] = render_unified_notes(release.REPOSITORY, plan)
         release.validate_plan(plan, release.manifest(), release.manifest_version())
         release.write_json(plan_path, plan)

@@ -10,6 +10,45 @@ body:
       description: Include a link or repository path if possible.
     validations:
       required: true
+  - type: dropdown
+    id: modules
+    attributes:
+      label: Affected modules
+      description: Select all affected Go modules, or Repository only for repository work.
+      multiple: true
+      options:
+        - Repository only
+        - powertools-lambda-go
+        - commons/awssdk
+        - commons/dynamodb
+        - commons/metadata
+        - commons/regex
+        - logger
+        - metrics
+        - parameters
+        - signer
+        - jmespath
+        - datamasking/kms
+        - datamasking
+        - kafka/protobuf
+        - kafka/avro
+        - kafka
+        - batch
+        - idempotency
+        - idempotency/cache
+        - parser
+        - validation
+        - eventhandler/http
+        - eventhandler/appsyncevents
+        - eventhandler/appsyncgraphql
+        - eventhandler/bedrock
+        - eventhandler/http/metrics
+        - eventhandler/http/tracer
+        - tracer
+        - tracer/xray
+        - examples
+        - integration
+        - tools
   - type: textarea
     id: request
     attributes:

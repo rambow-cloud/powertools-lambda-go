@@ -9,11 +9,45 @@ body:
         Search existing issues first. Use synthetic input and remove secrets,
         account identifiers, and production data. Do not disclose vulnerabilities
         here; see the contribution guide for a private reporting route.
-  - type: input
-    id: module
+  - type: dropdown
+    id: modules
     attributes:
-      label: Affected module or tool
-      placeholder: logger, eventhandler/http, documentation build, etc.
+      label: Affected modules
+      description: Select all affected Go modules, or Repository only for repository work.
+      multiple: true
+      options:
+        - Repository only
+        - powertools-lambda-go
+        - commons/awssdk
+        - commons/dynamodb
+        - commons/metadata
+        - commons/regex
+        - logger
+        - metrics
+        - parameters
+        - signer
+        - jmespath
+        - datamasking/kms
+        - datamasking
+        - kafka/protobuf
+        - kafka/avro
+        - kafka
+        - batch
+        - idempotency
+        - idempotency/cache
+        - parser
+        - validation
+        - eventhandler/http
+        - eventhandler/appsyncevents
+        - eventhandler/appsyncgraphql
+        - eventhandler/bedrock
+        - eventhandler/http/metrics
+        - eventhandler/http/tracer
+        - tracer
+        - tracer/xray
+        - examples
+        - integration
+        - tools
     validations:
       required: true
   - type: input

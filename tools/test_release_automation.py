@@ -323,8 +323,19 @@ class PreparationTests(unittest.TestCase):
                     preparation.prepare(args(issue=None, local=False, auto_publish=True), api)
                 regenerate.assert_not_called()
             self.assertEqual(sum(path == "issues" for path, _ in api.writes), 1)
+            self.assertEqual(next(data["labels"] for path, data in api.writes if path == "issues"), ["release"])
             self.assertEqual(sum(path == "pulls" for path, _ in api.writes), 2)
             self.assertEqual(command(root, "git", "status", "--porcelain"), "")
+
+    def test_reused_tracking_issue_gets_release_label(self):
+        with fixture() as (_, api, _):
+            original_git = release.git
+            def git(*arguments):
+                return "" if arguments[:2] == ("-c", "credential.helper=") else original_git(*arguments)
+            with patch.object(release, "git", side_effect=git), patch.object(preparation, "open_preparation"):
+                preparation.prepare(args(local=False), api)
+            self.assertIn(("issues/20/labels", {"labels": ["release"]}), api.writes)
+            self.assertFalse(any(path == "issues" for path, _ in api.writes))
 
     def test_duplicate_request_reuses_preparation_pr_without_writes(self):
         with fixture() as (_, api, _):
