@@ -81,6 +81,7 @@ extra:
 
 nav:
   - What is Powertools for Go: index.md
+  - Release notes: RELEASE_NOTES.md
   - Getting started:
       - First Lambda: GETTING_STARTED.md
       - Modules and installation: MODULES.md
