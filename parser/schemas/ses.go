@@ -23,10 +23,19 @@ var positiveInteger = parser.Pipe(parser.Number(), parser.SchemaFunc[any](func(c
 	return output, issues, err
 }))
 var sesVerdict = parser.Object(field("status", parser.Enum("PASS", "FAIL", "GRAY", "PROCESSING_FAILED")))
-var sesReceipt = parser.Object(field("timestamp", isoDateTime), field("processingTimeMillis", positiveInteger), field("recipients", array(parser.String())), field("spamVerdict", sesVerdict), field("virusVerdict", sesVerdict), field("spfVerdict", sesVerdict), field("dmarcVerdict", sesVerdict), field("dkimVerdict", sesVerdict), field("dmarcPolicy", parser.Enum("none", "quarantine", "reject")), field("action", parser.Object(field("type", parser.Enum("Lambda")), field("invocationType", parser.Literal("Event")), field("functionArn", parser.String()))))
+var sesReceipt = parser.Object(
+	field("timestamp", isoDateTime), field("processingTimeMillis", positiveInteger), field("recipients", array(parser.String())),
+	field("spamVerdict", sesVerdict), field("virusVerdict", sesVerdict), field("spfVerdict", sesVerdict), field("dmarcVerdict", sesVerdict), field("dkimVerdict", sesVerdict),
+	optional("dmarcPolicy", parser.Enum("none", "quarantine", "reject")),
+	field("action", parser.Object(field("type", parser.Enum("Lambda")), field("invocationType", parser.Enum("Event", "RequestResponse")), field("functionArn", parser.String()))),
+)
 var sesMail = parser.Object(
 	field("timestamp", isoDateTime), field("source", parser.String()), field("messageId", parser.String()), field("destination", array(parser.String())), field("headersTruncated", parser.Boolean()), field("headers", array(parser.Object(field("name", parser.String()), field("value", parser.String())))),
-	field("commonHeaders", parser.Object(field("from", array(parser.String())), field("to", array(parser.String())), optional("cc", array(parser.String())), optional("bcc", array(parser.String())), optional("sender", array(parser.String())), optional("reply-to", array(parser.String())), field("returnPath", parser.String()), field("messageId", parser.String()), field("date", parser.String()), field("subject", parser.String()))),
+	field("commonHeaders", parser.Object(
+		optional("from", array(parser.String())), optional("to", array(parser.String())), optional("cc", array(parser.String())), optional("bcc", array(parser.String())), optional("sender", array(parser.String())),
+		optional("replyTo", array(parser.String())), optional("reply-to", array(parser.String())),
+		optional("returnPath", parser.String()), optional("messageId", parser.String()), optional("date", parser.String()), optional("subject", parser.String()),
+	)),
 )
 var SesRecordSchema = parser.Object(field("eventSource", parser.Literal("aws:ses")), field("eventVersion", parser.String()), field("ses", parser.Object(field("mail", sesMail), field("receipt", sesReceipt))))
 var SesSchema = parser.Object(field("Records", array(SesRecordSchema, 1)))
