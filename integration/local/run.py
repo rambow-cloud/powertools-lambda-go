@@ -313,9 +313,10 @@ def main():
                         wire = base64.b64decode(compressed.get("body", ""))
                         check(f"{test_id}: HTTP {kind} {encoding} payload", compressed.get("isBase64Encoded") is True and compressed_headers.get("content-encoding") == encoding and decoder(wire).decode("utf-8") == "hello λ 世界")
                         check(f"{test_id}: HTTP {kind} {encoding} composed headers", compressed_headers.get("content-length") == str(len(wire)) and compressed_headers.get("vary") == "Origin" and compressed_headers.get("x-request-id") == response.get("request_id"))
-                    for mode in ("identity", "no_transform"):
-                        plain = routed.get(f"{kind}_{mode}", {})
-                        check(f"{test_id}: HTTP {kind} {mode} skips compression", plain.get("isBase64Encoded") is False and plain.get("body") == "hello λ 世界" and "content-encoding" not in plain.get("headers", {}))
+                    offered = routed.get(f"{kind}_identity", {})
+                    check(f"{test_id}: HTTP {kind} gzip accepted alongside identity", offered.get("isBase64Encoded") is True and offered.get("headers", {}).get("content-encoding") == "gzip" and gzip.decompress(base64.b64decode(offered.get("body", ""))).decode("utf-8") == "hello λ 世界")
+                    plain = routed.get(f"{kind}_no_transform", {})
+                    check(f"{test_id}: HTTP {kind} no_transform skips compression", plain.get("isBase64Encoded") is False and plain.get("body") == "hello λ 世界" and "content-encoding" not in plain.get("headers", {}))
                 for name, source in (("parser_rejected", "body"), ("schema_rejected", "path")):
                     failure = routed.get(name, {})
                     issues = json.loads(failure.get("body", "{}")).get("details", {}).get("issues", [])

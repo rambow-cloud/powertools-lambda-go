@@ -59,13 +59,15 @@ After a successful `next`, the middleware first skips an exact `Transfer-Encodin
 
 Compression is skipped for HEAD, any existing Content-Encoding/Transfer-Encoding header, a comma-separated `no-transform` Cache-Control directive, or a null body. The no-transform directive is case-insensitive; `no-transform=1` and `x-no-transform` do not match. There is no Content-Type filter in the pinned implementation.
 
-Accept-Encoding handling intentionally preserves the reference's case-sensitive substring checks:
+Accept-Encoding handling intentionally corrects the pinned substring behavior using [RFC 9110 coding tokens and weights](https://www.rfc-editor.org/rfc/rfc9110.html#section-12.5.3):
 
 - An absent header behaves as `*`; an explicitly empty header does not.
-- The preferred encoding or `*` must occur somewhere in the header.
-- Any occurrence of `identity` disables compression.
-- Quality weights are not interpreted: `gzip;q=0` and `*;q=0` can select compression.
+- Coding tokens are case-insensitive exact matches, so `GZIP` is gzip while `xgzipx` is not. A specific coding entry overrides `*`, including an explicit q=0 exclusion.
+- A positive weight permits the configured coding. An explicit identity weight wins only when it is higher; `gzip, identity` may compress, and `identity;q=0, gzip` compresses. Without an explicit identity preference, an offered coding may be used.
+- Weights follow the 0-to-1 range with up to three decimal digits; malformed or duplicate weight parameters exclude that offer. Repeated coding offers use their highest weight.
 - There is no fallback from the configured encoding to another encoding and no automatic `Vary: Accept-Encoding`.
+
+This middleware decides whether to apply compression and preserves the original response/status when it does not. Applications that reject requests excluding every available representation must enforce that policy separately.
 
 Compression replaces the owned response body, removes Content-Length and sets Content-Encoding. The ordinary proxy conversion selects Base64 from that header. With nested compression middleware, the outer middleware may populate Content-Length from an already compressed inner body and then skip re-encoding it. Header values must describe the actual bytes emitted by that runtime.
 
@@ -75,7 +77,7 @@ Go uses its standard gzip/zlib implementations. Compressed bytes and their lengt
 
 `tools/reference/generate-http-middleware.mjs` executes the actual pinned middleware/router and records 1,076 cases across API Gateway REST, HTTP API v2, ALB and Function URL events. It covers defaults, empty and wildcard configurations, preflight allow/deny, route policies, credentials, max-age numeric formatting, encoding/quality strings, exact thresholds, null/empty/Unicode bodies, pre-encoded and transfer-encoded responses, cache directives, errors, HEAD, and both middleware orders.
 
-The comparison checks status, Base64 flags, headers, cookies, handler invocation counts and decoded payload bytes. For compressed bodies only, it compares decompressed bytes instead of compressor-specific wire bytes. If nested middleware supplies Content-Length, each runtime's length is checked against its own compressed bytes before comparison. The existing JSON-body decoded-value normalization remains; no error or negotiation differences are removed from the fixture.
+The comparison checks status, Base64 flags, headers, cookies, handler invocation counts and decoded payload bytes. For compressed bodies only, it compares decompressed bytes instead of compressor-specific wire bytes. If nested middleware supplies Content-Length, each runtime's length is checked against its own compressed bytes before comparison. Original fixtures remain unchanged; 24 named token/quality expectations are explicitly corrected from their original input bodies. Additional gzip/deflate tests cover weights, identity preference, wildcard overrides, token casing/boundaries and malformed values; the runtime also verifies gzip accepted alongside identity.
 
 Additional Go tests exercise 64 simultaneous callers using one middleware configuration, post-construction option mutation, read/close/write failures, error and panic identity, cancellation, and exactly-once body cleanup. Original HTTP reference cases remain part of the same module tests.
 
