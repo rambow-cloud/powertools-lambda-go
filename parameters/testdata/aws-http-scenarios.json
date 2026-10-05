@@ -1,0 +1,554 @@
+{
+  "cases": [
+    {
+      "name": "ssm-json",
+      "service": "ssm",
+      "provenance": "synthetic",
+      "steps": [
+        {
+          "operation": "GetParameter",
+          "method": "POST",
+          "path": "/",
+          "target": "AmazonSSM.GetParameter",
+          "request": {
+            "Name": "config",
+            "WithDecryption": true
+          },
+          "query": {},
+          "status": 200,
+          "headers": {
+            "Content-Type": "application/x-amz-json-1.1"
+          },
+          "body": "{\"Parameter\":{\"Name\":\"config\",\"Type\":\"SecureString\",\"Value\":\"{\\\"enabled\\\":true}\",\"Version\":1}}"
+        }
+      ],
+      "source_urls": [
+        "https://docs.aws.amazon.com/systems-manager/latest/APIReference/API_GetParameter.html",
+        "https://docs.aws.amazon.com/systems-manager/latest/APIReference/API_GetParametersByPath.html"
+      ],
+      "sdk_version": "v1.78.0",
+      "reviewed_on": "2026-10-05"
+    },
+    {
+      "name": "ssm-retry-success",
+      "service": "ssm",
+      "provenance": "synthetic",
+      "steps": [
+        {
+          "operation": "GetParameter",
+          "method": "POST",
+          "path": "/",
+          "target": "AmazonSSM.GetParameter",
+          "request": {
+            "Name": "config",
+            "WithDecryption": true
+          },
+          "query": {},
+          "status": 400,
+          "headers": {
+            "Content-Type": "application/x-amz-json-1.1"
+          },
+          "body": "{\"__type\":\"ThrottlingException\",\"message\":\"synthetic throttle\"}"
+        },
+        {
+          "operation": "GetParameter",
+          "method": "POST",
+          "path": "/",
+          "target": "AmazonSSM.GetParameter",
+          "request": {
+            "Name": "config",
+            "WithDecryption": true
+          },
+          "query": {},
+          "status": 200,
+          "headers": {
+            "Content-Type": "application/x-amz-json-1.1"
+          },
+          "body": "{\"Parameter\":{\"Name\":\"config\",\"Type\":\"SecureString\",\"Value\":\"{\\\"enabled\\\":true}\",\"Version\":1}}"
+        }
+      ],
+      "source_urls": [
+        "https://docs.aws.amazon.com/systems-manager/latest/APIReference/API_GetParameter.html",
+        "https://docs.aws.amazon.com/systems-manager/latest/APIReference/API_GetParametersByPath.html"
+      ],
+      "sdk_version": "v1.78.0",
+      "reviewed_on": "2026-10-05"
+    },
+    {
+      "name": "ssm-retry-exhausted",
+      "service": "ssm",
+      "provenance": "synthetic",
+      "steps": [
+        {
+          "operation": "GetParameter",
+          "method": "POST",
+          "path": "/",
+          "target": "AmazonSSM.GetParameter",
+          "request": {
+            "Name": "config",
+            "WithDecryption": true
+          },
+          "query": {},
+          "status": 500,
+          "headers": {
+            "Content-Type": "application/x-amz-json-1.1"
+          },
+          "body": "{\"__type\":\"InternalServerError\",\"message\":\"synthetic unavailable\"}"
+        },
+        {
+          "operation": "GetParameter",
+          "method": "POST",
+          "path": "/",
+          "target": "AmazonSSM.GetParameter",
+          "request": {
+            "Name": "config",
+            "WithDecryption": true
+          },
+          "query": {},
+          "status": 500,
+          "headers": {
+            "Content-Type": "application/x-amz-json-1.1"
+          },
+          "body": "{\"__type\":\"InternalServerError\",\"message\":\"synthetic unavailable\"}"
+        },
+        {
+          "operation": "GetParameter",
+          "method": "POST",
+          "path": "/",
+          "target": "AmazonSSM.GetParameter",
+          "request": {
+            "Name": "config",
+            "WithDecryption": true
+          },
+          "query": {},
+          "status": 500,
+          "headers": {
+            "Content-Type": "application/x-amz-json-1.1"
+          },
+          "body": "{\"__type\":\"InternalServerError\",\"message\":\"synthetic unavailable\"}"
+        }
+      ],
+      "source_urls": [
+        "https://docs.aws.amazon.com/systems-manager/latest/APIReference/API_GetParameter.html",
+        "https://docs.aws.amazon.com/systems-manager/latest/APIReference/API_GetParametersByPath.html"
+      ],
+      "sdk_version": "v1.78.0",
+      "reviewed_on": "2026-10-05"
+    },
+    {
+      "name": "ssm-missing",
+      "service": "ssm",
+      "provenance": "synthetic",
+      "steps": [
+        {
+          "operation": "GetParameter",
+          "method": "POST",
+          "path": "/",
+          "target": "AmazonSSM.GetParameter",
+          "request": {
+            "Name": "config",
+            "WithDecryption": true
+          },
+          "query": {},
+          "status": 400,
+          "headers": {
+            "Content-Type": "application/x-amz-json-1.1"
+          },
+          "body": "{\"__type\":\"ParameterNotFound\",\"message\":\"synthetic missing\"}"
+        }
+      ],
+      "source_urls": [
+        "https://docs.aws.amazon.com/systems-manager/latest/APIReference/API_GetParameter.html",
+        "https://docs.aws.amazon.com/systems-manager/latest/APIReference/API_GetParametersByPath.html"
+      ],
+      "sdk_version": "v1.78.0",
+      "reviewed_on": "2026-10-05"
+    },
+    {
+      "name": "ssm-pages",
+      "service": "ssm",
+      "provenance": "synthetic",
+      "steps": [
+        {
+          "operation": "GetParametersByPath",
+          "method": "POST",
+          "path": "/",
+          "target": "AmazonSSM.GetParametersByPath",
+          "request": {
+            "Path": "/app",
+            "Recursive": true,
+            "WithDecryption": true
+          },
+          "query": {},
+          "status": 200,
+          "headers": {
+            "Content-Type": "application/x-amz-json-1.1"
+          },
+          "body": "{\"Parameters\":[{\"Name\":\"/app/a.json\",\"Value\":\"true\"}],\"NextToken\":\"page-2\"}"
+        },
+        {
+          "operation": "GetParametersByPath",
+          "method": "POST",
+          "path": "/",
+          "target": "AmazonSSM.GetParametersByPath",
+          "request": {
+            "Path": "/app",
+            "Recursive": true,
+            "WithDecryption": true,
+            "NextToken": "page-2"
+          },
+          "query": {},
+          "status": 200,
+          "headers": {
+            "Content-Type": "application/x-amz-json-1.1"
+          },
+          "body": "{\"Parameters\":[{\"Name\":\"/app/b.json\",\"Value\":\"2\"}]}"
+        }
+      ],
+      "source_urls": [
+        "https://docs.aws.amazon.com/systems-manager/latest/APIReference/API_GetParameter.html",
+        "https://docs.aws.amazon.com/systems-manager/latest/APIReference/API_GetParametersByPath.html"
+      ],
+      "sdk_version": "v1.78.0",
+      "reviewed_on": "2026-10-05"
+    },
+    {
+      "name": "secrets-binary",
+      "service": "secrets",
+      "provenance": "synthetic",
+      "steps": [
+        {
+          "operation": "GetSecretValue",
+          "method": "POST",
+          "path": "/",
+          "target": "secretsmanager.GetSecretValue",
+          "request": {
+            "SecretId": "config",
+            "VersionStage": "AWSPREVIOUS"
+          },
+          "query": {},
+          "status": 200,
+          "headers": {
+            "Content-Type": "application/x-amz-json-1.1"
+          },
+          "body": "{\"Name\":\"config\",\"SecretBinary\":\"aGVsbG8=\",\"VersionStages\":[\"AWSPREVIOUS\"]}"
+        }
+      ],
+      "source_urls": [
+        "https://docs.aws.amazon.com/secretsmanager/latest/apireference/API_GetSecretValue.html"
+      ],
+      "sdk_version": "v1.44.2",
+      "reviewed_on": "2026-10-05"
+    },
+    {
+      "name": "secrets-missing",
+      "service": "secrets",
+      "provenance": "synthetic",
+      "steps": [
+        {
+          "operation": "GetSecretValue",
+          "method": "POST",
+          "path": "/",
+          "target": "secretsmanager.GetSecretValue",
+          "request": {
+            "SecretId": "config",
+            "VersionStage": "AWSPREVIOUS"
+          },
+          "query": {},
+          "status": 400,
+          "headers": {
+            "Content-Type": "application/x-amz-json-1.1"
+          },
+          "body": "{\"__type\":\"ResourceNotFoundException\",\"message\":\"synthetic missing\"}"
+        }
+      ],
+      "source_urls": [
+        "https://docs.aws.amazon.com/secretsmanager/latest/apireference/API_GetSecretValue.html"
+      ],
+      "sdk_version": "v1.44.2",
+      "reviewed_on": "2026-10-05"
+    },
+    {
+      "name": "secrets-malformed-binary",
+      "service": "secrets",
+      "provenance": "synthetic",
+      "steps": [
+        {
+          "operation": "GetSecretValue",
+          "method": "POST",
+          "path": "/",
+          "target": "secretsmanager.GetSecretValue",
+          "request": {
+            "SecretId": "config",
+            "VersionStage": "AWSPREVIOUS"
+          },
+          "query": {},
+          "status": 200,
+          "headers": {
+            "Content-Type": "application/x-amz-json-1.1"
+          },
+          "body": "{\"SecretBinary\":\"!invalid-base64!\"}"
+        }
+      ],
+      "source_urls": [
+        "https://docs.aws.amazon.com/secretsmanager/latest/apireference/API_GetSecretValue.html"
+      ],
+      "sdk_version": "v1.44.2",
+      "reviewed_on": "2026-10-05"
+    },
+    {
+      "name": "dynamodb-native",
+      "service": "dynamodb",
+      "provenance": "synthetic",
+      "steps": [
+        {
+          "operation": "GetItem",
+          "method": "POST",
+          "path": "/",
+          "target": "DynamoDB_20120810.GetItem",
+          "request": {
+            "TableName": "settings",
+            "Key": {
+              "pk": {
+                "S": "config"
+              }
+            },
+            "ProjectionExpression": "#value",
+            "ExpressionAttributeNames": {
+              "#value": "data"
+            },
+            "ConsistentRead": true
+          },
+          "query": {},
+          "status": 200,
+          "headers": {
+            "Content-Type": "application/x-amz-json-1.0"
+          },
+          "body": "{\"Item\":{\"data\":{\"M\":{\"count\":{\"N\":\"2\"},\"enabled\":{\"BOOL\":true}}}}}"
+        }
+      ],
+      "source_urls": [
+        "https://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_GetItem.html",
+        "https://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_Query.html"
+      ],
+      "sdk_version": "v1.68.0",
+      "reviewed_on": "2026-10-05"
+    },
+    {
+      "name": "dynamodb-missing-table",
+      "service": "dynamodb",
+      "provenance": "synthetic",
+      "steps": [
+        {
+          "operation": "GetItem",
+          "method": "POST",
+          "path": "/",
+          "target": "DynamoDB_20120810.GetItem",
+          "request": {
+            "TableName": "settings",
+            "Key": {
+              "pk": {
+                "S": "config"
+              }
+            },
+            "ProjectionExpression": "#value",
+            "ExpressionAttributeNames": {
+              "#value": "data"
+            },
+            "ConsistentRead": true
+          },
+          "query": {},
+          "status": 400,
+          "headers": {
+            "Content-Type": "application/x-amz-json-1.0"
+          },
+          "body": "{\"__type\":\"ResourceNotFoundException\",\"message\":\"synthetic missing table\"}"
+        }
+      ],
+      "source_urls": [
+        "https://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_GetItem.html",
+        "https://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_Query.html"
+      ],
+      "sdk_version": "v1.68.0",
+      "reviewed_on": "2026-10-05"
+    },
+    {
+      "name": "dynamodb-pages",
+      "service": "dynamodb",
+      "provenance": "synthetic",
+      "steps": [
+        {
+          "operation": "Query",
+          "method": "POST",
+          "path": "/",
+          "target": "DynamoDB_20120810.Query",
+          "request": {
+            "TableName": "settings",
+            "KeyConditionExpression": "#key = :key",
+            "ExpressionAttributeNames": {
+              "#key": "pk",
+              "#sk": "name",
+              "#value": "data"
+            },
+            "ExpressionAttributeValues": {
+              ":key": {
+                "S": "group"
+              }
+            },
+            "ProjectionExpression": "#sk, #value",
+            "Limit": 1
+          },
+          "query": {},
+          "status": 200,
+          "headers": {
+            "Content-Type": "application/x-amz-json-1.0"
+          },
+          "body": "{\"Items\":[{\"name\":{\"S\":\"a.json\"},\"data\":{\"S\":\"true\"}}],\"LastEvaluatedKey\":{\"pk\":{\"S\":\"group\"},\"name\":{\"S\":\"a.json\"}}}"
+        },
+        {
+          "operation": "Query",
+          "method": "POST",
+          "path": "/",
+          "target": "DynamoDB_20120810.Query",
+          "request": {
+            "TableName": "settings",
+            "KeyConditionExpression": "#key = :key",
+            "ExpressionAttributeNames": {
+              "#key": "pk",
+              "#sk": "name",
+              "#value": "data"
+            },
+            "ExpressionAttributeValues": {
+              ":key": {
+                "S": "group"
+              }
+            },
+            "ProjectionExpression": "#sk, #value",
+            "Limit": 1,
+            "ExclusiveStartKey": {
+              "pk": {
+                "S": "group"
+              },
+              "name": {
+                "S": "a.json"
+              }
+            }
+          },
+          "query": {},
+          "status": 200,
+          "headers": {
+            "Content-Type": "application/x-amz-json-1.0"
+          },
+          "body": "{\"Items\":[{\"name\":{\"S\":\"b.binary\"},\"data\":{\"S\":\"aGVsbG8=\"}}]}"
+        }
+      ],
+      "source_urls": [
+        "https://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_GetItem.html",
+        "https://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_Query.html"
+      ],
+      "sdk_version": "v1.68.0",
+      "reviewed_on": "2026-10-05"
+    },
+    {
+      "name": "appconfig-unchanged",
+      "service": "appconfig",
+      "provenance": "synthetic",
+      "steps": [
+        {
+          "operation": "StartConfigurationSession",
+          "method": "POST",
+          "path": "/configurationsessions",
+          "target": "",
+          "request": {
+            "ApplicationIdentifier": "orders",
+            "EnvironmentIdentifier": "test",
+            "ConfigurationProfileIdentifier": "flags",
+            "RequiredMinimumPollIntervalInSeconds": 15
+          },
+          "query": {},
+          "status": 200,
+          "headers": {
+            "Content-Type": "application/json"
+          },
+          "body": "{\"InitialConfigurationToken\":\"initial\"}"
+        },
+        {
+          "operation": "GetLatestConfiguration",
+          "method": "GET",
+          "path": "/configuration",
+          "target": "",
+          "request": null,
+          "query": {
+            "configuration_token": [
+              "initial"
+            ]
+          },
+          "status": 200,
+          "headers": {
+            "Content-Type": "application/json",
+            "Next-Poll-Configuration-Token": "next-1",
+            "Next-Poll-Interval-In-Seconds": "15"
+          },
+          "body": "{\"enabled\":true}"
+        },
+        {
+          "operation": "GetLatestConfiguration",
+          "method": "GET",
+          "path": "/configuration",
+          "target": "",
+          "request": null,
+          "query": {
+            "configuration_token": [
+              "next-1"
+            ]
+          },
+          "status": 200,
+          "headers": {
+            "Content-Type": "application/json",
+            "Next-Poll-Configuration-Token": "next-2",
+            "Next-Poll-Interval-In-Seconds": "15"
+          },
+          "body": ""
+        }
+      ],
+      "source_urls": [
+        "https://docs.aws.amazon.com/appconfig/2019-10-09/APIReference/API_appconfigdata_StartConfigurationSession.html",
+        "https://docs.aws.amazon.com/appconfig/2019-10-09/APIReference/API_appconfigdata_GetLatestConfiguration.html"
+      ],
+      "sdk_version": "v1.31.0",
+      "reviewed_on": "2026-10-05"
+    },
+    {
+      "name": "appconfig-error",
+      "service": "appconfig",
+      "provenance": "synthetic",
+      "steps": [
+        {
+          "operation": "StartConfigurationSession",
+          "method": "POST",
+          "path": "/configurationsessions",
+          "target": "",
+          "request": {
+            "ApplicationIdentifier": "orders",
+            "EnvironmentIdentifier": "test",
+            "ConfigurationProfileIdentifier": "flags",
+            "RequiredMinimumPollIntervalInSeconds": 15
+          },
+          "query": {},
+          "status": 400,
+          "headers": {
+            "Content-Type": "application/json",
+            "x-amzn-errortype": "BadRequestException"
+          },
+          "body": "{\"Message\":\"synthetic bad configuration\"}"
+        }
+      ],
+      "source_urls": [
+        "https://docs.aws.amazon.com/appconfig/2019-10-09/APIReference/API_appconfigdata_StartConfigurationSession.html",
+        "https://docs.aws.amazon.com/appconfig/2019-10-09/APIReference/API_appconfigdata_GetLatestConfiguration.html"
+      ],
+      "sdk_version": "v1.31.0",
+      "reviewed_on": "2026-10-05"
+    }
+  ]
+}
