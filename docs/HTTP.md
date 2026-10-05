@@ -94,6 +94,8 @@ Dynamic parameters use `:name` and are percent-decoded after matching. Encoded s
 
 The pinned router has no special string `*` syntax: use a regex such as `/files/.*`. HEAD does not automatically use GET. Supported methods without a route return 404. Unsupported methods return a bare 405 before middleware and custom error handlers. Fetch normalizes six standard method names but preserves lowercase `patch`; this behavior is retained.
 
+All adapters discard GET/HEAD request bodies after method normalization and before Base64 decoding, including empty or encoded bodies. The request exposes `http.NoBody`, zero content length and no replay body; supplied headers and the original event snapshot remain intact. REST v1 also accepts an omitted body. POST/PATCH bodies retain their bytes and replay behavior.
+
 ```go
 app.Use(func(request *httpapi.RequestContext, next httpapi.Next) error {
     request.Store.Set("request_id", request.Request.Header.Get("X-Request-ID"))
