@@ -39,7 +39,7 @@ type RequestContext struct {
 
 // Respond replaces the response while retaining headers already set by middleware.
 func (r *RequestContext) Respond(value any) error {
-	response, binary, err := handlerResponse(value, r.Response.Header, nethttp.StatusOK, r.IsHTTPStreaming)
+	response, encoding, err := handlerResponse(value, r.Response.Header, nethttp.StatusOK, r.IsHTTPStreaming)
 	if err != nil {
 		return err
 	}
@@ -47,7 +47,9 @@ func (r *RequestContext) Respond(value any) error {
 		_ = r.Response.Body.Close()
 	}
 	r.Response = response
-	if binary {
+	if encoding.explicit != nil {
+		r.IsBase64Encoded = encoding.explicit
+	} else if encoding.binary && r.IsBase64Encoded == nil {
 		enabled := true
 		r.IsBase64Encoded = &enabled
 	}

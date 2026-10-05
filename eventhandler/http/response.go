@@ -6,20 +6,25 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"mime"
 	nethttp "net/http"
 	"strings"
+	"unicode/utf8"
 
 	"github.com/rambow-cloud/powertools-lambda-go/commons"
 )
 
 // Response is the Go equivalent of an extended proxy handler result.
-// Body strings are sent verbatim; other JSON values are serialized.
+// Body strings are verbatim unless marked as preencoded; other JSON values are serialized.
 type Response struct {
 	StatusCode        int
 	Headers           nethttp.Header
 	MultiValueHeaders nethttp.Header
 	Body              any
 	Cookies           []string
+	// Nil selects automatic encoding. True string bodies contain standard
+	// Base64; bytes, readers and JSON values remain raw. False selects text.
+	IsBase64Encoded *bool
 }
 
 // ProxyResponse is the Lambda integration response, shared by all event adapters.
@@ -85,7 +90,12 @@ func responseBody(value any) ([]byte, bool, error) {
 	}
 }
 
-func handlerResponse(value any, previous nethttp.Header, fallback int, streaming bool) (*nethttp.Response, bool, error) {
+type responseEncoding struct {
+	binary   bool
+	explicit *bool
+}
+
+func handlerResponse(value any, previous nethttp.Header, fallback int, streaming bool) (*nethttp.Response, responseEncoding, error) {
 	headers := previous.Clone()
 	if headers == nil {
 		headers = make(nethttp.Header)
@@ -94,11 +104,12 @@ func handlerResponse(value any, previous nethttp.Header, fallback int, streaming
 	var body []byte
 	var stream io.ReadCloser
 	var binary bool
+	var explicit *bool
 	var err error
 	switch value := value.(type) {
 	case *nethttp.Response:
 		if value == nil {
-			return nil, false, fmt.Errorf("response is nil")
+			return nil, responseEncoding{}, fmt.Errorf("response is nil")
 		}
 		status = value.StatusCode
 		if previous == nil {
@@ -115,10 +126,15 @@ func handlerResponse(value any, previous nethttp.Header, fallback int, streaming
 				stream = value.Body
 			} else {
 				body, err = readOwnedBody(value.Body)
+				binary = !utf8.Valid(body)
 			}
 		}
 	case Response:
 		status = value.StatusCode
+		if value.IsBase64Encoded != nil {
+			encoded := *value.IsBase64Encoded
+			explicit = &encoded
+		}
 		headers.Set("Content-Type", "application/json")
 		for name, values := range value.Headers {
 			headers[nethttp.CanonicalHeaderKey(name)] = append([]string(nil), values...)
@@ -133,8 +149,15 @@ func handlerResponse(value any, previous nethttp.Header, fallback int, streaming
 		}
 		if reader, ok := value.Body.(io.Reader); streaming && ok {
 			stream = ownedReader(reader)
+			binary = true
 		} else {
-			body, _, err = responseBody(value.Body)
+			body, binary, err = responseBody(value.Body)
+			if text, ok := value.Body.(string); err == nil && ok && explicit != nil && *explicit {
+				body, err = base64.StdEncoding.DecodeString(text)
+				if err != nil {
+					err = fmt.Errorf("invalid Base64 response body: %w", err)
+				}
+			}
 		}
 	case []byte:
 		body, binary = value, true
@@ -151,7 +174,7 @@ func handlerResponse(value any, previous nethttp.Header, fallback int, streaming
 		if err == nil {
 			proxy, ok, proxyErr := proxyResult(body)
 			if proxyErr != nil {
-				return nil, false, proxyErr
+				return nil, responseEncoding{}, proxyErr
 			}
 			if ok {
 				return handlerResponse(proxy, previous, fallback, streaming)
@@ -159,20 +182,20 @@ func handlerResponse(value any, previous nethttp.Header, fallback int, streaming
 		}
 	}
 	if err != nil {
-		return nil, false, err
+		return nil, responseEncoding{}, err
 	}
 	if status < 200 || status > 599 {
 		if stream != nil {
 			_ = stream.Close()
 		}
-		return nil, false, fmt.Errorf("response status must be between 200 and 599")
+		return nil, responseEncoding{}, fmt.Errorf("response status must be between 200 and 599")
 	}
 	noContent := status == 204 || status == 205 || status == 304
 	if (len(body) > 0 || stream != nil && stream != nethttp.NoBody) && noContent {
 		if stream != nil {
 			_ = stream.Close()
 		}
-		return nil, false, fmt.Errorf("response status %d cannot have a body", status)
+		return nil, responseEncoding{}, fmt.Errorf("response status %d cannot have a body", status)
 	}
 	if noContent {
 		body = nil
@@ -185,7 +208,7 @@ func handlerResponse(value any, previous nethttp.Header, fallback int, streaming
 	if stream != nil {
 		reader, length = stream, -1
 	}
-	return &nethttp.Response{StatusCode: status, Status: statusText, Header: headers, Body: reader, ContentLength: length}, binary, nil
+	return &nethttp.Response{StatusCode: status, Status: statusText, Header: headers, Body: reader, ContentLength: length}, responseEncoding{binary, explicit}, nil
 }
 
 func ownedReader(reader io.Reader) io.ReadCloser {
@@ -196,11 +219,11 @@ func ownedReader(reader io.Reader) io.ReadCloser {
 }
 
 func base64Headers(headers nethttp.Header) bool {
-	if encoding := headers.Get("Content-Encoding"); encoding == "gzip" || encoding == "deflate" {
+	if encoding := strings.ToLower(strings.TrimSpace(headers.Get("Content-Encoding"))); encoding == "gzip" || encoding == "deflate" {
 		return true
 	}
-	media := strings.TrimSpace(strings.SplitN(headers.Get("Content-Type"), ";", 2)[0])
-	return strings.HasPrefix(media, "image/") || strings.HasPrefix(media, "audio/") || strings.HasPrefix(media, "video/")
+	media, _, err := mime.ParseMediaType(headers.Get("Content-Type"))
+	return err == nil && (media == "application/octet-stream" || media == "application/pdf" || strings.HasPrefix(media, "image/") || strings.HasPrefix(media, "audio/") || strings.HasPrefix(media, "video/"))
 }
 
 // HandlerResultToWebResponse converts a handler result with the default 200 status.

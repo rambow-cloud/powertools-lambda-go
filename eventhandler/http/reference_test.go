@@ -81,6 +81,7 @@ func referenceHandler(route referenceRoute) Handler {
 				MultiValueHeaders map[string][]string
 				Cookies           []string
 				StatusText        string
+				IsBase64Encoded   *bool
 			}
 			if err := json.Unmarshal(route.Value, &value); err != nil {
 				return nil, err
@@ -113,7 +114,7 @@ func referenceHandler(route referenceRoute) Handler {
 				}
 				return response, nil
 			}
-			return Response{StatusCode: value.StatusCode, Headers: headers, MultiValueHeaders: multiHeaders, Body: body, Cookies: value.Cookies}, nil
+			return Response{StatusCode: value.StatusCode, Headers: headers, MultiValueHeaders: multiHeaders, Body: body, Cookies: value.Cookies, IsBase64Encoded: value.IsBase64Encoded}, nil
 		case "bytes":
 			var values []byte
 			if err := json.Unmarshal(route.Value, &values); err != nil {
@@ -286,6 +287,17 @@ func TestHTTPReference(t *testing.T) {
 				response["statusCode"], response["body"] = float64(204), ""
 				if item.Name == "alb-proxy-219" {
 					response["statusDescription"] = "204 No Content"
+				}
+			}
+			// Issue #63: these explicitly preencoded strings are malformed.
+			// Reject them instead of silently dropping the encoding flag.
+			switch item.Name {
+			case "v1-proxy-48", "v2-proxy-135", "alb-proxy-222", "url-proxy-309":
+				response := want.(map[string]any)
+				response["statusCode"] = float64(500)
+				response["body"] = map[string]any{"statusCode": float64(500), "error": "Internal Server Error", "message": "Internal Server Error"}
+				if item.Name == "alb-proxy-222" {
+					response["statusDescription"] = "500 Internal Server Error"
 				}
 			}
 			if !reflect.DeepEqual(got, want) {
