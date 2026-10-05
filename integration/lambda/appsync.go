@@ -28,7 +28,7 @@ func appSyncEventsProbe(ctx context.Context, log *logger.Logger, tr *tracer.Trac
 	})
 	app.OnPublish("/default/aggregate", func(ctx context.Context, value any, event appsyncevents.Event) (any, error) { return value, nil }, appsyncevents.PublishOptions{Aggregate: true})
 	app.OnPublish("/default/error", func(context.Context, any, appsyncevents.Event) (any, error) {
-		return nil, &appsyncevents.UnauthorizedError{Message: "denied"}
+		return nil, errors.New("denied")
 	})
 	denied := &appsyncevents.UnauthorizedError{Message: "denied"}
 	app.OnSubscribe("/default/deny", func(context.Context, appsyncevents.Event) error { return denied })
