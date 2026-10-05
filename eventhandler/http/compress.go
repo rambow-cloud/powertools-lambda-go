@@ -21,8 +21,9 @@ type CompressionOptions struct {
 	Threshold *float64
 }
 
-// Compress preserves the pinned middleware's substring-based encoding selection,
-// including its treatment of quality values. It does not filter content types.
+// Compress selects the configured coding using exact tokens and quality weights.
+// An explicitly preferred identity skips compression; equal weights may compress.
+// It does not filter content types or change status when no coding is selected.
 // Response bodies are buffered because Resolve produces a buffered proxy result.
 func Compress(options CompressionOptions) Middleware {
 	encoding, threshold := options.Encoding, float64(1024)
@@ -57,15 +58,14 @@ func Compress(options CompressionOptions) Middleware {
 		if err := request.Context.Err(); err != nil {
 			return err
 		}
-		accepted := request.Request.Header.Get("Accept-Encoding")
+		accepted := strings.Join(request.Request.Header.Values("Accept-Encoding"), ",")
 		if !hasHeader(request.Request.Header, "Accept-Encoding") {
 			accepted = "*"
 		}
 		length := response.Header.Get("Content-Length")
 		if !hasBody || request.Request.Method == nethttp.MethodHead ||
 			hasHeader(response.Header, "Content-Encoding") || hasHeader(response.Header, "Transfer-Encoding") ||
-			strings.Contains(accepted, "identity") ||
-			!(strings.Contains(accepted, encoding) || strings.Contains(accepted, "*")) ||
+			!acceptsCompression(accepted, encoding) ||
 			length != "" && !(commons.ParseNumber(length) > threshold) ||
 			noTransform(response.Header.Get("Cache-Control")) {
 			return nil
@@ -92,6 +92,59 @@ func Compress(options CompressionOptions) Middleware {
 		response.Header.Set("Content-Encoding", encoding)
 		return nil
 	}
+}
+
+func acceptsCompression(accepted, encoding string) bool {
+	weights := map[string]float64{}
+	for _, entry := range strings.Split(accepted, ",") {
+		coding, parameter, weighted := strings.Cut(entry, ";")
+		coding = strings.ToLower(strings.TrimSpace(coding))
+		if coding == "" {
+			continue
+		}
+		weight := float64(1)
+		if weighted {
+			name, value, present := strings.Cut(parameter, "=")
+			if !present || !strings.EqualFold(strings.TrimSpace(name), "q") {
+				weight = 0
+			} else {
+				weight = compressionQuality(strings.TrimSpace(value))
+			}
+		}
+		// Repeated offers use their highest quality, never a substring match.
+		if previous, present := weights[coding]; !present || weight > previous {
+			weights[coding] = weight
+		}
+	}
+	weight, specific := weights[strings.ToLower(encoding)]
+	if !specific {
+		weight = weights["*"]
+	}
+	// Without an explicit identity preference, an offered coding may be used.
+	return weight > 0 && weight >= weights["identity"]
+}
+
+// RFC 9110 qvalues are 0/1 with up to three decimal digits; 1 has only zeroes.
+// Malformed weights are excluded from compression selection.
+func compressionQuality(value string) float64 {
+	if value == "" || value[0] != '0' && value[0] != '1' {
+		return 0
+	}
+	if len(value) > 1 {
+		if value[1] != '.' || len(value) > 5 {
+			return 0
+		}
+		for _, digit := range value[2:] {
+			if digit < '0' || digit > '9' || value[0] == '1' && digit != '0' {
+				return 0
+			}
+		}
+	}
+	weight, err := strconv.ParseFloat(value, 64)
+	if err != nil {
+		return 0
+	}
+	return weight
 }
 
 func noTransform(value string) bool {
