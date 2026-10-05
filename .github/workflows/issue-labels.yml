@@ -1,0 +1,48 @@
+name: Issue labels
+
+on:
+  issues:
+    types: [opened, edited, reopened]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: issue-labels-${{ github.event.issue.number || 'backfill' }}
+  cancel-in-progress: false
+
+env:
+  CGO_ENABLED: '0'
+  PYTHONDONTWRITEBYTECODE: '1'
+
+jobs:
+  labels:
+    name: Classify issue modules and categories
+    if: github.repository == 'rambow-cloud/powertools-lambda-go'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      # Execute trusted main code; issue text is fetched as data by the script.
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: main
+          persist-credentials: false
+      - name: Synchronize catalog and apply issue labels
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python3 - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+          import subprocess
+          command = ['python3', '.github/scripts/issue_labels.py']
+          if os.environ['GITHUB_EVENT_NAME'] == 'workflow_dispatch':
+              command.append('--backfill')
+          else:
+              event = json.loads(Path(os.environ['GITHUB_EVENT_PATH']).read_text())
+              command.extend(['--issue', str(int(event['issue']['number']))])
+          subprocess.run(command, check=True)
+          PY

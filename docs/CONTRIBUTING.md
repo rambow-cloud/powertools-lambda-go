@@ -38,6 +38,31 @@ Combine type and area labels when useful: a workflow bug can have `bug` and
 `cicd`; a documentation feature can have `enhancement` and `documentation`.
 Labels organize work; they do not select CI suites or authorize publication.
 
+Module labels use `module:<directory>`, for example `module:logger` and
+`module:eventhandler/http/metrics`. The root uses `module:powertools-lambda-go`.
+The catalog covers every manifest module, including development modules and the
+frozen X-Ray adapter; a label does not change a module's publication status.
+Select one or more **Affected modules** in the issue form, or **Repository only**
+for repository work. The **Issue labels** workflow applies module and category
+labels on creation, editing, or reopening. Editing this selector replaces its
+previous module labels and preserves unrelated labels. Older forms are classified
+additively from their explicit affected-area field; narrative text is not used.
+
+CLI/API-created module issues can include the same field, for example:
+
+```markdown
+### Affected modules
+
+logger, metrics
+```
+
+Run **Issue labels** from the Actions tab on `main` to synchronize the label
+catalog and backfill open and closed issues. Pull requests are excluded, and
+unrelated repository labels are retained. Unified release issues use `release`
+without attaching every module label. Release preparation sets this label
+directly for new and reused tracking issues, including built-in-token creation
+that does not trigger another Actions workflow.
+
 When creating an issue with `gh issue create`, pass labels explicitly, for example
 `--label bug --label cicd`: CLI/API creation with a body does not apply web form
 defaults. Maintainers keep the catalog and repository labels in sync; unrelated

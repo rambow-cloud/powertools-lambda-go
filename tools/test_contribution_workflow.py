@@ -1,9 +1,10 @@
 """Offline regression tests for the exact metadata script embedded in Actions."""
 
 import json
+import importlib.util
 from pathlib import Path
 import unittest
-from unittest.mock import patch
+from unittest.mock import Mock, patch
 
 import yaml
 
@@ -165,7 +166,7 @@ class IssueFormTests(unittest.TestCase):
         self.assertEqual(len(names), len(set(names)))
         for label in labels:
             with self.subTest(label=label["name"]):
-                self.assertRegex(label["name"], r"^[a-z][a-z ]+$")
+                self.assertRegex(label["name"], r"^(?:[a-z][a-z ]+|module:[a-z][a-z0-9_/-]*)$")
                 self.assertRegex(label["color"], r"^[0-9a-f]{6}$")
                 self.assertTrue(0 < len(label["description"]) <= 100)
         self.assertEqual(next(label["color"] for label in labels if label["name"] == "bug"), "d73a4a")
@@ -177,6 +178,84 @@ class IssueFormTests(unittest.TestCase):
         text = (ROOT / ".github/PULL_REQUEST_TEMPLATE.md").read_text()
         errors = NAMESPACE["validate"]({"body": text}, REPOSITORY, lambda number: {})
         self.assertEqual(len(errors), 4)
+
+
+class IssueLabelTests(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        spec = importlib.util.spec_from_file_location("issue_labels", ROOT / ".github/scripts/issue_labels.py")
+        cls.labels = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(cls.labels)
+        cls.directories = [module["directory"] for module in json.loads((ROOT / "tools/modules.json").read_text(encoding="utf-8"))["modules"]]
+
+    def test_catalog_and_form_selectors_cover_every_module(self):
+        catalog = json.loads((ROOT / ".github/labels.json").read_text(encoding="utf-8"))
+        expected = {self.labels.module_label(directory) for directory in self.directories}
+        self.assertEqual({label["name"] for label in catalog if label["name"].startswith("module:")}, expected)
+        for name in ("bug_report", "feature_request", "documentation", "cicd", "maintenance", "question"):
+            form = yaml.safe_load((ROOT / f".github/ISSUE_TEMPLATE/{name}.yml").read_text(encoding="utf-8"))
+            selector = next(item for item in form["body"] if item.get("id") == "modules")
+            self.assertTrue(selector["attributes"]["multiple"])
+            options = selector["attributes"]["options"]
+            self.assertEqual(len(options), len(set(options)))
+            self.assertEqual(set(options), {"Repository only", *[self.labels.PROJECT if directory == "." else directory for directory in self.directories]})
+
+    def test_nested_multiple_and_root_selection_ignore_narrative(self):
+        issue = {"title": "[Bug]: example", "body": "### Affected modules\n\npowertools-lambda-go, logger, eventhandler/http/metrics\n\n### Reproduction\nparser fails; $(echo injected)"}
+        desired, explicit = self.labels.desired_labels(issue, self.directories)
+        self.assertTrue(explicit)
+        self.assertEqual(desired, {"bug", "module:powertools-lambda-go", "module:logger", "module:eventhandler/http/metrics"})
+
+    def test_edit_removes_stale_modules_and_preserves_unrelated_labels(self):
+        issue = {"number": 1, "title": "[Feature]: example", "body": "### Affected modules\nparser", "labels": [{"name": name} for name in ("enhancement", "module:logger", "help wanted")]}
+        api = Mock()
+        self.labels.classify(api, issue, self.directories)
+        self.assertEqual(api.repo.call_args_list[0].kwargs["data"], {"labels": ["module:parser"]})
+        self.assertEqual(api.repo.call_args_list[1].args, ("issues/1/labels/module%3Alogger",))
+        self.assertEqual(api.repo.call_args_list[1].kwargs, {"method": "DELETE"})
+        issue["body"] = "### Affected modules\nRepository only"
+        desired, explicit = self.labels.desired_labels(issue, self.directories)
+        self.assertEqual((desired, explicit), ({"enhancement"}, True))
+
+    def test_legacy_area_is_additive_and_prs_are_skipped(self):
+        issue = {"number": 1, "title": "[Bug]: example", "body": "## Affected module or tool\nParser, `parameters`, jmespath helpers\n\n## Context\nlogger"}
+        desired, explicit = self.labels.desired_labels(issue, self.directories)
+        self.assertEqual((desired, explicit), ({"bug", "module:parser", "module:parameters", "module:jmespath"}, False))
+        issue["pull_request"] = {}
+        api = Mock()
+        self.labels.classify(api, issue, self.directories)
+        api.repo.assert_not_called()
+
+    def test_unknown_selection_is_rejected_before_label_changes(self):
+        api = Mock()
+        with self.assertRaisesRegex(ValueError, "Unknown affected module"):
+            self.labels.classify(api, {"number": 1, "title": "[Bug]: example", "body": "### Affected modules\nlogger, $(echo injected)"}, self.directories)
+        api.repo.assert_not_called()
+
+    def test_release_and_category_detection_are_idempotent(self):
+        issue = {"number": 1, "title": "[Release]: v0.2.0", "body": "### Affected modules\nlogger", "labels": [{"name": "release"}]}
+        api = Mock()
+        self.labels.classify(api, issue, self.directories)
+        api.repo.assert_not_called()
+        self.assertEqual(self.labels.desired_labels({"title": "[CI/CD]: work"}, self.directories), ({"cicd"}, False))
+
+    def test_catalog_sync_creates_missing_labels_and_keeps_unrelated_labels(self):
+        api = Mock()
+        definition = {"name": "bug", "color": "d73a4a", "description": "Bug"}
+        api.pages.return_value = [definition, {"name": "help wanted"}]
+        self.labels.synchronize(api, [definition, {"name": "module:logger", "color": "1d76db", "description": "Logger"}])
+        self.assertEqual(api.repo.call_count, 1)
+        self.assertEqual(api.repo.call_args.args, ("labels",))
+        self.assertEqual(api.repo.call_args.kwargs["method"], "POST")
+
+    def test_workflow_uses_trusted_code_and_safe_event_handling(self):
+        workflow = yaml.safe_load((ROOT / ".github/workflows/issue-labels.yml").read_text(encoding="utf-8"))
+        events = workflow.get("on", workflow.get(True))
+        self.assertEqual(set(events["issues"]["types"]), {"opened", "edited", "reopened"})
+        self.assertEqual(workflow["permissions"], {"contents": "read", "issues": "write"})
+        steps = workflow["jobs"]["labels"]["steps"]
+        self.assertEqual(steps[0]["with"], {"ref": "main", "persist-credentials": False})
+        self.assertNotIn("${{", steps[1]["run"])
 
 
 if __name__ == "__main__":
