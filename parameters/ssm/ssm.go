@@ -3,7 +3,9 @@ package ssm
 
 import (
 	"context"
+	"encoding/json"
 	"errors"
+	"strconv"
 	"strings"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
@@ -55,27 +57,44 @@ func decrypt(explicit, sdkValue *bool) (*bool, error) {
 	return aws.Bool(value), err
 }
 
-func (p *Provider) Get(ctx context.Context, name string, options GetOptions) (any, error) {
-	return p.cache.Get(ctx, name, options.Options, func(ctx context.Context) (any, error) {
-		return p.get(ctx, name, options)
-	})
-}
-
-func (p *Provider) get(ctx context.Context, name string, options GetOptions) (any, error) {
+func parameterInput(name string, options GetOptions) (sdk.GetParameterInput, error) {
 	input := sdk.GetParameterInput{}
 	if options.SDKOptions != nil {
 		input = *options.SDKOptions
 	}
 	input.Name = aws.String(name)
-	var err error
-	input.WithDecryption, err = decrypt(options.Decrypt, input.WithDecryption)
+	value, err := decrypt(options.Decrypt, input.WithDecryption)
+	input.WithDecryption = aws.Bool(aws.ToBool(value))
+	return input, err
+}
+
+func (p *Provider) Get(ctx context.Context, name string, options GetOptions) (any, error) {
+	if err := ctx.Err(); err != nil {
+		return nil, parameters.GetError(name, err)
+	}
+	input, err := parameterInput(name, options)
+	if err != nil {
+		return nil, parameters.GetError(name, err)
+	}
+	options.RequestKey = strconv.FormatBool(aws.ToBool(input.WithDecryption))
+	return p.cache.Get(ctx, name, options.Options, func(ctx context.Context) (any, error) {
+		return p.getInput(ctx, input, options.ThrowOnMissing)
+	})
+}
+
+func (p *Provider) get(ctx context.Context, name string, options GetOptions) (any, error) {
+	input, err := parameterInput(name, options)
 	if err != nil {
 		return nil, err
 	}
+	return p.getInput(ctx, input, options.ThrowOnMissing)
+}
+
+func (p *Provider) getInput(ctx context.Context, input sdk.GetParameterInput, throwOnMissing bool) (any, error) {
 	out, err := p.client.GetParameter(ctx, &input, userAgent)
 	if err != nil {
 		var missing *types.ParameterNotFound
-		if options.ThrowOnMissing && errors.As(err, &missing) {
+		if throwOnMissing && errors.As(err, &missing) {
 			return nil, nil
 		}
 		return nil, err
@@ -87,20 +106,29 @@ func (p *Provider) get(ctx context.Context, name string, options GetOptions) (an
 }
 
 func (p *Provider) GetMultiple(ctx context.Context, path string, options MultipleOptions) (map[string]any, error) {
+	if err := ctx.Err(); err != nil {
+		return nil, parameters.GetError(path, err)
+	}
+	input := sdk.GetParametersByPathInput{}
+	if options.SDKOptions != nil {
+		input = *options.SDKOptions
+	}
+	input.Path = aws.String(path)
+	value, err := decrypt(options.Decrypt, input.WithDecryption)
+	if err != nil {
+		return nil, parameters.GetError(path, err)
+	}
+	input.WithDecryption = aws.Bool(aws.ToBool(value))
+	if options.Recursive != nil {
+		input.Recursive = options.Recursive
+	}
+	input.Recursive = aws.Bool(aws.ToBool(input.Recursive))
+	key, err := json.Marshal(input)
+	if err != nil {
+		return nil, parameters.GetError(path, err)
+	}
+	options.RequestKey = string(key)
 	return p.cache.GetMultiple(ctx, path, options.Options, func(ctx context.Context) (map[string]any, error) {
-		input := sdk.GetParametersByPathInput{}
-		if options.SDKOptions != nil {
-			input = *options.SDKOptions
-		}
-		input.Path = aws.String(path)
-		var err error
-		input.WithDecryption, err = decrypt(options.Decrypt, input.WithDecryption)
-		if err != nil {
-			return nil, err
-		}
-		if options.Recursive != nil {
-			input.Recursive = options.Recursive
-		}
 		result := make(map[string]any)
 		pages := sdk.NewGetParametersByPathPaginator(p.client, &input, func(o *sdk.GetParametersByPathPaginatorOptions) { o.StopOnDuplicateToken = true })
 		for pages.HasMorePages() {

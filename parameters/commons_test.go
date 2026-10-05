@@ -25,7 +25,7 @@ func TestSharedMaxAgeValidationBeforeCacheLookup(t *testing.T) {
 		t.Fatalf("cache bypassed configuration validation: %v calls=%d", err, calls)
 	}
 	_, err = cache.Get(context.Background(), "key", parameters.Options{MaxAge: parameters.Age(0)}, fetch)
-	if err != nil || calls != 1 {
-		t.Fatal("explicit lifetime should bypass environment and retain valid entry")
+	if err != nil || calls != 2 {
+		t.Fatal("explicit zero lifetime should bypass environment and cache")
 	}
 }

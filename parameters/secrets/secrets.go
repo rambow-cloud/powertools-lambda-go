@@ -3,6 +3,7 @@ package secrets
 
 import (
 	"context"
+	"encoding/json"
 	"errors"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
@@ -30,12 +31,17 @@ func (p *Provider) ClearCache()   { p.cache.ClearCache() }
 func userAgent(o *sdk.Options) { o.APIOptions = append(o.APIOptions, awssdk.UserAgent("parameters")) }
 
 func (p *Provider) Get(ctx context.Context, name string, options GetOptions) (any, error) {
+	input := sdk.GetSecretValueInput{}
+	if options.SDKOptions != nil {
+		input = *options.SDKOptions
+	}
+	input.SecretId = aws.String(name)
+	key, err := json.Marshal(input)
+	if err != nil {
+		return nil, parameters.GetError(name, err)
+	}
+	options.RequestKey = string(key)
 	return p.cache.Get(ctx, name, options.Options, func(ctx context.Context) (any, error) {
-		input := sdk.GetSecretValueInput{}
-		if options.SDKOptions != nil {
-			input = *options.SDKOptions
-		}
-		input.SecretId = aws.String(name)
 		out, err := p.client.GetSecretValue(ctx, &input, userAgent)
 		if err != nil {
 			var missing *types.ResourceNotFoundException

@@ -11,8 +11,10 @@ import (
 )
 
 // Options controls one retrieval. A nil MaxAge reads the environment on each call.
-// MaxAge controls new cache entries; ForceFetch bypasses existing entries.
+// Nonpositive MaxAge bypasses lookup and storage; ForceFetch bypasses lookup.
 type Options struct {
+	// RequestKey isolates effective provider request options. Providers set it automatically.
+	RequestKey            string
 	MaxAge                *time.Duration
 	ForceFetch            bool
 	Transform             Transform
@@ -88,6 +90,7 @@ func GetError(name string, err error) error {
 }
 
 type cacheKey struct {
+	request   string
 	name      string
 	transform Transform
 	multiple  bool
@@ -98,7 +101,7 @@ type entry struct {
 }
 
 // Cache is safe for concurrent retrievals. Construct one per provider, not per invocation.
-// SDK options are not cache keys: use ForceFetch or separate providers when they change.
+// RequestKey isolates value-affecting request options within each operation.
 // Concurrent misses may fetch independently, matching the reference provider.
 type Cache struct {
 	mu         sync.Mutex
@@ -150,15 +153,23 @@ func (c *Cache) save(key cacheKey, value any, age time.Duration, generation uint
 
 // Lookup and Store share single-value entries with batched provider operations.
 func (c *Cache) Lookup(name string, options Options) (any, bool) {
-	value, ok, _ := c.lookup(cacheKey{name: name, transform: options.Transform}, options.ForceFetch)
+	age, err := options.lifetime()
+	if err != nil || age <= 0 {
+		return nil, false
+	}
+	value, ok, _ := c.lookup(cacheKey{request: options.RequestKey, name: name, transform: options.Transform}, options.ForceFetch)
 	return value, ok
 }
 
 // Store caches an already transformed value returned by a batched operation.
 func (c *Cache) Store(name string, value any, options Options) {
-	key := cacheKey{name: name, transform: options.Transform}
+	age, err := options.lifetime()
+	if err != nil || age <= 0 {
+		return
+	}
+	key := cacheKey{request: options.RequestKey, name: name, transform: options.Transform}
 	_, _, generation := c.lookup(key, true)
-	c.save(key, value, options.Lifetime(), generation)
+	c.save(key, value, age, generation)
 }
 
 // Get fetches and transforms a value on a cache miss. A nil value means missing.
@@ -166,12 +177,12 @@ func (c *Cache) Get(ctx context.Context, name string, options Options, fetch fun
 	if err := ctx.Err(); err != nil {
 		return nil, GetError(name, err)
 	}
-	key := cacheKey{name: name, transform: options.Transform}
+	key := cacheKey{request: options.RequestKey, name: name, transform: options.Transform}
 	age, err := options.lifetime()
 	if err != nil {
 		return nil, GetError(name, err)
 	}
-	if value, ok, generation := c.lookup(key, options.ForceFetch); ok {
+	if value, ok, generation := c.lookup(key, options.ForceFetch || age <= 0); ok {
 		return value, nil
 	} else {
 		value, err := fetch(ctx)
@@ -200,12 +211,12 @@ func (c *Cache) GetMultiple(ctx context.Context, path string, options Options, f
 	if err := ctx.Err(); err != nil {
 		return nil, GetError(path, err)
 	}
-	key := cacheKey{name: path, transform: options.Transform, multiple: true}
+	key := cacheKey{request: options.RequestKey, name: path, transform: options.Transform, multiple: true}
 	age, err := options.lifetime()
 	if err != nil {
 		return nil, GetError(path, err)
 	}
-	value, ok, generation := c.lookup(key, options.ForceFetch)
+	value, ok, generation := c.lookup(key, options.ForceFetch || age <= 0)
 	if ok {
 		return value.(map[string]any), nil
 	}
