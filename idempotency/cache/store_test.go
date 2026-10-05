@@ -144,6 +144,16 @@ func TestReferenceCacheScenarios(t *testing.T) {
 			if err != nil {
 				t.Fatal(err)
 			}
+			if fixture.Name == "missing-lease" {
+				// Issue #52 deliberately rejects this unsafe v2.35.0 takeover.
+				// Keep the upstream fixture intact and assert the Go correction.
+				err := store.Put(context.Background(), fixture.Record, now)
+				var conflict *idempotency.AlreadyExistsError
+				if !errors.As(err, &conflict) || conflict.Record == nil || f.values[key] != fixture.Seed || len(f.values) != 1 {
+					t.Fatalf("record without deadline was not preserved: %v", err)
+				}
+				return
+			}
 			var result idempotency.Record
 			switch fixture.Operation {
 			case "put":

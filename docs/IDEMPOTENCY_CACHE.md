@@ -25,7 +25,7 @@ The caller owns the connected client, credentials, TLS, topology, timeouts, retr
 
 The Redis key is the core-generated idempotency identity. Values are JSON objects with the reference's default `status`, `expiration`, `in_progress_expiration`, `data`, and `validation` fields. Options customize these attribute names. JSON response numbers remain raw numeric tokens when Go reads them.
 
-Acquisition uses `SET NX EX`; a conflict reads the record. Live completed/in-progress records are returned to the core for replay, validation, or concurrency rejection. An expired record, expired/missing execution lease, or malformed JSON record follows the reference's orphan-recovery path. It acquires `<key>:lock` using `SET NX EX 10`. The lock expires naturally and is not deleted after successful recovery, matching the pinned cache adapter.
+Acquisition uses `SET NX EX`; a conflict reads the record. Live completed/in-progress records are returned to the core for replay, validation, or concurrency rejection. An in-progress record without an execution deadline remains locked until its overall expiration. An expired record, expired execution lease, or malformed JSON record follows the reference's orphan-recovery path. It acquires `<key>:lock` using `SET NX EX 10`. The lock expires naturally and is not deleted after successful recovery, matching the pinned cache adapter.
 
 The recovery write additionally uses a single-key Lua compare-and-set against the exact value observed before locking. If another caller changed or deleted that value, recovery returns a conflict instead of overwriting it. The script references only the record key, so it does not require the record and `:lock` keys to share a cluster slot. This guard is a deliberate improvement over the reference's unconditional recovery write. It requires permission to execute `EVAL`, in addition to `GET`, `SET`, and `DEL`.
 
@@ -33,6 +33,7 @@ Completion resets the server TTL using the record's new expiration minus the cur
 
 ## Reference differences
 
+- Unlike TypeScript v2.35.0, Go does not recover an unexpired in-progress record solely because its execution deadline is absent or zero. This prevents overlapping operations without context deadlines from executing twice. Expired records and expired nonzero execution deadlines remain recoverable.
 - The pinned TypeScript cache completion writer drops `validation`. Go retains it by default so repeated requests can validate completed responses. Set `OmitValidationOnSuccess: true` only when exact reproduction of that record shape is required; validation then cannot succeed against the omitted hash. Reference fixtures explicitly use this option for exact writer comparisons. Go cannot reconstruct a missing validation hash in an existing TypeScript record.
 - Orphan recovery retains the reference lock protocol and adds the compare-and-set guard described above. Its successful write is compared structurally with the reference's final `SET`; a separate test checks that a newly completed record cannot be overwritten. This comparison does not claim command-level equality for recovery.
 - A record disappearing after a failed `SET NX` returns a conflict without a snapshot, allowing the core's bounded inconsistent-state retry. The pinned cache adapter exposes a missing-item error in that case.
