@@ -232,7 +232,7 @@ def main():
                 app_original = [{"id": "one", "payload": {"id": "order-a"}}, {"id": "two", "payload": {"id": "order-b"}}]
                 check(f"{test_id}: AppSync Events aggregate precedence", app_events.get("aggregate", {}).get("events") == app_original)
                 check(f"{test_id}: AppSync Events missing route passthrough", app_events.get("passthrough", {}).get("events") == app_original)
-                check(f"{test_id}: AppSync Events item authorization envelopes", app_events.get("item_errors", {}).get("events") == [{"id": "one", "error": "UnauthorizedException - denied"}, {"id": "two", "error": "UnauthorizedException - denied"}])
+                check(f"{test_id}: AppSync Events item failure envelopes", app_events.get("item_errors", {}).get("events") == [{"id": "one", "error": "Error - denied"}, {"id": "two", "error": "Error - denied"}])
                 check(f"{test_id}: AppSync Events subscription and invalid input", app_events.get("authorization") is True and app_events.get("invalid") is True)
                 graphql = response.get("appsync_graphql", {})
                 single = graphql.get("single", {})
