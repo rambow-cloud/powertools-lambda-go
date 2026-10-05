@@ -58,6 +58,14 @@ Three disposable containers share an internal Docker network: Lambda, the captur
 
 The capture service decodes real OTLP/HTTP protobuf exports and provides deterministic HTTP, DynamoDB, SSM, Secrets Manager, AppConfig Data, and AppConfig Agent response fixtures. It is not a production collector, DynamoDB Local, or an AWS service emulator. Tests exercise actual SDK serialization/middleware and HTTP instrumentation; they do not verify live service semantics, IAM, KMS, or S3 signature enforcement.
 
+The separate [KMS HTTP fixture](https://github.com/rambow-cloud/powertools-lambda-go/blob/main/integration/internal/kmsfixture/README.md)
+records its official API sources and synthetic boundaries. Native SDK tests verify
+length selectors, binary responses, typed key/context errors and explicit rejection
+of unsupported options. Its wrapped keys contain plaintext test material; only the
+real Encryption SDK encrypts message content. These HTTP contract tests run on
+Windows without the Encryption SDK dependency, while full interoperability stays
+in Linux integration acceptance.
+
 Five invocations cover initial/warm success, returned error, an unsampled parent, and panic. Assertions inspect runtime request IDs, log isolation, buffering, trace identity, span relationships, annotations, error status, downstream propagation, and completed OTLP export. The fixture explicitly injects deterministic parent headers through the test handler's context extractor: these checks do not establish native AWS trace-header injection behavior. RIE does not reproduce Lambda freeze/thaw, hard timeouts, X-Ray indexing, or service maps. Arm64 is cross-compiled but is not executed by this runner.
 
 Evidence is written to `dist/local/report.json`, `dist/local/otlp.json`, and `dist/local/lambda.log`. The runner removes only its own named containers and network in a `finally` block. The downloaded image and build artifacts remain reusable. Interrupted processes or Docker failures can leave resources with the run's `ptgo-local-` prefix; check the report for cleanup failures.
