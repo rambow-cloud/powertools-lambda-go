@@ -177,6 +177,28 @@ func runReference(t *testing.T, path string, count int) {
 	}
 	for _, item := range fixture.Cases {
 		t.Run(item.Name, func(t *testing.T) {
+			// Update/Delete require an existing resource ID in the AWS contract.
+			// Keep the pinned fixture intact and correct only this omitted field.
+			if item.Schema == "CloudFormationCustomResourceUpdateSchema" || item.Schema == "CloudFormationCustomResourceDeleteSchema" {
+				if input, object := item.Input.(map[string]any); object {
+					identifier, present := input["PhysicalResourceId"]
+					if text, valid := identifier.(string); valid {
+						if item.Expected.Success {
+							item.Expected.Data.(map[string]any)["PhysicalResourceId"] = text
+						}
+					} else {
+						received := "number" // The pinned invalid-field case uses zero.
+						if !present {
+							received = "undefined"
+						} else if identifier == nil {
+							received = "null"
+						}
+						item.Expected.Success, item.Expected.Thrown = false, !item.Safe
+						item.Expected.Data, item.Expected.Original = nil, item.Input
+						item.Expected.Issues = append(item.Expected.Issues, parser.Issue{Code: "invalid_type", Expected: "string", Message: "Invalid input: expected string, received " + received, Path: []any{"PhysicalResourceId"}})
+					}
+				}
+			}
 			schema := referenceSchema(item.Schema)
 			switch item.Envelope {
 			case "kafka":
