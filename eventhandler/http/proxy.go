@@ -30,6 +30,10 @@ func proxyResult(raw []byte) (Response, bool, error) {
 		}
 	}
 	result := Response{StatusCode: int(status), Headers: make(nethttp.Header), MultiValueHeaders: make(nethttp.Header)}
+	if raw, present := doc["isBase64Encoded"]; present {
+		encoded := string(raw) == "true"
+		result.IsBase64Encoded = &encoded
+	}
 	if body, present := doc["body"]; present && !null(body) {
 		if text, ok := textValue(body); ok {
 			result.Body = text
