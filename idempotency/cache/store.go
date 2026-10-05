@@ -171,7 +171,8 @@ func (s *Store) Put(ctx context.Context, record idempotency.Record, now time.Tim
 		if statusErr != nil {
 			return statusErr
 		}
-		if status == idempotency.Completed || (status == idempotency.InProgress && existing.InProgressExpiration > now.UnixMilli()) {
+		// An absent execution deadline is not evidence of an abandoned operation.
+		if status == idempotency.Completed || (status == idempotency.InProgress && (existing.InProgressExpiration == 0 || existing.InProgressExpiration > now.UnixMilli())) {
 			return &idempotency.AlreadyExistsError{Record: &existing}
 		}
 	}
