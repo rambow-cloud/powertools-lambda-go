@@ -79,3 +79,41 @@ Use `--runtime-only` to reuse previously built binaries while debugging Docker i
 Use `--skip-module-checks` when module checks have already passed and only a build or Docker infrastructure issue needs another attempt. Both architectures are rebuilt; the report explicitly records that module verification was reused.
 
 The image digest is pinned in `run.py`. Refresh it deliberately when updating the Lambda runtime baseline. Official references: [Go Lambda container images](https://docs.aws.amazon.com/lambda/latest/dg/go-image.html), [Runtime Interface Emulator](https://github.com/aws/aws-lambda-runtime-interface-emulator).
+
+## DynamoDB Local service acceptance
+
+Run the separate stateful suite from the repository root:
+
+```sh
+uv run --no-project python integration/local/test_dynamodb_run.py
+uv run --no-project python integration/local/dynamodb_run.py
+```
+
+The default runner starts the official digest-pinned DynamoDB Local Docker image
+with an ephemeral loopback port, an in-memory shared database and telemetry
+disabled. It uses synthetic credentials, no AWS profiles, bounded execution and
+an owned container that is removed on success or failure. On a machine with Java
+17 or newer, download the [official local distribution](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DynamoDBLocal.DownloadingAndRunning.html)
+and use the native alternative:
+
+```sh
+uv run --no-project python integration/local/dynamodb_run.py --jar path/to/DynamoDBLocal.jar
+```
+
+Both modes execute the same real SDK/provider tests. They verify a single winner
+among 16 conditional claims, returned prior records, persisted completion/replay,
+payload validation, expiry/lease recovery and equality boundaries, deletion,
+composite tenant isolation, Parameters cache refresh/native binary values and
+Limit=1 query pagination. Tables are independently named and deleted. Missing
+tests, skipped tests, process failures and cleanup errors fail the runner.
+
+`dist/service-acceptance/dynamodb-local.json` records the source commit, dirty
+working-tree flag, backend version, mode and acceptance results. Go JSON events
+and backend diagnostics remain alongside it. The Go package skips these tests
+when `POWERTOOLS_DYNAMODB_LOCAL_ENDPOINT` is absent; the maintained runner supplies
+a loopback endpoint and always uses `-count=1` with `CGO_ENABLED=0`.
+
+This is independent verification of supported DynamoDB state behavior, separate
+from the handwritten runtime capture fixture. It does not establish IAM, cloud
+throughput, TTL background deletion or transaction-conflict behavior. See the
+[official local/cloud differences](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DynamoDBLocal.UsageNotes.html).
