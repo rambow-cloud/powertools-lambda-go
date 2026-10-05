@@ -93,17 +93,53 @@ In PowerShell, use `$env:CGO_ENABLED = '0'` instead of `export`. Use
 iteration, but are not full-workspace acceptance. CI runs the complete module
 checks and both Linux Lambda architecture builds.
 
-For documentation or contribution-workflow changes:
+For documentation changes (no Go toolchain is needed):
 
 ```sh
 uv lock --project website --check
-uv run --project website --frozen python tools/test_contribution_workflow.py
-uv run --project website --frozen python tools/test_release.py
-uv run --project website --frozen python tools/test_release_automation.py
 uv run --project website --frozen python website/check_navigation.py
 uv run --project website --frozen python website/check_guides.py
 uv run --project website --frozen zensical build --clean --strict --config-file mkdocs.yml
 ```
+
+For issue forms or repository automation changes, run `actionlint` and:
+
+```sh
+uv run --project website --frozen python tools/test_contribution_workflow.py
+uv run --project website --frozen python tools/test_ci_changes.py
+```
+
+Release tooling changes additionally run `tools/test_release.py` and
+`tools/test_release_automation.py` with the same Python command, Go installed,
+CGO disabled, and the pinned GoReleaser version from [Releasing modules](RELEASING.md).
+
+### How CI selects checks
+
+The **CI** workflow compares the complete PR diff (merge base to head) or main
+push diff (before to after), including deleted and renamed paths. It calls
+separate documentation and repository automation workflows as needed:
+
+| Changed inputs | Checks |
+|---|---|
+| Documentation, Markdown, site assets or site configuration | Documentation navigation, guides, strict build and links |
+| Issue forms, PR template or label configuration | Workflow lint, contribution/metadata tests and CI routing tests |
+| Documentation workflow | Documentation and automation checks |
+| Release tools or release workflows | Automation checks plus offline GoReleaser/release tests |
+| Go source | All module checks, both Lambda architectures, runtime simulations and documentation |
+| Runtime scripts, fixtures or TypeScript reference | Go/module and runtime checks |
+| Dependencies, release plans, module manifest, CI routing, shared actions or unknown paths | All relevant suites; unknown paths select everything |
+
+Mixed changes select the union. Shared documentation/Python dependency changes
+also run automation/release tests. **Run workflow** on CI runs every suite.
+No workflow-level path filter can leave a required check pending.
+
+The main ruleset requires **PR contribution policy** and **CI gate**. The gate
+always runs and fails if classification fails, outputs are missing, or any
+selected suite fails, is cancelled, or is unexpectedly skipped. Only suites
+explicitly excluded by classification may be skipped. Release publication
+additionally requires actual module, runtime, documentation and release-tooling
+success on the preparation PR and exact main commit; a skipped check cannot
+authorize publication.
 
 For behavior involving the Lambda runtime, use the maintained
 [local Docker integration runner](LOCAL_INTEGRATION.md). It includes the module
@@ -146,8 +182,8 @@ review both. Owner and dependency-bot PRs need the same tracking issue; a
 maintainer can edit a bot PR description to add it and the missing sections.
 Drafts may fail until their description is complete.
 
-The **Modules and Lambda artifacts** and **Build documentation** checks run for
-all PRs, including documentation-only changes. A first-time fork contribution
+The **CI gate** runs for every PR and verifies the suites selected from its changed
+files, as described above. A first-time fork contribution
 may wait for a maintainer to approve running Actions. This is expected, not a
 request for credentials or repository write access. PR jobs receive no AWS
 credentials and do not deploy. Edit the PR body to rerun the policy check; push

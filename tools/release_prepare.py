@@ -250,7 +250,7 @@ Automatic publication after merge and successful main checks: **{'enabled' if au
 
 def start_pr_checks(pr, api, resume=False, wait_seconds=60):
     """Native PR events satisfy rulesets; workflow_dispatch job checks do not."""
-    expected = {".github/workflows/" + filename for filename in ("contribution.yml", "ci.yml", "docs.yml")}
+    expected = {".github/workflows/" + filename for filename in ("contribution.yml", "ci.yml")}
     deadline = time.monotonic() + wait_seconds
     while True:
         latest, page = {}, 1

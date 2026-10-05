@@ -62,19 +62,22 @@ The migration retains `mkdocs.yml`, page URLs, and the checked Go snippet. The s
 
 ## Go CI
 
-`.github/workflows/ci.yml` runs on pull requests, pushes to `main`, and manual dispatch:
+`.github/workflows/ci.yml` runs on pull requests, pushes to `main`, and manual dispatch.
+It selects suites from the complete changed-file list; see [CI selection](CONTRIBUTING.md#how-ci-selects-checks).
+When Go/runtime inputs change, it runs:
 
 1. Check module licenses and notices.
 2. Verify the manifest's 31 packaged modules with tests, vet, tidy consistency, and 28 standalone public consumers using the existing local proxy harness.
 3. Cross-compile the basic Lambda for Linux amd64 and arm64.
 4. Validate static ELF binaries and executable bootstrap ZIP entries.
 5. Retain example ZIPs and module verification progress as Actions artifacts for seven days.
+6. Run the [Docker runtime simulation](LOCAL_INTEGRATION.md), including streaming, Batch and KMS interoperability evidence.
 
-Every job sets `CGO_ENABLED=0`. The harness disables the development workspace while validating independently packaged modules. Deprecated X-Ray adapter coverage is regression coverage only. CI does not create AWS resources or claim to run the separate Docker runtime acceptance suite.
+Every job sets `CGO_ENABLED=0`. The harness disables the development workspace while validating independently packaged modules. Deprecated X-Ray adapter coverage is regression coverage only. CI does not create AWS resources. Documentation and issue-metadata changes skip these Go/runtime jobs.
 
 ## GitHub Pages
 
-`.github/workflows/docs.yml` builds the site on pull requests, pushes to `main`, and manual dispatch. Pull requests only build an artifact. Only the canonical repository's `main` branch can deploy, using the `github-pages` environment.
+`.github/workflows/docs.yml` is called by CI when documentation or referenced source changes, and on full manual CI runs. It checks navigation, guides, links and the strict site build without installing Go or GoReleaser. Pull requests only build an artifact. Only the canonical repository's `main` branch can deploy, using the `github-pages` environment.
 
 The deployment job alone receives `pages: write` and `id-token: write`. It uses the official Pages configuration, artifact, and deployment actions. No personal access token is stored in the workflow, and no `gh-pages` branch is needed.
 

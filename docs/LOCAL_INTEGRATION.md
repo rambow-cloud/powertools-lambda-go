@@ -13,8 +13,10 @@ reports, and cleaned up without errors. The [acceptance summary](CI_RUNTIME_ACCE
 records the tested PR merge SHA, run/attempt, suite counts, and six binary hashes;
 it is distinct from the historical local acceptance above.
 
-Go CI runs **Runtime simulation** on every pull request, main push, and manual
-dispatch after **Modules and Lambda artifacts** passes. It installs Node.js
+CI runs **Runtime simulation** for Go/runtime inputs, release batches, unknown
+paths and full manual runs, after **Modules and Lambda artifacts** passes.
+Documentation and metadata-only changes skip both jobs; the always-running
+**CI gate** validates this selection. It installs Node.js
 22.21.1 and reference dependencies with `npm ci`, then uses
 `integration/local/run.py --skip-module-checks`: module tests are reused from
 the prerequisite job while normal and streaming fixtures are freshly built for
@@ -33,7 +35,9 @@ cleanup errors. It writes a job summary and SHA-256 hashes for all six binaries.
 The `runtime-simulation-SHA-RUN-ATTEMPT` artifact retains reports and diagnostic
 logs for seven days, including on failure; build caches and binaries are excluded.
 
-Both merge protection and release publication must require **Runtime simulation**.
+Merge protection requires **CI gate**, which requires runtime success whenever
+the Go/runtime suite is selected. Release publication additionally requires
+actual **Runtime simulation** success even when the aggregate gate passes.
 See [maintainer setup](MAINTAINING.md) for rollout. Checked-in Go reference
 corpora run in the module job; the full Node fixture regeneration command remains
 a deliberate development operation when reference versions or generators change.

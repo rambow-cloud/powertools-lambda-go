@@ -316,6 +316,15 @@ class PublicationTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "has not passed"):
             release.check_runs(api, B, ["Build documentation"])
 
+    def test_green_aggregate_does_not_authorize_skipped_release_checks(self):
+        for skipped in release.MAIN_CHECKS:
+            checks = [{"name": name, "app": {"slug": "github-actions"}, "id": number,
+                       "status": "completed", "conclusion": "skipped" if name == skipped else "success"}
+                      for number, name in enumerate(release.MAIN_CHECKS)]
+            api = FakeAPI({f"commits/{B}/check-runs?per_page=100&page=1": {"check_runs": checks}})
+            with self.subTest(skipped=skipped), self.assertRaisesRegex(ValueError, "has not passed"):
+                release.check_runs(api, B, release.MAIN_CHECKS)
+
     def test_draft_lookup_uses_authenticated_listing_and_rejects_duplicates(self):
         draft = {"tag_name": "logger/v0.1.1", "draft": True}
         api = FakeAPI({"releases": [{"tag_name": "metrics/v0.1.0", "draft": True}, draft]})
@@ -450,7 +459,7 @@ class WorkflowTests(unittest.TestCase):
         events = workflow.get("on", workflow.get(True))
         self.assertEqual(set(events), {"workflow_dispatch", "workflow_run"})
         self.assertEqual(set(events["workflow_dispatch"]["inputs"]), {"pr", "publish"})
-        self.assertEqual(events["workflow_run"]["workflows"], ["Go CI", "Documentation"])
+        self.assertEqual(events["workflow_run"]["workflows"], ["CI"])
         self.assertIs(events["workflow_dispatch"]["inputs"]["publish"]["default"], False)
         self.assertFalse(workflow["concurrency"]["cancel-in-progress"])
         self.assertEqual(workflow["env"]["CGO_ENABLED"], "0")

@@ -75,8 +75,9 @@ recorded source must still be its first parent; if main advances first, rerun
 preparation against current main and use the newly generated PR.
 
 With automatic publication enabled, merging this preparation PR authorizes its
-frozen release batch. After all three required main checks pass (Modules and Lambda
-artifacts, Runtime simulation, and Build documentation), GoReleaser publishes
+frozen release batch. After the CI gate, Modules and Lambda artifacts, Runtime
+simulation, Documentation / Build documentation, and Automation / Release tooling
+checks pass on main, GoReleaser publishes
 in dependency order and the tracking issue closes after public consumer checks.
 Ordinary feature/bug PR merges do not publish modules.
 
@@ -177,8 +178,11 @@ First release notes include both a capability/compatibility summary and PR chang
 
 ## Automatic publication and manual recovery
 
-Automatic publication listens for completed **Go CI** and **Documentation**
-workflows on main push commits. It resolves the merged preparation PR and its
+Automatic publication listens for the completed **CI** workflow on main push
+commits. Release plans and module manifests select every CI suite, and publication
+requires the aggregate CI gate plus actual module, runtime, documentation and
+release-tooling success; skipped jobs cannot authorize publication.
+It resolves the merged preparation PR and its
 exact plan, requires the plan's `auto_publish: true`, and rechecks the latest
 required main checks. If another check is still pending or failed, it makes no
 publication writes; the next completion event re-evaluates the batch. Fork and
