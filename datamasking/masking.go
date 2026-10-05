@@ -166,7 +166,13 @@ func (m *Masker) Erase(ctx context.Context, data any, options EraseOptions) (any
 	}
 	touched := map[string]bool{}
 	for _, item := range options.Rules {
-		for _, path := range resolve(copy, item.Field) {
+		paths := resolve(copy, item.Field)
+		if len(paths) == 0 {
+			if err := m.missingField(ctx, item.Field); err != nil {
+				return nil, err
+			}
+		}
+		for _, path := range paths {
 			if err := ctx.Err(); err != nil {
 				return nil, err
 			}
@@ -183,11 +189,9 @@ func (m *Masker) Erase(ctx context.Context, data any, options EraseOptions) (any
 	for _, field := range options.Fields {
 		paths := resolve(copy, field)
 		if len(paths) == 0 {
-			message := fmt.Sprintf("Field not found: '%s'", field)
-			if !m.config.IgnoreMissing {
-				return nil, &Error{"DataMaskingFieldNotFoundError", message, nil}
+			if err := m.missingField(ctx, field); err != nil {
+				return nil, err
 			}
-			m.config.Warn(ctx, message)
 		}
 		for _, path := range paths {
 			if err := ctx.Err(); err != nil {
@@ -209,6 +213,15 @@ func (m *Masker) Erase(ctx context.Context, data any, options EraseOptions) (any
 		}
 	}
 	return copy.value(), nil
+}
+
+func (m *Masker) missingField(ctx context.Context, field string) error {
+	message := fmt.Sprintf("Field not found: '%s'", field)
+	if !m.config.IgnoreMissing {
+		return &Error{"DataMaskingFieldNotFoundError", message, nil}
+	}
+	m.config.Warn(ctx, message)
+	return nil
 }
 
 func maskLeaves(ctx context.Context, value *node, rule Rule) error {

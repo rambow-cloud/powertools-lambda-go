@@ -83,6 +83,11 @@ func TestTypeScriptReference(t *testing.T) {
 		t.Fatal("unexpected reference rejection lifecycle", corpus.AsyncFailure)
 	}
 	for _, tc := range corpus.Cases {
+		// Issue #69: strict missing Rules obey the same policy as Fields.
+		// Preserve the original TypeScript fixture and correct this named case.
+		if tc.Name == "erase-154" {
+			tc.Error = &struct{ Name, Message string }{"DataMaskingFieldNotFoundError", "Field not found: 'missing'"}
+		}
 		t.Run(tc.Name, func(t *testing.T) {
 			calls, warnings := []call{}, []string{}
 			var mu sync.Mutex
