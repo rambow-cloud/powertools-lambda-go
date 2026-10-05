@@ -167,11 +167,15 @@ func handlerResponse(value any, previous nethttp.Header, fallback int, streaming
 		}
 		return nil, false, fmt.Errorf("response status must be between 200 and 599")
 	}
-	if (body != nil || stream != nil && stream != nethttp.NoBody) && (status == 204 || status == 205 || status == 304) {
+	noContent := status == 204 || status == 205 || status == 304
+	if (len(body) > 0 || stream != nil && stream != nethttp.NoBody) && noContent {
 		if stream != nil {
 			_ = stream.Close()
 		}
 		return nil, false, fmt.Errorf("response status %d cannot have a body", status)
+	}
+	if noContent {
+		body = nil
 	}
 	var reader io.ReadCloser = nethttp.NoBody
 	if body != nil {
