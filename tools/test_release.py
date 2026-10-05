@@ -84,10 +84,12 @@ class NotesTests(unittest.TestCase):
         data["modules"][2]["entries"] = [entry("metrics", "feature", "Broad note with no actual change.")]
         data["repository_entries"] = [entry("repository", "maintenance", "Improve CI.")]
         notes = release.render_unified_notes(release.REPOSITORY, data)
-        self.assertIn("### logger\n\n#### Fixes", notes)
+        self.assertIn("### powertools-lambda-go/logger\n\n#### Fixes", notes)
         self.assertIn("logger/logger.go", notes)
-        self.assertIn("`metrics`: bumped to `v0.1.1`", notes)
-        self.assertNotIn("### metrics", notes)
+        self.assertIn("`powertools-lambda-go/metrics`: bumped to `v0.1.1`", notes)
+        self.assertIn("`powertools-lambda-go`: bumped to `v0.1.1`", notes)
+        self.assertIn("| `powertools-lambda-go` | `v0.1.1` | Bumped to v0.1.1 only |", notes)
+        self.assertNotIn("### powertools-lambda-go/metrics", notes)
         self.assertNotIn("Broad note", notes)
         self.assertIn("Improve CI.", notes)
         self.assertIn("v0.1.0..." + A, notes)

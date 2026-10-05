@@ -48,6 +48,13 @@ change that was fully reverted has no net file change.
 - **Initial release:** explicitly describe first publication when no previous
   module Release exists; it is never described as an unchanged version bump.
 
+Updated-module headings, the bump-only list, and the module version table use
+project-qualified display names: `powertools-lambda-go` for the root,
+`powertools-lambda-go/logger` for Logger, and
+`powertools-lambda-go/commons/awssdk` for a nested module. PR note keys remain
+`.` and repository-relative module directories; tag names and Go import paths
+keep their existing forms.
+
 The module version table uses the same classification. New plans use
 `notes_format: 2`; publication verifies their frozen file lists against Git.
 Existing schema 1/2 plans without this field retain their original rendering
