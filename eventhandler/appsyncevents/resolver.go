@@ -64,6 +64,7 @@ func (r *Resolver) Resolve(ctx context.Context, input any) (any, error) {
 		return response, nil
 	}
 	results := make([]any, len(items))
+	failures := make([]error, len(items))
 	panics := make([]any, len(items))
 	var group sync.WaitGroup
 	for i, item := range items {
@@ -87,10 +88,11 @@ func (r *Resolver) Resolve(ctx context.Context, input any) (any, error) {
 				return response, nil
 			})
 			if err != nil {
-				r.diagnostic(ctx, "error", "An error occurred in handler "+path, err)
-				response := errorResponse(err)
-				response["id"] = message["id"]
-				result = response
+				result, failures[i] = r.handleError(ctx, path, err)
+				if failures[i] != nil {
+					return
+				}
+				result.(map[string]any)["id"] = message["id"]
 			}
 			results[i] = result
 		})
@@ -99,6 +101,11 @@ func (r *Resolver) Resolve(ctx context.Context, input any) (any, error) {
 	for _, failure := range panics {
 		if failure != nil {
 			panic(failure)
+		}
+	}
+	for _, failure := range failures {
+		if failure != nil {
+			return nil, failure
 		}
 	}
 	return map[string]any{"events": results}, nil

@@ -148,12 +148,8 @@ func TestAuthorizationAndDiagnosticPanic(t *testing.T) {
 		app := New(quiet())
 		app.OnPublish("/*", func(context.Context, any, Event) (any, error) { return nil, denied }, PublishOptions{Aggregate: aggregate})
 		result, err := app.Resolve(context.Background(), event("/default", "PUBLISH", 1))
-		if aggregate {
-			if err != denied {
-				t.Fatal("authorization identity lost")
-			}
-		} else if err != nil || result.(map[string]any)["events"].([]any)[0].(map[string]any)["error"] != "UnauthorizedException - denied" {
-			t.Fatal(result, err)
+		if err != denied || result != nil {
+			t.Fatal("authorization identity lost", result, err)
 		}
 		app.OnSubscribe("/*", func(context.Context, Event) error { return denied })
 		if _, err := app.Resolve(context.Background(), event("/default", "SUBSCRIBE")); err != denied {
