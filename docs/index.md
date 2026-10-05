@@ -2,7 +2,7 @@
 
 Powertools for Go Lambda is a collection of utilities for building native Go functions on AWS Lambda. Add structured logging, OpenTelemetry tracing, metrics, and event handling to your functions with independently versioned Go modules.
 
-This is an **independent community implementation** based on Powertools for AWS Lambda (TypeScript) v2.35.0. It is a development subset with documented [compatibility boundaries](COMPATIBILITY.md); initial public release tags are pending.
+This is an **independent community implementation** based on Powertools for AWS Lambda (TypeScript) v2.35.0. It is a development subset with documented [compatibility boundaries](COMPATIBILITY.md). See [Release notes](RELEASE_NOTES.md) for published versions, module updates and version-only bumps.
 
 ## Getting started
 
