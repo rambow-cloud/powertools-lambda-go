@@ -13,8 +13,10 @@ reports, and cleaned up without errors. The [acceptance summary](CI_RUNTIME_ACCE
 records the tested PR merge SHA, run/attempt, suite counts, and six binary hashes;
 it is distinct from the historical local acceptance above.
 
-CI runs **Runtime simulation** for Go/runtime inputs, release batches, unknown
-paths and full manual runs, after **Modules and Lambda artifacts** passes.
+CI runs **Runtime simulation** for runtime scripts/fixtures and reference inputs,
+release batches, shared/unknown inputs and full manual runs, after
+**Modules and Lambda artifacts** passes. Ordinary Go edits check affected modules
+and their current-version consumers; test-only edits check their owning module.
 Documentation and metadata-only changes skip both jobs; the always-running
 **CI gate** validates this selection. It installs Node.js
 22.21.1 and reference dependencies with `npm ci`, then uses
@@ -35,9 +37,18 @@ cleanup errors. It writes a job summary and SHA-256 hashes for all six binaries.
 The `runtime-simulation-SHA-RUN-ATTEMPT` artifact retains reports and diagnostic
 logs for seven days, including on failure; build caches and binaries are excluded.
 
-Merge protection requires **CI gate**, which requires runtime success whenever
-the Go/runtime suite is selected. Release publication additionally requires
-actual **Runtime simulation** success even when the aggregate gate passes.
+The separate **DynamoDB Local** job runs for affected Parameters, Idempotency and
+shared DynamoDB modules, service test/runner edits, and every full regression.
+It runs the opt-in tests against the pinned official Docker image, checks that
+all three suites executed without skips, and removes the run's tables/container.
+The `dynamodb-local-SHA-RUN-ATTEMPT` artifact retains test events, backend logs,
+backend version, current execution identity and cleanup results for seven days.
+It requires no cloud credentials.
+
+Merge protection requires **CI gate**, which requires each selected module,
+runtime or service job to succeed. Release publication additionally requires
+actual **Runtime simulation**, **DynamoDB Local** and **Full regression** success
+on the preparation PR and exact main commit even when a scoped gate passes.
 See [maintainer setup](MAINTAINING.md) for rollout. Checked-in Go reference
 corpora run in the module job; the full Node fixture regeneration command remains
 a deliberate development operation when reference versions or generators change.

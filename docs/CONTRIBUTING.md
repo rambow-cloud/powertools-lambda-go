@@ -140,8 +140,9 @@ uv run --no-project python tools/modules.py check
 In PowerShell, use `$env:CGO_ENABLED = '0'` instead of `export`. Use
 `tools/modules.py tidy` when dependency metadata must change; keep filesystem
 `replace` directives out of `go.mod`. Focused `check --only MODULE` runs help
-iteration, but are not full-workspace acceptance. CI runs the complete module
-checks and both Linux Lambda architecture builds.
+iteration, but are not full-workspace acceptance. Ordinary CI uses scoped
+packaged checks; release preparation and manual full runs check every module
+and both Linux Lambda architectures.
 
 For documentation changes (no Go toolchain is needed):
 
@@ -175,21 +176,40 @@ separate documentation and repository automation workflows as needed:
 | Issue forms, PR template or label configuration | Workflow lint, contribution/metadata tests and CI routing tests |
 | Documentation workflow | Documentation and automation checks |
 | Release tools or release workflows | Automation checks plus offline GoReleaser/release tests |
-| Go source | All module checks, both Lambda architectures, runtime simulations and documentation |
-| Runtime scripts, fixtures or TypeScript reference | Go/module and runtime checks |
-| Dependencies, release plans, module manifest, CI routing, shared actions or unknown paths | All relevant suites; unknown paths select everything |
+| Go production source or a module's `go.mod`/`go.sum` | Changed modules and transitive consumers of their current local versions; Go source also checks documentation |
+| Go tests or module `testdata` | Owning modules; production consumers do not import these test files |
+| Parameters, Idempotency or shared DynamoDB changes | Affected module checks plus the dedicated DynamoDB Local suite |
+| DynamoDB Local tests or runner | Integration module checks and DynamoDB Local; no unrelated runtime simulation |
+| Runtime scripts, fixtures or TypeScript reference | Integration module checks and runtime simulation |
+| Release plans, module manifest, shared workspace/build tools, CI routing, shared actions or unknown paths | Full regression: all modules, both architectures, runtime, DynamoDB Local, documentation and automation/release checks |
 
 Mixed changes select the union. Shared documentation/Python dependency changes
 also run automation/release tests. **Run workflow** on CI runs every suite.
 No workflow-level path filter can leave a required check pending.
 
+Module ownership uses the longest manifest-directory match, so
+`eventhandler/http/metrics` is distinct from `eventhandler/http`. Dependency
+expansion follows current manifest versions, matching the packaged checker;
+older pinned releases use their published contents. The selection job lists
+the chosen modules and suites in its summary. Deleted and renamed paths take
+part in the same selection, including both sides of a rename.
+
+The module job invokes `tools/modules.py check --only DIRECTORY` for each selected
+module and verifies tests, vet, tidy metadata and independent public consumers
+with `GOWORK=off`. License checks remain repository-wide. Full runs omit
+`--only` and additionally produce both Lambda architecture artifacts. Runtime
+simulation and DynamoDB Local use separate selection flags. A DynamoDB-related
+production change includes consumers but does not run the unrelated complete
+Lambda simulation; that simulation runs for runtime inputs and full regression.
+
 The main ruleset requires **PR contribution policy** and **CI gate**. The gate
 always runs and fails if classification fails, outputs are missing, or any
 selected suite fails, is cancelled, or is unexpectedly skipped. Only suites
 explicitly excluded by classification may be skipped. Release publication
-additionally requires actual module, runtime, documentation and release-tooling
-success on the preparation PR and exact main commit; a skipped check cannot
-authorize publication.
+additionally requires **Full regression** and actual module, runtime, DynamoDB
+Local, documentation and release-tooling success on the preparation PR and
+exact main commit. The full marker runs only for complete regression and depends
+on the successful gate; a scoped run or skipped check cannot authorize publication.
 
 For behavior involving the Lambda runtime, use the maintained
 [local Docker integration runner](LOCAL_INTEGRATION.md). It includes the module

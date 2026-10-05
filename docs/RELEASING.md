@@ -262,6 +262,12 @@ tag/Release conflicts. Preflight writes local artifacts only, including a
 nonpublishing GoReleaser run for every selected module. Publication is serialized
 and an active run is not canceled by a newer request.
 
+Release preparation changes select complete CI automatically. Publication
+requires **Full regression**, **DynamoDB Local**, module/architecture checks,
+runtime simulation, documentation and release-tooling success on both the
+preparation PR and exact main commit. Ordinary PRs use affected-module checks;
+a green scoped gate or a skipped full-regression marker cannot publish a release.
+
 For each module, publication creates a tag at the selected SHA and uses
 GoReleaser to create its draft GitHub Release with the reviewed notes. After a
 real public consumer passes, a second GoReleaser invocation publishes that same

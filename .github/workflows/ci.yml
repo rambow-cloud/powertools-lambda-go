@@ -28,6 +28,10 @@ jobs:
       docs: ${{ steps.changes.outputs.docs }}
       automation: ${{ steps.changes.outputs.automation }}
       release: ${{ steps.changes.outputs.release }}
+      modules: ${{ steps.changes.outputs.modules }}
+      runtime: ${{ steps.changes.outputs.runtime }}
+      dynamodb: ${{ steps.changes.outputs.dynamodb }}
+      full: ${{ steps.changes.outputs.full }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -76,20 +80,46 @@ jobs:
       - name: Check module licenses and notices
         run: uv run --no-project python tools/licenses.py --check
       - name: Test, vet, tidy-check, and verify independent consumers
-        run: uv run --no-project python tools/modules.py check
+        env:
+          CI_MODULES: ${{ needs.changes.outputs.modules }}
+          CI_FULL: ${{ needs.changes.outputs.full }}
+        run: |
+          uv run --no-project python - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+          import subprocess
+
+          modules = json.loads(os.environ['CI_MODULES'])
+          known = {item['directory'] for item in json.loads(Path('tools/modules.json').read_text())['modules']}
+          if not isinstance(modules, list) or not modules or any(not isinstance(item, str) or item not in known for item in modules):
+              raise ValueError('Expected a nonempty list of known modules')
+          full = os.environ['CI_FULL']
+          if full not in ('true', 'false'):
+              raise ValueError('Missing or invalid full-regression selection')
+          command = ['uv', 'run', '--no-project', 'python', 'tools/modules.py', 'check']
+          if full == 'false':
+              for directory in modules:
+                  command.extend(['--only', directory])
+          subprocess.run(command, check=True)
+          PY
       - name: Cross-compile Lambda for x86_64
+        if: needs.changes.outputs.full == 'true'
         run: go build -trimpath -tags lambda.norpc -o dist/amd64/bootstrap ./examples/basic
         env:
           GOOS: linux
           GOARCH: amd64
       - name: Cross-compile Lambda for arm64
+        if: needs.changes.outputs.full == 'true'
         run: go build -trimpath -tags lambda.norpc -o dist/arm64/bootstrap ./examples/basic
         env:
           GOOS: linux
           GOARCH: arm64
       - name: Validate static ELF binaries and package executable bootstrap ZIPs
+        if: needs.changes.outputs.full == 'true'
         run: go run ./tools/package
       - name: Upload Lambda example artifacts
+        if: needs.changes.outputs.full == 'true'
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: lambda-examples-${{ github.sha }}
@@ -108,7 +138,8 @@ jobs:
 
   runtime:
     name: Runtime simulation
-    needs: test
+    needs: [changes, test]
+    if: needs.changes.outputs.runtime == 'true'
     runs-on: ubuntu-24.04
     timeout-minutes: 45
     env:
@@ -168,10 +199,43 @@ jobs:
           if-no-files-found: warn
           retention-days: 7
 
+  dynamodb:
+    name: DynamoDB Local
+    needs: changes
+    if: needs.changes.outputs.dynamodb == 'true'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
+        with:
+          go-version-file: go.mod
+          cache-dependency-path: '**/go.sum'
+      - uses: astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7 # v10.2.0
+        with:
+          python-version: '3.14'
+          enable-cache: false
+      - name: Test service evidence safeguards
+        run: uv run --no-project python integration/local/test_dynamodb_run.py
+      - name: Run real stateful adapter acceptance on the pinned local service
+        run: uv run --no-project python integration/local/dynamodb_run.py
+      - name: Ensure service tests preserve checked-in acceptance history
+        run: git diff --exit-code
+      - name: Upload service acceptance and diagnostics
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: dynamodb-local-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: dist/service-acceptance/*
+          if-no-files-found: warn
+          retention-days: 7
+
   gate:
     name: CI gate
     if: always()
-    needs: [changes, test, runtime, docs, automation]
+    needs: [changes, test, runtime, dynamodb, docs, automation]
     runs-on: ubuntu-24.04
     timeout-minutes: 5
     steps:
@@ -187,12 +251,21 @@ jobs:
               if needs['changes']['result'] != 'success':
                   raise ValueError('Change selection did not succeed')
               selected = needs['changes']['outputs']
-              for suite in ('go', 'docs', 'automation', 'release'):
+              for suite in ('go', 'docs', 'automation', 'release', 'runtime', 'dynamodb', 'full'):
                   if selected.get(suite) not in ('true', 'false'):
                       raise ValueError(f'Missing or invalid selection: {suite}')
               if selected['release'] == 'true' and selected['automation'] != 'true':
                   raise ValueError('Release checks require the automation suite')
-              for job, suite in (('test', 'go'), ('runtime', 'go'), ('docs', 'docs'), ('automation', 'automation')):
+              modules = json.loads(selected.get('modules', 'null'))
+              if not isinstance(modules, list) or any(not isinstance(item, str) or not item for item in modules) or len(modules) != len(set(modules)):
+                  raise ValueError('Missing or invalid module selection')
+              if bool(modules) != (selected['go'] == 'true'):
+                  raise ValueError('Go checks require a consistent module selection')
+              if any(selected[suite] == 'true' for suite in ('runtime', 'dynamodb')) and selected['go'] != 'true':
+                  raise ValueError('Service/runtime checks require Go checks')
+              if selected['full'] == 'true' and any(selected[suite] != 'true' for suite in ('go', 'docs', 'automation', 'release', 'runtime', 'dynamodb')):
+                  raise ValueError('Full regression requires every suite')
+              for job, suite in (('test', 'go'), ('runtime', 'runtime'), ('dynamodb', 'dynamodb'), ('docs', 'docs'), ('automation', 'automation')):
                   expected = 'success' if selected[suite] == 'true' else 'skipped'
                   if needs[job]['result'] != expected:
                       raise ValueError(f'{job}: expected {expected}, got {needs[job]["result"]}')
@@ -200,4 +273,23 @@ jobs:
 
           if __name__ == '__main__':
               validate(json.loads(os.environ['CI_NEEDS']))
+          PY
+
+  full:
+    name: Full regression
+    if: always() && needs.changes.outputs.full == 'true'
+    needs: [changes, gate]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - name: Record completed full regression for release publication
+        env:
+          CHANGE_RESULT: ${{ needs.changes.result }}
+          GATE_RESULT: ${{ needs.gate.result }}
+        run: |
+          python3 - <<'PY'
+          import os
+          if os.environ['CHANGE_RESULT'] != 'success' or os.environ['GATE_RESULT'] != 'success':
+              raise ValueError('Full regression has not passed')
+          print('All modules, architectures, runtime, local service, documentation and release tooling passed.')
           PY

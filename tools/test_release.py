@@ -357,6 +357,7 @@ class PublicationTests(unittest.TestCase):
             release.check_runs(api, B, ["Build documentation"])
 
     def test_green_aggregate_does_not_authorize_skipped_release_checks(self):
+        self.assertTrue({"Full regression", "DynamoDB Local"} <= set(release.MAIN_CHECKS))
         for skipped in release.MAIN_CHECKS:
             checks = [{"name": name, "app": {"slug": "github-actions"}, "id": number,
                        "status": "completed", "conclusion": "skipped" if name == skipped else "success"}
