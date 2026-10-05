@@ -14,7 +14,7 @@ Build the complete example at `./examples/appsyncevents` with `CGO_ENABLED=0`. I
 
 ## Input and output
 
-For the publish input below, the resolver returns `{"events":[{"id":"e1","payload":{"id":"ORD-123"}}]}`. Each ID is preserved. An individual callback error produces that item's `error` instead of its payload. A private subscription without an identity raises `UnauthorizedException`; it is not a successful null response. The example does not write successful application logs. Large-payload warnings use the diagnostic sink and do not truncate output.
+For the publish input below, the resolver returns `{"events":[{"id":"e1","payload":{"id":"ORD-123"}}]}`. Each ID is preserved. An ordinary individual callback error produces that item's `error` instead of its payload. A private subscription without an identity raises `UnauthorizedException`; it is not a successful null response. The example does not write successful application logs. Large-payload warnings use the diagnostic sink and do not truncate output.
 
 ~~~json
 {
@@ -106,7 +106,9 @@ An unmatched publish returns the original events, including extra message proper
 
 ## Errors, context and diagnostics
 
-Ordinary handler errors become `Error - message`; NamedError controls the name. Individual publish failures become `{id, error}` items, including UnauthorizedError. Aggregate/subscription UnauthorizedError propagates to the Lambda caller unchanged; ordinary aggregate/subscription errors become a top-level error envelope. The concrete type is UnauthorizedException, retaining the Go Lambda SDK's reflected errorType; UnauthorizedError is an alias. Go error unwrapping is supported for authorization and error names. Non-error panics in business callbacks map to the reference's unknown-error message. Diagnostic callback panics are rethrown on the resolving goroutine after all individual workers finish, so callers can recover without an unhandled worker panic.
+Ordinary handler errors become `Error - message`; NamedError controls the name. Ordinary individual publish failures become `{id, error}` items; ordinary aggregate/subscription errors become a top-level error envelope. UnauthorizedError propagates to the Lambda caller unchanged in all publication modes and subscriptions, including wrapped errors and errors raised by business callback panics. Individual publication waits for every worker before returning an authorization error with no partial response; when several items deny authorization, it returns the first denial in input order. The concrete type is UnauthorizedException, retaining the Go Lambda SDK's reflected errorType; UnauthorizedError is an alias. Go error unwrapping is supported for authorization and error names. Non-error panics in business callbacks map to the reference's unknown-error message. Diagnostic callback panics are rethrown on the resolving goroutine after all individual workers finish, so callers can recover without an unhandled worker panic.
+
+This intentionally corrects the non-aggregate authorization behavior in the pinned TypeScript v2.35.0 reference. The original reference fixture remains intact; its successful per-item authorization envelope is explicitly checked against the corrected invocation-error expectation. Ordinary error envelopes and empty-publication responses retain their original expectations.
 
 The original context reaches each handler and resolution diagnostic, preserving Lambda request identity, cancellation, Logger invocation state and OTel spans. Cancellation is cooperative: handlers inspect context as they would in ordinary Go code. No new invocation identity or tracer backend is created.
 

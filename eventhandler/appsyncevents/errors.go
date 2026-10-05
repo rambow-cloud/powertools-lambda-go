@@ -13,8 +13,7 @@ func (e *NamedError) Unwrap() error     { return e.Cause }
 func (e *NamedError) ErrorName() string { return e.Name }
 
 // UnauthorizedException preserves the Go Lambda SDK's reflected errorType as well
-// as the reference response name. Aggregate/subscription handlers propagate it;
-// individual publication formats it in that item's error response.
+// as the reference response name. All publish and subscribe handlers propagate it.
 type UnauthorizedException struct {
 	Message string
 	Cause   error
