@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"io"
+	"mime"
 	nethttp "net/http"
 	"strings"
 
@@ -51,7 +52,9 @@ func extractValidationBody(body io.ReadCloser, headers nethttp.Header, inbound b
 		return nil, err
 	}
 	text := strings.TrimPrefix(commons.DecodeUTF8(data), "\ufeff")
-	if strings.Contains(headers.Get("Content-Type"), "application/json") {
+	media, _, mediaErr := mime.ParseMediaType(headers.Get("Content-Type"))
+	_, subtype, _ := strings.Cut(media, "/")
+	if mediaErr == nil && (media == "application/json" || len(subtype) > len("+json") && strings.HasSuffix(subtype, "+json")) {
 		var result any
 		if json.Unmarshal([]byte(text), &result) != nil {
 			return nil, validationError(inbound, true, []ValidationIssue{})

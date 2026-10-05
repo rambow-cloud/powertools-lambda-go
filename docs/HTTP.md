@@ -125,6 +125,8 @@ Binary results, gzip/deflate encoding and image/audio/video content types select
 
 Request checks run in body/header/path/query order before the handler. Issues aggregate with the field name prefixed to their paths. Response checks run after the inner middleware/handler. JSON parse errors produce the reference validation response. Absent response bodies skip body checks. Transformed values live in `request.Valid`; requests and responses are not rewritten. Query validation uses the final value of a repeated key.
 
+Body extraction parses `Content-Type` tokens case-insensitively, including valid parameters. `application/json` and nonempty structured `+json` subtypes are decoded before either body check, following [RFC 6839](https://datatracker.ietf.org/doc/html/rfc6839#section-3.1). Other or malformed media types remain text. Invalid JSON produces request status 422 or response status 500 before the body schema runs. Original wire bytes remain unchanged.
+
 The [local fixture](https://github.com/rambow-cloud/powertools-lambda-go/blob/main/integration/lambda/http.go) uses actual Parser body schemas and JSON Schema Validation for path and response checks. Applications provide these small adapters, preserving dependency isolation. Callbacks must support concurrent reuse; extraction and per-request results remain local to each invocation.
 
 ## Public contract map
