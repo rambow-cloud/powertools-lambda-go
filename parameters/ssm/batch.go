@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"sort"
+	"strconv"
 	"time"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
@@ -49,6 +50,7 @@ func (p *Provider) GetParametersByName(ctx context.Context, names map[string]Get
 		}
 		// The pinned batch implementation does not honor ForceFetch.
 		cfg.ForceFetch = false
+		cfg.RequestKey = strconv.FormatBool(*cfg.Decrypt)
 		configs[name] = cfg
 		if *cfg.Decrypt {
 			encrypted = append(encrypted, name)
@@ -118,13 +120,9 @@ func (p *Provider) GetParametersByName(ctx context.Context, names map[string]Get
 			if err != nil && strict {
 				return nil, err
 			}
-			// Preserve the reference's truthiness guard and zero-age fallback for batches.
+			// Preserve the reference's truthiness guard; nonpositive ages do not cache.
 			if truthy(value) {
-				cacheOptions := cfg.Options
-				if cacheOptions.MaxAge != nil && *cacheOptions.MaxAge == 0 {
-					cacheOptions.MaxAge = parameters.Age(5 * time.Second)
-				}
-				p.cache.Store(name, value, cacheOptions)
+				p.cache.Store(name, value, cfg.Options)
 			}
 			result[name] = value
 		}
