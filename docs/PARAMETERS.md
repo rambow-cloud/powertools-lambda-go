@@ -208,6 +208,13 @@ All five providers and the reference convenience-function families are implement
 
 ## Validation
 
+Service tests use separate layers. Fake clients exercise provider inputs, typed
+error chains, failed-fetch recovery, cache reuse and cancellation without HTTP.
+They return synthetic SDK outputs and do not validate SDK serialization or AWS
+behavior. AppConfig fake tests additionally cover single-use token rotation,
+session expiry, unchanged values and concurrent callers. Real SDK protocol tests
+and stateful local acceptance provide the next layers.
+
 On 2026-09-14, the complete Go test suite, vet, and both Linux architecture builds passed with CGO disabled. Local Docker Lambda acceptance passed **94/94 assertions** across five invocations. All five providers ran with Logger, Metrics, and OTel Tracer. Checks include warm cache reuse, forced refresh, AppConfig token rotation/empty updates, and agent-owned caching. Containers and the internal network were removed.
 
 Commons migration validation on the same date passed the complete regression suite and **100/100 Docker assertions**, including Metadata and shared SDK marker composition. Existing Parameters cases remain in the suite. [COMMONS_REUSE.md](COMMONS_REUSE.md) records the migrations and retained provider-specific policies.
