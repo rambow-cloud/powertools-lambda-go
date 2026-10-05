@@ -92,7 +92,7 @@ func isV1(event wireObject) bool {
 	_, path := textValue(event["path"])
 	_, resource := textValue(event["resource"])
 	_, body := textValue(event["body"])
-	return method && path && resource && (len(event["headers"]) == 0 || optionalObject(event["headers"], true)) && (len(event["multiValueHeaders"]) == 0 || optionalObject(event["multiValueHeaders"], true)) && object(event["requestContext"]) != nil && isBool(event["isBase64Encoded"]) && (null(event["body"]) || body) && optionalObject(event["pathParameters"], true) && optionalObject(event["queryStringParameters"], true) && optionalObject(event["multiValueQueryStringParameters"], true) && optionalObject(event["stageVariables"], true)
+	return method && path && resource && (len(event["headers"]) == 0 || optionalObject(event["headers"], true)) && (len(event["multiValueHeaders"]) == 0 || optionalObject(event["multiValueHeaders"], true)) && object(event["requestContext"]) != nil && isBool(event["isBase64Encoded"]) && (len(event["body"]) == 0 || null(event["body"]) || body) && optionalObject(event["pathParameters"], true) && optionalObject(event["queryStringParameters"], true) && optionalObject(event["multiValueQueryStringParameters"], true) && optionalObject(event["stageVariables"], true)
 }
 func isBool(raw json.RawMessage) bool { return string(raw) == "true" || string(raw) == "false" }
 func IsHTTPMethod(method string) bool {
@@ -297,16 +297,13 @@ func eventRequest(ctx context.Context, input any) (*nethttp.Request, ResponseTyp
 		}
 	}
 	body, hasBody := textValue(event["body"])
-	if kind == ALB && (method == "GET" || method == "HEAD") {
-		hasBody = false
-	}
 	// Fetch normalizes these six methods, but preserves PATCH's original casing.
 	upper := strings.ToUpper(method)
 	if upper != "PATCH" {
 		method = upper
 	}
-	if hasBody && (method == "GET" || method == "HEAD") {
-		return nil, kind, raw, fmt.Errorf("Request with GET/HEAD method cannot have body.")
+	if method == "GET" || method == "HEAD" {
+		hasBody = false
 	}
 	if hasBody && string(event["isBase64Encoded"]) == "true" {
 		body = commons.DecodeUTF8(commons.DecodeBase64Buffer(body))

@@ -203,7 +203,21 @@ func TestHTTPReference(t *testing.T) {
 	if err := json.Unmarshal(raw, &corpus); err != nil {
 		t.Fatal(err)
 	}
+	var albGetExpected json.RawMessage
 	for _, item := range corpus.Cases {
+		if item.Name == "alb-method-GET" {
+			albGetExpected = item.Expected.Response
+		}
+	}
+	if len(albGetExpected) == 0 {
+		t.Fatal("missing uppercase ALB GET baseline")
+	}
+	for _, item := range corpus.Cases {
+		// Issue #67: lowercase GET normalizes before dropping its request body.
+		if item.Name == "alb-method-get" {
+			item.Expected.Error, item.Expected.Message = "", ""
+			item.Expected.Response = albGetExpected
+		}
 		t.Run(item.Name, func(t *testing.T) {
 			warnings := []string{}
 			options := Options{Prefix: item.Prefix, Diagnostic: func(level, message string) {
