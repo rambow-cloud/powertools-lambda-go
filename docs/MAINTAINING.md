@@ -62,8 +62,9 @@ contribution policy** and selecting GitHub Actions as the expected source.
 Preserve strict branch freshness, review rules and the empty bypass list. Apply
 the migration before merging the rollout PR. Follow with a metadata/documentation
 PR to verify successful selected jobs, skipped Go/runtime jobs and a green gate.
-The publication tool additionally requires actual module, runtime, documentation
-and release-tooling success on the preparation PR and exact main commit;
+The publication tool additionally requires **Full regression** and actual module,
+runtime, DynamoDB Local, documentation and release-tooling success on the
+preparation PR and exact main commit;
 missing, pending, failed, or skipped checks cannot publish.
 
 Use issue comments to record accepted scope and remaining questions. Optional
