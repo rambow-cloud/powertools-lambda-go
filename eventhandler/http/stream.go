@@ -22,20 +22,16 @@ func (r *Router) ResolveStream(ctx context.Context, event any, destination io.Wr
 	return r.resolve(ctx, event, true, func(request *RequestContext) error {
 		response := request.Response
 		headers := ProxyResponse{Headers: map[string]string{}}
-		if request.ResponseType == APIGatewayV1 {
-			proxyHeaders(response.Header, APIGatewayV1, &headers)
-		} else {
-			for name, values := range response.Header {
-				name = strings.ToLower(name)
-				if name == "set-cookie" && len(values) > 0 {
-					headers.Headers[name] = values[len(values)-1]
-				} else {
-					headers.Headers[name] = strings.Join(values, ", ")
-				}
+		for name, values := range response.Header {
+			name = strings.ToLower(name)
+			if name == "set-cookie" && len(values) > 0 {
+				headers.Headers[name] = values[len(values)-1]
+			} else {
+				headers.Headers[name] = strings.Join(values, ", ")
 			}
 		}
-		// The reference drops v1 multiValueHeaders, but uses v2 header
-		// conversion (including the last Set-Cookie entry) for ALB streaming.
+		// Headers-only metadata joins non-cookie values for every adapter.
+		// The existing streaming contract retains only the final cookie.
 		metadata, err := jsonBytes(struct {
 			StatusCode int               `json:"statusCode"`
 			Headers    map[string]string `json:"headers"`

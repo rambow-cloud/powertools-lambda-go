@@ -64,9 +64,10 @@ func proxyResult(raw []byte) (Response, bool, error) {
 			if err != nil {
 				return err
 			}
-			if err := setHeader(result.MultiValueHeaders, name, value, true); err != nil {
+			if err := validateHeader(name, value); err != nil {
 				return err
 			}
+			result.MultiValueHeaders.Add(name, value)
 		}
 		return nil
 	})

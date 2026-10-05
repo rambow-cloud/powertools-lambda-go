@@ -121,7 +121,7 @@ Binary bytes/readers (including `Response.Body`), buffered native bodies contain
 
 `RequestContext.IsBase64Encoded` controls final buffered output. An explicit false survives binary inference; middleware can override selection after the handler. `WebResponseToProxyResult` continues to follow its explicit encoding argument. Text output still applies UTF-8 replacement and BOM removal when selected.
 
-Cookie and allowlisted multi-value header splitting follows the reference, including comma splitting of cookie Expires values.
+Buffered responses preserve each `Set-Cookie` line verbatim, including commas inside `Expires`. V2 places these values in `cookies`; v1/ALB retain repeated values in `multiValueHeaders`, including arbitrary custom headers. Single `Date`/`Last-Modified` values remain scalar. Known non-cookie list headers still expand comma-separated single lines for v1/ALB. These correct issue #65; original fixtures retain four cookie and two custom-header expectation corrections. The [headers-only streaming contract](HTTP_STREAMING.md) joins non-cookie values and retains only the final cookie.
 
 `NewHTTPError` maps nine ordinary built-in status codes to reference error names. `HTTPError` exposes `Type`, `Details` and unwrapped `Cause`; validation uses its own names and 422/500 statuses. `OnError` registers an exact name, `HttpError`, or `Error` fallback. `NotFound` and `MethodNotAllowed` are conveniences. Unhandled errors return the reference 500 shape. Development mode reuses Commons environment parsing with an optional `Options.Debug` override; Go stack text differs from JavaScript. `Options.Diagnostic` receives warnings/debug messages. Default console/ALC logging and exhaustive error inheritance/recursion remain open.
 

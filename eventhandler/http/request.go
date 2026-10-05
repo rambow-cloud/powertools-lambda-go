@@ -137,9 +137,15 @@ func headerValue(raw json.RawMessage) (string, error) {
 	}
 	return "", fmt.Errorf("header value must be a scalar")
 }
-func setHeader(headers nethttp.Header, name, value string, appendValue bool) error {
+func validateHeader(name, value string) error {
 	if name == "" || strings.ContainsAny(name, " ()<>@,;:\\\"/[]?={}\t\r\n") || strings.ContainsAny(value, "\r\n\x00") {
 		return fmt.Errorf("invalid HTTP header")
+	}
+	return nil
+}
+func setHeader(headers nethttp.Header, name, value string, appendValue bool) error {
+	if err := validateHeader(name, value); err != nil {
+		return err
 	}
 	if appendValue && headers.Get(name) != "" {
 		value = headers.Get(name) + ", " + value

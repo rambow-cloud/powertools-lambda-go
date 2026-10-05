@@ -300,6 +300,30 @@ func TestHTTPReference(t *testing.T) {
 					response["statusDescription"] = "500 Internal Server Error"
 				}
 			}
+			// Issue #65: a Set-Cookie field is one value, including Expires.
+			switch item.Name {
+			case "v1-proxy-47", "v2-proxy-134", "alb-proxy-221", "url-proxy-308":
+				var value struct{ Headers map[string]string }
+				if err := json.Unmarshal(item.Routes[0].Value, &value); err != nil {
+					t.Fatal(err)
+				}
+				cookie := value.Headers["set-cookie"]
+				response := want.(map[string]any)
+				if item.Name == "v2-proxy-134" || item.Name == "url-proxy-308" {
+					response["cookies"] = []any{cookie}
+				} else {
+					response["headers"].(map[string]any)["set-cookie"] = cookie
+					delete(response["multiValueHeaders"].(map[string]any), "set-cookie")
+				}
+			case "v1-proxy-46", "alb-proxy-220":
+				var value struct{ MultiValueHeaders map[string]any }
+				if err := json.Unmarshal(item.Routes[0].Value, &value); err != nil {
+					t.Fatal(err)
+				}
+				response := want.(map[string]any)
+				delete(response["headers"].(map[string]any), "x-values")
+				response["multiValueHeaders"].(map[string]any)["x-values"] = value.MultiValueHeaders["x-values"]
+			}
 			if !reflect.DeepEqual(got, want) {
 				t.Fatalf("response: %s; want %s", actual, item.Expected.Response)
 			}

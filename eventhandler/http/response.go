@@ -116,9 +116,6 @@ func handlerResponse(value any, previous nethttp.Header, fallback int, streaming
 			statusText = value.Status
 		}
 		for name, values := range value.Header {
-			if previous != nil && strings.EqualFold(name, "Set-Cookie") && len(values) > 1 {
-				values = values[len(values)-1:]
-			}
 			headers[nethttp.CanonicalHeaderKey(name)] = append([]string(nil), values...)
 		}
 		if value.Body != nil {
@@ -269,21 +266,24 @@ func proxyHeaders(headers nethttp.Header, kind ResponseType, result *ProxyRespon
 	const lists = " accept accept-encoding accept-language cache-control vary connection allow x-forwarded-for te expect transfer-encoding content-encoding content-language "
 	for name, values := range headers {
 		name = strings.ToLower(name)
+		if name == "set-cookie" && kind == APIGatewayV2 {
+			result.Cookies = append(result.Cookies, values...)
+			continue
+		}
 		value := strings.Join(values, ", ")
-		if name == "set-cookie" || kind != APIGatewayV2 && (strings.Contains(lists, " "+name+" ") || strings.HasPrefix(name, "access-control-")) {
-			parts := strings.Split(value, ",")
-			for i := range parts {
-				parts[i] = strings.TrimLeft(parts[i], " \t")
-			}
-			if name == "set-cookie" && kind == APIGatewayV2 {
-				result.Cookies = append(result.Cookies, parts...)
-				continue
+		if kind != APIGatewayV2 {
+			parts := values
+			if len(values) == 1 && name != "set-cookie" && (strings.Contains(lists, " "+name+" ") || strings.HasPrefix(name, "access-control-")) {
+				parts = strings.Split(value, ",")
+				for i := range parts {
+					parts[i] = strings.TrimLeft(parts[i], " \t")
+				}
 			}
 			if len(parts) > 1 {
 				if result.MultiValueHeaders == nil {
 					result.MultiValueHeaders = map[string][]string{}
 				}
-				result.MultiValueHeaders[name] = parts
+				result.MultiValueHeaders[name] = append([]string(nil), parts...)
 				continue
 			}
 		}
