@@ -1,4 +1,3 @@
-// Package http routes native Lambda HTTP events with isolated invocation state.
 package http
 
 import (

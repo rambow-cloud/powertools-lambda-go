@@ -1,4 +1,3 @@
-// Package commons provides shared Powertools contracts without AWS SDK dependencies.
 package commons
 
 import (

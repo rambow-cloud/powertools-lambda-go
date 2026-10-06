@@ -1,4 +1,3 @@
-// Package idempotency prevents repeated execution using an atomic persistence store.
 package idempotency
 
 import (

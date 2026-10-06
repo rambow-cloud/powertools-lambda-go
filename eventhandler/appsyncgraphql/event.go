@@ -1,4 +1,3 @@
-// Package appsyncgraphql routes native Lambda AppSync GraphQL invocations.
 package appsyncgraphql
 
 import "context"

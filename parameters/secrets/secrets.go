@@ -1,4 +1,3 @@
-// Package secrets retrieves AWS Secrets Manager values with an in-memory cache.
 package secrets
 
 import (

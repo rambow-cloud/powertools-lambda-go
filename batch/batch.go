@@ -1,4 +1,3 @@
-// Package batch processes Lambda record batches and reports partial failures.
 package batch
 
 import (

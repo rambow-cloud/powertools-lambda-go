@@ -1,4 +1,3 @@
-// Package metrics provides optional HTTP middleware for CloudWatch EMF metrics.
 package metrics
 
 import (

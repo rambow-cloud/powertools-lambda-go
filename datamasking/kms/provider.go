@@ -1,5 +1,3 @@
-// Package kms implements Data Masking providers with the AWS Encryption SDK.
-// This initial provider does not implement TypeScript's data-key cache.
 package kms
 
 import (

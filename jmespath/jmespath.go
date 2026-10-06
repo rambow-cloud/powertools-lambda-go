@@ -1,4 +1,3 @@
-// Package jmespath evaluates JSON queries with optional Powertools functions.
 package jmespath
 
 import (

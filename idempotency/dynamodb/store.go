@@ -1,4 +1,3 @@
-// Package dynamodb implements the reference DynamoDB idempotency protocol.
 package dynamodb
 
 import (

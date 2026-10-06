@@ -1,4 +1,3 @@
-// Package commons provides shared, SDK-independent utility primitives.
 package commons
 
 import (

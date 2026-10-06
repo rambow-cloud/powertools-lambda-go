@@ -1,4 +1,3 @@
-// Package datamasking erases selected data and composes encryption providers.
 package datamasking
 
 import (

@@ -1,4 +1,3 @@
-// Package bedrock handles Bedrock Agent function-based action-group invocations.
 package bedrock
 
 import (

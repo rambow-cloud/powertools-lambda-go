@@ -1,5 +1,3 @@
-// Package regex provides shared ECMAScript matching and string replacement.
-// It is optional: importing Commons or Data Masking alone does not load it.
 package regex
 
 import (

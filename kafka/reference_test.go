@@ -4,7 +4,6 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
-	"fmt"
 	"math"
 	"os"
 	"reflect"
@@ -174,11 +173,4 @@ func TestTypeScriptReference(t *testing.T) {
 		})
 	}
 	t.Logf("Verified %d actual TypeScript scenarios", len(corpus.Cases))
-}
-
-func ExampleWrapHandler() {
-	handler := WrapHandler(New(Config{}), func(ctx context.Context, event *ConsumerRecords) (any, error) { return event.Records[0].Value(ctx) })
-	value, err := handler(context.Background(), json.RawMessage(`{"records":{"orders-0":[{"value":"aGVsbG8=","headers":[]}]}}`))
-	fmt.Println(value, err)
-	// Output: hello <nil>
 }

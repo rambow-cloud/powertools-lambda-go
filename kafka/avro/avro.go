@@ -1,4 +1,3 @@
-// Package avro adapts Avro binary values to the lazy Kafka consumer.
 package avro
 
 import (

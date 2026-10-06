@@ -1,4 +1,3 @@
-// Package tracer provides optional OpenTelemetry route middleware.
 package tracer
 
 import (

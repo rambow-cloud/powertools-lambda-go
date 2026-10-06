@@ -118,6 +118,40 @@ These commands require a published repository and tags. The selected repository 
 
 Splitting modules isolates declared dependency graphs; it does not mean every utility is dependency-free. Logger retains the OTel trace API for correlation, Tracer retains its OTel and AWS instrumentation dependencies, and Parameters retains its SDK providers. The legacy X-Ray SDK is confined to the frozen adapter and its own regression tests. The current integration module no longer depends on it. See [XRAY_MIGRATION.md](XRAY_MIGRATION.md).
 
+## Package documentation on pkg.go.dev
+
+Each maintained public package keeps its overview in `doc.go` and public usage
+examples in an external-package `example_test.go`. Use Go doc comments for API
+links and headings so both `go doc` and pkg.go.dev can display them. Examples with
+`Output` comments run during module tests; examples requiring AWS, an Agent or
+shared persistence compile without running when they omit `Output`. Keep those
+requirements explicit and use synthetic inputs. The frozen `tracer/xray` adapter
+retains its deprecation notice and existing regression tests.
+
+pkg.go.dev reads published module source, including package comments, examples
+and license files. Merging documentation changes does not update an existing
+version's immutable documentation. Publish through the normal
+[release process](RELEASING.md), then verify the version selected in the browser.
+Nested modules are indexed separately; the root module's importable public
+package is `commons`. See the official [Go doc comment guide](https://go.dev/doc/comment)
+and [module publication guide](https://go.dev/doc/modules/developing).
+
+For a published version containing the changes, open these pages and select that
+version from the version selector:
+
+- [Commons](https://pkg.go.dev/github.com/rambow-cloud/powertools-lambda-go/commons):
+  check the Overview and the `NewLRUCache` example.
+- [Logger](https://pkg.go.dev/github.com/rambow-cloud/powertools-lambda-go/logger):
+  check invocation lifecycle guidance and the `New` example.
+- [HTTP Metrics](https://pkg.go.dev/github.com/rambow-cloud/powertools-lambda-go/eventhandler/http/metrics):
+  check request-scope publication guidance and the `New` middleware example.
+- [KMS provider](https://pkg.go.dev/github.com/rambow-cloud/powertools-lambda-go/datamasking/kms):
+  check the Encryption SDK limitations and compile-only `New` example.
+
+If a published module has not yet been indexed, use pkg.go.dev's request action
+for that module/version. Confirm its license, Overview, API links and Examples
+after processing. Do not expect unpublished branch changes on the public site.
+
 ## Scoped verification
 
 After a relevant source change, `$env:CGO_ENABLED='0'; uv run python tools/modules.py check --only eventhandler/appsyncevents` in PowerShell rebuilds proxy artifacts and runs the same archive tests, vet, tidy and independent-consumer checks for the selected module. Repeat --only for additional affected modules. Dependencies are packaged but are not claimed as tested by that scoped run. The result is saved separately as MODULE_ACCEPTANCE_SCOPED.json and never replaces MODULE_ACCEPTANCE.json. Full-workspace checks remain the default, including workspace/manifest and dependency-isolation validation.

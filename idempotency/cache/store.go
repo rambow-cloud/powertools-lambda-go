@@ -1,4 +1,3 @@
-// Package cache provides Redis/Valkey persistence for idempotent operations.
 package cache
 
 import (

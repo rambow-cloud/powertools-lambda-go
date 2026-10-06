@@ -1,4 +1,3 @@
-// Package dynamodb adapts shared DynamoDB conversion to AWS SDK types.
 package dynamodb
 
 import (

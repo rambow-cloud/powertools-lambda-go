@@ -1,4 +1,3 @@
-// Package metadata retrieves Lambda execution-environment metadata on demand.
 package metadata
 
 import (

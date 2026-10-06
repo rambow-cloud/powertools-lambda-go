@@ -1,4 +1,3 @@
-// Package protobuf adapts caller-supplied Protobuf message decoders to Kafka.
 package protobuf
 
 import (

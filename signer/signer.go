@@ -1,4 +1,3 @@
-// Package signer signs outbound HTTP requests using AWS Signature Version 4.
 package signer
 
 import (
