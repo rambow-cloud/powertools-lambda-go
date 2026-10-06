@@ -35,60 +35,106 @@ func TestReference(t *testing.T) {
 		t.Fatalf("reference cases: %d", len(fixture.Cases))
 	}
 	for _, item := range fixture.Cases {
-		t.Run(item.Name, func(t *testing.T) {
-			var output bytes.Buffer
-			m := newMetrics(t, &output)
-			app := httpapi.New(httpapi.Options{})
-			app.Use(httpmetrics.New(m), httpapi.CORS(httpapi.CORSOptions{}))
-			if err := app.Get("/items/:id", func(r *httpapi.RequestContext) (any, error) {
-				switch item.Action {
-				case "http-error":
-					return nil, httpapi.NewHTTPError(400, "bad input")
-				case "error":
-					return nil, errors.New("business failure")
-				case "business":
-					bound := m.WithContext(r.Context)
-					if err := bound.AddMetric("Orders", powermetrics.Count, 2); err != nil {
-						return nil, err
+		for _, capture := range []bool{false, true} {
+			name := item.Name + "/default"
+			if capture {
+				name = item.Name + "/request-count"
+			}
+			t.Run(name, func(t *testing.T) {
+				var output bytes.Buffer
+				m := newMetrics(t, &output)
+				app := httpapi.New(httpapi.Options{})
+				middleware := httpmetrics.New(m)
+				if capture {
+					middleware = httpmetrics.New(m, httpmetrics.Options{CaptureRequestCount: true})
+				}
+				app.Use(middleware, httpapi.CORS(httpapi.CORSOptions{}))
+				if err := app.Get("/items/:id", func(r *httpapi.RequestContext) (any, error) {
+					switch item.Action {
+					case "http-error":
+						return nil, httpapi.NewHTTPError(400, "bad input")
+					case "error":
+						return nil, errors.New("business failure")
+					case "business":
+						bound := m.WithContext(r.Context)
+						if err := bound.AddMetric("Orders", powermetrics.Count, 2); err != nil {
+							return nil, err
+						}
+						if err := bound.AddMetadata("custom", "value"); err != nil {
+							return nil, err
+						}
 					}
-					if err := bound.AddMetadata("custom", "value"); err != nil {
-						return nil, err
+					status := map[string]int{"created": 201, "redirect": 302, "client": 422, "server": 503}[item.Action]
+					if status == 0 {
+						status = 200
+					}
+					return httpapi.Response{StatusCode: status, Body: "ok"}, nil
+				}); err != nil {
+					t.Fatal(err)
+				}
+				response, err := app.Resolve(context.Background(), item.Event)
+				if err != nil {
+					t.Fatal(err)
+				}
+				if response.StatusCode != item.Status {
+					t.Fatalf("status: got %d, want %d", response.StatusCode, item.Status)
+				}
+				documents := decodeDocuments(t, output.Bytes())
+				for _, document := range documents {
+					if capture {
+						assertRequestCount(t, document)
+						delete(document, "request")
+						for _, directive := range document["_aws"].(map[string]any)["CloudWatchMetrics"].([]any) {
+							entry := directive.(map[string]any)
+							filtered := []any{}
+							for _, metric := range entry["Metrics"].([]any) {
+								if metric.(map[string]any)["Name"] != "request" {
+									filtered = append(filtered, metric)
+								}
+							}
+							entry["Metrics"] = filtered
+						}
+					}
+					if latency, ok := document["latency"].(float64); !ok || latency < 0 {
+						t.Fatalf("latency: %v", document["latency"])
+					}
+					delete(document, "latency")
+					aws := document["_aws"].(map[string]any)
+					delete(aws, "Timestamp")
+					for _, directive := range aws["CloudWatchMetrics"].([]any) {
+						for _, keys := range directive.(map[string]any)["Dimensions"].([]any) {
+							values := keys.([]any)
+							sort.Slice(values, func(i, j int) bool { return values[i].(string) < values[j].(string) })
+						}
 					}
 				}
-				status := map[string]int{"created": 201, "redirect": 302, "client": 422, "server": 503}[item.Action]
-				if status == 0 {
-					status = 200
+				if !reflect.DeepEqual(documents, item.Documents) {
+					t.Fatalf("EMF mismatch\ngot: %#v\nwant: %#v", documents, item.Documents)
 				}
-				return httpapi.Response{StatusCode: status, Body: "ok"}, nil
-			}); err != nil {
-				t.Fatal(err)
-			}
-			response, err := app.Resolve(context.Background(), item.Event)
-			if err != nil {
-				t.Fatal(err)
-			}
-			if response.StatusCode != item.Status {
-				t.Fatalf("status: got %d, want %d", response.StatusCode, item.Status)
-			}
-			documents := decodeDocuments(t, output.Bytes())
-			for _, document := range documents {
-				if latency, ok := document["latency"].(float64); !ok || latency < 0 {
-					t.Fatalf("latency: %v", document["latency"])
-				}
-				delete(document, "latency")
-				aws := document["_aws"].(map[string]any)
-				delete(aws, "Timestamp")
-				for _, directive := range aws["CloudWatchMetrics"].([]any) {
-					for _, keys := range directive.(map[string]any)["Dimensions"].([]any) {
-						values := keys.([]any)
-						sort.Slice(values, func(i, j int) bool { return values[i].(string) < values[j].(string) })
-					}
+			})
+		}
+	}
+}
+
+func assertRequestCount(t *testing.T, document map[string]any) {
+	t.Helper()
+	if document["request"] != float64(1) {
+		t.Fatalf("request count: %v", document["request"])
+	}
+	definitions := 0
+	for _, directive := range document["_aws"].(map[string]any)["CloudWatchMetrics"].([]any) {
+		for _, value := range directive.(map[string]any)["Metrics"].([]any) {
+			metric := value.(map[string]any)
+			if metric["Name"] == "request" {
+				definitions++
+				if metric["Unit"] != "Count" {
+					t.Fatalf("request unit: %v", metric)
 				}
 			}
-			if !reflect.DeepEqual(documents, item.Documents) {
-				t.Fatalf("EMF mismatch\ngot: %#v\nwant: %#v", documents, item.Documents)
-			}
-		})
+		}
+	}
+	if definitions != 1 {
+		t.Fatalf("request definitions: %d", definitions)
 	}
 }
 

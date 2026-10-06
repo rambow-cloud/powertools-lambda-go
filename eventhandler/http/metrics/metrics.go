@@ -10,14 +10,26 @@ import (
 	powermetrics "github.com/rambow-cloud/powertools-lambda-go/metrics"
 )
 
+// Options controls optional HTTP metrics beyond the TypeScript reference contract.
+type Options struct {
+	// CaptureRequestCount emits request=1 with unit Count per middleware execution.
+	// The default emits only latency, fault and error.
+	CaptureRequestCount bool
+}
+
 // New emits latency, fault and error metrics with a bounded route dimension.
+// Options can enable an additional request counter without changing the defaults.
 // Each request owns a metric scope, including metrics added downstream using
 // m.WithContext(request.Context). It publishes before streaming body transfer,
 // matching the reference middleware. The parent scope remains unchanged.
 // Publication failures propagate as errors without discarding business errors.
-func New(m *powermetrics.Metrics) httpapi.Middleware {
+func New(m *powermetrics.Metrics, options ...Options) httpapi.Middleware {
 	if m == nil {
 		panic("HTTP metrics middleware requires a Metrics instance")
+	}
+	var opts Options
+	if len(options) > 0 {
+		opts = options[0]
 	}
 	return func(request *httpapi.RequestContext, next httpapi.Next) (err error) {
 		started := time.Now()
@@ -35,7 +47,7 @@ func New(m *powermetrics.Metrics) httpapi.Middleware {
 			}
 			// Finish must run even if a custom metric writer panics.
 			defer func() { err = combine(err, finish()) }()
-			err = combine(err, record(m.WithContext(ctx), request, status, time.Since(started)))
+			err = combine(err, record(m.WithContext(ctx), request, status, time.Since(started), opts))
 		}()
 		err = next()
 		if err == nil {
@@ -55,7 +67,7 @@ func combine(first, second error) error {
 	return errors.Join(first, second)
 }
 
-func record(m *powermetrics.Metrics, r *httpapi.RequestContext, status int, elapsed time.Duration) error {
+func record(m *powermetrics.Metrics, r *httpapi.RequestContext, status int, elapsed time.Duration, options Options) error {
 	path := r.Request.URL.EscapedPath()
 	if path == "" {
 		path = "/"
@@ -95,8 +107,15 @@ func record(m *powermetrics.Metrics, r *httpapi.RequestContext, status int, elap
 	if route == "" {
 		route = "NOT_FOUND"
 	}
-	if err := m.AddDimension("route", route); err != nil {
-		return err
+	var dimensionErr error
+	if options.CaptureRequestCount {
+		// Scope-local defaults survive automatic and single-metric publication.
+		dimensionErr = m.SetDefaultDimensions(powermetrics.Dimensions{"route": route})
+	} else {
+		dimensionErr = m.AddDimension("route", route)
+	}
+	if dimensionErr != nil {
+		return dimensionErr
 	}
 	fault, clientError := float64(0), float64(0)
 	if status >= 500 {
@@ -112,6 +131,9 @@ func record(m *powermetrics.Metrics, r *httpapi.RequestContext, status int, elap
 		if err := m.AddMetric(metric.name, metric.unit, metric.value); err != nil {
 			return err
 		}
+	}
+	if options.CaptureRequestCount {
+		return m.AddMetric("request", powermetrics.Count, 1)
 	}
 	return nil
 }

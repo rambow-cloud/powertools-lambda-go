@@ -36,6 +36,36 @@ The complete Lambda example is `examples/http/main.go`. Its outer Tracer wrapper
 - Recording/publication errors propagate. Go retains simultaneous business and metric failures with `errors.Join`; panics keep their original value. Direct `StartScope` callers must call its idempotent finish function and handle the flush error.
 - Streaming metrics measure middleware/route execution before body transfer. They do not claim full transfer latency or capture later stream failures.
 
+### Optional request count
+
+Enable an explicit request counter when application dashboards need request volume
+or a denominator for error/fault ratios:
+
+```go
+app.Use(httpmetrics.New(metric, httpmetrics.Options{CaptureRequestCount: true}))
+```
+
+The middleware adds `request=1` with unit `Count` to its existing request scope at
+completion, including HTTP errors, ordinary failures, panics and unmatched routes.
+It reuses the matched route template or `NOT_FOUND`, namespace and default
+dimensions. The route is a scope-local default when counting is enabled, so it
+survives the Metrics automatic flush limit and single-metric publication mode.
+Disabled Metrics instances publish nothing. Streaming counts middleware
+execution before body transfer; it does not count successful transfer completion.
+An outer Lambda Metrics wrapper retains its own invocation scope.
+
+Use CloudWatch `Sum` to aggregate published request samples. This is not a unique
+client-request count: Lambda retries and EMF's at-least-once delivery can repeat
+samples, while failed publication can lose them. Reserve the `request` metric and
+`route` dimension for the middleware instead of overriding them downstream. Each
+dimension combination adds a custom metric and can increase CloudWatch costs.
+
+`New(metric)` and `Options{}` retain the three-metric TypeScript v2.35.0 contract.
+Request counting is an intentional opt-in Go extension. Direct constructor calls
+remain valid; code assigning `New` to an explicitly nonvariadic function type must
+adapt to its optional `...Options` argument. HTTP core and core Metrics gain no
+dependencies or runtime changes.
+
 ## Tracer contracts and OTel mapping
 
 The source contract is the actual TypeScript v2.35.0 HTTP tracer middleware. Its SDK representation is replaced with OTel. Internal route span names retain `METHOD /escaped/path`; `http.route` carries the template separately. The outer Lambda wrapper remains the server span.
