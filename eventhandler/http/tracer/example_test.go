@@ -21,13 +21,14 @@ func ExampleNew() {
 	}
 	app := httpapi.New(httpapi.Options{})
 	app.Use(httptracer.New(t))
-	if err := app.Get("/health", func(request *httpapi.RequestContext) (any, error) {
-		return t.TraceID(request.Context) != "", nil
+	// Environment flags can disable tracing without changing the HTTP response.
+	if err := app.Get("/health", func(*httpapi.RequestContext) (any, error) {
+		return "ok", nil
 	}); err != nil {
 		panic(err)
 	}
 	event := json.RawMessage(`{"version":"2.0","routeKey":"$default","rawPath":"/health","rawQueryString":"","headers":{},"requestContext":{"http":{"method":"GET"},"domainName":"api.example.test"},"isBase64Encoded":false}`)
 	response, err := app.Resolve(context.Background(), event)
 	fmt.Println(response.StatusCode, response.Body, err)
-	// Output: 200 true <nil>
+	// Output: 200 "ok" <nil>
 }

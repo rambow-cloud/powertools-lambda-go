@@ -13,13 +13,14 @@ func ExampleNewOTelBackend() {
 	// This provider has no exporter, so the example performs no network calls.
 	provider := sdktrace.NewTracerProvider(sdktrace.WithSampler(sdktrace.AlwaysSample()))
 	defer func() { _ = provider.Shutdown(context.Background()) }()
-	t, err := tracer.New(tracer.WithServiceName("orders"),
-		tracer.WithBackend(tracer.NewOTelBackend(provider)), tracer.WithLocalTracing(true))
+	backend := tracer.NewOTelBackend(provider)
+	// Direct backend operations use the supplied provider independently of
+	// the environment flags that control a Tracer instance.
+	_, span, err := backend.Start(context.Background(), "accept-order", tracer.Internal)
 	if err != nil {
 		panic(err)
 	}
-	ctx, end := t.StartSpan(context.Background(), "accept-order")
-	fmt.Println(t.TraceID(ctx) != "")
-	end(nil)
+	fmt.Println(span.TraceID() != "")
+	span.End()
 	// Output: true
 }

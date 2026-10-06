@@ -11,7 +11,7 @@ import (
 func ExampleMetrics_Flush() {
 	var output bytes.Buffer
 	m, err := metrics.New(metrics.WithNamespace("Example/Orders"),
-		metrics.WithServiceName("orders"), metrics.WithOutput(&output))
+		metrics.WithServiceName("orders"), metrics.WithOutput(&output), metrics.WithDisabled(false))
 	if err != nil {
 		panic(err)
 	}

@@ -1,7 +1,7 @@
 // Package metrics adds CloudWatch EMF middleware to the Lambda HTTP router.
 //
 // [New] adapts a core Metrics instance to HTTP middleware. Register it with the
-// router's Use method during application setup. Route execution records request,
+// router's Use method during application setup. Route execution records
 // latency, fault and error metrics using request-scoped metric state.
 //
 // # Publication lifecycle
