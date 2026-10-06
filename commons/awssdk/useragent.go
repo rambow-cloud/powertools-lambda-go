@@ -1,4 +1,3 @@
-// Package awssdk provides opt-in AWS SDK middleware shared by Powertools adapters.
 package awssdk
 
 import (

@@ -1,4 +1,3 @@
-// Package tracer provides Lambda-aware tracing with interchangeable backends.
 package tracer
 
 import (

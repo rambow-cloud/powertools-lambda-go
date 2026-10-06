@@ -1,4 +1,3 @@
-// Package logger provides Powertools-style structured logging for Go Lambda handlers.
 package logger
 
 import (

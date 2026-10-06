@@ -1,4 +1,3 @@
-// Package validation validates Lambda inputs and outputs against JSON Schema.
 package validation
 
 import (

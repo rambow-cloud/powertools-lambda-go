@@ -1,4 +1,3 @@
-// Package ssm retrieves and writes AWS Systems Manager parameters.
 package ssm
 
 import (

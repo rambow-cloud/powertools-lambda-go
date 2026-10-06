@@ -1,4 +1,3 @@
-// Package envelopes validates Lambda envelopes and extracts typed payloads.
 package envelopes
 
 import (

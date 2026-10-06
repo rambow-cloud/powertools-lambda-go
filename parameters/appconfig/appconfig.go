@@ -1,4 +1,3 @@
-// Package appconfig retrieves configuration through the AppConfig Data API.
 package appconfig
 
 import (

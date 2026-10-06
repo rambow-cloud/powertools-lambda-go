@@ -1,4 +1,3 @@
-// Package appsyncevents routes native Lambda AppSync Events invocations.
 package appsyncevents
 
 import "context"

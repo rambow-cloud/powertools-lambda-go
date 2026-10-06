@@ -1,4 +1,3 @@
-// Package kafka provides lazy deserialization of AWS Lambda Kafka events.
 package kafka
 
 import (

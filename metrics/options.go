@@ -1,4 +1,3 @@
-// Package metrics emits CloudWatch Embedded Metric Format documents for Go Lambda.
 package metrics
 
 import (

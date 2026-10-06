@@ -1,4 +1,3 @@
-// Package schemas contains reference-derived Lambda event schemas.
 package schemas
 
 import "github.com/rambow-cloud/powertools-lambda-go/parser"

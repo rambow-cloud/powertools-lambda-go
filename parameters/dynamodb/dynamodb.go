@@ -1,4 +1,3 @@
-// Package dynamodb retrieves configuration values from a DynamoDB table.
 package dynamodb
 
 import (

@@ -1,4 +1,3 @@
-// Package parser validates and transforms Lambda payloads using typed schemas.
 package parser
 
 import (

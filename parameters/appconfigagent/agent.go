@@ -1,5 +1,3 @@
-// Package appconfigagent reads the local AppConfig Agent or Lambda extension.
-// The agent owns caching and polling; this package does not add a second cache.
 package appconfigagent
 
 import (

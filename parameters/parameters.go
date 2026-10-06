@@ -1,4 +1,3 @@
-// Package parameters provides shared caching and transformations for configuration providers.
 package parameters
 
 import (
