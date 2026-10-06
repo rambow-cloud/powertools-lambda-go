@@ -30,3 +30,31 @@ func ExampleNew() {
 	fmt.Println(response.StatusCode, output.Len() > 0, err)
 	// Output: 200 true <nil>
 }
+
+func ExampleNew_requestCount() {
+	var output bytes.Buffer
+	m, err := metrics.New(metrics.WithNamespace("Example/Orders"),
+		metrics.WithServiceName("orders"), metrics.WithOutput(&output), metrics.WithDisabled(false))
+	if err != nil {
+		panic(err)
+	}
+	app := httpapi.New(httpapi.Options{})
+	app.Use(httpmetrics.New(m, httpmetrics.Options{CaptureRequestCount: true}))
+	if err := app.Get("/health", func(*httpapi.RequestContext) (any, error) {
+		return "ok", nil
+	}); err != nil {
+		panic(err)
+	}
+	event := json.RawMessage(`{"version":"2.0","routeKey":"$default","rawPath":"/health","rawQueryString":"","headers":{},"requestContext":{"http":{"method":"GET"},"domainName":"api.example.test"},"isBase64Encoded":false}`)
+	_, err = app.Resolve(context.Background(), event)
+	if err != nil {
+		panic(err)
+	}
+	var document map[string]any
+	if err := json.Unmarshal(output.Bytes(), &document); err != nil {
+		panic(err)
+	}
+	// Use Sum to aggregate the published request metric in CloudWatch.
+	fmt.Println(document["request"], document["route"])
+	// Output: 1 GET /health
+}

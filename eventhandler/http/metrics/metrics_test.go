@@ -28,7 +28,7 @@ func TestConcurrentScopes(t *testing.T) {
 		t.Fatal(err)
 	}
 	app := httpapi.New(httpapi.Options{})
-	app.Use(httpmetrics.New(m))
+	app.Use(httpmetrics.New(m, httpmetrics.Options{CaptureRequestCount: true}))
 	late := make(chan *powermetrics.Metrics, 64)
 	if err := app.Get("/items/:id", func(r *httpapi.RequestContext) (any, error) {
 		if r.Request.Context() != r.Context {
@@ -62,6 +62,7 @@ func TestConcurrentScopes(t *testing.T) {
 	}
 	seen := map[string]bool{}
 	for _, document := range documents {
+		assertRequestCount(t, document)
 		id := document["id"].(string)
 		if seen[id] || document["apiGwRequestId"] != id || document["route"] != "GET /items/:id" || document["Parent"] != nil {
 			t.Fatalf("scope leak: %v", document)
@@ -77,15 +78,22 @@ func TestConcurrentScopes(t *testing.T) {
 	}
 }
 
-type failedWriter struct{ err error }
+type failedWriter struct {
+	err    error
+	output *bytes.Buffer
+}
 
-func (w failedWriter) Write([]byte) (int, error) { return 0, w.err }
+func (w failedWriter) Write(data []byte) (int, error) {
+	_, _ = w.output.Write(data)
+	return 0, w.err
+}
 
 func TestFailureAndContextRestoration(t *testing.T) {
 	writeFailure := errors.New("output unavailable")
 	for _, mode := range []string{"success", "error", "panic", "cancel"} {
 		t.Run(mode, func(t *testing.T) {
-			m, err := powermetrics.New(powermetrics.WithNamespace("Test"), powermetrics.WithOutput(failedWriter{writeFailure}), powermetrics.WithDisabled(false))
+			var attempted bytes.Buffer
+			m, err := powermetrics.New(powermetrics.WithNamespace("Test"), powermetrics.WithOutput(failedWriter{writeFailure, &attempted}), powermetrics.WithDisabled(false))
 			if err != nil {
 				t.Fatal(err)
 			}
@@ -98,7 +106,7 @@ func TestFailureAndContextRestoration(t *testing.T) {
 			var recovered any
 			func() {
 				defer func() { recovered = recover() }()
-				err = httpmetrics.New(m)(r, func() error {
+				err = httpmetrics.New(m, httpmetrics.Options{CaptureRequestCount: true})(r, func() error {
 					bound = m.WithContext(r.Context)
 					switch mode {
 					case "error":
@@ -115,6 +123,11 @@ func TestFailureAndContextRestoration(t *testing.T) {
 			if r.Context != ctx || r.Request != req {
 				t.Fatal("context not restored")
 			}
+			documents := decodeDocuments(t, attempted.Bytes())
+			if len(documents) != 1 {
+				t.Fatalf("publication attempts: %d", len(documents))
+			}
+			assertRequestCount(t, documents[0])
 			if mode == "panic" {
 				if recovered != business {
 					t.Fatalf("panic: %v", recovered)
@@ -150,13 +163,15 @@ func TestStreamingPublishesBeforeBodyTransfer(t *testing.T) {
 	var output, wire bytes.Buffer
 	m := newMetrics(t, &output)
 	app := httpapi.New(httpapi.Options{})
-	app.Use(httpmetrics.New(m))
+	app.Use(httpmetrics.New(m, httpmetrics.Options{CaptureRequestCount: true}))
 	var bound *powermetrics.Metrics
 	body := &inspectedReader{Reader: strings.NewReader("streamed body")}
 	body.beforeRead = func() {
-		if len(decodeDocuments(t, output.Bytes())) != 1 {
+		documents := decodeDocuments(t, output.Bytes())
+		if len(documents) != 1 {
 			t.Fatal("metrics were not published before body reads")
 		}
+		assertRequestCount(t, documents[0])
 		if err := bound.AddMetric("Late", powermetrics.Count, 1); !errors.Is(err, powermetrics.ErrInvocationClosed) {
 			t.Fatalf("stream scope: %v", err)
 		}
@@ -169,5 +184,8 @@ func TestStreamingPublishesBeforeBodyTransfer(t *testing.T) {
 	}
 	if body.closes != 1 || !bytes.HasSuffix(wire.Bytes(), []byte("streamed body")) {
 		t.Fatalf("stream ownership: %d, %q", body.closes, wire.Bytes())
+	}
+	if len(decodeDocuments(t, output.Bytes())) != 1 {
+		t.Fatal("stream transfer republished request metrics")
 	}
 }
