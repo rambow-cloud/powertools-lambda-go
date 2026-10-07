@@ -172,6 +172,7 @@ nav:
           - Kafka: KAFKA_PLAN.md
           - Additional Kafka wire modes: KAFKA_WIRE_DESIGN.md
           - Data Masking: DATAMASKING_PLAN.md
+          - KMS materials caching: KMS_CACHE_DESIGN.md
           - HTTP: HTTP_PLAN.md
           - AppSync Events: APPSYNC_EVENTS_PLAN.md
           - AppSync GraphQL: APPSYNC_GRAPHQL_PLAN.md

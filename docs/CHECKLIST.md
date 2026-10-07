@@ -6,6 +6,8 @@ Usage belongs in the utility guides. [Feature comparison](FEATURE_PARITY.md) map
 
 ## Documentation and feature audit
 
+- [x] DESIGN-116: Design bounded KMS materials caching with explicit ownership, atomic limits and preserved uncached defaults. Compared pinned TypeScript v2.35.0/client-node v5.0.2 defaults, provider context handling and Go Encryption SDK/MPL v0.4.0 public constructors and CMM seams; reviewed AWS caching/threshold/interoperability guidance. Locked dependencies, navigation, eighteen guide checks and strict site build pass. See [design acceptance](KMS_CACHE_DESIGN.md); issue #116. Planning only; implementation/service gates remain open (2026-10-08).
+
 - [x] DESIGN-118: Define additional Validation dialect and extension compatibility without changing current defaults. Inspected the default compiler and pinned v2.35.0/AJV v8.20.0 source; executed thirteen reference observations for dialects, annotations, mutation, data references and custom keywords. Locked dependencies, navigation, eighteen guide checks and strict site build pass. See [design acceptance](VALIDATION_EXTENSION_DESIGN.md); issue #118. Planning only; implementation/service gates remain open (2026-10-08).
 
 - [x] DESIGN-117: Audit Kafka delivery versus raw producer framing against pinned TypeScript v2.35.0, current adapters/corpora and AWS/Confluent contracts. Publish the supported-mode matrix, concrete missing frame/index parsing, resolver/dependency ownership and proposed malformed/lazy/concurrency acceptance in [the wire design](KAFKA_WIRE_DESIGN.md). Locked dependencies, navigation, eighteen guide checks and strict build pass. This completes issue #117's planning scope, not implementation or live-service acceptance (2026-10-08).
