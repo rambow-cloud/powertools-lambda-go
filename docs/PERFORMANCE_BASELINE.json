@@ -1,0 +1,107 @@
+{
+  "verified_at": "2026-10-07",
+  "source_sha": "75ce7eedf90d8a89ea83aa6f84646ec558325558",
+  "environment": {
+    "go": "go1.27.1",
+    "os": "windows",
+    "architecture": "amd64",
+    "CGO_ENABLED": "0",
+    "GOMAXPROCS": "2",
+    "cpu": "12th Gen Intel Core i5-12500H"
+  },
+  "command": "go test -p 1 -run ^$ -bench Benchmark -benchmem -benchtime=200ms -count=1 .",
+  "scope": "Local workspace microbenchmarks; not Lambda, cloud service or arm64 performance",
+  "results": [
+    {
+      "module": "idempotency",
+      "benchmark": "BenchmarkIdempotencyReplay/Store-2",
+      "iterations": 74918,
+      "ns_per_op": 3286.0,
+      "B/op": 2073.0,
+      "allocs/op": 61.0
+    },
+    {
+      "module": "idempotency",
+      "benchmark": "BenchmarkIdempotencyReplay/LocalCache-2",
+      "iterations": 78808,
+      "ns_per_op": 3202.0,
+      "B/op": 2089.0,
+      "allocs/op": 60.0
+    },
+    {
+      "module": "logger",
+      "benchmark": "BenchmarkLogger/Emitted-2",
+      "iterations": 28792,
+      "ns_per_op": 8357.0,
+      "output-B/op": 208.0,
+      "B/op": 5256.0,
+      "allocs/op": 116.0
+    },
+    {
+      "module": "logger",
+      "benchmark": "BenchmarkLogger/Filtered-2",
+      "iterations": 517798,
+      "ns_per_op": 454.7,
+      "output-B/op": 0.0,
+      "B/op": 528.0,
+      "allocs/op": 4.0
+    },
+    {
+      "module": "metrics",
+      "benchmark": "BenchmarkMetricsPublish-2",
+      "iterations": 83816,
+      "ns_per_op": 2809.0,
+      "output-B/op": 191.0,
+      "B/op": 2112.0,
+      "allocs/op": 40.0
+    },
+    {
+      "module": "parameters",
+      "benchmark": "BenchmarkParametersCache/Hit-2",
+      "iterations": 1138857,
+      "ns_per_op": 209.6,
+      "B/op": 336.0,
+      "allocs/op": 2.0
+    },
+    {
+      "module": "parameters",
+      "benchmark": "BenchmarkParametersCache/ForceFetch-2",
+      "iterations": 312117,
+      "ns_per_op": 798.1,
+      "B/op": 744.0,
+      "allocs/op": 9.0
+    },
+    {
+      "module": "parser",
+      "benchmark": "BenchmarkParserObject/Valid-2",
+      "iterations": 376795,
+      "ns_per_op": 532.6,
+      "B/op": 384.0,
+      "allocs/op": 8.0
+    },
+    {
+      "module": "parser",
+      "benchmark": "BenchmarkParserObject/Invalid-2",
+      "iterations": 435342,
+      "ns_per_op": 583.5,
+      "B/op": 864.0,
+      "allocs/op": 13.0
+    },
+    {
+      "module": "validation",
+      "benchmark": "BenchmarkValidationCompiled/Valid-2",
+      "iterations": 66463,
+      "ns_per_op": 3838.0,
+      "B/op": 2321.0,
+      "allocs/op": 55.0
+    },
+    {
+      "module": "validation",
+      "benchmark": "BenchmarkValidationCompiled/Invalid-2",
+      "iterations": 27372,
+      "ns_per_op": 9067.0,
+      "B/op": 6774.0,
+      "allocs/op": 158.0
+    }
+  ]
+}
