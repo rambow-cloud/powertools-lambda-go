@@ -166,7 +166,7 @@ class IssueFormTests(unittest.TestCase):
         self.assertEqual(len(names), len(set(names)))
         for label in labels:
             with self.subTest(label=label["name"]):
-                self.assertRegex(label["name"], r"^(?:[a-z][a-z ]+|module:[a-z][a-z0-9_/-]*)$")
+                self.assertRegex(label["name"], r"^(?:[a-z][a-z ]+|module:[a-z][a-z0-9_/-]*|priority:P[0-3])$")
                 self.assertRegex(label["color"], r"^[0-9a-f]{6}$")
                 self.assertTrue(0 < len(label["description"]) <= 100)
         self.assertEqual(next(label["color"] for label in labels if label["name"] == "bug"), "d73a4a")
@@ -207,9 +207,10 @@ class IssueLabelTests(unittest.TestCase):
         self.assertEqual(desired, {"bug", "module:powertools-lambda-go", "module:logger", "module:eventhandler/http/metrics"})
 
     def test_edit_removes_stale_modules_and_preserves_unrelated_labels(self):
-        issue = {"number": 1, "title": "[Feature]: example", "body": "### Affected modules\nparser", "labels": [{"name": name} for name in ("enhancement", "module:logger", "help wanted")]}
+        issue = {"number": 1, "title": "[Feature]: example", "body": "### Affected modules\nparser", "labels": [{"name": name} for name in ("enhancement", "module:logger", "help wanted", "priority:P1")]}
         api = Mock()
         self.labels.classify(api, issue, self.directories)
+        self.assertEqual(api.repo.call_count, 2)
         self.assertEqual(api.repo.call_args_list[0].kwargs["data"], {"labels": ["module:parser"]})
         self.assertEqual(api.repo.call_args_list[1].args, ("issues/1/labels/module%3Alogger",))
         self.assertEqual(api.repo.call_args_list[1].kwargs, {"method": "DELETE"})
@@ -247,6 +248,27 @@ class IssueLabelTests(unittest.TestCase):
         self.assertEqual(api.repo.call_count, 1)
         self.assertEqual(api.repo.call_args.args, ("labels",))
         self.assertEqual(api.repo.call_args.kwargs["method"], "POST")
+
+    def test_priority_catalog_is_synchronized_without_assigning_priorities(self):
+        catalog = json.loads((ROOT / ".github/labels.json").read_text(encoding="utf-8"))
+        priorities = [label for label in catalog if label["name"].startswith("priority:")]
+        self.assertEqual({label["name"] for label in priorities}, {f"priority:P{level}" for level in range(4)})
+        api = Mock()
+        api.pages.return_value = [{"name": "help wanted"}]
+        self.labels.synchronize(api, priorities)
+        self.assertEqual(api.repo.call_count, 4)
+        for call, definition in zip(api.repo.call_args_list, priorities):
+            self.assertEqual(call.args, ("labels",))
+            self.assertEqual(call.kwargs, {"method": "POST", "data": definition})
+
+        for definition in priorities:
+            with self.subTest(priority=definition["name"]):
+                api = Mock()
+                self.labels.classify(api, {"number": 1, "title": "[Bug]: example", "body": "### Affected modules\nlogger", "labels": [{"name": "bug"}, {"name": definition["name"]}]}, self.directories)
+                api.repo.assert_called_once_with("issues/1/labels", method="POST", data={"labels": ["module:logger"]})
+
+        desired, _ = self.labels.desired_labels({"title": "[Feature]: example", "body": "### Affected modules\nRepository only"}, self.directories)
+        self.assertEqual(desired, {"enhancement"})
 
     def test_workflow_uses_trusted_code_and_safe_event_handling(self):
         workflow = yaml.safe_load((ROOT / ".github/workflows/issue-labels.yml").read_text(encoding="utf-8"))

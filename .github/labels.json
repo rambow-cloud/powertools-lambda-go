@@ -35,6 +35,26 @@
     "description": "Further information is requested"
   },
   {
+    "name": "priority:P0",
+    "color": "b60205",
+    "description": "Urgent: active severe impact requiring immediate attention"
+  },
+  {
+    "name": "priority:P1",
+    "color": "d93f0b",
+    "description": "High: significant impact or a blocker to prioritize next"
+  },
+  {
+    "name": "priority:P2",
+    "color": "fbca04",
+    "description": "Normal: planned work without an urgent blocker"
+  },
+  {
+    "name": "priority:P3",
+    "color": "c2e0c6",
+    "description": "Low: optional improvements or work that can wait"
+  },
+  {
     "name": "module:powertools-lambda-go",
     "color": "1d76db",
     "description": "Issues affecting the powertools-lambda-go module"

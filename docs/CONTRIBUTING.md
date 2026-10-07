@@ -38,6 +38,22 @@ Combine type and area labels when useful: a workflow bug can have `bug` and
 `cicd`; a documentation feature can have `enhancement` and `documentation`.
 Labels organize work; they do not select CI suites or authorize publication.
 
+Maintainers assign one priority label when triaging an issue:
+
+| Priority label | Color | Scheduling guidance |
+|---|---|---|
+| `priority:P0` | Dark red `#b60205` | Urgent: active severe impact requiring immediate attention |
+| `priority:P1` | Orange `#d93f0b` | High: significant impact or a blocker to prioritize next |
+| `priority:P2` | Yellow `#fbca04` | Normal: planned work without an urgent blocker |
+| `priority:P3` | Light green `#c2e0c6` | Low: optional improvements or work that can wait |
+
+An issue without a priority label is untriaged, not implicitly P2. Keep at most
+one priority label per issue; remove the previous priority when changing it and
+explain the decision in a comment when useful. Priority describes scheduling
+urgency rather than issue type or a delivery deadline. The owner can self-triage.
+Issue forms and automatic classification do not infer priorities; module edits
+and catalog synchronization preserve manually assigned priority labels.
+
 Module labels use `module:<directory>`, for example `module:logger` and
 `module:eventhandler/http/metrics`. The root uses `module:powertools-lambda-go`.
 The catalog covers every manifest module, including development modules and the
