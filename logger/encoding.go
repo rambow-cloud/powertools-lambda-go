@@ -92,13 +92,8 @@ func normalizeValue(key string, value any, replacer Replacer, active map[visit]b
 		if v.IsNil() {
 			return value
 		}
-		var pointer uintptr
-		if v.Kind() == reflect.Map {
-			pointer = uintptr(v.UnsafePointer())
-		} else {
-			pointer = v.Pointer()
-		}
-		ref := visit{v.Type(), pointer}
+		// The address is an opaque identity token; it is never converted to a pointer.
+		ref := visit{v.Type(), v.Pointer()}
 		if active[ref] {
 			return "[Circular]"
 		}

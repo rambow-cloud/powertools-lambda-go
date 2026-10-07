@@ -34,9 +34,7 @@ func array(value any) ([]any, bool) {
 }
 func identity(value any) mergeVisit {
 	v := reflect.ValueOf(value)
-	if v.Kind() == reflect.Map {
-		return mergeVisit{v.Kind(), uintptr(v.UnsafePointer())}
-	}
+	// The address is an opaque identity token; it is never converted to a pointer.
 	return mergeVisit{v.Kind(), v.Pointer()}
 }
 
