@@ -148,6 +148,37 @@ def args(**changes):
 
 
 class VersionTests(unittest.TestCase):
+    def test_explicit_candidates_and_stable_promotion(self):
+        for current, previous, target in (
+            ("v0.2.0", "v0.2.0", "v1.0.0-rc.1"),
+            ("v1.0.0-rc.1", "logger/v1.0.0-rc.1", "v1.0.0-rc.2"),
+            ("v1.0.0-rc.2", "v0.2.0", "v1.0.0"),
+        ):
+            with self.subTest(target=target):
+                self.assertEqual(preparation.next_version(current, previous, "auto", [], (), target), target)
+
+    def test_explicit_targets_reject_invalid_downgrade_and_reserved_versions(self):
+        for target, reserved in (
+            ("v0.1.9", ()), ("v0.2.0", ()), ("v0.2.0-rc.1", ()),
+            ("v1.0.0-rc.1", ("v1.0.0-rc.1",)),
+            ("v1.0.0-rc.1", ("v1.0.0-rc.2",)),
+            ("v1.0.0-rc.1", ("v1.0.0",)),
+            ("v1.0.0-rc.01", ()), ("v1.00.0", ()), ("v2.0.0", ()),
+        ):
+            with self.subTest(target=target, reserved=reserved), self.assertRaises(ValueError):
+                preparation.next_version("v0.2.0", "v0.2.0", "auto", [], reserved, target)
+        with self.assertRaisesRegex(ValueError, "not both"):
+            preparation.next_version("v0.2.0", "v0.2.0", "major", [], (), "v1.0.0-rc.1")
+
+    def test_explicit_target_checks_all_maintained_component_reservations(self):
+        with fixture():
+            modules = release.manifest()
+            previous = {".": "v0.1.0", "logger": "logger/v0.1.0", "metrics": "metrics/v0.1.0"}
+            target = "v1.0.0-rc.1"
+            self.assertEqual(preparation.unified_version(modules, previous, "auto", [], ["tracer/xray/v1.0.0"], target), target)
+            with self.assertRaisesRegex(ValueError, "reserved"):
+                preparation.unified_version(modules, previous, "auto", [], ["metrics/v1.0.0-rc.1"], target)
+
     def test_unified_increment_uses_all_changes_and_all_reserved_component_tags(self):
         with fixture():
             modules = release.manifest()
@@ -184,6 +215,28 @@ class VersionTests(unittest.TestCase):
 
 
 class PreparationTests(unittest.TestCase):
+    def test_candidate_metadata_and_notes_include_the_whole_cohort(self):
+        with fixture() as (root, api, _):
+            preparation.prepare(args(version="v1.0.0-rc.1"), api)
+            plan = json.loads((root / "releases/fixture.json").read_text(encoding="utf-8"))
+            self.assertEqual(plan["release_version"], "v1.0.0-rc.1")
+            self.assertTrue(all(item["version"] == "v1.0.0-rc.1" for item in plan["modules"]))
+            self.assertIn("v1.0.0-rc.1", (root / "logger/go.mod").read_text(encoding="utf-8"))
+            release.validate_plan(plan, release.manifest())
+            self.assertEqual(api.writes, [])
+
+    def test_later_candidate_uses_previous_candidate_history(self):
+        with fixture() as (root, api, source):
+            for directory in (".", "logger", "metrics"):
+                tag = release.tag_name(directory, "v1.0.0-rc.1")
+                command(root, "git", "tag", tag)
+                api.tag_shas[tag] = source
+                api.releases.append({"tag_name": tag, "draft": False, "prerelease": True})
+            preparation.prepare(args(version="v1.0.0-rc.2"), api)
+            plan = json.loads((root / "releases/fixture.json").read_text(encoding="utf-8"))
+            self.assertTrue(all(item["previous_tag"] == release.tag_name(item["directory"], "v1.0.0-rc.1") for item in plan["modules"]))
+            release.validate_plan(plan, release.manifest())
+
     def test_first_unified_release_includes_all_modules_and_generates_history(self):
         with fixture() as (root, api, source):
             preparation.prepare(args(auto_publish=True), api)
@@ -542,7 +595,8 @@ class WorkflowTests(unittest.TestCase):
         workflow = yaml.safe_load((ROOT / ".github/workflows/prepare-release.yml").read_text(encoding="utf-8"))
         events = workflow.get("on", workflow.get(True))
         self.assertEqual(set(events), {"workflow_dispatch"})
-        self.assertEqual(set(events["workflow_dispatch"]["inputs"]), {"bump", "auto_publish"})
+        self.assertEqual(set(events["workflow_dispatch"]["inputs"]), {"bump", "version", "auto_publish"})
+        self.assertEqual(events["workflow_dispatch"]["inputs"]["version"]["type"], "string")
         self.assertTrue(events["workflow_dispatch"]["inputs"]["auto_publish"]["default"])
         self.assertFalse(workflow["concurrency"]["cancel-in-progress"])
         self.assertEqual(workflow["jobs"]["prepare"]["permissions"]["actions"], "write")
