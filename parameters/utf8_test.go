@@ -6,6 +6,7 @@ import (
 	"os"
 	"reflect"
 	"testing"
+	"unicode/utf8"
 
 	"github.com/rambow-cloud/powertools-lambda-go/parameters"
 )
@@ -44,6 +45,13 @@ func TestTransformUTF8Reference(t *testing.T) {
 			}
 			for _, mode := range []parameters.Transform{transform, parameters.Auto} {
 				got, err := parameters.TransformValue(name, input, mode)
+				if data, ok := input.([]byte); item.Kind == "json-bytes" && ok && !utf8.Valid(data) {
+					// JSON v2 rejects malformed UTF-8 instead of repairing it.
+					if err == nil || got != nil {
+						t.Errorf("%s: invalid UTF-8 accepted: %#v (%v)", mode, got, err)
+					}
+					continue
+				}
 				if err != nil || !reflect.DeepEqual(got, item.Expected) {
 					t.Errorf("%s: got %#v (%v), want %#v", mode, got, err, item.Expected)
 				}

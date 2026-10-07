@@ -23,7 +23,7 @@ func kafkaEventText(records string) json.RawMessage {
 
 func TestKafkaOrderingAndReuse(t *testing.T) {
 	schema := envelopes.Kafka(parser.String())
-	input := kafkaEventText(`"z":[` + kafkaRecordText("old") + `],"10":[` + kafkaRecordText("ten") + `],"2":[` + kafkaRecordText("two") + `],"a":[` + kafkaRecordText("a") + `],"z":[` + kafkaRecordText("last") + `],"01":[` + kafkaRecordText("zero-one") + `]`)
+	input := kafkaEventText(`"z":[` + kafkaRecordText("last") + `],"10":[` + kafkaRecordText("ten") + `],"2":[` + kafkaRecordText("two") + `],"a":[` + kafkaRecordText("a") + `],"01":[` + kafkaRecordText("zero-one") + `]`)
 	before := append([]byte(nil), input...)
 	var wg sync.WaitGroup
 	for i := 0; i < 32; i++ {
@@ -47,6 +47,18 @@ func TestKafkaOrderingAndReuse(t *testing.T) {
 	got, err := parser.Parse(context.Background(), native, schema)
 	if err != nil || !reflect.DeepEqual(got, []any{"two", "ten", "zero-one", "a", "last"}) {
 		t.Fatalf("native map order=%v, error=%v", got, err)
+	}
+}
+
+func TestKafkaDuplicateTopicsRejected(t *testing.T) {
+	input := kafkaEventText(`"orders":[` + kafkaRecordText("first") + `],"orders":[` + kafkaRecordText("second") + `]`)
+	calls := 0
+	schema := envelopes.Kafka(parser.SchemaFunc[string](func(_ context.Context, value any) (string, []parser.Issue, error) {
+		calls++
+		return value.(string), nil, nil
+	}))
+	if _, err := parser.Parse(context.Background(), input, schema); err == nil || calls != 0 {
+		t.Fatalf("duplicate topics accepted: calls=%d error=%v", calls, err)
 	}
 }
 

@@ -1,7 +1,7 @@
 package validation
 
 import (
-	"encoding/json"
+	jsonv1 "encoding/json"
 	"fmt"
 	"strings"
 
@@ -16,7 +16,7 @@ func alwaysValidSchema(value any) (bool, error) {
 	switch value := value.(type) {
 	case bool:
 		return value, nil
-	case json.Number:
+	case jsonv1.Number:
 		return true, nil
 	case string:
 		if value == "" {
@@ -107,7 +107,7 @@ func checkKeywordShapes(schema map[string]any) error {
 		}
 		actual := "null"
 		switch value.(type) {
-		case json.Number:
+		case jsonv1.Number:
 			actual = "number"
 		case string:
 			actual = "string"

@@ -3,7 +3,7 @@ package main
 
 import (
 	"context"
-	"encoding/json"
+	jsonv1 "encoding/json"
 
 	"github.com/aws/aws-lambda-go/lambda"
 	"github.com/rambow-cloud/powertools-lambda-go/parser"
@@ -18,5 +18,5 @@ type query struct {
 
 func main() {
 	schema := parser.Typed[query](schemas.AppSyncResolverSchema.Extend(parser.Field{Name: "arguments", Schema: parser.Object(parser.Field{Name: "id", Schema: parser.String()})}))
-	lambda.Start(parser.WrapHandler[json.RawMessage](schema, func(ctx context.Context, input query) (string, error) { return input.Arguments.ID, ctx.Err() }))
+	lambda.Start(parser.WrapHandler[jsonv1.RawMessage](schema, func(ctx context.Context, input query) (string, error) { return input.Arguments.ID, ctx.Err() }))
 }

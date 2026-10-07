@@ -2,7 +2,8 @@ package validation
 
 import (
 	"bytes"
-	"encoding/json"
+	"encoding/json/jsontext"
+	json "encoding/json/v2"
 	"strconv"
 
 	"github.com/rambow-cloud/powertools-lambda-go/commons"
@@ -14,40 +15,52 @@ import (
 type objectOrder map[string][]string
 
 func readObjectOrder(value any) objectOrder {
-	raw, err := json.Marshal(value)
+	raw, err := json.Marshal(value, json.Deterministic(true))
 	if err != nil {
 		return nil
 	}
-	decoder := json.NewDecoder(bytes.NewReader(raw))
-	decoder.UseNumber()
+	decoder := jsontext.NewDecoder(bytes.NewReader(raw))
 	order := objectOrder{}
-	var read func(string)
-	read = func(path string) {
-		token, _ := decoder.Token()
-		switch token {
-		case json.Delim('{'):
-			var keys []string
-			seen := map[string]bool{}
-			for decoder.More() {
-				token, _ := decoder.Token()
-				key := token.(string)
-				if !seen[key] {
-					keys = append(keys, key)
-					seen[key] = true
+	var read func(string) error
+	read = func(path string) error {
+		token, err := decoder.ReadToken()
+		if err != nil {
+			return err
+		}
+		switch token.Kind() {
+		case '{':
+			keys := []string{}
+			for decoder.PeekKind() != '}' {
+				token, err := decoder.ReadToken()
+				if err != nil {
+					return err
 				}
-				read(path + pointer([]string{key}))
+				key := token.String()
+				keys = append(keys, key)
+				if err := read(path + pointer([]string{key})); err != nil {
+					return err
+				}
 			}
-			_, _ = decoder.Token()
+			if _, err := decoder.ReadToken(); err != nil {
+				return err
+			}
 			commons.SortObjectKeys(keys)
 			order[path] = keys
-		case json.Delim('['):
-			for i := 0; decoder.More(); i++ {
-				read(path + "/" + strconv.Itoa(i))
+		case '[':
+			for i := 0; decoder.PeekKind() != ']'; i++ {
+				if err := read(path + "/" + strconv.Itoa(i)); err != nil {
+					return err
+				}
 			}
-			_, _ = decoder.Token()
+			if _, err := decoder.ReadToken(); err != nil {
+				return err
+			}
 		}
+		return nil
 	}
-	read("")
+	if read("") != nil {
+		return nil
+	}
 	return order
 }
 

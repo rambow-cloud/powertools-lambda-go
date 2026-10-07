@@ -1,6 +1,6 @@
 package http
 
-import "encoding/json"
+import json "encoding/json/v2"
 
 func eventObject(value any) wireObject {
 	raw, err := json.Marshal(value)

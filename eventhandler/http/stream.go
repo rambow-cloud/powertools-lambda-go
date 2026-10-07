@@ -2,7 +2,7 @@ package http
 
 import (
 	"context"
-	"encoding/json"
+	jsonv1 "encoding/json"
 	"errors"
 	"fmt"
 	"io"
@@ -151,8 +151,8 @@ func (w *readyStreamWriter) Write(p []byte) (int, error) {
 // Logger/Tracer wrappers inside handler so cleanup covers the entire body copy.
 // Errors before the first write are invocation errors; subsequent errors reach
 // the Lambda SDK through Read and can be reported as Runtime API error trailers.
-func Streamify(handler func(context.Context, json.RawMessage, io.Writer) error) func(context.Context, json.RawMessage) (*ResponseStream, error) {
-	return func(ctx context.Context, event json.RawMessage) (*ResponseStream, error) {
+func Streamify(handler func(context.Context, jsonv1.RawMessage, io.Writer) error) func(context.Context, jsonv1.RawMessage) (*ResponseStream, error) {
+	return func(ctx context.Context, event jsonv1.RawMessage) (*ResponseStream, error) {
 		if handler == nil {
 			return nil, errors.New("stream handler must not be nil")
 		}
@@ -163,7 +163,7 @@ func Streamify(handler func(context.Context, json.RawMessage, io.Writer) error) 
 		reader, writer := io.Pipe()
 		stream := &ResponseStream{reader: reader, cancel: cancel, done: make(chan struct{})}
 		ready := &readyStreamWriter{writer: writer, ready: make(chan struct{})}
-		snapshot := append(json.RawMessage(nil), event...)
+		snapshot := append(jsonv1.RawMessage(nil), event...)
 		stop := context.AfterFunc(ctx, func() {
 			_ = writer.CloseWithError(ctx.Err())
 		})

@@ -5,7 +5,7 @@ import (
 	"compress/gzip"
 	"context"
 	"encoding/base64"
-	"encoding/json"
+	json "encoding/json/v2"
 	"math/big"
 
 	"github.com/aws/aws-lambda-go/events"

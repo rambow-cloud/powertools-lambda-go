@@ -5,9 +5,10 @@ import (
 	"compress/gzip"
 	"context"
 	"encoding/base64"
-	"encoding/json"
-	"github.com/rambow-cloud/powertools-lambda-go/parser"
+	json "encoding/json/v2"
 	"io"
+
+	"github.com/rambow-cloud/powertools-lambda-go/parser"
 )
 
 var CloudWatchLogEventSchema = parser.Object(field("id", parser.String()), field("timestamp", parser.Number()), field("message", parser.String()))

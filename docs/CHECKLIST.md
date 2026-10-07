@@ -21,6 +21,7 @@ Usage belongs in the utility guides. [Feature comparison](FEATURE_PARITY.md) map
 - [x] F-03: Record English documentation/comment policy and always-disabled CGO in AGENTS.md.
 - [x] F-04: Share invocation identity and prefer runtime context trace headers over process state.
 - [x] F-05: Document the OTel default and optional X-Ray backend decision.
+- [x] F-06: Set Go 1.27 in all 31 module/workspace baselines and generated consumer fixtures; use JSON v2 APIs in maintained serializers and jsontext for ordered token traversal. Verify strict duplicate/Unicode handling, exact typed field names, nil collections, streaming marshalers, Logger error atomicity/number precision and the CloudWatch optional-resolution field. Local acceptance (2026-10-07): 31-module tidy; 28 native packaged modules and 27 standalone consumers with GOWORK=off, tests/vet/isolation; both static Linux Lambda architectures and executable ZIPs; workflow lint and documentation checks. Kafka ordering received an additional scoped source check after its final traversal cleanup. Full Linux KMS/runtime/service and pinned release-CLI acceptance is tracked by [Issue #110](https://github.com/rambow-cloud/powertools-lambda-go/issues/110). CGO remained disabled.
 
 ## Commons and Metadata
 

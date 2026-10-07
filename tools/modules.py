@@ -48,7 +48,7 @@ def environment():
     # outside the root module's package walk, including pre-module dependencies.
     boundary = ROOT / "dist/go.mod"
     if not boundary.exists():
-        boundary.write_text("module example.com/powertools-build-artifacts\n\ngo 1.26\n", encoding="utf-8")
+        boundary.write_text("module example.com/powertools-build-artifacts\n\ngo 1.27\n", encoding="utf-8")
     env.update(GOCACHE=str(cache), GOTMPDIR=str(temporary))
     return env
 
@@ -240,7 +240,7 @@ def main():
         # Test the extracted release-shaped archive, including its own test fixtures.
         consumer = session / "consumers" / module["directory"]
         consumer.mkdir(parents=True, exist_ok=True)
-        consumer.joinpath("go.mod").write_text(f"module example.com/consumer\n\ngo 1.26\n\nrequire {name} {module['version']}\n", encoding="utf-8")
+        consumer.joinpath("go.mod").write_text(f"module example.com/consumer\n\ngo 1.27\n\nrequire {name} {module['version']}\n", encoding="utf-8")
         consumer.joinpath("go.sum").write_text(pinned_sums, encoding="utf-8")
         downloaded = json.loads(run("go", "mod", "download", "-json", name, cwd=consumer, env=env))
         extracted = session / "sources" / module["directory"]

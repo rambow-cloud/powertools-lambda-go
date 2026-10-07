@@ -62,7 +62,7 @@ body:
     attributes:
       label: Environment
       description: Go version, OS/architecture, local or Lambda runtime, and relevant sanitized configuration.
-      placeholder: Go 1.26; Linux amd64; CGO_ENABLED=0; local execution
+      placeholder: Go 1.27; Linux amd64; CGO_ENABLED=0; local execution
     validations:
       required: true
   - type: textarea

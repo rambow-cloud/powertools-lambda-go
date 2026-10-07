@@ -2,7 +2,7 @@ package main
 
 import (
 	"context"
-	"encoding/json"
+	jsonv1 "encoding/json"
 	"errors"
 	"fmt"
 	nethttp "net/http"
@@ -64,11 +64,11 @@ func newHTTPProbe(log *logger.Logger, tr *tracer.Tracer, m *metrics.Metrics) fun
 		request.Response.Header.Set("X-Request-ID", invocation.AwsRequestID)
 		return nil
 	})
-	pathSchema, setupErr := validation.Compile(context.Background(), json.RawMessage(`{"type":"object","properties":{"id":{"type":"string","pattern":"^order-"}},"required":["id"]}`), validation.Options{})
+	pathSchema, setupErr := validation.Compile(context.Background(), jsonv1.RawMessage(`{"type":"object","properties":{"id":{"type":"string","pattern":"^order-"}},"required":["id"]}`), validation.Options{})
 	if setupErr != nil {
 		return func(context.Context) (map[string]any, error) { return nil, setupErr }
 	}
-	outputSchema, setupErr := validation.Compile(context.Background(), json.RawMessage(`{"type":"object","properties":{"status":{"const":"ok"}},"required":["status"]}`), validation.Options{})
+	outputSchema, setupErr := validation.Compile(context.Background(), jsonv1.RawMessage(`{"type":"object","properties":{"status":{"const":"ok"}},"required":["status"]}`), validation.Options{})
 	if setupErr != nil {
 		return func(context.Context) (map[string]any, error) { return nil, setupErr }
 	}

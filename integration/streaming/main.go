@@ -3,7 +3,7 @@ package main
 
 import (
 	"context"
-	"encoding/json"
+	jsonv1 "encoding/json"
 	"errors"
 	"fmt"
 	"io"
@@ -20,7 +20,7 @@ import (
 )
 
 type call struct {
-	event  json.RawMessage
+	event  jsonv1.RawMessage
 	writer io.Writer
 }
 type bodyState struct {
@@ -116,7 +116,7 @@ func main() {
 		}()
 		return struct{}{}, app.ResolveStream(ctx, input.event, input.writer)
 	}), tracer.HandlerOptions{Name: "stream-invocation", DisableCaptureResponse: true})
-	lambda.Start(httpapi.Streamify(func(ctx context.Context, event json.RawMessage, destination io.Writer) error {
+	lambda.Start(httpapi.Streamify(func(ctx context.Context, event jsonv1.RawMessage, destination io.Writer) error {
 		_, err := complete(ctx, call{event: event, writer: destination})
 		return err
 	}))

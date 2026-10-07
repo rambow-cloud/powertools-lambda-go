@@ -1,9 +1,8 @@
 package appsyncevents
 
 import (
-	"bytes"
 	"context"
-	"encoding/json"
+	json "encoding/json/v2"
 	"errors"
 	"fmt"
 	"reflect"
@@ -130,25 +129,11 @@ func (r *Router) warnLarge(ctx context.Context, path string, value any) error {
 	if warned {
 		return nil
 	}
-	var output bytes.Buffer
-	encoder := json.NewEncoder(&output)
-	encoder.SetEscapeHTML(false)
-	if err := encoder.Encode(value); err != nil {
+	data, err := json.Marshal(value)
+	if err != nil {
 		return &NamedError{Name: "TypeError", Message: err.Error(), Cause: err}
 	}
-	size := output.Len() - 1
-	// encoding/json escapes these two valid JSON string characters even with HTML
-	// escaping disabled. JSON.stringify writes their three-byte UTF-8 representations.
-	data := output.Bytes()
-	for i := 0; i < len(data); i++ {
-		if data[i] != '\\' {
-			continue
-		}
-		if i+5 < len(data) && string(data[i+1:i+5]) == "u202" && (data[i+5] == '8' || data[i+5] == '9') {
-			size -= 3
-		}
-		i++ // Skip an escaped backslash so literal "\\u2028" remains six characters.
-	}
+	size := len(data)
 	if size <= MaxEventSize {
 		return nil
 	}

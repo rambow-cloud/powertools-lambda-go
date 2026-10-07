@@ -2,7 +2,8 @@ package idempotency
 
 import (
 	"bytes"
-	"encoding/json"
+	"encoding/json/jsontext"
+	json "encoding/json/v2"
 	"fmt"
 	"io"
 	"sort"
@@ -22,16 +23,16 @@ type object []property
 // whose lowercase forms compare equally; Go maps have no insertion order.
 // Numbers use JavaScript's float64 domain. See docs/IDEMPOTENCY.md for limits.
 func CanonicalJSON(value any) ([]byte, error) {
-	encoded, err := json.Marshal(value)
+	encoded, err := json.Marshal(value, json.Deterministic(true))
 	if err != nil {
 		return nil, err
 	}
-	decoder := json.NewDecoder(bytes.NewReader(encoded))
+	decoder := jsontext.NewDecoder(bytes.NewReader(encoded))
 	decoded, err := readValue(decoder)
 	if err != nil {
 		return nil, err
 	}
-	if _, err := decoder.Token(); err != io.EOF {
+	if _, err := decoder.ReadToken(); err != io.EOF {
 		return nil, fmt.Errorf("expected one JSON value")
 	}
 	var output bytes.Buffer
@@ -39,49 +40,52 @@ func CanonicalJSON(value any) ([]byte, error) {
 	return output.Bytes(), nil
 }
 
-func readValue(decoder *json.Decoder) (any, error) {
-	token, err := decoder.Token()
+func readValue(decoder *jsontext.Decoder) (any, error) {
+	token, err := decoder.ReadToken()
 	if err != nil {
 		return nil, err
 	}
-	if delim, ok := token.(json.Delim); ok {
-		switch delim {
-		case '{':
-			result := object{}
-			positions := map[string]int{}
-			for decoder.More() {
-				key, err := decoder.Token()
-				if err != nil {
-					return nil, err
-				}
-				value, err := readValue(decoder)
-				if err != nil {
-					return nil, err
-				}
-				name := key.(string)
-				if index, exists := positions[name]; exists {
-					result[index].value = value
-				} else {
-					positions[name] = len(result)
-					result = append(result, property{name, value})
-				}
+	switch token.Kind() {
+	case '{':
+		result := object{}
+		for decoder.PeekKind() != '}' {
+			key, err := decoder.ReadToken()
+			if err != nil {
+				return nil, err
 			}
-			_, err := decoder.Token()
-			return result, err
-		case '[':
-			result := []any{}
-			for decoder.More() {
-				value, err := readValue(decoder)
-				if err != nil {
-					return nil, err
-				}
-				result = append(result, value)
+			name := key.String()
+			value, err := readValue(decoder)
+			if err != nil {
+				return nil, err
 			}
-			_, err := decoder.Token()
-			return result, err
+			result = append(result, property{name, value})
 		}
+		_, err := decoder.ReadToken()
+		return result, err
+	case '[':
+		result := []any{}
+		for decoder.PeekKind() != ']' {
+			value, err := readValue(decoder)
+			if err != nil {
+				return nil, err
+			}
+			result = append(result, value)
+		}
+		_, err := decoder.ReadToken()
+		return result, err
+	case '"':
+		return token.String(), nil
+	case 't':
+		return true, nil
+	case 'f':
+		return false, nil
+	case 'n':
+		return nil, nil
+	case '0':
+		return token.Float()
+	default:
+		return nil, fmt.Errorf("unexpected JSON token %s", token.Kind())
 	}
-	return token, nil
 }
 
 func writeValue(out *bytes.Buffer, value any) {
@@ -140,8 +144,7 @@ func writeValue(out *bytes.Buffer, value any) {
 }
 
 func writeString(out *bytes.Buffer, value string) {
-	// encoding/json escapes HTML and two Unicode separators even though
-	// JSON.stringify does not. Emit strings directly to avoid changing hashes.
+	// Use JSON.stringify string escaping for the canonical hash representation.
 	out.WriteByte('"')
 	for _, r := range value {
 		switch r {

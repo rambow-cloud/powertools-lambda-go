@@ -3,7 +3,9 @@ package envelopes
 import (
 	"bytes"
 	"context"
-	"encoding/json"
+	jsonv1 "encoding/json"
+	"encoding/json/jsontext"
+	json "encoding/json/v2"
 	"fmt"
 	"sort"
 
@@ -15,7 +17,7 @@ import (
 type kafkaEnvelope[T any] struct{ payload parser.Schema[T] }
 
 // Kafka flattens topic-partition records after Base64-to-text decoding.
-// RawMessage input preserves JSON topic order; Go maps use encoding/json's key order.
+// RawMessage input preserves JSON topic order; Go maps use sorted topic keys.
 func Kafka[T any](payload parser.Schema[T]) parser.Schema[[]T] { return kafkaEnvelope[T]{payload} }
 func (s kafkaEnvelope[T]) Validate(ctx context.Context, input any) ([]T, []parser.Issue, error) {
 	return s.validate(ctx, input, false)
@@ -30,7 +32,7 @@ func (s kafkaEnvelope[T]) validate(ctx context.Context, input any, safe bool) ([
 	if s.payload == nil {
 		return nil, nil, fmt.Errorf("Kafka payload schema is required")
 	}
-	raw, err := json.Marshal(input)
+	raw, err := json.Marshal(input, json.Deterministic(true))
 	if err != nil {
 		return nil, nil, err
 	}
@@ -106,33 +108,28 @@ func (s kafkaEnvelope[T]) validate(ctx context.Context, input any, safe bool) ([
 }
 
 func kafkaTopicKeys(raw []byte) []string {
-	var event map[string]json.RawMessage
+	var event map[string]jsonv1.RawMessage
 	if json.Unmarshal(raw, &event) != nil {
 		return nil
 	}
-	decoder := json.NewDecoder(bytes.NewReader(event["records"]))
-	if token, err := decoder.Token(); err != nil || token != json.Delim('{') {
+	decoder := jsontext.NewDecoder(bytes.NewReader(event["records"]))
+	if token, err := decoder.ReadToken(); err != nil || token.Kind() != '{' {
 		return nil
 	}
 	keys := []string{}
-	seen := map[string]bool{}
-	for decoder.More() {
-		token, err := decoder.Token()
+	for decoder.PeekKind() != '}' {
+		token, err := decoder.ReadToken()
 		if err != nil {
 			return nil
 		}
-		key, ok := token.(string)
-		if !ok {
+		key := token.String()
+		if decoder.SkipValue() != nil {
 			return nil
 		}
-		var value json.RawMessage
-		if decoder.Decode(&value) != nil {
-			return nil
-		}
-		if !seen[key] {
-			keys = append(keys, key)
-			seen[key] = true
-		}
+		keys = append(keys, key)
+	}
+	if _, err := decoder.ReadToken(); err != nil {
+		return nil
 	}
 	commons.SortObjectKeys(keys)
 	return keys

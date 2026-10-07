@@ -2,7 +2,9 @@ package kafka
 
 import (
 	"bytes"
-	"encoding/json"
+	jsonv1 "encoding/json"
+	"encoding/json/jsontext"
+	json "encoding/json/v2"
 	"sort"
 	"strconv"
 
@@ -14,7 +16,7 @@ func eventObject(input any) (map[string]any, []string, error) {
 	event, native := input.(map[string]any)
 	if !native {
 		var err error
-		raw, err = json.Marshal(input)
+		raw, err = json.Marshal(input, json.Deterministic(true))
 		if err != nil {
 			return nil, nil, err
 		}
@@ -38,29 +40,27 @@ func eventObject(input any) (map[string]any, []string, error) {
 		}
 		sort.Strings(keys)
 	} else {
-		var fields map[string]json.RawMessage
+		var fields map[string]jsonv1.RawMessage
 		if err := json.Unmarshal(raw, &fields); err != nil {
 			return nil, nil, err
 		}
-		decoder := json.NewDecoder(bytes.NewReader(fields["records"]))
-		if _, err := decoder.Token(); err != nil {
+		decoder := jsontext.NewDecoder(bytes.NewReader(fields["records"]))
+		if _, err := decoder.ReadToken(); err != nil {
 			return nil, nil, err
 		}
-		seen := map[string]bool{}
-		for decoder.More() {
-			token, err := decoder.Token()
+		for decoder.PeekKind() != '}' {
+			token, err := decoder.ReadToken()
 			if err != nil {
 				return nil, nil, err
 			}
-			key := token.(string)
-			var value json.RawMessage
-			if err := decoder.Decode(&value); err != nil {
+			key := token.String()
+			if err := decoder.SkipValue(); err != nil {
 				return nil, nil, err
 			}
-			if !seen[key] {
-				keys = append(keys, key)
-				seen[key] = true
-			}
+			keys = append(keys, key)
+		}
+		if _, err := decoder.ReadToken(); err != nil {
+			return nil, nil, err
 		}
 	}
 	commons.SortObjectKeys(keys)

@@ -8,7 +8,7 @@ This is an **independent community implementation** based on Powertools for AWS 
 
 Follow the [first Lambda guide](GETTING_STARTED.md) to compose Logger and Tracer around a typed handler, configure a collector, and build an executable for `provided.al2023`.
 
-Use **Go 1.26 or newer**, target **arm64 or x86_64**, and keep **CGO disabled**. Start from the local workspace until module releases are available. The [module guide](MODULES.md) explains dependencies, imports, and independent versioning.
+Use **Go 1.27 or newer**, target **arm64 or x86_64**, and keep **CGO disabled**. Start from the local workspace until module releases are available. The [module guide](MODULES.md) explains dependencies, imports, and independent versioning.
 
 Before choosing a utility, read [usage patterns](USAGE_PATTERNS.md) for object and wrapper lifetimes, and [environment variables](ENVIRONMENT_VARIABLES.md) for configuration. Every main utility guide shows a complete example, expected output and its TypeScript mapping.
 

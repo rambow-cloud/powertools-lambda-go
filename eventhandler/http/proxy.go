@@ -1,7 +1,8 @@
 package http
 
 import (
-	"encoding/json"
+	jsonv1 "encoding/json"
+	json "encoding/json/v2"
 	nethttp "net/http"
 	"strings"
 )
@@ -41,7 +42,7 @@ func proxyResult(raw []byte) (Response, bool, error) {
 			result.Body = body
 		}
 	}
-	err := visitObject(doc["headers"], func(name string, raw json.RawMessage) error {
+	err := visitObject(doc["headers"], func(name string, raw jsonv1.RawMessage) error {
 		if null(raw) {
 			return nil
 		}
@@ -54,8 +55,8 @@ func proxyResult(raw []byte) (Response, bool, error) {
 	if err != nil {
 		return Response{}, true, err
 	}
-	err = visitObject(doc["multiValueHeaders"], func(name string, raw json.RawMessage) error {
-		var values []json.RawMessage
+	err = visitObject(doc["multiValueHeaders"], func(name string, raw jsonv1.RawMessage) error {
+		var values []jsonv1.RawMessage
 		if err := json.Unmarshal(raw, &values); err != nil {
 			return err
 		}

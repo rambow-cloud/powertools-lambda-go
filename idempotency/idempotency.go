@@ -7,7 +7,8 @@ import (
 	"crypto/sha256"
 	"crypto/sha512"
 	"encoding/base64"
-	"encoding/json"
+	jsonv1 "encoding/json"
+	json "encoding/json/v2"
 	"errors"
 	"fmt"
 	"hash"
@@ -173,7 +174,7 @@ func (m *Manager) Key(payload any) (key, validation string, skip bool, err error
 	// Reuse the snapshot used by missing-key validation. Invoking a custom
 	// marshaler twice could hash a different value or duplicate its side effects.
 	if m.serialize == nil {
-		selection = json.RawMessage(encoded)
+		selection = jsonv1.RawMessage(encoded)
 	}
 	hash, err := m.digest(selection)
 	if err != nil {

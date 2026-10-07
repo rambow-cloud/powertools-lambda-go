@@ -3,7 +3,7 @@ package main
 
 import (
 	"context"
-	"encoding/json"
+	jsonv1 "encoding/json"
 	"log"
 
 	"github.com/aws/aws-lambda-go/lambda"
@@ -37,7 +37,7 @@ func main() {
 	}); err != nil {
 		log.Fatal(err)
 	}
-	handler := func(ctx context.Context, event json.RawMessage) (httpapi.ProxyResponse, error) {
+	handler := func(ctx context.Context, event jsonv1.RawMessage) (httpapi.ProxyResponse, error) {
 		return app.Resolve(ctx, event)
 	}
 	lambda.Start(tracer.WrapHandler(trace, logger.WrapHandler(requestLog, handler)))

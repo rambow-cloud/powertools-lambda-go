@@ -115,7 +115,7 @@ def fixture():
             name = BASE + ("" if module["directory"] == "." else "/" + module["directory"])
             required = BASE + "/logger" if module["directory"] == "examples" else BASE
             dependency = f"\nrequire {required} v0.1.0\n" if module["directory"] not in {".", "tools"} else ""
-            (directory / "go.mod").write_text(f"module {name}\n\ngo 1.26\n{dependency}", encoding="utf-8")
+            (directory / "go.mod").write_text(f"module {name}\n\ngo 1.27\n{dependency}", encoding="utf-8")
             (directory / "LICENSE").write_text("Synthetic offline fixture license.\n", encoding="utf-8")
             (directory / "NOTICE").write_text("Synthetic offline fixture notice.\n", encoding="utf-8")
             if module["directory"] == ".":
@@ -128,7 +128,7 @@ def fixture():
                 (directory / "value.go").write_text(f'package {package}\n\nimport "{imported}"\n\nconst Value = {identifier}.Value\n', encoding="utf-8")
         (root / "tools/modules.json").write_text(json.dumps({"base": BASE, "release_version": "v0.1.0", "modules": modules}), encoding="utf-8")
         shutil.copyfile(ROOT / "tools/modules.py", root / "tools/modules.py")
-        (root / "go.work").write_text("go 1.26\n\nuse (\n" + "\n".join("\t" + ("." if module["directory"] == "." else "./" + module["directory"]) for module in modules) + "\n)\n", encoding="utf-8")
+        (root / "go.work").write_text("go 1.27\n\nuse (\n" + "\n".join("\t" + ("." if module["directory"] == "." else "./" + module["directory"]) for module in modules) + "\n)\n", encoding="utf-8")
         (root / ".gitignore").write_text("dist/\n__pycache__/\n", encoding="utf-8")
         # Detached Git maintenance must not outlive a disposable fixture.
         for args in (("init",), ("config", "maintenance.auto", "false"), ("config", "gc.auto", "0"),

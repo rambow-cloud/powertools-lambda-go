@@ -2,7 +2,7 @@ package secrets
 
 import (
 	"context"
-	"encoding/json"
+	json "encoding/json/v2"
 	"errors"
 
 	"github.com/aws/aws-sdk-go-v2/aws"

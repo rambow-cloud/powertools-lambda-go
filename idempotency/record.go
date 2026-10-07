@@ -2,7 +2,7 @@ package idempotency
 
 import (
 	"context"
-	"encoding/json"
+	jsonv1 "encoding/json"
 	"errors"
 	"fmt"
 	"time"
@@ -20,12 +20,12 @@ const (
 // seconds; InProgressExpiration is in Unix milliseconds. Zero means absent.
 // Data holds JSON response bytes, not a JSON string containing those bytes.
 type Record struct {
-	Key                  string          `json:"id"`
-	Status               Status          `json:"status"`
-	Expiration           int64           `json:"expiration,omitempty"`
-	InProgressExpiration int64           `json:"in_progress_expiration,omitempty"`
-	Data                 json.RawMessage `json:"data,omitempty"`
-	Validation           string          `json:"validation,omitempty"`
+	Key                  string            `json:"id"`
+	Status               Status            `json:"status"`
+	Expiration           int64             `json:"expiration,omitzero"`
+	InProgressExpiration int64             `json:"in_progress_expiration,omitzero"`
+	Data                 jsonv1.RawMessage `json:"data,omitempty"`
+	Validation           string            `json:"validation,omitempty"`
 }
 
 func (r Record) IsExpired(now time.Time) bool {
@@ -45,7 +45,7 @@ func (r Record) CurrentStatus(now time.Time) (Status, error) {
 }
 
 func (r Record) Clone() Record {
-	r.Data = append(json.RawMessage(nil), r.Data...)
+	r.Data = append(jsonv1.RawMessage(nil), r.Data...)
 	return r
 }
 

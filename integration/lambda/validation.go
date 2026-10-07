@@ -2,7 +2,7 @@ package main
 
 import (
 	"context"
-	"encoding/json"
+	jsonv1 "encoding/json"
 	"errors"
 	"fmt"
 	"strings"
@@ -16,7 +16,7 @@ type validationPair struct{ input, output *validation.Schema }
 func compileValidationSchemas(sources map[string]string) (map[string]*validation.Schema, error) {
 	compiled := map[string]*validation.Schema{}
 	for name, source := range sources {
-		schema, err := validation.Compile(context.Background(), json.RawMessage(source), validation.Options{})
+		schema, err := validation.Compile(context.Background(), jsonv1.RawMessage(source), validation.Options{})
 		if err != nil {
 			return nil, err
 		}

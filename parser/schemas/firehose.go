@@ -2,7 +2,8 @@ package schemas
 
 import (
 	"context"
-	"encoding/json"
+	json "encoding/json/v2"
+
 	"github.com/rambow-cloud/powertools-lambda-go/commons"
 	"github.com/rambow-cloud/powertools-lambda-go/parser"
 )

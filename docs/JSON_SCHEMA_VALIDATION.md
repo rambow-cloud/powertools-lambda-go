@@ -2,6 +2,8 @@
 
 Validation checks events and responses against JSON Schema. Import `github.com/rambow-cloud/powertools-lambda-go/validation`. Use it for schema documents shared with other systems; choose [Parser](PARSER.md) when composing typed Go schemas and event transformations. The reference uses Powertools v2.35.0 with AJV v8.20.0.
 
+JSON snapshots and typed handler conversion use `encoding/json/v2`. Duplicate members and invalid Unicode are rejected; typed fields match JSON names case-sensitively. Numeric callbacks and snapshots retain exact `json.Number` tokens. Use explicit application field tags and [current JSON collection and omission rules](GETTING_STARTED.md#prerequisites-and-installation).
+
 See [installation](MODULES.md) and the [compatibility baseline](COMPATIBILITY.md).
 
 ## Complete example

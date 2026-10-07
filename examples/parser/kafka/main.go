@@ -3,7 +3,7 @@ package main
 
 import (
 	"context"
-	"encoding/json"
+	jsonv1 "encoding/json"
 
 	"github.com/aws/aws-lambda-go/lambda"
 	"github.com/rambow-cloud/powertools-lambda-go/parser"
@@ -18,7 +18,7 @@ type order struct {
 func main() {
 	payload := parser.Typed[order](parser.Object(parser.Field{Name: "id", Schema: parser.String()}, parser.Field{Name: "amount", Schema: parser.Number()}))
 	// RawMessage retains the topic key order received from the Lambda runtime.
-	handler := parser.WrapHandler[json.RawMessage](envelopes.Kafka(parser.JSONStringified(payload)), func(ctx context.Context, orders []order) (int, error) {
+	handler := parser.WrapHandler[jsonv1.RawMessage](envelopes.Kafka(parser.JSONStringified(payload)), func(ctx context.Context, orders []order) (int, error) {
 		if err := ctx.Err(); err != nil {
 			return 0, err
 		}
