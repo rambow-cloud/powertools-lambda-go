@@ -10,14 +10,20 @@ Nil slices and maps encode as `[]` and `{}`. `omitempty` omits empty JSON values
 
 These rules describe JSON serialization owned by Powertools. Invocation input/output serialization performed by `aws-lambda-go` follows that SDK's encoding contract.
 
-Public module tags have not been released yet. Until they exist, work from a local checkout and use the repository's `go.work`, which connects the independent modules. After the initial source upload, obtain a checkout with:
+The latest published cohort is v0.2.0. This guide describes current main,
+including the unreleased Go 1.27/JSON v2 upgrade. Use the [README example](https://github.com/rambow-cloud/powertools-lambda-go/blob/main/README.md)
+for a minimal application pinned to v0.2.0; installing that version does not
+install main's new JSON behavior. See [version policy](VERSION_POLICY.md).
+
+For the maintained source example and repository packaging, obtain a checkout:
 
 ~~~sh
 git clone https://github.com/rambow-cloud/powertools-lambda-go.git
 cd powertools-lambda-go
 ~~~
 
-If you already have the local source tree, start in its root directory. Do not run `go get ...@v0.1.0` until that module's release tag exists. See [module installation and versioning](MODULES.md) for independent-module usage.
+Use the repository workspace for these development examples. See
+[module installation](MODULES.md) for isolated released-version consumers.
 
 ## Create utilities once
 

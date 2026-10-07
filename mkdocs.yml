@@ -146,6 +146,8 @@ nav:
       - Contributing: CONTRIBUTING.md
       - Maintainer setup: MAINTAINING.md
       - Releasing modules: RELEASING.md
+      - v1 readiness: V1_READINESS.md
+      - Version policy: VERSION_POLICY.md
       - Documentation and CI: DOCUMENTATION.md
       - Verification:
           - Overview: VALIDATION.md
@@ -153,6 +155,7 @@ nav:
           - Local integration runner: LOCAL_INTEGRATION.md
           - Local acceptance: LOCAL_VALIDATION.md
           - Historical AWS acceptance: AWS_VALIDATION.md
+          - Scoped AWS service acceptance: AWS_SERVICE_ACCEPTANCE.md
       - Design and remaining work:
           - Tracing decision: TRACING_DECISION.md
           - Commons: COMMONS_PLAN.md

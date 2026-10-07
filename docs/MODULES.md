@@ -2,6 +2,8 @@
 
 The implementation uses twenty-eight public modules and three development modules. Current module/import paths use the selected rambow-cloud repository namespace. Each module has its own `go.mod`, dependency requirements, and version entry in `tools/modules.json`. The 27 maintained public modules were released as `v0.1.0` on 2026-10-04; fresh public consumer builds and checksums are recorded in [RELEASE_ACCEPTANCE.json](RELEASE_ACCEPTANCE.json). The frozen `tracer/xray` adapter was excluded from publication. Go 1.27 is the current supported baseline for all modules; CGO is always disabled. The count includes the deprecated, frozen X-Ray adapter. Current namespace verification is recorded in [MODULE_ACCEPTANCE_MIGRATION.json](MODULE_ACCEPTANCE_MIGRATION.json): all 31 packaged modules and 28 independent public consumers passed with GOWORK=off and CGO disabled on 2026-09-27. The report combines 13 accepted modules with an 18-module continuation. Non-documentation source matched the accepted archives at verification; later publication-only changes are checked separately. Earlier MODULE_ACCEPTANCE, REGEX and KMS records retain their original verification scope with historical module directories identified independently of repository ownership.
 
+Latest published cohort: [v0.2.0](https://github.com/rambow-cloud/powertools-lambda-go/releases/tag/v0.2.0). The module table below records historical initial tags, not current installation targets. Current main requires Go 1.27 and includes unreleased JSON v2 changes. Follow [version policy](VERSION_POLICY.md).
+
 ## Module boundaries
 
 Future releases use [one shared version](RELEASING.md) for all maintained public
@@ -97,14 +99,16 @@ fixture verification does not publish or verify public versions.
 
 The module verifier keeps each writable module cache isolated. Its local fixture proxy takes precedence, followed by existing download caches from previous verification runs, and finally the public Go proxy. External checksums remain verified; cached synthetic versions never replace newly generated local fixture versions.
 
-For a future Logger-only release, update only Logger's version entry, for example to `v0.1.1`. Leave its Commons requirement at `v0.1.0` if it does not need newer Commons behavior. Its tag will be `logger/v0.1.1`; Metrics and Tracer do not need new tags. Update dependent module requirements only when they need the newer functionality.
+Every maintained module releases at the same version. A Logger fix still
+advances the full cohort; see [RELEASING.md](RELEASING.md). Module dependencies
+stay independent. The frozen X-Ray adapter is excluded from publication.
 
-After publication, consumers select module versions normally:
+Consumers select the published module versions normally:
 
 ```powershell
 $env:CGO_ENABLED = '0'
-go get github.com/rambow-cloud/powertools-lambda-go/logger@v0.1.0
-go get github.com/rambow-cloud/powertools-lambda-go/metrics@v0.1.0
+go get github.com/rambow-cloud/powertools-lambda-go/logger@v0.2.0
+go get github.com/rambow-cloud/powertools-lambda-go/metrics@v0.2.0
 ```
 
 ```go
@@ -114,7 +118,7 @@ import (
 )
 ```
 
-These commands require a published repository and tags. The selected repository path is `github.com/rambow-cloud/powertools-lambda-go`; upload and tags are pending. Project and source-data notices are included in each module. Before first release, finalize the API compatibility scope and release notes. Publish shared dependencies before their consumers and verify retrieval through the real Go proxy. For a module's incompatible v2 release, use its `/v2` module/import suffix and corresponding subdirectory-prefixed tag.
+These commands install the published v0.2.0 cohort. They do not select current main. Project and source notices ship in each module; publication verifies dependency order and public consumers. Incompatible v2+ changes require reviewed module paths and prefixed tags.
 
 Splitting modules isolates declared dependency graphs; it does not mean every utility is dependency-free. Logger retains the OTel trace API for correlation, Tracer retains its OTel and AWS instrumentation dependencies, and Parameters retains its SDK providers. The legacy X-Ray SDK is confined to the frozen adapter and its own regression tests. The current integration module no longer depends on it. See [XRAY_MIGRATION.md](XRAY_MIGRATION.md).
 
