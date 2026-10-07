@@ -40,9 +40,11 @@ incompatible changes require a separately reviewed major/module-path plan.
 | Kafka/codecs | Lazy decode errors, JSON/native modes, framing, schemas and callback ownership |
 | Masking/KMS | Immutability, selection/order, provider concurrency/errors, authenticated context and uncached operation |
 
-The [public declaration inventory](V1_API_SURFACE.json) contains 35 packages and 823 declaration groups across all 27 maintained modules at the recorded source SHA. This mechanical inventory, the [previous critical-path review](MODULE_REVIEW_2026_10_05.md), package documentation and regression evidence are review inputs. Keep
-#112 open until all exports/defaults/errors/ownership contracts have been reviewed
-and resulting fixes have passed their acceptance criteria.
+The [public declaration inventory](V1_API_SURFACE.json) contains 35 packages and
+823 declaration groups. The [API scope review](V1_API_REVIEW.md) compares the
+v0.2.0 declarations, constructors/interfaces and documented contracts, reusing
+critical-path/regression evidence. Its contract decision is reviewed through
+this issue/PR; final publication remains a separate gate.
 
 ## Gates and evidence
 
@@ -50,7 +52,7 @@ and resulting fixes have passed their acceptance criteria.
 | --- | --- | --- |
 | Go 1.27/JSON v2 | [#110](https://github.com/rambow-cloud/powertools-lambda-go/issues/110), [PR #111](https://github.com/rambow-cloud/powertools-lambda-go/pull/111) | Merged; full PR CI passed 31 modules/28 consumers, both builds and local runtime/service scope |
 | First-party pointer cleanup | [#107](https://github.com/rambow-cloud/powertools-lambda-go/issues/107), [PR #108](https://github.com/rambow-cloud/powertools-lambda-go/pull/108) | Implemented; new-baseline integration under review |
-| Stable API audit | [#112](https://github.com/rambow-cloud/powertools-lambda-go/issues/112) | Contract proposed; complete cohort review pending |
+| Stable API scope review | [#112](https://github.com/rambow-cloud/powertools-lambda-go/issues/112) | Declaration/constructor/interface and documented contract review recorded in [V1_API_REVIEW.md](V1_API_REVIEW.md); publication commitment pending |
 | Performance baseline | [#113](https://github.com/rambow-cloud/powertools-lambda-go/issues/113) | Representative measured evidence required |
 | Onboarding/version policy | [#48](https://github.com/rambow-cloud/powertools-lambda-go/issues/48), [#49](https://github.com/rambow-cloud/powertools-lambda-go/issues/49), [#51](https://github.com/rambow-cloud/powertools-lambda-go/issues/51) | [Policy](VERSION_POLICY.md) and isolated published-example verification |
 | Sanitized service evidence | [#114](https://github.com/rambow-cloud/powertools-lambda-go/issues/114) | [Recorded scope](AWS_SERVICE_ACCEPTANCE.md), historical artifacts only |

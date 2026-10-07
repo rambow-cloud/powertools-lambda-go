@@ -147,6 +147,7 @@ nav:
       - Maintainer setup: MAINTAINING.md
       - Releasing modules: RELEASING.md
       - v1 readiness: V1_READINESS.md
+      - v1 API review: V1_API_REVIEW.md
       - Version policy: VERSION_POLICY.md
       - Documentation and CI: DOCUMENTATION.md
       - Verification:
