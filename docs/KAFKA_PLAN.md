@@ -22,6 +22,10 @@ The core's Decoder callback is now implemented by separate optional Avro and Pro
 
 ## Binary adapter findings
 
+Post-v1 planning for additional producer envelopes and schema lookup is recorded in
+[additional Kafka wire modes](KAFKA_WIRE_DESIGN.md), completing issue #117's design
+scope. It does not complete the implementation or live-service gates above.
+
 The installed v2.35.0 package dynamically loads `avro-js` and `protobufjs`; neither is a mandatory dependency in its published manifest. Keep the corresponding Go libraries outside the core module. The reference fixture lock currently uses avro-js 1.12.1 and protobufjs 7.5.4, and uses the published CommonJS entry to avoid the observed ESM loader failure.
 
 Avro source inspection shows that `fromBuffer` rejects trailing data and truncated input. Its long reader rejects potential precision loss rather than silently rounding every int64 to a JavaScript number. Union values preserve branch wrappers; bytes and fixed values are Node Buffers. These are acceptance requirements when evaluating a Go decoder, not optional output normalization. The Avro adapter now isolates hamba/avro v2.31.0 in its own module, uses a fresh schema cache and primitive reader, and owns the traversal needed to preserve reference union/logical/number behavior. The Kafka core retains no third-party dependencies.
