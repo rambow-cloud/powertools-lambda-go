@@ -169,6 +169,7 @@ nav:
           - Parser: PARSER_PLAN.md
           - Validation: VALIDATION_PLAN.md
           - Kafka: KAFKA_PLAN.md
+          - Additional Kafka wire modes: KAFKA_WIRE_DESIGN.md
           - Data Masking: DATAMASKING_PLAN.md
           - HTTP: HTTP_PLAN.md
           - AppSync Events: APPSYNC_EVENTS_PLAN.md

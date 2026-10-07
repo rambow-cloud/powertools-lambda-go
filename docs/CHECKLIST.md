@@ -6,6 +6,8 @@ Usage belongs in the utility guides. [Feature comparison](FEATURE_PARITY.md) map
 
 ## Documentation and feature audit
 
+- [x] DESIGN-117: Audit Kafka delivery versus raw producer framing against pinned TypeScript v2.35.0, current adapters/corpora and AWS/Confluent contracts. Publish the supported-mode matrix, concrete missing frame/index parsing, resolver/dependency ownership and proposed malformed/lazy/concurrency acceptance in [the wire design](KAFKA_WIRE_DESIGN.md). Locked dependencies, navigation, eighteen guide checks and strict build pass. This completes issue #117's planning scope, not implementation or live-service acceptance (2026-10-08).
+
 - [x] DOC-15: Verify automatic Cloudflare Pages production publication from an actual `main` push: observed a `github:push` deployment for commit `a39d92fac53cd13b66f6efd6abc864e48a9e9813`, successful locked-dependency/navigation/guide/strict-build checks and a successful deployment (2026-10-02). Custom-domain and certificate statuses remain active. Evidence: [CLOUDFLARE_ACCEPTANCE.json](CLOUDFLARE_ACCEPTANCE.json).
 
 - [x] DOC-14: Publish the static documentation with Cloudflare Pages Git integration on `main`, using the existing locked dependency, navigation, guide and strict build checks. Associate `powertools-lambda-go.rambow.cloud`, configure its CNAME and verify a successful deployment plus active custom-domain/certificate status. All build checks and control-plane publication checks passed (2026-10-02). Keep credentials and private account identifiers out of Git. Evidence: [CLOUDFLARE_ACCEPTANCE.json](CLOUDFLARE_ACCEPTANCE.json). Browser review remains separate under DOC-06.
