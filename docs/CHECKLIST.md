@@ -6,6 +6,8 @@ Usage belongs in the utility guides. [Feature comparison](FEATURE_PARITY.md) map
 
 ## Documentation and feature audit
 
+- [x] DESIGN-119: Assess Managed Instances lifecycle, native Go worker support and dedicated composed-runtime acceptance. Inspected aws-lambda-go v1.55.0 worker/deadline/trace handling and shared invocation/Logger/Metrics/OTel cleanup; compared current AWS lifecycle/runtime/logging contracts. Locked dependencies, navigation, eighteen guide checks and strict site build pass. See [design acceptance](MANAGED_INSTANCES_DESIGN.md); issue #119. Planning only; implementation/service gates remain open (2026-10-08).
+
 - [x] DESIGN-116: Design bounded KMS materials caching with explicit ownership, atomic limits and preserved uncached defaults. Compared pinned TypeScript v2.35.0/client-node v5.0.2 defaults, provider context handling and Go Encryption SDK/MPL v0.4.0 public constructors and CMM seams; reviewed AWS caching/threshold/interoperability guidance. Locked dependencies, navigation, eighteen guide checks and strict site build pass. See [design acceptance](KMS_CACHE_DESIGN.md); issue #116. Planning only; implementation/service gates remain open (2026-10-08).
 
 - [x] DESIGN-118: Define additional Validation dialect and extension compatibility without changing current defaults. Inspected the default compiler and pinned v2.35.0/AJV v8.20.0 source; executed thirteen reference observations for dialects, annotations, mutation, data references and custom keywords. Locked dependencies, navigation, eighteen guide checks and strict site build pass. See [design acceptance](VALIDATION_EXTENSION_DESIGN.md); issue #118. Planning only; implementation/service gates remain open (2026-10-08).
