@@ -5,82 +5,21 @@
   "completed": true,
   "modules": [
     {
-      "path": "github.com/rambow-cloud/powertools-lambda-go/jmespath",
-      "directory": "jmespath",
+      "path": "github.com/rambow-cloud/powertools-lambda-go/eventhandler/bedrock",
+      "directory": "eventhandler/bedrock",
       "public": true,
-      "version": "v0.1.0",
-      "archive_sha256": "175484f2b375c7f22875d4e687ea002dc8dbfd3dfe4ab3612a8f716c1b802be0",
-      "tests": true,
-      "vet": true,
-      "tidy": true,
-      "consumer_build": true,
-      "external_modules": [
-        "github.com/davecgh/go-spew",
-        "github.com/google/go-cmp",
-        "github.com/jmespath-community/go-jmespath",
-        "github.com/pmezard/go-difflib",
-        "github.com/stretchr/testify",
-        "golang.org/x/exp",
-        "golang.org/x/mod",
-        "golang.org/x/sys",
-        "golang.org/x/tools",
-        "gopkg.in/yaml.v3"
-      ],
-      "binary_bytes": 3223040
-    },
-    {
-      "path": "github.com/rambow-cloud/powertools-lambda-go/parser",
-      "directory": "parser",
-      "public": true,
-      "version": "v0.1.0",
-      "archive_sha256": "750c955357a32433e4163bbefc03f2c1fa339b05490731b463c60c937386945a",
+      "version": "v0.2.0",
+      "archive_sha256": "f780f32139bab4ea91b2cd45320f43cd90a7a15c3ab3bbefba99243ab910691c",
       "tests": true,
       "vet": true,
       "tidy": true,
       "consumer_build": true,
       "external_modules": [],
-      "binary_bytes": 4545024
-    },
-    {
-      "path": "github.com/rambow-cloud/powertools-lambda-go/parameters",
-      "directory": "parameters",
-      "public": true,
-      "version": "v0.1.0",
-      "archive_sha256": "3adfda169361b436e67c5ae13e08caf4f3e244be587bb808e387358c959ed13c",
-      "tests": true,
-      "vet": true,
-      "tidy": true,
-      "consumer_build": true,
-      "external_modules": [
-        "github.com/aws/aws-sdk-go-v2",
-        "github.com/aws/aws-sdk-go-v2/config",
-        "github.com/aws/aws-sdk-go-v2/credentials",
-        "github.com/aws/aws-sdk-go-v2/feature/dynamodb/attributevalue",
-        "github.com/aws/aws-sdk-go-v2/feature/ec2/imds",
-        "github.com/aws/aws-sdk-go-v2/internal/configsources",
-        "github.com/aws/aws-sdk-go-v2/internal/endpoints/v2",
-        "github.com/aws/aws-sdk-go-v2/internal/v4a",
-        "github.com/aws/aws-sdk-go-v2/service/appconfigdata",
-        "github.com/aws/aws-sdk-go-v2/service/dynamodb",
-        "github.com/aws/aws-sdk-go-v2/service/dynamodbstreams",
-        "github.com/aws/aws-sdk-go-v2/service/internal/accept-encoding",
-        "github.com/aws/aws-sdk-go-v2/service/internal/endpoint-discovery",
-        "github.com/aws/aws-sdk-go-v2/service/internal/presigned-url",
-        "github.com/aws/aws-sdk-go-v2/service/secretsmanager",
-        "github.com/aws/aws-sdk-go-v2/service/signin",
-        "github.com/aws/aws-sdk-go-v2/service/ssm",
-        "github.com/aws/aws-sdk-go-v2/service/sso",
-        "github.com/aws/aws-sdk-go-v2/service/ssooidc",
-        "github.com/aws/aws-sdk-go-v2/service/sts",
-        "github.com/aws/smithy-go"
-      ],
-      "binary_bytes": 3157504
+      "binary_bytes": 3036672
     }
   ],
   "scope": "Selected modules only; this report does not replace full-workspace acceptance",
   "selected_directories": [
-    "jmespath",
-    "parameters",
-    "parser"
+    "eventhandler/bedrock"
   ]
 }

@@ -3,6 +3,7 @@ package bedrock
 import (
 	"context"
 	"encoding/json"
+	jsonv2 "encoding/json/v2"
 	"errors"
 	"fmt"
 	"reflect"
@@ -99,8 +100,9 @@ func TestErrorsSerializationAndReentrantDiagnostics(t *testing.T) {
 		t.Fatalf("reentrant registration: %v %v", result, err)
 	}
 	result, err = app.Resolve(context.Background(), testEvent())
-	if err != nil || !strings.Contains(body(result).(string), "cannot marshal from Go func()") {
-		t.Fatalf("serialization failure escaped: %v %v", result, err)
+	var semantic *jsonv2.SemanticError
+	if err != nil || !errors.As(observed, &semantic) || semantic.GoType == nil || semantic.GoType.Kind() != reflect.Func || !strings.HasPrefix(body(result).(string), "Unable to complete tool execution due to Error - ") {
+		t.Fatalf("serialization failure escaped: %v %v diagnostic=%v", result, err, observed)
 	}
 	cycle := map[string]any{}
 	cycle["self"] = cycle
