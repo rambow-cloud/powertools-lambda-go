@@ -150,6 +150,7 @@ nav:
       - v1 API review: V1_API_REVIEW.md
       - Version policy: VERSION_POLICY.md
       - Documentation and CI: DOCUMENTATION.md
+      - Performance baseline: PERFORMANCE.md
       - Verification:
           - Overview: VALIDATION.md
           - Module review (2026-10-05): MODULE_REVIEW_2026_10_05.md
