@@ -11,6 +11,27 @@ changes; later changes on `main` belong to a future release. See
 [compatibility boundaries](COMPATIBILITY.md) before upgrading and
 [the release workflow](RELEASING.md) for maintainer instructions.
 
+## v1.0.0
+
+Published **2026-10-07** as the first stable v1 release.
+[GitHub Release and consolidated notes](https://github.com/rambow-cloud/powertools-lambda-go/releases/tag/v1.0.0).
+
+All 27 maintained modules share this version and independent tags at
+[`7be51eb55236`](https://github.com/rambow-cloud/powertools-lambda-go/tree/7be51eb5523612495f1123d82de4a9ee93895b88).
+One project Release contains the accumulated changes since stable v0.2.0,
+including Go 1.27, direct JSON v2 behavior, package documentation and scoped fixes.
+The [reviewed v1 contract](V1_API_REVIEW.md) now applies to the documented
+maintained subset. Frozen X-Ray and development modules are excluded.
+
+The preparation PR and exact merged-main commit passed Full regression:
+31 packaged modules, 28 independent consumers, both Lambda architectures,
+runtime simulation, DynamoDB Local, documentation and pinned release tools.
+Publication additionally verified all 27 fresh public proxy/checksum consumers,
+with CGO disabled, GOWORK off and no local replacements. Exact identities and
+checksums are in [stable acceptance](RELEASE_ACCEPTANCE_V1.json).
+Prior stable/candidate publications remain available; browser presentation and
+pkg.go.dev overview/API/example review remain separate owner checks.
+
 ## v1.0.0-rc.1
 
 Published **2026-10-07** as a prerelease. [GitHub Release and consolidated notes](https://github.com/rambow-cloud/powertools-lambda-go/releases/tag/v1.0.0-rc.1).

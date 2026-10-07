@@ -10,6 +10,16 @@ Scope adjustment (2026-09-13): feature parity work now prioritizes Logger and Op
 
 Scope adjustment (2026-09-14): the legacy SDK adapter is now deprecated and frozen, with module/API notices and a constructor warning. Maintained X-Ray support uses OpenTelemetry and the collector's awsxray exporter. The current integration program is OTel-only. See [XRAY_MIGRATION.md](XRAY_MIGRATION.md).
 
+## Stable v1 commitment
+
+Stable [v1.0.0](RELEASE_NOTES.md#v100) starts the reviewed compatibility
+commitment for all 27 maintained modules. Preserve documented exported APIs,
+configuration defaults, error categories, JSON/persistence formats and
+ownership/lifecycle contracts within v1. Optional additive features may ship
+in minor releases; incompatible changes require a reviewed major/module-path
+plan. Native SDK/Go error details and exhaustive TypeScript equivalence remain
+outside this promise. See [the contract decisions](V1_API_REVIEW.md).
+
 ## Logger API mapping
 
 | TypeScript concept | Go surface | Status and differences |

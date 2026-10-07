@@ -1,10 +1,10 @@
 # Documentation and verification versions
 
 Documentation on `main` and the site describes the current source and can include
-unreleased APIs. The latest stable cohort is v0.2.0; the published prerelease
-is [v1.0.0-rc.1](RELEASE_NOTES.md#v100-rc1). Both current source and this candidate
-require Go 1.27 and use JSON v2 directly. Installing v0.2.0 does not install
-the candidate's JSON v2 changes. Select `@v1.0.0-rc.1` explicitly to try it.
+unreleased APIs. The latest stable cohort is [v1.0.0](RELEASE_NOTES.md#v100).
+It requires Go 1.27 and uses JSON v2 directly. The earlier v1.0.0-rc.1 candidate
+and v0.2.0 stable cohort remain available as historical versions. Select
+`@v1.0.0` explicitly to reproduce the stable release.
 
 ## Examples and installation
 
@@ -14,7 +14,7 @@ the candidate's JSON v2 changes. Select `@v1.0.0-rc.1` explicitly to try it.
   such as `examples` are not independently published.
 - Checkout snippets describe their source revision. Identify a new API as
   unreleased until its module version is published.
-- The README example targets v0.2.0. Verify it in an isolated application using
+- The README example targets v1.0.0. Verify it in an isolated application using
   its pinned installation command rather than the repository workspace.
 - Import paths contain no `@version`; selection belongs to `go get` and `go.mod`.
 - For release-specific documentation, use the matching Git tag's docs/examples.

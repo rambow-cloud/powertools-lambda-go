@@ -10,15 +10,15 @@ Nil slices and maps encode as `[]` and `{}`. `omitempty` omits empty JSON values
 
 These rules describe JSON serialization owned by Powertools. Invocation input/output serialization performed by `aws-lambda-go` follows that SDK's encoding contract.
 
-The latest published cohort is v0.2.0. This guide describes current main,
-including the unreleased Go 1.27/JSON v2 upgrade. Use the [README example](https://github.com/rambow-cloud/powertools-lambda-go/blob/main/README.md)
-for a minimal application pinned to v0.2.0; installing that version does not
-install main's new JSON behavior. See [version policy](VERSION_POLICY.md).
+The latest stable cohort is [v1.0.0](https://github.com/rambow-cloud/powertools-lambda-go/releases/tag/v1.0.0),
+including Go 1.27 and the JSON v2 behavior described above. Use the
+[README example](https://github.com/rambow-cloud/powertools-lambda-go/blob/main/README.md)
+for a minimal application pinned to v1.0.0. See [version policy](VERSION_POLICY.md).
 
 For the maintained source example and repository packaging, obtain a checkout:
 
 ~~~sh
-git clone https://github.com/rambow-cloud/powertools-lambda-go.git
+git clone --branch v1.0.0 https://github.com/rambow-cloud/powertools-lambda-go.git
 cd powertools-lambda-go
 ~~~
 

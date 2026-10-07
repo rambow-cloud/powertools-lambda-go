@@ -11,6 +11,14 @@ contracts, reusing the [critical-path review](MODULE_REVIEW_2026_10_05.md) and
 subsequent issue-linked regression acceptance. It does not certify exhaustive
 TypeScript equivalence or every application/service topology.
 
+Stable **v1.0.0** was published on 2026-10-07 after the owner's explicit
+authorization, preparation/main Full regression and all 27 public consumers.
+The decisions below now define the maintained v1 compatibility commitment.
+The declaration review retains its original source identity; the stable
+promotion adds no Go source changes relative to the verified candidate.
+See [stable acceptance](RELEASE_ACCEPTANCE_V1.json) for release commit `7be51eb55236`
+and exact checks. Browser presentation remains a separate owner check.
+
 ## Differences from the published baseline
 
 | Area | Reviewed difference | v1 decision |
@@ -65,7 +73,7 @@ builds and scoped local runtime/service checks. The service-order assertion
 finding is tracked under #122; it is corrected through its own issue/PR.
 The six core performance modules have separate packaged acceptance under #113.
 
-Actual v1 publication starts the final compatibility commitment. Public candidate
-consumers, browser presentation and final publication remain separate gates in
+Stable v1 publication has started the compatibility commitment. Candidate and
+stable public consumers passed; browser presentation remains separate in
 [V1_READINESS.md](V1_READINESS.md). The review does not turn exhaustive native,
 serialization or service milestones into completed functionality.

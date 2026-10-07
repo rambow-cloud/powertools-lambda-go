@@ -1,0 +1,341 @@
+{
+  "schema_version": 1,
+  "verified_at": "2026-10-07",
+  "repository": "rambow-cloud/powertools-lambda-go",
+  "release_version": "v1.0.0",
+  "publication_mode": "project",
+  "prerelease": false,
+  "github_latest_at_acceptance": true,
+  "published_at": "2026-10-07T14:39:43Z",
+  "source_sha": "7be51eb5523612495f1123d82de4a9ee93895b88",
+  "notes_source_sha": "e121d8b20ba9f016590c46c054eaa1c58effcc70",
+  "issue": 137,
+  "preparation_pr": 138,
+  "preparation_head": "8f06637604a74de10ce2bb772f0e8e665ea543ad",
+  "plan": "v1-stable-project-e121d8b2",
+  "plan_sha256": "fcd0821f88ca80e2c7e6bdec6fa7154e3e39e865d06058eb1681818a80a97567",
+  "publication_run": 37637432902,
+  "workflow_url": "https://github.com/rambow-cloud/powertools-lambda-go/actions/runs/37637432902",
+  "pr_ci_run": 37633400701,
+  "pr_ci_checkout": "c4fa3e3194396a7382c93a670fdd53f04a5323e9",
+  "main_ci_run": 37635467302,
+  "main_ci_checkout": "7be51eb5523612495f1123d82de4a9ee93895b88",
+  "environment": {
+    "os": "linux",
+    "architecture": "amd64",
+    "CGO_ENABLED": "0",
+    "GOWORK": "off",
+    "GOPROXY": "https://proxy.golang.org",
+    "GOSUMDB": "sum.golang.org",
+    "fresh_module_and_build_caches": true,
+    "local_replacements": false
+  },
+  "goreleaser_version": "2.18.2",
+  "completed": true,
+  "project_release": {
+    "tag": "v1.0.0",
+    "release_published": true,
+    "url": "https://github.com/rambow-cloud/powertools-lambda-go/releases/tag/v1.0.0"
+  },
+  "excluded_frozen_modules": [
+    "tracer/xray"
+  ],
+  "module_count": 27,
+  "modules": [
+    {
+      "directory": ".",
+      "version": "v1.0.0",
+      "tag": "v1.0.0",
+      "tag_url": "https://github.com/rambow-cloud/powertools-lambda-go/tree/v1.0.0",
+      "sum": "h1:JqNWzXIZ+zH3yM3OUpkKrtp1wHX7nnouWLKreZQfaJw=",
+      "go_mod_sum": "h1:QJNv+GZi7RBBdzk0vCGFIGx9eM1Kd53oHA1fZ4BNF1Q=",
+      "consumer_build": true,
+      "checksum_verification": true
+    },
+    {
+      "directory": "commons/regex",
+      "version": "v1.0.0",
+      "tag": "commons/regex/v1.0.0",
+      "tag_url": "https://github.com/rambow-cloud/powertools-lambda-go/tree/commons/regex/v1.0.0",
+      "sum": "h1:R3RcF6mDAKOCEdIYcydcGqWEuPzi0URVXe45oyi5qkU=",
+      "go_mod_sum": "h1:gRPF0fMONB66sicL77XVY1oLerzSFfuqHGMA65wxzhM=",
+      "consumer_build": true,
+      "checksum_verification": true
+    },
+    {
+      "directory": "signer",
+      "version": "v1.0.0",
+      "tag": "signer/v1.0.0",
+      "tag_url": "https://github.com/rambow-cloud/powertools-lambda-go/tree/signer/v1.0.0",
+      "sum": "h1:b04s6OwAsOv0uHLO3cqTwckroHZ2zOmvbWLhvc09Db8=",
+      "go_mod_sum": "h1:W+Sz0yvwbYCy+3w6IlfzI+mKAD0prcXCC2/lT78afyE=",
+      "consumer_build": true,
+      "checksum_verification": true
+    },
+    {
+      "directory": "batch",
+      "version": "v1.0.0",
+      "tag": "batch/v1.0.0",
+      "tag_url": "https://github.com/rambow-cloud/powertools-lambda-go/tree/batch/v1.0.0",
+      "sum": "h1:c+zeQoxx0JeBb2elUWkqrRDimVDSjbu+kOevQWO63QI=",
+      "go_mod_sum": "h1:1oe5BHxblN3JSWGC5aHQ0iOdrNRMoJT2PU3h3gso4A0=",
+      "consumer_build": true,
+      "checksum_verification": true
+    },
+    {
+      "directory": "commons/awssdk",
+      "version": "v1.0.0",
+      "tag": "commons/awssdk/v1.0.0",
+      "tag_url": "https://github.com/rambow-cloud/powertools-lambda-go/tree/commons/awssdk/v1.0.0",
+      "sum": "h1:T3vJ2egDrNIhJBvetw5sV5kI7M4EIkdXJDgwKI17qdQ=",
+      "go_mod_sum": "h1:8134ZDGf9WCDsy13CCisgHktDi2WcXb9gfWeTUFNKtI=",
+      "consumer_build": true,
+      "checksum_verification": true
+    },
+    {
+      "directory": "commons/dynamodb",
+      "version": "v1.0.0",
+      "tag": "commons/dynamodb/v1.0.0",
+      "tag_url": "https://github.com/rambow-cloud/powertools-lambda-go/tree/commons/dynamodb/v1.0.0",
+      "sum": "h1:RlKk3CDEfaxnEBiQghxhFpdmrCekGBHVsSQlUJ3ZeFI=",
+      "go_mod_sum": "h1:1AkmSey3TZpWAkdCtyE0no3ows9hJUk9uvbt5fJdz2g=",
+      "consumer_build": true,
+      "checksum_verification": true
+    },
+    {
+      "directory": "commons/metadata",
+      "version": "v1.0.0",
+      "tag": "commons/metadata/v1.0.0",
+      "tag_url": "https://github.com/rambow-cloud/powertools-lambda-go/tree/commons/metadata/v1.0.0",
+      "sum": "h1:XI11xERqydtUsseht0mDhpk5h2nvXd7Irvmlins7qUI=",
+      "go_mod_sum": "h1:yD3q8lsDCUaX7sKU6Y+nN6LOU2WQZFYPaYcYT4WFhiI=",
+      "consumer_build": true,
+      "checksum_verification": true
+    },
+    {
+      "directory": "datamasking",
+      "version": "v1.0.0",
+      "tag": "datamasking/v1.0.0",
+      "tag_url": "https://github.com/rambow-cloud/powertools-lambda-go/tree/datamasking/v1.0.0",
+      "sum": "h1:ZVOmmL7e6V0BF0wJAhKvM7C6xWHIlFqmuH4cXwuK4cs=",
+      "go_mod_sum": "h1:8WfsUdacqygMV8+Nefw1athTarvefvF2klDaWhXDI4g=",
+      "consumer_build": true,
+      "checksum_verification": true
+    },
+    {
+      "directory": "eventhandler/appsyncevents",
+      "version": "v1.0.0",
+      "tag": "eventhandler/appsyncevents/v1.0.0",
+      "tag_url": "https://github.com/rambow-cloud/powertools-lambda-go/tree/eventhandler/appsyncevents/v1.0.0",
+      "sum": "h1:65bxWYEsVTZvPhcCfVvi4VigQYeZWLB+txCniE9QlA8=",
+      "go_mod_sum": "h1:SH7QRaA9chUBAj0bc+uCPfofe6qfM+SK9mMKEkwIuPs=",
+      "consumer_build": true,
+      "checksum_verification": true
+    },
+    {
+      "directory": "eventhandler/appsyncgraphql",
+      "version": "v1.0.0",
+      "tag": "eventhandler/appsyncgraphql/v1.0.0",
+      "tag_url": "https://github.com/rambow-cloud/powertools-lambda-go/tree/eventhandler/appsyncgraphql/v1.0.0",
+      "sum": "h1:j2cDzg3glLVVnzen2Wk5cuH4PBpWT8+qUzmk8cSeQpk=",
+      "go_mod_sum": "h1:6JhgAQJirWVSY5sqysDhZxfESvh41MjU7pgleDReiCI=",
+      "consumer_build": true,
+      "checksum_verification": true
+    },
+    {
+      "directory": "eventhandler/bedrock",
+      "version": "v1.0.0",
+      "tag": "eventhandler/bedrock/v1.0.0",
+      "tag_url": "https://github.com/rambow-cloud/powertools-lambda-go/tree/eventhandler/bedrock/v1.0.0",
+      "sum": "h1:0uT3bpq5AKWMvduEkMiNFzaGeWwh290l1nVc5+VrWys=",
+      "go_mod_sum": "h1:laLHdNUohty2vnROtWiWuo8lKAb9ElYnFTWyfQmFXVg=",
+      "consumer_build": true,
+      "checksum_verification": true
+    },
+    {
+      "directory": "eventhandler/http",
+      "version": "v1.0.0",
+      "tag": "eventhandler/http/v1.0.0",
+      "tag_url": "https://github.com/rambow-cloud/powertools-lambda-go/tree/eventhandler/http/v1.0.0",
+      "sum": "h1:aIucpiQMKxzTr9IAU2a/dUCI8d6B8YGGHS0hgGNp27E=",
+      "go_mod_sum": "h1:RXzpdPo9WwAFC7n3l6E0bCXCyRPnxWoPH0OOKdg6KWA=",
+      "consumer_build": true,
+      "checksum_verification": true
+    },
+    {
+      "directory": "jmespath",
+      "version": "v1.0.0",
+      "tag": "jmespath/v1.0.0",
+      "tag_url": "https://github.com/rambow-cloud/powertools-lambda-go/tree/jmespath/v1.0.0",
+      "sum": "h1:GSGnh9p+ay6uDecWdNc4TV7FIXPWBxr80mqpjBxziys=",
+      "go_mod_sum": "h1:EyEVh3ADQgl1jXu61slEskrCz49OyYxAPFg9GLDleOY=",
+      "consumer_build": true,
+      "checksum_verification": true
+    },
+    {
+      "directory": "kafka",
+      "version": "v1.0.0",
+      "tag": "kafka/v1.0.0",
+      "tag_url": "https://github.com/rambow-cloud/powertools-lambda-go/tree/kafka/v1.0.0",
+      "sum": "h1:Sf66wZMpARgLXS7IBfrxmJi8TJaDczn59Dt+w2ux8z8=",
+      "go_mod_sum": "h1:mx0T8ffo+YBoG9dAByHO48sj/a7Jv/v55S2YWmjRZLs=",
+      "consumer_build": true,
+      "checksum_verification": true
+    },
+    {
+      "directory": "logger",
+      "version": "v1.0.0",
+      "tag": "logger/v1.0.0",
+      "tag_url": "https://github.com/rambow-cloud/powertools-lambda-go/tree/logger/v1.0.0",
+      "sum": "h1:Bq993Ik4Durxj5rqROZIfxd4Ycunz+FEaRnNm/XH6Lc=",
+      "go_mod_sum": "h1:qPSsgSlX88ZWmmYq5yknSyB77qPy8E8q8Ma4TSpF+t4=",
+      "consumer_build": true,
+      "checksum_verification": true
+    },
+    {
+      "directory": "metrics",
+      "version": "v1.0.0",
+      "tag": "metrics/v1.0.0",
+      "tag_url": "https://github.com/rambow-cloud/powertools-lambda-go/tree/metrics/v1.0.0",
+      "sum": "h1:IphIj1Syw2It8iDw6bI+HTQEUObqoaEAcHdwZ5X0ug8=",
+      "go_mod_sum": "h1:W/J+QI43X55QWnoAuURFxRwKh5dE7ea9+AictwnY878=",
+      "consumer_build": true,
+      "checksum_verification": true
+    },
+    {
+      "directory": "parser",
+      "version": "v1.0.0",
+      "tag": "parser/v1.0.0",
+      "tag_url": "https://github.com/rambow-cloud/powertools-lambda-go/tree/parser/v1.0.0",
+      "sum": "h1:tH4o/2CX8cccWcWAB7T/0+TLQ1nUP+ylwCtBkdYNmIo=",
+      "go_mod_sum": "h1:cmMmIUOReVzYQ4DkBv+42PJcn1hzWZiila8gg0mKC4g=",
+      "consumer_build": true,
+      "checksum_verification": true
+    },
+    {
+      "directory": "datamasking/kms",
+      "version": "v1.0.0",
+      "tag": "datamasking/kms/v1.0.0",
+      "tag_url": "https://github.com/rambow-cloud/powertools-lambda-go/tree/datamasking/kms/v1.0.0",
+      "sum": "h1:K8eGrtrgDTaTLo+h62i2gdJAhYJ5p0LsPkKi+dghMto=",
+      "go_mod_sum": "h1:RHghDkKDwXiFC1UUxpQiGgbH/t4zz/E0O7YHUVAjToU=",
+      "consumer_build": true,
+      "checksum_verification": true
+    },
+    {
+      "directory": "eventhandler/http/metrics",
+      "version": "v1.0.0",
+      "tag": "eventhandler/http/metrics/v1.0.0",
+      "tag_url": "https://github.com/rambow-cloud/powertools-lambda-go/tree/eventhandler/http/metrics/v1.0.0",
+      "sum": "h1:vs8LAUb4hDCKOPoAnOqLq4BBmI5MCIRqoUsjea2itBM=",
+      "go_mod_sum": "h1:pg2etdP7r2v9aoPA/qco1sIECTLJu/lQzqUqepVemiA=",
+      "consumer_build": true,
+      "checksum_verification": true
+    },
+    {
+      "directory": "idempotency",
+      "version": "v1.0.0",
+      "tag": "idempotency/v1.0.0",
+      "tag_url": "https://github.com/rambow-cloud/powertools-lambda-go/tree/idempotency/v1.0.0",
+      "sum": "h1:AnMIMq8oVcfBCopOzg+WAxMKkEoC2Cba5YWfw+y1swQ=",
+      "go_mod_sum": "h1:h35+rIzcbJbHgPsTZrTZ1Ml/NHvZbMuOkA1bJXoUFhU=",
+      "consumer_build": true,
+      "checksum_verification": true
+    },
+    {
+      "directory": "kafka/avro",
+      "version": "v1.0.0",
+      "tag": "kafka/avro/v1.0.0",
+      "tag_url": "https://github.com/rambow-cloud/powertools-lambda-go/tree/kafka/avro/v1.0.0",
+      "sum": "h1:RMW7fP4m0N6BIINAqLTAS0Evklr2mu50PsBIARtHIwA=",
+      "go_mod_sum": "h1:EPiv7Z6MW7VEyKVMRausCXJEXZI16lvnO1LtA2IYcu8=",
+      "consumer_build": true,
+      "checksum_verification": true
+    },
+    {
+      "directory": "kafka/protobuf",
+      "version": "v1.0.0",
+      "tag": "kafka/protobuf/v1.0.0",
+      "tag_url": "https://github.com/rambow-cloud/powertools-lambda-go/tree/kafka/protobuf/v1.0.0",
+      "sum": "h1:2vpEFxaCZp5sfYL4t01MtXeT3HNIXlErLqwhT7cNYSM=",
+      "go_mod_sum": "h1:nMRrCaGy2xcsnmbj+7/EVU303m14syTr6LlyxO70mos=",
+      "consumer_build": true,
+      "checksum_verification": true
+    },
+    {
+      "directory": "parameters",
+      "version": "v1.0.0",
+      "tag": "parameters/v1.0.0",
+      "tag_url": "https://github.com/rambow-cloud/powertools-lambda-go/tree/parameters/v1.0.0",
+      "sum": "h1:e1ZUv9/UwJLruUJ0wsbLFubwMQ1OmEm4C7jI5HX+ka0=",
+      "go_mod_sum": "h1:+z9bJK3mHwErCr810Ud3wRPAX55HXFwVInKTh/dtWIY=",
+      "consumer_build": true,
+      "checksum_verification": true
+    },
+    {
+      "directory": "tracer",
+      "version": "v1.0.0",
+      "tag": "tracer/v1.0.0",
+      "tag_url": "https://github.com/rambow-cloud/powertools-lambda-go/tree/tracer/v1.0.0",
+      "sum": "h1:913r0ZCXqjSg8mfVAScJMIm+uecyR3wYd7NZmq9l77s=",
+      "go_mod_sum": "h1:GotBKqzChuj54PZIO56u0umOz7y9/odgCSQQfgHhQyg=",
+      "consumer_build": true,
+      "checksum_verification": true
+    },
+    {
+      "directory": "validation",
+      "version": "v1.0.0",
+      "tag": "validation/v1.0.0",
+      "tag_url": "https://github.com/rambow-cloud/powertools-lambda-go/tree/validation/v1.0.0",
+      "sum": "h1:agdH74zJ7+OLxIrslTAHksO6Bqb+297BWP6KzIWoI2s=",
+      "go_mod_sum": "h1:IK6wMevt/khAVzGTdRw15YLd1WnxYvsgYMV+wzmSO44=",
+      "consumer_build": true,
+      "checksum_verification": true
+    },
+    {
+      "directory": "eventhandler/http/tracer",
+      "version": "v1.0.0",
+      "tag": "eventhandler/http/tracer/v1.0.0",
+      "tag_url": "https://github.com/rambow-cloud/powertools-lambda-go/tree/eventhandler/http/tracer/v1.0.0",
+      "sum": "h1:3gCZRgFf0DNXHy76NsmzhkgQBvdTQjz7VN/S6mtZSBo=",
+      "go_mod_sum": "h1:PVEOIAgz5G4r5TTWyaXg2APPn9PPt7rP6DBBEzq6D8w=",
+      "consumer_build": true,
+      "checksum_verification": true
+    },
+    {
+      "directory": "idempotency/cache",
+      "version": "v1.0.0",
+      "tag": "idempotency/cache/v1.0.0",
+      "tag_url": "https://github.com/rambow-cloud/powertools-lambda-go/tree/idempotency/cache/v1.0.0",
+      "sum": "h1:MYL4kzEOpvSjgjIRsilKJveb8C18qG7VLlbKwz0pCPc=",
+      "go_mod_sum": "h1:o9Mj4/zt6HMZMbvqv2O+KQoWPnLbVWeJEllJi6oyYGw=",
+      "consumer_build": true,
+      "checksum_verification": true
+    }
+  ],
+  "limits": [
+    "Browser presentation and pkg.go.dev overview/API/example review remain separate owner checks.",
+    "Local runtime simulation executes amd64; arm64 coverage is build/artifact validation.",
+    "No new AWS cloud testing or billing acceptance.",
+    "Stable compatibility covers the documented maintained subset; exhaustive TypeScript parity is not claimed."
+  ],
+  "readme_example": {
+    "module": "logger",
+    "version": "v1.0.0",
+    "aws_lambda_go": "v1.55.0",
+    "consumer": "Exact README main.go and installation command in an isolated application.",
+    "source_sha": "7be51eb5523612495f1123d82de4a9ee93895b88",
+    "sum": "h1:Bq993Ik4Durxj5rqROZIfxd4Ycunz+FEaRnNm/XH6Lc=",
+    "go_mod_sum": "h1:qPSsgSlX88ZWmmYq5yknSyB77qPy8E8q8Ma4TSpF+t4=",
+    "identity_basis": "Public module sums match the publisher record for the immutable release tag.",
+    "GOWORK": "off",
+    "CGO_ENABLED": "0",
+    "public_proxy_and_checksum_database": true,
+    "fresh_module_cache": true,
+    "local_replacements": false,
+    "module_verification": true,
+    "linux_arm64_build": true,
+    "lambda_runtime_execution": false,
+    "local_network_compatibility": "Verified TLS; supported TLS hybrid/http2 toggles disabled locally only."
+  }
+}
