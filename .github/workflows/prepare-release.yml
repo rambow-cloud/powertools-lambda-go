@@ -9,6 +9,11 @@ on:
         default: auto
         type: choice
         options: [auto, patch, minor, major]
+      version:
+        description: Optional explicit target (for example v1.0.0-rc.1); leave bump at auto
+        required: false
+        default: ''
+        type: string
       auto_publish:
         description: Publish automatically after the preparation PR merges and main checks pass
         required: true
@@ -50,12 +55,15 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
           RELEASE_BUMP: ${{ inputs.bump }}
+          RELEASE_VERSION: ${{ inputs.version }}
           RELEASE_AUTOMATIC: ${{ inputs.auto_publish }}
         run: |
           python3 - <<'PY'
           import os
           import subprocess
           command = ['python3', 'tools/release.py', 'prepare', '--all', '--bump', os.environ['RELEASE_BUMP']]
+          if os.environ['RELEASE_VERSION']:
+              command.extend(['--version', os.environ['RELEASE_VERSION']])
           if os.environ['RELEASE_AUTOMATIC'] == 'true':
               command.append('--auto-publish')
           subprocess.run(command, check=True)

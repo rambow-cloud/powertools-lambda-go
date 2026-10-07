@@ -7,6 +7,9 @@ independent; nested modules still require their own prefixed tags.
 The repository publishes Go source modules and GitHub Releases with GoReleaser
 OSS; Lambda ZIPs remain CI example artifacts. No cloud AWS account is needed.
 
+Before preparing v1, complete [the readiness gates](V1_READINESS.md).
+Documentation and test identity follow [VERSION_POLICY.md](VERSION_POLICY.md).
+
 ## Contribution notes accumulate until publication
 
 Every PR includes a `## Release notes` section. Write one English, user-facing
@@ -105,6 +108,7 @@ and choose **Run workflow** on `main`:
 | Input | Value |
 |---|---|
 | `bump` | Leave `auto` for note-based versioning, or select `patch`, `minor`, or `major` |
+| `version` | Optional explicit target such as `v1.0.0-rc.1`; keep `bump=auto` when specifying it |
 | `auto_publish` | Leave checked to publish after the preparation PR merges and main checks pass |
 
 The workflow creates a Release tracking issue and a preparation PR. It computes
@@ -148,6 +152,21 @@ The CLI preparation commands below can use a maintainer's existing `gh`
 authentication while the organization policy stays restricted.
 
 ## Automatic versions and dependency metadata
+
+For a reviewed candidate, the CLI supports an explicit target:
+
+```sh
+export CGO_ENABLED=0
+uv run --no-project python tools/release.py prepare --all --version v1.0.0-rc.1
+```
+
+Omitting `--auto-publish` leaves automatic publication disabled. The Actions input
+still defaults to enabled; uncheck it for a preparation-only review. The explicit
+version must advance beyond current/published versions and every reserved tag in
+the maintained cohort. Invalid SemVer, downgrades and v2+ paths are rejected.
+Successive candidates compare notes against the preceding published candidate;
+stable promotion compares against the previous stable release. Every candidate
+uses the ordinary reviewed-plan, full-CI and fresh public-consumer gates.
 
 | Situation | Default target |
 |---|---|

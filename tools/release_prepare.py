@@ -54,13 +54,14 @@ def module_changes(modules, directory, previous, target):
     return sorted(path for path in data.split("\0") if path and directory in affected_modules([path], modules))
 
 
-def build_notes_plan(api, modules, target, releases, overrides, bump, reserved_tags, issue=None, automatic=False):
+def build_notes_plan(api, modules, target, releases, overrides, bump, reserved_tags, issue=None, automatic=False, target_version=None):
     directories = scope_modules(modules, all_modules=True)
     history = History(api, modules, target, overrides)
-    previous_tags = {directory: release.previous_release(directory, target, releases) for directory in directories}
+    prerelease = bool(target_version and "-" in target_version)
+    previous_tags = {directory: release.previous_release(directory, target, releases, prerelease=prerelease) for directory in directories}
     histories = {directory: history.notes(previous_tags[directory]) for directory in directories}
     entries = [entry for records, _, _, _ in histories.values() for entry in records]
-    version = unified_version(modules, previous_tags, bump, entries, reserved_tags)
+    version = unified_version(modules, previous_tags, bump, entries, reserved_tags, target_version)
     plan = {"schema_version": 2, "notes_format": 2, "release_version": version,
             "repository_entries": [entry for entry in histories["."][0] if entry["module"] == "repository"],
             "issue": issue or 1, "source_sha": target, "auto_publish": automatic,
@@ -140,10 +141,20 @@ class History:
         return entries, [pr["number"] for pr in prs], direct, generated
 
 
-def next_version(current, previous, bump, entries, reserved=()):
+def next_version(current, previous, bump, entries, reserved=(), target_version=None):
     """First release keeps the configured version; later requests always advance."""
     release.version_key(current)
     baseline = previous.rsplit("/", 1)[-1] if previous else None
+    if target_version is not None:
+        if bump != "auto":
+            raise ValueError("Use either --version or a non-auto --bump, not both.")
+        target_key = release.version_key(target_version)
+        prior = [current, *([baseline] if baseline else [])]
+        if any(target_key <= release.version_key(version) for version in prior):
+            raise ValueError("Explicit target must advance beyond current and published versions.")
+        if any(target_key <= release.version_key(version) for version in reserved):
+            raise ValueError("Explicit target must advance beyond every reserved maintained-module version.")
+        return target_version
     if baseline is None:
         version = current
     else:
@@ -189,7 +200,7 @@ def module_requirements(modules):
     return result
 
 
-def unified_version(modules, previous, bump, entries, reserved_tags):
+def unified_version(modules, previous, bump, entries, reserved_tags, target_version=None):
     current = max((module["version"] for module in modules.values() if maintained(module)), key=release.version_key)
     published = [tag.rsplit("/", 1)[-1] for tag in previous.values() if tag]
     baseline = max([current, *published], key=release.version_key) if published else None
@@ -200,7 +211,7 @@ def unified_version(modules, previous, bump, entries, reserved_tags):
             version = tag.removeprefix(prefix)
             if maintained(module) and tag.startswith(prefix) and release.VERSION.fullmatch(version):
                 reserved.append(version)
-    return next_version(current, baseline, bump, entries, reserved)
+    return next_version(current, baseline, bump, entries, reserved, target_version)
 
 
 def synchronize_metadata(modules, selected, requirements):
@@ -327,6 +338,11 @@ def open_preparation(plan, name, branch, api):
 def prepare(args, api):
     modules = release.manifest()
     requested = scope_modules(modules, getattr(args, "module", None), args.all)
+    target_version = getattr(args, "version", None)
+    if target_version is not None:
+        release.version_key(target_version)
+        if args.bump != "auto":
+            raise ValueError("Use either --version or a non-auto --bump, not both.")
     if args.issue is not None and args.issue < 1:
         raise ValueError("Use a positive release tracking issue number.")
     target = release.git("rev-parse", "HEAD")
@@ -334,13 +350,21 @@ def prepare(args, api):
         raise ValueError("Prepare from a clean checkout of current origin/main; no manual version edits are needed.")
     if args.local and not args.issue:
         raise ValueError("--local requires an existing --issue and creates no GitHub issue or PR.")
-    name = args.plan or "auto-" + hashlib.sha256(("unified:" + ",".join(sorted(requested)) + ":" + args.bump + ":" + str(args.auto_publish)).encode()).hexdigest()[:10] + "-" + target[:12]
+    identity = "unified:" + ",".join(sorted(requested)) + ":" + args.bump + ":" + str(args.auto_publish)
+    if target_version is not None:
+        identity += ":" + target_version
+    name = args.plan or "auto-" + hashlib.sha256(identity.encode()).hexdigest()[:10] + "-" + target[:12]
     plan_path = release.plan_path(name)
     branch = "release/" + name
     if not args.local:
         release.authorize_actor(api)
         existing = list(api.pages("pulls?state=open&head=" + quote(release.REPOSITORY.split("/")[0] + ":" + branch, safe="")))
         if existing:
+            if target_version is not None:
+                release.git("-c", "credential.helper=", "-c", "credential.helper=!gh auth git-credential", "fetch", "origin", "refs/heads/" + branch)
+                existing_plan = json.loads(release.git("show", f"FETCH_HEAD:releases/{name}.json"))
+                if existing_plan["release_version"] != target_version:
+                    raise ValueError("Existing preparation PR has a different explicit target; it was not changed.")
             print(f"Preparation already exists: {existing[0]['html_url']}")
             start_pr_checks(existing[0], api, resume=True)
             return
@@ -349,7 +373,7 @@ def prepare(args, api):
             release.git("-c", "credential.helper=", "-c", "credential.helper=!gh auth git-credential", "fetch", "origin", "refs/heads/" + branch)
             sha = remote_branch["object"]["sha"]
             existing_plan = json.loads(release.git("show", f"{sha}:releases/{name}.json"))
-            if existing_plan["source_sha"] != target or set(existing_plan["requested_modules"]) != set(requested) or existing_plan.get("auto_publish", False) != args.auto_publish or release.git("rev-parse", sha + "^1") != target:
+            if existing_plan["source_sha"] != target or set(existing_plan["requested_modules"]) != set(requested) or existing_plan.get("auto_publish", False) != args.auto_publish or release.git("rev-parse", sha + "^1") != target or (target_version is not None and existing_plan["release_version"] != target_version):
                 raise ValueError("Existing preparation branch conflicts with this request; it was not overwritten.")
             issue = api.repo(f"issues/{existing_plan['issue']}")
             if issue["state"] != "open" or "pull_request" in issue:
@@ -369,7 +393,7 @@ def prepare(args, api):
         return available_cache[tag]
     requirements = module_requirements(modules)
     directories = requested
-    plan = build_notes_plan(api, modules, target, releases, overrides, args.bump, reserved_tags, args.issue, args.auto_publish)
+    plan = build_notes_plan(api, modules, target, releases, overrides, args.bump, reserved_tags, args.issue, args.auto_publish, target_version)
     version = plan["release_version"]
     selected = {item["directory"]: item for item in plan["modules"]}
     predicted = deepcopy(requirements)
