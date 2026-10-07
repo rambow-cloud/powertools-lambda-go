@@ -1,142 +1,142 @@
 {
   "base": "github.com/rambow-cloud/powertools-lambda-go",
-  "release_version": "v0.2.0",
+  "release_version": "v1.0.0-rc.1",
   "modules": [
     {
       "directory": ".",
-      "version": "v0.2.0",
+      "version": "v1.0.0-rc.1",
       "public": true,
       "package": "commons"
     },
     {
       "directory": "commons/awssdk",
-      "version": "v0.2.0",
+      "version": "v1.0.0-rc.1",
       "public": true
     },
     {
       "directory": "commons/dynamodb",
-      "version": "v0.2.0",
+      "version": "v1.0.0-rc.1",
       "public": true
     },
     {
       "directory": "commons/metadata",
-      "version": "v0.2.0",
+      "version": "v1.0.0-rc.1",
       "public": true
     },
     {
       "directory": "commons/regex",
-      "version": "v0.2.0",
+      "version": "v1.0.0-rc.1",
       "public": true
     },
     {
       "directory": "logger",
-      "version": "v0.2.0",
+      "version": "v1.0.0-rc.1",
       "public": true
     },
     {
       "directory": "metrics",
-      "version": "v0.2.0",
+      "version": "v1.0.0-rc.1",
       "public": true
     },
     {
       "directory": "parameters",
-      "version": "v0.2.0",
+      "version": "v1.0.0-rc.1",
       "public": true
     },
     {
       "directory": "signer",
-      "version": "v0.2.0",
+      "version": "v1.0.0-rc.1",
       "public": true
     },
     {
       "directory": "jmespath",
-      "version": "v0.2.0",
+      "version": "v1.0.0-rc.1",
       "public": true
     },
     {
       "directory": "datamasking/kms",
-      "version": "v0.2.0",
+      "version": "v1.0.0-rc.1",
       "public": true,
       "test_os": "linux"
     },
     {
       "directory": "datamasking",
-      "version": "v0.2.0",
+      "version": "v1.0.0-rc.1",
       "public": true
     },
     {
       "directory": "kafka/protobuf",
-      "version": "v0.2.0",
+      "version": "v1.0.0-rc.1",
       "public": true
     },
     {
       "directory": "kafka/avro",
-      "version": "v0.2.0",
+      "version": "v1.0.0-rc.1",
       "public": true
     },
     {
       "directory": "kafka",
-      "version": "v0.2.0",
+      "version": "v1.0.0-rc.1",
       "public": true
     },
     {
       "directory": "batch",
-      "version": "v0.2.0",
+      "version": "v1.0.0-rc.1",
       "public": true
     },
     {
       "directory": "idempotency",
-      "version": "v0.2.0",
+      "version": "v1.0.0-rc.1",
       "public": true
     },
     {
       "directory": "idempotency/cache",
-      "version": "v0.2.0",
+      "version": "v1.0.0-rc.1",
       "public": true
     },
     {
       "directory": "parser",
-      "version": "v0.2.0",
+      "version": "v1.0.0-rc.1",
       "public": true
     },
     {
       "directory": "validation",
-      "version": "v0.2.0",
+      "version": "v1.0.0-rc.1",
       "public": true
     },
     {
       "directory": "eventhandler/http",
-      "version": "v0.2.0",
+      "version": "v1.0.0-rc.1",
       "public": true
     },
     {
       "directory": "eventhandler/appsyncevents",
-      "version": "v0.2.0",
+      "version": "v1.0.0-rc.1",
       "public": true
     },
     {
       "directory": "eventhandler/appsyncgraphql",
-      "version": "v0.2.0",
+      "version": "v1.0.0-rc.1",
       "public": true
     },
     {
       "directory": "eventhandler/bedrock",
-      "version": "v0.2.0",
+      "version": "v1.0.0-rc.1",
       "public": true
     },
     {
       "directory": "eventhandler/http/metrics",
-      "version": "v0.2.0",
+      "version": "v1.0.0-rc.1",
       "public": true
     },
     {
       "directory": "eventhandler/http/tracer",
-      "version": "v0.2.0",
+      "version": "v1.0.0-rc.1",
       "public": true
     },
     {
       "directory": "tracer",
-      "version": "v0.2.0",
+      "version": "v1.0.0-rc.1",
       "public": true
     },
     {
