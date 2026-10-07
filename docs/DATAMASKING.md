@@ -13,7 +13,7 @@ package main
 
 import (
 	"context"
-	"encoding/json"
+	json "encoding/json/v2"
 	"fmt"
 	stdlog "log"
 
@@ -95,7 +95,7 @@ All selected values are captured before provider calls start. Operations run con
 
 ## JSON and native boundaries
 
-Use json.RawMessage when exact source object-key order matters for encrypted plaintext. Commons.SortObjectKeys preserves numeric-key enumeration; native Go maps use deterministic sorted keys. Commons.ParseNumber supplies reference numeric conversion. JSON-tagged native structs are accepted, with encoding/json semantics. Go binary values use their native JSON representation. Fields/rules and callback implementations remain application-owned and must not be mutated during a call.
+Use `jsontext.Value` or `encoding/json.RawMessage` when exact source object-key order matters for encrypted plaintext. Commons.SortObjectKeys preserves numeric-key enumeration; native Go maps use deterministic sorted keys. Commons.ParseNumber supplies reference numeric conversion. JSON-tagged native structs use `encoding/json/v2` semantics. Duplicate object members, invalid UTF-8 and invalid escaped Unicode are rejected. Go binary values use their native JSON representation. Fields/rules and callback implementations remain application-owned and must not be mutated during a call.
 
 Selected/rule operations accept acyclic JSON-shaped data. They do not reproduce structuredClone's Dates, Maps, Sets, cyclic graphs or prototype handling. Native functions/channels/cycles that need cloning return DataMaskingUnsupportedTypeError. Undefined cannot be passed as a whole plaintext to a string-only Go provider. Array length changes/holes, lone UTF-16 surrogates, U+2028/U+2029 serialization and exact JSON parser failures remain open. Returned Error names are explicit library metadata, not overrides of native Lambda Runtime API error type names.
 

@@ -1,12 +1,12 @@
 package validation
 
 import (
-	"bytes"
 	"context"
-	"encoding/json"
+	json "encoding/json/v2"
 	"fmt"
-	"io"
 	"strings"
+
+	"github.com/rambow-cloud/powertools-lambda-go/internal/jsonvalue"
 
 	"github.com/rambow-cloud/powertools-lambda-go/jmespath"
 )
@@ -124,14 +124,9 @@ func jsonValue(value any) (any, error) {
 	if err != nil {
 		return nil, err
 	}
-	decoder := json.NewDecoder(bytes.NewReader(raw))
-	decoder.UseNumber()
 	var result any
-	if err = decoder.Decode(&result); err != nil {
+	if err = json.Unmarshal(raw, &result, jsonvalue.Numbers); err != nil {
 		return nil, err
-	}
-	if err = decoder.Decode(new(any)); err != io.EOF {
-		return nil, fmt.Errorf("payload must contain one JSON value")
 	}
 	return result, nil
 }

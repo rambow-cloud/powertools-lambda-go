@@ -2,7 +2,7 @@ package datamasking
 
 import (
 	"context"
-	"encoding/json"
+	jsonv1 "encoding/json"
 	"fmt"
 	"os"
 	"reflect"
@@ -116,7 +116,7 @@ func (m *Masker) Erase(ctx context.Context, data any, options EraseOptions) (any
 	// Whole-payload erasure does not clone or inspect object contents upstream.
 	// RawMessage must first be decoded to distinguish null, arrays and objects.
 	if options.Fields == nil && options.Rules == nil && !options.Rule.configured() {
-		if _, raw := data.(json.RawMessage); !raw {
+		if _, raw := data.(jsonv1.RawMessage); !raw {
 			value := reflect.ValueOf(data)
 			switch value.Kind() {
 			case reflect.Pointer, reflect.Map, reflect.Slice:

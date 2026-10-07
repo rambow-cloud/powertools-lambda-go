@@ -3,7 +3,7 @@ package main
 import (
 	"bufio"
 	"encoding/base64"
-	"encoding/json"
+	json "encoding/json/v2"
 	"fmt"
 	"io"
 	"net/http"
@@ -33,7 +33,7 @@ func (s *streamRuntime) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	switch {
 	case r.URL.Path == "/stream/invoke":
 		var invocation streamInvocation
-		if err := json.NewDecoder(r.Body).Decode(&invocation); err != nil {
+		if err := json.UnmarshalRead(r.Body, &invocation); err != nil {
 			http.Error(w, err.Error(), 400)
 			return
 		}
@@ -53,7 +53,7 @@ func (s *streamRuntime) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		if result == nil {
 			result = map[string]any{"completed": false}
 		}
-		_ = json.NewEncoder(w).Encode(result)
+		_ = json.MarshalWrite(w, result)
 	case strings.HasPrefix(r.URL.Path, "/stream/gate/"):
 		s.mu.Lock()
 		invocation := s.active[strings.TrimPrefix(r.URL.Path, "/stream/gate/")]
@@ -82,7 +82,7 @@ func (s *streamRuntime) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			if invocation.Mode == "invalid-event" {
 				event = map[string]any{}
 			}
-			_ = json.NewEncoder(w).Encode(event)
+			_ = json.MarshalWrite(w, event)
 		case <-r.Context().Done():
 		}
 	default:

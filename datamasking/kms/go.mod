@@ -1,6 +1,6 @@
 module github.com/rambow-cloud/powertools-lambda-go/datamasking/kms
 
-go 1.26
+go 1.27
 
 require (
 	github.com/aws/aws-cryptographic-material-providers-library/releases/go/mpl v0.4.0

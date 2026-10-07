@@ -2,7 +2,8 @@ package main
 
 import (
 	"context"
-	"encoding/json"
+	jsonv1 "encoding/json"
+	json "encoding/json/v2"
 	"errors"
 
 	"github.com/aws/aws-lambda-go/events"
@@ -12,18 +13,18 @@ import (
 
 func parserIdentityProbe(ctx context.Context) (map[string]any, error) {
 	result := map[string]any{}
-	resolver := json.RawMessage(`{"arguments":{"id":"resolver","amount":1},"source":null,"identity":{"resolverContext":{"role":"reader"}},"request":{"domainName":null,"headers":{}},"info":{"selectionSetList":["id"],"selectionSetGraphQL":"{id}","parentTypeName":"Query","fieldName":"order","variables":{}},"prev":null,"stash":{}}`)
+	resolver := jsonv1.RawMessage(`{"arguments":{"id":"resolver","amount":1},"source":null,"identity":{"resolverContext":{"role":"reader"}},"request":{"domainName":null,"headers":{}},"info":{"selectionSetList":["id"],"selectionSetGraphQL":"{id}","parentTypeName":"Query","fieldName":"order","variables":{}},"prev":null,"stash":{}}`)
 	type resolverInput struct {
 		Arguments order `json:"arguments"`
 	}
 	resolverSchema := parser.Typed[resolverInput](schemas.AppSyncResolverSchema.Extend(parser.Field{Name: "arguments", Schema: parser.Any(orderInputSchema)}))
-	handler := parser.WrapHandler[json.RawMessage](resolverSchema, func(ctx context.Context, input resolverInput) (order, error) { return input.Arguments, ctx.Err() })
+	handler := parser.WrapHandler[jsonv1.RawMessage](resolverSchema, func(ctx context.Context, input resolverInput) (order, error) { return input.Arguments, ctx.Err() })
 	value, err := handler(ctx, resolver)
 	if err != nil {
 		return nil, err
 	}
 	result["resolver"] = value
-	batch, err := parser.Parse(ctx, []json.RawMessage{resolver, resolver}, schemas.AppSyncBatchResolverSchema)
+	batch, err := parser.Parse(ctx, []jsonv1.RawMessage{resolver, resolver}, schemas.AppSyncBatchResolverSchema)
 	if err != nil {
 		return nil, err
 	}
@@ -40,9 +41,9 @@ func parserIdentityProbe(ctx context.Context) (map[string]any, error) {
 	if err != nil {
 		return nil, err
 	}
-	signup := json.RawMessage(`{"version":"1","triggerSource":"PreSignUp_SignUp","region":"ap-east-1","userPoolId":"pool","userName":"user","callerContext":{"awsSdkVersion":"version","clientId":"client"},"request":{"userAttributes":{"email":"synthetic@example.test"},"validationData":null},"response":{"autoConfirmUser":false,"autoVerifyEmail":false,"autoVerifyPhone":false}}`)
+	signup := jsonv1.RawMessage(`{"version":"1","triggerSource":"PreSignUp_SignUp","region":"ap-east-1","userPoolId":"pool","userName":"user","callerContext":{"awsSdkVersion":"version","clientId":"client"},"request":{"userAttributes":{"email":"synthetic@example.test"},"validationData":null},"response":{"autoConfirmUser":false,"autoVerifyEmail":false,"autoVerifyPhone":false}}`)
 	calls := 0
-	signupHandler := parser.WrapHandler[json.RawMessage](parser.Typed[events.CognitoEventUserPoolsPreSignup](schemas.PreSignupTriggerSchema), func(ctx context.Context, event events.CognitoEventUserPoolsPreSignup) (events.CognitoEventUserPoolsPreSignup, error) {
+	signupHandler := parser.WrapHandler[jsonv1.RawMessage](parser.Typed[events.CognitoEventUserPoolsPreSignup](schemas.PreSignupTriggerSchema), func(ctx context.Context, event events.CognitoEventUserPoolsPreSignup) (events.CognitoEventUserPoolsPreSignup, error) {
 		calls++
 		event.Response.AutoConfirmUser = true
 		return event, ctx.Err()
@@ -68,7 +69,7 @@ func parserIdentityProbe(ctx context.Context) (map[string]any, error) {
 	}
 	result["signup_issues"] = failure.Issues
 	result["signup_calls"] = calls
-	token := json.RawMessage(`{"version":"3","triggerSource":"TokenGeneration_Authentication","region":"ap-east-1","userPoolId":"pool","callerContext":{"awsSdkVersion":"version","clientId":"client"},"request":{"userAttributes":{},"groupConfiguration":{"groupsToOverride":[],"iamRolesToOverride":[],"preferredRole":null},"scopes":["read"]},"response":{"stripped":true}}`)
+	token := jsonv1.RawMessage(`{"version":"3","triggerSource":"TokenGeneration_Authentication","region":"ap-east-1","userPoolId":"pool","callerContext":{"awsSdkVersion":"version","clientId":"client"},"request":{"userAttributes":{},"groupConfiguration":{"groupsToOverride":[],"iamRolesToOverride":[],"preferredRole":null},"scopes":["read"]},"response":{"stripped":true}}`)
 	result["token_v1"], err = parser.Parse(ctx, token, schemas.PreTokenGenerationTriggerSchemaV1)
 	if err != nil {
 		return nil, err
@@ -77,7 +78,7 @@ func parserIdentityProbe(ctx context.Context) (map[string]any, error) {
 	if err != nil {
 		return nil, err
 	}
-	challenge := json.RawMessage(`{"version":"1","triggerSource":"DefineAuthChallenge_Authentication","region":"ap-east-1","userPoolId":"pool","callerContext":{"awsSdkVersion":"version","clientId":"client"},"request":{"userAttributes":{},"session":[]},"response":{}}`)
+	challenge := jsonv1.RawMessage(`{"version":"1","triggerSource":"DefineAuthChallenge_Authentication","region":"ap-east-1","userPoolId":"pool","callerContext":{"awsSdkVersion":"version","clientId":"client"},"request":{"userAttributes":{},"session":[]},"response":{}}`)
 	safe, err := parser.SafeParse(ctx, challenge, schemas.DefineAuthChallengeTriggerSchema)
 	if err != nil {
 		return nil, err

@@ -2,7 +2,8 @@ package validation
 
 import (
 	"context"
-	"encoding/json"
+	jsonv1 "encoding/json"
+	json "encoding/json/v2"
 	"errors"
 	"fmt"
 	"maps"
@@ -32,7 +33,7 @@ func (jsonCompiler) Compile(ctx context.Context, input any, options CompileOptio
 	if err != nil {
 		return nil, err
 	}
-	input = json.RawMessage(raw)
+	input = jsonv1.RawMessage(raw)
 	compiler := jsonschema.NewCompiler()
 	compiler.UseRegexpEngine(deferPattern)
 	// Draft 6 supplies the shared assertions; the vocabulary below controls
@@ -72,13 +73,13 @@ func (jsonCompiler) Compile(ctx context.Context, input any, options CompileOptio
 		}
 		formats[name] = true
 		compiler.RegisterFormat(&jsonschema.Format{Name: formatPrefix + name, Validate: func(value any) error {
-			if _, ok := value.(json.Number); ok {
+			if _, ok := value.(jsonv1.Number); ok {
 				return callback(value)
 			}
 			return nil
 		}})
 	}
-	register := func(location string, reference json.RawMessage) error {
+	register := func(location string, reference jsonv1.RawMessage) error {
 		if err := ctx.Err(); err != nil {
 			return err
 		}
@@ -107,7 +108,7 @@ func (jsonCompiler) Compile(ctx context.Context, input any, options CompileOptio
 		if err != nil {
 			return nil, err
 		}
-		value, err := jsonValue(json.RawMessage(raw))
+		value, err := jsonValue(jsonv1.RawMessage(raw))
 		if err != nil {
 			return nil, err
 		}
@@ -165,7 +166,7 @@ func (v *jsonValidator) Validate(ctx context.Context, input any) (result []Issue
 	if err != nil {
 		return nil, err
 	}
-	snapshot := json.RawMessage(raw)
+	snapshot := jsonv1.RawMessage(raw)
 	value, err := jsonValue(snapshot)
 	if err != nil {
 		return nil, err

@@ -1,6 +1,8 @@
 package metrics
 
-import "encoding/json"
+import (
+	jsonv1 "encoding/json"
+)
 
 // ClearDimensions removes regular dimensions and independent dimension sets.
 // Default dimensions, metrics, metadata and the timestamp are preserved.
@@ -24,7 +26,7 @@ func (m *Metrics) ClearMetadata() error {
 	if s.closed.Load() {
 		return ErrInvocationClosed
 	}
-	s.metadata = map[string]json.RawMessage{}
+	s.metadata = map[string]jsonv1.RawMessage{}
 	return nil
 }
 

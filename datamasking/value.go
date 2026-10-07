@@ -2,7 +2,8 @@ package datamasking
 
 import (
 	"bytes"
-	"encoding/json"
+	"encoding/json/jsontext"
+	json "encoding/json/v2"
 	"fmt"
 	"io"
 	"math"
@@ -13,7 +14,7 @@ import (
 )
 
 // The private tree keeps raw JSON insertion order for provider plaintext and
-// wildcard traversal. Native Go maps acquire encoding/json's deterministic order.
+// wildcard traversal. Native Go maps use explicit deterministic JSON ordering.
 type node struct {
 	scalar any
 	object map[string]*node
@@ -22,7 +23,7 @@ type node struct {
 }
 
 func copyInput(input any) (*node, error) {
-	data, err := json.Marshal(input)
+	data, err := json.Marshal(input, json.Deterministic(true))
 	if err != nil {
 		return nil, err
 	}
@@ -30,59 +31,62 @@ func copyInput(input any) (*node, error) {
 }
 
 func parse(data []byte) (*node, error) {
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.UseNumber()
+	decoder := jsontext.NewDecoder(bytes.NewReader(data))
 	result, err := readNode(decoder)
 	if err != nil {
 		return nil, err
 	}
-	if _, err := decoder.Token(); err != io.EOF {
+	if _, err := decoder.ReadToken(); err != io.EOF {
 		return nil, fmt.Errorf("unexpected data after JSON value")
 	}
 	return result, nil
 }
 
-func readNode(decoder *json.Decoder) (*node, error) {
-	token, err := decoder.Token()
+func readNode(decoder *jsontext.Decoder) (*node, error) {
+	token, err := decoder.ReadToken()
 	if err != nil {
 		return nil, err
 	}
 	result := &node{}
-	switch token {
-	case json.Delim('{'):
+	switch token.Kind() {
+	case '{':
 		result.object = map[string]*node{}
-		for decoder.More() {
-			token, err := decoder.Token()
+		for decoder.PeekKind() != '}' {
+			token, err := decoder.ReadToken()
 			if err != nil {
 				return nil, err
 			}
-			key := token.(string)
+			key := token.String()
 			value, err := readNode(decoder)
 			if err != nil {
 				return nil, err
 			}
-			if _, present := result.object[key]; !present {
-				result.order = append(result.order, key)
-			}
+			result.order = append(result.order, key)
 			result.object[key] = value
 		}
 		commons.SortObjectKeys(result.order)
-		_, err = decoder.Token()
-	case json.Delim('['):
+		_, err = decoder.ReadToken()
+	case '[':
 		result.array = []*node{}
-		for decoder.More() {
+		for decoder.PeekKind() != ']' {
 			value, err := readNode(decoder)
 			if err != nil {
 				return nil, err
 			}
 			result.array = append(result.array, value)
 		}
-		_, err = decoder.Token()
+		_, err = decoder.ReadToken()
+	case '"':
+		result.scalar = token.String()
+	case 't':
+		result.scalar = true
+	case 'f':
+		result.scalar = false
+	case '0':
+		result.scalar = commons.ParseNumber(token.String())
+	case 'n':
 	default:
-		result.scalar = token
-		if number, ok := token.(json.Number); ok {
-			result.scalar = commons.ParseNumber(string(number))
-		}
+		return nil, fmt.Errorf("unexpected JSON token %s", token.Kind())
 	}
 	return result, err
 }
@@ -146,11 +150,8 @@ func (n *node) text() string {
 }
 
 func quote(value string) string {
-	var buffer bytes.Buffer
-	encoder := json.NewEncoder(&buffer)
-	encoder.SetEscapeHTML(false)
-	_ = encoder.Encode(value)
-	return strings.TrimSuffix(buffer.String(), "\n")
+	data, _ := json.Marshal(value)
+	return string(data)
 }
 
 func (n *node) stringify() (string, error) {

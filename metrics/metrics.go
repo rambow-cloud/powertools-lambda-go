@@ -1,7 +1,8 @@
 package metrics
 
 import (
-	"encoding/json"
+	jsonv1 "encoding/json"
+	json "encoding/json/v2"
 	"errors"
 	"fmt"
 	"io"
@@ -27,7 +28,7 @@ type state struct {
 	mu                   sync.Mutex
 	defaults, dimensions Dimensions
 	sets                 []Dimensions
-	metadata             map[string]json.RawMessage
+	metadata             map[string]jsonv1.RawMessage
 	metrics              map[string]*metric
 	order                []string
 	timestamp            *float64
@@ -87,7 +88,7 @@ func newState(defaults Dimensions) *state {
 func (s *state) clear() {
 	s.dimensions = Dimensions{}
 	s.sets = nil
-	s.metadata = map[string]json.RawMessage{}
+	s.metadata = map[string]jsonv1.RawMessage{}
 	s.clearMetrics()
 }
 

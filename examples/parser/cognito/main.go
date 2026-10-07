@@ -3,7 +3,7 @@ package main
 
 import (
 	"context"
-	"encoding/json"
+	jsonv1 "encoding/json"
 	"fmt"
 
 	"github.com/aws/aws-lambda-go/events"
@@ -14,7 +14,7 @@ import (
 
 func main() {
 	schema := parser.Typed[events.CognitoEventUserPoolsPreSignup](schemas.PreSignupTriggerSchema)
-	lambda.Start(parser.WrapHandler[json.RawMessage](schema, func(ctx context.Context, event events.CognitoEventUserPoolsPreSignup) (events.CognitoEventUserPoolsPreSignup, error) {
+	lambda.Start(parser.WrapHandler[jsonv1.RawMessage](schema, func(ctx context.Context, event events.CognitoEventUserPoolsPreSignup) (events.CognitoEventUserPoolsPreSignup, error) {
 		if event.Request.UserAttributes["email"] == "" {
 			return event, fmt.Errorf("email is required")
 		}

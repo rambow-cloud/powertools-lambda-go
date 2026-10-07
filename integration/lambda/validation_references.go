@@ -2,7 +2,7 @@ package main
 
 import (
 	"context"
-	"encoding/json"
+	jsonv1 "encoding/json"
 	"errors"
 	"sync"
 
@@ -53,7 +53,7 @@ func validationReferenceProbe(ctx context.Context) (map[string]any, error) {
 	if err != nil {
 		return nil, err
 	}
-	_, err = validation.Compile(ctx, json.RawMessage(`{"properties":{"😀":true},"patternProperties":{"^..$":{"type":"integer"}}}`), validation.Options{})
+	_, err = validation.Compile(ctx, jsonv1.RawMessage(`{"properties":{"😀":true},"patternProperties":{"^..$":{"type":"integer"}}}`), validation.Options{})
 	var compilation *validation.SchemaCompilationError
 	result["strict_utf16_rejected"] = errors.As(err, &compilation)
 	result["setup"], err = validationSetupProbe(ctx)

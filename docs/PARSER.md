@@ -4,6 +4,8 @@ Parser validates and transforms Lambda event data into typed Go values. Import `
 
 See [installation](MODULES.md) and the [compatibility baseline](COMPATIBILITY.md).
 
+JSON helpers and typed conversion use `encoding/json/v2`. `Typed[T]` matches JSON names case-sensitively; use explicit tags such as `json:"id"` on application fields. Raw JSON rejects duplicate members and invalid Unicode, including repeated Kafka topic members. Base64 helpers retain their documented JSON-then-text fallback when strict JSON decoding fails.
+
 ## Complete example
 
 The complete Lambda example validates EventBridge metadata and an order in `detail`, then passes a typed order to the business handler. Build `./examples/parser` with `CGO_ENABLED=0`.

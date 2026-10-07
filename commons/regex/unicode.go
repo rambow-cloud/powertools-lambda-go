@@ -2,7 +2,7 @@ package regex
 
 import (
 	_ "embed"
-	"encoding/json"
+	json "encoding/json/v2"
 	"fmt"
 	"strings"
 	"sync"
@@ -21,8 +21,8 @@ var unicodeProperties = sync.OnceValues(func() (*propertyTables, error) {
 })
 
 type propertyTables struct {
-	Aliases map[string]string
-	Ranges  map[string][][2]uint32
+	Aliases map[string]string      `json:"aliases"`
+	Ranges  map[string][][2]uint32 `json:"ranges"`
 }
 
 func propertyRanges(name string, negative bool) (string, error) {

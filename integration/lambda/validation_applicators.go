@@ -2,7 +2,7 @@ package main
 
 import (
 	"context"
-	"encoding/json"
+	jsonv1 "encoding/json"
 	"sync"
 
 	"github.com/rambow-cloud/powertools-lambda-go/validation"
@@ -22,7 +22,7 @@ func validationApplicatorProbe(ctx context.Context) (map[string]any, error) {
 		return nil, err
 	}
 	payloads := map[string]any{
-		"nested": json.RawMessage(`{"alpha":[false,2],"zebra":{"card":true,"BAD/~":1}}`),
+		"nested": jsonv1.RawMessage(`{"alpha":[false,2],"zebra":{"card":true,"BAD/~":1}}`),
 		"one_of": 6,
 	}
 	return collectValidationIssues(ctx, schemas, payloads)

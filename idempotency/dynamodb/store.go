@@ -2,7 +2,8 @@ package dynamodb
 
 import (
 	"context"
-	"encoding/json"
+	jsonv1 "encoding/json"
+	json "encoding/json/v2"
 	"errors"
 	"fmt"
 	"strconv"
@@ -16,6 +17,7 @@ import (
 	"github.com/rambow-cloud/powertools-lambda-go/commons"
 	"github.com/rambow-cloud/powertools-lambda-go/commons/awssdk"
 	"github.com/rambow-cloud/powertools-lambda-go/idempotency"
+	"github.com/rambow-cloud/powertools-lambda-go/internal/jsonvalue"
 )
 
 type Client interface {
@@ -136,9 +138,7 @@ func (s *Store) Update(ctx context.Context, record idempotency.Record) error {
 	fields := []string{"#expiry = :expiry", "#status = :status"}
 	if len(record.Data) > 0 {
 		var value any
-		decoder := json.NewDecoder(strings.NewReader(string(record.Data)))
-		decoder.UseNumber()
-		if err := decoder.Decode(&value); err != nil {
+		if err := json.Unmarshal(record.Data, &value, jsonvalue.Numbers); err != nil {
 			return err
 		}
 		attribute, err := attributevalue.Marshal(value)
@@ -213,7 +213,7 @@ func (s *Store) decode(key string, item map[string]types.AttributeValue) (idempo
 func jsonNumbers(value any) any {
 	switch v := value.(type) {
 	case attributevalue.Number:
-		return json.Number(v)
+		return jsonv1.Number(v)
 	case map[string]any:
 		for key, item := range v {
 			v[key] = jsonNumbers(item)

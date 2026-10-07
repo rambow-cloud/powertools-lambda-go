@@ -3,7 +3,7 @@ package jmespath
 import (
 	"bytes"
 	"compress/gzip"
-	"encoding/json"
+	json "encoding/json/v2"
 	"io"
 
 	"github.com/rambow-cloud/powertools-lambda-go/commons"

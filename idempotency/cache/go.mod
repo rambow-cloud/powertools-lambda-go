@@ -1,6 +1,6 @@
 module github.com/rambow-cloud/powertools-lambda-go/idempotency/cache
 
-go 1.26
+go 1.27
 
 require (
 	github.com/rambow-cloud/powertools-lambda-go/idempotency v0.2.0

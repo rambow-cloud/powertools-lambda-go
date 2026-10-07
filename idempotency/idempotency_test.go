@@ -6,6 +6,7 @@ import (
 	"errors"
 	"os"
 	"reflect"
+	"strings"
 	"sync"
 	"sync/atomic"
 	"testing"
@@ -154,6 +155,13 @@ func TestReferenceKeys(t *testing.T) {
 				t.Fatal(err)
 			}
 			key, validation, skip, err := m.Key(json.RawMessage(fixture.Raw))
+			if fixture.Raw == `{"same":1,"same":2}` {
+				// JSON v2 rejects duplicate members before a key can be created.
+				if err == nil || key != "" || !strings.Contains(err.Error(), "duplicate object member name") {
+					t.Fatalf("duplicate payload accepted: key=%s error=%v", key, err)
+				}
+				return
+			}
 			if err != nil || skip || key != fixture.Key || validation != fixture.Validation {
 				t.Fatalf("key=%s validation=%s skip=%v error=%v; expected %s %s", key, validation, skip, err, fixture.Key, fixture.Validation)
 			}

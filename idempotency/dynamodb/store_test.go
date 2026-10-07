@@ -159,7 +159,11 @@ func TestConsistentReadsAndConditionalConflict(t *testing.T) {
 				if err != nil {
 					t.Fatal(err)
 				}
-				if string(r.Data) != `{"integer":9007199254740993,"items":[1.5,null]}` || r.Key != "key" || r.Status != idempotency.Completed {
+				var payload struct {
+					Integer json.Number `json:"integer"`
+					Items   []any       `json:"items"`
+				}
+				if json.Unmarshal(r.Data, &payload) != nil || payload.Integer.String() != "9007199254740993" || !reflect.DeepEqual(payload.Items, []any{1.5, nil}) || r.Key != "key" || r.Status != idempotency.Completed {
 					t.Fatalf("%+v %s", r, r.Data)
 				}
 			case "not-found":

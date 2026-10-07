@@ -1,7 +1,7 @@
 package main
 
 import (
-	"encoding/json"
+	json "encoding/json/v2"
 	"net/http"
 	"strconv"
 	"strings"
@@ -45,7 +45,7 @@ func (f *idempotencyFixture) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		ExpressionAttributeNames  map[string]string
 		ExpressionAttributeValues map[string]any
 	}
-	if err := json.NewDecoder(r.Body).Decode(&input); err != nil {
+	if err := json.UnmarshalRead(r.Body, &input); err != nil {
 		http.Error(w, err.Error(), 400)
 		return
 	}
@@ -66,12 +66,12 @@ func (f *idempotencyFixture) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		orphan := avString(existing, "status", "S") == "INPROGRESS" && lease != 0 && lease < millis
 		if found && !expired && !orphan {
 			w.WriteHeader(400)
-			_ = json.NewEncoder(w).Encode(map[string]any{"__type": "ConditionalCheckFailedException", "Item": existing})
+			_ = json.MarshalWrite(w, map[string]any{"__type": "ConditionalCheckFailedException", "Item": existing})
 			return
 		}
 		f.records[key] = input.Item
 	case "GetItem":
-		_ = json.NewEncoder(w).Encode(map[string]any{"Item": f.records[key]})
+		_ = json.MarshalWrite(w, map[string]any{"Item": f.records[key]})
 		return
 	case "UpdateItem":
 		item := f.records[key]
@@ -88,5 +88,5 @@ func (f *idempotencyFixture) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "unsupported fixture operation", 400)
 		return
 	}
-	_ = json.NewEncoder(w).Encode(map[string]any{})
+	_ = json.MarshalWrite(w, map[string]any{})
 }

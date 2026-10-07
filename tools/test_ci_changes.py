@@ -92,7 +92,7 @@ class RoutingTests(unittest.TestCase):
                                ("old", "require example.com/project v0.1.0\n")):
                 (root / name).mkdir(exist_ok=True)
                 module = "example.com/project" + ("/" + name if name != "." else "")
-                (root / name / "go.mod").write_text("module " + module + "\ngo 1.26\n" + body)
+                (root / name / "go.mod").write_text("module " + module + "\ngo 1.27\n" + body)
             self.assertEqual(ci_changes.select(["identity.go"], root=root)["modules"], [".", "child", "nested"])
             self.assertEqual(ci_changes.select(["identity_test.go"], root=root)["modules"], ["."])
 

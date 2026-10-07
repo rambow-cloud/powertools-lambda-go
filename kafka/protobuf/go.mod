@@ -1,6 +1,6 @@
 module github.com/rambow-cloud/powertools-lambda-go/kafka/protobuf
 
-go 1.26
+go 1.27
 
 require (
 	github.com/rambow-cloud/powertools-lambda-go v0.2.0

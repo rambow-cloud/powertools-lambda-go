@@ -1,7 +1,8 @@
 package validation
 
 import (
-	"encoding/json"
+	jsonv1 "encoding/json"
+	json "encoding/json/v2"
 	"math"
 	"strings"
 	"unicode/utf8"
@@ -25,7 +26,7 @@ func (m *schemaMetadata) adaptKeywords(s *jsonschema.Schema) {
 		{"minItems", "items", &s.MinItems}, {"maxItems", "items", &s.MaxItems},
 		{"minProperties", "properties", &s.MinProperties}, {"maxProperties", "properties", &s.MaxProperties},
 	} {
-		if value, ok := source[rule.name].(json.Number); ok {
+		if value, ok := source[rule.name].(jsonv1.Number); ok {
 			limit, _ := value.Float64()
 			*rule.native = nil
 			sizes = append(sizes, sizeLimit{rule.name, rule.unit, limit})
@@ -106,7 +107,7 @@ func (v sizeValidator) Validate(ctx *jsonschema.ValidatorContext, value any) {
 type multipleValidator float64
 
 func (v multipleValidator) Validate(ctx *jsonschema.ValidatorContext, value any) {
-	number, ok := value.(json.Number)
+	number, ok := value.(jsonv1.Number)
 	if !ok {
 		return
 	}
@@ -206,7 +207,7 @@ func propertyText(value any) string {
 			return "true"
 		}
 		return "false"
-	case json.Number:
+	case jsonv1.Number:
 		number, _ := value.Float64()
 		return numberText(number)
 	case []any:

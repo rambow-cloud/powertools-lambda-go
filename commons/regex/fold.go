@@ -2,7 +2,7 @@ package regex
 
 import (
 	_ "embed"
-	"encoding/json"
+	json "encoding/json/v2"
 	"fmt"
 	"strconv"
 	"strings"

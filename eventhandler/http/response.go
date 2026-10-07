@@ -3,7 +3,7 @@ package http
 import (
 	"bytes"
 	"encoding/base64"
-	"encoding/json"
+	json "encoding/json/v2"
 	"fmt"
 	"io"
 	"mime"
@@ -39,13 +39,7 @@ type ProxyResponse struct {
 }
 
 func jsonBytes(value any) ([]byte, error) {
-	var result bytes.Buffer
-	encoder := json.NewEncoder(&result)
-	encoder.SetEscapeHTML(false)
-	if err := encoder.Encode(value); err != nil {
-		return nil, err
-	}
-	return bytes.TrimSuffix(result.Bytes(), []byte{'\n'}), nil
+	return json.Marshal(value)
 }
 
 func ioBody(body []byte) io.ReadCloser { return io.NopCloser(bytes.NewReader(body)) }

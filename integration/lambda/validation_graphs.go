@@ -2,7 +2,7 @@ package main
 
 import (
 	"context"
-	"encoding/json"
+	jsonv1 "encoding/json"
 	"errors"
 	"sync"
 
@@ -18,16 +18,16 @@ var validationGraphSchemas = sync.OnceValues(func() (map[string]*validation.Sche
 	if err != nil {
 		return nil, err
 	}
-	schemas["external"], err = validation.Compile(context.Background(), json.RawMessage(`{"$ref":"https://example.test/nested/number"}`), validation.Options{CompileOptions: validation.CompileOptions{
-		ExternalSchemas: []any{json.RawMessage(`{"$id":"https://example.test/document","$defs":{"a/b~c":{"$id":"nested/","$defs":{"value":{"$id":"number","$schema":"https://example.test/annotation","type":"number"}}}}}`)},
+	schemas["external"], err = validation.Compile(context.Background(), jsonv1.RawMessage(`{"$ref":"https://example.test/nested/number"}`), validation.Options{CompileOptions: validation.CompileOptions{
+		ExternalSchemas: []any{jsonv1.RawMessage(`{"$id":"https://example.test/document","$defs":{"a/b~c":{"$id":"nested/","$defs":{"value":{"$id":"number","$schema":"https://example.test/annotation","type":"number"}}}}}`)},
 	}})
 	if err != nil {
 		return nil, err
 	}
-	schemas["ordered"], err = validation.Compile(context.Background(), json.RawMessage(`{"$ref":"https://example.test/shared"}`), validation.Options{CompileOptions: validation.CompileOptions{
+	schemas["ordered"], err = validation.Compile(context.Background(), jsonv1.RawMessage(`{"$ref":"https://example.test/shared"}`), validation.Options{CompileOptions: validation.CompileOptions{
 		ExternalSchemas: []any{
-			json.RawMessage(`{"$id":"https://example.test/first","$defs":{"value":{"$id":"shared","type":"number"}}}`),
-			json.RawMessage(`{"$id":"https://example.test/second","$defs":{"value":{"$id":"shared","type":"string"}}}`),
+			jsonv1.RawMessage(`{"$id":"https://example.test/first","$defs":{"value":{"$id":"shared","type":"number"}}}`),
+			jsonv1.RawMessage(`{"$id":"https://example.test/second","$defs":{"value":{"$id":"shared","type":"string"}}}`),
 		},
 	}})
 	return schemas, err
@@ -50,7 +50,7 @@ func validationGraphProbe(ctx context.Context) (map[string]any, error) {
 			return nil, err
 		}
 	}
-	_, err = validation.Compile(ctx, json.RawMessage(`{"if":{"$ref":"https://example.test/missing"},"then":false,"else":true}`), validation.Options{})
+	_, err = validation.Compile(ctx, jsonv1.RawMessage(`{"if":{"$ref":"https://example.test/missing"},"then":false,"else":true}`), validation.Options{})
 	var compilation *validation.SchemaCompilationError
 	result["active_missing_rejected"] = errors.As(err, &compilation)
 	return result, nil

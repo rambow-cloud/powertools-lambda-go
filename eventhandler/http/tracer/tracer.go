@@ -2,7 +2,7 @@ package tracer
 
 import (
 	"bytes"
-	"encoding/json"
+	json "encoding/json/v2"
 	"fmt"
 	"io"
 	"math"
