@@ -7,6 +7,9 @@ independent; nested modules still require their own prefixed tags.
 The repository publishes Go source modules and GitHub Releases with GoReleaser
 OSS; Lambda ZIPs remain CI example artifacts. No cloud AWS account is needed.
 
+Before preparing v1, complete [the readiness gates](V1_READINESS.md).
+Documentation and test identity follow [VERSION_POLICY.md](VERSION_POLICY.md).
+
 ## Contribution notes accumulate until publication
 
 Every PR includes a `## Release notes` section. Write one English, user-facing
