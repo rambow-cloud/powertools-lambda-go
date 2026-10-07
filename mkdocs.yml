@@ -168,6 +168,7 @@ nav:
           - Idempotency: IDEMPOTENCY_PLAN.md
           - Parser: PARSER_PLAN.md
           - Validation: VALIDATION_PLAN.md
+          - Validation extensions: VALIDATION_EXTENSION_DESIGN.md
           - Kafka: KAFKA_PLAN.md
           - Additional Kafka wire modes: KAFKA_WIRE_DESIGN.md
           - Data Masking: DATAMASKING_PLAN.md

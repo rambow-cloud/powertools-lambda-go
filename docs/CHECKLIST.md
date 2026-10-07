@@ -6,6 +6,8 @@ Usage belongs in the utility guides. [Feature comparison](FEATURE_PARITY.md) map
 
 ## Documentation and feature audit
 
+- [x] DESIGN-118: Define additional Validation dialect and extension compatibility without changing current defaults. Inspected the default compiler and pinned v2.35.0/AJV v8.20.0 source; executed thirteen reference observations for dialects, annotations, mutation, data references and custom keywords. Locked dependencies, navigation, eighteen guide checks and strict site build pass. See [design acceptance](VALIDATION_EXTENSION_DESIGN.md); issue #118. Planning only; implementation/service gates remain open (2026-10-08).
+
 - [x] DESIGN-117: Audit Kafka delivery versus raw producer framing against pinned TypeScript v2.35.0, current adapters/corpora and AWS/Confluent contracts. Publish the supported-mode matrix, concrete missing frame/index parsing, resolver/dependency ownership and proposed malformed/lazy/concurrency acceptance in [the wire design](KAFKA_WIRE_DESIGN.md). Locked dependencies, navigation, eighteen guide checks and strict build pass. This completes issue #117's planning scope, not implementation or live-service acceptance (2026-10-08).
 
 - [x] DOC-15: Verify automatic Cloudflare Pages production publication from an actual `main` push: observed a `github:push` deployment for commit `a39d92fac53cd13b66f6efd6abc864e48a9e9813`, successful locked-dependency/navigation/guide/strict-build checks and a successful deployment (2026-10-02). Custom-domain and certificate statuses remain active. Evidence: [CLOUDFLARE_ACCEPTANCE.json](CLOUDFLARE_ACCEPTANCE.json).
