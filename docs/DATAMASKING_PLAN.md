@@ -1,5 +1,9 @@
 # Data Masking implementation plan
 
+Issue #116's bounded-cache planning is recorded in [the KMS cache design](KMS_CACHE_DESIGN.md).
+It compares the pinned upstream APIs and defines isolation, limits and acceptance;
+the provider remains uncached and implementation/interoperability gates stay open.
+
 Reference: Powertools TypeScript v2.35.0, commit 7bcc27b1574493f9452688673658f52b80c53847. The installed package and lockfile provide the executable reference. Keep plain masking independent of optional encryption dependencies.
 
 - [x] MASK-SOURCE: Audit DataMasking, public types/errors, field resolution, rule precedence, provider transforms and the KMS provider. Confirm dot/wildcard selection without JMESPath, structuredClone behavior, default mask, missing-field asymmetry, concurrent transforms and ignored providerOptions.
