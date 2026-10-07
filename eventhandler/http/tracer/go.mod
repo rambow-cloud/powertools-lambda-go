@@ -3,9 +3,9 @@ module github.com/rambow-cloud/powertools-lambda-go/eventhandler/http/tracer
 go 1.27
 
 require (
-	github.com/rambow-cloud/powertools-lambda-go v0.2.0
-	github.com/rambow-cloud/powertools-lambda-go/eventhandler/http v0.2.0
-	github.com/rambow-cloud/powertools-lambda-go/tracer v0.2.0
+	github.com/rambow-cloud/powertools-lambda-go v1.0.0-rc.1
+	github.com/rambow-cloud/powertools-lambda-go/eventhandler/http v1.0.0-rc.1
+	github.com/rambow-cloud/powertools-lambda-go/tracer v1.0.0-rc.1
 	go.opentelemetry.io/otel v1.46.0
 	go.opentelemetry.io/otel/sdk v1.46.0
 	go.opentelemetry.io/otel/trace v1.46.0
@@ -35,7 +35,7 @@ require (
 	github.com/go-logr/stdr v1.2.2 // indirect
 	github.com/google/uuid v1.6.0 // indirect
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.30.0 // indirect
-	github.com/rambow-cloud/powertools-lambda-go/commons/awssdk v0.2.0 // indirect
+	github.com/rambow-cloud/powertools-lambda-go/commons/awssdk v1.0.0-rc.1 // indirect
 	go.opentelemetry.io/auto/sdk v1.2.1 // indirect
 	go.opentelemetry.io/contrib/instrumentation/github.com/aws/aws-sdk-go-v2/otelaws v0.71.0 // indirect
 	go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp v0.71.0 // indirect

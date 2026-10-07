@@ -8,9 +8,9 @@ require (
 	github.com/aws/aws-sdk-go-v2/config v1.33.4
 	github.com/aws/aws-sdk-go-v2/service/kms v1.51.1
 	github.com/aws/smithy-go v1.28.1
-	github.com/rambow-cloud/powertools-lambda-go v0.2.0
-	github.com/rambow-cloud/powertools-lambda-go/commons/awssdk v0.2.0
-	github.com/rambow-cloud/powertools-lambda-go/datamasking v0.2.0
+	github.com/rambow-cloud/powertools-lambda-go v1.0.0-rc.1
+	github.com/rambow-cloud/powertools-lambda-go/commons/awssdk v1.0.0-rc.1
+	github.com/rambow-cloud/powertools-lambda-go/datamasking v1.0.0-rc.1
 )
 
 require (
