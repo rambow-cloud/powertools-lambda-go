@@ -1,7 +1,6 @@
 package dynamodblocal_test
 
 import (
-	"bytes"
 	"context"
 	"crypto/rand"
 	"encoding/hex"
@@ -144,11 +143,11 @@ func TestDynamoDBLocalConditionalClaimsAndReplay(t *testing.T) {
 		t.Fatal(err)
 	}
 	got, err := s.Get(ctx, "claim")
-	if err != nil || got.Status != idempotency.Completed || string(got.Data) != `{"n":9007199254740993,"ok":true}` {
+	if err != nil || got.Status != idempotency.Completed || !sameJSON(got.Data, record.Data) {
 		t.Fatalf("persisted completion: %+v/%v", got, err)
 	}
 	var conflict *idempotency.AlreadyExistsError
-	if err := s.Put(ctx, record, now); !errors.As(err, &conflict) || conflict.Record == nil || !bytes.Equal(conflict.Record.Data, got.Data) {
+	if err := s.Put(ctx, record, now); !errors.As(err, &conflict) || conflict.Record == nil || !sameJSON(conflict.Record.Data, got.Data) {
 		t.Fatalf("completed prior item: %v", err)
 	}
 	newManager := func() *idempotency.Manager {
