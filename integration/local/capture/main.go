@@ -3,7 +3,8 @@
 package main
 
 import (
-	"encoding/json"
+	jsonv1 "encoding/json"
+	json "encoding/json/v2"
 	"fmt"
 	"io"
 	"log"
@@ -17,7 +18,7 @@ import (
 
 func main() {
 	var mu sync.Mutex
-	batches := []json.RawMessage{}
+	batches := []jsonv1.RawMessage{}
 	requests := []map[string]string{}
 	appConfigPolls := 0
 	mux := http.NewServeMux()
@@ -52,7 +53,7 @@ func main() {
 		mu.Lock()
 		defer mu.Unlock()
 		w.Header().Set("Content-Type", "application/json")
-		_ = json.NewEncoder(w).Encode(map[string]any{"batches": batches, "requests": requests, "idempotency": idempotency.snapshot()})
+		_ = json.MarshalWrite(w, map[string]any{"batches": batches, "requests": requests, "idempotency": idempotency.snapshot()})
 	})
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		mu.Lock()

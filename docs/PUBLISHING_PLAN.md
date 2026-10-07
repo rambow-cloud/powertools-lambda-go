@@ -37,7 +37,7 @@ A single module does not automatically compile or link every listed dependency i
 
 The selected structure uses one repository, coarse utility modules, and additional adapter modules where they isolate optional dependencies. It does not turn every helper or source file into a module.
 
-The previous root `go.mod` included Parameters SDK providers, OpenTelemetry exporters, and the legacy X-Ray SDK. The new root module has no third-party requirements. Feature and adapter module files own their respective dependencies. All currently use the existing Go 1.26 baseline.
+The previous root `go.mod` included Parameters SDK providers, OpenTelemetry exporters, and the legacy X-Ray SDK. The new root module has no third-party requirements. Feature and adapter module files own their respective dependencies. All currently use the existing Go 1.27 baseline.
 
 The split follows these boundaries:
 

@@ -99,7 +99,7 @@ func TestErrorsSerializationAndReentrantDiagnostics(t *testing.T) {
 		t.Fatalf("reentrant registration: %v %v", result, err)
 	}
 	result, err = app.Resolve(context.Background(), testEvent())
-	if err != nil || !strings.Contains(body(result).(string), "unsupported type") {
+	if err != nil || !strings.Contains(body(result).(string), "cannot marshal from Go func()") {
 		t.Fatalf("serialization failure escaped: %v %v", result, err)
 	}
 	cycle := map[string]any{}

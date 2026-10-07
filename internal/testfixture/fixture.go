@@ -2,7 +2,7 @@
 package testfixture
 
 import (
-	"encoding/json"
+	json "encoding/json/v2"
 	"math"
 	"math/big"
 	"os"

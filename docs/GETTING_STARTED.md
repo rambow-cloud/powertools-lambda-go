@@ -2,7 +2,13 @@
 
 ## Prerequisites and installation
 
-Use Go 1.26 or newer. The Lambda executable runs on `provided.al2023`; it does not require Node.js or Python. Build with `CGO_ENABLED=0`.
+Use Go 1.27 or newer. The Lambda executable runs on `provided.al2023`; it does not require Node.js or Python. Build with `CGO_ENABLED=0`.
+
+Maintained packages and examples use `encoding/json/v2` and `encoding/json/jsontext` directly. Go 1.27 provides these APIs without an experiment flag. JSON object member names must be unique, UTF-8 and escaped Unicode must be valid, and struct fields match JSON names case-sensitively. Give application structs explicit `json` tags that match their input.
+
+Nil slices and maps encode as `[]` and `{}`. `omitempty` omits empty JSON values; use `omitzero` when a field's Go zero value should be absent. Map member order is unspecified unless an operation explicitly requires ordering. Strings do not escape HTML by default. Byte arrays and slices use Base64; `time.Duration` requires an explicit supported format. Custom encoding can implement `MarshalJSONTo(*jsontext.Encoder) error`; decoding can implement `UnmarshalJSONFrom(*jsontext.Decoder) error`. See the [JSON v2 API](https://pkg.go.dev/encoding/json/v2) for the complete current behavior. `json.RawMessage` and `json.Number` from `encoding/json` remain usable value types; maintained serialization calls use v2 APIs.
+
+These rules describe JSON serialization owned by Powertools. Invocation input/output serialization performed by `aws-lambda-go` follows that SDK's encoding contract.
 
 Public module tags have not been released yet. Until they exist, work from a local checkout and use the repository's `go.work`, which connects the independent modules. After the initial source upload, obtain a checkout with:
 

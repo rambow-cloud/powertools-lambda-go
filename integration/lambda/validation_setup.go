@@ -2,7 +2,7 @@ package main
 
 import (
 	"context"
-	"encoding/json"
+	jsonv1 "encoding/json"
 	"errors"
 	"sync"
 
@@ -44,7 +44,7 @@ func validationSetupProbe(ctx context.Context) (map[string]any, error) {
 		"shape_rejected":      `{"$defs":{"value":{"required":true}},"$ref":"#/$defs/value"}`,
 		"branch_rejected":     `{"if":true,"then":true,"else":{"format":"unknown"}}`,
 	} {
-		_, err := validation.Compile(ctx, json.RawMessage(raw), validation.Options{})
+		_, err := validation.Compile(ctx, jsonv1.RawMessage(raw), validation.Options{})
 		var compilation *validation.SchemaCompilationError
 		result[name] = errors.As(err, &compilation)
 	}

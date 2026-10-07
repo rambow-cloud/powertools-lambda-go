@@ -3,6 +3,8 @@ package logger
 import (
 	"bytes"
 	"encoding/json"
+	"encoding/json/jsontext"
+	jsonv2 "encoding/json/v2"
 	"errors"
 	"strings"
 	"testing"
@@ -37,6 +39,22 @@ type dualEmptyString string
 func (dualEmptyString) MarshalJSON() ([]byte, error) { return []byte(`"json value"`), nil }
 func (dualEmptyString) MarshalText() ([]byte, error) { return nil, emptyStringTextError }
 
+type streamingEmptyString string
+
+func (streamingEmptyString) MarshalJSONTo(encoder *jsontext.Encoder) error {
+	return encoder.WriteToken(jsontext.String("streaming value"))
+}
+func (streamingEmptyString) MarshalJSON() ([]byte, error) { return nil, emptyStringJSONError }
+
+type failingStreamingEmptyString string
+
+func (failingStreamingEmptyString) MarshalJSONTo(encoder *jsontext.Encoder) error {
+	if err := encoder.WriteToken(jsontext.BeginObject); err != nil {
+		return err
+	}
+	return emptyStringJSONError
+}
+
 func TestEmptyStringAttributeMarshalers(t *testing.T) {
 	cleanEnv(t)
 	for _, tc := range []struct {
@@ -51,6 +69,8 @@ func TestEmptyStringAttributeMarshalers(t *testing.T) {
 		{"text-error", failingEmptyStringText(""), "", emptyStringTextError},
 		{"text-empty", emptyTextOutput(""), "", nil},
 		{"dual", dualEmptyString(""), "json value", nil},
+		{"streaming-value", streamingEmptyString(""), "streaming value", nil},
+		{"streaming-error", failingStreamingEmptyString(""), "", emptyStringJSONError},
 	} {
 		for _, source := range []string{"extra", "persistent", "temporary", "formatter"} {
 			for _, replace := range []bool{false, true} {
@@ -87,7 +107,7 @@ func TestEmptyStringAttributeMarshalers(t *testing.T) {
 					}
 					err := l.Info("record", extra...)
 					if tc.wantErr != nil {
-						var marshalErr *json.MarshalerError
+						var marshalErr *jsonv2.SemanticError
 						if !errors.Is(err, tc.wantErr) || !errors.As(err, &marshalErr) || output.Len() != 0 {
 							t.Fatalf("marshaler error lost: output=%s error=%v", &output, err)
 						}
@@ -111,6 +131,38 @@ func TestEmptyStringAttributeMarshalers(t *testing.T) {
 					}
 				})
 			}
+		}
+	}
+}
+
+func TestInvalidUTF8FieldNameDoesNotWritePartialRecord(t *testing.T) {
+	cleanEnv(t)
+	var output bytes.Buffer
+	l := New(WithOutput(&output))
+	err := l.Info("record", Fields{string([]byte{0xff}): "value"})
+	var syntax *jsontext.SyntacticError
+	if !errors.As(err, &syntax) || output.Len() != 0 {
+		t.Fatalf("invalid name emitted partial JSON: output=%s error=%v", &output, err)
+	}
+}
+
+func TestNestedNilCollectionsUseJSONV2Defaults(t *testing.T) {
+	cleanEnv(t)
+	for _, replace := range []bool{false, true} {
+		var output bytes.Buffer
+		options := []Option{WithOutput(&output)}
+		if replace {
+			options = append(options, WithReplacer(func(_ string, value any) any { return value }))
+		}
+		l := New(options...)
+		if err := l.Info("record", Fields{"payload": Fields{"items": []string(nil), "meta": map[string]int(nil)}}); err != nil {
+			t.Fatal(err)
+		}
+		payload := records(t, &output)[0]["payload"].(map[string]any)
+		items, itemsOK := payload["items"].([]any)
+		meta, metaOK := payload["meta"].(map[string]any)
+		if !itemsOK || !metaOK || len(items) != 0 || len(meta) != 0 {
+			t.Fatalf("replacer=%t: nil collections changed: %v", replace, payload)
 		}
 	}
 }

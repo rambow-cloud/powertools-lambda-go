@@ -432,7 +432,7 @@ def verify_consumer(directory, item, module, session):
     name = "github.com/" + REPOSITORY + ("" if directory == "." else "/" + directory)
     consumer = session / "consumers" / ("commons" if directory == "." else directory)
     consumer.mkdir(parents=True, exist_ok=True)
-    consumer.joinpath("go.mod").write_text(f"module example.com/release-consumer\n\ngo 1.26\n\nrequire {name} {item['version']}\n", encoding="utf-8")
+    consumer.joinpath("go.mod").write_text(f"module example.com/release-consumer\n\ngo 1.27\n\nrequire {name} {item['version']}\n", encoding="utf-8")
     imported = name + ("/" + module["package"] if module.get("package") else "")
     consumer.joinpath("main.go").write_text(f'package main\n\nimport _ "{imported}"\n\nfunc main() {{}}\n', encoding="utf-8")
     env = os.environ.copy()

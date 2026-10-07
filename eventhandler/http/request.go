@@ -3,7 +3,9 @@ package http
 import (
 	"bytes"
 	"context"
-	"encoding/json"
+	jsonv1 "encoding/json"
+	"encoding/json/jsontext"
+	json "encoding/json/v2"
 	"fmt"
 	"io"
 	nethttp "net/http"
@@ -26,7 +28,7 @@ type RequestContext struct {
 	Context         context.Context
 	Request         *nethttp.Request
 	Response        *nethttp.Response
-	Event           json.RawMessage
+	Event           jsonv1.RawMessage
 	ResponseType    ResponseType
 	Route           string
 	Params          map[string]string
@@ -56,9 +58,9 @@ func (r *RequestContext) Respond(value any) error {
 	return nil
 }
 
-type wireObject map[string]json.RawMessage
+type wireObject map[string]jsonv1.RawMessage
 
-func object(raw json.RawMessage) wireObject {
+func object(raw jsonv1.RawMessage) wireObject {
 	if len(raw) == 0 || raw[0] != '{' {
 		return nil
 	}
@@ -66,7 +68,7 @@ func object(raw json.RawMessage) wireObject {
 	_ = json.Unmarshal(raw, &result)
 	return result
 }
-func textValue(raw json.RawMessage) (string, bool) {
+func textValue(raw jsonv1.RawMessage) (string, bool) {
 	var result string
 	if len(raw) == 0 || raw[0] != '"' {
 		return "", false
@@ -74,8 +76,8 @@ func textValue(raw json.RawMessage) (string, bool) {
 	err := json.Unmarshal(raw, &result)
 	return result, err == nil
 }
-func null(raw json.RawMessage) bool { return bytes.Equal(raw, []byte("null")) }
-func optionalObject(raw json.RawMessage, nullable bool) bool {
+func null(raw jsonv1.RawMessage) bool { return bytes.Equal(raw, []byte("null")) }
+func optionalObject(raw jsonv1.RawMessage, nullable bool) bool {
 	return object(raw) != nil || nullable && null(raw) || !nullable && len(raw) == 0
 }
 func isV2(event wireObject) bool {
@@ -94,38 +96,39 @@ func isV1(event wireObject) bool {
 	_, body := textValue(event["body"])
 	return method && path && resource && (len(event["headers"]) == 0 || optionalObject(event["headers"], true)) && (len(event["multiValueHeaders"]) == 0 || optionalObject(event["multiValueHeaders"], true)) && object(event["requestContext"]) != nil && isBool(event["isBase64Encoded"]) && (len(event["body"]) == 0 || null(event["body"]) || body) && optionalObject(event["pathParameters"], true) && optionalObject(event["queryStringParameters"], true) && optionalObject(event["multiValueQueryStringParameters"], true) && optionalObject(event["stageVariables"], true)
 }
-func isBool(raw json.RawMessage) bool { return string(raw) == "true" || string(raw) == "false" }
+func isBool(raw jsonv1.RawMessage) bool { return string(raw) == "true" || string(raw) == "false" }
 func IsHTTPMethod(method string) bool {
 	return strings.Contains(" GET POST PUT PATCH DELETE HEAD OPTIONS ", " "+method+" ")
 }
 
 // Each object is traversed in JSON order, preserving raw-event query value order.
-func visitObject(raw json.RawMessage, visit func(string, json.RawMessage) error) error {
-	if len(raw) == 0 || null(raw) {
+func visitObject(raw jsonv1.RawMessage, visit func(string, jsonv1.RawMessage) error) error {
+	if null(raw) || len(raw) == 0 {
 		return nil
 	}
-	decoder := json.NewDecoder(bytes.NewReader(raw))
-	if token, err := decoder.Token(); err != nil || token != json.Delim('{') {
+	decoder := jsontext.NewDecoder(bytes.NewReader(raw))
+	if token, err := decoder.ReadToken(); err != nil || token.Kind() != '{' {
 		return fmt.Errorf("expected an object")
 	}
-	for decoder.More() {
-		token, err := decoder.Token()
+	for decoder.PeekKind() != '}' {
+		token, err := decoder.ReadToken()
 		if err != nil {
 			return err
 		}
-		var value json.RawMessage
-		if err := decoder.Decode(&value); err != nil {
+		key := token.String()
+		value, err := decoder.ReadValue()
+		if err != nil {
 			return err
 		}
-		if err := visit(token.(string), value); err != nil {
+		if err := visit(key, jsonv1.RawMessage(value)); err != nil {
 			return err
 		}
 	}
-	_, err := decoder.Token()
+	_, err := decoder.ReadToken()
 	return err
 }
 
-func headerValue(raw json.RawMessage) (string, error) {
+func headerValue(raw jsonv1.RawMessage) (string, error) {
 	if value, ok := textValue(raw); ok {
 		return strings.Trim(value, " \t\r\n"), nil
 	}
@@ -154,7 +157,7 @@ func setHeader(headers nethttp.Header, name, value string, appendValue bool) err
 	return nil
 }
 
-func eventRequest(ctx context.Context, input any) (*nethttp.Request, ResponseType, json.RawMessage, error) {
+func eventRequest(ctx context.Context, input any) (*nethttp.Request, ResponseType, jsonv1.RawMessage, error) {
 	raw, err := json.Marshal(input)
 	if err != nil {
 		return nil, "", nil, err
@@ -179,7 +182,7 @@ func eventRequest(ctx context.Context, input any) (*nethttp.Request, ResponseTyp
 		return nil, kind, raw, &InvalidHTTPMethodError{strings.ToUpper(method)}
 	}
 	headers := make(nethttp.Header)
-	err = visitObject(event["headers"], func(name string, raw json.RawMessage) error {
+	err = visitObject(event["headers"], func(name string, raw jsonv1.RawMessage) error {
 		value, err := headerValue(raw)
 		if err != nil {
 			return err
@@ -200,7 +203,7 @@ func eventRequest(ctx context.Context, input any) (*nethttp.Request, ResponseTyp
 			}
 		}
 	} else {
-		err = visitObject(event["multiValueHeaders"], func(name string, raw json.RawMessage) error {
+		err = visitObject(event["multiValueHeaders"], func(name string, raw jsonv1.RawMessage) error {
 			var values []string
 			if err := json.Unmarshal(raw, &values); err != nil {
 				return err
@@ -266,7 +269,7 @@ func eventRequest(ctx context.Context, input any) (*nethttp.Request, ResponseTyp
 			}
 			target.RawQuery += url.QueryEscape(name) + "=" + url.QueryEscape(value)
 		}
-		err = visitObject(event["queryStringParameters"], func(name string, raw json.RawMessage) error {
+		err = visitObject(event["queryStringParameters"], func(name string, raw jsonv1.RawMessage) error {
 			if _, present := multi[name]; present && !null(multi[name]) {
 				return nil
 			}
@@ -281,7 +284,7 @@ func eventRequest(ctx context.Context, input any) (*nethttp.Request, ResponseTyp
 			return nil
 		})
 		if err == nil {
-			err = visitObject(event["multiValueQueryStringParameters"], func(name string, raw json.RawMessage) error {
+			err = visitObject(event["multiValueQueryStringParameters"], func(name string, raw jsonv1.RawMessage) error {
 				var values []string
 				if err := json.Unmarshal(raw, &values); err != nil {
 					return err

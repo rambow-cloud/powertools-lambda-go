@@ -124,7 +124,7 @@ licenses and attribution for third-party material.
 ## 3. Implement and verify
 
 Read [AGENTS.md](https://github.com/rambow-cloud/powertools-lambda-go/blob/main/AGENTS.md)
-and [module development](MODULES.md). Use Go 1.26 or newer, uv, and Python 3.14
+and [module development](MODULES.md). Use Go 1.27 or newer, uv, and Python 3.14
 for documentation. Always set `CGO_ENABLED=0`; do not run the race detector.
 Root `go test ./...` does **not** cover nested modules.
 

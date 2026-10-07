@@ -3,7 +3,7 @@ package main
 
 import (
 	"context"
-	"encoding/json"
+	jsonv1 "encoding/json"
 	"log"
 
 	"github.com/aws/aws-lambda-go/lambda"
@@ -16,14 +16,14 @@ type order struct {
 }
 
 func main() {
-	inbound, err := validation.Compile(context.Background(), json.RawMessage(`{"type":"object","required":["id","amount"],"properties":{"id":{"type":"string","minLength":1},"amount":{"type":"integer","minimum":1}},"additionalProperties":false}`), validation.Options{})
+	inbound, err := validation.Compile(context.Background(), jsonv1.RawMessage(`{"type":"object","required":["id","amount"],"properties":{"id":{"type":"string","minLength":1},"amount":{"type":"integer","minimum":1}},"additionalProperties":false}`), validation.Options{})
 	if err != nil {
 		log.Fatal(err)
 	}
-	outbound, err := validation.Compile(context.Background(), json.RawMessage(`{"type":"string","minLength":1}`), validation.Options{})
+	outbound, err := validation.Compile(context.Background(), jsonv1.RawMessage(`{"type":"string","minLength":1}`), validation.Options{})
 	if err != nil {
 		log.Fatal(err)
 	}
-	handler := validation.WrapHandler[json.RawMessage](inbound, outbound, func(_ context.Context, input order) (string, error) { return input.ID, nil })
+	handler := validation.WrapHandler[jsonv1.RawMessage](inbound, outbound, func(_ context.Context, input order) (string, error) { return input.ID, nil })
 	lambda.Start(handler)
 }

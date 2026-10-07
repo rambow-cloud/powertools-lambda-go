@@ -2,7 +2,8 @@ package cache
 
 import (
 	"context"
-	"encoding/json"
+	jsonv1 "encoding/json"
+	json "encoding/json/v2"
 	"errors"
 	"fmt"
 	"time"
@@ -88,7 +89,7 @@ func (s *Store) encode(record idempotency.Record, completed bool) ([]byte, error
 
 func (s *Store) decode(key, value string) (idempotency.Record, error) {
 	r := idempotency.Record{Key: key}
-	var item map[string]json.RawMessage
+	var item map[string]jsonv1.RawMessage
 	if err := json.Unmarshal([]byte(value), &item); err != nil {
 		return r, &ConsistencyError{err}
 	}
@@ -115,7 +116,7 @@ func (s *Store) decode(key, value string) (idempotency.Record, error) {
 			return r, &ConsistencyError{fmt.Errorf("invalid attribute %s: %w", field.name, err)}
 		}
 	}
-	r.Data = append(json.RawMessage(nil), item[o.DataAttribute]...)
+	r.Data = append(jsonv1.RawMessage(nil), item[o.DataAttribute]...)
 	return r, nil
 }
 

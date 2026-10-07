@@ -3,7 +3,8 @@ package main
 import (
 	"context"
 	"encoding/base64"
-	"encoding/json"
+	jsonv1 "encoding/json"
+	json "encoding/json/v2"
 	"errors"
 	"fmt"
 
@@ -48,7 +49,7 @@ func newKafkaProbe(tr *tracer.Tracer, log *logger.Logger, credentials aws.Creden
 			return nil, err
 		}
 		encoded := base64.StdEncoding.EncodeToString(payload)
-		raw := json.RawMessage(fmt.Sprintf(`{"eventSource":"SelfManagedKafka","bootstrapServers":"a,b","records":{"z":[{"value":%q,"key":"","headers":[{"name":[195,169]}],"offset":2}],"a":[{"value":%q,"headers":null,"offset":1},{"value":"eyJpZCI6MSwiYW1vdW50Ijo1fQ==","headers":[]},{"value":null,"headers":[]}]}}`, encoded, encoded))
+		raw := jsonv1.RawMessage(fmt.Sprintf(`{"eventSource":"SelfManagedKafka","bootstrapServers":"a,b","records":{"z":[{"value":%q,"key":"","headers":[{"name":[195,169]}],"offset":2}],"a":[{"value":%q,"headers":null,"offset":1},{"value":"eyJpZCI6MSwiYW1vdW50Ijo1fQ==","headers":[]},{"value":null,"headers":[]}]}}`, encoded, encoded))
 		event, err := consumer.Deserialize(ctx, raw)
 		if err != nil {
 			return nil, err

@@ -1,7 +1,7 @@
 // Deprecated: This legacy SDK adapter is frozen. Use the tracer module's OpenTelemetry backend and an OTLP collector with the awsxray exporter.
 module github.com/rambow-cloud/powertools-lambda-go/tracer/xray
 
-go 1.26
+go 1.27
 
 require (
 	github.com/aws/aws-xray-sdk-go/v2 v2.0.3

@@ -2,7 +2,7 @@ package bedrock
 
 import (
 	"bytes"
-	"encoding/json"
+	json "encoding/json/v2"
 	"fmt"
 	"math"
 	"reflect"
@@ -87,13 +87,11 @@ func (w *jsonWriter) value(value any) error {
 		w.WriteByte(']')
 	default:
 		// Native structs, custom marshalers and raw JSON retain their Go contracts.
-		var encoded bytes.Buffer
-		encoder := json.NewEncoder(&encoded)
-		encoder.SetEscapeHTML(false)
-		if err := encoder.Encode(value); err != nil {
+		encoded, err := json.Marshal(value)
+		if err != nil {
 			return err
 		}
-		w.Write(bytes.TrimSuffix(encoded.Bytes(), []byte{'\n'}))
+		w.Write(encoded)
 	}
 	return nil
 }
@@ -121,28 +119,8 @@ func (w *jsonWriter) object(keys []string, values map[string]any) error {
 }
 
 func (w *jsonWriter) string(value string) {
-	var encoded bytes.Buffer
-	encoder := json.NewEncoder(&encoded)
-	encoder.SetEscapeHTML(false)
-	_ = encoder.Encode(value)
-	data := bytes.TrimSuffix(encoded.Bytes(), []byte{'\n'})
-	for i := 0; i < len(data); i++ {
-		if data[i] == '\\' && i+1 < len(data) {
-			if i+6 <= len(data) && (string(data[i:i+6]) == `\u2028` || string(data[i:i+6]) == `\u2029`) {
-				if data[i+5] == '8' {
-					w.WriteRune('\u2028')
-				} else {
-					w.WriteRune('\u2029')
-				}
-				i += 5
-			} else {
-				w.Write(data[i : i+2])
-				i++
-			}
-		} else {
-			w.WriteByte(data[i])
-		}
-	}
+	encoded, _ := json.Marshal(value)
+	w.Write(encoded)
 }
 
 func numberString(number float64, jsonMode bool) string {

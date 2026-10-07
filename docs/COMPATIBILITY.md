@@ -4,6 +4,8 @@ Reference: TypeScript v2.35.0, commit `7bcc27b1574493f9452688673658f52b80c53847`
 
 Start with the [complete feature comparison and evidence map](FEATURE_PARITY.md). Each utility guide has a TypeScript feature table, complete example, output explanation and boundaries. [Usage patterns](USAGE_PATTERNS.md) maps decorators, middleware and objects to Go; [environment variables](ENVIRONMENT_VARIABLES.md) records supported configuration. [CHECKLIST.md](CHECKLIST.md) describes project progress.
 
+Maintained packages require Go 1.27 and use `encoding/json/v2` defaults. Strict duplicate-member and Unicode validation, case-sensitive field names, nil collections and JSON field tags follow the [current JSON contract](GETTING_STARTED.md#prerequisites-and-installation). Utility-specific policies still apply: idempotency keys use explicit canonicalization, ordered event traversal retains source order, and Logger and EMF keep their own field and non-finite-number rules. Pinned JavaScript fixtures that accept duplicate members or repair malformed JSON text are asserted as intentional Go JSON boundary differences.
+
 Scope adjustment (2026-09-13): feature parity work now prioritizes Logger and OpenTelemetry. Exhaustive legacy X-Ray SDK behavior and native document parity are outside the maintained compatibility scope. The adapter's known DynamoDB enrichment gap is retained as a documented limitation, not an active release requirement.
 
 Scope adjustment (2026-09-14): the legacy SDK adapter is now deprecated and frozen, with module/API notices and a constructor warning. Maintained X-Ray support uses OpenTelemetry and the collector's awsxray exporter. The current integration program is OTel-only. See [XRAY_MIGRATION.md](XRAY_MIGRATION.md).

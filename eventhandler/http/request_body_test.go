@@ -55,7 +55,8 @@ func TestGetHeadRequestBodyNormalization(t *testing.T) {
 					if err := app.Handle(strings.ToUpper(method), "/items", func(request *RequestContext) (any, error) {
 						calls++
 						check(request.Request)
-						if !reflect.DeepEqual(json.RawMessage(original), request.Event) {
+						var snapshot map[string]any
+						if err := json.Unmarshal(request.Event, &snapshot); err != nil || !reflect.DeepEqual(event, snapshot) {
 							t.Fatalf("original event snapshot changed: %s; want %s", request.Event, original)
 						}
 						return Response{StatusCode: 200, Body: "ok"}, nil

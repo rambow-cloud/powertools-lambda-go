@@ -6,9 +6,9 @@ package kmsfixture
 import (
 	"context"
 	"crypto/rand"
-	"encoding/json"
+	jsonv1 "encoding/json"
+	json "encoding/json/v2"
 	"fmt"
-	"io"
 	"maps"
 	"net/http"
 	"strings"
@@ -55,17 +55,10 @@ func (f *Fixture) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		EncryptionContext            map[string]string
 		GrantTokens                  []string
 		DryRun                       bool
-		Recipient                    json.RawMessage
+		Recipient                    jsonv1.RawMessage
 	}
-	decoder := json.NewDecoder(r.Body)
-	decoder.DisallowUnknownFields()
-	var trailing any
-	if err := decoder.Decode(&input); err != nil {
+	if err := json.UnmarshalRead(r.Body, &input, json.RejectUnknownMembers(true)); err != nil {
 		serviceError(w, "ValidationException", "invalid synthetic fixture JSON request")
-		return
-	}
-	if err := decoder.Decode(&trailing); err != io.EOF {
-		serviceError(w, "ValidationException", "expected one JSON request")
 		return
 	}
 	if len(input.GrantTokens) != 0 || input.DryRun || len(input.Recipient) != 0 {
@@ -136,13 +129,13 @@ func (f *Fixture) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	w.Header().Set("Content-Type", "application/x-amz-json-1.1")
-	json.NewEncoder(w).Encode(result)
+	json.MarshalWrite(w, result)
 }
 
 func serviceError(w http.ResponseWriter, code, message string) {
 	w.Header().Set("Content-Type", "application/x-amz-json-1.1")
 	w.WriteHeader(http.StatusBadRequest)
-	_ = json.NewEncoder(w).Encode(map[string]string{"__type": code, "message": message})
+	_ = json.MarshalWrite(w, map[string]string{"__type": code, "message": message})
 }
 
 func (f *Fixture) Snapshot() (map[string]int, []string) {

@@ -3,7 +3,7 @@ package main
 
 import (
 	"context"
-	"encoding/json"
+	json "encoding/json/v2"
 	"fmt"
 	"net/http/httptest"
 	"os"
@@ -28,7 +28,7 @@ func run() error {
 		Expected   string            `json:"expected"`
 		Ciphertext string            `json:"ciphertext"`
 	}
-	if err := json.NewDecoder(os.Stdin).Decode(&cases); err != nil {
+	if err := json.UnmarshalRead(os.Stdin, &cases); err != nil {
 		return err
 	}
 	server := httptest.NewServer(&kmsfixture.Fixture{})
@@ -44,5 +44,5 @@ func run() error {
 			return err
 		}
 	}
-	return json.NewEncoder(os.Stdout).Encode(cases)
+	return json.MarshalWrite(os.Stdout, cases)
 }

@@ -3,7 +3,7 @@ package main
 import (
 	"context"
 	"encoding/base64"
-	"encoding/json"
+	jsonv1 "encoding/json"
 	"fmt"
 
 	"github.com/rambow-cloud/powertools-lambda-go/parser"
@@ -16,8 +16,8 @@ func parserServicesProbe(ctx context.Context) (map[string]any, error) {
 	record := func(body string) string {
 		return fmt.Sprintf(`{"topic":"orders","partition":0,"offset":1,"timestamp":1,"timestampType":"CREATE_TIME","value":%q,"headers":[]}`, base64.StdEncoding.EncodeToString([]byte(body)))
 	}
-	event := func(first, second string) json.RawMessage {
-		return json.RawMessage(`{"eventSource":"aws:kafka","eventSourceArn":"arn:cluster","records":{"z-0":[` + record(first) + `],"a-0":[` + record(second) + `]}}`)
+	event := func(first, second string) jsonv1.RawMessage {
+		return jsonv1.RawMessage(`{"eventSource":"aws:kafka","eventSourceArn":"arn:cluster","records":{"z-0":[` + record(first) + `],"a-0":[` + record(second) + `]}}`)
 	}
 	envelope := envelopes.Kafka(parser.JSONStringified(orderInputSchema))
 	value, err := parser.Parse(ctx, event(`{"id":"z","amount":1}`, `{"id":"a","amount":2}`), envelope)
@@ -45,7 +45,7 @@ func parserServicesProbe(ctx context.Context) (map[string]any, error) {
 		{"object_lambda", schemas.S3ObjectLambdaEventSchema, `{"xAmzRequestId":"id","getObjectContext":{"inputS3Url":"url","outputRoute":"route","outputToken":"token"},"configuration":{"accessPointArn":"arn:access","supportingAccessPointArn":"arn:support","payload":{"stripped":true}},"userRequest":{"url":"url","headers":{}},"userIdentity":{"type":"AssumedRole","accountId":"account","accessKeyId":"key","principalId":"principal","arn":"arn:user","sessionContext":{"sessionIssuer":{"type":"Role","principalId":"principal","arn":"arn:role","accountId":"account"},"attributes":{"creationDate":"date","mfaAuthenticated":"false"}}},"protocolVersion":"1"}`},
 	}
 	for _, item := range cases {
-		value, err := parser.Parse(ctx, json.RawMessage(item.input), item.schema)
+		value, err := parser.Parse(ctx, jsonv1.RawMessage(item.input), item.schema)
 		if err != nil {
 			return nil, fmt.Errorf("%s: %w", item.name, err)
 		}

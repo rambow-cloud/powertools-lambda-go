@@ -1,15 +1,16 @@
 package kafka
 
 import (
-	"bytes"
 	"context"
-	"encoding/json"
+	jsonv1 "encoding/json"
+	json "encoding/json/v2"
 	"fmt"
 	"math"
 	"strconv"
 	"strings"
 
 	"github.com/rambow-cloud/powertools-lambda-go/commons"
+	"github.com/rambow-cloud/powertools-lambda-go/internal/jsonvalue"
 )
 
 func (c *Consumer) decode(ctx context.Context, input, metadata any, config *FieldConfig) (any, error) {
@@ -84,15 +85,8 @@ func primitive(input string) (string, error) {
 }
 
 func parseJSON(raw []byte) (any, error) {
-	if !json.Valid(raw) {
-		var out any
-		err := json.Unmarshal(raw, &out)
-		return nil, err
-	}
-	decoder := json.NewDecoder(bytes.NewReader(raw))
-	decoder.UseNumber()
 	var result any
-	if err := decoder.Decode(&result); err != nil {
+	if err := json.Unmarshal(raw, &result, jsonvalue.Numbers); err != nil {
 		return nil, err
 	}
 	return jsonNumbers(result), nil
@@ -100,7 +94,7 @@ func parseJSON(raw []byte) (any, error) {
 
 func jsonNumbers(value any) any {
 	switch v := value.(type) {
-	case json.Number:
+	case jsonv1.Number:
 		// JavaScript numbers round to binary64 and may overflow to infinity.
 		f, _ := strconv.ParseFloat(string(v), 64)
 		return f

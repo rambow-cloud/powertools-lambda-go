@@ -1,7 +1,8 @@
 package metrics
 
 import (
-	"encoding/json"
+	jsonv1 "encoding/json"
+	json "encoding/json/v2"
 	"errors"
 	"strconv"
 	"time"
@@ -81,7 +82,7 @@ func record(m *powermetrics.Metrics, r *httpapi.RequestContext, status int, elap
 	}
 	if r.ResponseType != httpapi.ALB {
 		var event struct {
-			RequestContext map[string]json.RawMessage `json:"requestContext"`
+			RequestContext map[string]jsonv1.RawMessage `json:"requestContext"`
 		}
 		if err := json.Unmarshal(r.Event, &event); err != nil {
 			return err

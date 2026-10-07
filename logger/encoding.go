@@ -3,13 +3,16 @@ package logger
 import (
 	"bytes"
 	"encoding"
-	"encoding/json"
+	jsonv1 "encoding/json"
+	"encoding/json/jsontext"
+	json "encoding/json/v2"
 	"fmt"
-	"github.com/rambow-cloud/powertools-lambda-go/commons"
 	"math"
 	"reflect"
 	"sort"
-	"strings"
+
+	"github.com/rambow-cloud/powertools-lambda-go/commons"
+	"github.com/rambow-cloud/powertools-lambda-go/internal/jsonvalue"
 )
 
 var standardOrder = []string{"level", "message", "timestamp", "service", "cold_start", "function_arn", "function_memory_size", "function_name", "function_request_id", "sampling_rate", "xray_trace_id", "tenant_id"}
@@ -79,10 +82,15 @@ func normalizeValue(key string, value any, replacer Replacer, active map[visit]b
 	if depth > 100 {
 		return "[Truncated]"
 	}
+	// Number implements MarshalJSONTo in Go 1.27. Its scalar representation
+	// must not re-enter the custom-marshaler traversal after decoding.
+	if _, ok := value.(jsonv1.Number); ok {
+		return value
+	}
 	v := reflect.ValueOf(value)
 	if v.Kind() == reflect.Pointer || v.Kind() == reflect.Map || v.Kind() == reflect.Slice {
 		if v.IsNil() {
-			return nil
+			return value
 		}
 		// The address is an opaque identity token; it is never converted to a pointer.
 		ref := visit{v.Type(), v.Pointer()}
@@ -103,6 +111,9 @@ func normalizeValue(key string, value any, replacer Replacer, active map[visit]b
 		return result
 	}
 	if _, ok := value.(json.Marshaler); ok {
+		return normalizeJSON(key, value, replacer, active, depth)
+	}
+	if _, ok := value.(json.MarshalerTo); ok {
 		return normalizeJSON(key, value, replacer, active, depth)
 	}
 	switch v.Kind() {
@@ -148,23 +159,15 @@ func normalizeJSON(key string, value any, replacer Replacer, active map[visit]bo
 	if err != nil {
 		return value
 	}
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.UseNumber()
 	var decoded any
-	if err = decoder.Decode(&decoded); err != nil {
+	if err = json.Unmarshal(data, &decoded, jsonvalue.Numbers); err != nil {
 		return value
 	}
 	return normalizeValue(key, decoded, replacer, active, depth+1)
 }
 
 func marshal(value any) ([]byte, error) {
-	var out bytes.Buffer
-	encoder := json.NewEncoder(&out)
-	encoder.SetEscapeHTML(false)
-	if err := encoder.Encode(value); err != nil {
-		return nil, err
-	}
-	return bytes.TrimSuffix(out.Bytes(), []byte{'\n'}), nil
+	return json.Marshal(value)
 }
 
 // prepareForPrint makes a shallow copy of a map-shaped document, omitting empty
@@ -172,6 +175,9 @@ func marshal(value any) ([]byte, error) {
 // nonnil empty collections remain intact; the formatter's document is not mutated.
 func prepareForPrint(value any) any {
 	if _, ok := value.(json.Marshaler); ok {
+		return value
+	}
+	if _, ok := value.(json.MarshalerTo); ok {
 		return value
 	}
 	v := reflect.ValueOf(value)
@@ -188,8 +194,9 @@ func prepareForPrint(value any) any {
 		// A custom marshaler's JSON value or error cannot be inferred from its
 		// underlying Go value. Preserve it for the normal encoding traversal.
 		_, jsonCustom := item.(json.Marshaler)
+		_, streamingCustom := item.(json.MarshalerTo)
 		_, textCustom := item.(encoding.TextMarshaler)
-		if !jsonCustom && !textCustom {
+		if !jsonCustom && !streamingCustom && !textCustom {
 			field := reflect.ValueOf(item)
 			switch field.Kind() {
 			case reflect.String:
@@ -238,7 +245,10 @@ func encode(fields Fields, c config) ([]byte, error) {
 				out.WriteByte(',')
 			}
 			seen[key] = true
-			k, _ := marshal(key)
+			k, e := marshal(key)
+			if e != nil {
+				return nil, e
+			}
 			b, e := marshal(v)
 			if e != nil {
 				return nil, e
@@ -256,11 +266,11 @@ func encode(fields Fields, c config) ([]byte, error) {
 		}
 	}
 	if c.pretty {
-		var out bytes.Buffer
-		if err := json.Indent(&out, data, "", strings.Repeat(" ", 4)); err != nil {
+		pretty := jsontext.Value(data)
+		if err := pretty.Indent(jsontext.WithIndent("    ")); err != nil {
 			return nil, err
 		}
-		data = out.Bytes()
+		data = pretty
 	}
 	return data, nil
 }

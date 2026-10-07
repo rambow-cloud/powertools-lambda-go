@@ -2,6 +2,8 @@
 
 Parameters retrieves configuration from SSM, Secrets Manager, DynamoDB, AppConfig Data and AppConfig Agent. Shared caching and JSON/Base64 transforms live in `github.com/rambow-cloud/powertools-lambda-go/parameters`; service adapters are subpackages of that module.
 
+JSON transforms use `encoding/json/v2`: duplicate object members, invalid UTF-8 and lone escaped surrogates produce `TransformParameterError` with the underlying JSON error as its cause. JSON byte input is validated without repairing malformed text. Binary transforms retain their documented UTF-8 text decoding behavior.
+
 See [installation](MODULES.md) and the [compatibility baseline](COMPATIBILITY.md).
 
 ## Complete example
@@ -13,7 +15,7 @@ package main
 
 import (
 	"context"
-	"encoding/json"
+	json "encoding/json/v2"
 	"fmt"
 	stdlog "log"
 	"time"
@@ -37,7 +39,7 @@ func main() {
 		if err != nil {
 			stdlog.Fatal(err)
 		}
-		encoded, err := json.Marshal(value)
+		encoded, err := json.Marshal(value, json.Deterministic(true))
 		if err != nil {
 			stdlog.Fatal(err)
 		}

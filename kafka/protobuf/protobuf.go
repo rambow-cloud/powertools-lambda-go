@@ -2,7 +2,7 @@ package protobuf
 
 import (
 	"context"
-	"encoding/json"
+	jsonv1 "encoding/json"
 	"errors"
 	"fmt"
 	"sync/atomic"
@@ -28,7 +28,7 @@ type Input struct {
 // The decoder must be concurrency-safe and must not retain mutable shared results.
 type Message struct {
 	Decode      func(Input) (any, error)
-	Description json.RawMessage
+	Description jsonv1.RawMessage
 }
 
 // FromDescriptor supports generated and runtime descriptors through the official
@@ -215,7 +215,7 @@ func rangeError(position int, count int64, length int) error {
 func failure(message *Message, data string, err error) error {
 	description := message.Description
 	if len(description) == 0 {
-		description = json.RawMessage(`{}`)
+		description = jsonv1.RawMessage(`{}`)
 	}
 	name := "Error"
 	var named interface{ ErrorName() string }

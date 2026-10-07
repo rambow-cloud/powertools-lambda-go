@@ -2,7 +2,7 @@ package main
 
 import (
 	"context"
-	"encoding/json"
+	json "encoding/json/v2"
 	"errors"
 
 	"github.com/aws/aws-lambda-go/lambdacontext"

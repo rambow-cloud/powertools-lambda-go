@@ -2,7 +2,7 @@ package kafka
 
 import (
 	"context"
-	"encoding/json"
+	jsonv1 "encoding/json"
 	"fmt"
 	"os"
 )
@@ -181,8 +181,8 @@ func selectDecoder(config *FieldConfig) error {
 
 // WrapHandler preserves context, returned values, errors and panics. It reads no
 // record fields automatically; handlers decide whether to inspect a failing field.
-func WrapHandler[R any](consumer *Consumer, handler func(context.Context, *ConsumerRecords) (R, error)) func(context.Context, json.RawMessage) (R, error) {
-	return func(ctx context.Context, event json.RawMessage) (R, error) {
+func WrapHandler[R any](consumer *Consumer, handler func(context.Context, *ConsumerRecords) (R, error)) func(context.Context, jsonv1.RawMessage) (R, error) {
+	return func(ctx context.Context, event jsonv1.RawMessage) (R, error) {
 		var zero R
 		records, err := consumer.Deserialize(ctx, event)
 		if err != nil {

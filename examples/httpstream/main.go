@@ -3,7 +3,7 @@ package main
 
 import (
 	"context"
-	"encoding/json"
+	jsonv1 "encoding/json"
 	"io"
 	"log"
 	nethttp "net/http"
@@ -16,7 +16,7 @@ import (
 )
 
 type streamCall struct {
-	event  json.RawMessage
+	event  jsonv1.RawMessage
 	writer io.Writer
 }
 
@@ -37,7 +37,7 @@ func main() {
 	complete := tracer.WrapHandler(trace, logger.WrapHandler(requestLog, func(ctx context.Context, call streamCall) (struct{}, error) {
 		return struct{}{}, app.ResolveStream(ctx, call.event, call.writer)
 	}), tracer.HandlerOptions{DisableCaptureResponse: true})
-	lambda.Start(httpapi.Streamify(func(ctx context.Context, event json.RawMessage, destination io.Writer) error {
+	lambda.Start(httpapi.Streamify(func(ctx context.Context, event jsonv1.RawMessage, destination io.Writer) error {
 		_, err := complete(ctx, streamCall{event: event, writer: destination})
 		return err
 	}))

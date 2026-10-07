@@ -1,7 +1,7 @@
 package metrics
 
 import (
-	"encoding/json"
+	json "encoding/json/v2"
 	"fmt"
 	"math"
 	"sort"
@@ -12,7 +12,7 @@ import (
 type definition struct {
 	Name              string
 	Unit              Unit
-	StorageResolution Resolution `json:",omitempty"`
+	StorageResolution Resolution `json:",omitzero"`
 }
 
 func dimensionKeys(base, dimensions Dimensions) []string {

@@ -3,7 +3,7 @@ package main
 import (
 	"bytes"
 	"context"
-	"encoding/json"
+	jsonv1 "encoding/json"
 	"errors"
 	"math"
 	"time"
@@ -54,7 +54,7 @@ func metricsStoreProbe(ctx context.Context, m *metrics.Metrics) (result map[stri
 	if err != nil {
 		return nil, err
 	}
-	result["serialized"] = json.RawMessage(serialized)
+	result["serialized"] = jsonv1.RawMessage(serialized)
 	result["old_timestamp"] = timestamp.UnixMilli()
 	result["diagnostics"], err = metricsDiagnosticProbe(ctx)
 	if err != nil {
@@ -106,10 +106,10 @@ func metricsWrapperProbe(ctx context.Context) (map[string]any, error) {
 	if err != nil {
 		return nil, err
 	}
-	documents := []json.RawMessage{}
+	documents := []jsonv1.RawMessage{}
 	for _, line := range bytes.Split(bytes.TrimSpace(output.Bytes()), []byte{'\n'}) {
 		if len(line) > 0 {
-			documents = append(documents, append(json.RawMessage(nil), line...))
+			documents = append(documents, append(jsonv1.RawMessage(nil), line...))
 		}
 	}
 	closed := true
@@ -158,7 +158,7 @@ func metricsTimestampProbe(ctx context.Context) (result map[string]any, err erro
 	if err := bound.AddMetric("Count", metrics.Count, 1); err != nil {
 		return nil, err
 	}
-	documents := []json.RawMessage{}
+	documents := []jsonv1.RawMessage{}
 	for _, set := range []func() error{
 		func() error { return bound.SetTimestampMillis(0.5) },
 		func() error { return bound.SetTimestampMillis(math.NaN()) },
@@ -186,7 +186,7 @@ func metricsTimestampProbe(ctx context.Context) (result map[string]any, err erro
 	if err != nil {
 		return nil, err
 	}
-	result["reset"], result["reset_clock_calls"] = json.RawMessage(reset), clockCalls
+	result["reset"], result["reset_clock_calls"] = jsonv1.RawMessage(reset), clockCalls
 	if err := finish(); err != nil {
 		return nil, err
 	}
@@ -235,8 +235,8 @@ func metricsValueProbe(ctx context.Context) (map[string]any, error) {
 		return nil, err
 	}
 	return map[string]any{
-		"document":        json.RawMessage(document),
-		"reserved":        json.RawMessage(reserved),
+		"document":        jsonv1.RawMessage(document),
+		"reserved":        jsonv1.RawMessage(reserved),
 		"prototype_error": prototype.Error(),
 		"closed":          !bound.HasStoredMetrics() && errors.Is(bound.AddMetric("Late", metrics.Count, math.NaN()), metrics.ErrInvocationClosed),
 	}, nil
@@ -288,8 +288,8 @@ func metricsConfigurationProbe(ctx context.Context) (map[string]any, error) {
 	}
 	return map[string]any{
 		"calls":           config.calls,
-		"parent":          json.RawMessage(parent),
-		"child":           json.RawMessage(bytes.TrimSpace(output.Bytes())),
+		"parent":          jsonv1.RawMessage(parent),
+		"child":           jsonv1.RawMessage(bytes.TrimSpace(output.Bytes())),
 		"parent_disabled": bound.Disabled(),
 		"child_disabled":  child.Disabled(),
 		"closed":          errors.Is(child.AddMetric("Late", metrics.Count, 1), metrics.ErrInvocationClosed),
@@ -315,10 +315,10 @@ func metricsColdStartProbe(ctx context.Context) (map[string]any, error) {
 			return nil, err
 		}
 	}
-	documents := []json.RawMessage{}
+	documents := []jsonv1.RawMessage{}
 	for _, line := range bytes.Split(bytes.TrimSpace(output.Bytes()), []byte{'\n'}) {
 		if len(line) > 0 {
-			documents = append(documents, json.RawMessage(line))
+			documents = append(documents, jsonv1.RawMessage(line))
 		}
 	}
 	return map[string]any{
@@ -357,7 +357,7 @@ func metricsDiagnosticProbe(ctx context.Context) (map[string]any, error) {
 	}
 	result := map[string]any{
 		"warnings":             warnings,
-		"serialized":           json.RawMessage(bytes.TrimSpace(output.Bytes())),
+		"serialized":           jsonv1.RawMessage(bytes.TrimSpace(output.Bytes())),
 		"timestamp":            timestamp.UnixMilli(),
 		"callback_saw_metrics": observedMetrics,
 		"closed":               errors.Is(bound.AddDimension("late", ""), metrics.ErrInvocationClosed),

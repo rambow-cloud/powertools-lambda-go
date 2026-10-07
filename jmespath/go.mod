@@ -1,6 +1,6 @@
 module github.com/rambow-cloud/powertools-lambda-go/jmespath
 
-go 1.26
+go 1.27
 
 require (
 	github.com/jmespath-community/go-jmespath v1.1.1

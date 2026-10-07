@@ -1,7 +1,7 @@
 package parameters
 
 import (
-	"encoding/json"
+	json "encoding/json/v2"
 	"fmt"
 	"strings"
 
@@ -37,7 +37,7 @@ func TransformValue(name string, value any, transform Transform) (any, error) {
 	case string:
 		raw = v
 	case []byte:
-		raw = strings.TrimPrefix(commons.DecodeUTF8(v), "\ufeff")
+		raw = strings.TrimPrefix(string(v), "\ufeff")
 	default:
 		return value, nil
 	}

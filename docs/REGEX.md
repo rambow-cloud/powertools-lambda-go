@@ -33,7 +33,7 @@ Legacy matching uses UTF-16 code units. Legacy `i` canonicalization is generated
 
 ## Operational and native boundaries
 
-Options preserve the existing Validation timeout and backtracking-stack limits. Resource failures remain errors; Validation retains its public RegexError wrapping. Go strings preserve lone surrogates as WTF-8 bytes at this module's boundary. Standard encoding/json replaces invalid UTF-8 and therefore cannot round-trip these values as JavaScript UTF-16 strings. Input strings with arbitrary invalid UTF-8 are not a JavaScript string representation.
+Options preserve the existing Validation timeout and backtracking-stack limits. Resource failures remain errors; Validation retains its public RegexError wrapping. Go strings preserve lone surrogates as WTF-8 bytes at this module's native boundary. `encoding/json/v2` rejects invalid UTF-8 and lone escaped surrogates, so JSON cannot carry those values as JavaScript UTF-16 strings. Input strings with arbitrary invalid UTF-8 are not a JavaScript string representation.
 
 This is a tested compatibility implementation, not a complete ECMAScript interpreter. Unicode sets (`v`), remaining advanced syntax/case-fold/property/backreference edges, exact SyntaxError wording, JavaScript object coercion and replacement functions remain unverified or unsupported. SetLastIndex accepts a native int rather than arbitrary JavaScript values. Return values do not include match indices/capture arrays. These boundaries remain open under MASK-REGEX and the broader Validation parity gate.
 
