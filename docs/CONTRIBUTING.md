@@ -121,6 +121,10 @@ documentation and code comments in English; keep feedback respectful and specifi
 Original contributions use the repository's MIT license; preserve upstream
 licenses and attribution for third-party material.
 
+For documentation/example versions and source-versus-public acceptance identity,
+follow [the version policy](VERSION_POLICY.md). The proposed stable scope and
+remaining v1 audit are tracked in [v1 readiness](V1_READINESS.md).
+
 ## 3. Implement and verify
 
 Read [AGENTS.md](https://github.com/rambow-cloud/powertools-lambda-go/blob/main/AGENTS.md)

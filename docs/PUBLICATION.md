@@ -57,12 +57,17 @@ Whitespace review recognizes Windows CRLF line endings. Two trailing spaces in t
 - [x] Verify packaged modules, independent consumers and both Lambda example architectures with CGO disabled.
 - [x] Prepare and review the complete staged source snapshot, including fixture retention and ignored-file boundaries.
 - [x] Create the public rambow-cloud/powertools-lambda-go repository.
-- [ ] Push the reviewed source and verify the first Go CI and Documentation workflow runs.
+- [x] Push reviewed source and verify hosted CI/documentation publication; current checks and deployment milestones are recorded in [CHECKLIST.md](CHECKLIST.md).
 
-## Before first module release
+## Published versions and remaining acceptance
 
-- [ ] Finalize the declared compatibility scope, API documentation and release notes.
-- [ ] For binary distribution, review notices for the resolved transitive dependencies.
-- [ ] Publish module tags in dependency order and verify real public version retrieval.
+The 27 maintained public modules were initially released at v0.1.0 with fresh
+public consumers recorded in [RELEASE_ACCEPTANCE.json](RELEASE_ACCEPTANCE.json).
+The latest published cohort is [v0.2.0](https://github.com/rambow-cloud/powertools-lambda-go/releases/tag/v0.2.0).
+The frozen X-Ray adapter remains excluded. Local proxy fixtures remain distinct
+from public-version verification. Existing module license/notice checks run in CI;
+binary distributions require review of their resolved transitive notices.
 
-Local proxy fixtures use synthetic versions. No public module publication is claimed.
+The full stable API audit, candidate acceptance and final publication are tracked
+in [V1_READINESS.md](V1_READINESS.md). Keep historical reports at their original
+scope; source merges do not publish new versions.
