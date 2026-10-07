@@ -1,5 +1,10 @@
 # Idempotency implementation checklist
 
+Issue #120's platform assessment is complete in the
+[durable execution design](DURABLE_EXECUTION_DESIGN.md). It distinguishes response
+replay from workflow checkpoints and proposes an isolated experimental-SDK evaluation;
+no durable support is added and I-08 remains open.
+
 Reference: TypeScript v2.35.0. Check implementation items only after their tests pass. Full cross-language and platform acceptance remain independent requirements.
 
 - [x] I-00: Read the pinned configuration, sorting, handler lifecycle, record, DynamoDB and cache persistence implementations. Generate actual canonical-key, lifecycle, and DynamoDB command fixtures.

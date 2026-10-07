@@ -160,6 +160,7 @@ nav:
           - Scoped AWS service acceptance: AWS_SERVICE_ACCEPTANCE.md
       - Design and remaining work:
           - Managed Instances lifecycle: MANAGED_INSTANCES_DESIGN.md
+          - Durable execution: DURABLE_EXECUTION_DESIGN.md
           - Tracing decision: TRACING_DECISION.md
           - Commons: COMMONS_PLAN.md
           - Metrics: METRICS_PLAN.md
