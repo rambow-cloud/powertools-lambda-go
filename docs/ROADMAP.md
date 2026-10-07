@@ -1,5 +1,9 @@
 # Implementation sequence
 
+Post-v1 platform lifecycle requirements are assessed in the
+[Managed Instances design](MANAGED_INSTANCES_DESIGN.md). Existing runtime
+worker support is distinguished from project/platform acceptance.
+
 Project requirements: prioritize native Go Lambda, keep CGO disabled, use local Docker by default, and favor cohesive packages with small dependencies. The legacy X-Ray SDK adapter is deprecated and frozen; maintained X-Ray support uses OpenTelemetry. Documentation and code comments remain English.
 
 | Order | Scope | Current status |
