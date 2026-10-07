@@ -1,5 +1,9 @@
 # Validation implementation checklist
 
+Post-v1 dialect/extension scope, thirteen executed pinned reference observations
+and proposed acceptance are in [the extension design](VALIDATION_EXTENSION_DESIGN.md)
+for issue #118. This completes planning only; the implementation gates below remain.
+
 Reference: Powertools TypeScript v2.35.0, installed AJV v8.20.0. The default Go engine is jsonschema/v6 v6.0.3. All documentation and code comments remain English. Completion of a scoped item does not establish full AJV parity.
 
 - [x] V-01: Implement manual validation, reusable compiled schemas, an injected compiler/validator contract, and typed compilation/validation errors. Verify schema/options snapshots, 32 concurrent callers, cancellation, operational error identity and invalid JSON handling.
