@@ -1,9 +1,10 @@
 # Documentation and verification versions
 
 Documentation on `main` and the site describes the current source and can include
-unreleased APIs. The latest published cohort is v0.2.0. Current source requires
-Go 1.27 and uses JSON v2 directly; v0.2.0 predates that source upgrade. Installing
-v0.2.0 does not install main's JSON v2 changes.
+unreleased APIs. The latest stable cohort is v0.2.0; the published prerelease
+is [v1.0.0-rc.1](RELEASE_NOTES.md#v100-rc1). Both current source and this candidate
+require Go 1.27 and use JSON v2 directly. Installing v0.2.0 does not install
+the candidate's JSON v2 changes. Select `@v1.0.0-rc.1` explicitly to try it.
 
 ## Examples and installation
 

@@ -1,7 +1,7 @@
 # v1 readiness and stable scope
 
 The owner accepted issue-driven v1 preparation on 2026-10-07. Latest published
-cohort: v0.2.0. This plan defines the proposed scope; it does not certify an API
+stable cohort: v0.2.0; published candidate: v1.0.0-rc.1. This plan defines the proposed scope; it does not certify an API
 freeze or authorize publication. Track the full audit in [#112](https://github.com/rambow-cloud/powertools-lambda-go/issues/112).
 
 ## Maintained scope
@@ -51,13 +51,13 @@ this issue/PR; final publication remains a separate gate.
 | Gate | Tracking | Status |
 | --- | --- | --- |
 | Go 1.27/JSON v2 | [#110](https://github.com/rambow-cloud/powertools-lambda-go/issues/110), [PR #111](https://github.com/rambow-cloud/powertools-lambda-go/pull/111) | Merged; full PR CI passed 31 modules/28 consumers, both builds and local runtime/service scope |
-| First-party pointer cleanup | [#107](https://github.com/rambow-cloud/powertools-lambda-go/issues/107), [PR #108](https://github.com/rambow-cloud/powertools-lambda-go/pull/108) | Merged: 28 packaged modules/26 consumers and DynamoDB Local in hosted CI; local package builds on both architectures. Lambda ZIP/runtime gates were skipped and remain required for the candidate; transitive unsafe capabilities remain separate |
+| First-party pointer cleanup | [#107](https://github.com/rambow-cloud/powertools-lambda-go/issues/107), [PR #108](https://github.com/rambow-cloud/powertools-lambda-go/pull/108) | Merged: 28 packaged modules/26 consumers and DynamoDB Local in hosted CI; local package builds on both architectures. Lambda ZIP/runtime gates were skipped for #108 and passed separately in the candidate/main Full regression; transitive unsafe capabilities remain separate |
 | Stable API scope review | [#112](https://github.com/rambow-cloud/powertools-lambda-go/issues/112) | Declaration/constructor/interface and documented contract review recorded in [V1_API_REVIEW.md](V1_API_REVIEW.md); publication commitment pending |
 | Performance baseline | [#113](https://github.com/rambow-cloud/powertools-lambda-go/issues/113), [PR #125](https://github.com/rambow-cloud/powertools-lambda-go/pull/125) | Eleven measured scenarios and six packaged modules/consumers accepted; [Windows baseline and limits](PERFORMANCE.md) |
 | Onboarding/version policy | [#48](https://github.com/rambow-cloud/powertools-lambda-go/issues/48), [#49](https://github.com/rambow-cloud/powertools-lambda-go/issues/49), [#51](https://github.com/rambow-cloud/powertools-lambda-go/issues/51) | [Policy](VERSION_POLICY.md) and isolated published-example verification |
 | Sanitized service evidence | [#114](https://github.com/rambow-cloud/powertools-lambda-go/issues/114) | [Recorded scope](AWS_SERVICE_ACCEPTANCE.md), historical artifacts only |
 | Remaining service claims | [#92](https://github.com/rambow-cloud/powertools-lambda-go/issues/92) | Reuse evidence, focus acceptance or state unsupported boundary |
-| Candidate preparation/acceptance | [#115](https://github.com/rambow-cloud/powertools-lambda-go/issues/115), [#121](https://github.com/rambow-cloud/powertools-lambda-go/issues/121), [#129](https://github.com/rambow-cloud/powertools-lambda-go/issues/129) | Explicit selection merged in #126; candidate preparation and public acceptance tracked separately in #129 |
+| Candidate preparation/acceptance | [#115](https://github.com/rambow-cloud/powertools-lambda-go/issues/115), [#121](https://github.com/rambow-cloud/powertools-lambda-go/issues/121), [#129](https://github.com/rambow-cloud/powertools-lambda-go/issues/129) | v1.0.0-rc.1 published after #135/main Full regression and all 27 fresh public consumers passed; [public acceptance](RELEASE_ACCEPTANCE_V1_RC1.json) |
 | Browser presentation | DOC-06 | Owner verifies deployed homepage/Logger/quickstart at desktop/390px, search/navigation/themes/keyboard/code copy |
 
 Recent cloud examples verified CloudWatch extraction, both Lambda architectures,
@@ -83,15 +83,23 @@ unsafe capability labels do not prove remaining first-party unsafe calls.
 
 ## Candidate and final publication
 
-Prepare a reviewable v1.0.0-rc.1 cohort after implementation/scope gates pass.
+Candidate **v1.0.0-rc.1 is published** from `7eefb62fbde95a4d85eec1aee484a47e590a7d00` after
+[PR #135](https://github.com/rambow-cloud/powertools-lambda-go/pull/135) and exact merged-main
+Full regression passed. [Publication run 37630203444](https://github.com/rambow-cloud/powertools-lambda-go/actions/runs/37630203444)
+verified all 27 fresh public consumers and finalized one project Release.
+See [public acceptance](RELEASE_ACCEPTANCE_V1_RC1.json) for identities and checksums.
+Browser presentation/pkg.go.dev review and stable v1.0.0 approval remain pending.
+The preparation and publication gates below also apply to later versions.
+
+The published v1.0.0-rc.1 cohort was prepared after implementation/scope gates passed.
 Do not manually edit versions or reserve tags. Follow [RELEASING.md](RELEASING.md):
 exact preparation/source identity, all modules/consumers, both Lambda builds,
 runtime simulation, DynamoDB Local, documentation and release-tooling success.
 Review notes and existing license/provenance checks.
 
-The preparation proposal for [#129](https://github.com/rambow-cloud/powertools-lambda-go/issues/129)
-uses `--all --version v1.0.0-rc.1 --issue 129` without `--auto-publish`.
-Its frozen plan must show `auto_publish: false`, `publication_mode: project`, all 27 maintained modules,
+The merged preparation [#135](https://github.com/rambow-cloud/powertools-lambda-go/pull/135) for [#129](https://github.com/rambow-cloud/powertools-lambda-go/issues/129)
+used `--all --version v1.0.0-rc.1 --issue 129` without `--auto-publish`.
+Its frozen plan shows `auto_publish: false`, `publication_mode: project`, all 27 maintained modules,
 the exact source SHA and reviewed accumulated breaking/feature/fix notes.
 The frozen adapter and development modules are not release components.
 Preparation writes metadata and a reviewable PR; it creates no module tags.
@@ -107,7 +115,7 @@ Publication then uses dependency order and fresh public proxy/checksum consumers
 with `GOWORK=off`, `CGO_ENABLED=0` and no local proxy/replacement. Components
 use independent tags at the same version and commit. One project Release and
 consolidated notes remain draft until every consumer succeeds, then finalize
-once. Keep #129 open through that gate. These audited procedures complete
+once. The publisher closes #129 only after that gate passes. These audited procedures complete
 #115's tooling/scope review, not publication acceptance.
 
 For DOC-06, open [the documentation site](https://powertools-lambda-go.rambow.cloud/),
@@ -122,6 +130,6 @@ For each maintained module, open `https://pkg.go.dev/MODULE_PATH@v1.0.0-rc.1` an
 check its overview, API links and examples. The root package uses
 `github.com/rambow-cloud/powertools-lambda-go/commons@v1.0.0-rc.1`; Logger uses
 `github.com/rambow-cloud/powertools-lambda-go/logger@v1.0.0-rc.1`.
-Browser review is separate from builds. Keep candidate/final acceptance pending
-until actual publication and public consumers pass. Final v1.0.0 preparation
+Browser review is separate from builds. Candidate publication and public
+consumers passed; browser review and final stable acceptance remain pending. Final v1.0.0 preparation
 receives separate review; source merges and this plan do not publish modules.
