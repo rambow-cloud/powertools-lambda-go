@@ -73,13 +73,15 @@ authorize cloud calls.
 
 ## Post-v1 work
 
-These extensions do not block the supported subset:
+These extensions do not block the supported subset. Their planning issues have
+completed design acceptance; implementation and service acceptance remain open.
+See [the opt-in AWS acceptance plan](AWS_ACCEPTANCE_PLAN.md) for #92's deferred suite.
 
-- [#116](https://github.com/rambow-cloud/powertools-lambda-go/issues/116): optional KMS data-key caching.
-- [#117](https://github.com/rambow-cloud/powertools-lambda-go/issues/117): additional Kafka registry wire modes.
-- [#118](https://github.com/rambow-cloud/powertools-lambda-go/issues/118): additional AJV dialect/extensions.
-- [#119](https://github.com/rambow-cloud/powertools-lambda-go/issues/119): Managed Instances lifecycle.
-- [#120](https://github.com/rambow-cloud/powertools-lambda-go/issues/120): platform durable execution; existing DynamoDB Idempotency replay is implemented.
+- [#116](https://github.com/rambow-cloud/powertools-lambda-go/issues/116): [optional KMS materials caching design](KMS_CACHE_DESIGN.md).
+- [#117](https://github.com/rambow-cloud/powertools-lambda-go/issues/117): [additional Kafka registry wire modes](KAFKA_WIRE_DESIGN.md).
+- [#118](https://github.com/rambow-cloud/powertools-lambda-go/issues/118): [additional Validation dialect/extensions](VALIDATION_EXTENSION_DESIGN.md).
+- [#119](https://github.com/rambow-cloud/powertools-lambda-go/issues/119): [Managed Instances lifecycle assessment](MANAGED_INSTANCES_DESIGN.md).
+- [#120](https://github.com/rambow-cloud/powertools-lambda-go/issues/120): [platform durable execution design](DURABLE_EXECUTION_DESIGN.md); existing DynamoDB Idempotency replay is implemented.
 
 Keep frozen X-Ray regressions and its migration warning. Transitive deps.dev
 unsafe capability labels do not prove remaining first-party unsafe calls.

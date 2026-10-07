@@ -40,7 +40,7 @@ Do not combine its dates/artifacts with these examples to imply a fresh full run
 - AppSync, Bedrock and Kafka managed-service acceptance.
 
 The planning-only [#92](https://github.com/rambow-cloud/powertools-lambda-go/issues/92)
-tracks a small opt-in suite. Reuse existing evidence and select remaining cases
+has a completed [opt-in suite plan](AWS_ACCEPTANCE_PLAN.md). Reuse existing evidence and select remaining cases
 from the declared support scope. New calls require explicit authorization,
 profile/account guards, a cost/resource plan and cleanup. These results do not
 certify account-wide billing or universal Free Tier availability.

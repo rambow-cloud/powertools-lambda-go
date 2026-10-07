@@ -158,6 +158,7 @@ nav:
           - Local acceptance: LOCAL_VALIDATION.md
           - Historical AWS acceptance: AWS_VALIDATION.md
           - Scoped AWS service acceptance: AWS_SERVICE_ACCEPTANCE.md
+          - Opt-in AWS acceptance plan: AWS_ACCEPTANCE_PLAN.md
       - Design and remaining work:
           - Managed Instances lifecycle: MANAGED_INSTANCES_DESIGN.md
           - Durable execution: DURABLE_EXECUTION_DESIGN.md
