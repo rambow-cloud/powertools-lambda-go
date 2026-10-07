@@ -215,6 +215,69 @@ class VersionTests(unittest.TestCase):
 
 
 class PreparationTests(unittest.TestCase):
+    def test_root_only_release_bounds_next_patch_and_candidate_notes(self):
+        for published, target in (("v0.1.0", "v0.1.1"), ("v1.0.0-rc.1", "v1.0.0-rc.2")):
+            with self.subTest(published=published), fixture() as (root, api, _):
+                preparation.prepare(args(version=published) if "-" in published else args(), api)
+                command(root, "git", "add", ".")
+                command(root, "git", "commit", "-m", "Prepare project release")
+                source = command(root, "git", "rev-parse", "HEAD")
+                for directory in (".", "logger", "metrics"):
+                    tag = release.tag_name(directory, published)
+                    command(root, "git", "tag", tag)
+                    api.tag_shas[tag] = source
+                api.releases = [{"tag_name": published, "draft": False, "prerelease": "-" in published}]
+                (root / "logger/fix.go").write_text("package logger\n\nconst Fixed = true\n", encoding="utf-8")
+                command(root, "git", "add", ".")
+                command(root, "git", "commit", "-m", "fix(logger): fix fields")
+                new_source = command(root, "git", "rev-parse", "HEAD")
+                command(root, "git", "update-ref", "refs/remotes/origin/main", new_source)
+                preparation.prepare(args(plan="next", version=target), api)
+                data = json.loads((root / "releases/next.json").read_text(encoding="utf-8"))
+                self.assertEqual(data["publication_mode"], "project")
+                self.assertTrue(all(item["previous_tag"] == release.tag_name(item["directory"], published) for item in data["modules"]))
+                self.assertEqual([item["changed_files"] for item in data["modules"]], [[], ["logger/fix.go"], []])
+                self.assertTrue(all(set(item["untracked_commits"]) == {new_source} for item in data["modules"]))
+                self.assertNotIn("Import modules", data["modules"][0]["notes"])
+                self.assertEqual(data["modules"][0]["notes"].count("/releases/tag/"), 1)
+                release.validate_plan(data, release.manifest(), target, "project")
+                self.assertEqual(api.writes, [])
+
+    def test_project_history_rejects_missing_or_conflicting_tags(self):
+        for conflicting in (False, True):
+            with self.subTest(conflicting=conflicting), fixture() as (root, api, _):
+                preparation.prepare(args(), api)
+                command(root, "git", "add", ".")
+                command(root, "git", "commit", "-m", "Prepare project release")
+                source = command(root, "git", "rev-parse", "HEAD")
+                command(root, "git", "tag", "v0.1.0")
+                if conflicting:
+                    command(root, "git", "tag", "logger/v0.1.0", source + "^1")
+                published = [{"tag_name": "v0.1.0", "draft": False, "prerelease": False}]
+                with self.assertRaisesRegex(ValueError, "incomplete or conflicting"):
+                    release.previous_release("logger", source, published)
+                self.assertIsNone(release.previous_release("logger", source, [{**published[0], "draft": True}]))
+                self.assertIsNone(release.previous_release("logger", source + "^1", published))
+
+    def test_project_history_uses_published_cohort_and_stable_channel(self):
+        with fixture() as (root, _, _):
+            metadata = json.loads((root / "tools/modules.json").read_text(encoding="utf-8"))
+            metadata.update(publication_mode="project", release_version="v1.0.0-rc.1")
+            metadata["modules"] = [module for module in metadata["modules"] if module["directory"] != "metrics"]
+            for module in metadata["modules"]:
+                if module["public"] and module.get("status") != "deprecated-frozen":
+                    module["version"] = "v1.0.0-rc.1"
+            release.write_json(root / "tools/modules.json", metadata)
+            command(root, "git", "add", ".")
+            command(root, "git", "commit", "-m", "Prepare candidate")
+            source = command(root, "git", "rev-parse", "HEAD")
+            for tag in ("v1.0.0-rc.1", "logger/v1.0.0-rc.1"):
+                command(root, "git", "tag", tag)
+            published = [{"tag_name": "v1.0.0-rc.1", "draft": False, "prerelease": True}]
+            self.assertEqual(release.previous_release("logger", source, published, prerelease=True), "logger/v1.0.0-rc.1")
+            self.assertIsNone(release.previous_release("logger", source, published))
+            self.assertIsNone(release.previous_release("metrics", source, published, prerelease=True))
+
     def test_candidate_metadata_and_notes_include_the_whole_cohort(self):
         with fixture() as (root, api, _):
             preparation.prepare(args(version="v1.0.0-rc.1"), api)

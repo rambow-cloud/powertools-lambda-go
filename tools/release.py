@@ -125,14 +125,29 @@ def previous_release(directory, target, releases, prerelease=False):
     matches = []
     for release in releases:
         tag = release["tag_name"]
-        if release["draft"] or (release["prerelease"] and not prerelease) or not tag.startswith(prefix):
+        if release["draft"] or (release["prerelease"] and not prerelease):
             continue
-        version = tag[len(prefix):]
+        project = directory != "." and VERSION.fullmatch(tag)
+        if not project and not tag.startswith(prefix):
+            continue
+        version = tag if project else tag[len(prefix):]
         if not VERSION.fullmatch(version):
             continue
         sha = commit_of_tag(tag)
-        if is_ancestor(sha, target):
-            matches.append((version_key(version), tag))
+        if not is_ancestor(sha, target):
+            continue
+        if project:
+            snapshot = json.loads(git("show", f"{sha}:tools/modules.json"))
+            # Historical component Releases retain their original boundaries.
+            if snapshot.get("publication_mode") != "project" or snapshot.get("release_version") != version:
+                continue
+            module = next((module for module in snapshot["modules"] if module["directory"] == directory), None)
+            if not module or not module["public"] or module.get("status") == "deprecated-frozen":
+                continue
+            tag = tag_name(directory, version)
+            if module["version"] != version or not git("tag", "--list", tag) or commit_of_tag(tag) != sha:
+                raise ValueError(f"Published project Release has an incomplete or conflicting module tag: {tag}")
+        matches.append((version_key(version), tag))
     return max(matches)[1] if matches else None
 
 
@@ -169,7 +184,7 @@ def write_json(path, data):
     temporary.replace(path)
 
 
-def validate_plan(plan, modules, project_version=None):
+def validate_plan(plan, modules, project_version=None, publication_mode=None):
     if plan.get("preview"):
         raise ValueError("A notes preview is not a reviewed publication plan.")
     if plan.get("notes_format", 1) not in (1, 2):
@@ -177,6 +192,11 @@ def validate_plan(plan, modules, project_version=None):
     if plan.get("schema_version") not in {1, 2} or not isinstance(plan.get("issue"), int) or plan["issue"] < 1 or not SHA.fullmatch(plan.get("source_sha", "")):
         raise ValueError("Invalid release plan identity.")
     unified = plan["schema_version"] == 2
+    mode = plan.get("publication_mode")
+    if mode not in (None, "project") or (mode == "project" and not unified):
+        raise ValueError("Invalid publication mode; project publication requires a unified plan.")
+    if publication_mode is not None and mode != publication_mode:
+        raise ValueError("Release plan does not match the manifest publication mode.")
     if project_version is not None and (not unified or plan.get("release_version") != project_version):
         raise ValueError("Current release policy requires a unified plan matching release_version.")
     if unified:
@@ -368,7 +388,8 @@ def preflight(args, api):
         raise ValueError("Release checkout must be clean; commit reviewed changes before preflight.")
     plan = json.loads(plan_path(args.plan).read_text(encoding="utf-8"))
     modules = manifest()
-    selected = validate_plan(plan, modules, manifest_version())
+    policy = json.loads((ROOT / "tools/modules.json").read_text(encoding="utf-8"))
+    selected = validate_plan(plan, modules, manifest_version(), policy.get("publication_mode"))
     if plan["issue"] != args.issue:
         raise ValueError("Dispatch issue does not match the reviewed plan.")
     authorize_actor(api)
@@ -411,10 +432,13 @@ def preflight(args, api):
         return bool(release and not release["draft"] and remote_tag(api, tag))
     order = dependency_order(selected, modules, requirements, available)
     releases = list(api.pages("releases"))
+    project = plan.get("publication_mode") == "project"
+    root_tag = tag_name(".", selected["."]["version"]) if project else None
+    root_release = release_for_tag(api, root_tag) if project else None
     for directory in order:
         item = selected[directory]
         # Ignore this exact version when resuming a partially completed batch.
-        prior = [release for release in releases if release["tag_name"] != tag_name(directory, item["version"])]
+        prior = [release for release in releases if release["tag_name"] not in {tag_name(directory, item["version"]), root_tag}]
         if previous_release(directory, plan["source_sha"], prior, prerelease="-" in item["version"]) != item["previous_tag"]:
             raise ValueError(f"Previous published release changed: {directory}; prepare a fresh plan.")
         tag = tag_name(directory, item["version"])
@@ -422,8 +446,13 @@ def preflight(args, api):
             raise ValueError(f"Local tag {tag} conflicts with the reviewed SHA.")
         existing = remote_tag(api, tag)
         release = release_for_tag(api, tag)
+        if project and directory != "." and release:
+            raise ValueError(f"Project publication must not create or adopt a component Release: {tag}")
         check_existing(directory, item, args.sha, existing, release)
-        if issue["state"] != "open" and not (existing and release and not release["draft"]):
+        completed = root_release if project else release
+        if project and root_release and not root_release["draft"] and not existing:
+            raise ValueError(f"Published project Release is missing a module tag: {tag}")
+        if issue["state"] != "open" and not (existing and completed and not completed["draft"]):
             raise ValueError("Release tracking issue is closed before publication completed.")
     return plan, selected, modules, order
 
@@ -497,9 +526,52 @@ def run_goreleaser(directory, item, args, output, config, token=None, draft=True
     print(f"GoReleaser {stage}: {tag_name(directory, item['version'])}; output saved to {log}", flush=True)
 
 
+def ensure_tag(api, directory, item, sha):
+    tag = tag_name(directory, item["version"])
+    existing = remote_tag(api, tag)
+    check_existing(directory, item, sha, existing, None)
+    if git("tag", "--list", tag):
+        if commit_of_tag(tag) != sha:
+            raise ValueError(f"Local tag {tag} conflicts with the reviewed SHA.")
+    else:
+        git("tag", tag, sha)
+    if not existing:
+        api.repo("git/refs", method="POST", data={"ref": "refs/tags/" + tag, "sha": sha})
+
+
+def publish_project(args, api, selected, modules, order, output, config, report, session):
+    root = selected["."]
+    project = report["project_release"] = {"tag": root["version"], "release_published": False}
+    for directory in order:
+        item = selected[directory]
+        tag = tag_name(directory, item["version"])
+        if directory != "." and release_for_tag(api, tag):
+            raise ValueError(f"Project publication must not adopt a component Release: {tag}")
+        record = {"tag": tag, "url": f"https://github.com/{REPOSITORY}/tree/{tag}", "tag_created": False, "consumer_verified": False}
+        report["modules"].append(record)
+        ensure_tag(api, directory, item, args.sha)
+        record["tag_created"] = True
+        write_json(output / "progress.json", report)
+        if directory == ".":
+            observed = release_for_tag(api, root["version"])
+            check_existing(".", root, args.sha, args.sha, observed)
+            if not observed:
+                run_goreleaser(".", root, args, output, config, token=api.token)
+                observed = await_release_phase(api, ".", root, args.sha, draft=True)
+            project.update(url=observed["html_url"], release_published=not observed["draft"])
+        evidence = verify_consumer(directory, item, modules[directory], session)
+        record.update(consumer_verified=True, evidence=evidence)
+        write_json(output / "progress.json", report)
+    if observed["draft"]:
+        run_goreleaser(".", root, args, output, config, token=api.token, draft=False)
+        observed = await_release_phase(api, ".", root, args.sha, draft=False)
+    project.update(url=observed["html_url"], release_published=True)
+
+
 def publish(args, api):
     plan, selected, modules, order = preflight(args, api)
     args.unified = plan["schema_version"] == 2
+    project = plan.get("publication_mode") == "project"
     output = ROOT / "dist/releases" / args.plan
     output.mkdir(parents=True, exist_ok=True)
     digest = hashlib.sha256(plan_path(args.plan).read_bytes()).hexdigest()
@@ -509,7 +581,7 @@ def publish(args, api):
     if not re.search(rf"(?m)^GitVersion:\s+v?{re.escape(GORELEASER_VERSION)}\s*$", version):
         raise ValueError(f"Install GoReleaser OSS v{GORELEASER_VERSION}; the release workflow pins this version.")
     configs = {}
-    for directory in order:
+    for directory in (["."] if project else order):
         item = selected[directory]
         print(f"{'Publish' if args.publish else 'Preflight'}: {tag_name(directory, item['version'])}", flush=True)
         note_path = output / (("commons" if directory == "." else directory.replace("/", "-")) + ".md")
@@ -525,20 +597,14 @@ def publish(args, api):
     session = Path(tempfile.mkdtemp(prefix="consumer-", dir=output))
     deferred_root = None
     try:
-        for directory in order:
+        if project:
+            publish_project(args, api, selected, modules, order, output, configs["."], report, session)
+        for directory in ([] if project else order):
             item = selected[directory]
             tag = tag_name(directory, item["version"])
             record = {"tag": tag, "tag_created": False, "consumer_verified": False, "release_published": False}
             report["modules"].append(record)
-            existing = remote_tag(api, tag)
-            check_existing(directory, item, args.sha, existing, None)
-            if git("tag", "--list", tag):
-                if commit_of_tag(tag) != args.sha:
-                    raise ValueError(f"Local tag {tag} conflicts with the reviewed SHA.")
-            else:
-                git("tag", tag, args.sha)
-            if not existing:
-                api.repo("git/refs", method="POST", data={"ref": "refs/tags/" + tag, "sha": args.sha})
+            ensure_tag(api, directory, item, args.sha)
             record["tag_created"] = True
             write_json(output / "progress.json", report)
             release = release_for_tag(api, tag)
@@ -567,6 +633,8 @@ def publish(args, api):
         marker = f"<!-- release-plan:{args.plan}:{digest} -->"
         if not any(marker in (comment.get("body") or "") for comment in api.pages(f"issues/{args.issue}/comments")):
             links = "\n".join(f"- [{record['tag']}]({record['url']})" for record in report["modules"])
+            if project:
+                links = f"Project Release: [{plan['release_version']}]({report['project_release']['url']})\n\nModule tags:\n" + links
             api.repo(f"issues/{args.issue}/comments", method="POST", data={"body": f"{marker}\nPublished the reviewed plan at `{args.sha}`. All selected public consumers passed with CGO disabled, GOWORK=off, fresh caches, and checksum verification.\n\n{links}"})
         api.repo(f"issues/{args.issue}", method="PATCH", data={"state": "closed", "state_reason": "completed"})
     except (RuntimeError, ValueError, KeyError, OSError, TypeError) as error:

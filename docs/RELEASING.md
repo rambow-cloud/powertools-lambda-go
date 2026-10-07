@@ -4,7 +4,8 @@ Several PRs can merge before a version is published. Source merges do not
 publish modules. All maintained public modules release together at one version,
 even when only one component changes. Go module boundaries and import paths stay
 independent; nested modules still require their own prefixed tags.
-The repository publishes Go source modules and GitHub Releases with GoReleaser
+Each version has one project GitHub Release and one consolidated notes document.
+The repository publishes Go source modules and the project Release with GoReleaser
 OSS; Lambda ZIPs remain CI example artifacts. No cloud AWS account is needed.
 
 Before preparing v1, complete [the readiness gates](V1_READINESS.md).
@@ -134,7 +135,8 @@ With automatic publication enabled, merging this preparation PR authorizes its
 frozen release batch. After the CI gate, Modules and Lambda artifacts, Runtime
 simulation, Documentation / Build documentation, and Automation / Release tooling
 checks pass on main, GoReleaser publishes
-in dependency order and the tracking issue closes after public consumer checks.
+one project Release after every module tag and public consumer check succeeds.
+Tags are created in dependency order; the tracking issue then closes.
 Ordinary feature/bug PR merges do not publish modules.
 
 The repository's **Settings → Actions → General → Workflow permissions** must
@@ -188,7 +190,9 @@ maintained module entries must match it. The automation updates internal
 dependency requirements and workspace mappings while preserving module paths
 and Go language-version directives. Workspace consumer `go.mod` files are
 synchronized too. Publication always covers the full maintained cohort.
-Dependency changes appear in the frozen plan and component notes.
+Dependency changes appear in the frozen plan. New plans and their prepared
+manifests record `publication_mode: project`; module records preserve the
+reviewed change and dependency evidence for the single notes document.
 Go commands keep `CGO_ENABLED=0`; no module-file replacements are added.
 Tidy uses the existing local module fixtures before published external modules.
 
@@ -278,7 +282,7 @@ Publication checks caller write permission, Issue/PR association, merged SHA,
 clean checkout, reviewed plan, required PR/main checks, module paths/versions,
 dependency metadata, previous release boundaries, dependency order, and
 tag/Release conflicts. Preflight writes local artifacts only, including a
-nonpublishing GoReleaser run for every selected module. Publication is serialized
+nonpublishing GoReleaser run for the root project Release. Publication is serialized
 and an active run is not canceled by a newer request.
 
 Release preparation changes select complete CI automatically. Publication
@@ -287,37 +291,48 @@ runtime simulation, documentation and release-tooling success on both the
 preparation PR and exact main commit. Ordinary PRs use affected-module checks;
 a green scoped gate or a skipped full-regression marker cannot publish a release.
 
-For each module, publication creates a tag at the selected SHA and uses
-GoReleaser to create its draft GitHub Release with the reviewed notes. After a
-real public consumer passes, a second GoReleaser invocation publishes that same
-draft before proceeding to the next module. The root summary stays draft until
-every component consumer and Release succeeds, then is finalized last. It marks
+For each module, publication creates a tag at the selected SHA and verifies a
+real public consumer before proceeding to dependent modules. GoReleaser creates
+one draft at the root tag with all reviewed notes. This project Release stays
+draft until every module consumer succeeds, then is finalized once. It marks
 the stable project version as GitHub's Latest Release. Root Commons uses `vX.Y.Z`; Logger uses
 `logger/vX.Y.Z`. Consumers use fresh caches, `GOWORK=off`, `CGO_ENABLED=0`,
 the public Go proxy and checksum database, no local proxies/replacements, and
 a consumer build. This differs from synthetic local module verification.
-After all selected modules pass, the workflow posts Release links and closes
+After all selected modules pass, the workflow posts the project Release link and
+module tag links, then closes
 the tracking issue.
 
 The built-in GitHub token performs writes. Publication does not depend on a
-tag-triggered follow-up workflow. Component Releases do not replace the root
-Latest label. Prerelease versions create prerelease
-Releases. v2+ module-path migrations need a separate feature and are rejected
+tag-triggered follow-up workflow. Nested tags do not create component Releases.
+Prerelease versions create one prerelease project Release and do not change
+GitHub's Latest label. v2+ module-path migrations need a separate feature and are rejected
 by this initial tool.
 
 ## GoReleaser configuration and independent tags
 
 New preparations use schema 2: the complete maintained module set, one version,
-aligned internal requirements, and frozen unified summary are required before
+aligned internal requirements, explicit project publication mode, and frozen unified summary are required before
 publication writes. Immutable schema-1 plans from before this policy can still
 be recovered at their original commits, whose manifests lack `release_version`.
 They cannot be used to bypass the policy at a new preparation commit. Published
-`v0.1.0` tags, notes, and acceptance records are not rewritten by this change.
+`v0.1.0` and `v0.2.0` tags, Releases, notes, and acceptance records are not rewritten.
+Previously frozen schema-2 plans without a publication mode retain their
+component-Release recovery behavior at their original commits. New preparation
+always selects project mode; a prepared project manifest rejects unmarked plans.
+
+For later releases, each module's history boundary is its previous published
+component Release or a published project Release with that module in the
+version cohort recorded at the tagged commit. Project Releases require the
+matching prefixed module tag at that same commit. Missing or conflicting tags
+stop preparation; drafts and unrelated commits are excluded. Modules added
+after the published cohort receive an initial summary. Stable releases exclude
+prerelease boundaries; successive candidates may use published candidates.
 
 The workflow installs GoReleaser OSS **v2.18.2** through a commit-pinned official
 action. `.goreleaser.json` is the shared configuration; GoReleaser accepts JSON
-through its YAML parser. The publisher derives per-module configurations under
-`dist/releases/NAME/MODULE/`, changing the project name, output directory, and
+through its YAML parser. The publisher derives one project configuration under
+`dist/releases/NAME/commons/`, changing the project name, output directory, and
 explicit prerelease status from the reviewed plan.
 Library releases skip binary builds, checksums, and artifact uploads.
 Each invocation saves a phase configuration with the required draft state;
@@ -334,13 +349,15 @@ the requested draft or published state to become visible. It checks reviewed
 content on every observed Release and stops immediately on conflicts or API
 errors. This bounded read-after-write wait never repeats a publication write.
 If visibility does not converge, existing objects are preserved for recovery.
-It passes each frozen Markdown file using `--release-notes`; GoReleaser does not
+It passes the frozen consolidated Markdown file using `--release-notes`; GoReleaser does not
 replace it with a repository-wide commit changelog. Existing notes are kept;
 conflict detection tolerates only terminal newline formatting differences.
 
 [Native monorepo tag-prefix support](https://goreleaser.com/customization/monorepo/)
-requires GoReleaser Pro. This source-library integration uses the OSS release
-command with `GORELEASER_CURRENT_TAG` set to the complete reviewed tag and
+requires GoReleaser Pro. New project publication invokes OSS only for the root
+tag; the publisher creates the independent prefixed tags required by Go.
+Historical component-plan recovery uses the OSS release command with
+`GORELEASER_CURRENT_TAG` set to the complete reviewed tag and
 `--skip=validate`. It is a compatibility adapter, rather than native OSS
 monorepo support. The publisher replaces those skipped checks: the checkout
 must be clean at the exact merged SHA, the module version must be valid and
@@ -389,7 +406,7 @@ force-pushed. Local metadata is restored on generation/tidy failures. If main
 advances, preparation creates a fresh plan and PR for the new source.
 
 For publication failures, inspect workflow logs and the
-`release-progress-RUN_ID` artifact, including per-module GoReleaser phase
+`release-progress-RUN_ID` artifact, including project GoReleaser phase
 configurations, metadata, and logs. Public-consumer dependency/build caches
 stay on the runner. Failed consumer checks preserve tags/drafts and leave the
 tracking issue open. A tag already makes a Go version publicly

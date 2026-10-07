@@ -62,7 +62,7 @@ def build_notes_plan(api, modules, target, releases, overrides, bump, reserved_t
     histories = {directory: history.notes(previous_tags[directory]) for directory in directories}
     entries = [entry for records, _, _, _ in histories.values() for entry in records]
     version = unified_version(modules, previous_tags, bump, entries, reserved_tags, target_version)
-    plan = {"schema_version": 2, "notes_format": 2, "release_version": version,
+    plan = {"schema_version": 2, "notes_format": 2, "publication_mode": "project", "release_version": version,
             "repository_entries": [entry for entry in histories["."][0] if entry["module"] == "repository"],
             "issue": issue or 1, "source_sha": target, "auto_publish": automatic,
             "requested_modules": directories, "included_dependencies": [], "bump": bump, "modules": []}
@@ -234,6 +234,7 @@ def synchronize_metadata(modules, selected, requirements):
     manifest_path = release.ROOT / "tools/modules.json"
     data = json.loads(manifest_path.read_text(encoding="utf-8"))
     data["release_version"] = selected["."]["version"]
+    data["publication_mode"] = "project"
     for module in data["modules"]:
         if module["directory"] in selected:
             module["version"] = selected[module["directory"]]["version"]
@@ -275,7 +276,7 @@ Prepare `releases/{name}.json` from `{plan['source_sha']}`. Versions, internal r
 |---|---|---|
 {rows}
 
-Unified project version: **{plan['release_version']}**. All maintained public modules are included, even when only one component changes. The root Release groups accumulated component and repository changes and lists the full version table.
+Unified project version: **{plan['release_version']}**. All maintained public modules are included, even when only one component changes. One project Release contains the consolidated notes and full version table; independent module tags identify the same commit.
 
 Historical notes inferred from PR titles and changed paths: {history}. Review these summaries, initial scope statements, and direct-commit acknowledgements in the plan.
 
