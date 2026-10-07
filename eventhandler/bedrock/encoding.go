@@ -42,7 +42,8 @@ func (w *jsonWriter) value(value any) error {
 			w.WriteString("null")
 			return nil
 		}
-		key := visit{kind: rv.Kind(), pointer: uintptr(rv.UnsafePointer())}
+		// The address is an opaque identity token; it is never converted to a pointer.
+		key := visit{kind: rv.Kind(), pointer: rv.Pointer()}
 		if rv.Kind() == reflect.Slice {
 			key.length = rv.Len()
 		}
