@@ -100,6 +100,8 @@ def render_unified_notes(repository, plan):
     version = plan["release_version"]
     lines = [f"# {version}", "", "All maintained public modules use this version.", "",
              f"**Publication status:** https://github.com/{repository}/issues/{plan['issue']}", ""]
+    if plan.get("publication_mode") == "project":
+        lines += ["One project Release contains these notes; independent Go modules use matching tags at the same commit.", ""]
     for item in plan["modules"]:
         directory = item["directory"]
         direct = {sha: note for sha, note in item["untracked_commits"].items() if directory in note["modules"]}
@@ -136,8 +138,12 @@ def render_unified_notes(repository, plan):
         tag = version if directory == "." else directory + "/" + version
         changed = item["entries"] or item["initial_summary"] or any(directory in note["modules"] for note in item["untracked_commits"].values())
         status = "Component changes" if changed else "Dependency alignment" if item.get("dependency_updates") else "No component changes"
-        lines.append(f"| `{directory}` | [{version}](https://github.com/{repository}/releases/tag/{tag}) | {status} |")
-    lines += ["", "Internal dependency requirements are synchronized to this version. See each component Release for dependency details.", ""]
+        route = "tree" if plan.get("publication_mode") == "project" and directory != "." else "releases/tag"
+        lines.append(f"| `{directory}` | [{version}](https://github.com/{repository}/{route}/{tag}) | {status} |")
+    footer = "Internal dependency requirements are synchronized to this version."
+    if plan.get("publication_mode") != "project":
+        footer += " See each component Release for dependency details."
+    lines += ["", footer, ""]
     if root["previous_tag"]:
         lines += [f"**Full changelog:** https://github.com/{repository}/compare/{root['previous_tag']}...{version}", ""]
     return "\n".join(lines)
@@ -208,6 +214,8 @@ def render_file_based_notes(repository, plan):
               f"**Source:** [{plan['source_sha'][:12]}](https://github.com/{repository}/tree/{plan['source_sha']})", ""]
     if not preview:
         lines += [f"**Publication status:** https://github.com/{repository}/issues/{plan['issue']}", ""]
+        if plan.get("publication_mode") == "project":
+            lines += ["One project Release contains these notes; independent Go modules use matching tags at the same commit.", ""]
     if changed:
         lines += ["## Updated modules", ""]
         for item in changed:
@@ -228,7 +236,8 @@ def render_file_based_notes(repository, plan):
     for item in plan["modules"]:
         directory = item["directory"]
         tag = version if directory == "." else directory + "/" + version
-        label = f"`{version}`" if preview else f"[{version}](https://github.com/{repository}/releases/tag/{tag})"
+        route = "tree" if plan.get("publication_mode") == "project" and directory != "." else "releases/tag"
+        label = f"`{version}`" if preview else f"[{version}](https://github.com/{repository}/{route}/{tag})"
         lines.append(f"| `{module_display_name(repository, directory)}` | {label} | {change_status(item)} |")
     lines += ["", "</details>"]
     if root["previous_tag"]:

@@ -29,7 +29,7 @@ body:
     id: history
     attributes:
       label: Previous versions and accumulated changes
-      description: Link the previous project version and relevant PRs. The root Release groups actual changes by component and shows the full version table.
+      description: Link the previous project version and relevant PRs. One project Release contains the consolidated notes and full version table; Go module tags share its version and commit.
     validations:
       required: true
   - type: textarea

@@ -91,7 +91,7 @@ Review notes and existing license/provenance checks.
 
 The preparation proposal for [#129](https://github.com/rambow-cloud/powertools-lambda-go/issues/129)
 uses `--all --version v1.0.0-rc.1 --issue 129` without `--auto-publish`.
-Its frozen plan must show `auto_publish: false`, all 27 maintained modules,
+Its frozen plan must show `auto_publish: false`, `publication_mode: project`, all 27 maintained modules,
 the exact source SHA and reviewed accumulated breaking/feature/fix notes.
 The frozen adapter and development modules are not release components.
 Preparation writes metadata and a reviewable PR; it creates no module tags.
@@ -105,8 +105,9 @@ licenses/notices; ordinary source PR acceptance is not candidate acceptance.
 
 Publication then uses dependency order and fresh public proxy/checksum consumers,
 with `GOWORK=off`, `CGO_ENABLED=0` and no local proxy/replacement. Components
-remain draft until their own consumer succeeds, and the root summary finalizes
-last. Keep #129 open through that gate. These audited procedures complete
+use independent tags at the same version and commit. One project Release and
+consolidated notes remain draft until every consumer succeeds, then finalize
+once. Keep #129 open through that gate. These audited procedures complete
 #115's tooling/scope review, not publication acceptance.
 
 For DOC-06, open [the documentation site](https://powertools-lambda-go.rambow.cloud/),

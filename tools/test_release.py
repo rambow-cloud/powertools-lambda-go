@@ -50,6 +50,13 @@ def unified_plan():
     return data
 
 
+def project_plan():
+    data = unified_plan()
+    data["publication_mode"] = "project"
+    data["modules"][0]["notes"] = release.render_unified_notes(release.REPOSITORY, data)
+    return data
+
+
 def pr(number, sha, base="main"):
     return {"number": number, "merged_at": f"2026-10-{number:02}T00:00:00Z", "merge_commit_sha": sha, "base": {"ref": base, "repo": {"full_name": release.REPOSITORY}}}
 
@@ -76,6 +83,19 @@ class FakeAPI:
 
 
 class NotesTests(unittest.TestCase):
+    def test_project_notes_link_one_release_and_real_module_tags(self):
+        for notes_format in (1, 2):
+            data = project_plan()
+            data["notes_format"] = notes_format
+            for selected in data["modules"]:
+                selected["changed_files"] = [selected["directory"] + "/value.go"]
+            notes = release.render_unified_notes(release.REPOSITORY, data)
+            self.assertEqual(notes.count("/releases/tag/"), 1)
+            self.assertIn("/releases/tag/v0.1.1", notes)
+            self.assertIn("/tree/logger/v0.1.1", notes)
+            self.assertNotIn("each component Release", notes)
+            self.assertIn("One project Release", notes)
+
     def test_file_based_notes_ignore_broad_notes_for_unchanged_modules(self):
         data = unified_plan()
         data.update(notes_format=2, preview=True)
@@ -205,6 +225,19 @@ class HistoryTests(unittest.TestCase):
 
 
 class PlanTests(unittest.TestCase):
+    def test_publication_mode_is_explicit_and_cannot_bypass_current_policy(self):
+        modules = {directory: {**module, "version": "v0.1.1"} for directory, module in MODULES.items()}
+        release.validate_plan(project_plan(), modules, "v0.1.1", "project")
+        # Previously frozen unified plans still validate under their old manifest.
+        release.validate_plan(unified_plan(), modules, "v0.1.1")
+        with self.assertRaisesRegex(ValueError, "manifest publication mode"):
+            release.validate_plan(unified_plan(), modules, "v0.1.1", "project")
+        for schema, mode in ((2, "component"), (1, "project")):
+            data = project_plan()
+            data.update(schema_version=schema, publication_mode=mode)
+            with self.assertRaisesRegex(ValueError, "publication mode"):
+                release.validate_plan(data, modules)
+
     def test_unified_internal_requirements_cannot_pin_older_components(self):
         requirements = {"logger": [{"Path": "github.com/" + release.REPOSITORY, "Version": "v0.1.0"}]}
         with self.assertRaisesRegex(ValueError, "cohort version"):
@@ -260,6 +293,67 @@ class PlanTests(unittest.TestCase):
 
 
 class PublicationTests(unittest.TestCase):
+    def test_project_release_failure_resume_and_completed_replay(self):
+        data, api = project_plan(), FakeAPI()
+        selected = {item["directory"]: item for item in data["modules"]}
+        calls, tags, verified, fail_finalize = [], {}, [], [True]
+        def cli(directory, item, args, output, config, token=None, draft=True):
+            calls.append((directory, bool(token), draft))
+            self.assertEqual(directory, ".")
+            if not token:
+                return
+            if not draft:
+                self.assertEqual(verified[-3:], [".", "logger", "metrics"])
+                if fail_finalize:
+                    fail_finalize.clear()
+                    raise RuntimeError("Finalization unavailable")
+            record = {"tag_name": item["version"], "draft": draft, "name": item["version"], "body": item["notes"], "prerelease": False, "html_url": "https://example.com/project"}
+            api.responses["releases/tags/" + item["version"]] = record
+            api.responses["releases"] = [record]
+        original_repo = api.repo
+        def repo(path, **kwargs):
+            if path == "git/refs" and kwargs.get("method") == "POST":
+                tags[kwargs["data"]["ref"].removeprefix("refs/tags/")] = kwargs["data"]["sha"]
+            if path == "issues/20/comments" and kwargs.get("method") == "POST":
+                api.responses.setdefault(path, []).append(kwargs["data"])
+            return original_repo(path, **kwargs)
+        api.repo = repo
+        def consumer(directory, *args):
+            self.assertEqual(set(tags.values()), {B})
+            verified.append(directory)
+            return {"sum": "h1:verified"}
+        with tempfile.TemporaryDirectory() as temporary, patch.object(release, "ROOT", Path(temporary)), patch.object(release, "preflight", return_value=(data, selected, MODULES, [".", "logger", "metrics"])), patch.object(release, "run", return_value="GitVersion: " + release.GORELEASER_VERSION), patch.object(release, "git", return_value=""), patch.object(release, "run_goreleaser", side_effect=cli), patch.object(release, "remote_tag", side_effect=lambda api, tag: tags.get(tag)):
+            Path(temporary, ".goreleaser.json").write_bytes((ROOT / ".goreleaser.json").read_bytes())
+            release.write_json(release.plan_path("logger-update"), data)
+            with patch.object(release, "verify_consumer") as verify:
+                release.publish(self.args(), api)
+                verify.assert_not_called()
+                self.assertEqual(api.calls, [])
+            def failed_consumer(directory, *args):
+                if directory == "metrics":
+                    raise RuntimeError("Public proxy not ready")
+                return consumer(directory, *args)
+            with patch.object(release, "verify_consumer", side_effect=failed_consumer), self.assertRaisesRegex(RuntimeError, "proxy"):
+                release.publish(self.args(True), api)
+            self.assertTrue(api.responses["releases"][0]["draft"])
+            self.assertFalse(any(path.startswith("issues/") for path, kwargs in api.calls if kwargs.get("method", "GET") != "GET"))
+            with patch.object(release, "verify_consumer", side_effect=consumer):
+                with self.assertRaisesRegex(RuntimeError, "Finalization unavailable"):
+                    release.publish(self.args(True), api)
+                self.assertTrue(api.responses["releases"][0]["draft"])
+                self.assertFalse(any(path.startswith("issues/") for path, kwargs in api.calls if kwargs.get("method", "GET") != "GET"))
+                release.publish(self.args(True), api)
+                release.publish(self.args(True), api)
+            report = json.loads(Path(temporary, "dist/releases/logger-update/progress.json").read_text(encoding="utf-8"))
+            self.assertEqual([path.name for path in Path(temporary, "dist/releases/logger-update").glob("*.md")], ["commons.md"])
+        self.assertEqual([call for call in calls if call[1]], [(".", True, True), (".", True, False), (".", True, False)])
+        self.assertEqual(tags, {"v0.1.1": B, "logger/v0.1.1": B, "metrics/v0.1.1": B})
+        self.assertEqual(sum(path == "git/refs" for path, _ in api.calls), 3)
+        self.assertTrue(report["completed"] and report["project_release"]["release_published"])
+        self.assertTrue(all(record["consumer_verified"] and "release_published" not in record for record in report["modules"]))
+        self.assertEqual(len(api.responses["releases"]), 1)
+        self.assertEqual(len(api.responses["issues/20/comments"]), 1)
+
     def test_unified_summary_stays_draft_on_failure_and_finalizes_last_on_resume(self):
         data, api = unified_plan(), FakeAPI()
         selected = {item["directory"]: item for item in data["modules"]}
@@ -445,10 +539,12 @@ class PublicationTests(unittest.TestCase):
 
 class PreflightTests(unittest.TestCase):
     def test_authority_history_and_preparation_scope_before_any_writes(self):
-        scenarios = ("valid", "dirty", "local-tag", "permission", "unmerged", "wrong-sha", "closes-issue", "source-changed", "library-change", "closed-issue", "check-failed")
+        scenarios = ("valid", "dirty", "local-tag", "permission", "unmerged", "wrong-sha", "closes-issue", "source-changed", "library-change", "closed-issue", "check-failed", "project-valid", "project-component", "project-closed-complete", "project-closed-incomplete", "project-published-incomplete")
         for scenario in scenarios:
             with self.subTest(scenario=scenario), tempfile.TemporaryDirectory() as temporary:
-                data = plan()
+                project = scenario.startswith("project-")
+                data = project_plan() if project else plan()
+                modules = {directory: {**module, "version": "v0.1.1"} for directory, module in MODULES.items()} if project else MODULES
                 responses = {
                     "collaborators/maintainer/permission": {"permission": "admin"},
                     "pulls/21": {"merged": True, "base": {"ref": "main", "repo": {"full_name": release.REPOSITORY}}, "merge_commit_sha": B, "head": {"sha": C}, "body": "Refs #20\n"},
@@ -465,6 +561,15 @@ class PreflightTests(unittest.TestCase):
                     responses["pulls/21"]["body"] += "Closes #20\n"
                 elif scenario == "closed-issue":
                     responses["issues/20"]["state"] = "closed"
+                if project and scenario != "project-valid":
+                    root = data["modules"][0]
+                    published = {"tag_name": root["version"], "draft": False, "name": root["version"], "body": root["notes"], "prerelease": False}
+                    responses["releases/tags/" + root["version"]] = published
+                    responses["releases"] = [published]
+                    if scenario == "project-component":
+                        responses["releases/tags/logger%2Fv0.1.1"] = {**published, "tag_name": "logger/v0.1.1"}
+                    if "closed" in scenario:
+                        responses["issues/20"]["state"] = "closed"
                 api = FakeAPI(responses)
                 def git(*args):
                     if args == ("rev-parse", "HEAD"):
@@ -481,11 +586,22 @@ class PreflightTests(unittest.TestCase):
                         return "releases/logger-update.json\n" + ("logger/logger.go" if scenario == "library-change" else "tools/modules.json")
                     raise AssertionError(args)
                 args = PublicationTests().args()
-                release.write_json(Path(temporary) / "tools/modules.json", {"base": "github.com/" + release.REPOSITORY, "modules": list(MODULES.values())})
-                with patch.object(release, "ROOT", Path(temporary)), patch.object(release, "manifest", return_value=MODULES), patch.object(release, "git", side_effect=git), patch.object(release, "is_ancestor", return_value=True), patch.object(release, "run", return_value=json.dumps({"Module": {"Path": "github.com/" + release.REPOSITORY + "/logger"}, "Require": []})), patch.object(release, "check_runs", side_effect=ValueError("Check failed") if scenario == "check-failed" else None) as checks, patch.object(release, "previous_release", return_value="logger/v0.1.0"), patch.object(release, "remote_tag", return_value=None), patch.dict(os.environ, {"GITHUB_ACTOR": "maintainer"}):
+                metadata = {"base": "github.com/" + release.REPOSITORY, "modules": list(modules.values())}
+                if project:
+                    metadata.update(release_version="v0.1.1", publication_mode="project")
+                release.write_json(Path(temporary) / "tools/modules.json", metadata)
+                def module_metadata(*command, cwd, **kwargs):
+                    directory = Path(cwd).relative_to(temporary).as_posix()
+                    path = "github.com/" + release.REPOSITORY + ("" if directory == "." else "/" + directory)
+                    return json.dumps({"Module": {"Path": path}, "Require": []})
+                def tag_target(api, tag):
+                    if project and scenario != "project-valid":
+                        return None if "incomplete" in scenario and tag.startswith("metrics/") else B
+                    return None
+                with patch.object(release, "ROOT", Path(temporary)), patch.object(release, "manifest", return_value=modules), patch.object(release, "git", side_effect=git), patch.object(release, "is_ancestor", return_value=True), patch.object(release, "run", side_effect=module_metadata), patch.object(release, "check_runs", side_effect=ValueError("Check failed") if scenario == "check-failed" else None) as checks, patch.object(release, "previous_release", side_effect=lambda directory, *args, **kwargs: release.tag_name(directory, "v0.1.0")), patch.object(release, "remote_tag", side_effect=tag_target), patch.dict(os.environ, {"GITHUB_ACTOR": "maintainer"}):
                     release.write_json(release.plan_path("logger-update"), data)
-                    if scenario == "valid":
-                        self.assertEqual(release.preflight(args, api)[3], ["logger"])
+                    if scenario in ("valid", "project-valid", "project-closed-complete"):
+                        self.assertEqual(release.preflight(args, api)[3], [".", "logger", "metrics"] if project else ["logger"])
                         self.assertEqual([call.args[1] for call in checks.call_args_list], [C, B])
                         self.assertTrue(all("Runtime simulation" in call.args[2] for call in checks.call_args_list))
                     else:

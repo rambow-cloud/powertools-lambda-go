@@ -9,8 +9,9 @@ Latest published cohort: [v0.2.0](https://github.com/rambow-cloud/powertools-lam
 Future releases use [one shared version](RELEASING.md) for all maintained public
 modules. `tools/modules.json` records the project `release_version`, and each
 maintained module version matches it. Fixing only Logger still releases the full
-cohort; the root version Release groups actual component changes and lists every
-module. Development modules and the frozen X-Ray adapter remain excluded.
+cohort. Each version creates one project Release with consolidated component
+notes and a full module table, plus independent Go module tags at the same
+commit. Development modules and the frozen X-Ray adapter remain excluded.
 
 All module paths start with `github.com/rambow-cloud/powertools-lambda-go`.
 
