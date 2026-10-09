@@ -30,6 +30,7 @@ outside this promise. See [the contract decisions](V1_API_REVIEW.md).
 | persistent keys | `AppendPersistentKeys/RemovePersistentKeys/PersistentKeys` | Shared Commons object/indexed-array merge; returned nested values must be treated as immutable |
 | createChild | `Child(options...)` | Separate persistent/temporary snapshots and shared sink lock; inherited temporary precedence and independent reset/removal |
 | Lambda context injection | `WrapHandler` plus `WithContext` | Typed functions replace decorators/Middy; request state always resets |
+| log incoming event | `HandlerOptions.LogEvent`, `WrapHandler`, `WrapRawHandler` | Opt-in; typed wrapper logs its received value; raw entry logs JSON before JSON v2 typed decoding, retaining unknown members and numeric tokens |
 | correlation ID extraction | `SetCorrelationID`, `ExtractCorrelationID`, or handler callback/source/extractor | All nine built-in source locations and optional compiled JMESPath expressions; query failures use instrumentation diagnostics |
 | custom formatter/JSON replacer | `WithFormatter/WithReplacer` | Go callback model; structs/marshalers use their JSON representation for descendant replacement, preserving JSON tags and numeric tokens |
 | bufferLogs/flushBuffer/clearBuffer | `WithBuffer/FlushBuffer/ClearBuffer` | Active-trace flush/clear, sequential trace replacement, byte-size eviction, oversize error details and error auto-flush; runtime X-Ray root or valid OTel context, including unsampled contexts |

@@ -62,6 +62,8 @@ func (s *scope) finish(flush bool, handlerErr error) {
 // HandlerOptions controls wrapper behavior. Per-invocation attributes always reset.
 // CorrelationID supports custom extraction without imposing a query dependency.
 type HandlerOptions struct {
+	// LogEvent records the value received by the wrapper before its handler runs.
+	// WrapRawHandler receives raw JSON; WrapHandler may receive a typed projection.
 	LogEvent           *bool
 	FlushBufferOnError bool
 	CorrelationID      func(event any) any
@@ -74,6 +76,8 @@ type HandlerOptions struct {
 // WrapHandler enriches logs and isolates mutable state for each Lambda invocation.
 // The handler must use l.WithContext(ctx); a root logger has process-scoped state.
 // A panic is observed for cleanup and then rethrown unchanged to the Lambda runtime.
+// Event logging serializes T, which may already omit original JSON members.
+// Use WrapRawHandler at the runtime entry to log before typed decoding.
 func WrapHandler[T, R any](l *Logger, handler func(context.Context, T) (R, error), options ...HandlerOptions) func(context.Context, T) (R, error) {
 	var opts HandlerOptions
 	if len(options) > 0 {
