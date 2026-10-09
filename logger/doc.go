@@ -11,6 +11,8 @@
 // and correlation information. This prevents keys from leaking between invocations.
 // Buffering, sampling and event logging are configurable; review their data and
 // flush policies before enabling them for production payloads.
+// [WrapRawHandler] retains incoming JSON members in event logs before decoding
+// a typed business input. [WrapHandler] logs the input value it receives.
 //
 // The package composes with OpenTelemetry tracing and optional JMESPath extraction.
 // Applications own custom writers, formatters, clocks and error callbacks.

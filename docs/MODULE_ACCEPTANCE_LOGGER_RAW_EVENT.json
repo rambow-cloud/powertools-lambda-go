@@ -1,0 +1,40 @@
+{
+  "cgo_enabled": false,
+  "workspace": "off",
+  "source": "local module proxy fixtures; not published versions",
+  "completed": true,
+  "modules": [
+    {
+      "path": "github.com/rambow-cloud/powertools-lambda-go/logger",
+      "directory": "logger",
+      "public": true,
+      "version": "v1.0.0",
+      "archive_sha256": "47adaeade7d782a7c95a94289ff30311989364d303f47d210f63803fa2c860fc",
+      "tests": true,
+      "vet": true,
+      "tidy": true,
+      "consumer_build": true,
+      "external_modules": [
+        "github.com/aws/aws-lambda-go",
+        "github.com/cespare/xxhash/v2",
+        "github.com/davecgh/go-spew",
+        "github.com/go-logr/logr",
+        "github.com/go-logr/stdr",
+        "github.com/google/go-cmp",
+        "github.com/pmezard/go-difflib",
+        "github.com/stretchr/testify",
+        "go.opentelemetry.io/auto/sdk",
+        "go.opentelemetry.io/otel",
+        "go.opentelemetry.io/otel/metric",
+        "go.opentelemetry.io/otel/trace",
+        "go.yaml.in/yaml/v3",
+        "gopkg.in/yaml.v3"
+      ],
+      "binary_bytes": 3954176
+    }
+  ],
+  "scope": "Selected modules only; this report does not replace full-workspace acceptance",
+  "selected_directories": [
+    "logger"
+  ]
+}

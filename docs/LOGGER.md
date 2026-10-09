@@ -170,7 +170,7 @@ Compared with the [official v2.35.0 Logger guide](https://github.com/aws-powerto
 | --- | --- | --- |
 | Structured keys / messages / errors | `Info`, `Warn`, `Error` and other levels | Explicit message and Fields; Go error types/causes instead of JS stacks |
 | Lambda context injection | `WrapHandler` plus `WithContext` | Typed functions; invocation state closes at completion |
-| Log incoming event | `POWERTOOLS_LOGGER_LOG_EVENT`, wrapper option | Opt-in; separate event record |
+| Log incoming event | `POWERTOOLS_LOGGER_LOG_EVENT`, wrapper option, `WrapRawHandler` | Opt-in; separate event record; raw entry retains original JSON values before typed decoding |
 | Correlation ID | `SetCorrelationID`, handler source/callback/extractor | Nine sources; compiled JMESPath is optional |
 | Append / remove / reset attributes | Temporary and persistent key methods | Scoped state and merge precedence |
 | Levels / ALC / suppression | `WithLevel`, `SetLevel`, `SilentLevel` | ALC precedence; filtered calls return nil |
@@ -187,6 +187,58 @@ Compared with the [official v2.35.0 Logger guide](https://github.com/aws-powerto
 ### Event logging and child configuration
 
 Event logging is disabled by default. With `POWERTOOLS_LOGGER_LOG_EVENT=true`, the wrapper emits an additional event record before your business logs; it can include the entire payload. Set this before constructing `appLog`, or select the handler option. It does not change what `Info` means.
+
+`WrapHandler` logs the Go value it receives. When the AWS runtime first decodes
+JSON into a struct, members absent from that struct are discarded; serializing
+the struct can also omit fields with `omitempty` or `json:"-"` tags. For example,
+`{"name":"Alice","age":30}` becomes `{"name":"Alice"}` when the input struct
+only declares `name`. The logger cannot reconstruct discarded values.
+
+Register `WrapRawHandler` at the runtime entry to log the complete incoming JSON
+value before decoding a typed business input:
+
+~~~go
+type greetingEvent struct {
+    Name string `json:"name"`
+}
+
+handler := func(ctx context.Context, event greetingEvent) (string, error) {
+    return event.Name, appLog.WithContext(ctx).Info("Greeting accepted")
+}
+enabled := true
+lambda.Start(logger.WrapRawHandler(appLog, handler, logger.HandlerOptions{
+    LogEvent: &enabled,
+}))
+~~~
+
+The returned function accepts `encoding/json.RawMessage`. Its event record
+contains `"event":{"name":"Alice","age":30}`, while the business handler
+receives `greetingEvent{Name: "Alice"}`. Unknown members, nested values, empty
+strings, JSON nulls and exact numeric tokens are retained in event logs. JSON
+whitespace and member order are not preserved. Existing formatter/replacer
+policies can transform or redact the event, and `LogEvent: false` or a level
+above INFO suppresses the event record as usual. Review payload contents before
+enabling event logging.
+
+Typed decoding uses `encoding/json/v2` defaults, including case-sensitive field
+names. Event logging runs before typed decoding; a decoding error
+returns without calling the business handler. Invalid JSON rejected by the AWS
+runtime never reaches the wrapper. Runtime `WithUseNumber` and
+`WithDisallowUnknownFields` options apply to its RawMessage entry, not to the
+subsequent typed decoder. If you need custom decoding options, use
+`WrapHandler` around a RawMessage function and decode inside that function.
+Raw-wrapper correlation callbacks and extractors receive RawMessage; built-in
+correlation sources and this project's compiled JMESPath queries support it.
+
+Keep event logging outside Parser/Validation when you need the incoming payload.
+For an existing raw-input pipeline, compose
+`logger.WrapHandler(appLog, parser.WrapHandler[json.RawMessage](schema, handler), options)`
+or the equivalent `validation.WrapHandler[json.RawMessage]` pipeline. Here `json`
+refers to `encoding/json`. Placing Logger inside these wrappers records their
+parsed or validated value, which may already omit original fields. Tracer can
+remain outside Logger; all these wrappers share the invocation identity.
+See the executable [raw-event example](https://github.com/rambow-cloud/powertools-lambda-go/blob/main/logger/example_test.go)
+and [runtime-entry regressions](https://github.com/rambow-cloud/powertools-lambda-go/blob/main/logger/raw_handler_test.go).
 
 Create `componentLog := appLog.Child(logger.WithPersistentKeys(logger.Fields{"component":"payments"}))` when a component needs a stable field and independent settings. In a wrapped handler, bind it with `componentLog.WithContext(ctx)`. Child level/key changes do not mutate the parent's configuration. Treat retained nested values as immutable.
 

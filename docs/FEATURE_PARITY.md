@@ -23,7 +23,7 @@ Use each guide's **TypeScript feature coverage** table for the individual featur
 
 | TypeScript utility | Go guide and module | Implemented capability groups | Remaining compatibility or service gate |
 | --- | --- | --- | --- |
-| Logger | [Logger](LOGGER.md), `logger` | JSON, Lambda context, levels/ALC, attributes, children, correlation, sampling, buffering, formatters/replacers, timezone/key ordering | Complete diagnostics/configuration, native serialization, child/buffer edge cases |
+| Logger | [Logger](LOGGER.md), `logger` | JSON, Lambda context, opt-in raw event logging before typed decoding, levels/ALC, attributes, children, correlation, sampling, buffering, formatters/replacers, timezone/key ordering | Complete diagnostics/configuration, native serialization, child/buffer edge cases |
 | Tracer | [Tracer](TRACER.md), `tracer` | Handler/operation spans, annotations/metadata, HTTP/SDK v2, capture controls, context IDs, OTel provider injection | OTel representation differs from native X-Ray; exhaustive lifecycle, freeze/timeout and service-map behavior |
 | Metrics | [Metrics](METRICS.md), `metrics` | EMF, units/resolution, dimension sets, multiple values, timestamps, cold start, selective clears, single metrics and multi-instance wrappers | Native metadata/types, full framework lifecycle and broader CloudWatch service boundaries; scoped extraction passed in [AWS_SERVICE_ACCEPTANCE.md](AWS_SERVICE_ACCEPTANCE.md) |
 | Parameters | [Parameters](PARAMETERS.md), `parameters` and service subpackages | Five providers, caches/transforms, force fetch, missing values, SSM writes/batches, SDK injection | Duration/invalid-input diagnostics and live service semantics |
