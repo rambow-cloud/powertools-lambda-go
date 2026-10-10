@@ -15,6 +15,30 @@ changes; later changes on `main` belong to a future release. See
 [compatibility boundaries](COMPATIBILITY.md) before upgrading and
 [the release workflow](RELEASING.md) for maintainer instructions.
 
+## v1.1.0
+
+Published **2026-10-10** as a stable minor release.
+[GitHub Release and consolidated notes](https://github.com/rambow-cloud/powertools-lambda-go/releases/tag/v1.1.0).
+
+Logger adds the opt-in `WrapRawHandler` entrypoint, which logs incoming JSON
+before typed decoding so unknown members and original values remain available
+to event logging. Existing `WrapHandler` behavior is preserved. See
+[event logging](LOGGER.md#event-logging-and-child-configuration).
+The other 26 maintained modules receive a version bump and aligned internal
+requirements; the consolidated Release also records repository changes.
+
+All 27 maintained modules share independent tags at
+[`caac78d27493`](https://github.com/rambow-cloud/powertools-lambda-go/tree/caac78d274931b930c6e830e180c225cce160def).
+The preparation PR and exact main commit passed Full regression, including
+packaged modules, independent consumers, both Lambda architecture artifacts,
+runtime simulation, DynamoDB Local, documentation and pinned release tools.
+All 27 fresh public proxy/checksum consumers passed with CGO disabled, GOWORK
+off and no replacements. The README application also built against the
+published Logger version for Linux arm64. Exact identities and checksums are
+in [v1.1.0 acceptance](RELEASE_ACCEPTANCE_V1_1_0.json).
+Frozen X-Ray and development modules remain excluded; browser/pkg.go.dev
+presentation review and live AWS testing remain separate checks.
+
 ## v1.0.0
 
 Published **2026-10-07** as the first stable v1 release.

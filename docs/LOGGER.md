@@ -199,8 +199,8 @@ the struct can also omit fields with `omitempty` or `json:"-"` tags. For example
 `{"name":"Alice","age":30}` becomes `{"name":"Alice"}` when the input struct
 only declares `name`. The logger cannot reconstruct discarded values.
 
-Register `WrapRawHandler` at the runtime entry to log the complete incoming JSON
-value before decoding a typed business input:
+Register `WrapRawHandler` (available in Logger v1.1.0 and later) at the runtime
+entry to log the complete incoming JSON value before decoding a typed business input:
 
 ~~~go
 type greetingEvent struct {

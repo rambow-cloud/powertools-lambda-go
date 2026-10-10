@@ -1,9 +1,11 @@
 # v1 readiness and stable scope
 
-The owner accepted issue-driven v1 preparation on 2026-10-07. Latest published
+The owner accepted issue-driven v1 preparation on 2026-10-07. First published
 stable cohort: v1.0.0; earlier candidate: v1.0.0-rc.1. The owner explicitly
 authorized stable publication under #137; this record covers the published
 maintained subset and its compatibility commitment, not exhaustive parity. Track the full audit in [#112](https://github.com/rambow-cloud/powertools-lambda-go/issues/112).
+See [version policy](VERSION_POLICY.md) for the latest stable cohort and
+[release history](RELEASE_NOTES.md) for later v1 publications.
 
 ## Maintained scope
 
