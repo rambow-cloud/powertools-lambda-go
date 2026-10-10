@@ -85,6 +85,8 @@ Logger adds `trace_id`, `span_id`, and a formatted `xray_trace_id` from a valid 
 
 ## Explicitly unfinished
 
+The [phased issue backlog](ROADMAP.md) now assigns the remaining recorded work to six milestones. Existing APIs, intentional Go differences and frozen legacy X-Ray behavior remain distinct from missing features.
+
 - Complete exported-symbol/default/error audit and comprehensive TypeScript differential fixtures.
 - Logger full diagnostic/configuration behavior, JavaScript serialization edge cases, and complete child/buffer parity. Arbitrary correlation expressions and struct/marshaler descendant replacement are implemented.
 - Tracer decorators/Middy-equivalent options, complete OTel error/HTTP/SDK parity, non-HTTP event extraction, and collector/X-Ray document fixtures. Opt-in HTTP event-envelope extraction is implemented; legacy native segment compatibility is frozen.
