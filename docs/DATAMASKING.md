@@ -8,9 +8,17 @@ Data Masking erases selected fields or transforms them through an encryption pro
 
 See [installation](MODULES.md) and the [compatibility baseline](COMPATIBILITY.md).
 
+## Install
+
+Use Go 1.27 or newer and install the module in your own application:
+
+```sh
+CGO_ENABLED=0 go get github.com/rambow-cloud/powertools-lambda-go/datamasking@v1.1.0
+```
+
 ## Complete example
 
-This complete offline program masks a customer SSN without changing the input object. Save it in an empty directory inside the checkout and run `go run main.go` with `CGO_ENABLED=0`. It requires no provider or AWS credentials.
+This complete offline program masks a customer SSN without changing the input object. Save it as `main.go` in your application and run `CGO_ENABLED=0 go run .`. It requires no provider or AWS credentials.
 
 ~~~go
 package main
@@ -58,28 +66,10 @@ Stdout contains the following JSON. Only `customer.ssn` changes; the original `p
 }
 ~~~
 
-## Objects and lifecycle
+## Common tasks
 
-| Object | Responsibility |
-| --- | --- |
-| `masker` | Reusable masking policy and optional provider. |
-| `EraseOptions` | Select fields, ordered rules and custom/dynamic masks for one operation. |
-| `masked` | Returned private result; print/store this value instead of the original payload. |
-| `Provider` | Context-aware Encrypt/Decrypt interface; optional real KMS provider is uncached. |
-
-## TypeScript feature coverage
-
-Compared with the [official v2.35.0 data-masking guide](https://github.com/aws-powertools/powertools-lambda-typescript/blob/7bcc27b1574493f9452688673658f52b80c53847/docs/features/data-masking.md) and the pinned npm implementation. The table maps capabilities; it does not certify every native type or service behavior.
-
-| TypeScript feature | Go API or approach | Compatibility scope |
-| --- | --- | --- |
-| Erasure / field selection | `Erase`, `Fields`, `Rules` | Whole payload, dot paths, wildcards, custom/dynamic masks. |
-| Regex replacement | Optional `commons/regex` replacer | Shared ECMAScript adapter; complete regex boundaries remain open. |
-| Encrypt / decrypt | `Provider`, `Encrypt`, `Decrypt` | Caller-supplied provider; field-level and whole-payload paths. |
-| Encryption context / multiple keys | `TransformOptions.Context`, KMS provider `Keys` | Real SDK interoperability checked with synthetic local key wrapping. |
-| Provider / data-key caching | `datamasking/kms` | Uncached provider implemented; TypeScript data-key caching remains unsupported. |
-
-Executable evidence: [datamasking/masking_test.go](https://github.com/rambow-cloud/powertools-lambda-go/blob/main/datamasking/masking_test.go). See [the verification scope](FEATURE_PARITY.md) and [project progress](CHECKLIST.md) for open gates.
+- [Select fields and customize masks](#rules-and-selectors).
+- [Encrypt and decrypt selected fields](#encryption-provider-boundary).
 
 ## Rules and selectors
 
@@ -106,3 +96,27 @@ Selected/rule operations accept acyclic JSON-shaped data. They do not reproduce 
 The current 240-case corpus checks erasure, provider orchestration, plaintext ordering, errors and diagnostics. Its deterministic provider and local Lambda fixture are explicitly not cryptography. They establish neither confidentiality nor AWS ciphertext/cache compatibility. See [the reference scope](https://github.com/rambow-cloud/powertools-lambda-go/blob/main/datamasking/testdata/README.md).
 
 Current verified acceptance: 30 packaged modules/27 standalone consumers across the initial checkpoint and six-module continuation, both CGO-disabled Linux builds, 856/856 RIE assertions, 95/95 streaming and 14/14 Batch checks. Regex adds 7,671 Node replacement cases, 19 invalid patterns and 30 actual Data Masking compositions. Docker executed amd64; arm64 was cross-compiled. See LOCAL_VALIDATION.md and MODULE_ACCEPTANCE_REGEX.json for exact scopes and the Validation extraction fix.
+## Objects and lifecycle
+
+| Object | Responsibility |
+| --- | --- |
+| `masker` | Reusable masking policy and optional provider. |
+| `EraseOptions` | Select fields, ordered rules and custom/dynamic masks for one operation. |
+| `masked` | Returned private result; print/store this value instead of the original payload. |
+| `Provider` | Context-aware Encrypt/Decrypt interface; optional real KMS provider is uncached. |
+
+## TypeScript feature coverage
+
+??? info "Compare with TypeScript v2.35.0"
+
+    Compared with the [official v2.35.0 data-masking guide](https://github.com/aws-powertools/powertools-lambda-typescript/blob/7bcc27b1574493f9452688673658f52b80c53847/docs/features/data-masking.md) and the pinned npm implementation. The table maps capabilities; it does not certify every native type or service behavior.
+
+    | TypeScript feature | Go API or approach | Compatibility scope |
+    | --- | --- | --- |
+    | Erasure / field selection | `Erase`, `Fields`, `Rules` | Whole payload, dot paths, wildcards, custom/dynamic masks. |
+    | Regex replacement | Optional `commons/regex` replacer | Shared ECMAScript adapter; complete regex boundaries remain open. |
+    | Encrypt / decrypt | `Provider`, `Encrypt`, `Decrypt` | Caller-supplied provider; field-level and whole-payload paths. |
+    | Encryption context / multiple keys | `TransformOptions.Context`, KMS provider `Keys` | Real SDK interoperability checked with synthetic local key wrapping. |
+    | Provider / data-key caching | `datamasking/kms` | Uncached provider implemented; TypeScript data-key caching remains unsupported. |
+
+    Executable evidence: [datamasking/masking_test.go](https://github.com/rambow-cloud/powertools-lambda-go/blob/main/datamasking/masking_test.go). See [the verification scope](FEATURE_PARITY.md) and [project progress](CHECKLIST.md) for open gates.

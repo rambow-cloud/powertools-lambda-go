@@ -8,6 +8,15 @@ AppSync Events handles publish and subscribe invocations with channel routing, a
 
 See [installation](MODULES.md) and the [compatibility baseline](COMPATIBILITY.md).
 
+## Install
+
+Use Go 1.27 or newer and install the module in your own application:
+
+```sh
+CGO_ENABLED=0 go get github.com/rambow-cloud/powertools-lambda-go/eventhandler/appsyncevents@v1.1.0
+CGO_ENABLED=0 go get github.com/aws/aws-lambda-go@v1.55.0
+```
+
 ## Complete example
 
 Build the complete example at `./examples/appsyncevents` with `CGO_ENABLED=0`. Its `/orders/*` publish route returns each payload unchanged; `/orders/private` requires an identity for subscriptions.
@@ -56,28 +65,11 @@ For the publish input below, the resolver returns `{"events":[{"id":"e1","payloa
 }
 ~~~
 
-## Objects and lifecycle
+## Common tasks
 
-| Object | Responsibility |
-| --- | --- |
-| `app` | Reusable route registry and match cache; handlers are registered once. |
-| `payload` / `event` | One publish payload and the full invocation event; aggregate mode passes all items. |
-| `ctx` | Original Lambda context; pass to optional Logger/Tracer and downstream calls. |
-
-## TypeScript feature coverage
-
-Compared with the [official v2.35.0 appsync-events guide](https://github.com/aws-powertools/powertools-lambda-typescript/blob/7bcc27b1574493f9452688673658f52b80c53847/docs/features/event-handler/appsync-events.md) and the pinned npm implementation. The table maps capabilities; it does not certify every native type or service behavior.
-
-| TypeScript feature | Go API or approach | Compatibility scope |
-| --- | --- | --- |
-| Publish / subscribe | `OnPublish`, `OnSubscribe`, `Resolve` | Per-item publishing or authorization callback. |
-| Wildcards / routing | Channel patterns and separate publish/subscribe registries | Reference specificity and match caching. |
-| Aggregated processing | `OnPublish` with `PublishOptions{Aggregate: true}` | Whole-batch callback; output order remains explicit. |
-| Oversize detection | `WarnOnLargePayload` | Warns above 245760 bytes; no drop/truncation. |
-| Errors / unauthorized operations | Named errors and `UnauthorizedError` | Individual error items versus propagated authorization errors. |
-| Lambda context / logging | `Options.Diagnostic` | Concurrency-safe callbacks; no automatic business logs. |
-
-Executable evidence: [eventhandler/appsyncevents/reference_test.go](https://github.com/rambow-cloud/powertools-lambda-go/blob/main/eventhandler/appsyncevents/reference_test.go). See [the verification scope](FEATURE_PARITY.md) and [project progress](CHECKLIST.md) for open gates.
+- [Register publish and subscribe handlers](#event-and-handler-mapping).
+- [Use wildcard routes and shared state](#routing-and-process-state).
+- [Handle authorization errors](#errors-context-and-diagnostics).
 
 ## Event and handler mapping
 
@@ -126,8 +118,35 @@ The reference fixture covers the exact limit, above-limit values, UTF-8 characte
 
 ## Verification scope
 
-Verified 100 actual TypeScript scenarios, 64 concurrent invocations, ordered concurrent item results, LRU eviction and authorization/callback error behavior; full verification passed 23 packaged modules/20 standalone consumers, both CGO-disabled Linux builds, 742/742 RIE assertions, 95/95 streaming Runtime API checks and 14/14 Batch artifact checks (2026-09-22). Docker ran amd64; arm64 was cross-compiled. No AWS resources were used.
+??? info "Reference evidence and compatibility details"
 
-The full-run AppSync archive preceded the concrete UnauthorizedException type-name correction. MODULE_ACCEPTANCE_SCOPED.json separately verifies the final AppSync source archive, tests/vet/tidy and standalone consumer; the Lambda binaries were built from the corrected source. Unaffected module suites and runtime invocations were not repeated.
+    Verified 100 actual TypeScript scenarios, 64 concurrent invocations, ordered concurrent item results, LRU eviction and authorization/callback error behavior; full verification passed 23 packaged modules/20 standalone consumers, both CGO-disabled Linux builds, 742/742 RIE assertions, 95/95 streaming Runtime API checks and 14/14 Batch artifact checks (2026-09-22). Docker ran amd64; arm64 was cross-compiled. No AWS resources were used.
 
-The pinned reference generator produces 100 scenarios, many with repeated registration and resolution operations. It compares complete response shapes, warning/error text, cache behavior, handler arguments and context. Long strings are compared by exact UTF-8 length and SHA-256 rather than discarded. Concurrent calls and error logs use multiset comparison; route diagnostics and response order remain exact. Go-specific tests cover 64 concurrent invocations, concurrent item completion, input immutability, authorization identity, 100-entry cache eviction and callback panic propagation. This is scoped evidence, not an exhaustive parity or live AppSync service claim.
+    The full-run AppSync archive preceded the concrete UnauthorizedException type-name correction. MODULE_ACCEPTANCE_SCOPED.json separately verifies the final AppSync source archive, tests/vet/tidy and standalone consumer; the Lambda binaries were built from the corrected source. Unaffected module suites and runtime invocations were not repeated.
+
+    The pinned reference generator produces 100 scenarios, many with repeated registration and resolution operations. It compares complete response shapes, warning/error text, cache behavior, handler arguments and context. Long strings are compared by exact UTF-8 length and SHA-256 rather than discarded. Concurrent calls and error logs use multiset comparison; route diagnostics and response order remain exact. Go-specific tests cover 64 concurrent invocations, concurrent item completion, input immutability, authorization identity, 100-entry cache eviction and callback panic propagation. This is scoped evidence, not an exhaustive parity or live AppSync service claim.
+
+## Objects and lifecycle
+
+| Object | Responsibility |
+| --- | --- |
+| `app` | Reusable route registry and match cache; handlers are registered once. |
+| `payload` / `event` | One publish payload and the full invocation event; aggregate mode passes all items. |
+| `ctx` | Original Lambda context; pass to optional Logger/Tracer and downstream calls. |
+
+## TypeScript feature coverage
+
+??? info "Compare with TypeScript v2.35.0"
+
+    Compared with the [official v2.35.0 appsync-events guide](https://github.com/aws-powertools/powertools-lambda-typescript/blob/7bcc27b1574493f9452688673658f52b80c53847/docs/features/event-handler/appsync-events.md) and the pinned npm implementation. The table maps capabilities; it does not certify every native type or service behavior.
+
+    | TypeScript feature | Go API or approach | Compatibility scope |
+    | --- | --- | --- |
+    | Publish / subscribe | `OnPublish`, `OnSubscribe`, `Resolve` | Per-item publishing or authorization callback. |
+    | Wildcards / routing | Channel patterns and separate publish/subscribe registries | Reference specificity and match caching. |
+    | Aggregated processing | `OnPublish` with `PublishOptions{Aggregate: true}` | Whole-batch callback; output order remains explicit. |
+    | Oversize detection | `WarnOnLargePayload` | Warns above 245760 bytes; no drop/truncation. |
+    | Errors / unauthorized operations | Named errors and `UnauthorizedError` | Individual error items versus propagated authorization errors. |
+    | Lambda context / logging | `Options.Diagnostic` | Concurrency-safe callbacks; no automatic business logs. |
+
+    Executable evidence: [eventhandler/appsyncevents/reference_test.go](https://github.com/rambow-cloud/powertools-lambda-go/blob/main/eventhandler/appsyncevents/reference_test.go). See [the verification scope](FEATURE_PARITY.md) and [project progress](CHECKLIST.md) for open gates.

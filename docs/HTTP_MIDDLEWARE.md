@@ -4,23 +4,31 @@ description: "Configure CORS and response compression middleware for Powertools 
 
 # HTTP CORS and compression
 
-Reference: installed `@aws-lambda-powertools/event-handler@2.35.0`, specifically `http/middleware/cors.js`, `compress.js`, `http/constants.js`, the public declarations and the router composition code. `CORS` and `Compress` live in the independent HTTP module and introduce no third-party dependencies. They use the existing synchronous middleware contract and snapshot configuration at construction for concurrent router reuse.
+Use `app.Use` to apply CORS or response compression to your HTTP routes. Both are
+built into the HTTP module. Start with the [GET/POST routing example](HTTP.md#complete-example),
+then add the middleware you need before serving requests.
 
 ## Usage
 
+This fragment assumes an initialized `app` and the `httpapi` import from the routing guide:
+
 ```go
-app := httpapi.New(httpapi.Options{})
-maxAge := float64(600)
 app.Use(httpapi.CORS(httpapi.CORSOptions{
-    Origins: []string{"https://app.example.com", "https://admin.example.com"},
+    Origins: []string{"https://app.example.com"},
     AllowMethods: []string{"GET", "POST"},
-    AllowHeaders: []string{"Authorization", "Content-Type"},
-    ExposeHeaders: []string{"X-Request-ID"},
-    Credentials: true,
-    MaxAge: &maxAge,
 }))
 app.Use(httpapi.Compress(httpapi.CompressionOptions{}))
+```
 
+Put CORS before compression so preflight responses can bypass downstream processing.
+The complete Lambda application is in [examples/http](https://github.com/rambow-cloud/powertools-lambda-go/blob/main/examples/http/main.go).
+
+## Route-specific middleware
+
+Pass middleware after the route handler to apply it to one route. This fragment
+also uses the standard `log` import:
+
+```go
 threshold := float64(512)
 err := app.Get("/large", func(request *httpapi.RequestContext) (any, error) {
     return map[string]any{"message": "response data"}, nil
@@ -33,9 +41,13 @@ if err != nil {
 }
 ```
 
-This example only demonstrates configuration; the short sample body does not exceed the threshold. Put CORS before compression when preflight responses should bypass downstream processing. Use normal middleware registration for route-specific policies. The complete native Lambda example is in [examples/http](https://github.com/rambow-cloud/powertools-lambda-go/blob/main/examples/http/main.go).
+The short sample body does not exceed the threshold; use a larger response to
+observe compression.
 
 ## CORS contract
+
+Use the options below when you need allowed headers, credentials, exposed headers
+or preflight cache duration. Start with an explicit allowed origin.
 
 | Option | Default / mapping |
 | --- | --- |
@@ -78,6 +90,8 @@ Compression replaces the owned response body, removes Content-Length and sets Co
 Go uses its standard gzip/zlib implementations. Compressed bytes and their lengths can differ from Node even for identical content. This is an explicit wire representation difference: exact compressed-byte parity is not claimed. Resolve currently buffers responses; this middleware does not establish native Lambda response streaming. Read/write/close failures retain their causes; consumed bodies are closed once. Cancellation is checked before and during compression, but it cannot forcibly interrupt an application reader that blocks inside Read. Readers must cooperate with their request context where necessary.
 
 ## Evidence and remaining scope
+
+The baseline is the [official v2.35.0 HTTP guide](https://github.com/aws-powertools/powertools-lambda-typescript/blob/7bcc27b1574493f9452688673658f52b80c53847/docs/features/event-handler/http.md) and its CORS/compression implementation. Middleware snapshots configuration for concurrent router reuse.
 
 `tools/reference/generate-http-middleware.mjs` executes the actual pinned middleware/router and records 1,076 cases across API Gateway REST, HTTP API v2, ALB and Function URL events. It covers defaults, empty and wildcard configurations, preflight allow/deny, route policies, credentials, max-age numeric formatting, encoding/quality strings, exact thresholds, null/empty/Unicode bodies, pre-encoded and transfer-encoded responses, cache directives, errors, HEAD, and both middleware orders.
 

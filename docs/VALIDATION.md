@@ -10,7 +10,7 @@ The initial full packaged run accepted 24 modules before Validation failed to co
 
 The runtime command reused these checks with --skip-module-checks, rebuilt normal/streaming handlers for Linux amd64 and arm64 with CGO_ENABLED=0, and passed 856/856 RIE assertions plus 95/95 real-Go-SDK/local-Runtime-API streaming checks. Saved Batch artifacts pass 14/14. Nine added runtime assertions cover named Unicode captures, global state reset and a sticky offset inside a surrogate pair. The report correctly distinguishes reused module checks from executed builds. Docker executed amd64; arm64 was cross-compiled. Temporary runtime resources were cleaned, and no AWS resources were used.
 
-Unicode sets (v), advanced syntax/case/property boundaries, native JSON preservation of lone surrogates, exact diagnostics and performance remain open. The AWS Encryption SDK provider and caching interoperability are not implemented. See REGEX.md and DATAMASKING_PLAN.md.
+Unicode sets (v), advanced syntax/case/property boundaries, native JSON preservation of lone surrogates, exact diagnostics and performance remain open. The optional [AWS Encryption SDK provider](DATAMASKING_KMS.md) implements uncached encryption; [data-key caching remains unsupported (#164)](https://github.com/rambow-cloud/powertools-lambda-go/issues/164). See REGEX.md and DATAMASKING_PLAN.md.
 
 ## Data Masking core acceptance (2026-09-23)
 

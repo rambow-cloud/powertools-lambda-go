@@ -8,59 +8,60 @@ Parser validates and transforms Lambda event data into typed Go values. Import `
 
 See [installation](MODULES.md) and the [compatibility baseline](COMPATIBILITY.md).
 
-JSON helpers and typed conversion use `encoding/json/v2`. `Typed[T]` matches JSON names case-sensitively; use explicit tags such as `json:"id"` on application fields. Raw JSON rejects duplicate members and invalid Unicode, including repeated Kafka topic members. Base64 helpers retain their documented JSON-then-text fallback when strict JSON decoding fails.
+## Install
+
+Use Go 1.27 or newer and install the module in your own application:
+
+```sh
+CGO_ENABLED=0 go get github.com/rambow-cloud/powertools-lambda-go/parser@v1.1.0
+```
 
 ## Complete example
 
-The complete Lambda example validates EventBridge metadata and an order in `detail`, then passes a typed order to the business handler. Build `./examples/parser` with `CGO_ENABLED=0`.
+Define a schema, then call `Parse` to validate and convert a payload to a Go type.
+This program runs locally without Lambda or AWS credentials.
 
 ~~~go
---8<-- "examples/parser/main.go"
-~~~
+package main
 
-## Input and output
+import (
+	"context"
+	"fmt"
+	"log"
 
-For the valid input below, the handler returns the JSON string `"ORD-123"`. It does not print a log record. Changing `amount` to `-1` produces a `ParseError` before business code runs. Its top-level message is `Failed to parse EventBridge envelope`; inspect its issues for the `detail.amount` path and `amount must be non-negative` message. The detailed issues are not automatically printed. An absent field differs from explicit JSON null. Use `SafeParse` or `WrapSafeHandler` when the application should decide how to respond to validation failures.
+	"github.com/rambow-cloud/powertools-lambda-go/parser"
+)
 
-~~~json
-{
-  "version": "0",
-  "id": "00000000-0000-4000-8000-000000000001",
-  "detail-type": "OrderCreated",
-  "source": "com.example.orders",
-  "account": "123456789012",
-  "time": "2026-10-01T00:00:00Z",
-  "region": "ap-east-1",
-  "resources": [],
-  "detail": {
-    "id": "ORD-123",
-    "amount": 42
-  }
+type Order struct {
+	ID string `json:"id"`
+}
+
+func main() {
+	schema := parser.Typed[Order](parser.Object(
+		parser.Field{Name: "id", Schema: parser.String()},
+	))
+	order, err := parser.Parse(context.Background(), map[string]any{"id": "ORD-123"}, schema)
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println(order.ID)
 }
 ~~~
 
-## Objects and lifecycle
+`Object` describes the fields to validate; `Typed[Order]` converts the validated
+value into your struct. Match input names with explicit `json` tags.
 
-| Object | Responsibility |
-| --- | --- |
-| `payload` | Reusable schema; object fields, refinements and typed output are composed before serving requests. |
-| `input` | Validated `order`, not the raw EventBridge event. |
-| `Result[T]` / `ParseError` | Safe parsing keeps validation failures separate from operational/cancellation errors. |
+## Input and output
 
-## TypeScript feature coverage
+The valid payload `{"id":"ORD-123"}` produces an `Order` and prints `ORD-123`.
+Changing `id` to a number produces a `ParseError`; inspect its issues for the `id`
+path. Use `SafeParse` when you prefer a result containing `Success`, `Data` and `Error`.
 
-Compared with the [official v2.35.0 parser guide](https://github.com/aws-powertools/powertools-lambda-typescript/blob/7bcc27b1574493f9452688673658f52b80c53847/docs/features/parser.md) and the pinned npm implementation. The table maps capabilities; it does not certify every native type or service behavior.
+## Common tasks
 
-| TypeScript feature | Go API or approach | Compatibility scope |
-| --- | --- | --- |
-| Manual / handler parsing | `Parse`, `WrapHandler` | Typed callbacks replace decorators/Middy. |
-| Safe / inline handling | `SafeParse`, `WrapSafeHandler` | Non-nil issues indicate rejection; operational errors still propagate. |
-| Built-in schemas | `parser/schemas` | 90 runtime schema definitions mapped; inferred-type parity remains open. |
-| Envelopes | `parser/envelopes` | Fourteen envelopes; source-specific decoding and failure paths. |
-| Custom validation / types | `SchemaFunc`, `Typed`, `Refine`, `Transform`, `Pipe` | Synchronous context-aware Go validators; no Zod/Promise runtime. |
-| Parse errors / unions | `Issue`, `ParseError`, `Union` | Recursive branch diagnostics; native/metadata boundaries remain. |
-
-Executable evidence: [parser/reference_test.go](https://github.com/rambow-cloud/powertools-lambda-go/blob/main/parser/reference_test.go), [parser/identity_reference_test.go](https://github.com/rambow-cloud/powertools-lambda-go/blob/main/parser/identity_reference_test.go), [parser/union_reference_test.go](https://github.com/rambow-cloud/powertools-lambda-go/blob/main/parser/union_reference_test.go). See [the verification scope](FEATURE_PARITY.md) and [project progress](CHECKLIST.md) for open gates.
+- [Build a typed schema](#schema-contract).
+- [Validate a Lambda handler or batch](#composition).
+- [Choose an event envelope](#initial-event-contracts).
 
 ## Schema contract
 
@@ -69,6 +70,8 @@ Executable evidence: [parser/reference_test.go](https://github.com/rambow-cloud/
 `Parse` returns data or an error. `SafeParse` returns a `Result[T]`: validation failures contain `Error` and the original input reference; successful results contain `Data`. Operational errors and cancellation still return errors. `ParseError` returned by an envelope or custom Go schema represents a validation failure. Other errors propagate. Panics are not intercepted. Go has no JavaScript Promise-based validator return; validators execute synchronously and can honor context cancellation.
 
 `WrapHandler` validates before invoking business code. `WrapSafeHandler` passes the safe result to application code for inline handling. Both preserve shared invocation identity and context values. Handler results, errors and panics retain their original behavior.
+
+JSON helpers and typed conversion use `encoding/json/v2`. `Typed[T]` matches JSON names case-sensitively; use explicit tags such as `json:"id"` on application fields. Raw JSON rejects duplicate members and invalid Unicode, including repeated Kafka topic members. Base64 helpers retain their documented JSON-then-text fallback when strict JSON decoding fails.
 
 ## Composition
 
@@ -103,6 +106,18 @@ orders, err := parser.Parse(ctx, event,
 
 `Base64Encoded` reuses Commons UTF-8 decoding, replacing each maximal malformed subpart separately. Plain input and the original-byte fallback strip exactly one leading BOM, matching `TextDecoder`. The gzip JSON path retains BOM, matching `Buffer.toString`; unsuccessful gzip JSON parsing still falls back to the original compressed bytes. Twenty pinned reference cases cover these paths, malformed byte runs, truncated sequences, single/double BOMs and valid Unicode in `testdata/utf8-v2.35.0.json`.
 
+### Parse an EventBridge Lambda event
+
+Add a built-in envelope when Lambda supplies service metadata around your payload.
+This maintained example validates EventBridge `detail`, then calls a typed handler:
+
+~~~go
+--8<-- "examples/parser/main.go"
+~~~
+
+Input detail `{"id":"ORD-123","amount":42}` returns `"ORD-123"`; a negative amount
+fails validation before the business callback runs.
+
 ## Initial event contracts
 
 | Reference export | Go equivalent | Behavior |
@@ -126,12 +141,40 @@ The eighteen HTTP schema exports and five HTTP body envelopes are mapped in [PAR
 
 ## Evidence and remaining boundaries
 
-The fifteen service schema exports and Kafka envelope are mapped in [PARSER_SERVICES.md](PARSER_SERVICES.md). Kafka preserves topic order when supplied raw JSON, decodes message text explicitly and retains its distinct failure paths. S3 reuses the SQS/EventBridge schemas; Kafka and stream schemas share text decoding.
+??? info "Reference evidence and compatibility details"
 
-The 29 AppSync/shared, AppSync Events and Cognito exports are mapped in [PARSER_IDENTITY.md](PARSER_IDENTITY.md). They share identity and Cognito request primitives while retaining source-specific nullable fields, union order, trigger literals and response constraints. Native Lambda examples demonstrate typed resolver arguments and Cognito event conversion after input validation.
+    The fifteen service schema exports and Kafka envelope are mapped in [PARSER_SERVICES.md](PARSER_SERVICES.md). Kafka preserves topic order when supplied raw JSON, decodes message text explicitly and retains its distinct failure paths. S3 reuses the SQS/EventBridge schemas; Kafka and stream schemas share text decoding.
 
-The generators execute the pinned Parser and Zod packages to produce 40 core, 106 stream, 458 HTTP, 270 service, 1,467 identity and 1,152 union/refinement cases (3,493 total). Every corpus compares success/data, original input association, and issue code/message/path/expected fields recursively through union branches. JSON syntax diagnostic suffixes are normalized at every tree depth. Kafka's null-input exception and three rejected validation promises have explicit operational-error mappings, documented in PARSER_SERVICES.md. Native BigInt/non-finite numbers use the existing Commons fixture representation, and JavaScript Sets are compared to Go value slices. Tests also cover empty issue slices, operational errors, cancellation, handler errors/panics, mutable defaults, schema extension, accepted absence, pipeline modes and concurrent reuse/error-tree ownership.
+    The 29 AppSync/shared, AppSync Events and Cognito exports are mapped in [PARSER_IDENTITY.md](PARSER_IDENTITY.md). They share identity and Cognito request primitives while retaining source-specific nullable fields, union order, trigger literals and response constraints. Native Lambda examples demonstrate typed resolver arguments and Cognito event conversion after input validation.
 
-[PARSER_EXPORTS.json](PARSER_EXPORTS.json) inventories imported runtime exports and declaration names; [PARSER_SCHEMA_MAP.json](PARSER_SCHEMA_MAP.json) maps all 90 runtime schema names to Go definitions and reference subpaths. Declaration names can include supporting local types, and complete inferred-type mapping remains open. Constraint-specific error metadata, remaining primitive/union edge cases, malformed Unicode and numeric boundaries, exhaustive envelope compatibility, performance measurements and cross-language behavior also remain open. Built-in number parsing uses float64; DynamoDB decoding retains large integer strings as `*big.Int`, which should be consumed through an appropriate schema/output type.
+    The generators execute the pinned Parser and Zod packages to produce 40 core, 106 stream, 458 HTTP, 270 service, 1,467 identity and 1,152 union/refinement cases (3,493 total). Every corpus compares success/data, original input association, and issue code/message/path/expected fields recursively through union branches. JSON syntax diagnostic suffixes are normalized at every tree depth. Kafka's null-input exception and three rejected validation promises have explicit operational-error mappings, documented in PARSER_SERVICES.md. Native BigInt/non-finite numbers use the existing Commons fixture representation, and JavaScript Sets are compared to Go value slices. Tests also cover empty issue slices, operational errors, cancellation, handler errors/panics, mutable defaults, schema extension, accepted absence, pipeline modes and concurrent reuse/error-tree ownership.
 
-Node and Zod are development-only reference generators. Deployed Go Lambda binaries do not use them. Follow [MODULES.md](MODULES.md) for local unpublished module verification and dependency maintenance.
+    [PARSER_EXPORTS.json](PARSER_EXPORTS.json) inventories imported runtime exports and declaration names; [PARSER_SCHEMA_MAP.json](PARSER_SCHEMA_MAP.json) maps all 90 runtime schema names to Go definitions and reference subpaths. Declaration names can include supporting local types, and complete inferred-type mapping remains open. Constraint-specific error metadata, remaining primitive/union edge cases, malformed Unicode and numeric boundaries, exhaustive envelope compatibility, performance measurements and cross-language behavior also remain open. Built-in number parsing uses float64; DynamoDB decoding retains large integer strings as `*big.Int`, which should be consumed through an appropriate schema/output type.
+
+    Node and Zod are development-only reference generators. Deployed Go Lambda binaries do not use them. Follow [MODULES.md](MODULES.md) for local unpublished module verification and dependency maintenance.
+
+## Objects and lifecycle
+
+| Object | How to use it |
+| --- | --- |
+| `schema` | Define once and reuse to validate payloads. |
+| `Order` | Your application type; JSON tags identify input fields. |
+| Parsed result | A typed value available only after successful validation. |
+| Lambda wrapper | Optional `WrapHandler` integration for validation before business logic. |
+
+## TypeScript feature coverage
+
+??? info "Compare with TypeScript v2.35.0"
+
+    Compared with the [official v2.35.0 parser guide](https://github.com/aws-powertools/powertools-lambda-typescript/blob/7bcc27b1574493f9452688673658f52b80c53847/docs/features/parser.md) and the pinned npm implementation. The table maps capabilities; it does not certify every native type or service behavior.
+
+    | TypeScript feature | Go API or approach | Compatibility scope |
+    | --- | --- | --- |
+    | Manual / handler parsing | `Parse`, `WrapHandler` | Typed callbacks replace decorators/Middy. |
+    | Safe / inline handling | `SafeParse`, `WrapSafeHandler` | Non-nil issues indicate rejection; operational errors still propagate. |
+    | Built-in schemas | `parser/schemas` | 90 runtime schema definitions mapped; inferred-type parity remains open. |
+    | Envelopes | `parser/envelopes` | Fourteen envelopes; source-specific decoding and failure paths. |
+    | Custom validation / types | `SchemaFunc`, `Typed`, `Refine`, `Transform`, `Pipe` | Synchronous context-aware Go validators; no Zod/Promise runtime. |
+    | Parse errors / unions | `Issue`, `ParseError`, `Union` | Recursive branch diagnostics; native/metadata boundaries remain. |
+
+    Executable evidence: [parser/reference_test.go](https://github.com/rambow-cloud/powertools-lambda-go/blob/main/parser/reference_test.go), [parser/identity_reference_test.go](https://github.com/rambow-cloud/powertools-lambda-go/blob/main/parser/identity_reference_test.go), [parser/union_reference_test.go](https://github.com/rambow-cloud/powertools-lambda-go/blob/main/parser/union_reference_test.go). See [the verification scope](FEATURE_PARITY.md) and [project progress](CHECKLIST.md) for open gates.

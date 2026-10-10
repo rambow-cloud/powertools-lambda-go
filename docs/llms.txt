@@ -25,7 +25,7 @@ These pages do not override current usage guides or published release contracts.
 
 ## Getting started
 
-- [Your first Go Lambda](https://powertools-lambda-go.rambow.cloud/GETTING_STARTED/): Build your first Go Lambda with Powertools Logger and OpenTelemetry Tracer, a collector, CGO disabled and the provided.al2023 runtime.
+- [Your first Go Lambda](https://powertools-lambda-go.rambow.cloud/GETTING_STARTED/): Build your first Go Lambda with structured logging, then add optional OpenTelemetry tracing. Use CGO disabled and the provided.al2023 runtime.
 - [Independent modules in one repository](https://powertools-lambda-go.rambow.cloud/MODULES/): Install independently versioned Powertools for Go modules. Understand Go import paths, module dependencies, shared releases and standalone consumers.
 - [Usage patterns](https://powertools-lambda-go.rambow.cloud/USAGE_PATTERNS/): Compose Powertools for Go utilities with correct object lifetimes, Lambda invocation scope, typed handlers and reusable clients.
 - [Environment variables](https://powertools-lambda-go.rambow.cloud/ENVIRONMENT_VARIABLES/): Configure Powertools for Go logging, metrics and tracing using documented environment variables, defaults and option precedence.

@@ -4,7 +4,54 @@ description: "Add structured logging, OpenTelemetry tracing and CloudWatch metri
 
 # HTTP observability middleware
 
-The optional `eventhandler/http/metrics` and `eventhandler/http/tracer` modules compose the existing Metrics and OpenTelemetry Tracer. Each has an independent manifest and release tag. HTTP core acquires neither dependency. The Tracer adapter does not import the deprecated X-Ray SDK.
+Add request metrics or OpenTelemetry tracing to an existing HTTP router with
+`app.Use`. Both integrations are optional. Start with [basic routing](HTTP.md#complete-example)
+and choose the middleware your application needs.
+
+## Request metrics
+
+Install the metrics middleware:
+
+```sh
+CGO_ENABLED=0 go get github.com/rambow-cloud/powertools-lambda-go/eventhandler/http/metrics@v1.1.0
+```
+
+This fragment assumes an initialized `app` and imports for `httpmetrics`, `metrics`
+and standard `log`. Create the root Metrics object once:
+
+```go
+requestMetrics, err := metrics.New(metrics.WithNamespace("Orders"))
+if err != nil {
+    log.Fatal(err)
+}
+app.Use(httpmetrics.New(requestMetrics))
+```
+
+Each request emits latency and error/fault metrics. To also count requests, use
+`httpmetrics.Options{CaptureRequestCount: true}`; see [request count](#optional-request-count).
+
+## Request tracing
+
+Install the tracer middleware:
+
+```sh
+CGO_ENABLED=0 go get github.com/rambow-cloud/powertools-lambda-go/eventhandler/http/tracer@v1.1.0
+```
+
+Given an initialized `trace` from the [Tracer guide](TRACER.md#complete-example),
+and the `httptracer` import:
+
+```go
+app.Use(httptracer.New(trace, httptracer.Options{DisableCaptureResponse: true}))
+```
+
+The middleware creates route spans. Keep the outer `tracer.WrapHandler` to own the
+Lambda invocation span and exporter flush, and configure an OTLP collector.
+
+## Complete application
+
+The maintained [HTTP application](https://github.com/rambow-cloud/powertools-lambda-go/blob/main/examples/http/main.go)
+combines logging, request metrics, tracing, CORS and compression. Its imports are:
 
 ```go
 import (
@@ -15,18 +62,11 @@ import (
     "github.com/rambow-cloud/powertools-lambda-go/tracer"
 )
 
-metric, err := metrics.New(metrics.WithNamespace("Orders"))
-if err != nil { return err }
-tr, err := tracer.New()
-if err != nil { return err }
-app := httpapi.New(httpapi.Options{})
-app.Use(httpmetrics.New(metric))
-app.Use(httptracer.New(tr, httptracer.Options{DisableCaptureResponse: true}))
-app.Use(httpapi.CORS(httpapi.CORSOptions{}))
-app.Use(httpapi.Compress(httpapi.CompressionOptions{}))
 ```
 
-The complete Lambda example is `examples/http/main.go`. Its outer Tracer wrapper owns bounded exporter flushing. The middleware creates internal child spans, never another provider or exporter.
+The root objects below are called `metric` and `tr` in the contract discussion.
+Create each once; request-specific state is supplied by middleware. The HTTP core
+does not acquire these dependencies and the tracer adapter uses OpenTelemetry.
 
 ## Metrics contracts
 

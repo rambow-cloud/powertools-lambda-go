@@ -6,9 +6,19 @@ description: "Retrieve Lambda execution-environment metadata in Go with the opti
 
 Metadata retrieves Lambda execution-environment information from the Lambda Metadata Service (LMDS). Import `github.com/rambow-cloud/powertools-lambda-go/commons/metadata`, an independent optional module. It is distinct from EC2 instance metadata and is not fetched automatically by Logger or Tracer.
 
+## Install
+
+Use Go 1.27 or newer and install the module in your own application:
+
+```sh
+CGO_ENABLED=0 go get github.com/rambow-cloud/powertools-lambda-go/commons/metadata@v1.1.0
+```
+
 ## Complete example
 
-Save this program in an empty directory inside the checkout and run `go run main.go` with `CGO_ENABLED=0`. The same default helper can be called with the invocation context inside a Lambda handler.
+Save it as `main.go` in your application and run `CGO_ENABLED=0 go run .`.
+Outside Lambda it returns an empty object. In Lambda, pass the invocation context
+to retrieve metadata available in that execution environment.
 
 ~~~go
 package main
@@ -56,13 +66,15 @@ Call `ClearMetadataCache()` to clear the default client, or `client.ClearCache()
 
 ## TypeScript feature coverage
 
-Compared with the [official v2.35.0 Metadata guide](https://github.com/aws-powertools/powertools-lambda-typescript/blob/7bcc27b1574493f9452688673658f52b80c53847/docs/features/metadata.md).
+??? info "Compare with TypeScript v2.35.0"
 
-| TypeScript feature | Go API or approach | Compatibility scope |
-| --- | --- | --- |
-| Get execution-environment metadata | `GetMetadata(ctx, options...)` | Default environment endpoint/token and optional timeout |
-| Available metadata | `map[string]any` | Retains `AvailabilityZoneID` and unknown fields; no assumed service availability |
-| Local development | Empty default result outside Lambda | No automatic service request |
-| Clear cache / testing | `ClearMetadataCache`, explicit `Client` and HTTP injection | Go adds isolated snapshots, coordinated fetches and redirect rejection |
+    Compared with the [official v2.35.0 Metadata guide](https://github.com/aws-powertools/powertools-lambda-typescript/blob/7bcc27b1574493f9452688673658f52b80c53847/docs/features/metadata.md).
 
-[Metadata tests](https://github.com/rambow-cloud/powertools-lambda-go/blob/main/commons/metadata/metadata_test.go) cover reference/local/HTTP/error/cache/concurrency behavior. Local Docker explicitly retrieves metadata from its authenticated fixture. It does not establish real LMDS availability, authentication or execution-environment semantics. See [feature comparison](FEATURE_PARITY.md), [Commons](COMMONS.md) and [remaining progress](CHECKLIST.md#commons-and-metadata).
+    | TypeScript feature | Go API or approach | Compatibility scope |
+    | --- | --- | --- |
+    | Get execution-environment metadata | `GetMetadata(ctx, options...)` | Default environment endpoint/token and optional timeout |
+    | Available metadata | `map[string]any` | Retains `AvailabilityZoneID` and unknown fields; no assumed service availability |
+    | Local development | Empty default result outside Lambda | No automatic service request |
+    | Clear cache / testing | `ClearMetadataCache`, explicit `Client` and HTTP injection | Go adds isolated snapshots, coordinated fetches and redirect rejection |
+
+    [Metadata tests](https://github.com/rambow-cloud/powertools-lambda-go/blob/main/commons/metadata/metadata_test.go) cover reference/local/HTTP/error/cache/concurrency behavior. Local Docker explicitly retrieves metadata from its authenticated fixture. It does not establish real LMDS availability, authentication or execution-environment semantics. See [feature comparison](FEATURE_PARITY.md), [Commons](COMMONS.md) and [remaining progress](CHECKLIST.md#commons-and-metadata).

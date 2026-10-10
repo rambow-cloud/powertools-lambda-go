@@ -4,7 +4,20 @@ description: "Protect Go Lambda operations from duplicate execution with Powerto
 
 # Idempotency
 
-Reference: TypeScript v2.35.0. The Go implementation provides an independent module with a generic operation manager, typed Lambda wrappers, an optional local response cache, and a DynamoDB adapter. Redis/Valkey persistence is available through the separate [cache module](IDEMPOTENCY_CACHE.md). Full compatibility gates remain unfinished; see [IDEMPOTENCY_PLAN.md](IDEMPOTENCY_PLAN.md).
+Idempotency prevents an operation from running again for a duplicate payload and
+returns the stored result. Use DynamoDB persistence for retries across Lambda
+execution environments, or the optional [Redis/Valkey store](IDEMPOTENCY_CACHE.md).
+Create the persistence store and manager once, then wrap your handler.
+
+## Install
+
+Use Go 1.27 or newer and install the module in your own application:
+
+```sh
+CGO_ENABLED=0 go get github.com/rambow-cloud/powertools-lambda-go/idempotency@v1.1.0
+CGO_ENABLED=0 go get github.com/aws/aws-lambda-go@v1.55.0
+CGO_ENABLED=0 go get github.com/aws/aws-sdk-go-v2/config@v1.33.4
+```
 
 ## Complete example
 
@@ -20,31 +33,11 @@ Invoke with `{"id":"ORD-123","amount":42}`. The handler returns `{"order_id":"OR
 
 For a missing ID, `ThrowOnNoKey: true` rejects the request. Business errors trigger cleanup of the in-progress record; hard process termination cannot run cleanup, so execution leases and expiry matter. Use [the local Docker fixture](LOCAL_INTEGRATION.md) for synthetic persistence acceptance; this example requires a real or explicitly supplied compatible DynamoDB endpoint and is not an offline program.
 
-## Objects and lifecycle
+## Common tasks
 
-| Object | Responsibility |
-| --- | --- |
-| SDK `client` | Caller-owned service configuration, credentials, endpoint and transport |
-| `store` | Persistence implementation; core also accepts a custom store or optional Redis/Valkey adapter |
-| `manager` | Reusable key projections, TTL, replay and local-cache policy |
-| Business callback | Runs after acquisition; obeys context cancellation/deadline and returns a serializable result |
-
-## TypeScript feature coverage
-
-Compared with the [official v2.35.0 Idempotency guide](https://github.com/aws-powertools/powertools-lambda-typescript/blob/7bcc27b1574493f9452688673658f52b80c53847/docs/features/idempotency.md).
-
-| TypeScript feature | Go API or approach | Compatibility scope |
-| --- | --- | --- |
-| Function wrapper / decorator / middleware | `Execute`, `WrapHandler` | Typed functions, explicit payload and context |
-| Payload subset / required key / prefix | JMESPath/query options, ThrowOnNoKey and KeyPrefix | Native JSON/canonicalization boundaries below |
-| Persistence / custom store | DynamoDB adapter, optional cache module, store interface | Explicit clients; full live service gates remain |
-| Timeout / concurrency / expiry | Context lease, atomic acquisition, ExpiresAfter | Cooperative cancellation; no transactional fencing for stale workers |
-| Payload validation / local cache | Validation projection and optional completed-response cache | Snapshotted results; cache does not delete persistence records |
-| Custom functions / SDK / composite key | Query options, SDK injection and configurable attributes | Explicit Go configuration |
-| Batch integration / replay response | Application composition and replay hooks | Implemented local composition; full cross-language/native response gates remain |
-| Disable utility | POWERTOOLS_IDEMPOTENCY_DISABLED | Configuration read at construction |
-
-[Core key/lifecycle tests](https://github.com/rambow-cloud/powertools-lambda-go/blob/main/idempotency/idempotency_test.go), SDK wire tests and real local Valkey exchanges provide scoped evidence. See [feature comparison](FEATURE_PARITY.md) and [cache differences](IDEMPOTENCY_CACHE.md).
+- [Wrap an operation or a Lambda handler](#usage-and-dependency-boundaries).
+- [Choose the idempotency key](#keys-and-interoperability).
+- [Understand expiry and retries](#lifecycle).
 
 ## Usage and dependency boundaries
 
@@ -98,6 +91,8 @@ DynamoDB response data is stored as native AttributeValues, including lists, map
 
 ## Explicit differences and unfinished gates
 
+Remaining acceptance is tracked in the [Idempotency plan](IDEMPOTENCY_PLAN.md).
+
 - This is scoped JSON interoperability, not proof of every JavaScript type. Malformed UTF-8, lone UTF-16 surrogates, Unicode case conversion edge cases, custom JavaScript objects, BigInt, undefined values, and exhaustive floating-point formatting remain compatibility work. Arbitrary Go values that cannot be represented as JSON return an error.
 - The pinned in-progress consistency check compares an epoch-millisecond deadline with `getUTCMilliseconds()`. Go compares complete Unix milliseconds. A missing item after a conflict also receives bounded reacquisition instead of exposing an unwrapped missing-item error.
 - Key/query errors remain discoverable as `KeyError`; the TypeScript handler wraps some of these in a persistence error. Cleanup failures use `errors.Join` to preserve the original business error. Panics are cleaned up best-effort and rethrown with their original value.
@@ -109,6 +104,36 @@ DynamoDB response data is stored as native AttributeValues, including lists, map
 
 ## Reference evidence
 
-The pinned npm distribution is executed by [generate-idempotency.mjs](https://github.com/rambow-cloud/powertools-lambda-go/blob/main/tools/reference/generate-idempotency.mjs). It generates 25 canonical key cases, 14 lifecycle scenarios, and two real DynamoDB SDK command sequences. The fixtures retain the raw JSON used for identity checks. See the checklist for which verification gates have actually passed.
+??? info "Reference evidence and compatibility details"
 
-Primary reference sources: [BasePersistenceLayer](https://github.com/aws-powertools/powertools-lambda-typescript/blob/7bcc27b1574493f9452688673658f52b80c53847/packages/idempotency/src/persistence/BasePersistenceLayer.ts), [IdempotencyHandler](https://github.com/aws-powertools/powertools-lambda-typescript/blob/7bcc27b1574493f9452688673658f52b80c53847/packages/idempotency/src/IdempotencyHandler.ts), [DynamoDBPersistenceLayer](https://github.com/aws-powertools/powertools-lambda-typescript/blob/7bcc27b1574493f9452688673658f52b80c53847/packages/idempotency/src/persistence/DynamoDBPersistenceLayer.ts), and [deepSort](https://github.com/aws-powertools/powertools-lambda-typescript/blob/7bcc27b1574493f9452688673658f52b80c53847/packages/idempotency/src/deepSort.ts).
+    The pinned npm distribution is executed by [generate-idempotency.mjs](https://github.com/rambow-cloud/powertools-lambda-go/blob/main/tools/reference/generate-idempotency.mjs). It generates 25 canonical key cases, 14 lifecycle scenarios, and two real DynamoDB SDK command sequences. The fixtures retain the raw JSON used for identity checks. See the checklist for which verification gates have actually passed.
+
+    Primary reference sources: [BasePersistenceLayer](https://github.com/aws-powertools/powertools-lambda-typescript/blob/7bcc27b1574493f9452688673658f52b80c53847/packages/idempotency/src/persistence/BasePersistenceLayer.ts), [IdempotencyHandler](https://github.com/aws-powertools/powertools-lambda-typescript/blob/7bcc27b1574493f9452688673658f52b80c53847/packages/idempotency/src/IdempotencyHandler.ts), [DynamoDBPersistenceLayer](https://github.com/aws-powertools/powertools-lambda-typescript/blob/7bcc27b1574493f9452688673658f52b80c53847/packages/idempotency/src/persistence/DynamoDBPersistenceLayer.ts), and [deepSort](https://github.com/aws-powertools/powertools-lambda-typescript/blob/7bcc27b1574493f9452688673658f52b80c53847/packages/idempotency/src/deepSort.ts).
+
+## Objects and lifecycle
+
+| Object | Responsibility |
+| --- | --- |
+| SDK `client` | Caller-owned service configuration, credentials, endpoint and transport |
+| `store` | Persistence implementation; core also accepts a custom store or optional Redis/Valkey adapter |
+| `manager` | Reusable key projections, TTL, replay and local-cache policy |
+| Business callback | Runs after acquisition; obeys context cancellation/deadline and returns a serializable result |
+
+## TypeScript feature coverage
+
+??? info "Compare with TypeScript v2.35.0"
+
+    Compared with the [official v2.35.0 Idempotency guide](https://github.com/aws-powertools/powertools-lambda-typescript/blob/7bcc27b1574493f9452688673658f52b80c53847/docs/features/idempotency.md).
+
+    | TypeScript feature | Go API or approach | Compatibility scope |
+    | --- | --- | --- |
+    | Function wrapper / decorator / middleware | `Execute`, `WrapHandler` | Typed functions, explicit payload and context |
+    | Payload subset / required key / prefix | JMESPath/query options, ThrowOnNoKey and KeyPrefix | Native JSON/canonicalization boundaries below |
+    | Persistence / custom store | DynamoDB adapter, optional cache module, store interface | Explicit clients; full live service gates remain |
+    | Timeout / concurrency / expiry | Context lease, atomic acquisition, ExpiresAfter | Cooperative cancellation; no transactional fencing for stale workers |
+    | Payload validation / local cache | Validation projection and optional completed-response cache | Snapshotted results; cache does not delete persistence records |
+    | Custom functions / SDK / composite key | Query options, SDK injection and configurable attributes | Explicit Go configuration |
+    | Batch integration / replay response | Application composition and replay hooks | Implemented local composition; full cross-language/native response gates remain |
+    | Disable utility | POWERTOOLS_IDEMPOTENCY_DISABLED | Configuration read at construction |
+
+    [Core key/lifecycle tests](https://github.com/rambow-cloud/powertools-lambda-go/blob/main/idempotency/idempotency_test.go), SDK wire tests and real local Valkey exchanges provide scoped evidence. See [feature comparison](FEATURE_PARITY.md) and [cache differences](IDEMPOTENCY_CACHE.md).

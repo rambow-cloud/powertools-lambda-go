@@ -8,9 +8,17 @@ Signer adds AWS Signature Version 4 authentication to HTTP requests. Import `git
 
 See [installation](MODULES.md) and the [compatibility baseline](COMPATIBILITY.md).
 
+## Install
+
+Use Go 1.27 or newer and install the module in your own application:
+
+```sh
+CGO_ENABLED=0 go get github.com/rambow-cloud/powertools-lambda-go/signer@v1.1.0
+```
+
 ## Complete example
 
-Run the complete example with `go run ./examples/signing` and `CGO_ENABLED=0`. It uses synthetic credentials and signs API Gateway, Lambda Function URL and AppSync requests without sending them.
+Save this program as `main.go` in your application and run `CGO_ENABLED=0 go run .`. It uses synthetic credentials and signs API Gateway, Lambda Function URL and AppSync requests without sending them.
 
 ~~~go
 --8<-- "examples/signing/main.go"
@@ -26,26 +34,10 @@ lambda true
 appsync true
 ~~~
 
-## Objects and lifecycle
+## Common tasks
 
-| Object | Responsibility |
-| --- | --- |
-| `s` | Reusable service, region, clock and credentials-provider configuration. |
-| `request` / `signed` | `Sign` returns a signed copy; the caller owns body closure and request replay rules. |
-| `HTTPClient` | Copied client with a signing transport; credentials, retries and redirects stay explicit. |
-
-## TypeScript feature coverage
-
-Compared with the [official v2.35.0 signer guide](https://github.com/aws-powertools/powertools-lambda-typescript/blob/7bcc27b1574493f9452688673658f52b80c53847/docs/features/signer.md) and the pinned npm implementation. The table maps capabilities; it does not certify every native type or service behavior.
-
-| TypeScript feature | Go API or approach | Compatibility scope |
-| --- | --- | --- |
-| Signed fetch / other clients | `Sign`, `Transport`, `HTTPClient` | Go request/transport interfaces replace fetch. |
-| Region / credentials | `Config.Region`, `Credentials` | Environment or injected SDK provider; no automatic config-loader network calls. |
-| Errors | `ConfigError`, `SigningError` | Unwrap causes/cancellation; unsigned request is not sent on failure. |
-| Bodies / redirects | Replayable signed copies and client policy | Ownership and trusted redirect policy differ from JavaScript Request. |
-
-Executable evidence: [signer/signer_test.go](https://github.com/rambow-cloud/powertools-lambda-go/blob/main/signer/signer_test.go). See [the verification scope](FEATURE_PARITY.md) and [project progress](CHECKLIST.md) for open gates.
+- [Choose a service, region and credentials](#configuration-and-errors).
+- [Use a signed HTTP client](#ownership-redirects-and-composition).
 
 ## Configuration and errors
 
@@ -63,13 +55,41 @@ Compose with tracing as `signer.HTTPClient(s, tr.HTTPClient(baseClient))`. Neith
 
 ## Reference scope and intentional differences
 
-Reference: TypeScript v2.35.0. Thirteen fixed-time cases cover GET/JSON/binary/empty bodies, escaped paths, ports, repeated/whitespace headers, session tokens, explicit unsigned payloads, encoded queries, and service names. Twelve signatures match exactly. The duplicate-query case records an intentional difference: the upstream request converter signs only the last occurrence while returning the original URL. Go signs every occurrence, preserving the original URL and a valid canonical query.
+??? info "Reference evidence and compatibility details"
 
-Other Go contracts are explicit: empty `Region` means environment fallback; missing service is rejected; malformed query encoding and inconsistent Content-Length are rejected. Redirects require an explicit policy. Signer uses Go request-body ownership, and Go transport-generated headers are not signed unless supplied explicitly. Custom Host values and service-specific URL/path normalization follow the Go SDK; these do not establish every web Request conversion edge case. General presigning and SigV4a are not part of the pinned Powertools Signer API and are not implemented here.
+    Reference: TypeScript v2.35.0. Thirteen fixed-time cases cover GET/JSON/binary/empty bodies, escaped paths, ports, repeated/whitespace headers, session tokens, explicit unsigned payloads, encoded queries, and service names. Twelve signatures match exactly. The duplicate-query case records an intentional difference: the upstream request converter signs only the last occurrence while returning the original URL. Go signs every occurrence, preserving the original URL and a valid canonical query.
 
-Tests cover body replay/errors, configuration refresh, cancellation, custom transports, redirects, and concurrent use. Local Docker verifies synthetic signatures and OTel composition. These checks do not establish live IAM authorization, service-side acceptance for every path, or performance budgets.
+    Other Go contracts are explicit: empty `Region` means environment fallback; missing service is rejected; malformed query encoding and inconsistent Content-Length are rejected. Redirects require an explicit policy. Signer uses Go request-body ownership, and Go transport-generated headers are not signed unless supplied explicitly. Custom Host values and service-specific URL/path normalization follow the Go SDK; these do not establish every web Request conversion edge case. General presigning and SigV4a are not part of the pinned Powertools Signer API and are not implemented here.
+
+    Tests cover body replay/errors, configuration refresh, cancellation, custom transports, redirects, and concurrent use. Local Docker verifies synthetic signatures and OTel composition. These checks do not establish live IAM authorization, service-side acceptance for every path, or performance budgets.
+
 
 ## Sources
 
-- [Pinned Signer implementation](https://github.com/aws-powertools/powertools-lambda-typescript/blob/7bcc27b1574493f9452688673658f52b80c53847/packages/signer/src/SigV4Signer.ts)
-- [AWS SDK for Go v2 SigV4](https://github.com/aws/aws-sdk-go-v2/tree/v1.47.0/aws/signer/v4)
+??? info "Reference evidence and compatibility details"
+
+    - [Pinned Signer implementation](https://github.com/aws-powertools/powertools-lambda-typescript/blob/7bcc27b1574493f9452688673658f52b80c53847/packages/signer/src/SigV4Signer.ts)
+    - [AWS SDK for Go v2 SigV4](https://github.com/aws/aws-sdk-go-v2/tree/v1.47.0/aws/signer/v4)
+
+## Objects and lifecycle
+
+| Object | Responsibility |
+| --- | --- |
+| `s` | Reusable service, region, clock and credentials-provider configuration. |
+| `request` / `signed` | `Sign` returns a signed copy; the caller owns body closure and request replay rules. |
+| `HTTPClient` | Copied client with a signing transport; credentials, retries and redirects stay explicit. |
+
+## TypeScript feature coverage
+
+??? info "Compare with TypeScript v2.35.0"
+
+    Compared with the [official v2.35.0 signer guide](https://github.com/aws-powertools/powertools-lambda-typescript/blob/7bcc27b1574493f9452688673658f52b80c53847/docs/features/signer.md) and the pinned npm implementation. The table maps capabilities; it does not certify every native type or service behavior.
+
+    | TypeScript feature | Go API or approach | Compatibility scope |
+    | --- | --- | --- |
+    | Signed fetch / other clients | `Sign`, `Transport`, `HTTPClient` | Go request/transport interfaces replace fetch. |
+    | Region / credentials | `Config.Region`, `Credentials` | Environment or injected SDK provider; no automatic config-loader network calls. |
+    | Errors | `ConfigError`, `SigningError` | Unwrap causes/cancellation; unsigned request is not sent on failure. |
+    | Bodies / redirects | Replayable signed copies and client policy | Ownership and trusted redirect policy differ from JavaScript Request. |
+
+    Executable evidence: [signer/signer_test.go](https://github.com/rambow-cloud/powertools-lambda-go/blob/main/signer/signer_test.go). See [the verification scope](FEATURE_PARITY.md) and [project progress](CHECKLIST.md) for open gates.
