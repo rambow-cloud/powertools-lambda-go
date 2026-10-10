@@ -1,6 +1,6 @@
 ---
-title: Getting started with Powertools for Go Lambda
-description: "Build your first Go Lambda with structured logging, then add optional OpenTelemetry tracing. Use CGO disabled and the provided.al2023 runtime."
+title: Get started with Go Powertools Lambda
+description: "Build your first AWS Lambda function with Go Powertools structured logging, then add optional OpenTelemetry tracing. Use CGO disabled and provided.al2023."
 ---
 
 # Your first Go Lambda

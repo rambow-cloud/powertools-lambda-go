@@ -56,6 +56,7 @@ def discovery_assets(config: dict) -> dict[str, str]:
     lines = [
         f"# {config['site_name']}", "",
         f"> {config['site_description']}", "",
+        "Project names: " + ", ".join(config["extra"]["project_aliases"]) + ".", "",
         "This is an independent community project, not an official AWS distribution.",
         "The English documentation follows main; Release notes identify published versions.",
         "Use Compatibility and the TypeScript feature comparison for supported boundaries.",
@@ -130,9 +131,49 @@ class PageHead(HTMLParser):
             self.in_schema = False
 
 
+class ArticleText(HTMLParser):
+    """Collect article text without metadata, scripts or explicitly hidden nodes."""
+
+    VOID_ELEMENTS = {"area", "base", "br", "col", "embed", "hr", "img", "input", "link", "meta", "param", "source", "track", "wbr"}
+
+    def __init__(self, html: str):
+        super().__init__()
+        self.in_article = False
+        self.stack = []
+        self.text = []
+        self.feed(html)
+
+    def handle_starttag(self, tag, attrs):
+        if tag == "article":
+            self.in_article = True
+        if not self.in_article or tag in self.VOID_ELEMENTS:
+            return
+        attrs = dict(attrs)
+        style = re.sub(r"\s+", "", attrs.get("style", "")).lower()
+        hidden = (bool(self.stack and self.stack[-1][1]) or tag in {"script", "style", "template"}
+                  or "hidden" in attrs or attrs.get("aria-hidden", "").lower() == "true"
+                  or "display:none" in style or "visibility:hidden" in style)
+        self.stack.append((tag, hidden))
+
+    def handle_endtag(self, tag):
+        if not self.in_article:
+            return
+        for index in range(len(self.stack) - 1, -1, -1):
+            if self.stack[index][0] == tag:
+                del self.stack[index:]
+                break
+        if tag == "article":
+            self.in_article = False
+
+    def handle_data(self, data):
+        if self.in_article and self.stack and not self.stack[-1][1]:
+            self.text.append(data)
+
+
 def check_discovery(config: dict) -> tuple[list[str], int]:
     docs_dir, site_dir = ROOT / config["docs_dir"], ROOT / config["site_dir"]
     site_url = config["site_url"]
+    aliases = config["extra"]["project_aliases"]
     errors = []
     for filename, expected in discovery_assets(config).items():
         for directory in (docs_dir, site_dir):
@@ -170,13 +211,28 @@ def check_discovery(config: dict) -> tuple[list[str], int]:
         if head.links.get("describedby") != [site_url + "llms.txt"]:
             errors.append(f"{target}: missing AI documentation index link")
         nodes = [node for schema in head.schemas for node in schema.get("@graph", [schema])]
+        websites = [node for node in nodes if node.get("@type") == "WebSite"]
+        if (len(websites) != 1 or websites[0].get("name") != config["site_name"]
+                or websites[0].get("url") != site_url or websites[0].get("alternateName") != aliases):
+            errors.append(f"{target}: inconsistent website name or project aliases")
         articles = [node for node in nodes if node.get("@type") == "TechArticle"]
         if len(articles) != 1 or articles[0].get("url") != url or articles[0].get("description") != description:
             errors.append(f"{target}: missing or inconsistent TechArticle structured data")
+        if len(articles) == 1 and articles[0].get("about") != {"@id": site_url + "#software"}:
+            errors.append(f"{target}: article must identify the documented software")
         if target == "index.md":
+            expected_title = metadata.get("title", config["site_name"])
+            if head.title.strip() != expected_title or aliases[0].lower() not in expected_title.lower():
+                errors.append("Homepage must have one concise project-specific title without a repeated site-name suffix.")
+            visible_text = re.sub(r"\s+", " ", " ".join(ArticleText(html).text)).lower()
+            if any(alias.lower() not in visible_text for alias in aliases):
+                errors.append("Homepage project aliases must appear in visible article text.")
             software = [node for node in nodes if node.get("@type") == "SoftwareSourceCode"]
             if len(software) != 1 or software[0].get("codeRepository") != config["repo_url"]:
                 errors.append("Homepage must identify the software source repository.")
+            if (len(software) != 1 or software[0].get("alternateName") != aliases
+                    or software[0].get("url") != site_url or software[0].get("sameAs") != [config["repo_url"]]):
+                errors.append("Homepage software identity and project aliases must match the canonical site and repository.")
         if any(not robots.can_fetch(bot, url) for bot in BOTS):
             errors.append(f"{target}: crawler access denied")
         if '<article' not in html:

@@ -86,7 +86,15 @@ The migration retains `mkdocs.yml`, page URLs, and the checked Go snippet. The s
 
 The canonical site serves static HTML with the complete documentation text, including maintained code snippets, before JavaScript runs. `site_url` controls canonical URLs and the generated sitemap. Keep these URLs on the canonical Cloudflare hostname even when publishing the GitHub Pages mirror.
 
-The metadata-only override in `website/overrides/main.html` adds index/follow and unrestricted snippet-preview directives to documentation pages, Open Graph and social-card metadata, and JSON-LD identifying the website and technical articles. The homepage also identifies the software source repository. The 404 page uses `noindex, follow`. Main utility guides have individual descriptions in their Markdown front matter; other pages retain the configured site-description fallback. Structured data must describe the visible content: do not add invented ratings, authors, publication dates, AWS endorsement or unsupported compatibility claims.
+The metadata override in `website/overrides/main.html` adds index/follow and unrestricted snippet-preview directives to documentation pages, Open Graph and social-card metadata, and JSON-LD identifying the website and technical articles. The homepage also identifies the software source repository; articles link to that software identity. Its title omits the repeated site-name suffix. The 404 page uses `noindex, follow`. Main utility guides have individual descriptions in their Markdown front matter; other pages retain the configured site-description fallback. Structured data must describe the visible content: do not add invented ratings, authors, publication dates, AWS endorsement or unsupported compatibility claims.
+
+### Project names and query relevance
+
+The homepage, README and repository description identify **Go Powertools Lambda**, **Go Powertools** and **Powertools Lambda Go** as this community project's name variants. Keep the homepage's concise title, visible introduction/FAQ and canonical repository link useful to readers. Do not repeat all variants in every heading or create duplicate keyword landing pages. Google's [Search Essentials](https://developers.google.com/search/docs/essentials) recommends using the words readers search for in descriptive titles, headings and link text; its [title guidance](https://developers.google.com/search/docs/appearance/title-link) discourages keyword stuffing.
+
+`extra.project_aliases` in `mkdocs.yml` supplies the same variants to WebSite/software `alternateName` and the generated `llms.txt` introduction. These aliases must also appear in visible homepage content. The discovery checker rejects generic/duplicated homepage titles, missing or explicitly hidden aliases, inconsistent structured names and broken article/software identity. It checks initial HTML and explicit hidden attributes, not computed browser styles or search ranking.
+
+GitHub's repository website must point to the canonical documentation. Keep its description consistent with the community Go Lambda scope, and add relevant Go/Lambda/Powertools/observability topics while preserving existing topics. The README links to the homepage, quickstart and module guide. These are discoverable project references, not a guarantee of search authority or AI citations.
 
 `docs/robots.txt` allows all crawlers through `User-agent: *` and advertises the canonical sitemap. This includes search engines, AI search crawlers, user-requested agents and training crawlers. In particular, OpenAI's [crawler documentation](https://developers.openai.com/api/docs/bots) distinguishes `OAI-SearchBot` for search from `GPTBot` for training. Allowing training is not a requirement for appearing in AI search. If the project later adopts a narrower policy, update the generator and its acceptance checks together.
 
@@ -99,6 +107,14 @@ uv run --project website --frozen python website/check_discovery.py --write
 ~~~
 
 The standard Zensical build copies both text files to the site root; no deployment-specific postprocessing is required. CI runs `website/check_discovery.py` after building to reject stale or missing source/built entrypoints, sitemap coverage errors, incorrect canonicals, indexing directives and inconsistent structured data. `website/test_discovery.py` tests accidental noindex, preview-host sitemap pollution, stale descriptions, crawler-blocked published assets and an indexable error page using a small copy of the build.
+
+### When a page is indexed but the target queries do not find it
+
+An indexed URL and keyword visibility are separate outcomes. After the exact production deployment, use [Google Search Console](https://search.google.com/search-console) to inspect the canonical homepage, confirm Google's selected canonical and last crawl, and request a recrawl. Check Performance's Web results for the homepage with the three query filters `powertools lambda go`, `go powertools` and `go powertools lambda`; compare impressions, clicks and average position over equivalent date ranges. Sparse reports and a manual search alone do not prove the site is absent from every result.
+
+Follow Google's [recrawl guidance](https://developers.google.com/search/docs/crawling-indexing/ask-google-to-recrawl): a request does not guarantee inclusion or immediate updates. Improve useful examples and genuine project references as the library grows; do not manufacture backlinks, ratings or AWS affiliation. Google [AI features](https://developers.google.com/search/docs/appearance/ai-features) depend on ordinary indexing and snippet eligibility, and require no special AI schema. Actual rankings, citations and referrals remain separately observed results.
+
+[Visibility issue #206](https://github.com/rambow-cloud/powertools-lambda-go/issues/206) remains open for those owner-observed query and AI-citation outcomes after implementation issue #205 closes. A passing build or a successful direct URL fetch does not close that goal.
 
 ### Cloudflare crawler access
 

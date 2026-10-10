@@ -1,5 +1,13 @@
 {% extends "base.html" %}
 
+{% block htmltitle %}
+  {% if page and page.canonical_url == config.site_url %}
+    <title>{{ page.meta.title | d(config.site_name, true) | e }}</title>
+  {% else %}
+    {{ super() }}
+  {% endif %}
+{% endblock %}
+
 {% block extrahead %}
   {{ super() }}
   {% if page.canonical_url %}
@@ -27,8 +35,10 @@
             "@id": config.site_url ~ "#website",
             "url": config.site_url,
             "name": config.site_name,
+            "alternateName": config.extra.project_aliases,
             "description": config.site_description,
-            "inLanguage": "en"
+            "inLanguage": "en",
+            "about": {"@id": config.site_url ~ "#software"}
           },
           {
             "@type": "TechArticle",
@@ -38,6 +48,7 @@
             "description": description,
             "inLanguage": "en",
             "isPartOf": {"@id": config.site_url ~ "#website"},
+            "about": {"@id": config.site_url ~ "#software"},
             "mainEntityOfPage": page.canonical_url
           }
         ]
@@ -50,9 +61,11 @@
           "@type": "SoftwareSourceCode",
           "@id": config.site_url ~ "#software",
           "name": config.site_name,
+          "alternateName": config.extra.project_aliases,
           "description": config.site_description,
           "url": config.site_url,
           "codeRepository": config.repo_url,
+          "sameAs": [config.repo_url],
           "programmingLanguage": "Go",
           "runtimePlatform": "AWS Lambda provided.al2023",
           "license": "https://github.com/rambow-cloud/powertools-lambda-go/blob/main/LICENSE"

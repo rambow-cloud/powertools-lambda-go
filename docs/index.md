@@ -1,6 +1,6 @@
 ---
-title: Go Lambda logging, tracing and metrics
-description: "Independent Go utilities for AWS Lambda: structured logging, OpenTelemetry tracing, CloudWatch metrics, validation and event handling."
+title: "Go Powertools Lambda | Logging, Tracing and Metrics"
+description: "Go Powertools Lambda adds structured logging, OpenTelemetry tracing, CloudWatch metrics and HTTP routing to Go AWS Lambda functions. Independent community project."
 hide:
   - toc
 ---
@@ -8,11 +8,11 @@ hide:
 <div class="pt-hero" markdown="1">
 <div markdown="1">
 
-# Powertools for AWS Lambda (Go)
+# Go Powertools Lambda
 
 **Build Go Lambda functions with less boilerplate.**
 
-Structured logging, OpenTelemetry tracing, CloudWatch metrics and HTTP routing. Choose the independent Go modules your application needs.
+Go Powertools brings structured logging, OpenTelemetry tracing, CloudWatch metrics and HTTP routing to your AWS Lambda functions. Choose the independent Go modules your application needs.
 
 <div class="pt-actions" markdown="1">
 
@@ -25,7 +25,7 @@ Structured logging, OpenTelemetry tracing, CloudWatch metrics and HTTP routing. 
 <div class="pt-mascot"><img src="assets/logo-ram-gopher.png" alt="Powertools for Go ram-gopher mascot" width="240" height="240"></div>
 </div>
 
-An **independent community implementation**, based on Powertools for AWS Lambda (TypeScript) v2.35.0. See the [compatibility boundaries](COMPATIBILITY.md) and [release notes](RELEASE_NOTES.md). This is not an official AWS distribution.
+Powertools for AWS Lambda (Go) is an **independent community implementation**, based on Powertools for AWS Lambda (TypeScript) v2.35.0. The source repository is [`rambow-cloud/powertools-lambda-go`](https://github.com/rambow-cloud/powertools-lambda-go). See the [compatibility boundaries](COMPATIBILITY.md) and [release notes](RELEASE_NOTES.md). This is not an official AWS distribution.
 
 ## Getting started
 
@@ -44,7 +44,7 @@ Use **Go 1.27 or newer**, target **arm64 or x86_64**, and keep **CGO disabled**.
 
 Compose a typed handler with logging and tracing, then build a static Lambda executable.
 
-[Follow the quickstart](GETTING_STARTED.md)
+[Get started with Go Powertools](GETTING_STARTED.md)
 
 </div>
 <div class="pt-card" markdown="1">
@@ -139,6 +139,10 @@ Use the [TypeScript feature comparison](FEATURE_PARITY.md), [project progress](C
 Original contributions are licensed under [MIT](https://github.com/rambow-cloud/powertools-lambda-go/blob/main/LICENSE). Third-party content retains its [original attribution](https://github.com/rambow-cloud/powertools-lambda-go/blob/main/THIRD_PARTY_NOTICES.md). This project is not an official AWS distribution.
 
 ## Common questions
+
+### What is Powertools Lambda Go?
+
+Powertools Lambda Go is this community toolkit for AWS Lambda applications written in Go. It provides reusable modules for observability, HTTP APIs, configuration, idempotency, batch processing and validation. Install only the utilities you need; [start with a complete Logger example](GETTING_STARTED.md) or [build a simple GET/POST API](HTTP.md).
 
 ### Is Powertools for Go an official AWS project?
 

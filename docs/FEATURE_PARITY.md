@@ -10,7 +10,7 @@ Each guide maps the corresponding official feature documentation to Go APIs, sho
 
 ## Scheduled remaining work
 
-[The phased backlog](ROADMAP.md) links 38 open work issues across six GitHub milestones. It separates absent/optional capabilities from compatibility audits and service/resource acceptance. This scheduling update implements no feature and does not advance the pinned baseline.
+[The phased backlog](ROADMAP.md) links open work issues across six GitHub milestones. It separates absent/optional capabilities from compatibility audits and service/resource acceptance. Scheduling and search visibility do not establish feature completion or advance the pinned baseline.
 
 ## How to read verification claims
 
