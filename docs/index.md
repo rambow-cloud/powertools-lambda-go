@@ -1,21 +1,103 @@
 ---
 title: Go Lambda logging, tracing and metrics
 description: "Independent Go utilities for AWS Lambda: structured logging, OpenTelemetry tracing, CloudWatch metrics, validation and event handling."
+hide:
+  - toc
 ---
 
-# What is Powertools for AWS Lambda (Go)
+<div class="pt-hero" markdown="1">
+<div markdown="1">
 
-Powertools for Go Lambda is a collection of utilities for building native Go functions on AWS Lambda. Add structured logging, OpenTelemetry tracing, metrics, and event handling to your functions with independently versioned Go modules.
+# Powertools for AWS Lambda (Go)
 
-This is an **independent community implementation** based on Powertools for AWS Lambda (TypeScript) v2.35.0. It is a development subset with documented [compatibility boundaries](COMPATIBILITY.md). See [Release notes](RELEASE_NOTES.md) for published versions, module updates and version-only bumps.
+**Build Go Lambda functions with less boilerplate.**
+
+Structured logging, OpenTelemetry tracing, CloudWatch metrics and HTTP routing. Choose the independent Go modules your application needs.
+
+<div class="pt-actions" markdown="1">
+
+[Get started](GETTING_STARTED.md){ .pt-button .pt-button-primary }
+[Build an HTTP API](HTTP.md){ .pt-button }
+[GitHub](https://github.com/rambow-cloud/powertools-lambda-go){ .pt-button }
+
+</div>
+</div>
+<div class="pt-mascot"><img src="assets/logo-ram-gopher.png" alt="Powertools for Go ram-gopher mascot" width="240" height="240"></div>
+</div>
+
+An **independent community implementation**, based on Powertools for AWS Lambda (TypeScript) v2.35.0. See the [compatibility boundaries](COMPATIBILITY.md) and [release notes](RELEASE_NOTES.md). This is not an official AWS distribution.
 
 ## Getting started
 
-Follow the [first Lambda guide](GETTING_STARTED.md) to compose Logger and Tracer around a typed handler, configure a collector, and build an executable for `provided.al2023`.
+Install one utility to begin. For example, add structured logging:
+
+```sh
+CGO_ENABLED=0 go get github.com/rambow-cloud/powertools-lambda-go/logger@v1.1.0
+```
 
 Use **Go 1.27 or newer**, target **arm64 or x86_64**, and keep **CGO disabled**. Install the published modules using the [module guide](MODULES.md), which explains dependencies, imports, and independent versioning.
 
-Before choosing a utility, read [usage patterns](USAGE_PATTERNS.md) for object and wrapper lifetimes, and [environment variables](ENVIRONMENT_VARIABLES.md) for configuration. Every main utility guide shows a complete example, expected output and its TypeScript mapping.
+<div class="pt-cards" markdown="1">
+<div class="pt-card" markdown="1">
+
+### Your first Lambda
+
+Compose a typed handler with logging and tracing, then build a static Lambda executable.
+
+[Follow the quickstart](GETTING_STARTED.md)
+
+</div>
+<div class="pt-card" markdown="1">
+
+### Route HTTP requests
+
+Start with `app.Get` and `app.Post`. Read path parameters and JSON bodies, and return JSON responses.
+
+[Build a GET/POST handler](HTTP.md#complete-example)
+
+</div>
+<div class="pt-card" markdown="1">
+
+### Install only what you use
+
+Pick independent modules and add middleware or AWS integrations when your application needs them.
+
+[Choose your modules](MODULES.md)
+
+</div>
+</div>
+
+## Start with the essentials
+
+<div class="pt-cards" markdown="1">
+<div class="pt-card" markdown="1">
+
+### Logger
+
+Structured JSON logs with Lambda context, correlation IDs and configurable levels.
+
+[Write your first log](LOGGER.md#write-your-first-log)
+
+</div>
+<div class="pt-card" markdown="1">
+
+### Tracer
+
+Trace handlers and downstream calls with OpenTelemetry. Send spans to AWS X-Ray through a collector.
+
+[Add tracing](TRACER.md)
+
+</div>
+<div class="pt-card" markdown="1">
+
+### Metrics
+
+Emit custom CloudWatch metrics with Embedded Metric Format, including cold-start metrics.
+
+[Record application metrics](METRICS.md)
+
+</div>
+</div>
 
 ## Features
 
@@ -42,13 +124,15 @@ The manifest contains 31 modules, including 28 public modules. The legacy X-Ray 
 
 ## Examples
 
-The [quickstart](GETTING_STARTED.md#create-utilities-once) includes a complete Go handler directly from the maintained source. For other use cases, browse the [examples directory](https://github.com/rambow-cloud/powertools-lambda-go/tree/main/examples) or start with one of these guides:
+Every main utility guide starts with maintained code and expected results. Browse the [examples directory](https://github.com/rambow-cloud/powertools-lambda-go/tree/main/examples) or choose a use case:
 
-- [HTTP routing and middleware](HTTP.md), including [response streaming](HTTP_STREAMING.md).
+- [Simple GET/POST routing](HTTP.md#complete-example), then [middleware](HTTP_MIDDLEWARE.md), [observability](HTTP_OBSERVABILITY.md) or [response streaming](HTTP_STREAMING.md).
 - [Batch processing](BATCH.md) with [typed event parsing](PARSER.md).
 - [AppSync Events](APPSYNC_EVENTS.md), [AppSync GraphQL](APPSYNC_GRAPHQL.md), and [Bedrock Agents](BEDROCK.md).
 
 ## Project status
+
+Read [usage patterns](USAGE_PATTERNS.md) for object lifetimes and [environment variables](ENVIRONMENT_VARIABLES.md) for configuration. Utilities can be adopted independently, and maintained v1 APIs follow the [version policy](VERSION_POLICY.md).
 
 Use the [TypeScript feature comparison](FEATURE_PARITY.md), [project progress](CHECKLIST.md) and [roadmap](ROADMAP.md) to distinguish implemented behavior from remaining compatibility and release work. [Local acceptance records](LOCAL_VALIDATION.md) describe the scope of previous verification; they do not establish exhaustive parity or cloud acceptance.
 
