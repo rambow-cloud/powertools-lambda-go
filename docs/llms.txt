@@ -116,7 +116,7 @@ These pages do not override current usage guides or published release contracts.
 ## Resources
 
 - [X-Ray through OpenTelemetry](https://powertools-lambda-go.rambow.cloud/XRAY_MIGRATION/): Migrate Go Lambda tracing from the deprecated X-Ray SDK adapter to OpenTelemetry with a collector's awsxray exporter.
-- [Implementation sequence](https://powertools-lambda-go.rambow.cloud/ROADMAP/)
+- [Implementation sequence](https://powertools-lambda-go.rambow.cloud/ROADMAP/): Track unfinished Powertools for Go capabilities, compatibility audits and phased GitHub implementation milestones.
 - [Project progress](https://powertools-lambda-go.rambow.cloud/CHECKLIST/)
 - [Publication readiness](https://powertools-lambda-go.rambow.cloud/PUBLICATION/)
 - [Optional utilities and Go publishing](https://powertools-lambda-go.rambow.cloud/PUBLISHING_PLAN/)

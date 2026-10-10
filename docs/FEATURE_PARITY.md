@@ -8,6 +8,10 @@ This project uses **Powertools for AWS Lambda (TypeScript) v2.35.0**, source com
 
 Each guide maps the corresponding official feature documentation to Go APIs, shows a complete example and describes its output. Go function names, contexts, native values and error handling differ from JavaScript. The detailed mappings below distinguish implemented capabilities from remaining compatibility gates. [CHECKLIST.md](CHECKLIST.md) remains the authoritative project progress record.
 
+## Scheduled remaining work
+
+[The phased backlog](ROADMAP.md) links 38 open work issues across six GitHub milestones. It separates absent/optional capabilities from compatibility audits and service/resource acceptance. This scheduling update implements no feature and does not advance the pinned baseline.
+
 ## How to read verification claims
 
 | Evidence | What it establishes | What it does not establish |
