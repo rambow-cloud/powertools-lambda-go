@@ -120,7 +120,7 @@ jobs:
         run: go run ./tools/package
       - name: Upload Lambda example artifacts
         if: needs.changes.outputs.full == 'true'
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: lambda-examples-${{ github.sha }}
           path: dist/lambda-*.zip
@@ -129,7 +129,7 @@ jobs:
 
       - name: Upload module verification progress
         if: always()
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: module-verification-${{ github.sha }}
           path: dist/modules/check-*/progress.json
@@ -156,7 +156,7 @@ jobs:
         with:
           go-version-file: go.mod
           cache-dependency-path: '**/go.sum'
-      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version: '22.21.1'
       - uses: astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7 # v10.2.0
@@ -186,7 +186,7 @@ jobs:
         run: git diff --exit-code
       - name: Upload runtime acceptance and diagnostics
         if: always()
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: runtime-simulation-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
           path: |
@@ -225,7 +225,7 @@ jobs:
         run: git diff --exit-code
       - name: Upload service acceptance and diagnostics
         if: always()
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: dynamodb-local-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
           path: dist/service-acceptance/*
