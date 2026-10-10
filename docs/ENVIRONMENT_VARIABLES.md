@@ -1,3 +1,7 @@
+---
+description: "Configure Powertools for Go logging, metrics and tracing using documented environment variables, defaults and option precedence."
+---
+
 # Environment variables
 
 These variables configure the implemented Go utilities. The behavioral baseline is [TypeScript v2.35.0](https://github.com/aws-powertools/powertools-lambda-typescript/blob/7bcc27b1574493f9452688673658f52b80c53847/docs/environment-variables.md); Go-specific OTel settings are explicit extensions. Configure variables before constructing utilities. Do not mutate process environment as request-local state in concurrent handlers.

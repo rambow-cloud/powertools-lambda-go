@@ -1,3 +1,7 @@
+---
+description: "Parse API Gateway, ALB and other supported HTTP Lambda event shapes into typed Go models using Powertools Parser."
+---
+
 # HTTP Parser contracts
 
 Reference: installed TypeScript Parser v2.35.0 with Zod v4.1.12. This implementation covers all eighteen runtime schema exports from eight HTTP-related source families and five body envelopes. It validates event shapes and payloads; routing, authorization decisions, response validation and OpenAPI belong to the separate Event Handler/Validation work.

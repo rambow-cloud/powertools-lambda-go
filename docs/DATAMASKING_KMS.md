@@ -1,3 +1,7 @@
+---
+description: "Encrypt and decrypt masked Go payload fields with the optional Powertools KMS provider and documented AWS Encryption SDK interoperability."
+---
+
 # AWS Encryption SDK masking provider
 
 The optional datamasking/kms module implements datamasking.Provider with the official AWS Encryption SDK for Go v0.4.0 and Materials Providers Library v0.4.0. It emits Base64 AWS Encryption SDK messages with the same committed, signed default suite (0x0578) as the pinned TypeScript provider. Root Commons and ordinary Data Masking do not acquire these dependencies.

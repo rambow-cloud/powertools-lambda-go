@@ -1,3 +1,7 @@
+---
+description: "Process SQS, Kinesis and DynamoDB Streams batches in Go Lambda with Powertools partial failures, FIFO policies and typed handlers."
+---
+
 # Batch processing
 
 Batch processes SQS Standard/FIFO, Kinesis and DynamoDB Streams records and builds Lambda partial-failure responses. Import `github.com/rambow-cloud/powertools-lambda-go/batch`. Processing does not call an AWS service; configure your event source mapping separately.

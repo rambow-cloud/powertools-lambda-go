@@ -1,3 +1,7 @@
+---
+description: "Review JSON Schema shapes and conditional compilation contracts in Powertools Go Validation."
+---
+
 # Validation schema-shape and conditional compilation compatibility
 
 Reference: Powertools TypeScript v2.35.0 with AJV v8.20.0. This milestone extends [schema setup](VALIDATION_STRICT.md) and [keyword behavior](VALIDATION_KEYWORDS.md). Complete AJV compatibility remains open.

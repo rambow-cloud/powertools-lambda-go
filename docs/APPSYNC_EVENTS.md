@@ -1,3 +1,7 @@
+---
+description: "Handle AWS AppSync Events in Go Lambda with Powertools routing, publish and subscribe handlers and documented event contracts."
+---
+
 # AppSync Events
 
 AppSync Events handles publish and subscribe invocations with channel routing, authorization and optional aggregate processing. Import `github.com/rambow-cloud/powertools-lambda-go/eventhandler/appsyncevents`. It does not publish messages to AppSync by itself.

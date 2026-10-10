@@ -1,3 +1,7 @@
+---
+description: "Erase or transform selected Go Lambda payload fields with Powertools Data Masking, ordered rules and optional regex or KMS providers."
+---
+
 # Data Masking
 
 Data Masking erases selected fields or transforms them through an encryption provider. Import `github.com/rambow-cloud/powertools-lambda-go/datamasking`. Erasure is built in; regex and KMS encryption are separate optional modules.

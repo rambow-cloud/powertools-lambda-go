@@ -1,3 +1,7 @@
+---
+description: "Use ECMAScript regular expression matching in Powertools Go JSON Schema Validation with documented Unicode and compatibility boundaries."
+---
+
 # Validation regular expressions
 
 Validation uses a pure-Go ECMAScript Unicode regex adapter backed by [regexp2/v2 v2.8.0](https://github.com/dlclark/regexp2/tree/v2.8.0), pinned to commit `9d0d2ffe88a8b90012f7979ec85424e46d5ef48f`. It is used for both `pattern` and `patternProperties`. The implementation now lives in the optional commons/regex module and is also used by Data Masking replacements; see [REGEX.md](REGEX.md). CGO remains disabled, and deployed Lambda binaries require neither Node.js nor a JavaScript runtime.

@@ -1,3 +1,7 @@
+---
+description: "Resolve AWS AppSync GraphQL requests in Go Lambda with Powertools, including route dispatch, batching and error contracts."
+---
+
 # AppSync GraphQL
 
 AppSync GraphQL routes resolver events and batches to Go callbacks. Import `github.com/rambow-cloud/powertools-lambda-go/eventhandler/appsyncgraphql`. Register queries, mutations and other type/field pairs before serving invocations.

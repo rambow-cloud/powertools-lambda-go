@@ -32,6 +32,10 @@ jobs:
         run: uv run --project website --frozen python website/check_guides.py
       - name: Build and validate links and snippets
         run: uv run --project website --frozen zensical build --clean --strict --config-file mkdocs.yml
+      - name: Validate search and AI crawler discovery
+        run: uv run --project website --frozen python website/check_discovery.py
+      - name: Test discovery regression guards
+        run: uv run --project website --frozen python website/test_discovery.py
       - name: Upload site
         uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0
         with:

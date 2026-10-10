@@ -1,3 +1,7 @@
+---
+description: "Understand Kafka Lambda source and JSON event modes, payload decoding and Go Powertools compatibility boundaries."
+---
+
 # Kafka event format contracts
 
 The Go consumer follows the pinned TypeScript v2.35.0 explicit field configuration. `EventRecordFormat` is an event source mapping setting, not a field required by the consumer. Key and value configurations are independent. No schema registry client is introduced.

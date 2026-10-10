@@ -1,3 +1,7 @@
+---
+description: "Decode Kafka Lambda events in Go with Powertools JSON handling, headers and optional Avro or Protobuf adapters."
+---
+
 # Kafka consumer
 
 Kafka deserializes Lambda Kafka events into records with lazy key/value/header methods. Import `github.com/rambow-cloud/powertools-lambda-go/kafka`. It does not poll brokers, commit offsets or fetch schemas from a registry.

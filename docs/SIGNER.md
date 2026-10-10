@@ -1,3 +1,7 @@
+---
+description: "Sign Go HTTP requests using AWS Signature Version 4 with Powertools Signer, credentials and reusable signing transports."
+---
+
 # Signer
 
 Signer adds AWS Signature Version 4 authentication to HTTP requests. Import `github.com/rambow-cloud/powertools-lambda-go/signer`. Standalone signing does not send a request; `HTTPClient` provides a signed transport.

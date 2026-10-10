@@ -1,3 +1,7 @@
+---
+description: "Use shared ECMAScript regular expression matching and replacement in Powertools for Go with documented Unicode behavior."
+---
+
 # Shared ECMAScript regular expressions
 
 The optional `commons/regex` module owns the pure-Go regex engine, Unicode 16.0 property tables and pattern adaptation previously embedded in Validation. Validation delegates both Unicode payload matching and legacy strict property-overlap matching to it. Data Masking composes it through `Rule.Replace`; neither root Commons nor ordinary Data Masking depends on the engine.

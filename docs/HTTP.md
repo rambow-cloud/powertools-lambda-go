@@ -1,3 +1,7 @@
+---
+description: "Route API Gateway and ALB events in Go Lambda using Powertools HTTP handlers, typed requests, responses and middleware."
+---
+
 # HTTP event handler
 
 The independent `github.com/rambow-cloud/powertools-lambda-go/eventhandler/http` module adapts API Gateway REST, HTTP API v2, ALB and Lambda Function URL events. It depends only on root Commons and the standard library. Logger, OpenTelemetry Tracer, Parser and Validation compose through the original context and explicit callbacks; ordinary routing imports none of those modules.

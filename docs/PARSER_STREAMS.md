@@ -1,3 +1,7 @@
+---
+description: "Understand typed Go parsing contracts for stream and notification Lambda events, payload transformations and validation boundaries."
+---
+
 # Stream and notification Parser contracts
 
 Reference: installed TypeScript Parser v2.35.0 with Zod v4.1.12. The source audit covers the runtime exports of `schemas/sns`, `schemas/dynamodb`, `schemas/kinesis`, `schemas/kinesis-firehose` and `schemas/cloudwatch`, their envelopes, and `helpers/dynamodb`. These initial implementations remain subject to the full edge/error parity gate in PARSER_PLAN.md.

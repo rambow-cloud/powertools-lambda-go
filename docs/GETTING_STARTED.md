@@ -1,3 +1,8 @@
+---
+title: Getting started with Powertools for Go Lambda
+description: "Build your first Go Lambda with Powertools Logger and OpenTelemetry Tracer, a collector, CGO disabled and the provided.al2023 runtime."
+---
+
 # Your first Go Lambda
 
 ## Prerequisites and installation

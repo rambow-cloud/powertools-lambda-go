@@ -1,3 +1,7 @@
+---
+description: "Retrieve Lambda execution-environment metadata in Go with the optional Powertools Metadata client and explicit request contracts."
+---
+
 # Metadata
 
 Metadata retrieves Lambda execution-environment information from the Lambda Metadata Service (LMDS). Import `github.com/rambow-cloud/powertools-lambda-go/commons/metadata`, an independent optional module. It is distinct from EC2 instance metadata and is not fetched automatically by Logger or Tracer.

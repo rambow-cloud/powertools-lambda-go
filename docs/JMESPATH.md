@@ -1,3 +1,7 @@
+---
+description: "Query JSON and extract Lambda event envelopes with Powertools Go JMESPath, compiled expressions and documented TypeScript mappings."
+---
+
 # JMESPath
 
 JMESPath queries JSON documents, decodes Powertools envelopes and supports custom functions. Import `github.com/rambow-cloud/powertools-lambda-go/jmespath`. It is optional for Logger and does not contact AWS.

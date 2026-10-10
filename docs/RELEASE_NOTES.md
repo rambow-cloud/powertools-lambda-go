@@ -1,3 +1,7 @@
+---
+description: "Read published Powertools for Go release notes, stable and prerelease versions, component changes and canonical GitHub Release links."
+---
+
 # Release notes
 
 Published versions of Powertools for AWS Lambda (Go) are listed below, newest

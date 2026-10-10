@@ -1,3 +1,7 @@
+---
+description: "Handle recursive validation errors and compose Powertools Go Parser operations with explicit paths, results and error contracts."
+---
+
 # Parser recursive errors and composition
 
 Reference: Powertools TypeScript v2.35.0 and Zod v4.1.12. This milestone replaces flattened union diagnostics with recursive branch errors and aligns branch selection, continued refinements and array-check ordering. It also propagates safe parsing through nested Go schema composition. Constraint-specific error metadata and complete cross-language compatibility remain separate gates.

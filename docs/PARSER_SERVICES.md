@@ -1,3 +1,7 @@
+---
+description: "Parse supported AWS service and Kafka Lambda events into typed Go values with documented Powertools Parser contracts."
+---
+
 # Parser service events and Kafka
 
 Reference: Powertools TypeScript v2.35.0 and Zod v4.1.12, as installed by the pinned development fixture project. This slice implements fifteen runtime schema exports from six additional source families. It does not implement the separate Kafka consumer utility, schema registries, Avro or Protobuf.
