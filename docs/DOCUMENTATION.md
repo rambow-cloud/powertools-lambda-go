@@ -13,11 +13,13 @@ The site uses [Zensical](https://zensical.org/docs/) with its default modern the
 - `website/check_navigation.py` checks that every Markdown guide appears exactly once in navigation and that every target exists inside `docs/`.
 - `dist/site/` contains generated HTML and is ignored by Git.
 - The quickstart includes the actual Go example through a checked snippet, avoiding a second copy.
-- `RELEASE_NOTES.md` records published versions, preserving the frozen unified
-  notes for v0.2.0 and the separate initial-release scope for v0.1.0. When a release
-  completes, update this page from its reviewed root Release notes, with its
-  publication date and canonical Release link. Keep drafts and unreleased main
-  changes out of the published history; retain older entries.
+- `RELEASE_NOTES.md` lists published versions, newest first. Keep each entry to
+  its version heading, publication date, prerelease status when applicable,
+  canonical GitHub Release link and one to three short user-facing change bullets.
+  Summarize the reviewed Release notes, highlighting new APIs, fixes and upgrade
+  requirements. Detailed changelogs belong in GitHub Releases; CI results, commit
+  identities and checksums belong in acceptance records. Retain older versions
+  and their anchors; keep drafts and unreleased changes out of this page.
 - Links within the site use Markdown file paths; links to source outside `docs/` use GitHub URLs.
 
 Every guide belongs in navigation. Builds fail on missing navigation targets, broken local links, unknown anchors, or missing included snippets. Existing implementation plans and sanitized acceptance records remain available under Development.
