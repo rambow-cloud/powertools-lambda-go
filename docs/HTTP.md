@@ -4,21 +4,57 @@ description: "Route API Gateway and ALB events in Go Lambda using Powertools HTT
 
 # HTTP event handler
 
-The independent `github.com/rambow-cloud/powertools-lambda-go/eventhandler/http` module adapts API Gateway REST, HTTP API v2, ALB and Lambda Function URL events. It depends only on root Commons and the standard library. Logger, OpenTelemetry Tracer, Parser and Validation compose through the original context and explicit callbacks; ordinary routing imports none of those modules.
+Build HTTP APIs with `app.Get`, `app.Post`, `app.Put`, `app.Patch`, `app.Delete`, `app.Head` and `app.Options`. Each method takes a path and a handler. Return a Go value for a JSON response, or an `httpapi.Response` to choose the status code and headers. These methods are already supported; their capitalized names follow Go's exported-method convention.
 
-This is an initial implementation against Powertools TypeScript v2.35.0, not a full-parity claim. Remaining requirements are tracked in [HTTP_PLAN.md](HTTP_PLAN.md).
+The independent `github.com/rambow-cloud/powertools-lambda-go/eventhandler/http` module adapts API Gateway REST, HTTP API v2, ALB and Lambda Function URL events. It depends only on root Commons and the standard library. Its compatibility baseline is Powertools TypeScript v2.35.0; [HTTP_PLAN.md](HTTP_PLAN.md) records the supported scope and remaining requirements.
+
+## Install
+
+Use Go 1.27 or newer in your application's Go module:
+
+```sh
+CGO_ENABLED=0 go get github.com/rambow-cloud/powertools-lambda-go/eventhandler/http@v1.1.0
+CGO_ENABLED=0 go get github.com/aws/aws-lambda-go@v1.55.0
+```
+
+Import the routing module as `httpapi` to distinguish it from the standard library's `net/http`.
 
 ## Complete example
 
-The complete handler below composes routes, CORS/compression, Logger and optional Metrics/OTel middleware. Build `./examples/http` with `CGO_ENABLED=0`. The core router also works without observability modules.
+This Lambda has two routes:
+
+- `GET /orders/:id` returns the decoded path parameter as JSON with status 200.
+- `POST /orders` reads a JSON body and returns it with status 201, or returns 400 for invalid input. It demonstrates the response shape without saving an order.
+
+Create the router once, register the routes, then call `lambda.Start`. Registration returns an error for invalid route definitions, so check it during initialization.
 
 ~~~go
---8<-- "examples/http/main.go"
+--8<-- "examples/http-routing/main.go"
 ~~~
+
+The small Lambda callback passes the raw event to `app.Resolve`, which converts the Lambda event into an HTTP request and converts your result into a proxy response. You do not need to write those conversions yourself.
+
+Build this example from the repository root for `provided.al2023`:
+
+```sh
+CGO_ENABLED=0 GOOS=linux GOARCH=arm64 go build -trimpath -tags lambda.norpc -o bootstrap ./examples/http-routing
+```
+
+Use `GOARCH=amd64` for x86_64. In your own application, replace `./examples/http-routing` with your main package. Connect an API Gateway proxy integration or a Function URL to the Lambda so that requests reach the router.
 
 ## Input and output
 
-Send an API Gateway v2/Function URL event such as:
+At the HTTP boundary, the example behaves as follows:
+
+| Request | Status | JSON body |
+| --- | --- | --- |
+| `GET /orders/ORD-123` | 200 | `{"id":"ORD-123"}` |
+| `POST /orders` with `{"name":"Notebook"}` | 201 | `{"name":"Notebook"}` |
+| `POST /orders` with malformed JSON | 400 | An error with message `Expected a JSON order` |
+| `POST /orders` with `{}` | 400 | An error with message `name is required` |
+| `GET /missing` | 404 | A not-found error |
+
+For a Lambda console test, use this API Gateway v2/Function URL event:
 
 ~~~json
 {
@@ -42,7 +78,23 @@ Send an API Gateway v2/Function URL event such as:
 }
 ~~~
 
-The handler returns status 200 and the string-valued proxy `body` containing `{"id":"ORD-123"}`. Proxy headers/cookies and Base64 selection are part of the response envelope. The route additionally writes an INFO JSON record with `message: "Get order"` and `order_id: "ORD-123"`; Metrics middleware emits EMF separately. Tracing requires the configured enabled provider/collector. A response body is not itself a log record. Unknown routes produce 404; handler errors follow the registered error policy.
+The Lambda result has status 200 and a string-valued proxy `body` containing `{"id":"ORD-123"}`. The HTTP client receives that body as JSON. To test POST, set `rawPath` and `requestContext.http.path` to `/orders`, set `requestContext.http.method` to `POST`, and add `"body": "{\"name\":\"Notebook\"}"` at the top level. API Gateway passes the request body as a JSON string inside the event.
+
+This routing example does not configure logs, metrics or tracing. Add them with the [observability guide](HTTP_OBSERVABILITY.md) when needed.
+
+## Read a request and return a response
+
+| Task | API | Example |
+| --- | --- | --- |
+| Read a path parameter | `request.Params` | `request.Params["id"]` for `/orders/:id` |
+| Read a query parameter | Standard `net/http` URL | `request.Request.URL.Query().Get("status")` |
+| Read a header | Standard `net/http` headers | `request.Request.Header.Get("Authorization")` |
+| Read a JSON body | Go JSON v2 | `json.UnmarshalRead(request.Request.Body, &order)` |
+| Return JSON with status 200 | Return a Go value | `return map[string]string{"id": "ORD-123"}, nil` |
+| Return a different status | `httpapi.Response` | `return httpapi.Response{StatusCode: 201, Body: order}, nil` |
+| Return an HTTP error | `httpapi.NewHTTPError` | `return nil, httpapi.NewHTTPError(400, "name is required")` |
+
+The router owns the request body and closes it after the request. Decode it once in your handler. The example checks the required field explicitly; [schema validation](#optional-schema-validation) is optional. Ordinary Go errors become status 500 responses; use `NewHTTPError` for an intentional client error.
 
 ## Objects and lifecycle
 
@@ -50,7 +102,6 @@ The handler returns status 200 and the string-valued proxy `body` containing `{"
 | --- | --- |
 | `app` | Reusable registry; register routes and middleware before serving requests |
 | `request` | One RequestContext with invocation context, native HTTP request, parameters, response and request store |
-| `requestLog` / `requestMetrics` in this example | Root utility objects despite their variable names; binding/scoping happens per request |
 | `app.Shared` / request Store | Warm shared state versus one request's state; mutable values remain application-owned |
 
 ## TypeScript feature coverage
@@ -70,23 +121,19 @@ Compared with the [official v2.35.0 HTTP guide](https://github.com/aws-powertool
 
 [Core reference tests](https://github.com/rambow-cloud/powertools-lambda-go/blob/main/eventhandler/http/reference_test.go), middleware/streaming suites and optional module tests provide scoped evidence. See [feature comparison](FEATURE_PARITY.md), [observability](HTTP_OBSERVABILITY.md) and [streaming](HTTP_STREAMING.md).
 
+## Add middleware and observability
+
+Start with the routing example above, then add features as needed:
+
+- [Middleware](HTTP_MIDDLEWARE.md) shows `app.Use`, route middleware, CORS and compression.
+- [Observability](HTTP_OBSERVABILITY.md) adds structured logs, per-request metrics and OpenTelemetry tracing.
+- [Streaming](HTTP_STREAMING.md) covers streaming responses and their deployment requirements.
+
+The [composed example](https://github.com/rambow-cloud/powertools-lambda-go/blob/main/examples/http/main.go) combines those utilities. The [minimal example](https://github.com/rambow-cloud/powertools-lambda-go/blob/main/examples/http-routing/main.go) imports the routing module and Lambda runtime only; it does not require observability modules.
+
 ## Native Lambda usage
 
-```go
-app := httpapi.New(httpapi.Options{})
-err := app.Get("/orders/:id", func(request *httpapi.RequestContext) (any, error) {
-    return map[string]any{"id": request.Params["id"]}, nil
-})
-if err != nil {
-    log.Fatal(err)
-}
-handler := func(ctx context.Context, event json.RawMessage) (httpapi.ProxyResponse, error) {
-    return app.Resolve(ctx, event)
-}
-lambda.Start(handler)
-```
-
-Import the module as `httpapi` when also using `net/http`. Create the router before `lambda.Start`. The [complete example](https://github.com/rambow-cloud/powertools-lambda-go/blob/main/examples/http/main.go) adds Logger and OTel Tracer wrappers. Node.js is not part of the Lambda executable.
+Keep registration outside the invocation callback as shown in the complete example. A route handler receives an HTTP request; the Lambda callback receives a Lambda event. `app.Resolve` connects the two. Node.js is not part of the Lambda executable.
 
 `RequestContext` retains the original `context.Context`, native `http.Request`, owned `http.Response`, JSON event snapshot, matched route and decoded parameters. Function URLs share the v2 response format. Conversion failures and cancellation remain Go errors. Handler errors become HTTP responses under the registered policy. Panics retain their identity for outer cleanup and observability wrappers.
 

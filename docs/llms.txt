@@ -15,9 +15,9 @@ These pages do not override current usage guides or published release contracts.
 
 - [Source repository](https://github.com/rambow-cloud/powertools-lambda-go)
 
-## What is Powertools for Go
+## Home
 
-- [What is Powertools for AWS Lambda (Go)](https://powertools-lambda-go.rambow.cloud/): Independent Go utilities for AWS Lambda: structured logging, OpenTelemetry tracing, CloudWatch metrics, validation and event handling.
+- [Powertools for AWS Lambda (Go)](https://powertools-lambda-go.rambow.cloud/): Independent Go utilities for AWS Lambda: structured logging, OpenTelemetry tracing, CloudWatch metrics, validation and event handling.
 
 ## Release notes
 

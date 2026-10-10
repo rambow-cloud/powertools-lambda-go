@@ -80,8 +80,11 @@ watch:
 extra:
   generator: false
 
+extra_css:
+  - stylesheets/home.css
+
 nav:
-  - What is Powertools for Go: index.md
+  - Home: index.md
   - Release notes: RELEASE_NOTES.md
   - Getting started:
       - First Lambda: GETTING_STARTED.md
