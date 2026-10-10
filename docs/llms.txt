@@ -1,6 +1,8 @@
 # Powertools for AWS Lambda (Go)
 
-> Independent Go utilities for AWS Lambda, with OpenTelemetry tracing and independently versioned modules.
+> Go Powertools Lambda: independent Go utilities for AWS Lambda, with structured logging, OpenTelemetry tracing, CloudWatch metrics and HTTP routing.
+
+Project names: Go Powertools Lambda, Go Powertools, Powertools Lambda Go.
 
 This is an independent community project, not an official AWS distribution.
 The English documentation follows main; Release notes identify published versions.
@@ -17,7 +19,7 @@ These pages do not override current usage guides or published release contracts.
 
 ## Home
 
-- [Powertools for AWS Lambda (Go)](https://powertools-lambda-go.rambow.cloud/): Independent Go utilities for AWS Lambda: structured logging, OpenTelemetry tracing, CloudWatch metrics, validation and event handling.
+- [Go Powertools Lambda](https://powertools-lambda-go.rambow.cloud/): Go Powertools Lambda adds structured logging, OpenTelemetry tracing, CloudWatch metrics and HTTP routing to Go AWS Lambda functions. Independent community project.
 
 ## Release notes
 
@@ -25,8 +27,8 @@ These pages do not override current usage guides or published release contracts.
 
 ## Getting started
 
-- [Your first Go Lambda](https://powertools-lambda-go.rambow.cloud/GETTING_STARTED/): Build your first Go Lambda with structured logging, then add optional OpenTelemetry tracing. Use CGO disabled and the provided.al2023 runtime.
-- [Independent modules in one repository](https://powertools-lambda-go.rambow.cloud/MODULES/): Install independently versioned Powertools for Go modules. Understand Go import paths, module dependencies, shared releases and standalone consumers.
+- [Your first Go Lambda](https://powertools-lambda-go.rambow.cloud/GETTING_STARTED/): Build your first AWS Lambda function with Go Powertools structured logging, then add optional OpenTelemetry tracing. Use CGO disabled and provided.al2023.
+- [Independent modules in one repository](https://powertools-lambda-go.rambow.cloud/MODULES/): Install Go Powertools modules for AWS Lambda. Choose utility import paths, understand independent dependencies and use the shared published release version.
 - [Usage patterns](https://powertools-lambda-go.rambow.cloud/USAGE_PATTERNS/): Compose Powertools for Go utilities with correct object lifetimes, Lambda invocation scope, typed handlers and reusable clients.
 - [Environment variables](https://powertools-lambda-go.rambow.cloud/ENVIRONMENT_VARIABLES/): Configure Powertools for Go logging, metrics and tracing using documented environment variables, defaults and option precedence.
 - [Compatibility contract](https://powertools-lambda-go.rambow.cloud/COMPATIBILITY/): Review the maintained Powertools for Go compatibility contract, TypeScript baseline, runtime requirements and supported feature boundaries.

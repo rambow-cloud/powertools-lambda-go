@@ -4,7 +4,7 @@ description: "Track unfinished Powertools for Go capabilities, compatibility aud
 
 # Implementation sequence
 
-The owner-requested backlog in [#166](https://github.com/rambow-cloud/powertools-lambda-go/issues/166) inventories the current source and plans on **2026-10-10**, after stable **v1.1.0**. It contains **38 open work issues across six milestones**: 37 new issues and existing KMS issue #164. This update schedules work; it implements no feature.
+The owner-requested backlog in [#166](https://github.com/rambow-cloud/powertools-lambda-go/issues/166) inventories the source and plans on **2026-10-10**, after stable **v1.1.0**. As of **2026-10-11**, it contains **39 open work issues across six milestones**: the initial 37 issues, existing KMS issue #164 and search-visibility issue #206. The backlog schedules work; it does not establish feature completion.
 
 The comparison remains pinned to TypeScript **v2.35.0**, commit `7bcc27b1574493f9452688673658f52b80c53847`. An optional injected compiler or newer producer protocol is labelled separately from a missing default feature. [Feature comparison](FEATURE_PARITY.md) describes implemented APIs; [CHECKLIST.md](CHECKLIST.md) records verified progress.
 
@@ -17,7 +17,7 @@ The comparison remains pinned to TypeScript **v2.35.0**, commit `7bcc27b1574493f
 | 3 | [03 - KMS bounded materials cache](https://github.com/rambow-cloud/powertools-lambda-go/milestone/3) | 1 | Review supported CMM interfaces first. Implement only a reviewed cache with finite limits and authenticated interoperability; retain SDK blockers explicitly. |
 | 4 | [04 - Utility compatibility contracts](https://github.com/rambow-cloud/powertools-lambda-go/milestone/4) | 17 | Finish the finite per-utility contract matrices, fix reproduced defects and document intentional Go differences. Existing implementations remain available. |
 | 5 | [05 - Runtime lifecycle and durable evaluation](https://github.com/rambow-cloud/powertools-lambda-go/milestone/5) | 2 | Real native SDK multi-worker acceptance first, then an isolated durable prototype and a go/no-go decision. Local evidence does not certify Managed Instances deployment. |
-| 6 | [06 - Service and resource acceptance](https://github.com/rambow-cloud/powertools-lambda-go/milestone/6) | 5 | Local Redis topology and resource budgets, default-off service tooling and owner browser review. Actual AWS runs require a separately authorized task. |
+| 6 | [06 - Service and resource acceptance](https://github.com/rambow-cloud/powertools-lambda-go/milestone/6) | 6 | Local Redis topology and resource budgets, default-off service tooling, owner browser review and observed search visibility. Actual AWS runs require a separately authorized task. |
 
 Numbers describe the proposed sequence, not release versions or deadlines. Independent work can proceed while a dependency is blocked. Every implementation slice needs its own tests and review; acceptance is not postponed until milestone 06. Close a milestone only when its assigned work is resolved, or explicitly move deferred scope with a recorded reason.
 
@@ -85,6 +85,7 @@ These issues track remaining contracts and verification, not absent utilities. E
 | Guarded opt-in AWS runner | Implementation of missing reviewed runner slices | [#201](https://github.com/rambow-cloud/powertools-lambda-go/issues/201) | 06 |
 | Current-artifact managed-service acceptance | Historical results exist; remaining execution gates stay open | [#202](https://github.com/rambow-cloud/powertools-lambda-go/issues/202) | 06 |
 | Published documentation browser review | Owner acceptance remains separate from CI/deployment | [#203](https://github.com/rambow-cloud/powertools-lambda-go/issues/203) | 06 |
+| Target-query visibility and AI citations | Indexed homepage reported by owner; actual query outcomes remain open | [#206](https://github.com/rambow-cloud/powertools-lambda-go/issues/206) | 06 |
 
 The service matrix includes CloudWatch/OTel-to-X-Ray, Parameters services, DynamoDB/cache, Batch retries/checkpoints, AppSync, Bedrock, Kafka, KMS, LMDS and streaming/platform behavior. Live cases become separate service execution issues only after scenario and resource scope are selected. This backlog authorizes no AWS execution.
 

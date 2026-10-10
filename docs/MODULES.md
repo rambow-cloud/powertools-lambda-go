@@ -1,5 +1,6 @@
 ---
-description: "Install independently versioned Powertools for Go modules. Understand Go import paths, module dependencies, shared releases and standalone consumers."
+title: Install Go Powertools modules
+description: "Install Go Powertools modules for AWS Lambda. Choose utility import paths, understand independent dependencies and use the shared published release version."
 ---
 
 # Independent modules in one repository

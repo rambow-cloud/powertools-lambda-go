@@ -1,9 +1,17 @@
-# Powertools for Go Lambda
+# Go Powertools Lambda
 
-Structured logging, OpenTelemetry tracing, metrics and other utilities for native
-Go AWS Lambda applications. This independent community project uses Powertools
+Go Powertools provides structured logging, OpenTelemetry tracing, metrics and
+other utilities for native Go AWS Lambda applications. This independent community project uses Powertools
 for AWS Lambda (TypeScript) v2.35.0 as its behavioral reference. See the
 [supported scope](docs/COMPATIBILITY.md) for differences and limitations.
+
+[Go Powertools documentation](https://powertools-lambda-go.rambow.cloud/) ·
+[Getting started](https://powertools-lambda-go.rambow.cloud/GETTING_STARTED/) ·
+[Modules](https://powertools-lambda-go.rambow.cloud/MODULES/)
+
+Powertools Lambda Go targets native Go applications on AWS Lambda. Install only
+the utilities you need; this is an independent community project, not an official
+AWS distribution.
 
 ## Install
 
