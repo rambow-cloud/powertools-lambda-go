@@ -34,64 +34,64 @@ use (
 	./validation
 )
 
-replace github.com/rambow-cloud/powertools-lambda-go v1.0.0 => .
+replace github.com/rambow-cloud/powertools-lambda-go v1.1.0 => .
 
-replace github.com/rambow-cloud/powertools-lambda-go/batch v1.0.0 => ./batch
+replace github.com/rambow-cloud/powertools-lambda-go/batch v1.1.0 => ./batch
 
-replace github.com/rambow-cloud/powertools-lambda-go/commons/awssdk v1.0.0 => ./commons/awssdk
+replace github.com/rambow-cloud/powertools-lambda-go/commons/awssdk v1.1.0 => ./commons/awssdk
 
-replace github.com/rambow-cloud/powertools-lambda-go/commons/dynamodb v1.0.0 => ./commons/dynamodb
+replace github.com/rambow-cloud/powertools-lambda-go/commons/dynamodb v1.1.0 => ./commons/dynamodb
 
-replace github.com/rambow-cloud/powertools-lambda-go/commons/metadata v1.0.0 => ./commons/metadata
+replace github.com/rambow-cloud/powertools-lambda-go/commons/metadata v1.1.0 => ./commons/metadata
 
-replace github.com/rambow-cloud/powertools-lambda-go/commons/regex v1.0.0 => ./commons/regex
+replace github.com/rambow-cloud/powertools-lambda-go/commons/regex v1.1.0 => ./commons/regex
 
-replace github.com/rambow-cloud/powertools-lambda-go/datamasking v1.0.0 => ./datamasking
+replace github.com/rambow-cloud/powertools-lambda-go/datamasking v1.1.0 => ./datamasking
 
-replace github.com/rambow-cloud/powertools-lambda-go/datamasking/kms v1.0.0 => ./datamasking/kms
+replace github.com/rambow-cloud/powertools-lambda-go/datamasking/kms v1.1.0 => ./datamasking/kms
 
-replace github.com/rambow-cloud/powertools-lambda-go/eventhandler/appsyncevents v1.0.0 => ./eventhandler/appsyncevents
+replace github.com/rambow-cloud/powertools-lambda-go/eventhandler/appsyncevents v1.1.0 => ./eventhandler/appsyncevents
 
-replace github.com/rambow-cloud/powertools-lambda-go/eventhandler/appsyncgraphql v1.0.0 => ./eventhandler/appsyncgraphql
+replace github.com/rambow-cloud/powertools-lambda-go/eventhandler/appsyncgraphql v1.1.0 => ./eventhandler/appsyncgraphql
 
-replace github.com/rambow-cloud/powertools-lambda-go/eventhandler/bedrock v1.0.0 => ./eventhandler/bedrock
+replace github.com/rambow-cloud/powertools-lambda-go/eventhandler/bedrock v1.1.0 => ./eventhandler/bedrock
 
-replace github.com/rambow-cloud/powertools-lambda-go/eventhandler/http v1.0.0 => ./eventhandler/http
+replace github.com/rambow-cloud/powertools-lambda-go/eventhandler/http v1.1.0 => ./eventhandler/http
 
-replace github.com/rambow-cloud/powertools-lambda-go/eventhandler/http/metrics v1.0.0 => ./eventhandler/http/metrics
+replace github.com/rambow-cloud/powertools-lambda-go/eventhandler/http/metrics v1.1.0 => ./eventhandler/http/metrics
 
-replace github.com/rambow-cloud/powertools-lambda-go/eventhandler/http/tracer v1.0.0 => ./eventhandler/http/tracer
+replace github.com/rambow-cloud/powertools-lambda-go/eventhandler/http/tracer v1.1.0 => ./eventhandler/http/tracer
 
 replace github.com/rambow-cloud/powertools-lambda-go/examples v0.1.0 => ./examples
 
-replace github.com/rambow-cloud/powertools-lambda-go/idempotency v1.0.0 => ./idempotency
+replace github.com/rambow-cloud/powertools-lambda-go/idempotency v1.1.0 => ./idempotency
 
-replace github.com/rambow-cloud/powertools-lambda-go/idempotency/cache v1.0.0 => ./idempotency/cache
+replace github.com/rambow-cloud/powertools-lambda-go/idempotency/cache v1.1.0 => ./idempotency/cache
 
 replace github.com/rambow-cloud/powertools-lambda-go/integration v0.1.0 => ./integration
 
-replace github.com/rambow-cloud/powertools-lambda-go/jmespath v1.0.0 => ./jmespath
+replace github.com/rambow-cloud/powertools-lambda-go/jmespath v1.1.0 => ./jmespath
 
-replace github.com/rambow-cloud/powertools-lambda-go/kafka v1.0.0 => ./kafka
+replace github.com/rambow-cloud/powertools-lambda-go/kafka v1.1.0 => ./kafka
 
-replace github.com/rambow-cloud/powertools-lambda-go/kafka/avro v1.0.0 => ./kafka/avro
+replace github.com/rambow-cloud/powertools-lambda-go/kafka/avro v1.1.0 => ./kafka/avro
 
-replace github.com/rambow-cloud/powertools-lambda-go/kafka/protobuf v1.0.0 => ./kafka/protobuf
+replace github.com/rambow-cloud/powertools-lambda-go/kafka/protobuf v1.1.0 => ./kafka/protobuf
 
-replace github.com/rambow-cloud/powertools-lambda-go/logger v1.0.0 => ./logger
+replace github.com/rambow-cloud/powertools-lambda-go/logger v1.1.0 => ./logger
 
-replace github.com/rambow-cloud/powertools-lambda-go/metrics v1.0.0 => ./metrics
+replace github.com/rambow-cloud/powertools-lambda-go/metrics v1.1.0 => ./metrics
 
-replace github.com/rambow-cloud/powertools-lambda-go/parameters v1.0.0 => ./parameters
+replace github.com/rambow-cloud/powertools-lambda-go/parameters v1.1.0 => ./parameters
 
-replace github.com/rambow-cloud/powertools-lambda-go/parser v1.0.0 => ./parser
+replace github.com/rambow-cloud/powertools-lambda-go/parser v1.1.0 => ./parser
 
-replace github.com/rambow-cloud/powertools-lambda-go/signer v1.0.0 => ./signer
+replace github.com/rambow-cloud/powertools-lambda-go/signer v1.1.0 => ./signer
 
 replace github.com/rambow-cloud/powertools-lambda-go/tools v0.1.0 => ./tools
 
-replace github.com/rambow-cloud/powertools-lambda-go/tracer v1.0.0 => ./tracer
+replace github.com/rambow-cloud/powertools-lambda-go/tracer v1.1.0 => ./tracer
 
 replace github.com/rambow-cloud/powertools-lambda-go/tracer/xray v0.1.0 => ./tracer/xray
 
-replace github.com/rambow-cloud/powertools-lambda-go/validation v1.0.0 => ./validation
+replace github.com/rambow-cloud/powertools-lambda-go/validation v1.1.0 => ./validation
