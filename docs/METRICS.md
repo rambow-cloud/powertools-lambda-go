@@ -9,9 +9,17 @@ Metrics emits CloudWatch Embedded Metric Format (EMF) JSON to stdout or an `io.W
 
 See [installation](MODULES.md) and the [compatibility baseline](COMPATIBILITY.md).
 
+## Install
+
+Use Go 1.27 or newer and install the module in your own application:
+
+```sh
+CGO_ENABLED=0 go get github.com/rambow-cloud/powertools-lambda-go/metrics@v1.1.0
+```
+
 ## Complete example
 
-This complete local program adds one count and explicitly flushes it. Save it in an empty directory inside the checkout and run `go run main.go` with `CGO_ENABLED=0`. Under Lambda, replace the explicit flush with [the invocation wrapper](#lambda-example).
+This complete local program adds one count and explicitly flushes it. Save it as `main.go` in your application and run `CGO_ENABLED=0 go run .`. Under Lambda, replace the explicit flush with [the invocation wrapper](#lambda-example).
 
 ~~~go
 package main
@@ -26,7 +34,6 @@ func main() {
 	appMetrics, err := metrics.New(
 		metrics.WithNamespace("Orders"),
 		metrics.WithServiceName("checkout"),
-		metrics.WithDefaultDimensions(metrics.Dimensions{"environment": "demo"}),
 	)
 	if err != nil {
 		stdlog.Fatal(err)
@@ -53,8 +60,7 @@ With emission enabled, stdout contains one EMF document, shown below with an ill
         "Namespace": "Orders",
         "Dimensions": [
           [
-            "service",
-            "environment"
+            "service"
           ]
         ],
         "Metrics": [
@@ -67,35 +73,15 @@ With emission enabled, stdout contains one EMF document, shown below with an ill
     ]
   },
   "service": "checkout",
-  "environment": "demo",
   "OrdersReceived": 1
 }
 ~~~
 
-## Objects and lifecycle
+## Common tasks
 
-| Object | Responsibility |
-| --- | --- |
-| `appMetrics` | Reusable configuration and root store. `New` returns an error for invalid configuration. |
-| `requestMetrics` | `appMetrics.WithContext(ctx)` inside `WrapHandler`; dimensions, values and metadata belong to this invocation. |
-| `single` | `SingleMetric()` returns a separate instance and an error; each addition emits immediately. |
-
-## TypeScript feature coverage
-
-Compared with the [official v2.35.0 metrics guide](https://github.com/aws-powertools/powertools-lambda-typescript/blob/7bcc27b1574493f9452688673658f52b80c53847/docs/features/metrics.md) and the pinned npm implementation. The table maps capabilities; it does not certify every native type or service behavior.
-
-| TypeScript feature | Go API or approach | Compatibility scope |
-| --- | --- | --- |
-| Metrics, units and resolution | `AddMetric` | All 27 units; standard/high resolution and automatic limits. |
-| Multiple values / dimension sets | Repeated `AddMetric`, `AddDimensionSet` | Accumulates values; independent dimension combinations. |
-| Defaults / metadata | `SetDefaultDimensions`, `AddMetadata` | Metadata is a JSON snapshot, not a shared JavaScript object. |
-| Custom timestamp | `SetTimestamp`, `SetTimestampMillis` | Date/numeric cases already verified; extreme encoding boundaries remain. |
-| Flush / empty policy | `Flush`, `Clear`, `SetThrowOnEmptyMetrics` | Explicit errors and warning callbacks. |
-| Cold start | `CaptureColdStartMetric`, `HandlerOptions.CaptureColdStart` | Separate document; on-demand initialization only. |
-| Single metrics | `SingleMetric`, `WithSingleMetric` | Fresh configuration; callers handle construction errors. |
-| Middleware / custom diagnostics | `WrapHandler`, `WrapHandlers`, warning/error options | Scope isolation; `PropagateErrors` opts into reference error precedence. |
-
-Executable evidence: [metrics/metrics_test.go](https://github.com/rambow-cloud/powertools-lambda-go/blob/main/metrics/metrics_test.go), [metrics/timestamp_test.go](https://github.com/rambow-cloud/powertools-lambda-go/blob/main/metrics/timestamp_test.go), [metrics/lambda_test.go](https://github.com/rambow-cloud/powertools-lambda-go/blob/main/metrics/lambda_test.go). See [the verification scope](FEATURE_PARITY.md) and [project progress](CHECKLIST.md) for open gates.
+- [Flush metrics automatically in Lambda](#lambda-example).
+- [Set dimensions and defaults](#configuration).
+- [Record a cold-start metric](#manual-cold-start-metrics).
 
 ## Lambda example
 
@@ -170,17 +156,20 @@ This replaces the previous one-result `SingleMetric()` signature. Closed scopes 
 
 ## Reference coverage and remaining gaps
 
-The development-only `.mjs` generator executes `@aws-lambda-powertools/metrics@2.35.0`. Go compares eight actual emitted documents across four scenarios: dimensions/flush, 100-metric boundary, 100-value boundary, and isolated single metrics. Normalization removes timestamps and sorts dimension-name arrays only. Neither Node.js nor these generators are included in a Lambda deployment.
+??? info "Reference evidence and compatibility details"
 
-The first implementation has known differences that remain parity work:
+    The development-only `.mjs` generator executes `@aws-lambda-powertools/metrics@2.35.0`. Go compares eight actual emitted documents across four scenarios: dimensions/flush, 100-metric boundary, 100-value boundary, and isolated single metrics. Normalization removes timestamps and sorts dimension-name arrays only. Neither Node.js nor these generators are included in a Lambda deployment.
 
-- Go dimension arguments are typed strings. Non-string JavaScript arguments have no direct Go equivalent. Non-index keys in map batches use lexical order because Go maps cannot retain JavaScript insertion order.
-- `_aws` now follows reference overwrite precedence, including output that no longer has a valid EMF envelope. Metadata still uses Go JSON serialization and snapshot timing rather than mutable JavaScript references.
-- Wrapper instrumentation errors are reported by default; `PropagateErrors` selects reference publication-error precedence. Go functional options and explicit context binding replace decorators and automatic disposal.
-- Selective clears, runtime policy, manual cold-start APIs, custom configuration, single-metric reconstruction and numeric/Date timestamp inputs are implemented. Internal store getters are not public Metrics APIs. Remaining decorator/framework lifecycle differences, exported-type/metadata encoding and service acceptance gates remain in [METRICS_PLAN.md](METRICS_PLAN.md).
-- Exhaustive exported-symbol and invalid-input differential coverage, performance budgets, and real CloudWatch metric extraction for this new package remain pending.
+    The first implementation has known differences that remain parity work:
 
-The Docker suite checks emitted EMF, cold-start isolation, and error/panic flush alongside logs and OTLP spans. It does not establish CloudWatch service-side ingestion or metric visibility.
+    - Go dimension arguments are typed strings. Non-string JavaScript arguments have no direct Go equivalent. Non-index keys in map batches use lexical order because Go maps cannot retain JavaScript insertion order.
+    - `_aws` now follows reference overwrite precedence, including output that no longer has a valid EMF envelope. Metadata still uses Go JSON serialization and snapshot timing rather than mutable JavaScript references.
+    - Wrapper instrumentation errors are reported by default; `PropagateErrors` selects reference publication-error precedence. Go functional options and explicit context binding replace decorators and automatic disposal.
+    - Selective clears, runtime policy, manual cold-start APIs, custom configuration, single-metric reconstruction and numeric/Date timestamp inputs are implemented. Internal store getters are not public Metrics APIs. Remaining decorator/framework lifecycle differences, exported-type/metadata encoding and service acceptance gates remain in [METRICS_PLAN.md](METRICS_PLAN.md).
+    - Exhaustive exported-symbol and invalid-input differential coverage, performance budgets, and real CloudWatch metric extraction for this new package remain pending.
+
+    The Docker suite checks emitted EMF, cold-start isolation, and error/panic flush alongside logs and OTLP spans. It does not establish CloudWatch service-side ingestion or metric visibility.
+
 
 ## Explicit metric scopes
 
@@ -255,3 +244,29 @@ Targets publish in input order after normal returns, business errors, panics and
 The failing target's WithErrorHandler observes a publication error after all owned scopes close. By default, the business result/error/panic survives. With PropagateErrors, a publication error returns the zero result and replaces the business error or panic, matching the reference finally/after precedence through Go's error return. With no publication error, the original panic is rethrown unchanged. Preparation failures always skip the business handler, report and return the error, and close created scopes without application publication. A panic from a writer or callback propagates while cleanup still closes all owned scopes.
 
 Compatibility boundaries remain explicit: Go snapshots mutable options and isolates each invocation, whereas the JavaScript middleware reuses its instances. The decorator configures defaults when decorating; these Go wrappers configure the invocation like Middy's before hook. Middy-specific repeated error-hook scheduling is not represented by direct hook fixtures. Go does not preserve unpublished failed-invocation buffers for a later invocation. Broader decorator/framework equivalence remains under M-WRAPPER; use PropagateErrors when migrating reference error precedence.
+## Objects and lifecycle
+
+| Object | Responsibility |
+| --- | --- |
+| `appMetrics` | Reusable configuration and root store. `New` returns an error for invalid configuration. |
+| `requestMetrics` | `appMetrics.WithContext(ctx)` inside `WrapHandler`; dimensions, values and metadata belong to this invocation. |
+| `single` | `SingleMetric()` returns a separate instance and an error; each addition emits immediately. |
+
+## TypeScript feature coverage
+
+??? info "Compare with TypeScript v2.35.0"
+
+    Compared with the [official v2.35.0 metrics guide](https://github.com/aws-powertools/powertools-lambda-typescript/blob/7bcc27b1574493f9452688673658f52b80c53847/docs/features/metrics.md) and the pinned npm implementation. The table maps capabilities; it does not certify every native type or service behavior.
+
+    | TypeScript feature | Go API or approach | Compatibility scope |
+    | --- | --- | --- |
+    | Metrics, units and resolution | `AddMetric` | All 27 units; standard/high resolution and automatic limits. |
+    | Multiple values / dimension sets | Repeated `AddMetric`, `AddDimensionSet` | Accumulates values; independent dimension combinations. |
+    | Defaults / metadata | `SetDefaultDimensions`, `AddMetadata` | Metadata is a JSON snapshot, not a shared JavaScript object. |
+    | Custom timestamp | `SetTimestamp`, `SetTimestampMillis` | Date/numeric cases already verified; extreme encoding boundaries remain. |
+    | Flush / empty policy | `Flush`, `Clear`, `SetThrowOnEmptyMetrics` | Explicit errors and warning callbacks. |
+    | Cold start | `CaptureColdStartMetric`, `HandlerOptions.CaptureColdStart` | Separate document; on-demand initialization only. |
+    | Single metrics | `SingleMetric`, `WithSingleMetric` | Fresh configuration; callers handle construction errors. |
+    | Middleware / custom diagnostics | `WrapHandler`, `WrapHandlers`, warning/error options | Scope isolation; `PropagateErrors` opts into reference error precedence. |
+
+    Executable evidence: [metrics/metrics_test.go](https://github.com/rambow-cloud/powertools-lambda-go/blob/main/metrics/metrics_test.go), [metrics/timestamp_test.go](https://github.com/rambow-cloud/powertools-lambda-go/blob/main/metrics/timestamp_test.go), [metrics/lambda_test.go](https://github.com/rambow-cloud/powertools-lambda-go/blob/main/metrics/lambda_test.go). See [the verification scope](FEATURE_PARITY.md) and [project progress](CHECKLIST.md) for open gates.

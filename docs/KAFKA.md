@@ -8,6 +8,15 @@ Kafka deserializes Lambda Kafka events into records with lazy key/value/header m
 
 See [installation](MODULES.md) and the [compatibility baseline](COMPATIBILITY.md).
 
+## Install
+
+Use Go 1.27 or newer and install the module in your own application:
+
+```sh
+CGO_ENABLED=0 go get github.com/rambow-cloud/powertools-lambda-go/kafka@v1.1.0
+CGO_ENABLED=0 go get github.com/aws/aws-lambda-go@v1.55.0
+```
+
 ## Complete example
 
 Build the complete example at `./examples/kafka` with `CGO_ENABLED=0`. It configures JSON values, calls `Value(ctx)` for every record, and leaves the business operation explicit.
@@ -39,29 +48,11 @@ For the input below, `record.Value(ctx)` returns `map[string]any{"id":"ORD-123"}
 }
 ~~~
 
-## Objects and lifecycle
+## Common tasks
 
-| Object | Responsibility |
-| --- | --- |
-| `consumer` | Reusable decoding configuration; optional Avro/Protobuf decoders are supplied explicitly. |
-| `ConsumerRecords` | Flattened records plus retained event fields. |
-| `record` | `Key(ctx)`, `Value(ctx)` and `Headers(ctx)` decode on each read; originals and metadata are separately available. |
-
-## TypeScript feature coverage
-
-Compared with the [official v2.35.0 kafka guide](https://github.com/aws-powertools/powertools-lambda-typescript/blob/7bcc27b1574493f9452688673658f52b80c53847/docs/features/kafka.md) and the pinned npm implementation. The table maps capabilities; it does not certify every native type or service behavior.
-
-| TypeScript feature | Go API or approach | Compatibility scope |
-| --- | --- | --- |
-| ESM SOURCE / JSON / no registry | `Config`, schema metadata and codec options | Delivery-mode details in [Kafka modes](KAFKA_MODES.md); no registry lookup. |
-| Primitive / JSON key and value | `FieldConfig`, `Record.Key/Value` | Lazy decoding; null/absence remain distinct. |
-| Avro / Protobuf | Optional `kafka/avro`, `kafka/protobuf` modules | Native/metadata format boundaries documented in [binary formats](KAFKA_BINARY.md). |
-| Headers / record metadata | `Headers`, original values and `Fields` | Retains metadata; header decoding differs from Parser. |
-| Additional parsing | `FieldConfig.Parser` | Explicit synchronous validator callback; issues become ParserError. |
-| Idempotency integration | Decode then execute Idempotency on payload | Implemented by the local fixture; no implicit identity from lazy record objects. |
-| Errors / troubleshooting | Consumer error hierarchy and diagnostic callback | JSON fallbacks, tombstones and adapter failures are documented below. |
-
-Executable evidence: [kafka/reference_test.go](https://github.com/rambow-cloud/powertools-lambda-go/blob/main/kafka/reference_test.go), [kafka/avro/avro_test.go](https://github.com/rambow-cloud/powertools-lambda-go/blob/main/kafka/avro/avro_test.go), [kafka/protobuf/protobuf_test.go](https://github.com/rambow-cloud/powertools-lambda-go/blob/main/kafka/protobuf/protobuf_test.go). See [the verification scope](FEATURE_PARITY.md) and [project progress](CHECKLIST.md) for open gates.
+- [Decode records in Lambda](#native-lambda-usage).
+- [Read keys, values and headers](#public-mapping).
+- [Add parsing or duplicate protection](#composition-and-dependency-boundaries).
 
 ## Native Lambda usage
 
@@ -126,3 +117,28 @@ Binary formats require an explicit `FieldConfig.Decoder`. Its arguments are the 
 Reference evidence: [165 scenarios](https://github.com/rambow-cloud/powertools-lambda-go/blob/main/kafka/testdata/README.md), a complete 28-module/25-consumer baseline with subsequent affected-module checks, CGO-disabled Linux amd64/arm64 builds, 829/829 local RIE assertions, 95/95 streaming checks and 14/14 Batch artifact checks. Docker executed amd64; arm64 was cross-compiled. No AWS resources were used. Fixed-version implementation sources are installed by the reference package lock; no upstream code is patched to generate expected values.
 
 The 22 additional JSON-mode scenarios passed a subsequent core-only packaged check. The later Protobuf metadata fix and 172 mixed events passed affected-module checks and rebuilt Docker acceptance. See [KAFKA_MODES.md](KAFKA_MODES.md).
+## Objects and lifecycle
+
+| Object | Responsibility |
+| --- | --- |
+| `consumer` | Reusable decoding configuration; optional Avro/Protobuf decoders are supplied explicitly. |
+| `ConsumerRecords` | Flattened records plus retained event fields. |
+| `record` | `Key(ctx)`, `Value(ctx)` and `Headers(ctx)` decode on each read; originals and metadata are separately available. |
+
+## TypeScript feature coverage
+
+??? info "Compare with TypeScript v2.35.0"
+
+    Compared with the [official v2.35.0 kafka guide](https://github.com/aws-powertools/powertools-lambda-typescript/blob/7bcc27b1574493f9452688673658f52b80c53847/docs/features/kafka.md) and the pinned npm implementation. The table maps capabilities; it does not certify every native type or service behavior.
+
+    | TypeScript feature | Go API or approach | Compatibility scope |
+    | --- | --- | --- |
+    | ESM SOURCE / JSON / no registry | `Config`, schema metadata and codec options | Delivery-mode details in [Kafka modes](KAFKA_MODES.md); no registry lookup. |
+    | Primitive / JSON key and value | `FieldConfig`, `Record.Key/Value` | Lazy decoding; null/absence remain distinct. |
+    | Avro / Protobuf | Optional `kafka/avro`, `kafka/protobuf` modules | Native/metadata format boundaries documented in [binary formats](KAFKA_BINARY.md). |
+    | Headers / record metadata | `Headers`, original values and `Fields` | Retains metadata; header decoding differs from Parser. |
+    | Additional parsing | `FieldConfig.Parser` | Explicit synchronous validator callback; issues become ParserError. |
+    | Idempotency integration | Decode then execute Idempotency on payload | Implemented by the local fixture; no implicit identity from lazy record objects. |
+    | Errors / troubleshooting | Consumer error hierarchy and diagnostic callback | JSON fallbacks, tombstones and adapter failures are documented below. |
+
+    Executable evidence: [kafka/reference_test.go](https://github.com/rambow-cloud/powertools-lambda-go/blob/main/kafka/reference_test.go), [kafka/avro/avro_test.go](https://github.com/rambow-cloud/powertools-lambda-go/blob/main/kafka/avro/avro_test.go), [kafka/protobuf/protobuf_test.go](https://github.com/rambow-cloud/powertools-lambda-go/blob/main/kafka/protobuf/protobuf_test.go). See [the verification scope](FEATURE_PARITY.md) and [project progress](CHECKLIST.md) for open gates.

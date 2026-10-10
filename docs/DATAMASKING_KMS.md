@@ -6,7 +6,7 @@ description: "Encrypt and decrypt masked Go payload fields with the optional Pow
 
 The optional datamasking/kms module implements datamasking.Provider with the official AWS Encryption SDK for Go v0.4.0 and Materials Providers Library v0.4.0. It emits Base64 AWS Encryption SDK messages with the same committed, signed default suite (0x0578) as the pinned TypeScript provider. Root Commons and ordinary Data Masking do not acquire these dependencies.
 
-This initial provider is **uncached**. TypeScript enables a data-key caching materials manager by default. Cache capacity, age, message and byte limits remain an explicit compatibility gap; no ignored cache options are exposed.
+This initial provider is **uncached**. TypeScript enables a data-key caching materials manager by default. Cache capacity, age, message and byte limits remain unsupported. [Feature issue #164](https://github.com/rambow-cloud/powertools-lambda-go/issues/164) tracks implementation after the historical design issue #116; no ignored cache options are exposed.
 
 ## Usage
 

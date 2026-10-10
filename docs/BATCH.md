@@ -8,13 +8,57 @@ Batch processes SQS Standard/FIFO, Kinesis and DynamoDB Streams records and buil
 
 See [installation](MODULES.md) and the [compatibility baseline](COMPATIBILITY.md).
 
+## Install
+
+Use Go 1.27 or newer and install the module in your own application:
+
+```sh
+CGO_ENABLED=0 go get github.com/rambow-cloud/powertools-lambda-go/batch@v1.1.0
+CGO_ENABLED=0 go get github.com/aws/aws-lambda-go@v1.55.0
+```
+
 ## Complete example
 
-The complete Lambda example below parses each SQS body as an order, processes valid records and reports failed record IDs. Build it with `CGO_ENABLED=0` using `./examples/batch`; configure `ReportBatchItemFailures` on the SQS event source mapping.
+Process each SQS message and report only the records that fail. Enable
+`ReportBatchItemFailures` on the SQS event source mapping so Lambda uses the response.
+This first example uses Batch and the standard JSON decoder.
 
 ~~~go
---8<-- "examples/batch/main.go"
+package main
+
+import (
+	"context"
+	json "encoding/json/v2"
+	"log"
+
+	"github.com/aws/aws-lambda-go/events"
+	"github.com/aws/aws-lambda-go/lambda"
+	"github.com/rambow-cloud/powertools-lambda-go/batch"
+)
+
+type Order struct {
+	ID string `json:"id"`
+}
+
+func main() {
+	processor, err := batch.NewSQS[string](batch.Options{})
+	if err != nil {
+		log.Fatal(err)
+	}
+	handler := func(_ context.Context, record events.SQSMessage) (string, error) {
+		var order Order
+		if err := json.Unmarshal([]byte(record.Body), &order); err != nil {
+			return "", err
+		}
+		// Replace this with your business operation.
+		return order.ID, nil
+	}
+	lambda.Start(batch.WrapSQS(processor, handler))
+}
 ~~~
+
+A nil handler error marks the record
+successful; a returned error makes that record eligible for retry.
 
 ## Input and output
 
@@ -37,29 +81,10 @@ Even when every record fails, `Process` returns a populated `Report.Response` al
 }
 ~~~
 
-## Objects and lifecycle
+## Common tasks
 
-| Object | Responsibility |
-| --- | --- |
-| `processor` | Immutable reusable source and processing configuration. |
-| `schema` | Reusable body validation; parse failures retain original record IDs. |
-| `handler` | Per-record business callback; a returned error marks that record failed. |
-| Lambda wrapper / `Report` | The wrapper returns retry identifiers; `Process` additionally exposes ordered record results. |
-
-## TypeScript feature coverage
-
-Compared with the [official v2.35.0 batch guide](https://github.com/aws-powertools/powertools-lambda-typescript/blob/7bcc27b1574493f9452688673658f52b80c53847/docs/features/batch.md) and the pinned npm implementation. The table maps capabilities; it does not certify every native type or service behavior.
-
-| TypeScript feature | Go API or approach | Compatibility scope |
-| --- | --- | --- |
-| SQS / Kinesis / DynamoDB | Source-specific constructors and wrappers | Preserves MessageId/sequence identifiers. |
-| Partial / complete failures | Failure response and `FullBatchFailureError` | Lambda mapping must enable partial responses. |
-| FIFO / sequential processing | `NewSQSFIFO`, `Sequential`, `SkipGroupOnError` | Failed-group rules; skipped records remain explicit in Go reports. |
-| Parallel processing | `MaxConcurrency` | Go concurrency bound; contexts and panics are handled explicitly. |
-| Parser integration | `WithParser` plus `parser.Parse` | Implemented in this complete example and local runtime fixture. |
-| Custom processor / results / context | `Source`, `RecordProcessor`, `Process` | Interfaces replace subclassing; live checkpoint/retry gates remain. |
-
-Executable evidence: [batch/reference_test.go](https://github.com/rambow-cloud/powertools-lambda-go/blob/main/batch/reference_test.go). See [the verification scope](FEATURE_PARITY.md) and [project progress](CHECKLIST.md) for open gates.
+- [Choose parallel or FIFO processing](#processing-and-response-semantics).
+- [Validate record bodies with Parser](#context-errors-and-composition).
 
 ## Processing and response semantics
 
@@ -83,10 +108,47 @@ Typed wrappers preserve Lambda context and share the existing invocation identit
 
 No SDK API is called by the processor. Configure the event source mapping with `ReportBatchItemFailures`; returning this JSON alone does not enable service-side partial retries. Cloud event-source configuration, stream checkpointing, visibility timeouts, redrive policies, and actual retry behavior require separate AWS validation.
 
+### Add schema validation
+
+When records need validation beyond JSON decoding, compose Parser with Batch.
+The maintained example validates each `id` and retains the original SQS message ID
+for retries:
+
+~~~go
+--8<-- "examples/batch/main.go"
+~~~
+
 ## Reference and verification scope
 
-The pinned TypeScript v2.35.0 implementation supplies 43 reference scenarios: synchronous/asynchronous sequential processing, empty/success/partial/full-failure batches, suppressed full failure, FIFO stopping and failed groups, missing/empty group IDs, and missing DynamoDB sequence identifiers. Four invalid event envelopes are recorded separately. Go tests cover typed wrappers, parser failures, context preservation, panic/error causes, bounded concurrency, 100 overlapping calls, and warm FIFO reuse. The current acceptance result is tracked in [BATCH_PLAN.md](BATCH_PLAN.md) and [LOCAL_VALIDATION.md](LOCAL_VALIDATION.md).
+??? info "Reference evidence and compatibility details"
 
-Outstanding gates include exhaustive malformed-event/parser and concurrent completion-order differential coverage, live event-source retries/checkpoints, and performance/allocation budgets. This does not claim complete specification or service acceptance from local fixtures.
+    The pinned TypeScript v2.35.0 implementation supplies 43 reference scenarios: synchronous/asynchronous sequential processing, empty/success/partial/full-failure batches, suppressed full failure, FIFO stopping and failed groups, missing/empty group IDs, and missing DynamoDB sequence identifiers. Four invalid event envelopes are recorded separately. Go tests cover typed wrappers, parser failures, context preservation, panic/error causes, bounded concurrency, 100 overlapping calls, and warm FIFO reuse. The current acceptance result is tracked in [BATCH_PLAN.md](BATCH_PLAN.md) and [LOCAL_VALIDATION.md](LOCAL_VALIDATION.md).
 
-Sources: [pinned Batch source](https://github.com/aws-powertools/powertools-lambda-typescript/tree/7bcc27b1574493f9452688673658f52b80c53847/packages/batch/src), [SQS partial responses](https://docs.aws.amazon.com/lambda/latest/dg/services-sqs-errorhandling.html), and [Kinesis partial responses](https://docs.aws.amazon.com/lambda/latest/dg/services-kinesis-batchfailurereporting.html).
+    Outstanding gates include exhaustive malformed-event/parser and concurrent completion-order differential coverage, live event-source retries/checkpoints, and performance/allocation budgets. This does not claim complete specification or service acceptance from local fixtures.
+
+    Sources: [pinned Batch source](https://github.com/aws-powertools/powertools-lambda-typescript/tree/7bcc27b1574493f9452688673658f52b80c53847/packages/batch/src), [SQS partial responses](https://docs.aws.amazon.com/lambda/latest/dg/services-sqs-errorhandling.html), and [Kinesis partial responses](https://docs.aws.amazon.com/lambda/latest/dg/services-kinesis-batchfailurereporting.html).
+
+## Objects and lifecycle
+
+| Object | Responsibility |
+| --- | --- |
+| `processor` | Immutable reusable source and processing configuration. |
+| `handler` | Per-record business callback; a returned error marks that record failed. |
+| Lambda wrapper / `Report` | The wrapper returns retry identifiers; `Process` additionally exposes ordered record results. |
+
+## TypeScript feature coverage
+
+??? info "Compare with TypeScript v2.35.0"
+
+    Compared with the [official v2.35.0 batch guide](https://github.com/aws-powertools/powertools-lambda-typescript/blob/7bcc27b1574493f9452688673658f52b80c53847/docs/features/batch.md) and the pinned npm implementation. The table maps capabilities; it does not certify every native type or service behavior.
+
+    | TypeScript feature | Go API or approach | Compatibility scope |
+    | --- | --- | --- |
+    | SQS / Kinesis / DynamoDB | Source-specific constructors and wrappers | Preserves MessageId/sequence identifiers. |
+    | Partial / complete failures | Failure response and `FullBatchFailureError` | Lambda mapping must enable partial responses. |
+    | FIFO / sequential processing | `NewSQSFIFO`, `Sequential`, `SkipGroupOnError` | Failed-group rules; skipped records remain explicit in Go reports. |
+    | Parallel processing | `MaxConcurrency` | Go concurrency bound; contexts and panics are handled explicitly. |
+    | Parser integration | `WithParser` plus `parser.Parse` | Optional composition example and local runtime fixture. |
+    | Custom processor / results / context | `Source`, `RecordProcessor`, `Process` | Interfaces replace subclassing; live checkpoint/retry gates remain. |
+
+    Executable evidence: [batch/reference_test.go](https://github.com/rambow-cloud/powertools-lambda-go/blob/main/batch/reference_test.go). See [the verification scope](FEATURE_PARITY.md) and [project progress](CHECKLIST.md) for open gates.

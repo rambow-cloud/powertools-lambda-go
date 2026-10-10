@@ -8,6 +8,15 @@ AppSync GraphQL routes resolver events and batches to Go callbacks. Import `gith
 
 See [installation](MODULES.md) and the [compatibility baseline](COMPATIBILITY.md).
 
+## Install
+
+Use Go 1.27 or newer and install the module in your own application:
+
+```sh
+CGO_ENABLED=0 go get github.com/rambow-cloud/powertools-lambda-go/eventhandler/appsyncgraphql@v1.1.0
+CGO_ENABLED=0 go get github.com/aws/aws-lambda-go@v1.55.0
+```
+
 ## Complete example
 
 Build this complete Lambda example at `./examples/appsyncgraphql` with `CGO_ENABLED=0`. Configure AppSync to send its resolver event to the Lambda data source; the example registers `Query.hello`.
@@ -32,28 +41,11 @@ The full AppSync event below returns `{"arguments":{"name":"Ada"},"message":"Hel
 }
 ~~~
 
-## Objects and lifecycle
+## Common tasks
 
-| Object | Responsibility |
-| --- | --- |
-| `app` | Reusable route/exception registry; no service client. |
-| Callback arguments | `arguments` is the field argument value; `event` retains identity, source and resolver context. |
-| `Router` | Split registrations into modules and include snapshots into the resolver. |
-
-## TypeScript feature coverage
-
-Compared with the [official v2.35.0 appsync-graphql guide](https://github.com/aws-powertools/powertools-lambda-typescript/blob/7bcc27b1574493f9452688673658f52b80c53847/docs/features/event-handler/appsync-graphql.md) and the pinned npm implementation. The table maps capabilities; it does not certify every native type or service behavior.
-
-| TypeScript feature | Go API or approach | Compatibility scope |
-| --- | --- | --- |
-| Resolver / nested mappings | `OnQuery`, `OnMutation`, `OnResolver` | Explicit type/field keys replace decorators and scope binding. |
-| Split routers | `NewRouter`, `IncludeRouter` | Snapshots included routes. |
-| Batch resolution | `OnBatchResolver`, batch options | Aggregated or sequential individual processing with explicit error policy. |
-| Exception handling | `OnException`, named errors | Errors remain distinct from resolver-not-found/invalid-batch exceptions. |
-| Scalars | `AWSDate`, `AWSTime`, `AWSDateTime`, `AWSTimestamp`, `MakeID` | Explicit Go clock values; native Date boundaries differ. |
-| Lambda context / logging | Callback `ctx`, `Options.Diagnostic` | Optional Logger; no implicit structured business log. |
-
-Executable evidence: [eventhandler/appsyncgraphql/reference_test.go](https://github.com/rambow-cloud/powertools-lambda-go/blob/main/eventhandler/appsyncgraphql/reference_test.go). See [the verification scope](FEATURE_PARITY.md) and [project progress](CHECKLIST.md) for open gates.
+- [Register queries and mutations](#public-mapping).
+- [Handle batches and errors](#batch-and-error-behavior).
+- [Use scalar helpers](#scalars-and-evidence).
 
 ## Public mapping
 
@@ -131,3 +123,27 @@ diagnostics, values and errors, plus 64 concurrent contexts, sequential batches,
 mutation ownership, callback reentrancy, panic/error identity and UUID structure.
 These checks do not establish live AppSync service or complete language parity.
 Remaining acceptance requirements are tracked in [APPSYNC_GRAPHQL_PLAN.md](APPSYNC_GRAPHQL_PLAN.md).
+## Objects and lifecycle
+
+| Object | Responsibility |
+| --- | --- |
+| `app` | Reusable route/exception registry; no service client. |
+| Callback arguments | `arguments` is the field argument value; `event` retains identity, source and resolver context. |
+| `Router` | Split registrations into modules and include snapshots into the resolver. |
+
+## TypeScript feature coverage
+
+??? info "Compare with TypeScript v2.35.0"
+
+    Compared with the [official v2.35.0 appsync-graphql guide](https://github.com/aws-powertools/powertools-lambda-typescript/blob/7bcc27b1574493f9452688673658f52b80c53847/docs/features/event-handler/appsync-graphql.md) and the pinned npm implementation. The table maps capabilities; it does not certify every native type or service behavior.
+
+    | TypeScript feature | Go API or approach | Compatibility scope |
+    | --- | --- | --- |
+    | Resolver / nested mappings | `OnQuery`, `OnMutation`, `OnResolver` | Explicit type/field keys replace decorators and scope binding. |
+    | Split routers | `NewRouter`, `IncludeRouter` | Snapshots included routes. |
+    | Batch resolution | `OnBatchResolver`, batch options | Aggregated or sequential individual processing with explicit error policy. |
+    | Exception handling | `OnException`, named errors | Errors remain distinct from resolver-not-found/invalid-batch exceptions. |
+    | Scalars | `AWSDate`, `AWSTime`, `AWSDateTime`, `AWSTimestamp`, `MakeID` | Explicit Go clock values; native Date boundaries differ. |
+    | Lambda context / logging | Callback `ctx`, `Options.Diagnostic` | Optional Logger; no implicit structured business log. |
+
+    Executable evidence: [eventhandler/appsyncgraphql/reference_test.go](https://github.com/rambow-cloud/powertools-lambda-go/blob/main/eventhandler/appsyncgraphql/reference_test.go). See [the verification scope](FEATURE_PARITY.md) and [project progress](CHECKLIST.md) for open gates.

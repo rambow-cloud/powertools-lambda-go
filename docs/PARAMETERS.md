@@ -6,86 +6,57 @@ description: "Retrieve and cache Go Lambda configuration from SSM, Secrets Manag
 
 Parameters retrieves configuration from SSM, Secrets Manager, DynamoDB, AppConfig Data and AppConfig Agent. Shared caching and JSON/Base64 transforms live in `github.com/rambow-cloud/powertools-lambda-go/parameters`; service adapters are subpackages of that module.
 
-JSON transforms use `encoding/json/v2`: duplicate object members, invalid UTF-8 and lone escaped surrogates produce `TransformParameterError` with the underlying JSON error as its cause. JSON byte input is validated without repairing malformed text. Binary transforms retain their documented UTF-8 text decoding behavior.
-
 See [installation](MODULES.md) and the [compatibility baseline](COMPATIBILITY.md).
+
+## Install
+
+Use Go 1.27 or newer and install the module in your own application:
+
+```sh
+CGO_ENABLED=0 go get github.com/rambow-cloud/powertools-lambda-go/parameters@v1.1.0
+```
 
 ## Complete example
 
-This complete offline example demonstrates the shared cache with an application retrieval callback. It makes no AWS request. Save it in an empty directory inside the checkout and run `go run main.go` with `CGO_ENABLED=0`. For an actual SSM client, use [SSM usage](#ssm-usage) below; create the provider once before serving Lambda invocations.
+Read one SSM parameter using the default provider. Configure your AWS SDK region
+and credentials, and grant the Lambda execution role `ssm:GetParameter` for the
+parameter. Create a String parameter named `/orders/feature` with value `enabled`
+before running this example. It calls SSM.
 
 ~~~go
 package main
 
 import (
 	"context"
-	json "encoding/json/v2"
 	"fmt"
-	stdlog "log"
-	"time"
+	"log"
 
-	"github.com/rambow-cloud/powertools-lambda-go/parameters"
+	"github.com/rambow-cloud/powertools-lambda-go/parameters/ssm"
 )
 
 func main() {
-	cache := parameters.NewCache(time.Now)
-	fetches := 0
-	fetch := func(context.Context) (any, error) {
-		fetches++
-		return `{"enabled":true,"limit":3}`, nil
+	value, err := ssm.GetParameter(context.Background(), "/orders/feature", ssm.GetOptions{})
+	if err != nil {
+		log.Fatal(err)
 	}
-	options := parameters.Options{
-		Transform: parameters.JSON,
-		MaxAge:    parameters.Age(30 * time.Second),
-	}
-	for range 2 {
-		value, err := cache.Get(context.Background(), "/orders/config", options, fetch)
-		if err != nil {
-			stdlog.Fatal(err)
-		}
-		encoded, err := json.Marshal(value, json.Deterministic(true))
-		if err != nil {
-			stdlog.Fatal(err)
-		}
-		fmt.Println(string(encoded))
-	}
-	fmt.Printf("fetches=%d\n", fetches)
+	fmt.Println(value)
 }
 ~~~
 
+In Lambda, call `GetParameter` with the invocation context. The default provider
+retains its cache between calls; you do not need to create a cache object.
+
 ## Input and output
 
-Stdout is exactly the following. Both calls return the decoded object, but the callback runs only once because the second call uses the still-valid cache entry. Setting `options.ForceFetch = true` before the second call would invoke it again. `cache.ClearCache()` removes cached values; it does not change the underlying configuration service. With an AWS provider, SDK errors are returned to your handler rather than logged as successful values.
+The parameter `/orders/feature` contains `enabled`; the program prints `enabled`.
+Repeated reads reuse the default five-second cache. Set `MaxAge`, `ForceFetch` or
+`Transform` when you need a different policy; see [cache and transformations](#cache-and-transformations).
 
-~~~text
-{"enabled":true,"limit":3}
-{"enabled":true,"limit":3}
-fetches=1
-~~~
+## Common tasks
 
-## Objects and lifecycle
-
-| Object | Responsibility |
-| --- | --- |
-| `cache` / explicit provider | Keep one instance across warm invocations to retain cached values; no background polling. |
-| `options` | Per-call transform, TTL, force-fetch and missing/error policy. |
-| `value` | `any`: JSON objects are `map[string]any`, arrays are `[]any`, numbers are `float64`; inspect or decode explicitly. |
-| `ctx` | Caller cancellation/deadline reaches retrieval and SDK operations. |
-
-## TypeScript feature coverage
-
-Compared with the [official v2.35.0 parameters guide](https://github.com/aws-powertools/powertools-lambda-typescript/blob/7bcc27b1574493f9452688673658f52b80c53847/docs/features/parameters.md) and the pinned npm implementation. The table maps capabilities; it does not certify every native type or service behavior.
-
-| TypeScript feature | Go API or approach | Compatibility scope |
-| --- | --- | --- |
-| SSM read / path / named batch / write | `ssm.New`, provider methods and convenience helpers | Pagination, decryption and reference batch quirks documented below. |
-| Secrets / DynamoDB | Explicit providers or Secrets helper | SDK v2 clients; DynamoDB decoding preserves large integers. |
-| AppConfig / Agent | Data provider or Agent `GetConfig` | Data sessions retain tokens; Agent has no additional cache. |
-| TTL / fresh values / clearing | `MaxAge`, `ForceFetch`, `ClearCache`, `ClearCaches` | Five-second ordinary default; duration/native edges differ. |
-| Transforms / missing values | `JSON`, `Binary`, `Auto`, `ThrowOnMissing` | Explicit Go results/errors; snapshots isolate cached objects. |
-| Custom provider / SDK arguments | `Cache.Get`, injected service interfaces and inputs | Callbacks replace inheritance; callers supply region/credentials/permissions. |
-
-Executable evidence: [parameters/parameters_test.go](https://github.com/rambow-cloud/powertools-lambda-go/blob/main/parameters/parameters_test.go), [parameters/providers_test.go](https://github.com/rambow-cloud/powertools-lambda-go/blob/main/parameters/providers_test.go). See [the verification scope](FEATURE_PARITY.md) and [project progress](CHECKLIST.md) for open gates.
+- [Read and write SSM parameters](#ssm-usage).
+- [Cache or decode a value](#cache-and-transformations).
+- [Use Secrets Manager or AppConfig](#other-providers).
 
 ## API map
 
@@ -212,6 +183,8 @@ All five providers and the reference convenience-function families are implement
 - AppConfig serializes session access, restarts sessions after failed polls, and rejects empty application/environment configuration earlier.
 - SDK-specific error messages, prototype-only base-provider methods, and exhaustive invalid-configuration diagnostics are not reproduced. The shared SDK middleware now adds one feature marker using the Go version, without global environment mutation.
 
+JSON transforms use `encoding/json/v2`: duplicate object members, invalid UTF-8 and lone escaped surrogates produce `TransformParameterError` with the underlying JSON error as its cause. JSON byte input is validated without repairing malformed text. Binary transforms retain their documented UTF-8 text decoding behavior.
+
 ## Validation
 
 Service tests use separate layers. Fake clients exercise provider inputs, typed
@@ -233,3 +206,28 @@ On 2026-09-14, the complete Go test suite, vet, and both Linux architecture buil
 Commons migration validation on the same date passed the complete regression suite and **100/100 Docker assertions**, including Metadata and shared SDK marker composition. Existing Parameters cases remain in the suite. [COMMONS_REUSE.md](COMMONS_REUSE.md) records the migrations and retained provider-specific policies.
 
 Unit tests execute real SDK requests against loopback fixtures and cover reference output, cache/transforms, writes/batches, pagination, default helpers/global clearing, and functional concurrency. Fixtures do not establish IAM, KMS, service quotas, throttling, or live AppConfig delivery. No AWS resources were deployed for this module. Remaining parity, cloud, and performance gates stay unchecked in [CHECKLIST.md](CHECKLIST.md). See [LOCAL_VALIDATION.md](LOCAL_VALIDATION.md) for runtime evidence.
+## Objects and lifecycle
+
+| Object | How to use it |
+| --- | --- |
+| Default provider | Created lazily by `ssm.GetParameter` and reused across calls. |
+| Explicit provider | Create once when you need a custom SDK client or separate cache. |
+| Invocation context | Pass it to reads so cancellation and deadlines reach the SDK. |
+| Retrieval options | Choose caching, transformation and missing-value behavior per call. |
+
+## TypeScript feature coverage
+
+??? info "Compare with TypeScript v2.35.0"
+
+    Compared with the [official v2.35.0 parameters guide](https://github.com/aws-powertools/powertools-lambda-typescript/blob/7bcc27b1574493f9452688673658f52b80c53847/docs/features/parameters.md) and the pinned npm implementation. The table maps capabilities; it does not certify every native type or service behavior.
+
+    | TypeScript feature | Go API or approach | Compatibility scope |
+    | --- | --- | --- |
+    | SSM read / path / named batch / write | `ssm.New`, provider methods and convenience helpers | Pagination, decryption and reference batch quirks documented below. |
+    | Secrets / DynamoDB | Explicit providers or Secrets helper | SDK v2 clients; DynamoDB decoding preserves large integers. |
+    | AppConfig / Agent | Data provider or Agent `GetConfig` | Data sessions retain tokens; Agent has no additional cache. |
+    | TTL / fresh values / clearing | `MaxAge`, `ForceFetch`, `ClearCache`, `ClearCaches` | Five-second ordinary default; duration/native edges differ. |
+    | Transforms / missing values | `JSON`, `Binary`, `Auto`, `ThrowOnMissing` | Explicit Go results/errors; snapshots isolate cached objects. |
+    | Custom provider / SDK arguments | `Cache.Get`, injected service interfaces and inputs | Callbacks replace inheritance; callers supply region/credentials/permissions. |
+
+    Executable evidence: [parameters/parameters_test.go](https://github.com/rambow-cloud/powertools-lambda-go/blob/main/parameters/parameters_test.go), [parameters/providers_test.go](https://github.com/rambow-cloud/powertools-lambda-go/blob/main/parameters/providers_test.go). See [the verification scope](FEATURE_PARITY.md) and [project progress](CHECKLIST.md) for open gates.

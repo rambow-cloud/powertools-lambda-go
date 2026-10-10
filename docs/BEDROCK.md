@@ -8,6 +8,15 @@ The Bedrock function resolver routes function-based Action Group invocations to 
 
 See [installation](MODULES.md) and the [compatibility baseline](COMPATIBILITY.md).
 
+## Install
+
+Use Go 1.27 or newer and install the module in your own application:
+
+```sh
+CGO_ENABLED=0 go get github.com/rambow-cloud/powertools-lambda-go/eventhandler/bedrock@v1.1.0
+CGO_ENABLED=0 go get github.com/aws/aws-lambda-go@v1.55.0
+```
+
 ## Complete example
 
 Build the complete example at `./examples/bedrock` with `CGO_ENABLED=0`. Configure a function-based Action Group whose `greeting` function supplies a `name` parameter.
@@ -45,27 +54,11 @@ For the input below, the resolver returns the Bedrock envelope with `messageVers
 }
 ~~~
 
-## Objects and lifecycle
+## Common tasks
 
-| Object | Responsibility |
-| --- | --- |
-| `app` | Reusable tool registry; `Tool` binds a function name to a callback. |
-| `parameters` | Ordered converted parameters; `Get` reads a value, `Has` distinguishes missing from null. |
-| `FunctionResponse` | Explicit body, session attributes and `Failure`/`Reprompt` response state. |
-
-## TypeScript feature coverage
-
-Compared with the [official v2.35.0 bedrock-agents guide](https://github.com/aws-powertools/powertools-lambda-typescript/blob/7bcc27b1574493f9452688673658f52b80c53847/docs/features/event-handler/bedrock-agents.md) and the pinned npm implementation. The table maps capabilities; it does not certify every native type or service behavior.
-
-| TypeScript feature | Go API or approach | Compatibility scope |
-| --- | --- | --- |
-| Tools / parameter conversion | `Tool`, `Parameters` | Function-name routing; covered JavaScript number/boolean conversion. |
-| Context / event access | Callback `ctx` and `Event` | Request-owned parameter objects; input ownership documented below. |
-| Error handling | Execution error bodies, named errors and response states | Not all failures propagate as a Lambda error. |
-| Session attributes | `FunctionResponse` | Explicit session and prompt-session updates. |
-| Logging | `Options.Diagnostic` | Optional sink; successful tool output is not a log record. |
-
-Executable evidence: [eventhandler/bedrock/reference_test.go](https://github.com/rambow-cloud/powertools-lambda-go/blob/main/eventhandler/bedrock/reference_test.go). See [the verification scope](FEATURE_PARITY.md) and [project progress](CHECKLIST.md) for open gates.
+- [Register an Action Group tool](#public-mapping).
+- [Read parameters and request bodies](#parameters-and-bodies).
+- [Return errors to the agent](#errors-and-diagnostics).
 
 ## Public mapping
 
@@ -145,17 +138,43 @@ to stdout only when Commons-trimmed `AWS_LAMBDA_LOG_LEVEL` equals `DEBUG`.
 
 ## Evidence and remaining boundaries
 
-The generator executes actual pinned public exports in 371 scenarios. Tests
-compare complete response envelopes, body strings, ordered calls and diagnostics;
-they do not parse or reorder body strings to hide wire differences. Non-finite
-values and negative zero use explicit tags only in recorded handler arguments.
-Native tests cover 64 simultaneous invocation contexts, cancellation propagation,
-input ownership, reentrant diagnostics, error identity, nil results, cycle handling
-and ordered parameter mutation.
+??? info "Reference evidence and compatibility details"
 
-Full declaration/native-type mapping, arbitrary object/prototype/Promise behavior,
-typed event adapters, exact circular-error diagnostics, native struct/marshaler
-serialization, uncommon numeric representations and malformed UTF-16/UTF-8 remain
-compatibility gates. Go map insertion order cannot be reconstructed after it is
-lost. Live Bedrock service acceptance, performance and publication remain separate
-requirements in [BEDROCK_PLAN.md](BEDROCK_PLAN.md).
+    The generator executes actual pinned public exports in 371 scenarios. Tests
+    compare complete response envelopes, body strings, ordered calls and diagnostics;
+    they do not parse or reorder body strings to hide wire differences. Non-finite
+    values and negative zero use explicit tags only in recorded handler arguments.
+    Native tests cover 64 simultaneous invocation contexts, cancellation propagation,
+    input ownership, reentrant diagnostics, error identity, nil results, cycle handling
+    and ordered parameter mutation.
+
+    Full declaration/native-type mapping, arbitrary object/prototype/Promise behavior,
+    typed event adapters, exact circular-error diagnostics, native struct/marshaler
+    serialization, uncommon numeric representations and malformed UTF-16/UTF-8 remain
+    compatibility gates. Go map insertion order cannot be reconstructed after it is
+    lost. Live Bedrock service acceptance, performance and publication remain separate
+    requirements in [BEDROCK_PLAN.md](BEDROCK_PLAN.md).
+
+## Objects and lifecycle
+
+| Object | Responsibility |
+| --- | --- |
+| `app` | Reusable tool registry; `Tool` binds a function name to a callback. |
+| `parameters` | Ordered converted parameters; `Get` reads a value, `Has` distinguishes missing from null. |
+| `FunctionResponse` | Explicit body, session attributes and `Failure`/`Reprompt` response state. |
+
+## TypeScript feature coverage
+
+??? info "Compare with TypeScript v2.35.0"
+
+    Compared with the [official v2.35.0 bedrock-agents guide](https://github.com/aws-powertools/powertools-lambda-typescript/blob/7bcc27b1574493f9452688673658f52b80c53847/docs/features/event-handler/bedrock-agents.md) and the pinned npm implementation. The table maps capabilities; it does not certify every native type or service behavior.
+
+    | TypeScript feature | Go API or approach | Compatibility scope |
+    | --- | --- | --- |
+    | Tools / parameter conversion | `Tool`, `Parameters` | Function-name routing; covered JavaScript number/boolean conversion. |
+    | Context / event access | Callback `ctx` and `Event` | Request-owned parameter objects; input ownership documented below. |
+    | Error handling | Execution error bodies, named errors and response states | Not all failures propagate as a Lambda error. |
+    | Session attributes | `FunctionResponse` | Explicit session and prompt-session updates. |
+    | Logging | `Options.Diagnostic` | Optional sink; successful tool output is not a log record. |
+
+    Executable evidence: [eventhandler/bedrock/reference_test.go](https://github.com/rambow-cloud/powertools-lambda-go/blob/main/eventhandler/bedrock/reference_test.go). See [the verification scope](FEATURE_PARITY.md) and [project progress](CHECKLIST.md) for open gates.

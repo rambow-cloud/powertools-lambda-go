@@ -4,11 +4,15 @@ description: "Stream Go Lambda HTTP responses using Powertools, with streaming l
 
 # Native Go HTTP response streaming
 
-The independent HTTP module provides synchronous `Router.ResolveStream` and the native Lambda adapter `Streamify`. They share event adaptation, route matching, middleware, validation and error handling with buffered `Resolve`. HTTP still depends only on root Commons and the Go standard library. The application chooses `aws-lambda-go`; HTTP does not import it.
+Return a reader from your HTTP route and use `Streamify` with `app.ResolveStream`
+to send the body incrementally. Routing and middleware work as in the
+[buffered GET/POST example](HTTP.md#complete-example). Deploy through a
+streaming-capable Lambda integration.
 
 ## Lambda handler
 
-`ResolveStream(ctx, event, destination)` writes HTTP integration metadata, an eight-zero-byte delimiter, then raw response bytes. It returns after copying and closing the owned response body. The destination remains caller-owned. `Streamify` supplies a bounded pipe and adapts that synchronous operation to a reader that the Go Lambda SDK consumes.
+This fragment uses the `httpapi` and `lambda` imports from the routing guide,
+plus `context`, `encoding/json`, `io`, `log`, `net/http` and `strings`.
 
 ```go
 app := httpapi.New(httpapi.Options{})
@@ -32,6 +36,11 @@ Replace the sample reader with a context-aware incremental producer. Configure a
 AWS describes the HTTP integration response framing and midstream error trailers in its [custom runtime contract](https://docs.aws.amazon.com/lambda/latest/dg/runtimes-custom.html). The [streaming overview](https://docs.aws.amazon.com/lambda/latest/dg/configuration-response-streaming.html) describes supported invocation paths. Actual deployment acceptance remains a separate gate; local event conversion for ALB/API Gateway v2 does not establish that those integrations deliver streamed responses.
 
 ## Ownership and lifecycle
+
+`ResolveStream(ctx, event, destination)` writes HTTP integration metadata, an
+eight-zero-byte delimiter, then the response bytes. It copies and closes the owned
+body before returning. `Streamify` adapts that operation to the reader consumed by
+the Go Lambda SDK; the destination remains caller-owned.
 
 `RequestContext.IsHTTPStreaming` is true throughout streaming routing. An `io.Reader`, `io.ReadCloser`, native `*http.Response` body, or `Response.Body` reader is retained without eagerly materializing it. Byte slices and ordinary JSON values still use their natural in-memory representation. ResolveStream copies through a bounded buffer. Explicit response-body validation consumes the full body before delivery, just as the pinned validator does; header-only validation does not.
 

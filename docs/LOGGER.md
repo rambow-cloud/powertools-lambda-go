@@ -9,9 +9,17 @@ Logger emits structured JSON with Lambda context, service identity, correlation 
 
 Import `github.com/rambow-cloud/powertools-lambda-go/logger`. It is an independent module; it does not bring in Tracer or JMESPath. See [installation](MODULES.md) and the [complete Lambda example](GETTING_STARTED.md#create-utilities-once).
 
+## Install
+
+Use Go 1.27 or newer and install the module in your own application:
+
+```sh
+CGO_ENABLED=0 go get github.com/rambow-cloud/powertools-lambda-go/logger@v1.1.0
+```
+
 ## Write your first log
 
-This complete program runs locally without Lambda or Tracer. Save it as `main.go` in a directory that uses the repository's Go workspace, then run it with CGO disabled as described in [Getting Started](GETTING_STARTED.md).
+This complete program runs locally without Lambda or Tracer. Save it as `main.go` in your application and run `CGO_ENABLED=0 go run .`.
 
 ~~~go
 package main
@@ -42,17 +50,11 @@ With the default `INFO` level, no sampling, and `POWERTOOLS_DEV` disabled, this 
 
 The timestamp is illustrative; your run uses the current time. `level`, `message`, `timestamp`, `service`, and `sampling_rate` are added by Logger. The fields you supply become top-level JSON properties, so `amount` is a number and `order_id` is a string. Local logging without an invocation context does not add Lambda function or request fields.
 
-## Objects and lifecycle
+## Common tasks
 
-There are three different names in the example:
-
-| Name | What it is | How to use it |
-| --- | --- | --- |
-| `logger` | The imported Powertools package | Create a logger with `logger.New(...)`; construct fields with `logger.Fields{...}` |
-| `appLog` | A `*logger.Logger` object returned by `logger.New` | Write structured records with `appLog.Info(...)`, `appLog.Warn(...)`, or `appLog.Error(...)` |
-| `stdlog` | Go's standard `log` package, imported under an explicit alias | Print a plain-text fallback if structured logging fails |
-
-The variable name `appLog` is your choice. Naming it `log` would still work, but would hide an imported standard-library package with that name. The examples use `appLog` and `stdlog` to make their roles explicit.
+- [Add Lambda context](#use-logger-in-a-lambda-handler).
+- [Add fields and correlation IDs](#attributes-and-correlation).
+- [Configure log levels and buffering](#configuration).
 
 ## Messages, fields, and errors
 
@@ -161,101 +163,11 @@ These are illustrative application records with synthetic identifiers. Timestamp
 
 `AppendKeys` adds `order_id` to every subsequent record written through that request's logger. The `items` field passed to the second `Info` call appears only on that record. A later invocation gets fresh request state, so the previous order's fields do not leak into it. Context-bound loggers reject writes after invocation completion; join background work before the handler returns.
 
-For the Logger/Tracer combination in [Getting Started](GETTING_STARTED.md#create-utilities-once), put Tracer outside Logger:
+For the Logger/Tracer combination in [Getting Started](GETTING_STARTED.md#add-tracing), put Tracer outside Logger:
 
 ~~~go
 lambda.Start(tracer.WrapHandler(t, logger.WrapHandler(appLog, handler)))
 ~~~
-
-## TypeScript feature coverage
-
-Compared with the [official v2.35.0 Logger guide](https://github.com/aws-powertools/powertools-lambda-typescript/blob/7bcc27b1574493f9452688673658f52b80c53847/docs/features/logger.md). Each capability below exists in Go; exhaustive configuration, diagnostics and serialization parity remain open.
-
-| TypeScript feature | Go API or approach | Compatibility scope |
-| --- | --- | --- |
-| Structured keys / messages / errors | `Info`, `Warn`, `Error` and other levels | Explicit message and Fields; Go error types/causes instead of JS stacks |
-| Lambda context injection | `WrapHandler` plus `WithContext` | Typed functions; invocation state closes at completion |
-| Log incoming event | `POWERTOOLS_LOGGER_LOG_EVENT`, wrapper option, `WrapRawHandler` | Opt-in; separate event record; raw entry retains original JSON values before typed decoding |
-| Correlation ID | `SetCorrelationID`, handler source/callback/extractor | Nine sources; compiled JMESPath is optional |
-| Append / remove / reset attributes | Temporary and persistent key methods | Scoped state and merge precedence |
-| Levels / ALC / suppression | `WithLevel`, `SetLevel`, `SilentLevel` | ALC precedence; filtered calls return nil |
-| Buffer logs | `WithBuffer`, `FlushBuffer`, `ClearBuffer` | X-Ray root or OTel context; explicit cleanup policies |
-| Reorder keys | `WithRecordOrder(keys...)` | Selected keys first; remaining fields use lexical order |
-| Custom timezone | `TZ`, injected `WithClock` | Built-in timezone data and Go time formatting |
-| Child loggers | `Child(options...)` | Snapshotted attributes and independent settings |
-| Debug sampling | `WithSampleRate`, constructor/invocation decisions | Reference sampling grid; separate from trace sampling |
-| Formatter / JSON replacer | `WithFormatter`, `WithReplacer` | Go callbacks and JSON representation |
-| Test output | `WithOutput`, `WithClock` | Writer injection instead of console spies |
-
-[JSON reference tests](https://github.com/rambow-cloud/powertools-lambda-go/blob/main/logger/reference_test.go), [sampling tests](https://github.com/rambow-cloud/powertools-lambda-go/blob/main/logger/sampling_test.go), [48 child/empty-field/buffer scenarios](https://github.com/rambow-cloud/powertools-lambda-go/blob/main/logger/parity_reference_test.go) and [native context/ownership/concurrency regressions](https://github.com/rambow-cloud/powertools-lambda-go/blob/main/logger/parity_test.go) provide scoped evidence. See [feature comparison](FEATURE_PARITY.md) and [Logger progress](CHECKLIST.md#logger).
-
-### Event logging and child configuration
-
-Event logging is disabled by default. With `POWERTOOLS_LOGGER_LOG_EVENT=true`, the wrapper emits an additional event record before your business logs; it can include the entire payload. Set this before constructing `appLog`, or select the handler option. It does not change what `Info` means.
-
-`WrapHandler` logs the Go value it receives. When the AWS runtime first decodes
-JSON into a struct, members absent from that struct are discarded; serializing
-the struct can also omit fields with `omitempty` or `json:"-"` tags. For example,
-`{"name":"Alice","age":30}` becomes `{"name":"Alice"}` when the input struct
-only declares `name`. The logger cannot reconstruct discarded values.
-
-Register `WrapRawHandler` (available in Logger v1.1.0 and later) at the runtime
-entry to log the complete incoming JSON value before decoding a typed business input:
-
-~~~go
-type greetingEvent struct {
-    Name string `json:"name"`
-}
-
-handler := func(ctx context.Context, event greetingEvent) (string, error) {
-    return event.Name, appLog.WithContext(ctx).Info("Greeting accepted")
-}
-enabled := true
-lambda.Start(logger.WrapRawHandler(appLog, handler, logger.HandlerOptions{
-    LogEvent: &enabled,
-}))
-~~~
-
-The returned function accepts `encoding/json.RawMessage`. Its event record
-contains `"event":{"name":"Alice","age":30}`, while the business handler
-receives `greetingEvent{Name: "Alice"}`. Unknown members, nested values, empty
-strings, JSON nulls and exact numeric tokens are retained in event logs. JSON
-whitespace and member order are not preserved. Existing formatter/replacer
-policies can transform or redact the event, and `LogEvent: false` or a level
-above INFO suppresses the event record as usual. Review payload contents before
-enabling event logging.
-
-Typed decoding uses `encoding/json/v2` defaults, including case-sensitive field
-names. Event logging runs before typed decoding; a decoding error
-returns without calling the business handler. Invalid JSON rejected by the AWS
-runtime never reaches the wrapper. Runtime `WithUseNumber` and
-`WithDisallowUnknownFields` options apply to its RawMessage entry, not to the
-subsequent typed decoder. If you need custom decoding options, use
-`WrapHandler` around a RawMessage function and decode inside that function.
-Raw-wrapper correlation callbacks and extractors receive RawMessage; built-in
-correlation sources and this project's compiled JMESPath queries support it.
-
-Keep event logging outside Parser/Validation when you need the incoming payload.
-For an existing raw-input pipeline, compose
-`logger.WrapHandler(appLog, parser.WrapHandler[json.RawMessage](schema, handler), options)`
-or the equivalent `validation.WrapHandler[json.RawMessage]` pipeline. Here `json`
-refers to `encoding/json`. Placing Logger inside these wrappers records their
-parsed or validated value, which may already omit original fields. Tracer can
-remain outside Logger; all these wrappers share the invocation identity.
-See the executable [raw-event example](https://github.com/rambow-cloud/powertools-lambda-go/blob/main/logger/example_test.go)
-and [runtime-entry regressions](https://github.com/rambow-cloud/powertools-lambda-go/blob/main/logger/raw_handler_test.go).
-
-Create `componentLog := appLog.Child(logger.WithPersistentKeys(logger.Fields{"component":"payments"}))` when a component needs a stable field and independent settings. In a wrapped handler, bind it with `componentLog.WithContext(ctx)`. Child level/key changes do not mutate the parent's configuration. Treat retained nested values as immutable.
-
-`Child` snapshots persistent and temporary fields separately. Child persistent
-options merge into the persistent snapshot; inherited temporary values keep their
-usual precedence. For example, if the parent has persistent `shared: "parent"`
-and temporary `shared: "request"`, a child configured with persistent
-`shared: "child"` initially logs `"request"`. After the child's `ResetKeys`, it
-logs `"child"`. Inherited request-only keys disappear on reset and are excluded
-from `PersistentKeys`. Resetting a child does not change the parent.
-
-Use `WithRecordOrder("message", "level", "timestamp")` to put selected keys first. A formatter changes the record envelope; a replacer changes individual JSON values. Both callbacks must be concurrency-safe. Serialization failures return from the log call. These hooks do not emulate every JavaScript JSON.stringify value or stack diagnostic.
 
 ## Configuration
 
@@ -353,3 +265,103 @@ timestamps and native overflow-error details as described in
 Log methods return output or serialization errors. Handle the return from direct calls such as `requestLog.Info(...)` explicitly: `WithErrorHandler` does not automatically handle those returned errors. It receives wrapper instrumentation errors, such as event-log output or correlation-extractor failures, without replacing the business result; its default callback ignores them. Do not recursively log through the same logger from that callback.
 
 The API includes formatter/replacer hooks, timezones, event logging, child configuration, and buffering, but exhaustive TypeScript edge-case parity remains open. Consult the [Logger checklist](CHECKLIST.md#logger) and [compatibility guide](COMPATIBILITY.md) before relying on a particular boundary.
+## Objects and lifecycle
+
+| Name | What it is | How to use it |
+| --- | --- | --- |
+| `logger` | The imported Powertools package | Create a logger with `logger.New(...)`; construct fields with `logger.Fields{...}` |
+| `appLog` | A `*logger.Logger` object returned by `logger.New` | Write structured records with `appLog.Info(...)`, `appLog.Warn(...)`, or `appLog.Error(...)` |
+| `stdlog` | Go's standard `log` package, imported under an explicit alias | Print a plain-text fallback if structured logging fails |
+
+
+## TypeScript feature coverage
+
+??? info "Compare with TypeScript v2.35.0"
+
+    Compared with the [official v2.35.0 Logger guide](https://github.com/aws-powertools/powertools-lambda-typescript/blob/7bcc27b1574493f9452688673658f52b80c53847/docs/features/logger.md). Each capability below exists in Go; exhaustive configuration, diagnostics and serialization parity remain open.
+
+    | TypeScript feature | Go API or approach | Compatibility scope |
+    | --- | --- | --- |
+    | Structured keys / messages / errors | `Info`, `Warn`, `Error` and other levels | Explicit message and Fields; Go error types/causes instead of JS stacks |
+    | Lambda context injection | `WrapHandler` plus `WithContext` | Typed functions; invocation state closes at completion |
+    | Log incoming event | `POWERTOOLS_LOGGER_LOG_EVENT`, wrapper option, `WrapRawHandler` | Opt-in; separate event record; raw entry retains original JSON values before typed decoding |
+    | Correlation ID | `SetCorrelationID`, handler source/callback/extractor | Nine sources; compiled JMESPath is optional |
+    | Append / remove / reset attributes | Temporary and persistent key methods | Scoped state and merge precedence |
+    | Levels / ALC / suppression | `WithLevel`, `SetLevel`, `SilentLevel` | ALC precedence; filtered calls return nil |
+    | Buffer logs | `WithBuffer`, `FlushBuffer`, `ClearBuffer` | X-Ray root or OTel context; explicit cleanup policies |
+    | Reorder keys | `WithRecordOrder(keys...)` | Selected keys first; remaining fields use lexical order |
+    | Custom timezone | `TZ`, injected `WithClock` | Built-in timezone data and Go time formatting |
+    | Child loggers | `Child(options...)` | Snapshotted attributes and independent settings |
+    | Debug sampling | `WithSampleRate`, constructor/invocation decisions | Reference sampling grid; separate from trace sampling |
+    | Formatter / JSON replacer | `WithFormatter`, `WithReplacer` | Go callbacks and JSON representation |
+    | Test output | `WithOutput`, `WithClock` | Writer injection instead of console spies |
+
+    [JSON reference tests](https://github.com/rambow-cloud/powertools-lambda-go/blob/main/logger/reference_test.go), [sampling tests](https://github.com/rambow-cloud/powertools-lambda-go/blob/main/logger/sampling_test.go), [48 child/empty-field/buffer scenarios](https://github.com/rambow-cloud/powertools-lambda-go/blob/main/logger/parity_reference_test.go) and [native context/ownership/concurrency regressions](https://github.com/rambow-cloud/powertools-lambda-go/blob/main/logger/parity_test.go) provide scoped evidence. See [feature comparison](FEATURE_PARITY.md) and [Logger progress](CHECKLIST.md#logger).
+
+    ### Event logging and child configuration
+
+    Event logging is disabled by default. With `POWERTOOLS_LOGGER_LOG_EVENT=true`, the wrapper emits an additional event record before your business logs; it can include the entire payload. Set this before constructing `appLog`, or select the handler option. It does not change what `Info` means.
+
+    `WrapHandler` logs the Go value it receives. When the AWS runtime first decodes
+    JSON into a struct, members absent from that struct are discarded; serializing
+    the struct can also omit fields with `omitempty` or `json:"-"` tags. For example,
+    `{"name":"Alice","age":30}` becomes `{"name":"Alice"}` when the input struct
+    only declares `name`. The logger cannot reconstruct discarded values.
+
+    Register `WrapRawHandler` (available in Logger v1.1.0 and later) at the runtime
+    entry to log the complete incoming JSON value before decoding a typed business input:
+
+    ~~~go
+    type greetingEvent struct {
+        Name string `json:"name"`
+    }
+
+    handler := func(ctx context.Context, event greetingEvent) (string, error) {
+        return event.Name, appLog.WithContext(ctx).Info("Greeting accepted")
+    }
+    enabled := true
+    lambda.Start(logger.WrapRawHandler(appLog, handler, logger.HandlerOptions{
+        LogEvent: &enabled,
+    }))
+    ~~~
+
+    The returned function accepts `encoding/json.RawMessage`. Its event record
+    contains `"event":{"name":"Alice","age":30}`, while the business handler
+    receives `greetingEvent{Name: "Alice"}`. Unknown members, nested values, empty
+    strings, JSON nulls and exact numeric tokens are retained in event logs. JSON
+    whitespace and member order are not preserved. Existing formatter/replacer
+    policies can transform or redact the event, and `LogEvent: false` or a level
+    above INFO suppresses the event record as usual. Review payload contents before
+    enabling event logging.
+
+    Typed decoding uses `encoding/json/v2` defaults, including case-sensitive field
+    names. Event logging runs before typed decoding; a decoding error
+    returns without calling the business handler. Invalid JSON rejected by the AWS
+    runtime never reaches the wrapper. Runtime `WithUseNumber` and
+    `WithDisallowUnknownFields` options apply to its RawMessage entry, not to the
+    subsequent typed decoder. If you need custom decoding options, use
+    `WrapHandler` around a RawMessage function and decode inside that function.
+    Raw-wrapper correlation callbacks and extractors receive RawMessage; built-in
+    correlation sources and this project's compiled JMESPath queries support it.
+
+    Keep event logging outside Parser/Validation when you need the incoming payload.
+    For an existing raw-input pipeline, compose
+    `logger.WrapHandler(appLog, parser.WrapHandler[json.RawMessage](schema, handler), options)`
+    or the equivalent `validation.WrapHandler[json.RawMessage]` pipeline. Here `json`
+    refers to `encoding/json`. Placing Logger inside these wrappers records their
+    parsed or validated value, which may already omit original fields. Tracer can
+    remain outside Logger; all these wrappers share the invocation identity.
+    See the executable [raw-event example](https://github.com/rambow-cloud/powertools-lambda-go/blob/main/logger/example_test.go)
+    and [runtime-entry regressions](https://github.com/rambow-cloud/powertools-lambda-go/blob/main/logger/raw_handler_test.go).
+
+    Create `componentLog := appLog.Child(logger.WithPersistentKeys(logger.Fields{"component":"payments"}))` when a component needs a stable field and independent settings. In a wrapped handler, bind it with `componentLog.WithContext(ctx)`. Child level/key changes do not mutate the parent's configuration. Treat retained nested values as immutable.
+
+    `Child` snapshots persistent and temporary fields separately. Child persistent
+    options merge into the persistent snapshot; inherited temporary values keep their
+    usual precedence. For example, if the parent has persistent `shared: "parent"`
+    and temporary `shared: "request"`, a child configured with persistent
+    `shared: "child"` initially logs `"request"`. After the child's `ResetKeys`, it
+    logs `"child"`. Inherited request-only keys disappear on reset and are excluded
+    from `PersistentKeys`. Resetting a child does not change the parent.
+
+    Use `WithRecordOrder("message", "level", "timestamp")` to put selected keys first. A formatter changes the record envelope; a replacer changes individual JSON values. Both callbacks must be concurrency-safe. Serialization failures return from the log call. These hooks do not emulate every JavaScript JSON.stringify value or stack diagnostic.

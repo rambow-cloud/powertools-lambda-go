@@ -30,6 +30,7 @@ Each utility has its own module. Install the modules you use; see
 
 Save this complete example as `main.go`:
 
+<!-- --8<-- [start:first-lambda] -->
 ```go
 package main
 
@@ -64,6 +65,7 @@ func main() {
     lambda.Start(logger.WrapHandler(appLog, handler))
 }
 ```
+<!-- --8<-- [end:first-lambda] -->
 
 An input of `{"name":"Ada"}` returns `{"message":"Hello, Ada"}` and writes
 a structured log with `message: "Handling request"`, `service: "hello"` and

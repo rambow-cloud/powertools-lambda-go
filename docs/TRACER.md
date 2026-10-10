@@ -9,42 +9,58 @@ Tracer captures Lambda handlers, application operations, outbound HTTP requests 
 
 See [installation](MODULES.md) and the [compatibility baseline](COMPATIBILITY.md).
 
+## Install
+
+Use Go 1.27 or newer and install the module in your own application:
+
+```sh
+CGO_ENABLED=0 go get github.com/rambow-cloud/powertools-lambda-go/tracer@v1.1.0
+CGO_ENABLED=0 go get github.com/aws/aws-lambda-go@v1.55.0
+```
+
 ## Complete example
 
-This complete offline example injects an in-memory OTel exporter. Run `go run ./examples/local` from the checkout with `CGO_ENABLED=0`; no collector or AWS credentials are needed for this example. For Lambda, use [the complete handler](GETTING_STARTED.md#create-utilities-once) and [configure a collector](#collector-and-aws-x-ray).
+Create one tracer and wrap your Lambda handler. The wrapper creates and finishes
+the handler span; your business function returns its normal Go result.
 
 ~~~go
---8<-- "examples/local/main.go"
+package main
+
+import (
+	"context"
+	"log"
+
+	"github.com/aws/aws-lambda-go/lambda"
+	"github.com/rambow-cloud/powertools-lambda-go/tracer"
+)
+
+func main() {
+	trace, err := tracer.New(tracer.WithServiceName("greeting"))
+	if err != nil {
+		log.Fatal(err)
+	}
+	handler := func(_ context.Context, event map[string]string) (map[string]string, error) {
+		return map[string]string{"message": "Hello, " + event["name"]}, nil
+	}
+	lambda.Start(tracer.WrapHandler(trace, handler))
+}
 ~~~
+
+Deploy with a reachable OTLP
+collector; [collector setup](#collector-and-aws-x-ray) describes AWS X-Ray delivery.
+For an offline demonstration, use the [in-memory exporter example](#provider-ownership-and-delivery).
 
 ## Input and output
 
-The program writes one `INFO` JSON log with `message: "Hello"`, `service: "demo"` and `name: "Go"`, followed by a line like `Span: ## bootstrap, trace: <32 hexadecimal characters>`. The log contains the same `trace_id` and the handler span's `span_id`. IDs and the timestamp change per run. The handler returns `"Hello, Go"`; this example does not print that return value. A production exporter sends spans to its collector instead of printing `Span:` lines.
+Input `{"name":"Go"}` returns `{"message":"Hello, Go"}`. Tracer records a handler
+span and exports it to the configured collector. It does not write an application
+log or change the handler's result. Trace IDs vary between invocations.
 
-## Objects and lifecycle
+## Common tasks
 
-| Object | Responsibility |
-| --- | --- |
-| `tr` | Reusable tracer configuration; initialize once and handle the construction error. |
-| `ctx` | Active parent/span context; pass it to `Capture`, HTTP requests and AWS SDK calls. |
-| `provider` / `exporter` | Application-owned OTel infrastructure; this example shuts the provider down explicitly. |
-| `handler` | Wrapped callable; it ends the handler span and flushes on success, error or panic. |
-
-## TypeScript feature coverage
-
-Compared with the [official v2.35.0 tracer guide](https://github.com/aws-powertools/powertools-lambda-typescript/blob/7bcc27b1574493f9452688673658f52b80c53847/docs/features/tracer.md) and the pinned npm implementation. The table maps capabilities; it does not certify every native type or service behavior.
-
-| TypeScript feature | Go API or approach | Compatibility scope |
-| --- | --- | --- |
-| Lambda handler / methods | `WrapHandler`, `Capture`, `StartSpan` | Typed callbacks replace decorators and Middy. |
-| Annotations and metadata | `PutAnnotation`, `PutMetadata` | OTel attributes/events; metadata differs from native X-Ray documents. |
-| AWS / HTTP instrumentation | `InstrumentAWS`, `HTTPClient` | Explicit SDK v2/client instrumentation, without global patching. |
-| Response / error capture | `WithCaptureResponse`, `WithCaptureError` | Opt out at initialization; business results are preserved. |
-| X-Ray root ID | `XRayTraceID(ctx)` | Formats an OTel ID or uses runtime context. |
-| Escape hatch | `WithBackend`, `NewOTelBackend` | Injected provider ownership is explicit; no shared raw X-Ray Segment API. |
-| Tracing enablement and sampling | `WithLocalTracing`, OTel sampler environment | OTel extension; deprecated SDK backend is frozen. |
-
-Executable evidence: [tracer/tracer_test.go](https://github.com/rambow-cloud/powertools-lambda-go/blob/main/tracer/tracer_test.go). See [the verification scope](FEATURE_PARITY.md) and [project progress](CHECKLIST.md) for open gates.
+- [Send traces to AWS X-Ray](#collector-and-aws-x-ray).
+- [Trace HTTP and AWS SDK calls](#http-and-aws-sdk-v2).
+- [Configure capture and sampling](#configuration).
 
 ## Initialize and compose
 
@@ -113,3 +129,45 @@ Supply an application-owned provider with `tracer.WithBackend(tracer.NewOTelBack
 Invocation completion ends spans and attempts a bounded flush. Hard timeouts or a failing collector can prevent delivery. Use `WithErrorHandler` for instrumentation and flush diagnostics; callbacks ignore errors by default.
 
 OTel metadata attributes and legacy X-Ray metadata documents differ. Local validation is not proof of every AWS indexing, freeze/thaw, or service behavior. See [compatibility](COMPATIBILITY.md), [local evidence](LOCAL_VALIDATION.md), and the [remaining Tracer work](CHECKLIST.md#tracer).
+### Try tracing offline
+
+The maintained local example uses an in-memory exporter and also shows Logger
+correlation. It needs no collector or AWS credentials:
+
+```sh
+CGO_ENABLED=0 go run ./examples/local
+```
+
+~~~go
+--8<-- "examples/local/main.go"
+~~~
+
+It prints a `Hello` log and a `Span: ## bootstrap, trace: ...` line. Use this
+combined example after the Tracer-only handler above.
+
+## Objects and lifecycle
+
+| Object | How to use it |
+| --- | --- |
+| `trace` | Create once before `lambda.Start`; reuse the tracer across invocations. |
+| Wrapped handler | Creates the invocation span and performs a bounded flush. |
+| `ctx` inside a handler | Pass it into child operations, HTTP requests and AWS SDK calls. |
+| Injected provider | Optional application-owned exporter/provider; your application owns its shutdown. |
+
+## TypeScript feature coverage
+
+??? info "Compare with TypeScript v2.35.0"
+
+    Compared with the [official v2.35.0 tracer guide](https://github.com/aws-powertools/powertools-lambda-typescript/blob/7bcc27b1574493f9452688673658f52b80c53847/docs/features/tracer.md) and the pinned npm implementation. The table maps capabilities; it does not certify every native type or service behavior.
+
+    | TypeScript feature | Go API or approach | Compatibility scope |
+    | --- | --- | --- |
+    | Lambda handler / methods | `WrapHandler`, `Capture`, `StartSpan` | Typed callbacks replace decorators and Middy. |
+    | Annotations and metadata | `PutAnnotation`, `PutMetadata` | OTel attributes/events; metadata differs from native X-Ray documents. |
+    | AWS / HTTP instrumentation | `InstrumentAWS`, `HTTPClient` | Explicit SDK v2/client instrumentation, without global patching. |
+    | Response / error capture | `WithCaptureResponse`, `WithCaptureError` | Opt out at initialization; business results are preserved. |
+    | X-Ray root ID | `XRayTraceID(ctx)` | Formats an OTel ID or uses runtime context. |
+    | Escape hatch | `WithBackend`, `NewOTelBackend` | Injected provider ownership is explicit; no shared raw X-Ray Segment API. |
+    | Tracing enablement and sampling | `WithLocalTracing`, OTel sampler environment | OTel extension; deprecated SDK backend is frozen. |
+
+    Executable evidence: [tracer/tracer_test.go](https://github.com/rambow-cloud/powertools-lambda-go/blob/main/tracer/tracer_test.go). See [the verification scope](FEATURE_PARITY.md) and [project progress](CHECKLIST.md) for open gates.

@@ -12,7 +12,7 @@ The site uses [Zensical](https://zensical.org/docs/) with its default modern the
 - `website/pyproject.toml` and `website/uv.lock` isolate and lock documentation dependencies.
 - `website/check_navigation.py` checks that every Markdown guide appears exactly once in navigation and that every target exists inside `docs/`.
 - `dist/site/` contains generated HTML and is ignored by Git.
-- The quickstart includes the actual Go example through a checked snippet, avoiding a second copy.
+- The quickstart includes the minimal README program through a named snippet and the composed Go example through a checked source snippet, avoiding duplicate code.
 - `RELEASE_NOTES.md` lists published versions, newest first. Keep each entry to
   its version heading, publication date, prerelease status when applicable,
   canonical GitHub Release link and short user-facing change bullets. Use
@@ -29,7 +29,11 @@ Every guide belongs in navigation. Builds fail on missing navigation targets, br
 
 ## Utility guide contract
 
-The [feature comparison](FEATURE_PARITY.md) fixes the TypeScript baseline and maps implementation and evidence across all utility families. Main guides begin with a complete local or maintained Lambda example, explain input and observable output, identify objects and their lifetimes, and map the pinned TypeScript capabilities to Go. Advanced contract details follow those sections. Incomplete fragments must identify their required application symbols.
+The [feature comparison](FEATURE_PARITY.md) fixes the TypeScript baseline and maps implementation and evidence across all utility families. Follow the official TypeScript guides' progression: a brief purpose, installation, one minimal example, expected results, common tasks and advanced usage. Keep first examples focused on the utility being introduced. Add Logger, Tracer, Parser or other composition after readers have seen the basic API. Identify prerequisites for examples that contact AWS.
+
+Place detailed lifecycle tables, fixture history and TypeScript feature mappings after ordinary usage. Keep existing anchors, English text, accurate error handling and the pinned behavioral baseline. Incomplete fragments must identify their imports and required application symbols.
+
+Create a documentation issue before making guide changes. When comparison reveals a missing implemented upstream capability, search existing issues and create or link a feature issue with evidence and acceptance criteria. Keep confirmed missing features distinct from intentional Go/JavaScript differences and incomplete exhaustive verification. Link the open feature issue from the affected guide and plan; do not claim unsupported behavior. See [documentation review #163](https://github.com/rambow-cloud/powertools-lambda-go/issues/163) and [data-key caching #164](https://github.com/rambow-cloud/powertools-lambda-go/issues/164).
 
 `website/check_guides.py` checks those sections, complete example presence, fixed-source attribution and referenced source-file existence for eighteen guides, including Commons. It checks documentation structure, not functional parity. Packaged tests and [the maintained Docker runner](LOCAL_INTEGRATION.md) establish the stated behavioral scope. Verify changed executable examples and compare their documented results before claiming acceptance.
 
@@ -40,6 +44,8 @@ Use site-local links for usage and verification pages. Use source links for code
 Zensical's bundled modern theme owns typography, spacing, title permalinks, page-edit actions, search, code copying, and responsive navigation. The configuration uses the theme's default fonts and icons, with the standard system/light/dark palette toggle. A small `extrahead` override adds discovery metadata and JSON-LD without changing the theme's layout or scripts.
 
 `mkdocs.yml` keeps all utilities in one navigation tree; implementation plans stay inside Development. The project emblem and attribution remain configured through the theme's standard logo, favicon, and copyright settings.
+
+`docs/stylesheets/home.css` styles only the homepage introduction, actions and utility cards. Guide typography and expandable reference sections use the bundled theme.
 
 Preview the homepage, Logger, and Getting Started pages. At desktop width, inspect the three-column layout and section highlighting; at a 390px mobile width, inspect the drawer, search overlay, code/table scrolling, and theme toggle. Check keyboard focus and copy controls. Browser visual acceptance is separate from the strict build and remains pending until a rendered review is performed.
 

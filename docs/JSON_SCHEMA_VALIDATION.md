@@ -6,45 +6,59 @@ description: "Validate Go Lambda inputs and responses against JSON Schema with P
 
 Validation checks events and responses against JSON Schema. Import `github.com/rambow-cloud/powertools-lambda-go/validation`. Use it for schema documents shared with other systems; choose [Parser](PARSER.md) when composing typed Go schemas and event transformations. The reference uses Powertools v2.35.0 with AJV v8.20.0.
 
-JSON snapshots and typed handler conversion use `encoding/json/v2`. Duplicate members and invalid Unicode are rejected; typed fields match JSON names case-sensitively. Numeric callbacks and snapshots retain exact `json.Number` tokens. Use explicit application field tags and [current JSON collection and omission rules](GETTING_STARTED.md#prerequisites-and-installation).
-
 See [installation](MODULES.md) and the [compatibility baseline](COMPATIBILITY.md).
+
+## Install
+
+Use Go 1.27 or newer and install the module in your own application:
+
+```sh
+CGO_ENABLED=0 go get github.com/rambow-cloud/powertools-lambda-go/validation@v1.1.0
+```
 
 ## Complete example
 
-This complete Lambda example compiles inbound and outbound schemas once. Build `./examples/validation` with `CGO_ENABLED=0`. It accepts an order, returns its ID, and validates that the response is a nonempty string.
+Pass a payload and JSON Schema to `Validate`. This local program requires a
+nonempty string `id`; no Lambda runtime or AWS credentials are needed.
 
 ~~~go
---8<-- "examples/validation/main.go"
+package main
+
+import (
+	"context"
+	"fmt"
+	"log"
+
+	"github.com/rambow-cloud/powertools-lambda-go/validation"
+)
+
+func main() {
+	schema := map[string]any{
+		"type":     "object",
+		"required": []string{"id"},
+		"properties": map[string]any{
+			"id": map[string]any{"type": "string", "minLength": 1},
+		},
+	}
+	payload := map[string]any{"id": "ORD-123"}
+	if _, err := validation.Validate(context.Background(), payload, schema, validation.Options{}); err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println("Valid order")
+}
 ~~~
 
 ## Input and output
 
-Input `{"id":"ORD-123","amount":42}` returns the JSON string `"ORD-123"`. Input `{"id":"","amount":0}` produces `Inbound schema validation failed` with issues for `id` and `amount`, before business code runs. A successful business result violating the outbound schema produces `Outbound schema validation failed`. The example writes no successful application log record. Compilation errors are handled during initialization, separately from request errors.
+The valid payload prints `Valid order`. An empty or missing `id` produces a
+`SchemaValidationError`. Validation checks the value; it does not add defaults,
+coerce types or remove additional fields by default.
 
-## Objects and lifecycle
+## Common tasks
 
-| Object | Responsibility |
-| --- | --- |
-| `inbound` / `outbound` | Reusable compiled validators; nil disables a wrapper stage. |
-| `input` | Typed order decoded after inbound validation; the wrapper applies JSON snapshot ownership. |
-| `SchemaValidationError` | Carries ordered issues; use `errors.As` to inspect paths, keywords and parameters. |
-
-## TypeScript feature coverage
-
-Compared with the [official v2.35.0 validation guide](https://github.com/aws-powertools/powertools-lambda-typescript/blob/7bcc27b1574493f9452688673658f52b80c53847/docs/features/validation.md) and the pinned npm implementation. The table maps capabilities; it does not certify every native type or service behavior.
-
-| TypeScript feature | Go API or approach | Compatibility scope |
-| --- | --- | --- |
-| Standalone / decorators / middleware | `Validate`, `Compile`, `WrapHandler` | Compiled typed wrapper; business errors/panics are preserved. |
-| Event extraction / envelopes | `Options.Envelope` | JMESPath extraction on input only. |
-| Decode query functions | `Options.QueryOptions` | Opt in to Powertools functions explicitly. |
-| Custom formats | `Formats`, `NumberFormats` | No implicit email-format support; callbacks must be concurrency-safe. |
-| External references | `ExternalRefs`, `ExternalSchemas` | Registered locally; no remote schema loading. |
-| Custom AJV instance | `Options.Compiler` interface | Go compiler/validator injection, not an AJV object. |
-| Keywords / errors / Unicode regex | Pure-Go Draft 7 adapter and issue mapping | Scoped reference coverage; complete AJV parity remains open. |
-
-Executable evidence: [validation/reference_test.go](https://github.com/rambow-cloud/powertools-lambda-go/blob/main/validation/reference_test.go). See [the verification scope](FEATURE_PARITY.md) and [project progress](CHECKLIST.md) for open gates.
+- [Reuse a compiled schema or validate a handler](#usage).
+- [Register formats and references](#extension-points).
+- [Handle validation errors](#errors-and-current-boundaries).
 
 ## Usage
 
@@ -65,6 +79,16 @@ value, err := schema.Validate(ctx, event)
 `WrapHandler[I,T,R](inbound, outbound, handler)` accepts the raw event type `I`, validates and converts it to `T`, invokes the business handler, and validates its successful result `R`. Input is snapshotted through JSON before validation, including typed events containing slices or pointers. Only inbound validation applies an envelope. Business results with errors and panic identity are preserved. The wrapper reuses the shared invocation context. See [the native Lambda example](https://github.com/rambow-cloud/powertools-lambda-go/blob/main/examples/validation/main.go).
 
 As in the reference middleware, a literal boolean `false` schema passed through `Compile` is skipped by the wrapper. Standalone validation against that same compiled schema rejects all values. A nil wrapper schema disables that stage. Go's wrapper accepts precompiled schemas; compilation failures are therefore normally handled during initialization, before invocation. It does not emulate the TypeScript decorator's un-cloned input variant.
+
+### Validate a Lambda event and response
+
+The maintained example compiles input and output schemas once, then wraps a typed
+handler. Input `{"id":"ORD-123","amount":42}` returns `"ORD-123"`; an invalid input
+fails before business code runs, and an invalid successful result fails outbound validation.
+
+~~~go
+--8<-- "examples/validation/main.go"
+~~~
 
 ## Extension points
 
@@ -108,6 +132,8 @@ Remaining compatibility work is explicit:
 - Context cancellation is checked around compilation/validation, but synchronous engine traversal cannot be interrupted midway. Performance and pathological-schema resource limits are not yet measured.
 - Parser/Event Handler composition, complete middleware/decorator mapping, public release and live AWS acceptance remain separate gates.
 
+JSON snapshots and typed handler conversion use `encoding/json/v2`. Duplicate members and invalid Unicode are rejected; typed fields match JSON names case-sensitively. Numeric callbacks and snapshots retain exact `json.Number` tokens. Use explicit application field tags and [current JSON collection and omission rules](GETTING_STARTED.md#prerequisites-and-installation).
+
 ## Public contract map
 
 | TypeScript public entry | Go equivalent | Remaining boundary |
@@ -125,3 +151,29 @@ Remaining compatibility work is explicit:
 This map was inspected against the installed package's export manifest, declarations and implementations. The package exposes four public subpaths: root, middleware, decorator and errors. Its `types.d.ts` is referenced by the declarations but is not a separately exported package subpath.
 
 CGO is disabled for all development, tests and builds. Functional concurrency tests do not replace a race-detector run; the latter is intentionally excluded by repository policy.
+## Objects and lifecycle
+
+| Object | How to use it |
+| --- | --- |
+| Schema document | Describe the accepted payload with JSON Schema. |
+| Compiled schema | Use `Compile` once for repeated calls rather than compiling on each `Validate` call. |
+| Invocation context | Pass cancellation and deadlines into validation and wrappers. |
+| Lambda wrapper | Optionally validate both the event and successful response. |
+
+## TypeScript feature coverage
+
+??? info "Compare with TypeScript v2.35.0"
+
+    Compared with the [official v2.35.0 validation guide](https://github.com/aws-powertools/powertools-lambda-typescript/blob/7bcc27b1574493f9452688673658f52b80c53847/docs/features/validation.md) and the pinned npm implementation. The table maps capabilities; it does not certify every native type or service behavior.
+
+    | TypeScript feature | Go API or approach | Compatibility scope |
+    | --- | --- | --- |
+    | Standalone / decorators / middleware | `Validate`, `Compile`, `WrapHandler` | Compiled typed wrapper; business errors/panics are preserved. |
+    | Event extraction / envelopes | `Options.Envelope` | JMESPath extraction on input only. |
+    | Decode query functions | `Options.QueryOptions` | Opt in to Powertools functions explicitly. |
+    | Custom formats | `Formats`, `NumberFormats` | No implicit email-format support; callbacks must be concurrency-safe. |
+    | External references | `ExternalRefs`, `ExternalSchemas` | Registered locally; no remote schema loading. |
+    | Custom AJV instance | `Options.Compiler` interface | Go compiler/validator injection, not an AJV object. |
+    | Keywords / errors / Unicode regex | Pure-Go Draft 7 adapter and issue mapping | Scoped reference coverage; complete AJV parity remains open. |
+
+    Executable evidence: [validation/reference_test.go](https://github.com/rambow-cloud/powertools-lambda-go/blob/main/validation/reference_test.go). See [the verification scope](FEATURE_PARITY.md) and [project progress](CHECKLIST.md) for open gates.
