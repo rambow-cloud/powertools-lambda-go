@@ -15,9 +15,12 @@ The site uses [Zensical](https://zensical.org/docs/) with its default modern the
 - The quickstart includes the actual Go example through a checked snippet, avoiding a second copy.
 - `RELEASE_NOTES.md` lists published versions, newest first. Keep each entry to
   its version heading, publication date, prerelease status when applicable,
-  canonical GitHub Release link and one to three short user-facing change bullets.
-  Summarize the reviewed Release notes, highlighting new APIs, fixes and upgrade
-  requirements. Detailed changelogs belong in GitHub Releases; CI results, commit
+  canonical GitHub Release link and short user-facing change bullets. Use
+  `Features`, `Fixes`, `Breaking changes` and `Changes` headings in that order,
+  omitting empty categories. Summarize the reviewed Release notes with affected
+  components, named APIs, corrected behavior and material upgrade requirements.
+  Group related fixes without losing their meaning. Full changelogs belong in
+  GitHub Releases; CI results, commit
   identities and checksums belong in acceptance records. Retain older versions
   and their anchors; keep drafts and unreleased changes out of this page.
 - Links within the site use Markdown file paths; links to source outside `docs/` use GitHub URLs.
