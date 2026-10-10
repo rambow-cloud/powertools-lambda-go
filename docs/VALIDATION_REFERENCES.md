@@ -1,3 +1,7 @@
+---
+description: "Use JSON Schema type groups and references with Powertools Go Validation, including resource and diagnostic boundaries."
+---
+
 # Validation type groups and references
 
 Reference: Powertools TypeScript v2.35.0 with AJV v8.20.0. The default Go compiler uses jsonschema/v6 v6.0.3. This milestone extends the existing applicator adapter; it does not establish exhaustive AJV equivalence.

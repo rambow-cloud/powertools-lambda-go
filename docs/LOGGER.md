@@ -1,3 +1,8 @@
+---
+title: Structured logging for Go Lambda
+description: "Write structured JSON logs in Go Lambda with context, correlation IDs, configurable levels and buffering using Powertools Logger."
+---
+
 # Logger
 
 Logger emits structured JSON with Lambda context, service identity, correlation IDs, configurable levels, and optional buffering.

@@ -1,3 +1,7 @@
+---
+description: "Retrieve and cache Go Lambda configuration from SSM, Secrets Manager, DynamoDB and AppConfig using Powertools Parameters."
+---
+
 # Parameters
 
 Parameters retrieves configuration from SSM, Secrets Manager, DynamoDB, AppConfig Data and AppConfig Agent. Shared caching and JSON/Base64 transforms live in `github.com/rambow-cloud/powertools-lambda-go/parameters`; service adapters are subpackages of that module.

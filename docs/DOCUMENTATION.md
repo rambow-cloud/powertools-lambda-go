@@ -1,3 +1,7 @@
+---
+description: "Build and maintain the Zensical documentation site, search and AI crawler discovery, GitHub Pages mirror and Cloudflare Pages publication."
+---
+
 # Documentation and continuous integration
 
 ## Documentation structure
@@ -28,7 +32,7 @@ Use site-local links for usage and verification pages. Use source links for code
 
 ## Visual design
 
-Zensical's bundled modern theme owns typography, spacing, title permalinks, page-edit actions, search, code copying, and responsive navigation. The previous custom CSS and template overrides have been removed. The configuration uses the theme's default fonts and icons, with the standard system/light/dark palette toggle.
+Zensical's bundled modern theme owns typography, spacing, title permalinks, page-edit actions, search, code copying, and responsive navigation. The configuration uses the theme's default fonts and icons, with the standard system/light/dark palette toggle. A small `extrahead` override adds discovery metadata and JSON-LD without changing the theme's layout or scripts.
 
 `mkdocs.yml` keeps all utilities in one navigation tree; implementation plans stay inside Development. The project emblem and attribution remain configured through the theme's standard logo, favicon, and copyright settings.
 
@@ -57,13 +61,51 @@ uv lock --project website --check
 uv run --project website --frozen python website/check_navigation.py
 uv run --project website --frozen python website/check_guides.py
 uv run --project website --frozen zensical build --clean --strict --config-file mkdocs.yml
+uv run --project website --frozen python website/check_discovery.py
+uv run --project website --frozen python website/test_discovery.py
 ~~~
 
 Python 3.14 is required for the isolated documentation environment. uv can provision it when permitted. The Go runtime library has no Python dependency.
 
 Zensical 0.0.67 is pinned in `website/pyproject.toml`; the lockfile includes its Windows and Linux wheels. To update the builder and bundled theme, change its exact version, run `uv lock --project website`, and review the resulting lockfile before running the clean strict build.
 
-The migration retains `mkdocs.yml`, page URLs, and the checked Go snippet. The site now uses Zensical's default modern theme without custom CSS or template overrides. Zensical replaces the MkDocs and Material packages, so the Material warning about MkDocs 2.0 no longer applies. Link validation uses Zensical's `invalid_links` and `invalid_link_anchors` settings. Zensical does not implement MkDocs' navigation validation, so the navigation checker runs separately in CI. The snippets extension uses the repository root as its base path; run all documentation commands from that directory. Zensical is still in its 0.0.x release series; validate upgrades before deploying them. See the [official migration guide](https://zensical.org/docs/compatibility/mkdocs/migration/).
+The migration retains `mkdocs.yml`, page URLs, and the checked Go snippet. The site uses Zensical's default modern theme with a metadata-only template override and no custom CSS. Zensical replaces the MkDocs and Material packages, so the Material warning about MkDocs 2.0 no longer applies. Link validation uses Zensical's `invalid_links` and `invalid_link_anchors` settings. Zensical does not implement MkDocs' navigation validation, so the navigation checker runs separately in CI. The snippets extension uses the repository root as its base path; run all documentation commands from that directory. Zensical is still in its 0.0.x release series; validate upgrades before deploying them. See the [official migration guide](https://zensical.org/docs/compatibility/mkdocs/migration/).
+
+## Search engines and AI discovery
+
+The canonical site serves static HTML with the complete documentation text, including maintained code snippets, before JavaScript runs. `site_url` controls canonical URLs and the generated sitemap. Keep these URLs on the canonical Cloudflare hostname even when publishing the GitHub Pages mirror.
+
+The metadata-only override in `website/overrides/main.html` adds index/follow and unrestricted snippet-preview directives to documentation pages, Open Graph and social-card metadata, and JSON-LD identifying the website and technical articles. The homepage also identifies the software source repository. The 404 page uses `noindex, follow`. Main utility guides have individual descriptions in their Markdown front matter; other pages retain the configured site-description fallback. Structured data must describe the visible content: do not add invented ratings, authors, publication dates, AWS endorsement or unsupported compatibility claims.
+
+`docs/robots.txt` allows all crawlers through `User-agent: *` and advertises the canonical sitemap. This includes search engines, AI search crawlers, user-requested agents and training crawlers. In particular, OpenAI's [crawler documentation](https://developers.openai.com/api/docs/bots) distinguishes `OAI-SearchBot` for search from `GPTBot` for training. Allowing training is not a requirement for appearing in AI search. If the project later adopts a narrower policy, update the generator and its acceptance checks together.
+
+`docs/llms.txt` provides an optional [LLM-friendly documentation index](https://llmstxt.org/), generated from navigation, Markdown headings and page descriptions. User guides come first; maintainer procedures, plans and dated evidence are under Optional, with explicit scope caveats. This entrypoint supplements the HTML site. Google's [AI search guidance](https://developers.google.com/search/docs/appearance/ai-features) requires conventional indexing and useful content, with no special AI file or schema requirement. Crawl access, sitemaps, metadata and this index do not guarantee indexing, rankings or AI citations.
+
+After changing navigation, a heading, a page description, the repository URL or canonical site configuration, regenerate the tracked entrypoints before the strict build:
+
+~~~sh
+uv run --project website --frozen python website/check_discovery.py --write
+~~~
+
+The standard Zensical build copies both text files to the site root; no deployment-specific postprocessing is required. CI runs `website/check_discovery.py` after building to reject stale or missing source/built entrypoints, sitemap coverage errors, incorrect canonicals, indexing directives and inconsistent structured data. `website/test_discovery.py` tests accidental noindex, preview-host sitemap pollution, stale descriptions, crawler-blocked published assets and an indexable error page using a small copy of the build.
+
+### Cloudflare crawler access
+
+`robots.txt` expresses a crawling preference; CDN security can still prevent access. In the `rambow.cloud` zone, review Security settings and AI Crawl Control. Search and agent policies must allow the documentation host, and managed robots rules must not override the repository's all-crawler policy. Avoid crawler challenges or pay-per-crawl restrictions on public documentation. Keep protections for malicious traffic; a user-agent string alone does not establish a trusted bot identity. See [Cloudflare's crawler controls](https://developers.cloudflare.com/ai-crawl-control/features/manage-ai-crawlers/) and [robots.txt management](https://developers.cloudflare.com/bots/additional-configurations/managed-robots-txt/).
+
+The read-only API inspection on 2026-10-10 found Bot Fight Mode, AI crawler protection and robots preference synchronization disabled, unmanaged robots.txt, and no custom firewall ruleset. No Cloudflare security configuration change was needed. This inspection establishes configured policy, not successful crawler visits or engine indexing.
+
+### Publication and owner verification
+
+Merge the reviewed changes to `main` to trigger the existing Cloudflare and GitHub Pages builds. After a successful production deployment:
+
+1. Open [robots.txt](https://powertools-lambda-go.rambow.cloud/robots.txt). Confirm `User-agent: *`, `Allow: /`, the canonical Sitemap line and no added `Disallow: /` group.
+2. Open [sitemap.xml](https://powertools-lambda-go.rambow.cloud/sitemap.xml) and [llms.txt](https://powertools-lambda-go.rambow.cloud/llms.txt). Confirm the canonical hostname and links to Logger, Tracer and Getting Started. Follow those links without encountering login or a challenge page.
+3. Open [Logger](https://powertools-lambda-go.rambow.cloud/LOGGER/) and inspect View page source. Confirm its specific description, canonical URL, robots directives and JSON-LD. The article and examples must appear in the initial HTML.
+4. In [Google Search Console](https://search.google.com/search-console), verify ownership of a URL-prefix property for `https://powertools-lambda-go.rambow.cloud/` using a supported account-specific method, submit `https://powertools-lambda-go.rambow.cloud/sitemap.xml`, and run URL Inspection's live test on the homepage and key guides. Request indexing and monitor Page indexing and Performance. A verified property for the GitHub Pages mirror does not establish ownership of this hostname.
+5. In [Bing Webmaster Tools](https://www.bing.com/webmasters/), add or import the canonical site, submit the same sitemap and inspect indexing and crawl reports. Monitor Cloudflare AI Crawl Control and referred visits for AI crawler activity; successful crawling does not establish a search result or citation.
+
+Ownership tokens are account-specific. Keep them out of generic examples and never substitute a fabricated token. Search-console verification, live browser acceptance, crawling and indexing remain owner checks after publication; a local build establishes none of them.
 
 ## Go CI
 

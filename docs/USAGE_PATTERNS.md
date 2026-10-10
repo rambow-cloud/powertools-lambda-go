@@ -1,3 +1,7 @@
+---
+description: "Compose Powertools for Go utilities with correct object lifetimes, Lambda invocation scope, typed handlers and reusable clients."
+---
+
 # Usage patterns
 
 Go exposes functions, functional options and small interfaces in place of TypeScript constructors, decorators, Middy middleware and subclassing. Start with [the complete Lambda quickstart](GETTING_STARTED.md), then use the feature guides for inputs and outputs. See [feature comparison](FEATURE_PARITY.md) for the pinned v2.35.0 scope.

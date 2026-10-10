@@ -1,3 +1,7 @@
+---
+description: "Work with JSON Schema condition graphs and external schema resources using Powertools Go Validation."
+---
+
 # Validation condition graphs and external resource registration
 
 Reference: Powertools TypeScript v2.35.0 with AJV v8.20.0. This extends [schema-shape compatibility](VALIDATION_SHAPES.md); the full Validation compatibility gate remains open.

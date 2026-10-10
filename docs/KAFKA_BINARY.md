@@ -1,3 +1,7 @@
+---
+description: "Decode Kafka Avro and Protobuf payloads with optional Powertools Go adapters and documented binary format contracts."
+---
+
 # Optional Kafka binary adapters
 
 Avro and Protobuf are separate modules, `kafka/avro` and `kafka/protobuf`. The Kafka core retains no third-party module dependencies. Neither adapter retrieves schemas or contacts a registry: the application supplies the schema or message decoder, and the Lambda event supplies metadata.

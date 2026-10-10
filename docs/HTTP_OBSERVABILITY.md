@@ -1,3 +1,7 @@
+---
+description: "Add structured logging, OpenTelemetry tracing and CloudWatch metrics to Go Lambda HTTP routes with Powertools middleware."
+---
+
 # HTTP observability middleware
 
 The optional `eventhandler/http/metrics` and `eventhandler/http/tracer` modules compose the existing Metrics and OpenTelemetry Tracer. Each has an independent manifest and release tag. HTTP core acquires neither dependency. The Tracer adapter does not import the deprecated X-Ray SDK.

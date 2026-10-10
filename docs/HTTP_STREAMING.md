@@ -1,3 +1,7 @@
+---
+description: "Stream Go Lambda HTTP responses using Powertools, with streaming lifecycle, response contracts and complete examples."
+---
+
 # Native Go HTTP response streaming
 
 The independent HTTP module provides synchronous `Router.ResolveStream` and the native Lambda adapter `Streamify`. They share event adaptation, route matching, middleware, validation and error handling with buffered `Resolve`. HTTP still depends only on root Commons and the Go standard library. The application chooses `aws-lambda-go`; HTTP does not import it.

@@ -1,3 +1,7 @@
+---
+description: "Compare Powertools for Go with Powertools for AWS Lambda TypeScript v2.35.0 using utility mappings and scoped verification evidence."
+---
+
 # TypeScript feature comparison and verification
 
 This project uses **Powertools for AWS Lambda (TypeScript) v2.35.0**, source commit `7bcc27b1574493f9452688673658f52b80c53847`, as its behavioral baseline. The [official source](https://github.com/aws-powertools/powertools-lambda-typescript/tree/7bcc27b1574493f9452688673658f52b80c53847) and `tools/reference/package-lock.json` identify the version being compared. Latest upstream documentation can describe newer behavior; it does not silently change this baseline.

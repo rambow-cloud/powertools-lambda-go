@@ -1,3 +1,7 @@
+---
+description: "Resolve Amazon Bedrock Agent function requests in Go Lambda with Powertools, typed inputs, routing and response contracts."
+---
+
 # Bedrock Agent function resolver
 
 The Bedrock function resolver routes function-based Action Group invocations to registered Go tools. Import `github.com/rambow-cloud/powertools-lambda-go/eventhandler/bedrock`. It does not implement an OpenAPI Action Group router or call a model.

@@ -1,3 +1,7 @@
+---
+description: "Parse Go Lambda events into typed values and validate handler inputs using Powertools Parser and documented event models."
+---
+
 # Parser
 
 Parser validates and transforms Lambda event data into typed Go values. Import `github.com/rambow-cloud/powertools-lambda-go/parser`; built-in schemas and envelopes are subpackages. It does not require Zod at runtime. The reference uses Powertools v2.35.0 and Zod v4.1.12.

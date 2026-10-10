@@ -1,3 +1,7 @@
+---
+description: "Review the maintained Powertools for Go compatibility contract, TypeScript baseline, runtime requirements and supported feature boundaries."
+---
+
 # Compatibility contract
 
 Reference: TypeScript v2.35.0, commit `7bcc27b1574493f9452688673658f52b80c53847`. The goal is feature and observable-behavior parity within the maintained scope. Implementation and scoped verification exist across the current utility families; exhaustive parity remains unfinished. A checked implementation item does not imply exhaustive reference parity.

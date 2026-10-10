@@ -1,3 +1,7 @@
+---
+description: "Validate Go Lambda inputs and responses against JSON Schema with Powertools, compiled validators and structured diagnostics."
+---
+
 # JSON Schema Validation
 
 Validation checks events and responses against JSON Schema. Import `github.com/rambow-cloud/powertools-lambda-go/validation`. Use it for schema documents shared with other systems; choose [Parser](PARSER.md) when composing typed Go schemas and event transformations. The reference uses Powertools v2.35.0 with AJV v8.20.0.

@@ -1,3 +1,7 @@
+---
+description: "Protect Go Lambda operations from duplicate execution with Powertools Idempotency, DynamoDB persistence and explicit lifecycle contracts."
+---
+
 # Idempotency
 
 Reference: TypeScript v2.35.0. The Go implementation provides an independent module with a generic operation manager, typed Lambda wrappers, an optional local response cache, and a DynamoDB adapter. Redis/Valkey persistence is available through the separate [cache module](IDEMPOTENCY_CACHE.md). Full compatibility gates remain unfinished; see [IDEMPOTENCY_PLAN.md](IDEMPOTENCY_PLAN.md).

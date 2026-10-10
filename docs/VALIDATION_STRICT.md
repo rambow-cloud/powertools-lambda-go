@@ -1,3 +1,7 @@
+---
+description: "Configure strict schema validation in Powertools for Go and understand compilation checks, compatibility and diagnostics."
+---
+
 # Validation strict-schema compatibility
 
 Reference: Powertools TypeScript v2.35.0 and AJV v8.20.0. Strict-schema compatibility remains an open umbrella requirement. The pattern-overlap and scoped schema-setup milestones below are implemented.

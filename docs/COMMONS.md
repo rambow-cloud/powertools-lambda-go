@@ -1,3 +1,7 @@
+---
+description: "Reuse dependency-free Powertools Go runtime primitives and one shared Lambda invocation identity across independent utilities."
+---
+
 # Commons and Metadata
 
 The foundation is implemented against the installed TypeScript v2.35.0 distribution. Pure helpers live in `commons`; AWS-specific helpers live in `commons/awssdk` and `commons/dynamodb`; HTTP metadata retrieval lives in `commons/metadata`. Existing invocation lifecycle ownership remains in `internal/invocation`. No package performs network requests or modifies AWS environment variables merely because it is imported.

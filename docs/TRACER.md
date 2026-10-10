@@ -1,3 +1,8 @@
+---
+title: OpenTelemetry tracing for Go Lambda
+description: "Trace Go Lambda handlers, HTTP requests and AWS SDK calls with OpenTelemetry. Deliver spans to AWS X-Ray through an OTLP collector."
+---
+
 # Tracer
 
 Tracer captures Lambda handlers, application operations, outbound HTTP requests and AWS SDK v2 calls as OpenTelemetry spans. Export through an OTLP collector; use its `awsxray` exporter for AWS X-Ray. Import `github.com/rambow-cloud/powertools-lambda-go/tracer`.

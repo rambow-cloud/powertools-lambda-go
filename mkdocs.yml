@@ -13,6 +13,7 @@ site_dir: dist/site
 strict: true
 
 theme:
+  custom_dir: website/overrides
   variant: modern
   language: en
   logo: assets/logo-ram-gopher.png

@@ -1,3 +1,7 @@
+---
+description: "Parse AppSync and Cognito Lambda events using Powertools Go models, including identity-event contracts and validation scope."
+---
+
 # Parser AppSync and Cognito models
 
 Reference: Powertools TypeScript v2.35.0 with Zod v4.1.12. The implementation adds the final three initial schema families: AppSync/shared, AppSync Events and Cognito. Their 29 unique runtime exports are available from `parser/schemas`; shared identities are reused directly. They add no module or third-party dependency. Parser schemas validate events; they do not provide AppSync routing, authorization decisions or a Cognito authentication implementation.

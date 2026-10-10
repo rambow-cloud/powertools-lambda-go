@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block extrahead %}
+  {{ super() }}
+  {% if page.canonical_url %}
+    {% set description = page.meta.description | d(config.site_description, true) %}
+    {% set title = page.meta.title | d(page.title, true) %}
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+    <link rel="sitemap" type="application/xml" href="{{ config.site_url }}sitemap.xml">
+    <link rel="describedby" type="text/plain" title="Documentation index for AI tools" href="{{ config.site_url }}llms.txt">
+    <meta property="og:type" content="{{ 'website' if page.canonical_url == config.site_url else 'article' }}">
+    <meta property="og:site_name" content="{{ config.site_name }}">
+    <meta property="og:title" content="{{ title }}">
+    <meta property="og:description" content="{{ description }}">
+    <meta property="og:url" content="{{ page.canonical_url }}">
+    <meta property="og:image" content="{{ config.site_url }}assets/logo.png">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="{{ title }}">
+    <meta name="twitter:description" content="{{ description }}">
+    <meta name="twitter:image" content="{{ config.site_url }}assets/logo.png">
+    <script type="application/ld+json">
+      {{ {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebSite",
+            "@id": config.site_url ~ "#website",
+            "url": config.site_url,
+            "name": config.site_name,
+            "description": config.site_description,
+            "inLanguage": "en"
+          },
+          {
+            "@type": "TechArticle",
+            "@id": page.canonical_url ~ "#article",
+            "url": page.canonical_url,
+            "headline": title,
+            "description": description,
+            "inLanguage": "en",
+            "isPartOf": {"@id": config.site_url ~ "#website"},
+            "mainEntityOfPage": page.canonical_url
+          }
+        ]
+      } | tojson }}
+    </script>
+    {% if page.canonical_url == config.site_url %}
+      <script type="application/ld+json">
+        {{ {
+          "@context": "https://schema.org",
+          "@type": "SoftwareSourceCode",
+          "@id": config.site_url ~ "#software",
+          "name": config.site_name,
+          "description": config.site_description,
+          "url": config.site_url,
+          "codeRepository": config.repo_url,
+          "programmingLanguage": "Go",
+          "runtimePlatform": "AWS Lambda provided.al2023",
+          "license": "https://github.com/rambow-cloud/powertools-lambda-go/blob/main/LICENSE"
+        } | tojson }}
+      </script>
+    {% endif %}
+  {% else %}
+    <meta name="robots" content="noindex, follow">
+  {% endif %}
+{% endblock %}

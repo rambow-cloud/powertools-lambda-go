@@ -1,3 +1,7 @@
+---
+description: "Use Redis or Valkey persistence with Powertools Go Idempotency, including cache configuration, lease behavior and replay contracts."
+---
+
 # Redis and Valkey persistence
 
 Import `github.com/rambow-cloud/powertools-lambda-go/idempotency/cache`. This optional adapter is an independent module/version so applications using only the Idempotency core or DynamoDB adapter do not import a Redis client. The adapter uses the pinned `github.com/redis/go-redis/v9 v9.21.0` client interfaces and the existing Idempotency record/lifecycle contract.

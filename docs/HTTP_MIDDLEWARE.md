@@ -1,3 +1,7 @@
+---
+description: "Configure CORS and response compression middleware for Powertools Go HTTP event handlers, including observable response behavior."
+---
+
 # HTTP CORS and compression
 
 Reference: installed `@aws-lambda-powertools/event-handler@2.35.0`, specifically `http/middleware/cors.js`, `compress.js`, `http/constants.js`, the public declarations and the router composition code. `CORS` and `Compress` live in the independent HTTP module and introduce no third-party dependencies. They use the existing synchronous middleware contract and snapshot configuration at construction for concurrent router reuse.

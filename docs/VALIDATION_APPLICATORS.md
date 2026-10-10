@@ -1,3 +1,7 @@
+---
+description: "Understand Go JSON Schema applicators and error diagnostics for composed schemas using Powertools Validation."
+---
+
 # Validation applicator diagnostics
 
 Reference: Powertools TypeScript v2.35.0 and AJV v8.20.0. The Go implementation uses jsonschema/v6 v6.0.3 with private compilation and diagnostic adapters. CGO remains disabled.

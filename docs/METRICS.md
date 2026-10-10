@@ -1,3 +1,8 @@
+---
+title: CloudWatch EMF metrics for Go Lambda
+description: "Emit CloudWatch Embedded Metric Format metrics from Go Lambda with Powertools Metrics, dimensions, validation and cold-start handling."
+---
+
 # Metrics
 
 Metrics emits CloudWatch Embedded Metric Format (EMF) JSON to stdout or an `io.Writer`. CloudWatch extracts metrics from these documents when they arrive in a suitable log group; this package does not call a CloudWatch API. Import `github.com/rambow-cloud/powertools-lambda-go/metrics`.

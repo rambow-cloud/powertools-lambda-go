@@ -1,0 +1,160 @@
+# Powertools for AWS Lambda (Go)
+
+> Independent Go utilities for AWS Lambda, with OpenTelemetry tracing and independently versioned modules.
+
+This is an independent community project, not an official AWS distribution.
+The English documentation follows main; Release notes identify published versions.
+Use Compatibility and the TypeScript feature comparison for supported boundaries.
+Target AWS Lambda provided.al2023 with CGO disabled on Linux amd64 or arm64.
+Use OpenTelemetry and a collector's awsxray exporter for AWS X-Ray.
+The legacy tracer/xray SDK adapter is deprecated and frozen.
+
+The Optional section contains maintainer procedures, implementation plans and dated evidence.
+Plans describe intended work; historical evidence establishes only its stated scope.
+These pages do not override current usage guides or published release contracts.
+
+- [Source repository](https://github.com/rambow-cloud/powertools-lambda-go)
+
+## What is Powertools for Go
+
+- [What is Powertools for AWS Lambda (Go)](https://powertools-lambda-go.rambow.cloud/): Independent Go utilities for AWS Lambda: structured logging, OpenTelemetry tracing, CloudWatch metrics, validation and event handling.
+
+## Release notes
+
+- [Release notes](https://powertools-lambda-go.rambow.cloud/RELEASE_NOTES/): Read published Powertools for Go release notes, stable and prerelease versions, component changes and canonical GitHub Release links.
+
+## Getting started
+
+- [Your first Go Lambda](https://powertools-lambda-go.rambow.cloud/GETTING_STARTED/): Build your first Go Lambda with Powertools Logger and OpenTelemetry Tracer, a collector, CGO disabled and the provided.al2023 runtime.
+- [Independent modules in one repository](https://powertools-lambda-go.rambow.cloud/MODULES/): Install independently versioned Powertools for Go modules. Understand Go import paths, module dependencies, shared releases and standalone consumers.
+- [Usage patterns](https://powertools-lambda-go.rambow.cloud/USAGE_PATTERNS/): Compose Powertools for Go utilities with correct object lifetimes, Lambda invocation scope, typed handlers and reusable clients.
+- [Environment variables](https://powertools-lambda-go.rambow.cloud/ENVIRONMENT_VARIABLES/): Configure Powertools for Go logging, metrics and tracing using documented environment variables, defaults and option precedence.
+- [Compatibility contract](https://powertools-lambda-go.rambow.cloud/COMPATIBILITY/): Review the maintained Powertools for Go compatibility contract, TypeScript baseline, runtime requirements and supported feature boundaries.
+- [TypeScript feature comparison and verification](https://powertools-lambda-go.rambow.cloud/FEATURE_PARITY/): Compare Powertools for Go with Powertools for AWS Lambda TypeScript v2.35.0 using utility mappings and scoped verification evidence.
+
+## Tracer
+
+- [Tracer](https://powertools-lambda-go.rambow.cloud/TRACER/): Trace Go Lambda handlers, HTTP requests and AWS SDK calls with OpenTelemetry. Deliver spans to AWS X-Ray through an OTLP collector.
+
+## Logger
+
+- [Logger](https://powertools-lambda-go.rambow.cloud/LOGGER/): Write structured JSON logs in Go Lambda with context, correlation IDs, configurable levels and buffering using Powertools Logger.
+
+## Metrics
+
+- [Metrics](https://powertools-lambda-go.rambow.cloud/METRICS/): Emit CloudWatch Embedded Metric Format metrics from Go Lambda with Powertools Metrics, dimensions, validation and cold-start handling.
+
+## Event handlers
+
+- [HTTP event handler](https://powertools-lambda-go.rambow.cloud/HTTP/): Route API Gateway and ALB events in Go Lambda using Powertools HTTP handlers, typed requests, responses and middleware.
+- [HTTP CORS and compression](https://powertools-lambda-go.rambow.cloud/HTTP_MIDDLEWARE/): Configure CORS and response compression middleware for Powertools Go HTTP event handlers, including observable response behavior.
+- [HTTP observability middleware](https://powertools-lambda-go.rambow.cloud/HTTP_OBSERVABILITY/): Add structured logging, OpenTelemetry tracing and CloudWatch metrics to Go Lambda HTTP routes with Powertools middleware.
+- [Native Go HTTP response streaming](https://powertools-lambda-go.rambow.cloud/HTTP_STREAMING/): Stream Go Lambda HTTP responses using Powertools, with streaming lifecycle, response contracts and complete examples.
+- [AppSync Events](https://powertools-lambda-go.rambow.cloud/APPSYNC_EVENTS/): Handle AWS AppSync Events in Go Lambda with Powertools routing, publish and subscribe handlers and documented event contracts.
+- [AppSync GraphQL](https://powertools-lambda-go.rambow.cloud/APPSYNC_GRAPHQL/): Resolve AWS AppSync GraphQL requests in Go Lambda with Powertools, including route dispatch, batching and error contracts.
+- [Bedrock Agent function resolver](https://powertools-lambda-go.rambow.cloud/BEDROCK/): Resolve Amazon Bedrock Agent function requests in Go Lambda with Powertools, typed inputs, routing and response contracts.
+
+## Parameters
+
+- [Parameters](https://powertools-lambda-go.rambow.cloud/PARAMETERS/): Retrieve and cache Go Lambda configuration from SSM, Secrets Manager, DynamoDB and AppConfig using Powertools Parameters.
+
+## Idempotency
+
+- [Idempotency](https://powertools-lambda-go.rambow.cloud/IDEMPOTENCY/): Protect Go Lambda operations from duplicate execution with Powertools Idempotency, DynamoDB persistence and explicit lifecycle contracts.
+- [Redis and Valkey persistence](https://powertools-lambda-go.rambow.cloud/IDEMPOTENCY_CACHE/): Use Redis or Valkey persistence with Powertools Go Idempotency, including cache configuration, lease behavior and replay contracts.
+
+## Batch processing
+
+- [Batch processing](https://powertools-lambda-go.rambow.cloud/BATCH/): Process SQS, Kinesis and DynamoDB Streams batches in Go Lambda with Powertools partial failures, FIFO policies and typed handlers.
+
+## JMESPath
+
+- [JMESPath](https://powertools-lambda-go.rambow.cloud/JMESPATH/): Query JSON and extract Lambda event envelopes with Powertools Go JMESPath, compiled expressions and documented TypeScript mappings.
+
+## Parser
+
+- [Parser](https://powertools-lambda-go.rambow.cloud/PARSER/): Parse Go Lambda events into typed values and validate handler inputs using Powertools Parser and documented event models.
+- [Stream and notification Parser contracts](https://powertools-lambda-go.rambow.cloud/PARSER_STREAMS/): Understand typed Go parsing contracts for stream and notification Lambda events, payload transformations and validation boundaries.
+- [HTTP Parser contracts](https://powertools-lambda-go.rambow.cloud/PARSER_HTTP/): Parse API Gateway, ALB and other supported HTTP Lambda event shapes into typed Go models using Powertools Parser.
+- [Parser AppSync and Cognito models](https://powertools-lambda-go.rambow.cloud/PARSER_IDENTITY/): Parse AppSync and Cognito Lambda events using Powertools Go models, including identity-event contracts and validation scope.
+- [Parser service events and Kafka](https://powertools-lambda-go.rambow.cloud/PARSER_SERVICES/): Parse supported AWS service and Kafka Lambda events into typed Go values with documented Powertools Parser contracts.
+- [Parser recursive errors and composition](https://powertools-lambda-go.rambow.cloud/PARSER_ERRORS/): Handle recursive validation errors and compose Powertools Go Parser operations with explicit paths, results and error contracts.
+
+## Validation
+
+- [JSON Schema Validation](https://powertools-lambda-go.rambow.cloud/JSON_SCHEMA_VALIDATION/): Validate Go Lambda inputs and responses against JSON Schema with Powertools, compiled validators and structured diagnostics.
+- [Validation keyword and numeric compatibility](https://powertools-lambda-go.rambow.cloud/VALIDATION_KEYWORDS/): Review Powertools Go JSON Schema keyword validation, numeric compatibility, supported behavior and diagnostic contracts.
+- [Validation applicator diagnostics](https://powertools-lambda-go.rambow.cloud/VALIDATION_APPLICATORS/): Understand Go JSON Schema applicators and error diagnostics for composed schemas using Powertools Validation.
+- [Validation type groups and references](https://powertools-lambda-go.rambow.cloud/VALIDATION_REFERENCES/): Use JSON Schema type groups and references with Powertools Go Validation, including resource and diagnostic boundaries.
+- [Validation condition graphs and external resource registration](https://powertools-lambda-go.rambow.cloud/VALIDATION_GRAPHS/): Work with JSON Schema condition graphs and external schema resources using Powertools Go Validation.
+- [Validation schema-shape and conditional compilation compatibility](https://powertools-lambda-go.rambow.cloud/VALIDATION_SHAPES/): Review JSON Schema shapes and conditional compilation contracts in Powertools Go Validation.
+- [Validation strict-schema compatibility](https://powertools-lambda-go.rambow.cloud/VALIDATION_STRICT/): Configure strict schema validation in Powertools for Go and understand compilation checks, compatibility and diagnostics.
+- [Validation regular expressions](https://powertools-lambda-go.rambow.cloud/VALIDATION_REGEX/): Use ECMAScript regular expression matching in Powertools Go JSON Schema Validation with documented Unicode and compatibility boundaries.
+
+## Data Masking
+
+- [Data Masking](https://powertools-lambda-go.rambow.cloud/DATAMASKING/): Erase or transform selected Go Lambda payload fields with Powertools Data Masking, ordered rules and optional regex or KMS providers.
+- [AWS Encryption SDK masking provider](https://powertools-lambda-go.rambow.cloud/DATAMASKING_KMS/): Encrypt and decrypt masked Go payload fields with the optional Powertools KMS provider and documented AWS Encryption SDK interoperability.
+
+## Kafka
+
+- [Kafka consumer](https://powertools-lambda-go.rambow.cloud/KAFKA/): Decode Kafka Lambda events in Go with Powertools JSON handling, headers and optional Avro or Protobuf adapters.
+- [Optional Kafka binary adapters](https://powertools-lambda-go.rambow.cloud/KAFKA_BINARY/): Decode Kafka Avro and Protobuf payloads with optional Powertools Go adapters and documented binary format contracts.
+- [Kafka event format contracts](https://powertools-lambda-go.rambow.cloud/KAFKA_MODES/): Understand Kafka Lambda source and JSON event modes, payload decoding and Go Powertools compatibility boundaries.
+
+## Signer
+
+- [Signer](https://powertools-lambda-go.rambow.cloud/SIGNER/): Sign Go HTTP requests using AWS Signature Version 4 with Powertools Signer, credentials and reusable signing transports.
+
+## Commons and Metadata
+
+- [Commons and Metadata](https://powertools-lambda-go.rambow.cloud/COMMONS/): Reuse dependency-free Powertools Go runtime primitives and one shared Lambda invocation identity across independent utilities.
+- [Metadata](https://powertools-lambda-go.rambow.cloud/METADATA/): Retrieve Lambda execution-environment metadata in Go with the optional Powertools Metadata client and explicit request contracts.
+- [Shared ECMAScript regular expressions](https://powertools-lambda-go.rambow.cloud/REGEX/): Use shared ECMAScript regular expression matching and replacement in Powertools for Go with documented Unicode behavior.
+- [Commons reuse audit](https://powertools-lambda-go.rambow.cloud/COMMONS_REUSE/): Review shared primitive ownership and reuse across Powertools Go modules, including invocation identity and dependency boundaries.
+
+## Resources
+
+- [X-Ray through OpenTelemetry](https://powertools-lambda-go.rambow.cloud/XRAY_MIGRATION/): Migrate Go Lambda tracing from the deprecated X-Ray SDK adapter to OpenTelemetry with a collector's awsxray exporter.
+- [Implementation sequence](https://powertools-lambda-go.rambow.cloud/ROADMAP/)
+- [Project progress](https://powertools-lambda-go.rambow.cloud/CHECKLIST/)
+- [Publication readiness](https://powertools-lambda-go.rambow.cloud/PUBLICATION/)
+- [Optional utilities and Go publishing](https://powertools-lambda-go.rambow.cloud/PUBLISHING_PLAN/)
+
+## Optional
+
+- [Contributing](https://powertools-lambda-go.rambow.cloud/CONTRIBUTING/)
+- [Maintainer setup](https://powertools-lambda-go.rambow.cloud/MAINTAINING/)
+- [Releasing Go modules at one version](https://powertools-lambda-go.rambow.cloud/RELEASING/)
+- [v1 readiness and stable scope](https://powertools-lambda-go.rambow.cloud/V1_READINESS/)
+- [v1 API scope review](https://powertools-lambda-go.rambow.cloud/V1_API_REVIEW/)
+- [Documentation and verification versions](https://powertools-lambda-go.rambow.cloud/VERSION_POLICY/)
+- [Documentation and continuous integration](https://powertools-lambda-go.rambow.cloud/DOCUMENTATION/): Build and maintain the Zensical documentation site, search and AI crawler discovery, GitHub Pages mirror and Cloudflare Pages publication.
+- [Local performance baseline](https://powertools-lambda-go.rambow.cloud/PERFORMANCE/)
+- [Validation evidence](https://powertools-lambda-go.rambow.cloud/VALIDATION/)
+- [Module review, 2026-10-05](https://powertools-lambda-go.rambow.cloud/MODULE_REVIEW_2026_10_05/)
+- [Local Docker integration runner](https://powertools-lambda-go.rambow.cloud/LOCAL_INTEGRATION/)
+- [Local Docker validation](https://powertools-lambda-go.rambow.cloud/LOCAL_VALIDATION/)
+- [AWS acceptance results](https://powertools-lambda-go.rambow.cloud/AWS_VALIDATION/)
+- [Scoped AWS service acceptance](https://powertools-lambda-go.rambow.cloud/AWS_SERVICE_ACCEPTANCE/)
+- [Opt-in AWS service contract acceptance](https://powertools-lambda-go.rambow.cloud/AWS_ACCEPTANCE_PLAN/)
+- [Lambda Managed Instances lifecycle assessment](https://powertools-lambda-go.rambow.cloud/MANAGED_INSTANCES_DESIGN/)
+- [Durable execution and Idempotency boundaries](https://powertools-lambda-go.rambow.cloud/DURABLE_EXECUTION_DESIGN/)
+- [Tracing backend decision](https://powertools-lambda-go.rambow.cloud/TRACING_DECISION/)
+- [Commons and Metadata implementation plan](https://powertools-lambda-go.rambow.cloud/COMMONS_PLAN/)
+- [Metrics compatibility checklist](https://powertools-lambda-go.rambow.cloud/METRICS_PLAN/)
+- [Signer assessment and implementation plan](https://powertools-lambda-go.rambow.cloud/SIGNER_PLAN/)
+- [JMESPath implementation checklist](https://powertools-lambda-go.rambow.cloud/JMESPATH_PLAN/)
+- [Batch implementation checklist](https://powertools-lambda-go.rambow.cloud/BATCH_PLAN/)
+- [Idempotency implementation checklist](https://powertools-lambda-go.rambow.cloud/IDEMPOTENCY_PLAN/)
+- [Parser implementation checklist](https://powertools-lambda-go.rambow.cloud/PARSER_PLAN/)
+- [Validation implementation checklist](https://powertools-lambda-go.rambow.cloud/VALIDATION_PLAN/)
+- [Additional Validation dialects and extensions](https://powertools-lambda-go.rambow.cloud/VALIDATION_EXTENSION_DESIGN/)
+- [Kafka implementation plan](https://powertools-lambda-go.rambow.cloud/KAFKA_PLAN/)
+- [Additional Kafka wire modes](https://powertools-lambda-go.rambow.cloud/KAFKA_WIRE_DESIGN/)
+- [Data Masking implementation plan](https://powertools-lambda-go.rambow.cloud/DATAMASKING_PLAN/)
+- [Bounded KMS materials caching](https://powertools-lambda-go.rambow.cloud/KMS_CACHE_DESIGN/)
+- [HTTP event handler implementation checklist](https://powertools-lambda-go.rambow.cloud/HTTP_PLAN/)
+- [AppSync Events implementation checklist](https://powertools-lambda-go.rambow.cloud/APPSYNC_EVENTS_PLAN/)
+- [AppSync GraphQL implementation checklist](https://powertools-lambda-go.rambow.cloud/APPSYNC_GRAPHQL_PLAN/)
+- [Bedrock Agent function resolver checklist](https://powertools-lambda-go.rambow.cloud/BEDROCK_PLAN/)

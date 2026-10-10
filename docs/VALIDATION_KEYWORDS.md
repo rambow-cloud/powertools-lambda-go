@@ -1,3 +1,7 @@
+---
+description: "Review Powertools Go JSON Schema keyword validation, numeric compatibility, supported behavior and diagnostic contracts."
+---
+
 # Validation keyword and numeric compatibility
 
 Reference: Powertools TypeScript v2.35.0 with AJV v8.20.0. These rules extend the schema-setup work in [VALIDATION_STRICT.md](VALIDATION_STRICT.md); they do not establish complete AJV compatibility.

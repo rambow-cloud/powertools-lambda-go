@@ -1,3 +1,7 @@
+---
+description: "Migrate Go Lambda tracing from the deprecated X-Ray SDK adapter to OpenTelemetry with a collector's awsxray exporter."
+---
+
 # X-Ray through OpenTelemetry
 
 Decision date: 2026-09-14. OpenTelemetry is the maintained tracing implementation, including delivery to AWS X-Ray. The independent `tracer/xray` SDK adapter is deprecated and frozen. No new legacy SDK features or compatibility fixes are planned.

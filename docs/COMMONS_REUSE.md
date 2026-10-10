@@ -1,3 +1,7 @@
+---
+description: "Review shared primitive ownership and reuse across Powertools Go modules, including invocation identity and dependency boundaries."
+---
+
 # Commons reuse audit
 
 Reference: installed `@aws-lambda-powertools/{commons,logger,metrics,parameters}` v2.35.0, baseline commit `7bcc27b1574493f9452688673658f52b80c53847`. This review inspected actual ESM imports and call sites, not only documentation descriptions. Future-module reuse below is a design conclusion, not a claim those packages have been implemented or fully audited.
