@@ -17,7 +17,7 @@ theme:
   variant: modern
   language: en
   logo: assets/logo-ram-gopher.png
-  favicon: assets/logo-ram-gopher.png
+  favicon: favicon.ico
   palette:
     - media: "(prefers-color-scheme)"
       toggle:

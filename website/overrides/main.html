@@ -10,6 +10,7 @@
 
 {% block extrahead %}
   {{ super() }}
+  <link rel="icon" type="image/png" sizes="96x96" href="{{ 'favicon.png' | url }}">
   {% if page.canonical_url %}
     {% set description = page.meta.description | d(config.site_description, true) %}
     {% set title = page.meta.title | d(page.title, true) %}
