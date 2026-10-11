@@ -35,6 +35,7 @@ theme:
         name: Switch to system preference
   features:
     - navigation.indexes
+    - navigation.path
     - navigation.tracking
     - toc.follow
     - navigation.top
@@ -89,18 +90,21 @@ extra_css:
 
 nav:
   - Home: index.md
-  - Release notes: RELEASE_NOTES.md
   - Getting started:
+      - Getting started: getting-started/index.md
       - First Lambda: GETTING_STARTED.md
       - Modules and installation: MODULES.md
       - Usage patterns: USAGE_PATTERNS.md
       - Environment variables: ENVIRONMENT_VARIABLES.md
       - Compatibility: COMPATIBILITY.md
       - TypeScript feature comparison: FEATURE_PARITY.md
-  - Tracer: TRACER.md
-  - Logger: LOGGER.md
-  - Metrics: METRICS.md
+  - Observability:
+      - Observability: observability/index.md
+      - Logger: LOGGER.md
+      - Tracer: TRACER.md
+      - Metrics: METRICS.md
   - Event handlers:
+      - Event handlers: event-handlers/index.md
       - HTTP:
           - Routing: HTTP.md
           - Middleware: HTTP_MIDDLEWARE.md
@@ -109,36 +113,41 @@ nav:
       - AppSync Events: APPSYNC_EVENTS.md
       - AppSync GraphQL: APPSYNC_GRAPHQL.md
       - Bedrock Agents: BEDROCK.md
-  - Parameters: PARAMETERS.md
-  - Idempotency:
-      - DynamoDB: IDEMPOTENCY.md
-      - Redis and Valkey: IDEMPOTENCY_CACHE.md
-  - Batch processing: BATCH.md
-  - JMESPath: JMESPATH.md
-  - Parser:
-      - Overview: PARSER.md
-      - Streams: PARSER_STREAMS.md
-      - HTTP: PARSER_HTTP.md
-      - Identity events: PARSER_IDENTITY.md
-      - Service events: PARSER_SERVICES.md
-      - Errors: PARSER_ERRORS.md
-  - Validation:
-      - Overview: JSON_SCHEMA_VALIDATION.md
-      - Keywords: VALIDATION_KEYWORDS.md
-      - Applicators: VALIDATION_APPLICATORS.md
-      - References: VALIDATION_REFERENCES.md
-      - Recursive schemas: VALIDATION_GRAPHS.md
-      - Value shapes: VALIDATION_SHAPES.md
-      - Strict mode: VALIDATION_STRICT.md
-      - Regular expressions: VALIDATION_REGEX.md
-  - Data Masking:
-      - Overview: DATAMASKING.md
-      - KMS provider: DATAMASKING_KMS.md
-  - Kafka:
-      - Overview: KAFKA.md
-      - Avro and Protobuf: KAFKA_BINARY.md
-      - Source and JSON modes: KAFKA_MODES.md
-  - Signer: SIGNER.md
+  - Data processing:
+      - Data processing: data-processing/index.md
+      - Batch processing: BATCH.md
+      - Idempotency:
+          - DynamoDB: IDEMPOTENCY.md
+          - Redis and Valkey: IDEMPOTENCY_CACHE.md
+      - Parser:
+          - Overview: PARSER.md
+          - Streams: PARSER_STREAMS.md
+          - HTTP: PARSER_HTTP.md
+          - Identity events: PARSER_IDENTITY.md
+          - Service events: PARSER_SERVICES.md
+          - Errors: PARSER_ERRORS.md
+      - Validation:
+          - Overview: JSON_SCHEMA_VALIDATION.md
+          - Keywords: VALIDATION_KEYWORDS.md
+          - Applicators: VALIDATION_APPLICATORS.md
+          - References: VALIDATION_REFERENCES.md
+          - Recursive schemas: VALIDATION_GRAPHS.md
+          - Value shapes: VALIDATION_SHAPES.md
+          - Strict mode: VALIDATION_STRICT.md
+          - Regular expressions: VALIDATION_REGEX.md
+      - JMESPath: JMESPATH.md
+      - Kafka:
+          - Overview: KAFKA.md
+          - Avro and Protobuf: KAFKA_BINARY.md
+          - Source and JSON modes: KAFKA_MODES.md
+  - Security and configuration:
+      - Security and configuration: security/index.md
+      - Parameters: PARAMETERS.md
+      - Data Masking:
+          - Overview: DATAMASKING.md
+          - KMS provider: DATAMASKING_KMS.md
+      - Signer: SIGNER.md
+  - Release notes: RELEASE_NOTES.md
   - Commons and Metadata:
       - Overview: COMMONS.md
       - Metadata: METADATA.md

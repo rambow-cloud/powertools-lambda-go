@@ -19,10 +19,12 @@ class DiscoveryTests(unittest.TestCase):
         self.addCleanup(self.temp.cleanup)
         root = Path(self.temp.name)
         self.config = yaml.safe_load((discovery.ROOT / "mkdocs.yml").read_text(encoding="utf-8"))
-        self.config["nav"] = [{"Home": "index.md"}, {"Logger": "LOGGER.md"}]
+        self.config["nav"] = [{"Home": "index.md"}, {"Observability": [
+            {"Observability": "observability/index.md"}, {"Logger": "LOGGER.md"}]}]
+        self.pages = ("index.md", "observability/index.md", "LOGGER.md")
         self.site = root / self.config["site_dir"]
         self.docs = root / self.config["docs_dir"]
-        for name in ("index.html", "LOGGER/index.html", "404.html"):
+        for name in ("index.html", "observability/index.html", "LOGGER/index.html", "404.html"):
             target = self.site / name
             target.parent.mkdir(parents=True, exist_ok=True)
             target.write_text((discovery.ROOT / self.config["site_dir"] / name).read_text(encoding="utf-8"), encoding="utf-8")
@@ -30,15 +32,17 @@ class DiscoveryTests(unittest.TestCase):
         for name in ("favicon.ico", "favicon.png"):
             shutil.copyfile(discovery.ROOT / self.config["docs_dir"] / name, self.docs / name)
             shutil.copyfile(discovery.ROOT / self.config["site_dir"] / name, self.site / name)
-        for name in ("index.md", "LOGGER.md"):
-            (self.docs / name).write_text((discovery.ROOT / self.config["docs_dir"] / name).read_text(encoding="utf-8"), encoding="utf-8")
+        for name in self.pages:
+            target = self.docs / name
+            target.parent.mkdir(parents=True, exist_ok=True)
+            target.write_text((discovery.ROOT / self.config["docs_dir"] / name).read_text(encoding="utf-8"), encoding="utf-8")
         self.original_home = (self.site / "index.html").read_text(encoding="utf-8")
         self.addCleanup(patch.stopall)
         patch.object(discovery, "ROOT", root).start()
         for name, content in discovery.discovery_assets(self.config).items():
             (self.docs / name).write_text(content, encoding="utf-8")
             (self.site / name).write_text(content, encoding="utf-8")
-        urls = [discovery.page_url(target, self.config["site_url"]) for target in ("index.md", "LOGGER.md")]
+        urls = [discovery.page_url(target, self.config["site_url"]) for target in self.pages]
         self.sitemap = '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' + ''.join(f'<url><loc>{url}</loc></url>' for url in urls) + '</urlset>'
         (self.site / "sitemap.xml").write_text(self.sitemap, encoding="utf-8")
 
@@ -50,7 +54,7 @@ class DiscoveryTests(unittest.TestCase):
 
     def issues(self):
         errors, count = discovery.check_discovery(self.config)
-        self.assertEqual(count, 2)
+        self.assertEqual(count, 3)
         return "\n".join(errors)
 
     def test_valid_build(self):
@@ -162,6 +166,51 @@ class DiscoveryTests(unittest.TestCase):
     def test_software_identity_points_to_wrong_repository(self):
         self.change_schema("SoftwareSourceCode", "sameAs", ["https://example.com/unrelated"])
         self.assertIn("software identity and project aliases", self.issues())
+
+    def test_missing_visible_homepage_category(self):
+        path = self.site / "index.html"
+        head, article = path.read_text(encoding="utf-8").split("<article", 1)
+        article = re.sub(r'href="\.?/?observability/"', 'href="https://example.com/"', article)
+        path.write_text(head + "<article" + article, encoding="utf-8")
+        self.assertIn("visibly link to every documentation category", self.issues())
+
+    def test_missing_category_guide_link(self):
+        self.replace("observability/index.html", 'href="../LOGGER/"', 'href="../METRICS/"')
+        self.assertIn("category must visibly link to every section entrypoint", self.issues())
+
+    def test_category_requires_collection_schema(self):
+        self.replace("observability/index.html", '"CollectionPage"', '"TechArticle"')
+        self.assertIn("CollectionPage structured data", self.issues())
+
+    def change_breadcrumb(self, change):
+        path = self.site / "LOGGER/index.html"
+        def replace(match):
+            schema = json.loads(match[1])
+            if schema.get("@type") == "BreadcrumbList":
+                change(schema)
+            return '<script type="application/ld+json">' + json.dumps(schema) + '</script>'
+        path.write_text(re.sub(r'<script type="application/ld\+json">(.*?)</script>', replace,
+                               path.read_text(encoding="utf-8"), flags=re.S), encoding="utf-8")
+
+    def test_wrong_breadcrumb_parent(self):
+        self.change_breadcrumb(lambda schema: schema["itemListElement"][1].update(item=self.config["site_url"] + "security/"))
+        self.assertIn("incorrect canonical BreadcrumbList hierarchy", self.issues())
+
+    def test_breadcrumb_position_gap(self):
+        self.change_breadcrumb(lambda schema: schema["itemListElement"][1].update(position=4))
+        self.assertIn("incorrect canonical BreadcrumbList hierarchy", self.issues())
+
+    def test_preview_host_in_breadcrumb(self):
+        self.change_breadcrumb(lambda schema: schema["itemListElement"][0].update(item="https://preview.example/"))
+        self.assertIn("incorrect canonical BreadcrumbList hierarchy", self.issues())
+
+    def test_missing_breadcrumb(self):
+        self.change_breadcrumb(lambda schema: schema.update({"@type": "ItemList"}))
+        self.assertIn("incorrect canonical BreadcrumbList hierarchy", self.issues())
+
+    def test_visible_category_breadcrumb_link(self):
+        self.replace("LOGGER/index.html", 'href="../observability/"', 'href="../security/"')
+        self.assertIn("missing visible category breadcrumb links", self.issues())
 
 
 if __name__ == "__main__":

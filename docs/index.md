@@ -27,6 +27,17 @@ Go Powertools brings structured logging, OpenTelemetry tracing, CloudWatch metri
 
 Powertools for AWS Lambda (Go) is an **independent community implementation**, based on Powertools for AWS Lambda (TypeScript) v2.35.0. The source repository is [`rambow-cloud/powertools-lambda-go`](https://github.com/rambow-cloud/powertools-lambda-go). See the [compatibility boundaries](COMPATIBILITY.md) and [release notes](RELEASE_NOTES.md). This is not an official AWS distribution.
 
+## Explore the documentation
+
+| Category | What you can build |
+| --- | --- |
+| [Getting started](getting-started/index.md) | Install modules and build your first Go Lambda function. |
+| [Observability](observability/index.md) | Add structured logging, OpenTelemetry tracing and CloudWatch metrics. |
+| [Event handlers](event-handlers/index.md) | Route HTTP APIs and resolve AppSync or Bedrock requests. |
+| [Data processing](data-processing/index.md) | Process batches, parse and validate events, and handle duplicates. |
+| [Security and configuration](security/index.md) | Load parameters, mask sensitive data and sign AWS requests. |
+| [Release notes](RELEASE_NOTES.md) | Read features and fixes in published versions. |
+
 ## Getting started
 
 Install one utility to begin. For example, add structured logging:

@@ -42,7 +42,7 @@
             "about": {"@id": config.site_url ~ "#software"}
           },
           {
-            "@type": "TechArticle",
+            "@type": "CollectionPage" if page.meta.category else "TechArticle",
             "@id": page.canonical_url ~ "#article",
             "url": page.canonical_url,
             "headline": title,
@@ -55,6 +55,33 @@
         ]
       } | tojson }}
     </script>
+    {% if page.canonical_url != config.site_url %}
+      {% set crumbs = namespace(items=[{
+        "@type": "ListItem", "position": 1,
+        "name": "Home", "item": config.site_url
+      }]) %}
+      {% for ancestor in page.ancestors | reverse %}
+        {% for child in ancestor.children %}
+          {% if child.is_index and config.site_url ~ child.url != page.canonical_url %}
+            {% set crumbs.items = crumbs.items + [{
+              "@type": "ListItem", "position": crumbs.items | length + 1,
+              "name": ancestor.title, "item": config.site_url ~ child.url
+            }] %}
+          {% endif %}
+        {% endfor %}
+      {% endfor %}
+      {% set crumbs.items = crumbs.items + [{
+        "@type": "ListItem", "position": crumbs.items | length + 1,
+        "name": page.title, "item": page.canonical_url
+      }] %}
+      <script type="application/ld+json">
+        {{ {
+          "@context": "https://schema.org", "@type": "BreadcrumbList",
+          "@id": page.canonical_url ~ "#breadcrumb",
+          "itemListElement": crumbs.items
+        } | tojson }}
+      </script>
+    {% endif %}
     {% if page.canonical_url == config.site_url %}
       <script type="application/ld+json">
         {{ {
