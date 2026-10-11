@@ -5,6 +5,7 @@ from html.parser import HTMLParser
 import json
 from pathlib import Path
 import re
+import struct
 from urllib.parse import urljoin
 from urllib.robotparser import RobotFileParser
 import xml.etree.ElementTree as ET
@@ -16,7 +17,7 @@ from check_navigation import navigation_targets
 
 ROOT = Path(__file__).resolve().parents[1]
 BOTS = (
-    "Googlebot", "Bingbot", "DuckDuckBot", "Baiduspider", "YandexBot",
+    "Googlebot", "Googlebot-Image", "Bingbot", "DuckDuckBot", "Baiduspider", "YandexBot",
     "OAI-SearchBot", "ChatGPT-User", "GPTBot", "Claude-SearchBot",
     "Claude-User", "ClaudeBot", "PerplexityBot", "Perplexity-User",
     "Amazonbot", "Applebot", "Google-Extended", "CCBot", "UnknownBot",
@@ -170,11 +171,55 @@ class ArticleText(HTMLParser):
             self.text.append(data)
 
 
+def png_dimensions(data: bytes) -> tuple[int, int]:
+    if len(data) < 33 or data[:16] != b"\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR":
+        raise ValueError("invalid PNG header")
+    return struct.unpack(">II", data[16:24])
+
+
+def check_favicons(docs_dir: Path, site_dir: Path) -> list[str]:
+    errors = []
+    for name in ("favicon.png", "favicon.ico"):
+        source, built = docs_dir / name, site_dir / name
+        if not source.is_file() or not built.is_file():
+            errors.append(f"Missing favicon asset: {name}")
+            continue
+        data = built.read_bytes()
+        if data != source.read_bytes():
+            errors.append(f"Stale favicon asset: {name}")
+        try:
+            if name.endswith(".png"):
+                if png_dimensions(data) != (96, 96):
+                    raise ValueError("PNG must be 96x96")
+            else:
+                reserved, kind, count = struct.unpack_from("<HHH", data)
+                if (reserved, kind, count) != (0, 1, 4):
+                    raise ValueError("ICO must contain four icon frames")
+                sizes = set()
+                previous_end = 6 + 16 * count
+                for index in range(count):
+                    width, height, colors, entry_reserved, planes, bits, length, offset = struct.unpack_from("<BBBBHHII", data, 6 + 16 * index)
+                    size = (width or 256, height or 256)
+                    if (colors or entry_reserved or planes not in (0, 1) or bits != 32
+                            or offset < previous_end or offset + length > len(data)
+                            or png_dimensions(data[offset:offset + length]) != size):
+                        raise ValueError("invalid ICO frame")
+                    sizes.add(size)
+                    previous_end = offset + length
+                if sizes != {(16, 16), (32, 32), (48, 48), (256, 256)}:
+                    raise ValueError("ICO must contain 16, 32, 48 and 256px square frames")
+        except (ValueError, struct.error) as error:
+            errors.append(f"Invalid favicon asset {name}: {error}")
+    return errors
+
+
 def check_discovery(config: dict) -> tuple[list[str], int]:
     docs_dir, site_dir = ROOT / config["docs_dir"], ROOT / config["site_dir"]
     site_url = config["site_url"]
     aliases = config["extra"]["project_aliases"]
-    errors = []
+    errors = check_favicons(docs_dir, site_dir)
+    if config["theme"].get("favicon") != "favicon.ico":
+        errors.append("Theme must declare the dedicated favicon.ico.")
     for filename, expected in discovery_assets(config).items():
         for directory in (docs_dir, site_dir):
             path = directory / filename
@@ -197,6 +242,9 @@ def check_discovery(config: dict) -> tuple[list[str], int]:
             continue
         html = path.read_text(encoding="utf-8")
         head = PageHead(html)
+        icons = [urljoin(url, href) for href in head.links.get("icon", [])]
+        if icons != [site_url + "favicon.ico", site_url + "favicon.png"]:
+            errors.append(f"{target}: missing or incorrect dedicated favicon links")
         metadata, _ = page_metadata(docs_dir / target)
         description = metadata.get("description", config["site_description"])
         if not head.title.strip() or head.links.get("canonical") != [url]:
@@ -238,6 +286,11 @@ def check_discovery(config: dict) -> tuple[list[str], int]:
         if '<article' not in html:
             errors.append(f"{target}: missing server-rendered article")
     error_head = PageHead((site_dir / "404.html").read_text(encoding="utf-8"))
+    published_robots = RobotFileParser()
+    published_robots.parse((site_dir / "robots.txt").read_text(encoding="utf-8").splitlines())
+    for name in ("favicon.ico", "favicon.png"):
+        if not published_robots.can_fetch("Googlebot-Image", site_url + name):
+            errors.append(f"Googlebot-Image cannot crawl {name}")
     if error_head.meta.get("robots") != ["noindex, follow"]:
         errors.append("The error page must opt out of indexing.")
     return errors, len(targets)

@@ -3,6 +3,7 @@
 import json
 from pathlib import Path
 import re
+import shutil
 import tempfile
 import unittest
 from unittest.mock import patch
@@ -26,6 +27,9 @@ class DiscoveryTests(unittest.TestCase):
             target.parent.mkdir(parents=True, exist_ok=True)
             target.write_text((discovery.ROOT / self.config["site_dir"] / name).read_text(encoding="utf-8"), encoding="utf-8")
         self.docs.mkdir()
+        for name in ("favicon.ico", "favicon.png"):
+            shutil.copyfile(discovery.ROOT / self.config["docs_dir"] / name, self.docs / name)
+            shutil.copyfile(discovery.ROOT / self.config["site_dir"] / name, self.site / name)
         for name in ("index.md", "LOGGER.md"):
             (self.docs / name).write_text((discovery.ROOT / self.config["docs_dir"] / name).read_text(encoding="utf-8"), encoding="utf-8")
         self.original_home = (self.site / "index.html").read_text(encoding="utf-8")
@@ -74,6 +78,37 @@ class DiscoveryTests(unittest.TestCase):
     def test_indexable_error_page(self):
         self.replace("404.html", "noindex, follow", "index, follow")
         self.assertIn("error page must opt out of indexing", self.issues())
+
+    def test_missing_published_favicon(self):
+        (self.site / "favicon.ico").unlink()
+        self.assertIn("Missing favicon asset: favicon.ico", self.issues())
+
+    def test_corrupt_ico(self):
+        (self.site / "favicon.ico").write_bytes(b"not an icon")
+        self.assertIn("Invalid favicon asset favicon.ico", self.issues())
+
+    def test_wrong_png_dimensions(self):
+        path = self.site / "favicon.png"
+        data = bytearray(path.read_bytes())
+        data[16:20] = (95).to_bytes(4, "big")
+        path.write_bytes(data)
+        self.assertIn("PNG must be 96x96", self.issues())
+
+    def test_nested_guide_icon_resolves_to_root(self):
+        self.replace("LOGGER/index.html", '../favicon.ico', './favicon.ico')
+        self.assertIn("LOGGER.md: missing or incorrect dedicated favicon links", self.issues())
+
+    def test_image_crawler_blocked_from_favicon(self):
+        path = self.site / "robots.txt"
+        path.write_text(path.read_text(encoding="utf-8") + "\nUser-agent: Googlebot-Image\nDisallow: /favicon\n", encoding="utf-8")
+        self.assertIn("Googlebot-Image cannot crawl favicon.ico", self.issues())
+
+    def test_subpath_mirror_icon_links(self):
+        mirror = "https://example.github.io/powertools-lambda-go/"
+        for name, page_url in (("index.html", mirror), ("LOGGER/index.html", mirror + "LOGGER/")):
+            head = discovery.PageHead((self.site / name).read_text(encoding="utf-8"))
+            self.assertEqual([discovery.urljoin(page_url, href) for href in head.links["icon"]],
+                             [mirror + "favicon.ico", mirror + "favicon.png"])
 
     def test_generic_homepage_title(self):
         path = self.site / "index.html"

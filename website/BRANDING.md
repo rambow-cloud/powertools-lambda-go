@@ -5,10 +5,12 @@ The current identity uses the user-selected rambow.cloud ram, cloud, and wordmar
 ## Assets and integration
 
 - `docs/assets/logo.png`: the full horizontal logo, including the rambow.cloud wordmark.
-- `docs/assets/logo-ram-gopher.png`: the compact ram/cloud/Gopher emblem used by the documentation header, mobile navigation, and favicon.
+- `docs/assets/logo-ram-gopher.png`: the compact ram/cloud/Gopher emblem used by the documentation header and mobile navigation.
 - Both assets are transparent PNGs, produced using the built-in image generation tool on 2026-09-30.
 - The full logo edits the user-supplied brand artwork. The compact version removes the wordmark and reframes the emblem with the same tool.
-- `theme.logo` and `theme.favicon` in `mkdocs.yml` reference the compact asset. Its new filename avoids retaining the previous favicon in browser caches.
+- `theme.logo` references the compact asset; `theme.favicon` references the dedicated `favicon.ico`.
+- `website/branding/favicon-source.png`: the transparent square favicon artwork, derived from the compact emblem with the built-in image generation tool on 2026-10-11. It preserves the ram, cloud and Gopher identity and is not published as a page asset.
+- `docs/favicon.png`: the 96px PNG favicon. `docs/favicon.ico`: PNG-encoded 16, 32, 48 and 256px frames. `website/build_favicons.py` packages the approved artwork using Pillow 12.0.0; the site build copies these committed files without image dependencies. Keep both published root filenames stable.
 - Zensical's default modern theme renders and sizes the logo; no project template or CSS override is used.
 
 ## Gopher attribution
@@ -16,6 +18,10 @@ The current identity uses the user-selected rambow.cloud ram, cloud, and wordmar
 The Go Gopher was created by Renee French and is licensed under [Creative Commons Attribution 4.0](https://creativecommons.org/licenses/by/4.0/), as documented by the [Go project](https://go.dev/brand) and [The Go Gopher](https://go.dev/blog/gopher).
 
 Changes: an AI-generated adaptation recolors and poses the Gopher within the user-provided ram/cloud logo, then creates a compact variant for small placements. Attribution appears in the documentation footer and `THIRD_PARTY_NOTICES.md`. This is an independent project, not an official Go or AWS distribution. The project MIT license does not replace the Gopher's attribution terms.
+
+## Dedicated-favicon edit prompt
+
+Use the existing transparent compact emblem as a strict identity reference. Produce a faithful square favicon version: preserve the navy/cyan curled-horn white ram facing right, blue cloud and small cyan Go Gopher at front-left, with the same arrangement and silhouette. Simplify only fine gradients and tiny details for readability at 32px. Center the complete emblem with narrow even transparent padding, including horn negative space. Keep the white facial areas. No redesign, wordmark, letters, border, badge, shadow, watermark, AWS marks or added objects. Output a single icon with true transparency, not a mockup or size sheet.
 
 ## Full-logo edit prompt
 

@@ -51,7 +51,11 @@ Preview the homepage, Logger, and Getting Started pages. At desktop width, inspe
 
 ## Project artwork
 
-The [full rambow.cloud logo](assets/logo.png) combines the project owner's ram/cloud identity with a Go Gopher. The [compact emblem](assets/logo-ram-gopher.png) is used in the header, navigation drawer, and favicon. Both use transparent backgrounds. Generation prompts and asset provenance are recorded in [website/BRANDING.md](https://github.com/rambow-cloud/powertools-lambda-go/blob/main/website/BRANDING.md).
+The [full rambow.cloud logo](assets/logo.png) combines the project owner's ram/cloud identity with a Go Gopher. The [compact emblem](assets/logo-ram-gopher.png) is used in the header and navigation drawer. Dedicated transparent favicon assets use the same identity: [favicon.ico](favicon.ico) contains 16, 32, 48 and 256px frames; [favicon.png](favicon.png) is 96px square. The theme declares the ICO, and the head override declares the PNG. Relative links resolve to the site root on nested guides and preserve the GitHub Pages mirror's subpath. Generation prompts and asset provenance are recorded in [website/BRANDING.md](https://github.com/rambow-cloud/powertools-lambda-go/blob/main/website/BRANDING.md).
+
+To refresh the committed favicon files after approving new artwork, run `uv run --with pillow==12.0.0 python website/build_favicons.py`. Pillow is only needed for asset packaging, not the documentation build. The discovery checker validates copied assets, PNG dimensions, ICO frame headers, page declarations and Googlebot-Image robots access.
+
+After production deployment, open **https://powertools-lambda-go.rambow.cloud/favicon.png** to inspect the image, open **https://powertools-lambda-go.rambow.cloud/favicon.ico** to confirm the file is available, and refresh both the homepage and **https://powertools-lambda-go.rambow.cloud/LOGGER/** to inspect their browser-tab icons. Request homepage indexing in Search Console if needed. Google processes favicons separately; [eligibility does not guarantee display](https://developers.google.com/search/docs/appearance/favicon-in-search), and local robots checks do not prove CDN access or Googlebot visits. Keep the favicon URLs stable.
 
 The Gopher is adapted from Renee French's design under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/). Keep the source, creator, license, and modification credit when reusing the artwork; the website footer includes that credit.
 
