@@ -47,6 +47,32 @@ def page_url(target: str, site_url: str) -> str:
     return urljoin(site_url, path)
 
 
+def navigation_paths(entries: list, parents: tuple = ()):
+    """Resolve breadcrumb parents only for sections with real index pages."""
+    for entry in entries:
+        for label, value in entry.items():
+            if isinstance(value, str):
+                yield value, label, tuple(parent for parent in parents if parent[1] != value)
+            else:
+                indexes = [target for item in value for target in item.values()
+                           if isinstance(target, str) and target.endswith('/index.md')]
+                section = ((label, indexes[0]),) if indexes else ()
+                yield from navigation_paths(value, parents + section)
+
+
+def section_entries(entries: list):
+    """Find each section index and its direct guide or subsection entrypoints."""
+    for entry in entries:
+        for value in entry.values():
+            if isinstance(value, list):
+                starts = [next(navigation_targets(item)) for item in value]
+                indexes = [target for item in value for target in item.values()
+                           if isinstance(target, str) and target.endswith('/index.md')]
+                if indexes:
+                    yield indexes[0], [target for target in starts if target != indexes[0]]
+                yield from section_entries(value)
+
+
 def discovery_assets(config: dict) -> dict[str, str]:
     site_url = config["site_url"]
     if not site_url.startswith("https://") or not site_url.endswith("/"):
@@ -142,6 +168,7 @@ class ArticleText(HTMLParser):
         self.in_article = False
         self.stack = []
         self.text = []
+        self.links = []
         self.feed(html)
 
     def handle_starttag(self, tag, attrs):
@@ -155,6 +182,8 @@ class ArticleText(HTMLParser):
                   or "hidden" in attrs or attrs.get("aria-hidden", "").lower() == "true"
                   or "display:none" in style or "visibility:hidden" in style)
         self.stack.append((tag, hidden))
+        if tag == "a" and not hidden and attrs.get("href"):
+            self.links.append(attrs["href"])
 
     def handle_endtag(self, tag):
         if not self.in_article:
@@ -168,6 +197,32 @@ class ArticleText(HTMLParser):
 
     def handle_data(self, data):
         if self.in_article and self.stack and not self.stack[-1][1]:
+            self.text.append(data)
+
+
+class NavigationPath(HTMLParser):
+    """Read the native visible breadcrumb links from rendered HTML."""
+
+    def __init__(self, html: str):
+        super().__init__()
+        self.active = False
+        self.links = []
+        self.text = []
+        self.feed(html)
+
+    def handle_starttag(self, tag, attrs):
+        attrs = dict(attrs)
+        if tag == "nav" and "md-path" in attrs.get("class", "").split():
+            self.active = True
+        elif self.active and tag == "a":
+            self.links.append(attrs.get("href", ""))
+
+    def handle_endtag(self, tag):
+        if tag == "nav":
+            self.active = False
+
+    def handle_data(self, data):
+        if self.active:
             self.text.append(data)
 
 
@@ -228,6 +283,9 @@ def check_discovery(config: dict) -> tuple[list[str], int]:
     robots = RobotFileParser()
     robots.parse(discovery_assets(config)["robots.txt"].splitlines())
     targets = list(navigation_targets(config["nav"]))
+    paths = {target: (label, parents) for target, label, parents in navigation_paths(config["nav"])}
+    sections = dict(section_entries(config["nav"]))
+    categories = [target for target in targets if page_metadata(docs_dir / target)[0].get("category")]
     urls = {page_url(target, site_url) for target in targets}
     sitemap = ET.parse(site_dir / "sitemap.xml")
     locations = [node.text for node in sitemap.findall(".//{*}loc")]
@@ -263,12 +321,39 @@ def check_discovery(config: dict) -> tuple[list[str], int]:
         if (len(websites) != 1 or websites[0].get("name") != config["site_name"]
                 or websites[0].get("url") != site_url or websites[0].get("alternateName") != aliases):
             errors.append(f"{target}: inconsistent website name or project aliases")
-        articles = [node for node in nodes if node.get("@type") == "TechArticle"]
+        primary_type = "CollectionPage" if metadata.get("category") else "TechArticle"
+        articles = [node for node in nodes if node.get("@type") == primary_type]
         if len(articles) != 1 or articles[0].get("url") != url or articles[0].get("description") != description:
-            errors.append(f"{target}: missing or inconsistent TechArticle structured data")
+            errors.append(f"{target}: missing or inconsistent {primary_type} structured data")
         if len(articles) == 1 and articles[0].get("about") != {"@id": site_url + "#software"}:
             errors.append(f"{target}: article must identify the documented software")
+        content = ArticleText(html)
+        article_links = {urljoin(url, href) for href in content.links}
+        breadcrumbs = [node for node in nodes if node.get("@type") == "BreadcrumbList"]
+        if target != "index.md":
+            label, parents = paths[target]
+            expected_trail = [("Home", site_url), *[(name, page_url(index, site_url)) for name, index in parents], (label, url)]
+            expected_items = [{"@type": "ListItem", "position": position, "name": name, "item": item}
+                              for position, (name, item) in enumerate(expected_trail, 1)]
+            if (len(breadcrumbs) != 1 or breadcrumbs[0].get("itemListElement") != expected_items
+                    or breadcrumbs[0].get("@id") != url + "#breadcrumb"):
+                errors.append(f"{target}: incorrect canonical BreadcrumbList hierarchy")
+            if parents or metadata.get("category"):
+                visible_path = NavigationPath(html)
+                visible_urls = {urljoin(url, href) for href in visible_path.links}
+                required_path = expected_trail[:-1] if parents else expected_trail
+                visible_names = " ".join(" ".join(visible_path.text).split())
+                if any(item not in visible_urls or name not in visible_names for name, item in required_path):
+                    errors.append(f"{target}: missing visible category breadcrumb links")
+        elif breadcrumbs:
+            errors.append("Homepage must not declare a single-item breadcrumb.")
+        if metadata.get("category"):
+            children = [page_url(child, site_url) for child in sections.get(target, [])]
+            if not children or not all(child in article_links for child in children):
+                errors.append(f"{target}: category must visibly link to every section entrypoint")
         if target == "index.md":
+            if not all(page_url(category, site_url) in article_links for category in categories):
+                errors.append("Homepage must visibly link to every documentation category.")
             expected_title = metadata.get("title", config["site_name"])
             if head.title.strip() != expected_title or aliases[0].lower() not in expected_title.lower():
                 errors.append("Homepage must have one concise project-specific title without a repeated site-name suffix.")
