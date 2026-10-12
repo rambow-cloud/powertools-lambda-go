@@ -162,6 +162,37 @@ cancellation, JSON/regex failures and registered-only loading. Local
 Handler/Parser, inbound/outbound and envelope composition are covered separately.
 See [the implementation issue](https://github.com/rambow-cloud/powertools-lambda-go/issues/168).
 
+## Optional Draft 2019-09 compiler
+
+`Draft201909Compiler` is also available on `main`, through
+`Options{Compiler: validation.Draft201909Compiler{}}`; it is absent from published
+v1.1.0. Registration, snapshots, native diagnostics, formats, regex limits and
+cancellation follow the [2020-12 compiler contract](#optional-draft-2020-12-compiler).
+Each adapter selects and validates its own metaschema and vocabulary. Their
+shared private implementation does not select a dialect automatically or expand
+default Draft 7.
+
+Use tuple `items` with `additionalItems`, rather than 2020-12 `prefixItems` and
+the changed `items`. Recursive extension uses `$recursiveAnchor:true` and
+`$recursiveRef:"#"`; 2020-12 dynamic keywords are rejected. See the executable
+[`Draft201909Compiler` example](https://github.com/rambow-cloud/powertools-lambda-go/blob/main/validation/example_test.go).
+
+The [58-case pinned injected-Ajv2019 corpus](https://github.com/rambow-cloud/powertools-lambda-go/blob/main/validation/testdata/draft-2019-09-v2.35.0.json)
+records 55 agreeing verdicts and three explicit differences. With integer
+`contains` and `unevaluatedItems:false`, Ajv2019 accepts `[1,2]` and `[1,"bad"]`;
+the native 2019-09 engine rejects both because `contains` does not mark array
+locations evaluated. The earlier draft left this interaction unspecified;
+[the 2020-12 release notes](https://json-schema.org/draft/2020-12/release-notes#contains-and-unevaluateditems)
+describe the subsequent change. The third difference is exact fractional
+`multipleOf`, as in the 2020-12 native profile. Original reference results and
+reasons are retained separately; no AJV verdict/message equivalence is promised.
+
+Native acceptance includes nested tuple resource/vocabulary checks, owned
+schema/payload/diagnostic reuse with 32 overlapping calls, default/dialect
+separation, recursive-reference fixtures, and local Handler/Parser, envelope,
+outbound and exact-number cases. The full 2020-12 and default Draft 7 suites
+remain regression gates after factoring the shared implementation.
+
 ## Errors and current boundaries
 
 `SchemaCompilationError` has the reference message `Failed to compile schema` and unwraps its compilation cause. `SchemaValidationError` carries `Issues` with instance path, schema path, keyword, message, params and an optional property name. An empty property name remains distinguishable from an absent field. Wrapper messages distinguish `Inbound schema validation failed` and `Outbound schema validation failed`. Query and operational errors remain distinct for standalone calls; wrappers retain operational errors as their cause.

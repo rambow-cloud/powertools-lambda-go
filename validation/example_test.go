@@ -38,3 +38,17 @@ func ExampleDraft202012Compiler() {
 	fmt.Println(valid == nil, extra != nil)
 	// Output: true true
 }
+
+func ExampleDraft201909Compiler() {
+	schema, err := validation.Compile(context.Background(), jsonv1.RawMessage(`{
+        "$schema":"https://json-schema.org/draft/2019-09/schema",
+        "type":"array","items":[{"type":"integer"},{"type":"string"}],"additionalItems":false
+    }`), validation.Options{Compiler: validation.Draft201909Compiler{}})
+	if err != nil {
+		panic(err)
+	}
+	_, valid := schema.Validate(context.Background(), []any{1, "ok"})
+	_, extra := schema.Validate(context.Background(), []any{1, "ok", true})
+	fmt.Println(valid == nil, extra != nil)
+	// Output: true true
+}

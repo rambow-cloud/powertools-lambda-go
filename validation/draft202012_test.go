@@ -17,7 +17,12 @@ import (
 )
 
 func TestDraft202012Reference(t *testing.T) {
-	data, err := os.ReadFile("testdata/draft-2020-12-v2.35.0.json")
+	testNativeDraftReference(t, "testdata/draft-2020-12-v2.35.0.json", Draft202012Compiler{}, 56, map[string]bool{"contains-evaluated-invalid": true, "fractional-multiple-native-exact": true})
+}
+
+func testNativeDraftReference(t *testing.T, filename string, compiler Compiler, count int, differences map[string]bool) {
+	t.Helper()
+	data, err := os.ReadFile(filename)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -40,12 +45,12 @@ func TestDraft202012Reference(t *testing.T) {
 	if err := jsonv1.Unmarshal(data, &fixture); err != nil {
 		t.Fatal(err)
 	}
-	if fixture.Version != "2.35.0" || fixture.AJVVersion != "8.20.0" || len(fixture.Cases) != 56 {
+	if fixture.Version != "2.35.0" || fixture.AJVVersion != "8.20.0" || len(fixture.Cases) != count {
 		t.Fatal("unexpected reference identity")
 	}
 	for _, item := range fixture.Cases {
 		t.Run(item.Name, func(t *testing.T) {
-			options := Options{Compiler: Draft202012Compiler{}}
+			options := Options{Compiler: compiler}
 			for _, source := range item.References {
 				options.ExternalSchemas = append(options.ExternalSchemas, source)
 			}
@@ -63,7 +68,7 @@ func TestDraft202012Reference(t *testing.T) {
 			_, err = schema.Validate(context.Background(), item.Payload)
 			success := item.Expected.Success
 			if item.NativeSuccess != nil {
-				if item.NativeReason == "" || (item.Name != "contains-evaluated-invalid" && item.Name != "fractional-multiple-native-exact") {
+				if item.NativeReason == "" || !differences[item.Name] {
 					t.Fatal("unreviewed native difference")
 				}
 				success = *item.NativeSuccess

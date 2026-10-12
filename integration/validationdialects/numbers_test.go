@@ -9,6 +9,15 @@ import (
 )
 
 func TestDraft202012ExactNumberBoundaries(t *testing.T) {
+	testDialectNumbers(t, validation.Draft202012Compiler{})
+}
+
+func TestDraft201909ExactNumberBoundaries(t *testing.T) {
+	testDialectNumbers(t, validation.Draft201909Compiler{})
+}
+
+func testDialectNumbers(t *testing.T, compiler validation.Compiler) {
+	t.Helper()
 	for _, item := range []struct {
 		name, schema, input string
 		valid               bool
@@ -22,7 +31,7 @@ func TestDraft202012ExactNumberBoundaries(t *testing.T) {
 		{"exact-fraction", `{"type":"number","multipleOf":0.1}`, `1.2`, true},
 	} {
 		t.Run(item.name, func(t *testing.T) {
-			schema, err := validation.Compile(context.Background(), jsonv1.RawMessage(item.schema), validation.Options{Compiler: validation.Draft202012Compiler{}})
+			schema, err := validation.Compile(context.Background(), jsonv1.RawMessage(item.schema), validation.Options{Compiler: compiler})
 			if err != nil {
 				t.Fatal(err)
 			}

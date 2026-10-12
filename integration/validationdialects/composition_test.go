@@ -17,12 +17,25 @@ type request struct {
 }
 
 func TestDraft202012HandlerParserComposition(t *testing.T) {
+	testDialectComposition(t, validation.Draft202012Compiler{},
+		jsonv1.RawMessage(`{"type":"object","required":["names"],"properties":{"names":{"type":"array","prefixItems":[{"type":"string"}],"items":false}}}`),
+		jsonv1.RawMessage(`{"type":"array","prefixItems":[{"type":"string"}],"items":false}`))
+}
+
+func TestDraft201909HandlerParserComposition(t *testing.T) {
+	testDialectComposition(t, validation.Draft201909Compiler{},
+		jsonv1.RawMessage(`{"type":"object","required":["names"],"properties":{"names":{"type":"array","items":[{"type":"string"}],"additionalItems":false}}}`),
+		jsonv1.RawMessage(`{"type":"array","items":[{"type":"string"}],"additionalItems":false}`))
+}
+
+func testDialectComposition(t *testing.T, compiler validation.Compiler, inputSchema, outputSchema jsonv1.RawMessage) {
+	t.Helper()
 	ctx := context.Background()
-	inbound, err := validation.Compile(ctx, jsonv1.RawMessage(`{"type":"object","required":["names"],"properties":{"names":{"type":"array","prefixItems":[{"type":"string"}],"items":false}}}`), validation.Options{Compiler: validation.Draft202012Compiler{}})
+	inbound, err := validation.Compile(ctx, inputSchema, validation.Options{Compiler: compiler})
 	if err != nil {
 		t.Fatal(err)
 	}
-	outbound, err := validation.Compile(ctx, jsonv1.RawMessage(`{"type":"array","prefixItems":[{"type":"string"}],"items":false}`), validation.Options{Compiler: validation.Draft202012Compiler{}})
+	outbound, err := validation.Compile(ctx, outputSchema, validation.Options{Compiler: compiler})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -49,7 +62,7 @@ func TestDraft202012HandlerParserComposition(t *testing.T) {
 			}
 		})
 	}
-	envelope, err := validation.Compile(ctx, jsonv1.RawMessage(`{"type":"object","dependentRequired":{"name":["id"]}}`), validation.Options{Compiler: validation.Draft202012Compiler{}, Envelope: "payload"})
+	envelope, err := validation.Compile(ctx, jsonv1.RawMessage(`{"type":"object","dependentRequired":{"name":["id"]}}`), validation.Options{Compiler: compiler, Envelope: "payload"})
 	if err != nil {
 		t.Fatal(err)
 	}

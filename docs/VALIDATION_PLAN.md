@@ -10,6 +10,11 @@ and measured injected-engine differences are in the
 [optional compiler contract](JSON_SCHEMA_VALIDATION.md#optional-draft-2020-12-compiler).
 Other dialects and transformations remain separately tracked work.
 
+[#169](https://github.com/rambow-cloud/powertools-lambda-go/issues/169) adds the
+opt-in `Draft201909Compiler`, with independently captured tuple/recursive-reference
+behavior and native differences. It reuses proven registration/diagnostics without
+changing either existing default or 2020-12 contracts.
+
 Reference: Powertools TypeScript v2.35.0, installed AJV v8.20.0. The default Go engine is jsonschema/v6 v6.0.3. All documentation and code comments remain English. Completion of a scoped item does not establish full AJV parity.
 
 - [x] V-01: Implement manual validation, reusable compiled schemas, an injected compiler/validator contract, and typed compilation/validation errors. Verify schema/options snapshots, 32 concurrent callers, cancellation, operational error identity and invalid JSON handling.

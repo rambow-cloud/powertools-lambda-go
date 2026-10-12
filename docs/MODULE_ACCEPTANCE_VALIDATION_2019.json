@@ -1,0 +1,40 @@
+{
+  "cgo_enabled": false,
+  "workspace": "off",
+  "source": "local module proxy fixtures; not published versions",
+  "completed": true,
+  "modules": [
+    {
+      "path": "github.com/rambow-cloud/powertools-lambda-go/validation",
+      "directory": "validation",
+      "public": true,
+      "version": "v1.1.0",
+      "archive_sha256": "04d3cf1cace5a7eea441eae5a6348e3ad35d743fd2a50c31cb8520b111fad462",
+      "tests": true,
+      "vet": true,
+      "tidy": true,
+      "consumer_build": true,
+      "external_modules": [
+        "github.com/davecgh/go-spew",
+        "github.com/dlclark/regexp2",
+        "github.com/dlclark/regexp2/v2",
+        "github.com/google/go-cmp",
+        "github.com/jmespath-community/go-jmespath",
+        "github.com/pmezard/go-difflib",
+        "github.com/santhosh-tekuri/jsonschema/v6",
+        "github.com/stretchr/testify",
+        "golang.org/x/exp",
+        "golang.org/x/mod",
+        "golang.org/x/sys",
+        "golang.org/x/text",
+        "golang.org/x/tools",
+        "gopkg.in/yaml.v3"
+      ],
+      "binary_bytes": 6432768
+    }
+  ],
+  "scope": "Selected modules only; this report does not replace full-workspace acceptance",
+  "selected_directories": [
+    "validation"
+  ]
+}
