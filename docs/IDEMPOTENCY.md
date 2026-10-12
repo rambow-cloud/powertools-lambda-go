@@ -92,6 +92,9 @@ DynamoDB response data is stored as native AttributeValues, including lists, map
 ## Explicit differences and unfinished gates
 
 Remaining acceptance is tracked in the [Idempotency plan](IDEMPOTENCY_PLAN.md).
+The finite [persistence boundary audit](IDEMPOTENCY_AUDIT.md) records local
+bidirectional evidence, reproduced fixes and intentional differences separately
+from the remaining service and topology gates.
 
 - This is scoped JSON interoperability, not proof of every JavaScript type. Malformed UTF-8, lone UTF-16 surrogates, Unicode case conversion edge cases, custom JavaScript objects, BigInt, undefined values, and exhaustive floating-point formatting remain compatibility work. Arbitrary Go values that cannot be represented as JSON return an error.
 - The pinned in-progress consistency check compares an epoch-millisecond deadline with `getUTCMilliseconds()`. Go compares complete Unix milliseconds. A missing item after a conflict also receives bounded reacquisition instead of exposing an unwrapped missing-item error.

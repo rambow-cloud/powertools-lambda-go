@@ -1,0 +1,782 @@
+{
+  "version": "2.35.0",
+  "now": 1800000000250,
+  "keys": [
+    {
+      "raw": "{\"4294967294\":1,\"4294967295\":2,\"0\":3,\"00\":4}",
+      "canonical": "{\"0\":3,\"4294967294\":1,\"00\":4,\"4294967295\":2}",
+      "key": "operation#K3kf75b0aApuZ781SfnvUQ=="
+    },
+    {
+      "raw": "{\"b\":[],\"a\":{},\"C\":[null,false,0,\"\"]}",
+      "canonical": "{\"a\":{},\"b\":[],\"C\":[null,false,0,\"\"]}",
+      "key": "operation#tbJl1LZxywAg0I0++iheKw=="
+    },
+    {
+      "raw": "{\"Ω\":1,\"é\":2,\"中\":3,\"😀\":4}",
+      "canonical": "{\"é\":2,\"Ω\":1,\"中\":3,\"😀\":4}",
+      "key": "operation#Yz6dCmlq/XEkZrjN0E/9mQ=="
+    },
+    {
+      "raw": "[5e-324,2.2250738585072014e-308,1.7976931348623157e308]",
+      "canonical": "[5e-324,2.2250738585072014e-308,1.7976931348623157e+308]",
+      "key": "operation#6P9+3DGs7nsHQvn0SUR85A=="
+    },
+    {
+      "raw": "[0.000001,0.0000009999999999999999,999999999999999900000,1e21]",
+      "canonical": "[0.000001,0.000001,999999999999999900000,1e+21]",
+      "key": "operation#4u8dlsb4N1iNUND8Qr166Q=="
+    },
+    {
+      "raw": "{\"text\":\"\\u0000\\b\\f\\r\\n\\t\\u2028\\u2029<>&\"}",
+      "canonical": "{\"text\":\"\\u0000\\b\\f\\r\\n\\t  <>&\"}",
+      "key": "operation#LvV1JOhwcOnVenaKzXjuPw=="
+    }
+  ],
+  "rows": [
+    {
+      "name": "null",
+      "custom": false,
+      "record": {
+        "id": "audit#key",
+        "status": "COMPLETED",
+        "expiration": 1800003600,
+        "data": null,
+        "validation": "validation-hash"
+      },
+      "cache": "{\"status\":\"COMPLETED\",\"expiration\":1800003600,\"data\":null}",
+      "item": {
+        "id": {
+          "S": "audit#key"
+        },
+        "expiration": {
+          "N": "1800003600"
+        },
+        "status": {
+          "S": "COMPLETED"
+        },
+        "data": {
+          "NULL": true
+        },
+        "validation": {
+          "S": "validation-hash"
+        }
+      },
+      "cacheRead": {
+        "id": "audit#key",
+        "status": "COMPLETED",
+        "expiration": 1800003600,
+        "data": null
+      },
+      "dynamodbRead": {
+        "id": "audit#key",
+        "status": "COMPLETED",
+        "expiration": 1800003600,
+        "data": null,
+        "validation": "validation-hash"
+      }
+    },
+    {
+      "name": "false",
+      "custom": false,
+      "record": {
+        "id": "audit#key",
+        "status": "COMPLETED",
+        "expiration": 1800003600,
+        "data": false,
+        "validation": "validation-hash"
+      },
+      "cache": "{\"status\":\"COMPLETED\",\"expiration\":1800003600,\"data\":false}",
+      "item": {
+        "id": {
+          "S": "audit#key"
+        },
+        "expiration": {
+          "N": "1800003600"
+        },
+        "status": {
+          "S": "COMPLETED"
+        },
+        "data": {
+          "BOOL": false
+        },
+        "validation": {
+          "S": "validation-hash"
+        }
+      },
+      "cacheRead": {
+        "id": "audit#key",
+        "status": "COMPLETED",
+        "expiration": 1800003600,
+        "data": false
+      },
+      "dynamodbRead": {
+        "id": "audit#key",
+        "status": "COMPLETED",
+        "expiration": 1800003600,
+        "data": false,
+        "validation": "validation-hash"
+      }
+    },
+    {
+      "name": "zero",
+      "custom": false,
+      "record": {
+        "id": "audit#key",
+        "status": "COMPLETED",
+        "expiration": 1800003600,
+        "data": 0,
+        "validation": "validation-hash"
+      },
+      "cache": "{\"status\":\"COMPLETED\",\"expiration\":1800003600,\"data\":0}",
+      "item": {
+        "id": {
+          "S": "audit#key"
+        },
+        "expiration": {
+          "N": "1800003600"
+        },
+        "status": {
+          "S": "COMPLETED"
+        },
+        "data": {
+          "N": "0"
+        },
+        "validation": {
+          "S": "validation-hash"
+        }
+      },
+      "cacheRead": {
+        "id": "audit#key",
+        "status": "COMPLETED",
+        "expiration": 1800003600,
+        "data": 0
+      },
+      "dynamodbRead": {
+        "id": "audit#key",
+        "status": "COMPLETED",
+        "expiration": 1800003600,
+        "data": 0,
+        "validation": "validation-hash"
+      }
+    },
+    {
+      "name": "string",
+      "custom": false,
+      "record": {
+        "id": "audit#key",
+        "status": "COMPLETED",
+        "expiration": 1800003600,
+        "data": "",
+        "validation": "validation-hash"
+      },
+      "cache": "{\"status\":\"COMPLETED\",\"expiration\":1800003600,\"data\":\"\"}",
+      "item": {
+        "id": {
+          "S": "audit#key"
+        },
+        "expiration": {
+          "N": "1800003600"
+        },
+        "status": {
+          "S": "COMPLETED"
+        },
+        "data": {
+          "S": ""
+        },
+        "validation": {
+          "S": "validation-hash"
+        }
+      },
+      "cacheRead": {
+        "id": "audit#key",
+        "status": "COMPLETED",
+        "expiration": 1800003600,
+        "data": ""
+      },
+      "dynamodbRead": {
+        "id": "audit#key",
+        "status": "COMPLETED",
+        "expiration": 1800003600,
+        "data": "",
+        "validation": "validation-hash"
+      }
+    },
+    {
+      "name": "array",
+      "custom": false,
+      "record": {
+        "id": "audit#key",
+        "status": "COMPLETED",
+        "expiration": 1800003600,
+        "data": [],
+        "validation": "validation-hash"
+      },
+      "cache": "{\"status\":\"COMPLETED\",\"expiration\":1800003600,\"data\":[]}",
+      "item": {
+        "id": {
+          "S": "audit#key"
+        },
+        "expiration": {
+          "N": "1800003600"
+        },
+        "status": {
+          "S": "COMPLETED"
+        },
+        "data": {
+          "L": []
+        },
+        "validation": {
+          "S": "validation-hash"
+        }
+      },
+      "cacheRead": {
+        "id": "audit#key",
+        "status": "COMPLETED",
+        "expiration": 1800003600,
+        "data": []
+      },
+      "dynamodbRead": {
+        "id": "audit#key",
+        "status": "COMPLETED",
+        "expiration": 1800003600,
+        "data": [],
+        "validation": "validation-hash"
+      }
+    },
+    {
+      "name": "object",
+      "custom": false,
+      "record": {
+        "id": "audit#key",
+        "status": "COMPLETED",
+        "expiration": 1800003600,
+        "data": {
+          "nested": [
+            null,
+            1.5,
+            true
+          ],
+          "large": 9007199254740991
+        },
+        "validation": "validation-hash"
+      },
+      "cache": "{\"status\":\"COMPLETED\",\"expiration\":1800003600,\"data\":{\"nested\":[null,1.5,true],\"large\":9007199254740991}}",
+      "item": {
+        "id": {
+          "S": "audit#key"
+        },
+        "expiration": {
+          "N": "1800003600"
+        },
+        "status": {
+          "S": "COMPLETED"
+        },
+        "data": {
+          "M": {
+            "nested": {
+              "L": [
+                {
+                  "NULL": true
+                },
+                {
+                  "N": "1.5"
+                },
+                {
+                  "BOOL": true
+                }
+              ]
+            },
+            "large": {
+              "N": "9007199254740991"
+            }
+          }
+        },
+        "validation": {
+          "S": "validation-hash"
+        }
+      },
+      "cacheRead": {
+        "id": "audit#key",
+        "status": "COMPLETED",
+        "expiration": 1800003600,
+        "data": {
+          "nested": [
+            null,
+            1.5,
+            true
+          ],
+          "large": 9007199254740991
+        }
+      },
+      "dynamodbRead": {
+        "id": "audit#key",
+        "status": "COMPLETED",
+        "expiration": 1800003600,
+        "data": {
+          "nested": [
+            null,
+            1.5,
+            true
+          ],
+          "large": 9007199254740991
+        },
+        "validation": "validation-hash"
+      }
+    },
+    {
+      "name": "live",
+      "custom": false,
+      "record": {
+        "id": "audit#key",
+        "status": "INPROGRESS",
+        "expiration": 1800003600,
+        "in_progress_expiration": 1800000005250,
+        "validation": "validation-hash"
+      },
+      "cache": "{\"status\":\"INPROGRESS\",\"expiration\":1800003600,\"in_progress_expiration\":1800000005250,\"validation\":\"validation-hash\"}",
+      "item": {
+        "id": {
+          "S": "audit#key"
+        },
+        "expiration": {
+          "N": "1800003600"
+        },
+        "status": {
+          "S": "INPROGRESS"
+        },
+        "in_progress_expiration": {
+          "N": "1800000005250"
+        },
+        "validation": {
+          "S": "validation-hash"
+        }
+      },
+      "cacheRead": {
+        "id": "audit#key",
+        "status": "INPROGRESS",
+        "expiration": 1800003600,
+        "in_progress_expiration": 1800000005250,
+        "validation": "validation-hash"
+      },
+      "dynamodbRead": {
+        "id": "audit#key",
+        "status": "INPROGRESS",
+        "expiration": 1800003600,
+        "in_progress_expiration": 1800000005250,
+        "validation": "validation-hash"
+      }
+    },
+    {
+      "name": "no-lease",
+      "custom": false,
+      "record": {
+        "id": "audit#key",
+        "status": "INPROGRESS",
+        "expiration": 1800003600,
+        "validation": "validation-hash"
+      },
+      "cache": "{\"status\":\"INPROGRESS\",\"expiration\":1800003600,\"validation\":\"validation-hash\"}",
+      "item": {
+        "id": {
+          "S": "audit#key"
+        },
+        "expiration": {
+          "N": "1800003600"
+        },
+        "status": {
+          "S": "INPROGRESS"
+        },
+        "validation": {
+          "S": "validation-hash"
+        }
+      },
+      "cacheRead": {
+        "id": "audit#key",
+        "status": "INPROGRESS",
+        "expiration": 1800003600,
+        "validation": "validation-hash"
+      },
+      "dynamodbRead": {
+        "id": "audit#key",
+        "status": "INPROGRESS",
+        "expiration": 1800003600,
+        "validation": "validation-hash"
+      }
+    },
+    {
+      "name": "null",
+      "custom": true,
+      "record": {
+        "id": "audit#key",
+        "status": "COMPLETED",
+        "expiration": 1800003600,
+        "data": null,
+        "validation": "validation-hash"
+      },
+      "cache": "{\"s\":\"COMPLETED\",\"e\":1800003600,\"d\":null}",
+      "item": {
+        "id": {
+          "S": "audit#key"
+        },
+        "e": {
+          "N": "1800003600"
+        },
+        "s": {
+          "S": "COMPLETED"
+        },
+        "d": {
+          "NULL": true
+        },
+        "v": {
+          "S": "validation-hash"
+        }
+      },
+      "cacheRead": {
+        "id": "audit#key",
+        "status": "COMPLETED",
+        "expiration": 1800003600,
+        "data": null
+      },
+      "dynamodbRead": {
+        "id": "audit#key",
+        "status": "COMPLETED",
+        "expiration": 1800003600,
+        "data": null,
+        "validation": "validation-hash"
+      }
+    },
+    {
+      "name": "false",
+      "custom": true,
+      "record": {
+        "id": "audit#key",
+        "status": "COMPLETED",
+        "expiration": 1800003600,
+        "data": false,
+        "validation": "validation-hash"
+      },
+      "cache": "{\"s\":\"COMPLETED\",\"e\":1800003600,\"d\":false}",
+      "item": {
+        "id": {
+          "S": "audit#key"
+        },
+        "e": {
+          "N": "1800003600"
+        },
+        "s": {
+          "S": "COMPLETED"
+        },
+        "d": {
+          "BOOL": false
+        },
+        "v": {
+          "S": "validation-hash"
+        }
+      },
+      "cacheRead": {
+        "id": "audit#key",
+        "status": "COMPLETED",
+        "expiration": 1800003600,
+        "data": false
+      },
+      "dynamodbRead": {
+        "id": "audit#key",
+        "status": "COMPLETED",
+        "expiration": 1800003600,
+        "data": false,
+        "validation": "validation-hash"
+      }
+    },
+    {
+      "name": "zero",
+      "custom": true,
+      "record": {
+        "id": "audit#key",
+        "status": "COMPLETED",
+        "expiration": 1800003600,
+        "data": 0,
+        "validation": "validation-hash"
+      },
+      "cache": "{\"s\":\"COMPLETED\",\"e\":1800003600,\"d\":0}",
+      "item": {
+        "id": {
+          "S": "audit#key"
+        },
+        "e": {
+          "N": "1800003600"
+        },
+        "s": {
+          "S": "COMPLETED"
+        },
+        "d": {
+          "N": "0"
+        },
+        "v": {
+          "S": "validation-hash"
+        }
+      },
+      "cacheRead": {
+        "id": "audit#key",
+        "status": "COMPLETED",
+        "expiration": 1800003600,
+        "data": 0
+      },
+      "dynamodbRead": {
+        "id": "audit#key",
+        "status": "COMPLETED",
+        "expiration": 1800003600,
+        "data": 0,
+        "validation": "validation-hash"
+      }
+    },
+    {
+      "name": "string",
+      "custom": true,
+      "record": {
+        "id": "audit#key",
+        "status": "COMPLETED",
+        "expiration": 1800003600,
+        "data": "",
+        "validation": "validation-hash"
+      },
+      "cache": "{\"s\":\"COMPLETED\",\"e\":1800003600,\"d\":\"\"}",
+      "item": {
+        "id": {
+          "S": "audit#key"
+        },
+        "e": {
+          "N": "1800003600"
+        },
+        "s": {
+          "S": "COMPLETED"
+        },
+        "d": {
+          "S": ""
+        },
+        "v": {
+          "S": "validation-hash"
+        }
+      },
+      "cacheRead": {
+        "id": "audit#key",
+        "status": "COMPLETED",
+        "expiration": 1800003600,
+        "data": ""
+      },
+      "dynamodbRead": {
+        "id": "audit#key",
+        "status": "COMPLETED",
+        "expiration": 1800003600,
+        "data": "",
+        "validation": "validation-hash"
+      }
+    },
+    {
+      "name": "array",
+      "custom": true,
+      "record": {
+        "id": "audit#key",
+        "status": "COMPLETED",
+        "expiration": 1800003600,
+        "data": [],
+        "validation": "validation-hash"
+      },
+      "cache": "{\"s\":\"COMPLETED\",\"e\":1800003600,\"d\":[]}",
+      "item": {
+        "id": {
+          "S": "audit#key"
+        },
+        "e": {
+          "N": "1800003600"
+        },
+        "s": {
+          "S": "COMPLETED"
+        },
+        "d": {
+          "L": []
+        },
+        "v": {
+          "S": "validation-hash"
+        }
+      },
+      "cacheRead": {
+        "id": "audit#key",
+        "status": "COMPLETED",
+        "expiration": 1800003600,
+        "data": []
+      },
+      "dynamodbRead": {
+        "id": "audit#key",
+        "status": "COMPLETED",
+        "expiration": 1800003600,
+        "data": [],
+        "validation": "validation-hash"
+      }
+    },
+    {
+      "name": "object",
+      "custom": true,
+      "record": {
+        "id": "audit#key",
+        "status": "COMPLETED",
+        "expiration": 1800003600,
+        "data": {
+          "nested": [
+            null,
+            1.5,
+            true
+          ],
+          "large": 9007199254740991
+        },
+        "validation": "validation-hash"
+      },
+      "cache": "{\"s\":\"COMPLETED\",\"e\":1800003600,\"d\":{\"nested\":[null,1.5,true],\"large\":9007199254740991}}",
+      "item": {
+        "id": {
+          "S": "audit#key"
+        },
+        "e": {
+          "N": "1800003600"
+        },
+        "s": {
+          "S": "COMPLETED"
+        },
+        "d": {
+          "M": {
+            "nested": {
+              "L": [
+                {
+                  "NULL": true
+                },
+                {
+                  "N": "1.5"
+                },
+                {
+                  "BOOL": true
+                }
+              ]
+            },
+            "large": {
+              "N": "9007199254740991"
+            }
+          }
+        },
+        "v": {
+          "S": "validation-hash"
+        }
+      },
+      "cacheRead": {
+        "id": "audit#key",
+        "status": "COMPLETED",
+        "expiration": 1800003600,
+        "data": {
+          "nested": [
+            null,
+            1.5,
+            true
+          ],
+          "large": 9007199254740991
+        }
+      },
+      "dynamodbRead": {
+        "id": "audit#key",
+        "status": "COMPLETED",
+        "expiration": 1800003600,
+        "data": {
+          "nested": [
+            null,
+            1.5,
+            true
+          ],
+          "large": 9007199254740991
+        },
+        "validation": "validation-hash"
+      }
+    },
+    {
+      "name": "live",
+      "custom": true,
+      "record": {
+        "id": "audit#key",
+        "status": "INPROGRESS",
+        "expiration": 1800003600,
+        "in_progress_expiration": 1800000005250,
+        "validation": "validation-hash"
+      },
+      "cache": "{\"s\":\"INPROGRESS\",\"e\":1800003600,\"ip\":1800000005250,\"v\":\"validation-hash\"}",
+      "item": {
+        "id": {
+          "S": "audit#key"
+        },
+        "e": {
+          "N": "1800003600"
+        },
+        "s": {
+          "S": "INPROGRESS"
+        },
+        "ip": {
+          "N": "1800000005250"
+        },
+        "v": {
+          "S": "validation-hash"
+        }
+      },
+      "cacheRead": {
+        "id": "audit#key",
+        "status": "INPROGRESS",
+        "expiration": 1800003600,
+        "in_progress_expiration": 1800000005250,
+        "validation": "validation-hash"
+      },
+      "dynamodbRead": {
+        "id": "audit#key",
+        "status": "INPROGRESS",
+        "expiration": 1800003600,
+        "in_progress_expiration": 1800000005250,
+        "validation": "validation-hash"
+      }
+    },
+    {
+      "name": "no-lease",
+      "custom": true,
+      "record": {
+        "id": "audit#key",
+        "status": "INPROGRESS",
+        "expiration": 1800003600,
+        "validation": "validation-hash"
+      },
+      "cache": "{\"s\":\"INPROGRESS\",\"e\":1800003600,\"v\":\"validation-hash\"}",
+      "item": {
+        "id": {
+          "S": "audit#key"
+        },
+        "e": {
+          "N": "1800003600"
+        },
+        "s": {
+          "S": "INPROGRESS"
+        },
+        "v": {
+          "S": "validation-hash"
+        }
+      },
+      "cacheRead": {
+        "id": "audit#key",
+        "status": "INPROGRESS",
+        "expiration": 1800003600,
+        "validation": "validation-hash"
+      },
+      "dynamodbRead": {
+        "id": "audit#key",
+        "status": "INPROGRESS",
+        "expiration": 1800003600,
+        "validation": "validation-hash"
+      }
+    }
+  ],
+  "equalLease": {
+    "seed": "{\"status\":\"INPROGRESS\",\"expiration\":1800003600,\"in_progress_expiration\":1800000000250}",
+    "referenceFinal": "{\"status\":\"INPROGRESS\",\"expiration\":1800003600,\"in_progress_expiration\":1800000005250}"
+  }
+}
