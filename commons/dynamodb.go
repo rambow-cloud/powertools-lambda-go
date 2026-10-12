@@ -64,9 +64,10 @@ func rawAttribute(raw any) (any, error) {
 				return v, nil
 			case string:
 				return v != "", nil
-			case float64:
-				return v != 0 && !math.IsNaN(v), nil
 			default:
+				if number, ok := numeric(value); ok {
+					return number != 0 && !math.IsNaN(number), nil
+				}
 				return true, nil
 			}
 		case "N":
@@ -106,7 +107,14 @@ func rawAttribute(raw any) (any, error) {
 				duplicate := false
 				if kind != "L" {
 					for _, prior := range result {
-						if reflect.DeepEqual(prior, converted) {
+						equal := reflect.DeepEqual(prior, converted)
+						// JavaScript Set uses SameValueZero: repeated NaN
+						// numeric attributes represent one set member.
+						if number, ok := prior.(float64); ok && math.IsNaN(number) {
+							other, ok := converted.(float64)
+							equal = ok && math.IsNaN(other)
+						}
+						if equal {
 							duplicate = true
 							break
 						}

@@ -37,6 +37,8 @@ Usage belongs in the utility guides. [Feature comparison](FEATURE_PARITY.md) map
 
 ## Commons and Metadata
 
+- [x] AUDIT-COMMONS-180-LOCAL: Complete the [finite Commons matrix](COMMONS_PLAN.md#finite-boundary-audit-180) with 71 actual TypeScript v2.35.0 observations, 24 SDK numeric cases, native snapshot/LRU checks and Metadata strict-body recovery/endpoint/cancellation/closure tests. Reproduce and fix NaN numeric-set deduplication and native numeric BOOL zero/NaN conversion. Four packaged modules and four independent consumers pass with CGO disabled/GOWORK off; scoped JSON v2, licenses and documentation/discovery checks pass. Preserve explicit strict-container, JSON, SDK, ownership and redirect differences; broad C-09/C-10, resource #200 and cloud #201/#202 gates remain separate (2026-10-13).
+
 - [x] C-01: Map reference exports and inspect actual Logger/Metrics/Parameters reuse. Record Go equivalents and differences in [COMMONS.md](COMMONS.md) and [COMMONS_REUSE.md](COMMONS_REUSE.md).
 - [x] C-02: Implement shared configuration/runtime, Base64, type helpers, indexed deep merge, LRU, decoded-value snapshots, and raw/native DynamoDB conversion with large integer preservation.
 - [x] C-03: Migrate compatible Logger, Metrics, Tracer, Parameters, and invocation helpers. Preserve utility-specific cache, fallback, lifecycle, and serialization policies.

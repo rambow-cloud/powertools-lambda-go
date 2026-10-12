@@ -17,6 +17,7 @@ npm run fixtures
 | `generate-metrics.mjs` | EMF dimensions, repeated values, automatic flush boundaries, and single metrics |
 | `generate-parameters.mjs` | Cache and transform output plus SSM batching/decryption quirks and SDK operation sequences |
 | `generate-commons.mjs` | Environment/runtime, Base64, deep merge, LRU/types, DynamoDB values, and Metadata request/cache behavior |
+| `generate-commons-boundaries.mjs` | 71 numeric, malformed encoding and raw DynamoDB observations; 24 numbers also belong to the optional SDK module; see `docs/COMMONS_PLAN.md` |
 | `generate-signer.mjs` | Thirteen fixed-time SigV4 request/body/header cases, including the duplicate-query difference |
 | `generate-jmespath.mjs` | Seventy-eight standard/function/envelope/error cases, including explicitly recorded undefined results |
 | `generate-batch.mjs` | Forty-three sync/async sequential, FIFO/group, stream and failure-policy cases, plus four invalid envelopes |

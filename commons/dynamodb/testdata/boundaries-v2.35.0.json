@@ -1,0 +1,151 @@
+{
+  "version": "2.35.0",
+  "cases": [
+    {
+      "mode": "number",
+      "input": "",
+      "value": 0
+    },
+    {
+      "mode": "number",
+      "input": " ",
+      "value": 0
+    },
+    {
+      "mode": "number",
+      "input": "-0",
+      "value": 0
+    },
+    {
+      "mode": "number",
+      "input": ".5",
+      "value": 0.5
+    },
+    {
+      "mode": "number",
+      "input": "1.",
+      "value": 1
+    },
+    {
+      "mode": "number",
+      "input": "+2",
+      "value": 2
+    },
+    {
+      "mode": "number",
+      "input": "1e-324",
+      "value": 0
+    },
+    {
+      "mode": "number",
+      "input": "5e-324",
+      "value": 5e-324
+    },
+    {
+      "mode": "number",
+      "input": "1e309",
+      "value": {
+        "number": "Infinity"
+      }
+    },
+    {
+      "mode": "number",
+      "input": "-1e309",
+      "value": {
+        "number": "-Infinity"
+      }
+    },
+    {
+      "mode": "number",
+      "input": "NaN",
+      "value": {
+        "number": "NaN"
+      }
+    },
+    {
+      "mode": "number",
+      "input": "nan",
+      "value": {
+        "number": "NaN"
+      }
+    },
+    {
+      "mode": "number",
+      "input": "Infinity",
+      "value": {
+        "number": "Infinity"
+      }
+    },
+    {
+      "mode": "number",
+      "input": "-Infinity",
+      "value": {
+        "number": "-Infinity"
+      }
+    },
+    {
+      "mode": "number",
+      "input": "0x20000000000001",
+      "value": {
+        "bigint": "9007199254740993"
+      }
+    },
+    {
+      "mode": "number",
+      "input": "0b10",
+      "value": 2
+    },
+    {
+      "mode": "number",
+      "input": "0o10",
+      "value": 8
+    },
+    {
+      "mode": "number",
+      "input": "0b2",
+      "value": {
+        "number": "NaN"
+      }
+    },
+    {
+      "mode": "number",
+      "input": "0x_1",
+      "value": {
+        "number": "NaN"
+      }
+    },
+    {
+      "mode": "number",
+      "input": "1_000",
+      "value": {
+        "number": "NaN"
+      }
+    },
+    {
+      "mode": "number",
+      "input": "9007199254740993",
+      "value": {
+        "bigint": "9007199254740993"
+      }
+    },
+    {
+      "mode": "number",
+      "input": "-9007199254740993",
+      "value": {
+        "bigint": "-9007199254740993"
+      }
+    },
+    {
+      "mode": "number",
+      "input": "9007199254740993.0",
+      "error": "UnmarshallDynamoDBAttributeError",
+      "message": "9007199254740993.0 can't be converted to BigInt"
+    },
+    {
+      "mode": "number",
+      "input": "1e20",
+      "error": "UnmarshallDynamoDBAttributeError",
+      "message": "1e20 can't be converted to BigInt"
+    }
+  ]
+}

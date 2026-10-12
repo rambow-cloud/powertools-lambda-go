@@ -137,6 +137,12 @@ Metadata is opt-in. Logger, Tracer, and Parameters do not automatically fetch it
 
 ## Remaining boundaries
 
+The [finite audit #180](COMMONS_PLAN.md#finite-boundary-audit-180) adds 71 pinned
+observations and native ownership/Metadata cases. Numeric sets deduplicate NaN,
+and raw BOOL applies zero/NaN conversion to all Go numeric kinds. Strict malformed
+container, JSON v2, snapshot and redirect policies remain explicit differences;
+the audit leaves exhaustive equivalence and service/resource gates separate.
+
 The foundation is implemented against the installed TypeScript v2.35.0 distribution. Pure helpers live in `commons`; AWS-specific helpers live in `commons/awssdk` and `commons/dynamodb`; HTTP metadata retrieval lives in `commons/metadata`. Existing invocation lifecycle ownership remains in `internal/invocation`. No package performs network requests or modifies AWS environment variables merely because it is imported.
 
 `SortObjectKeys` sorts a caller-owned key slice in place using JavaScript enumeration order: canonical unsigned indices below 4294967295 first, then other keys in their existing order. The input should contain unique keys. It is reused by Metrics, Parser Kafka envelopes and Validation; it does not recover insertion order from a Go map.
