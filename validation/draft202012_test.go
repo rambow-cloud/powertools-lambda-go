@@ -3,6 +3,8 @@ package validation
 import (
 	"context"
 	jsonv1 "encoding/json"
+	"encoding/json/jsontext"
+	json "encoding/json/v2"
 	"errors"
 	"fmt"
 	"math"
@@ -30,19 +32,19 @@ func testNativeDraftReference(t *testing.T, filename string, compiler Compiler, 
 		Version    string `json:"version"`
 		AJVVersion string `json:"ajvVersion"`
 		Cases      []struct {
-			Name          string              `json:"name"`
-			Schema        jsonv1.RawMessage   `json:"schema"`
-			Payload       jsonv1.RawMessage   `json:"payload"`
-			References    []jsonv1.RawMessage `json:"references"`
-			NativeSuccess *bool               `json:"nativeSuccess"`
-			NativeReason  string              `json:"nativeReason"`
+			Name          string           `json:"name"`
+			Schema        jsontext.Value   `json:"schema"`
+			Payload       jsontext.Value   `json:"payload"`
+			References    []jsontext.Value `json:"references"`
+			NativeSuccess *bool            `json:"nativeSuccess"`
+			NativeReason  string           `json:"nativeReason"`
 			Expected      struct {
 				Success bool   `json:"success"`
 				Stage   string `json:"stage"`
 			} `json:"expected"`
 		} `json:"cases"`
 	}
-	if err := jsonv1.Unmarshal(data, &fixture); err != nil {
+	if err := json.Unmarshal(data, &fixture); err != nil {
 		t.Fatal(err)
 	}
 	if fixture.Version != "2.35.0" || fixture.AJVVersion != "8.20.0" || len(fixture.Cases) != count {
@@ -141,7 +143,7 @@ func TestDraft202012RegisteredOnlyAndResources(t *testing.T) {
 	var requests atomic.Int32
 	server := httptest.NewServer(http.HandlerFunc(func(http.ResponseWriter, *http.Request) { requests.Add(1) }))
 	defer server.Close()
-	for _, source := range []any{map[string]any{"$ref": server.URL}, map[string]any{"$schema": server.URL}, jsonv1.RawMessage(`{"$defs":{"unused":{"typo":true}}}`)} {
+	for _, source := range []any{map[string]any{"$ref": server.URL}, map[string]any{"$schema": server.URL}, jsontext.Value(`{"$defs":{"unused":{"typo":true}}}`)} {
 		_, err := Compile(context.Background(), source, Options{Compiler: Draft202012Compiler{}})
 		if err == nil {
 			t.Fatal("unregistered resource/vocabulary compiled")
@@ -205,10 +207,10 @@ func TestDraft202012FormatsCancellationAndErrors(t *testing.T) {
 	if err != nil {
 		t.Fatal(errors.Unwrap(err))
 	}
-	if _, err := numbers.Validate(ctx, jsonv1.RawMessage(`9007199254740993`)); err != nil {
+	if _, err := numbers.Validate(ctx, jsontext.Value(`9007199254740993`)); err != nil {
 		t.Fatal(err)
 	}
-	if _, err := numbers.Validate(ctx, jsonv1.RawMessage(`9007199254740992`)); err == nil {
+	if _, err := numbers.Validate(ctx, jsontext.Value(`9007199254740992`)); err == nil {
 		t.Fatal("number format was not asserted")
 	}
 	canceled, cancel := context.WithCancel(ctx)
@@ -228,7 +230,7 @@ func TestDraft202012FormatsCancellationAndErrors(t *testing.T) {
 	if _, err := interrupt.Validate(during, "value"); !errors.Is(err, context.Canceled) {
 		t.Fatal("post-evaluation cancellation lost", err)
 	}
-	for _, input := range []any{math.Inf(1), jsonv1.RawMessage(`{"duplicate":1,"duplicate":2}`), jsonv1.RawMessage([]byte{'"', 0xff, '"'})} {
+	for _, input := range []any{math.Inf(1), jsontext.Value(`{"duplicate":1,"duplicate":2}`), jsontext.Value([]byte{'"', 0xff, '"'})} {
 		_, err := compiled.Validate(ctx, input)
 		var failure *SchemaValidationError
 		if err == nil || errors.As(err, &failure) {
@@ -268,7 +270,7 @@ func TestDraft202012DefaultRemainsDraft7(t *testing.T) {
 }
 
 func TestDraft202012PointerDiagnostics(t *testing.T) {
-	compiled, err := Compile(context.Background(), jsonv1.RawMessage(`{"type":"object","dependentRequired":{"a b/~":["missing"]}}`), Options{Compiler: Draft202012Compiler{}})
+	compiled, err := Compile(context.Background(), jsontext.Value(`{"type":"object","dependentRequired":{"a b/~":["missing"]}}`), Options{Compiler: Draft202012Compiler{}})
 	if err != nil {
 		t.Fatal(err)
 	}

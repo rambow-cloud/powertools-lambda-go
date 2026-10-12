@@ -56,6 +56,8 @@ func compileNativeDraft(ctx context.Context, input any, options CompileOptions, 
 			return nil, fmt.Errorf("format %q has both string and number definitions", name)
 		}
 		c.RegisterFormat(&jsonschema.Format{Name: name, Validate: func(value any) error {
+			// JSON v2 has no Number type. The pinned schema engine consumes
+			// json.Number tokens produced by our JSON v2 exact-number decoder.
 			if _, ok := value.(jsonv1.Number); ok {
 				return callback(value)
 			}

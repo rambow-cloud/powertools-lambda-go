@@ -2,7 +2,7 @@ package validationdialects_test
 
 import (
 	"context"
-	jsonv1 "encoding/json"
+	"encoding/json/jsontext"
 	"testing"
 
 	"github.com/rambow-cloud/powertools-lambda-go/validation"
@@ -31,11 +31,11 @@ func testDialectNumbers(t *testing.T, compiler validation.Compiler) {
 		{"exact-fraction", `{"type":"number","multipleOf":0.1}`, `1.2`, true},
 	} {
 		t.Run(item.name, func(t *testing.T) {
-			schema, err := validation.Compile(context.Background(), jsonv1.RawMessage(item.schema), validation.Options{Compiler: compiler})
+			schema, err := validation.Compile(context.Background(), jsontext.Value(item.schema), validation.Options{Compiler: compiler})
 			if err != nil {
 				t.Fatal(err)
 			}
-			_, err = schema.Validate(context.Background(), jsonv1.RawMessage(item.input))
+			_, err = schema.Validate(context.Background(), jsontext.Value(item.input))
 			if item.valid != (err == nil) {
 				t.Fatal(item.input, err)
 			}

@@ -9,7 +9,7 @@
       "directory": "validation",
       "public": true,
       "version": "v1.1.0",
-      "archive_sha256": "04d3cf1cace5a7eea441eae5a6348e3ad35d743fd2a50c31cb8520b111fad462",
+      "archive_sha256": "b7628afc98415227d5190daf4a5a62492995b6940579f74a3ed81bcc335036f8",
       "tests": true,
       "vet": true,
       "tidy": true,

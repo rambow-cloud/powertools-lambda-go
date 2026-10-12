@@ -2,7 +2,7 @@ package validation
 
 import (
 	"context"
-	jsonv1 "encoding/json"
+	"encoding/json/jsontext"
 	"errors"
 	"reflect"
 	"sync"
@@ -68,10 +68,10 @@ func TestDraft201909TupleSnapshotsAndIsolation(t *testing.T) {
 }
 
 func TestDraft201909NestedTupleVocabulary(t *testing.T) {
-	for _, source := range []jsonv1.RawMessage{
-		jsonv1.RawMessage(`{"items":[{"typo":true}]}`),
-		jsonv1.RawMessage(`{"items":[{"$schema":"https://json-schema.org/draft/2020-12/schema"}]}`),
-		jsonv1.RawMessage(`{"items":[{"$id":"https://example.test/same"},{"$id":"https://example.test/same"}]}`),
+	for _, source := range []jsontext.Value{
+		jsontext.Value(`{"items":[{"typo":true}]}`),
+		jsontext.Value(`{"items":[{"$schema":"https://json-schema.org/draft/2020-12/schema"}]}`),
+		jsontext.Value(`{"items":[{"$id":"https://example.test/same"},{"$id":"https://example.test/same"}]}`),
 	} {
 		if _, err := Compile(context.Background(), source, Options{Compiler: Draft201909Compiler{}}); err == nil {
 			t.Fatal("tuple schema position escaped checks")
