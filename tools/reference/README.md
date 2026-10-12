@@ -19,6 +19,7 @@ npm run fixtures
 | `generate-signer.mjs` | Thirteen fixed-time SigV4 request/body/header cases, including the duplicate-query difference |
 | `generate-jmespath.mjs` | Seventy-eight standard/function/envelope/error cases, including explicitly recorded undefined results |
 | `generate-batch.mjs` | Forty-three sync/async sequential, FIFO/group, stream and failure-policy cases, plus four invalid envelopes |
+| `generate-batch-boundaries.mjs` | Three controlled parallel cases, twelve warm calls and fifteen malformed-record observations from the pinned processors; see `docs/BATCH_PLAN.md` |
 | `generate-idempotency.mjs` | Twenty-five canonical keys, fourteen lifecycle scenarios, and two DynamoDB SDK command sequences |
 | `generate-idempotency-cache.mjs` | Sixteen cache persistence, expiry/lock, conflict, custom-field and malformed-record scenarios |
 | `generate-idempotency-boundaries.mjs` | Six canonical boundaries, sixteen records per persistence backend, the upstream lease-equality behavior, and actual Go-to-TypeScript record reads; see `docs/IDEMPOTENCY_AUDIT.md` |
