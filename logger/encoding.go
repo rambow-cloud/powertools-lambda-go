@@ -66,7 +66,7 @@ type visit struct {
 	ptr uintptr
 }
 
-func normalize(key string, value any, replacer Replacer, active map[visit]bool, depth int) any {
+func normalize(key string, value any, replacer Replacer, active map[visit]bool, depth int) (any, error) {
 	if replacer != nil {
 		value = replacer(key, value)
 	}
@@ -75,40 +75,48 @@ func normalize(key string, value any, replacer Replacer, active map[visit]bool, 
 
 // normalizeValue follows pointers without applying the same property's replacer twice.
 // Descendant properties still pass through normalize and receive the replacer.
-func normalizeValue(key string, value any, replacer Replacer, active map[visit]bool, depth int) any {
+func normalizeValue(key string, value any, replacer Replacer, active map[visit]bool, depth int) (any, error) {
 	if value == nil {
-		return nil
+		return nil, nil
 	}
 	if depth > 100 {
-		return "[Truncated]"
+		return "[Truncated]", nil
 	}
 	// Number implements MarshalJSONTo in Go 1.27. Its scalar representation
 	// must not re-enter the custom-marshaler traversal after decoding.
 	if _, ok := value.(jsonv1.Number); ok {
-		return value
+		return value, nil
 	}
 	v := reflect.ValueOf(value)
 	if v.Kind() == reflect.Pointer || v.Kind() == reflect.Map || v.Kind() == reflect.Slice {
 		if v.IsNil() {
-			return value
+			return value, nil
 		}
 		// The address is an opaque identity token; it is never converted to a pointer.
 		ref := visit{v.Type(), v.Pointer()}
 		if active[ref] {
-			return "[Circular]"
+			return "[Circular]", nil
 		}
 		active[ref] = true
 		defer delete(active, ref)
 	}
 	if err, ok := value.(error); ok {
 		result := Fields{"name": reflect.TypeOf(err).String(), "message": err.Error(), "location": ""}
+		var cause any
 		if wrapped, ok := err.(interface{ Unwrap() error }); ok && wrapped.Unwrap() != nil {
-			result["cause"] = normalize("cause", wrapped.Unwrap(), replacer, active, depth+1)
+			cause = wrapped.Unwrap()
 		}
 		if joined, ok := err.(interface{ Unwrap() []error }); ok {
-			result["cause"] = normalize("cause", joined.Unwrap(), replacer, active, depth+1)
+			cause = joined.Unwrap()
 		}
-		return result
+		if cause != nil {
+			encoded, err := normalize("cause", cause, replacer, active, depth+1)
+			if err != nil {
+				return nil, err
+			}
+			result["cause"] = encoded
+		}
+		return result, nil
 	}
 	if _, ok := value.(json.Marshaler); ok {
 		return normalizeJSON(key, value, replacer, active, depth)
@@ -116,52 +124,65 @@ func normalizeValue(key string, value any, replacer Replacer, active map[visit]b
 	if _, ok := value.(json.MarshalerTo); ok {
 		return normalizeJSON(key, value, replacer, active, depth)
 	}
+	// Text marshalers produce a scalar; traversing their underlying containers
+	// would discard the method and suppress its value or error.
+	if _, ok := value.(encoding.TextMarshaler); ok {
+		return value, nil
+	}
 	switch v.Kind() {
 	case reflect.Struct:
 		return normalizeJSON(key, value, replacer, active, depth)
 	case reflect.Float32, reflect.Float64:
 		if math.IsNaN(v.Float()) || math.IsInf(v.Float(), 0) {
-			return nil
+			return nil, nil
 		}
 	case reflect.Pointer, reflect.Interface:
 		return normalizeValue(key, v.Elem().Interface(), replacer, active, depth+1)
 	case reflect.Map:
 		if v.Type().Key().Kind() != reflect.String {
-			return value
+			return value, nil
 		}
 		result := Fields{}
 		iter := v.MapRange()
 		for iter.Next() {
 			k := iter.Key().String()
-			result[k] = normalize(k, iter.Value().Interface(), replacer, active, depth+1)
+			encoded, err := normalize(k, iter.Value().Interface(), replacer, active, depth+1)
+			if err != nil {
+				return nil, err
+			}
+			result[k] = encoded
 		}
-		return result
+		return result, nil
 	case reflect.Slice, reflect.Array:
 		if v.Type().Elem().Kind() == reflect.Uint8 {
-			return value
+			return value, nil
 		}
 		result := make([]any, v.Len())
 		for i := range result {
-			result[i] = normalize(fmt.Sprint(i), v.Index(i).Interface(), replacer, active, depth+1)
+			encoded, err := normalize(fmt.Sprint(i), v.Index(i).Interface(), replacer, active, depth+1)
+			if err != nil {
+				return nil, err
+			}
+			result[i] = encoded
 		}
-		return result
+		return result, nil
 	}
-	return value
+	return value, nil
 }
 
 // Apply descendant replacers to the JSON representation of structs/marshalers,
 // preserving field tags and exact numeric tokens without repeating the root callback.
-func normalizeJSON(key string, value any, replacer Replacer, active map[visit]bool, depth int) any {
+func normalizeJSON(key string, value any, replacer Replacer, active map[visit]bool, depth int) (any, error) {
 	if replacer == nil {
-		return value
+		return value, nil
 	}
 	data, err := marshal(value)
 	if err != nil {
-		return value
+		return nil, err
 	}
 	var decoded any
 	if err = json.Unmarshal(data, &decoded, jsonvalue.Numbers); err != nil {
-		return value
+		return nil, err
 	}
 	return normalizeValue(key, decoded, replacer, active, depth+1)
 }
@@ -178,6 +199,9 @@ func prepareForPrint(value any) any {
 		return value
 	}
 	if _, ok := value.(json.MarshalerTo); ok {
+		return value
+	}
+	if _, ok := value.(encoding.TextMarshaler); ok {
 		return value
 	}
 	v := reflect.ValueOf(value)
@@ -223,7 +247,10 @@ func encode(fields Fields, c config) ([]byte, error) {
 			return nil, err
 		}
 	}
-	value = normalize("", prepareForPrint(value), c.replacer, map[visit]bool{}, 0)
+	value, err = normalize("", prepareForPrint(value), c.replacer, map[visit]bool{}, 0)
+	if err != nil {
+		return nil, err
+	}
 	var data []byte
 	if object, ok := asFields(value); ok {
 		order := append(append([]string(nil), c.order...), standardOrder...)

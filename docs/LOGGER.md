@@ -195,12 +195,16 @@ Before JSON replacement, Logger removes top-level empty strings and null values
 from a map-shaped formatted document, including an empty `message`. Zero, false,
 nonnil empty collections, and nested empty/null values remain. A replacer can
 still produce empty strings or null values: cleanup has already happened at that
-point. Cleanup does not mutate caller or formatter maps. Custom JSON marshalers
+point. Cleanup does not mutate caller or formatter maps. Custom JSON/text marshalers
 and struct-shaped formatter results retain their Go encoding rules.
 An attribute implementing `json.Marshaler`, `json.MarshalerTo` from `encoding/json/v2`, or `encoding.TextMarshaler` is preserved
 even when its underlying string is empty; its custom value or serialization error
 is still observed. Explicitly marshaled empty text remains a JSON empty string.
 JSON v2 prefers `MarshalJSONTo`, then `MarshalJSON`, then text marshaling. Serialization errors retain their wrapped cause and use v2 error types. Struct attributes use v2 field-tag, zero-value and collection rules. Logger's top-level cleanup and circular/truncated markers remain utility policies.
+Text marshalers on maps, slices and pointers keep their scalar output or error;
+Logger does not traverse their underlying containers. If JSON normalization for
+a replacer fails, the log call returns that first error without invoking the
+marshaler again or writing a partial record.
 
 Set `logger.HandlerOptions.CorrelationSource` to a built-in source such as `logger.APIGatewayREST` or `logger.EventBridge`. For custom extraction, supply `CorrelationID`, or use a compiled [JMESPath](JMESPATH.md) expression as `CorrelationExtractor`. A callback takes precedence over an extractor, which takes precedence over a built-in source.
 
@@ -365,3 +369,36 @@ The API includes formatter/replacer hooks, timezones, event logging, child confi
     from `PersistentKeys`. Resetting a child does not change the parent.
 
     Use `WithRecordOrder("message", "level", "timestamp")` to put selected keys first. A formatter changes the record envelope; a replacer changes individual JSON values. Both callbacks must be concurrency-safe. Serialization failures return from the log call. These hooks do not emulate every JavaScript JSON.stringify value or stack diagnostic.
+
+## Finite boundary audit (#181)
+
+This local audit reuses the existing 48 TypeScript 2.35.0 Logger action cases and
+sampling/configuration regressions, then adds 26 actual upstream configuration,
+timezone and sink cases. No AWS calls are needed to regenerate or run them.
+
+| Boundary / APIs | Evidence | Classification |
+| --- | --- | --- |
+| `WithFormatter`, `WithReplacer`, record cleanup/order | Existing formatter, pointer/cycle, native struct, streaming marshaler and 18 cleanup action cases | Verified scoped traversal, precedence, owned snapshots and error identity |
+| Native text marshaler containers and formatter documents | `TestNativeTextMarshalerContainers` | Reproduced and fixed ignored map/slice text methods, including discarded errors; retain native JSON v2 method precedence |
+| JSON/streaming marshaler failure during replacement | `TestFailedJSONNormalizationDoesNotRetryMarshaler` | Reproduced and fixed duplicate marshaler calls; the first error propagates before output |
+| Timezones and environment levels/rates | `TestLoggerConfigurationBoundaryReference`: eight zones in winter/summer and ten environment cases | Verified DST, fractional offsets, invalid-zone fallback, level alias/precedence and ALC `FATAL` |
+| Diagnostics and zero offsets | Preserved actual upstream records/diagnostics in the same corpus | Intentional Go differences below; no unexplained mismatch is discarded |
+| Level sinks, `WithOutput`, `Child` output and short writes | Existing six-level routing plus `TestSinkShortWriteAndChildRoute` | Verified stdout/stderr thresholds, independent child override and `io.ErrShortWrite` |
+| Child key stores and invocation cleanup | Existing twelve child action cases, `TestChildTemporaryKeysInInvocation`, 40 concurrent buffered invocations and raw-wrapper lifecycle tests | Verified persistent/temporary precedence, separate stores, closure and original handler result/error/panic |
+| UTF-8 buffer sizes and lifecycle | Existing eighteen buffer action cases, including exact/one-byte-small/two-entry UTF-8 capacities, oversized trace replacement and native OTel tests | Verified byte accounting, eviction, trace ownership, flush/clear and output errors |
+
+Native differences remain explicit: Go's stable `New` API falls back to a zero
+sample rate for nonnumeric environment input, while the pinned constructor throws
+`TypeError`. Invalid timezone warnings are structured Go WARN records emitted at
+construction; the reference emits a plain console warning when formatting.
+Go's RFC3339 zero offset is `Z`, whereas Intl uses `+00:00` for London in winter
+and invalid-zone fallback. Those three cases have explicit expected Go output;
+the original TypeScript values remain in the fixture. Go marshalers, errors and
+OTel identity retain their documented native contracts.
+
+The affected packaged module passes tests, vet, tidy/isolation and an independent
+consumer with CGO disabled. L-08/L-09 still describe broader exhaustive API,
+environment, timezone-database and serialization acceptance; this finite audit
+does not claim that every native value, POSIX timezone alias, JavaScript diagnostic
+or concurrent callback implementation is equivalent. Resource budgets remain #200,
+and native multi-worker/platform acceptance remains #197/#202.
