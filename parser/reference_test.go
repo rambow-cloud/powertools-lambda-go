@@ -2,7 +2,9 @@ package parser_test
 
 import (
 	"context"
-	"encoding/json"
+	jsonv1 "encoding/json"
+	"encoding/json/jsontext"
+	json "encoding/json/v2"
 	"errors"
 	"os"
 	"reflect"
@@ -150,26 +152,37 @@ var streamSchemas = map[string]parser.Schema[any]{
 func runReference(t *testing.T, path string, count int) {
 	t.Helper()
 	var fixture struct {
-		Version string
+		Version string `json:"version"`
 		Cases   []struct {
-			Name, Schema, Envelope string
-			Input                  any
-			InputJSON              string
-			AsyncRejection         *struct{ Error, Message string }
-			Safe                   bool
-			Expected               struct {
-				Success, Thrown bool
-				Error, Message  string
-				Data, Original  any
-				Issues          []parser.Issue
-			}
-		}
+			Name           string `json:"name"`
+			Schema         string `json:"schema"`
+			Envelope       string `json:"envelope"`
+			Input          any    `json:"input"`
+			InputJSON      string `json:"inputJSON"`
+			AsyncRejection *struct {
+				Error   string `json:"error"`
+				Message string `json:"message"`
+			} `json:"asyncRejection"`
+			Safe     bool `json:"safe"`
+			Expected struct {
+				Success  bool           `json:"success"`
+				Thrown   bool           `json:"thrown"`
+				Error    string         `json:"error"`
+				Message  string         `json:"message"`
+				Data     any            `json:"data"`
+				Original any            `json:"original"`
+				Issues   []parser.Issue `json:"issues"`
+			} `json:"expected"`
+		} `json:"cases"`
 	}
 	raw, err := os.ReadFile(path)
 	if err != nil {
 		t.Fatal(err)
 	}
-	if err = json.Unmarshal(raw, &fixture); err != nil {
+	// Pinned JavaScript syntax diagnostics can contain clipped UTF-16 surrogate
+	// pairs. Only this reference-artifact reader permits replacement; parser
+	// input decoding and the invalid-Unicode regression tests remain strict.
+	if err = json.Unmarshal(raw, &fixture, jsontext.AllowInvalidUTF8(true)); err != nil {
 		t.Fatal(err)
 	}
 	if fixture.Version != "2.35.0" || len(fixture.Cases) != count {
@@ -284,7 +297,7 @@ func runReference(t *testing.T, path string, count int) {
 			var issues []parser.Issue
 			input := item.Input
 			if item.InputJSON != "" {
-				input = json.RawMessage(item.InputJSON)
+				input = jsonv1.RawMessage(item.InputJSON)
 			}
 			// These runtime exceptions remain operational errors in Go, not validation issues.
 			operational := ""

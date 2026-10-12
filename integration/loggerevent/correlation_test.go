@@ -3,7 +3,7 @@ package loggerevent_test
 import (
 	"bytes"
 	"context"
-	jsonv1 "encoding/json"
+	json "encoding/json/v2"
 	"testing"
 
 	"github.com/aws/aws-lambda-go/lambda"
@@ -28,7 +28,7 @@ func TestRawEventCompiledCorrelation(t *testing.T) {
 	var entry struct {
 		CorrelationID string `json:"correlation_id"`
 	}
-	if err := jsonv1.Unmarshal(output.Bytes(), &entry); err != nil || entry.CorrelationID != "request-1" {
+	if err := json.Unmarshal(output.Bytes(), &entry); err != nil || entry.CorrelationID != "request-1" {
 		t.Fatal(output.String(), err)
 	}
 }

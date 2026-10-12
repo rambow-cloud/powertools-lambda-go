@@ -2,7 +2,7 @@ package http
 
 import (
 	"context"
-	"encoding/json"
+	json "encoding/json/v2"
 	nethttp "net/http"
 	"strings"
 	"testing"

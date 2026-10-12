@@ -2,7 +2,7 @@ package commons_test
 
 import (
 	"context"
-	"encoding/json"
+	json "encoding/json/v2"
 	"errors"
 	"os"
 	"reflect"
@@ -85,13 +85,13 @@ func TestBase64Reference(t *testing.T) {
 func TestMergeLRUAndTypesReference(t *testing.T) {
 	f := testfixture.Load(t)
 	source := f["source"].(map[string]any)
-	before, _ := json.Marshal(source)
+	before, _ := json.Marshal(source, json.Deterministic(true))
 	merged := commons.DeepMerge(map[string]any{"nested": map[string]any{"a": float64(1)}, "array": []any{map[string]any{"a": float64(1)}, float64(2), float64(3)}, "nil": "old"}, source)
 	if !reflect.DeepEqual(merged, f["merged"]) {
 		t.Fatalf("merge: %v", merged)
 	}
 	merged["nested"].(map[string]any)["b"] = 99
-	after, _ := json.Marshal(source)
+	after, _ := json.Marshal(source, json.Deterministic(true))
 	if string(before) != string(after) {
 		t.Fatal("source mutated")
 	}

@@ -6,7 +6,8 @@ import (
 	"compress/zlib"
 	"context"
 	"encoding/base64"
-	"encoding/json"
+	jsonv1 "encoding/json"
+	json "encoding/json/v2"
 	"io"
 	nethttp "net/http"
 	"os"
@@ -17,8 +18,8 @@ import (
 )
 
 type middlewareSpec struct {
-	Type    string
-	Options json.RawMessage
+	Type    string            `json:"type"`
+	Options jsonv1.RawMessage `json:"options"`
 }
 
 func referenceBuiltins(t *testing.T, specifications []middlewareSpec) []Middleware {
@@ -26,20 +27,23 @@ func referenceBuiltins(t *testing.T, specifications []middlewareSpec) []Middlewa
 	result := make([]Middleware, 0, len(specifications))
 	for _, specification := range specifications {
 		if specification.Type == "compress" {
-			var options CompressionOptions
+			var options struct {
+				Encoding  string   `json:"encoding"`
+				Threshold *float64 `json:"threshold"`
+			}
 			if err := json.Unmarshal(specification.Options, &options); err != nil {
 				t.Fatal(err)
 			}
-			result = append(result, Compress(options))
+			result = append(result, Compress(CompressionOptions{Encoding: options.Encoding, Threshold: options.Threshold}))
 			continue
 		}
 		var options struct {
-			Origin        json.RawMessage
-			AllowMethods  []string
-			AllowHeaders  []string
-			ExposeHeaders []string
-			Credentials   bool
-			MaxAge        *float64
+			Origin        jsonv1.RawMessage `json:"origin"`
+			AllowMethods  []string          `json:"allowMethods"`
+			AllowHeaders  []string          `json:"allowHeaders"`
+			ExposeHeaders []string          `json:"exposeHeaders"`
+			Credentials   bool              `json:"credentials"`
+			MaxAge        *float64          `json:"maxAge"`
 		}
 		if err := json.Unmarshal(specification.Options, &options); err != nil {
 			t.Fatal(err)
@@ -88,21 +92,27 @@ func TestHTTPMiddlewareReference(t *testing.T) {
 	}
 	var corpus struct {
 		Cases []struct {
-			Name, RouteMethod           string
-			Event, Body                 json.RawMessage
-			Status                      int
-			Failure                     bool
-			ResponseHeaders             map[string]string
-			Middleware, RouteMiddleware []middlewareSpec
-			Expected                    struct {
-				Response ProxyResponse
-				Calls    int
-				Decoded  *string
-			}
-		}
+			Name            string            `json:"name"`
+			RouteMethod     string            `json:"routeMethod"`
+			Event           jsonv1.RawMessage `json:"event"`
+			Body            jsonv1.RawMessage `json:"body"`
+			Status          int
+			Failure         bool              `json:"failure"`
+			ResponseHeaders map[string]string `json:"responseHeaders"`
+			Middleware      []middlewareSpec  `json:"middleware"`
+			RouteMiddleware []middlewareSpec  `json:"routeMiddleware"`
+			Expected        struct {
+				Response ProxyResponse `json:"response"`
+				Calls    int           `json:"calls"`
+				Decoded  *string       `json:"decoded"`
+			} `json:"expected"`
+		} `json:"cases"`
 	}
 	if err := json.Unmarshal(data, &corpus); err != nil {
 		t.Fatal(err)
+	}
+	if len(corpus.Cases) == 0 {
+		t.Fatal("reference corpus has no cases")
 	}
 	for _, item := range corpus.Cases {
 		t.Run(item.Name, func(t *testing.T) {

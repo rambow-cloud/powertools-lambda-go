@@ -2,7 +2,7 @@ package appsyncgraphql
 
 import (
 	"context"
-	"encoding/json"
+	json "encoding/json/v2"
 	"errors"
 	"fmt"
 	"math"
@@ -13,23 +13,32 @@ import (
 )
 
 type step struct {
-	Op, Target, Kind, Mode, Field, Tag string
-	TypeName                           *string
-	Individual, ThrowOnError           bool
-	Names, Routers                     []string
-	Event                              any
+	Op           string   `json:"op"`
+	Target       string   `json:"target"`
+	Kind         string   `json:"kind"`
+	Mode         string   `json:"mode"`
+	Field        string   `json:"field"`
+	Tag          string   `json:"tag"`
+	TypeName     *string  `json:"typeName"`
+	Individual   bool     `json:"individual"`
+	ThrowOnError bool     `json:"throwOnError"`
+	Names        []string `json:"names"`
+	Routers      []string `json:"routers"`
+	Event        any      `json:"event"`
 }
 type reference struct {
 	Cases []struct {
-		Steps                []step
-		Results, Calls, Logs []any
-	}
+		Steps   []step `json:"steps"`
+		Results []any  `json:"results"`
+		Calls   []any  `json:"calls"`
+		Logs    []any  `json:"logs"`
+	} `json:"cases"`
 	Scalars []struct {
-		Millis    int64
-		Offset    any
-		Timestamp int64
-		Values    map[string]any
-	}
+		Millis    int64          `json:"millis"`
+		Offset    any            `json:"offset"`
+		Timestamp int64          `json:"timestamp"`
+		Values    map[string]any `json:"values"`
+	} `json:"scalars"`
 }
 
 func readReference(t *testing.T) reference {

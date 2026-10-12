@@ -3,7 +3,8 @@ package metrics
 import (
 	"bytes"
 	"context"
-	"encoding/json"
+	jsonv1 "encoding/json"
+	json "encoding/json/v2"
 	"errors"
 	"fmt"
 	"io"
@@ -21,19 +22,21 @@ func TestDiagnosticReference(t *testing.T) {
 		t.Fatal(err)
 	}
 	var fixture struct {
-		Now   int64
+		Now   int64 `json:"now"`
 		Cases []struct {
-			Name, Namespace    string
-			Disabled, Required bool
-			Defaults           Dimensions
-			Steps              [][]json.RawMessage
-			Results            []struct {
-				Value any
-				Error *string
-			}
-			Warnings []string
-			Emitted  []map[string]any
-		}
+			Name      string                `json:"name"`
+			Namespace string                `json:"namespace"`
+			Disabled  bool                  `json:"disabled"`
+			Required  bool                  `json:"required"`
+			Defaults  Dimensions            `json:"defaults"`
+			Steps     [][]jsonv1.RawMessage `json:"steps"`
+			Results   []struct {
+				Value any     `json:"value"`
+				Error *string `json:"error"`
+			} `json:"results"`
+			Warnings []string         `json:"warnings"`
+			Emitted  []map[string]any `json:"emitted"`
+		} `json:"cases"`
 	}
 	if err := json.Unmarshal(data, &fixture); err != nil {
 		t.Fatal(err)

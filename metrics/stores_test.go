@@ -2,7 +2,8 @@ package metrics
 
 import (
 	"context"
-	"encoding/json"
+	jsonv1 "encoding/json"
+	json "encoding/json/v2"
 	"errors"
 	"fmt"
 	"os"
@@ -19,17 +20,18 @@ func TestStoreReference(t *testing.T) {
 		t.Fatal(err)
 	}
 	var fixture struct {
-		Now   int64
+		Now   int64 `json:"now"`
 		Cases []struct {
-			Name               string
-			Disabled, Required bool
-			Steps              [][]json.RawMessage
-			Results            []struct {
-				EmptyError bool
-				Value      any
-			}
-			Emitted []map[string]any
-		}
+			Name     string                `json:"name"`
+			Disabled bool                  `json:"disabled"`
+			Required bool                  `json:"required"`
+			Steps    [][]jsonv1.RawMessage `json:"steps"`
+			Results  []struct {
+				EmptyError bool `json:"emptyError"`
+				Value      any  `json:"value"`
+			} `json:"results"`
+			Emitted []map[string]any `json:"emitted"`
+		} `json:"cases"`
 	}
 	if err := json.Unmarshal(data, &fixture); err != nil {
 		t.Fatal(err)

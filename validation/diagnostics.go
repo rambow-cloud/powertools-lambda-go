@@ -151,7 +151,12 @@ func (m *schemaMetadata) collectIssues(failure *jsonschema.ValidationError, issu
 	case *kind.AnyOf:
 		item.Message = "must match a schema in anyOf"
 	case *kind.OneOf:
-		item.Params["passingSchemas"] = k.Subschemas
+		// No matching branch is JSON null, not an empty list. Represent that
+		// domain value explicitly rather than relying on nil-slice encoding.
+		item.Params["passingSchemas"] = nil
+		if k.Subschemas != nil {
+			item.Params["passingSchemas"] = k.Subschemas
+		}
 		item.Message = "must match exactly one schema in oneOf"
 	case *kind.Contains:
 		item.Params["minContains"] = 1

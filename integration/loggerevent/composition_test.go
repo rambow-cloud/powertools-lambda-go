@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"context"
 	jsonv1 "encoding/json"
+	json "encoding/json/v2"
 	"errors"
 	"testing"
 
@@ -59,7 +60,7 @@ func TestLoggerBeforeAndAfterProjection(t *testing.T) {
 				var entry struct {
 					Event map[string]any `json:"event"`
 				}
-				if err := jsonv1.Unmarshal(output.Bytes(), &entry); err != nil {
+				if err := json.Unmarshal(output.Bytes(), &entry); err != nil {
 					t.Fatal(err)
 				}
 				age, present := entry.Event["age"]

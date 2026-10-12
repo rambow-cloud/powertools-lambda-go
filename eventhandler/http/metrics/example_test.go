@@ -3,7 +3,8 @@ package metrics_test
 import (
 	"bytes"
 	"context"
-	"encoding/json"
+	jsonv1 "encoding/json"
+	json "encoding/json/v2"
 	"fmt"
 
 	httpapi "github.com/rambow-cloud/powertools-lambda-go/eventhandler/http"
@@ -25,7 +26,7 @@ func ExampleNew() {
 	}); err != nil {
 		panic(err)
 	}
-	event := json.RawMessage(`{"version":"2.0","routeKey":"$default","rawPath":"/health","rawQueryString":"","headers":{},"requestContext":{"http":{"method":"GET"},"domainName":"api.example.test"},"isBase64Encoded":false}`)
+	event := jsonv1.RawMessage(`{"version":"2.0","routeKey":"$default","rawPath":"/health","rawQueryString":"","headers":{},"requestContext":{"http":{"method":"GET"},"domainName":"api.example.test"},"isBase64Encoded":false}`)
 	response, err := app.Resolve(context.Background(), event)
 	fmt.Println(response.StatusCode, output.Len() > 0, err)
 	// Output: 200 true <nil>
@@ -45,7 +46,7 @@ func ExampleNew_requestCount() {
 	}); err != nil {
 		panic(err)
 	}
-	event := json.RawMessage(`{"version":"2.0","routeKey":"$default","rawPath":"/health","rawQueryString":"","headers":{},"requestContext":{"http":{"method":"GET"},"domainName":"api.example.test"},"isBase64Encoded":false}`)
+	event := jsonv1.RawMessage(`{"version":"2.0","routeKey":"$default","rawPath":"/health","rawQueryString":"","headers":{},"requestContext":{"http":{"method":"GET"},"domainName":"api.example.test"},"isBase64Encoded":false}`)
 	_, err = app.Resolve(context.Background(), event)
 	if err != nil {
 		panic(err)

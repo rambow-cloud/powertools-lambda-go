@@ -3,7 +3,7 @@ package logger
 import (
 	"bytes"
 	"context"
-	"encoding/json"
+	json "encoding/json/v2"
 	"os"
 	"reflect"
 	"testing"
@@ -16,10 +16,10 @@ func TestSamplingTypeScriptReference(t *testing.T) {
 		t.Fatal(err)
 	}
 	var fixture struct {
-		Draws       []int
-		DrawCount   int
-		Levels      []string
-		Diagnostics []Fields
+		Draws       []int    `json:"draws"`
+		DrawCount   int      `json:"drawCount"`
+		Levels      []string `json:"levels"`
+		Diagnostics []Fields `json:"diagnostics"`
 	}
 	if err := json.Unmarshal(data, &fixture); err != nil {
 		t.Fatal(err)

@@ -2,7 +2,7 @@ package parameters_test
 
 import (
 	"context"
-	"encoding/json"
+	json "encoding/json/v2"
 	"errors"
 	"os"
 	"reflect"
@@ -21,20 +21,24 @@ func TestReferenceFixture(t *testing.T) {
 	}
 	var fixture struct {
 		Cases []struct {
-			Name    string
+			Name    string `json:"name"`
 			Options struct {
-				Transform                  parameters.Transform
-				ForceFetch, ThrowOnMissing bool
-			}
-			Value any
-			Error string
-			Calls int
-		}
-		Multiple    map[string]any
-		StrictError string
+				Transform      parameters.Transform `json:"transform"`
+				ForceFetch     bool                 `json:"forceFetch"`
+				ThrowOnMissing bool                 `json:"throwOnMissing"`
+			} `json:"options"`
+			Value any    `json:"value"`
+			Error string `json:"error"`
+			Calls int    `json:"calls"`
+		} `json:"cases"`
+		Multiple    map[string]any `json:"multiple"`
+		StrictError string         `json:"strictError"`
 	}
 	if err := json.Unmarshal(data, &fixture); err != nil {
 		t.Fatal(err)
+	}
+	if len(fixture.Cases) == 0 {
+		t.Fatal("reference corpus has no cases")
 	}
 	cache := parameters.NewCache(nil)
 	store := map[string]any{"plain": "hello", "json": `{"enabled":true,"count":2}`, "binary": "aGVsbG8=", "empty": "", "null": "null", "invalid": "{"}

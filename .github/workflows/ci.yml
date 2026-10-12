@@ -79,6 +79,8 @@ jobs:
           enable-cache: false
       - name: Check module licenses and notices
         run: uv run --no-project python tools/licenses.py --check
+      - name: Enforce first-party JSON v2 APIs
+        run: go run ./tools/jsonapi
       - name: Test, vet, tidy-check, and verify independent consumers
         env:
           CI_MODULES: ${{ needs.changes.outputs.modules }}

@@ -3,7 +3,7 @@ package appsyncevents
 import (
 	"context"
 	"crypto/sha256"
-	"encoding/json"
+	json "encoding/json/v2"
 	"fmt"
 	"os"
 	"reflect"
@@ -53,7 +53,7 @@ func multiset(t *testing.T, values []any) []string {
 	t.Helper()
 	result := []string{}
 	for _, value := range values {
-		data, err := json.Marshal(value)
+		data, err := json.Marshal(value, json.Deterministic(true))
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -71,16 +71,21 @@ func TestTypeScriptReference(t *testing.T) {
 	var fixture struct {
 		Cases []struct {
 			Steps []struct {
-				Type, Kind, Path, Mode, Tag, Character string
-				Aggregate                              bool
-				Length                                 int
-				Event                                  any
-			}
-			Warn    bool
-			Results []any
-			Calls   []any
-			Logs    [][]any
-		}
+				Type      string `json:"type"`
+				Kind      string `json:"kind"`
+				Path      string `json:"path"`
+				Mode      string `json:"mode"`
+				Tag       string `json:"tag"`
+				Character string `json:"character"`
+				Aggregate bool   `json:"aggregate"`
+				Length    int    `json:"length"`
+				Event     any    `json:"event"`
+			} `json:"steps"`
+			Warn    bool    `json:"warn"`
+			Results []any   `json:"results"`
+			Calls   []any   `json:"calls"`
+			Logs    [][]any `json:"logs"`
+		} `json:"cases"`
 	}
 	if err := json.Unmarshal(data, &fixture); err != nil {
 		t.Fatal(err)

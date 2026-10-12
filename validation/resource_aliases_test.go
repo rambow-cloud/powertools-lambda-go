@@ -2,7 +2,8 @@ package validation
 
 import (
 	"context"
-	"encoding/json"
+	jsonv1 "encoding/json"
+	json "encoding/json/v2"
 	"sync"
 	"sync/atomic"
 	"testing"
@@ -12,7 +13,7 @@ func TestExternalSchemaSnapshotAndConcurrentReuse(t *testing.T) {
 	var calls atomic.Int32
 	child := map[string]any{"$id": "child", "$schema": "https://example.test/annotation", "type": "string", "format": "count"}
 	document := map[string]any{"$id": "https://example.test/document", "if": child, "then": true, "else": true}
-	before, _ := json.Marshal(document)
+	before, _ := json.Marshal(document, json.Deterministic(true))
 	options := Options{CompileOptions: CompileOptions{
 		ExternalSchemas: []any{document},
 		Formats:         map[string]func(any) error{"count": func(any) error { calls.Add(1); return nil }},
@@ -25,7 +26,7 @@ func TestExternalSchemaSnapshotAndConcurrentReuse(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	after, _ := json.Marshal(document)
+	after, _ := json.Marshal(document, json.Deterministic(true))
 	if string(before) != string(after) || calls.Load() != 0 {
 		t.Fatalf("compilation modified caller data or invoked a callback: %s, calls %d", after, calls.Load())
 	}
@@ -51,8 +52,8 @@ func TestExternalSchemaSnapshotAndConcurrentReuse(t *testing.T) {
 
 func TestExternalReferenceMapOrder(t *testing.T) {
 	options := Options{CompileOptions: CompileOptions{ExternalRefs: map[string]any{
-		"https://example.test/z": json.RawMessage(`{"$defs":{"value":{"$id":"https://example.test/shared","type":"string"}}}`),
-		"https://example.test/a": json.RawMessage(`{"$defs":{"value":{"$id":"https://example.test/shared","type":"number"}}}`),
+		"https://example.test/z": jsonv1.RawMessage(`{"$defs":{"value":{"$id":"https://example.test/shared","type":"string"}}}`),
+		"https://example.test/a": jsonv1.RawMessage(`{"$defs":{"value":{"$id":"https://example.test/shared","type":"number"}}}`),
 	}}}
 	schema, err := Compile(context.Background(), map[string]any{"$ref": "https://example.test/shared"}, options)
 	if err != nil {

@@ -11,6 +11,8 @@ import (
 
 // Numbers keeps the original numeric token instead of rounding it to float64.
 // Non-number values use the ordinary JSON v2 decoder and its default semantics.
+// JSON v2 has no Number type; json.Number is retained as the interoperable exact
+// numeric value consumed by schema validation and other numeric domain operations.
 var Numbers = json.WithUnmarshalers(json.UnmarshalFromFunc(func(decoder *jsontext.Decoder, value *any) error {
 	if decoder.PeekKind() != '0' {
 		return errors.ErrUnsupported

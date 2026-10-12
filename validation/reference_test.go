@@ -2,7 +2,8 @@ package validation
 
 import (
 	"context"
-	"encoding/json"
+	jsonv1 "encoding/json"
+	json "encoding/json/v2"
 	"errors"
 	"fmt"
 	"os"
@@ -55,25 +56,28 @@ func assertReference(t *testing.T, path string) {
 	}
 	var corpus struct {
 		Cases []struct {
-			Name    string
-			Schema  json.RawMessage
-			Payload json.RawMessage
+			Name    string            `json:"name"`
+			Schema  jsonv1.RawMessage `json:"schema"`
+			Payload jsonv1.RawMessage `json:"payload"`
 			Options struct {
-				Envelope     string
-				Formats      bool
-				ExternalRefs []json.RawMessage
-			}
+				Envelope     string              `json:"envelope"`
+				Formats      bool                `json:"formats"`
+				ExternalRefs []jsonv1.RawMessage `json:"externalRefs"`
+			} `json:"options"`
 			Expected struct {
-				Success bool
-				Value   any
-				Error   string
-				Message string
-				Issues  any
-			}
-		}
+				Success bool   `json:"success"`
+				Value   any    `json:"value"`
+				Error   string `json:"error"`
+				Message string `json:"message"`
+				Issues  any    `json:"issues"`
+			} `json:"expected"`
+		} `json:"cases"`
 	}
 	if err = json.Unmarshal(raw, &corpus); err != nil {
 		t.Fatal(err)
+	}
+	if len(corpus.Cases) == 0 {
+		t.Fatal("reference corpus has no cases")
 	}
 	for _, item := range corpus.Cases {
 		t.Run(item.Name, func(t *testing.T) {
@@ -86,7 +90,7 @@ func assertReference(t *testing.T, path string) {
 					return fmt.Errorf("prefix required")
 				}}
 				options.NumberFormats = map[string]func(any) error{"even": func(value any) error {
-					number, _ := value.(json.Number).Float64()
+					number, _ := value.(jsonv1.Number).Float64()
 					if int(number)%2 == 0 {
 						return nil
 					}
@@ -108,10 +112,12 @@ func assertReference(t *testing.T, path string) {
 			}
 			result, err := Validate(context.Background(), input, item.Schema, options)
 			if item.Expected.Success {
-				if raw, ok := result.(json.RawMessage); ok {
-					if decodeErr := json.Unmarshal(raw, &result); decodeErr != nil {
+				if raw, ok := result.(jsonv1.RawMessage); ok {
+					var decoded any
+					if decodeErr := json.Unmarshal(raw, &decoded); decodeErr != nil {
 						t.Fatal(decodeErr)
 					}
+					result = decoded
 				}
 				if err != nil || !reflect.DeepEqual(result, item.Expected.Value) {
 					t.Fatalf("got %#v, %v; want %#v", result, err, item.Expected.Value)

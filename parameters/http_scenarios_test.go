@@ -2,7 +2,7 @@ package parameters_test
 
 import (
 	"context"
-	"encoding/json"
+	json "encoding/json/v2"
 	"errors"
 	"io"
 	"net/http"
@@ -33,17 +33,23 @@ import (
 )
 
 type serviceStep struct {
-	Operation, Method, Path, Target, Body string
-	Request                               map[string]any
-	Query                                 url.Values
-	Status                                int
-	Headers                               map[string]string
+	Operation string            `json:"operation"`
+	Method    string            `json:"method"`
+	Path      string            `json:"path"`
+	Target    string            `json:"target"`
+	Body      string            `json:"body"`
+	Request   map[string]any    `json:"request"`
+	Query     url.Values        `json:"query"`
+	Status    int               `json:"status"`
+	Headers   map[string]string `json:"headers"`
 }
 type serviceScenario struct {
-	Name, Service, Provenance string
-	SDKVersion                string   `json:"sdk_version"`
-	SourceURLs                []string `json:"source_urls"`
-	Steps                     []serviceStep
+	Name       string        `json:"name"`
+	Service    string        `json:"service"`
+	Provenance string        `json:"provenance"`
+	SDKVersion string        `json:"sdk_version"`
+	SourceURLs []string      `json:"source_urls"`
+	Steps      []serviceStep `json:"steps"`
 }
 
 // Exact request matching and consumed steps detect wrong selectors, tokens and retries.
@@ -137,7 +143,9 @@ func TestSourcedServiceHTTPScenarios(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	var corpus struct{ Cases []serviceScenario }
+	var corpus struct {
+		Cases []serviceScenario `json:"cases"`
+	}
 	if err := json.Unmarshal(data, &corpus); err != nil {
 		t.Fatal(err)
 	}

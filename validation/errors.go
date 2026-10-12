@@ -6,7 +6,7 @@ type Issue struct {
 	Keyword      string         `json:"keyword"`
 	Message      string         `json:"message"`
 	Params       map[string]any `json:"params"`
-	PropertyName *string        `json:"propertyName,omitempty"`
+	PropertyName *string        `json:"propertyName,omitzero"`
 }
 
 type SchemaCompilationError struct{ Err error }

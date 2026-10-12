@@ -2,7 +2,7 @@ package metrics
 
 import (
 	"bytes"
-	"encoding/json"
+	json "encoding/json/v2"
 	"errors"
 	"fmt"
 	"os"
@@ -14,10 +14,10 @@ import (
 )
 
 type referenceConfigService struct {
-	Namespace string `json:"getNamespace"`
-	Service   string `json:"getServiceName"`
-	Fail      string
-	Mutate    map[string]*string
+	Namespace string             `json:"getNamespace"`
+	Service   string             `json:"getServiceName"`
+	Fail      string             `json:"fail"`
+	Mutate    map[string]*string `json:"mutate"`
 	calls     *[]string
 	apply     func(map[string]*string)
 }
@@ -38,20 +38,26 @@ func (c *referenceConfigService) GetServiceName() (string, error) {
 }
 
 type configInput struct {
-	OptionSingle       bool
-	Namespace, Service *string
-	Env, After         map[string]*string
-	Custom             *referenceConfigService
-	Defaults           Dimensions
-	Single, Clear      bool
+	OptionSingle bool                    `json:"optionSingle"`
+	Namespace    *string                 `json:"namespace"`
+	Service      *string                 `json:"service"`
+	Env          map[string]*string      `json:"env"`
+	After        map[string]*string      `json:"after"`
+	Custom       *referenceConfigService `json:"custom"`
+	Defaults     Dimensions              `json:"defaults"`
+	Single       bool                    `json:"single"`
+	Clear        bool                    `json:"clear"`
 }
 type configResult struct {
-	Calls, Warnings               []string
-	Emitted                       []map[string]any
-	Error                         *string
-	Stage                         string
-	Parent, Child                 map[string]any
-	ParentDisabled, ChildDisabled *bool
+	Calls          []string         `json:"calls"`
+	Warnings       []string         `json:"warnings"`
+	Emitted        []map[string]any `json:"emitted"`
+	Error          *string          `json:"error"`
+	Stage          string           `json:"stage"`
+	Parent         map[string]any   `json:"parent"`
+	Child          map[string]any   `json:"child"`
+	ParentDisabled *bool            `json:"parentDisabled"`
+	ChildDisabled  *bool            `json:"childDisabled"`
 }
 
 func TestConfigurationReference(t *testing.T) {
@@ -60,11 +66,11 @@ func TestConfigurationReference(t *testing.T) {
 		t.Fatal(err)
 	}
 	var fixture struct {
-		Now   int64
+		Now   int64 `json:"now"`
 		Cases []struct {
-			Input  configInput
-			Result configResult
-		}
+			Input  configInput  `json:"input"`
+			Result configResult `json:"result"`
+		} `json:"cases"`
 	}
 	if err := json.Unmarshal(data, &fixture); err != nil {
 		t.Fatal(err)
@@ -76,8 +82,8 @@ func TestConfigurationReference(t *testing.T) {
 		t.Run(fmt.Sprint(index), func(t *testing.T) {
 			got := runConfigReference(t, fixture.Now, item.Input)
 			if !reflect.DeepEqual(got, item.Result) {
-				actual, _ := json.MarshalIndent(got, "", "  ")
-				want, _ := json.MarshalIndent(item.Result, "", "  ")
+				actual, _ := json.Marshal(got)
+				want, _ := json.Marshal(item.Result)
 				t.Fatalf("got:\n%s\nwant:\n%s", actual, want)
 			}
 		})

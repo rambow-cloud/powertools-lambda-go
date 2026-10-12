@@ -2,7 +2,8 @@ package maskingregex_test
 
 import (
 	"context"
-	"encoding/json"
+	jsonv1 "encoding/json"
+	json "encoding/json/v2"
 	"os"
 	"reflect"
 	"testing"
@@ -14,12 +15,15 @@ import (
 func TestTypeScriptMaskingRegex(t *testing.T) {
 	var fixture struct {
 		Cases []struct {
-			Pattern, Flags, Format string
-			LastIndex, FinalIndex  int
-			Data                   json.RawMessage
-			Result                 any
-			Fields                 bool
-		}
+			Pattern    string            `json:"pattern"`
+			Flags      string            `json:"flags"`
+			Format     string            `json:"format"`
+			LastIndex  int               `json:"lastIndex"`
+			FinalIndex int               `json:"finalIndex"`
+			Data       jsonv1.RawMessage `json:"data"`
+			Result     any               `json:"result"`
+			Fields     bool              `json:"fields"`
+		} `json:"cases"`
 	}
 	data, err := os.ReadFile("testdata/typescript-v2.35.0.json")
 	if err != nil {
@@ -27,6 +31,9 @@ func TestTypeScriptMaskingRegex(t *testing.T) {
 	}
 	if err := json.Unmarshal(data, &fixture); err != nil {
 		t.Fatal(err)
+	}
+	if len(fixture.Cases) == 0 {
+		t.Fatal("reference corpus has no cases")
 	}
 	for i, item := range fixture.Cases {
 		expression, err := regex.Compile(item.Pattern, item.Flags, regex.Options{})

@@ -2,7 +2,7 @@ package bedrock
 
 import (
 	"context"
-	"encoding/json"
+	json "encoding/json/v2"
 	"fmt"
 	"math"
 	"os"
@@ -13,10 +13,14 @@ import (
 )
 
 type referenceStep struct {
-	Op, Mode, Tag, Description string
-	Name                       *string
-	Value, Event               any
-	Response                   map[string]any
+	Op          string `json:"op"`
+	Mode        string `json:"mode"`
+	Tag         string `json:"tag"`
+	Description string
+	Name        *string        `json:"name"`
+	Value       any            `json:"value"`
+	Event       any            `json:"event"`
+	Response    map[string]any `json:"response"`
 }
 
 func decodeSpecial(value any) any {
@@ -112,9 +116,11 @@ func TestTypeScriptReference(t *testing.T) {
 	}
 	var fixture struct {
 		Cases []struct {
-			Steps                []referenceStep
-			Results, Calls, Logs []any
-		}
+			Steps   []referenceStep `json:"steps"`
+			Results []any           `json:"results"`
+			Calls   []any           `json:"calls"`
+			Logs    []any           `json:"logs"`
+		} `json:"cases"`
 	}
 	if err := json.Unmarshal(data, &fixture); err != nil {
 		t.Fatal(err)

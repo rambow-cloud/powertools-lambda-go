@@ -2,7 +2,8 @@ package dynamodb
 
 import (
 	"context"
-	"encoding/json"
+	jsonv1 "encoding/json"
+	json "encoding/json/v2"
 	"errors"
 	"io"
 	"net/http"
@@ -37,12 +38,12 @@ func TestReferenceDynamoDBCommands(t *testing.T) {
 	}
 	var fixtures struct {
 		Wire []struct {
-			Composite bool
+			Composite bool `json:"composite"`
 			Commands  []struct {
-				Type  string
-				Input map[string]any
-			}
-		}
+				Type  string         `json:"type"`
+				Input map[string]any `json:"input"`
+			} `json:"commands"`
+		} `json:"wire"`
 	}
 	if err = json.Unmarshal(data, &fixtures); err != nil {
 		t.Fatal(err)
@@ -57,7 +58,7 @@ func TestReferenceDynamoDBCommands(t *testing.T) {
 				want := fixture.Commands[index]
 				index++
 				var got map[string]any
-				if err := json.NewDecoder(r.Body).Decode(&got); err != nil {
+				if err := json.UnmarshalRead(r.Body, &got); err != nil {
 					t.Fatal(err)
 				}
 				if !reflect.DeepEqual(got, want.Input) {
@@ -96,7 +97,7 @@ func TestReferenceDynamoDBCommands(t *testing.T) {
 			}
 			r.Status = idempotency.Completed
 			r.InProgressExpiration = 0
-			r.Data = json.RawMessage(`{"ok":true,"amount":1.5,"nested":[null,3]}`)
+			r.Data = jsonv1.RawMessage(`{"ok":true,"amount":1.5,"nested":[null,3]}`)
 			if err = store.Update(context.Background(), r); err != nil {
 				t.Fatal(err)
 			}
@@ -116,7 +117,7 @@ func TestConsistentReadsAndConditionalConflict(t *testing.T) {
 		t.Run(operation, func(t *testing.T) {
 			sdkClient := client(t, func(r *http.Request) (*http.Response, error) {
 				var input map[string]any
-				if err := json.NewDecoder(r.Body).Decode(&input); err != nil {
+				if err := json.UnmarshalRead(r.Body, &input); err != nil {
 					t.Fatal(err)
 				}
 				if operation == "get" && input["ConsistentRead"] != true {
@@ -160,8 +161,8 @@ func TestConsistentReadsAndConditionalConflict(t *testing.T) {
 					t.Fatal(err)
 				}
 				var payload struct {
-					Integer json.Number `json:"integer"`
-					Items   []any       `json:"items"`
+					Integer jsonv1.Number `json:"integer"`
+					Items   []any         `json:"items"`
 				}
 				if json.Unmarshal(r.Data, &payload) != nil || payload.Integer.String() != "9007199254740993" || !reflect.DeepEqual(payload.Items, []any{1.5, nil}) || r.Key != "key" || r.Status != idempotency.Completed {
 					t.Fatalf("%+v %s", r, r.Data)
@@ -181,8 +182,10 @@ func TestConsistentReadsAndConditionalConflict(t *testing.T) {
 
 func TestConfigurationAndCompositeReads(t *testing.T) {
 	sdkClient := client(t, func(r *http.Request) (*http.Response, error) {
-		var input struct{ Key map[string]map[string]string }
-		if err := json.NewDecoder(r.Body).Decode(&input); err != nil {
+		var input struct {
+			Key map[string]map[string]string `json:"Key"`
+		}
+		if err := json.UnmarshalRead(r.Body, &input); err != nil {
 			t.Fatal(err)
 		}
 		if input.Key["pk"]["S"] != "tenant" || input.Key["sk"]["S"] != "logical" {

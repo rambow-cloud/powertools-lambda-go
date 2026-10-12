@@ -2,7 +2,7 @@ package metadata_test
 
 import (
 	"context"
-	"encoding/json"
+	json "encoding/json/v2"
 	"errors"
 	"fmt"
 	"net/http"
@@ -25,9 +25,15 @@ func TestMetadataReference(t *testing.T) {
 	}
 	var f struct {
 		Metadata struct {
-			First, Second, Third, Local map[string]any
-			Requests                    []struct{ URL, Authorization string }
-		}
+			First    map[string]any `json:"first"`
+			Second   map[string]any `json:"second"`
+			Third    map[string]any `json:"third"`
+			Local    map[string]any `json:"local"`
+			Requests []struct {
+				URL           string `json:"url"`
+				Authorization string `json:"authorization"`
+			} `json:"requests"`
+		} `json:"metadata"`
 	}
 	if err := json.Unmarshal(data, &f); err != nil {
 		t.Fatal(err)
@@ -35,7 +41,7 @@ func TestMetadataReference(t *testing.T) {
 	var requests []map[string]string
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		requests = append(requests, map[string]string{"url": "http://metadata.local:9001" + r.URL.Path, "authorization": r.Header.Get("Authorization")})
-		_ = json.NewEncoder(w).Encode(f.Metadata.First)
+		_ = json.MarshalWrite(w, f.Metadata.First)
 	}))
 	defer server.Close()
 	t.Setenv("AWS_LAMBDA_INITIALIZATION_TYPE", "on-demand")

@@ -3,7 +3,7 @@ package metrics
 import (
 	"bytes"
 	"context"
-	"encoding/json"
+	json "encoding/json/v2"
 	"errors"
 	"fmt"
 	"io"
@@ -20,17 +20,21 @@ func TestWrapperReference(t *testing.T) {
 		t.Fatal(err)
 	}
 	var fixture struct {
-		Now   int64
+		Now   int64 `json:"now"`
 		Cases []struct {
-			Targets                            []int
-			Defaults                           Dimensions
-			Required, Strict, Disabled, Called bool
-			Mode                               string
-			Value                              *int
-			Error, Stage                       *string
-			Warnings                           []string
-			Emitted                            []map[string]any
-		}
+			Targets  []int            `json:"targets"`
+			Defaults Dimensions       `json:"defaults"`
+			Required bool             `json:"required"`
+			Strict   bool             `json:"strict"`
+			Disabled bool             `json:"disabled"`
+			Called   bool             `json:"called"`
+			Mode     string           `json:"mode"`
+			Value    *int             `json:"value"`
+			Error    *string          `json:"error"`
+			Stage    *string          `json:"stage"`
+			Warnings []string         `json:"warnings"`
+			Emitted  []map[string]any `json:"emitted"`
+		} `json:"cases"`
 	}
 	if err := json.Unmarshal(data, &fixture); err != nil {
 		t.Fatal(err)

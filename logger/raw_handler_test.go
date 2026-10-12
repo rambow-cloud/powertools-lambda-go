@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"context"
 	jsonv1 "encoding/json"
+	"encoding/json/jsontext"
 	json "encoding/json/v2"
 	"errors"
 	"fmt"
@@ -13,14 +14,13 @@ import (
 	"testing"
 
 	"github.com/aws/aws-lambda-go/lambda"
+	"github.com/rambow-cloud/powertools-lambda-go/internal/jsonvalue"
 )
 
 func exactJSON(t *testing.T, data []byte) any {
 	t.Helper()
-	decoder := jsonv1.NewDecoder(bytes.NewReader(data))
-	decoder.UseNumber()
 	var value any
-	if err := decoder.Decode(&value); err != nil {
+	if err := json.Unmarshal(data, &value, jsonvalue.Numbers); err != nil {
 		t.Fatal(err)
 	}
 	return value
@@ -54,11 +54,11 @@ func TestWrapRawHandlerRuntimePreservesEvent(t *testing.T) {
 	if err != nil || string(response) != `"Alice"` || calls != 1 {
 		t.Fatal(string(response), err, calls)
 	}
-	decoder := jsonv1.NewDecoder(&output)
+	decoder := jsontext.NewDecoder(&output)
 	var entry struct {
 		Event jsonv1.RawMessage `json:"event"`
 	}
-	if err := decoder.Decode(&entry); err != nil {
+	if err := json.UnmarshalDecode(decoder, &entry); err != nil {
 		t.Fatal(err)
 	}
 	if !reflect.DeepEqual(exactJSON(t, entry.Event), exactJSON(t, payload)) {
@@ -68,7 +68,7 @@ func TestWrapRawHandlerRuntimePreservesEvent(t *testing.T) {
 		Event   jsonv1.RawMessage `json:"event"`
 		Message string            `json:"message"`
 	}
-	if err := decoder.Decode(&business); err != nil {
+	if err := json.UnmarshalDecode(decoder, &business); err != nil {
 		t.Fatal(err)
 	}
 	if business.Event != nil || business.Message != "business" {
@@ -95,7 +95,7 @@ func TestWrapRawHandlerJSONShapes(t *testing.T) {
 			var entry struct {
 				Event jsonv1.RawMessage `json:"event"`
 			}
-			if err := jsonv1.Unmarshal(output.Bytes(), &entry); err != nil {
+			if err := json.Unmarshal(output.Bytes(), &entry); err != nil {
 				t.Fatal(err)
 			}
 			if !reflect.DeepEqual(exactJSON(t, entry.Event), exactJSON(t, []byte(payload))) {
@@ -114,7 +114,10 @@ func TestWrapRawHandlerDecodeFailures(t *testing.T) {
 			calls := 0
 			h := WrapRawHandler(New(WithOutput(&output)), func(_ context.Context, input struct {
 				Name string `json:"name"`
-			}) (int, error) { calls++; return 1, nil }, HandlerOptions{LogEvent: &enabled})
+			}) (int, error) {
+				calls++
+				return 1, nil
+			}, HandlerOptions{LogEvent: &enabled})
 			result, err := lambda.NewHandler(h).Invoke(context.Background(), []byte(payload))
 			if err == nil || len(result) != 0 || calls != 0 {
 				t.Fatal(string(result), err, calls)
@@ -198,18 +201,24 @@ func TestWrapRawHandlerCorrelationAndNestedLifetime(t *testing.T) {
 			calls := 0
 			inner := WrapRawHandler(l, func(ctx context.Context, _ struct {
 				Name string `json:"name"`
-			}) (int, error) { calls++; if l.WithContext(ctx).GetCorrelationID() != "raw-id" {
-				t.Fatal("raw-only correlation member lost")
-			}; if err := l.WithContext(ctx).Debug("detail"); err != nil {
-				return 0, err
-			}; switch outcome {
-			case "panic":
-				panic(panicValue)
-			case "error":
-				return 9, business
-			case "cancel":
-				return 9, ctx.Err()
-			}; return 9, nil }, HandlerOptions{LogEvent: &enabled, CorrelationSource: EventBridge})
+			}) (int, error) {
+				calls++
+				if l.WithContext(ctx).GetCorrelationID() != "raw-id" {
+					t.Fatal("raw-only correlation member lost")
+				}
+				if err := l.WithContext(ctx).Debug("detail"); err != nil {
+					return 0, err
+				}
+				switch outcome {
+				case "panic":
+					panic(panicValue)
+				case "error":
+					return 9, business
+				case "cancel":
+					return 9, ctx.Err()
+				}
+				return 9, nil
+			}, HandlerOptions{LogEvent: &enabled, CorrelationSource: EventBridge})
 			outer := WrapHandler(l, func(ctx context.Context, raw jsonv1.RawMessage) (int, error) {
 				retained = l.WithContext(ctx)
 				result, err := inner(ctx, raw)
@@ -275,7 +284,11 @@ func TestWrapRawHandlerConcurrentInvocations(t *testing.T) {
 	enabled := true
 	h := WrapRawHandler(l, func(ctx context.Context, input struct {
 		Name string `json:"name"`
-	}) (string, error) { bound := l.WithContext(ctx); bound.AppendKeys(Fields{"owner": input.Name}); return input.Name, bound.Info("business") }, HandlerOptions{LogEvent: &enabled, CorrelationID: func(value any) any {
+	}) (string, error) {
+		bound := l.WithContext(ctx)
+		bound.AppendKeys(Fields{"owner": input.Name})
+		return input.Name, bound.Info("business")
+	}, HandlerOptions{LogEvent: &enabled, CorrelationID: func(value any) any {
 		raw, ok := value.(jsonv1.RawMessage)
 		if !ok {
 			t.Error("callback did not receive RawMessage")

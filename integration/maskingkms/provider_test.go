@@ -2,7 +2,7 @@ package maskingkms_test
 
 import (
 	"context"
-	"encoding/json"
+	json "encoding/json/v2"
 	"errors"
 	"io"
 	"net/http"
@@ -23,19 +23,24 @@ import (
 func TestTypeScriptCiphertexts(t *testing.T) {
 	var corpus struct {
 		Cases []struct {
-			Name, Ciphertext, Expected string
-			Keys                       []string
-			Context                    map[string]string
-			Checks                     []struct {
-				Context map[string]string
-				Value   string
-				Error   *struct{ Name, Message string }
-			}
-		}
+			Name       string            `json:"name"`
+			Ciphertext string            `json:"ciphertext"`
+			Expected   string            `json:"expected"`
+			Keys       []string          `json:"keys"`
+			Context    map[string]string `json:"context"`
+			Checks     []struct {
+				Context map[string]string `json:"context"`
+				Value   string            `json:"value"`
+				Error   *struct {
+					Name    string `json:"name"`
+					Message string `json:"message"`
+				} `json:"error"`
+			} `json:"checks"`
+		} `json:"cases"`
 		Failures []struct {
-			Ciphertext string
-			Error      any
-		}
+			Ciphertext string `json:"ciphertext"`
+			Error      any    `json:"error"`
+		} `json:"failures"`
 	}
 	data, err := os.ReadFile("testdata/typescript-v2.35.0.json")
 	if err != nil {
@@ -43,6 +48,9 @@ func TestTypeScriptCiphertexts(t *testing.T) {
 	}
 	if err := json.Unmarshal(data, &corpus); err != nil {
 		t.Fatal(err)
+	}
+	if len(corpus.Cases) == 0 {
+		t.Fatal("reference corpus has no cases")
 	}
 	fixture := &kmsfixture.Fixture{}
 	server := httptest.NewServer(fixture)

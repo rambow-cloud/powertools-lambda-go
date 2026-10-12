@@ -2,7 +2,7 @@ package avro
 
 import (
 	"context"
-	"encoding/json"
+	json "encoding/json/v2"
 	"errors"
 	"math"
 	"os"
@@ -57,12 +57,18 @@ func TestTypeScriptReference(t *testing.T) {
 		t.Fatal(err)
 	}
 	var corpus struct {
-		Version string
+		Version string `json:"version"`
 		Cases   []struct {
-			Name, Schema, Data string
-			Metadata, Value    any
-			Error              *struct{ Name, Message string }
-		}
+			Name     string `json:"name"`
+			Schema   string `json:"schema"`
+			Data     string `json:"data"`
+			Metadata any    `json:"metadata"`
+			Value    any    `json:"value"`
+			Error    *struct {
+				Name    string `json:"name"`
+				Message string `json:"message"`
+			} `json:"error"`
+		} `json:"cases"`
 	}
 	if err := json.Unmarshal(data, &corpus); err != nil {
 		t.Fatal(err)

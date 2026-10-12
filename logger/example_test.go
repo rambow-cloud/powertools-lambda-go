@@ -3,7 +3,7 @@ package logger_test
 import (
 	"bytes"
 	"context"
-	"encoding/json"
+	json "encoding/json/v2"
 	"fmt"
 
 	"github.com/aws/aws-lambda-go/lambda"

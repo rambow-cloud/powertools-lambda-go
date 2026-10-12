@@ -3,7 +3,7 @@ package http
 import (
 	"context"
 	"encoding/base64"
-	"encoding/json"
+	json "encoding/json/v2"
 	"fmt"
 	"io"
 	nethttp "net/http"
@@ -33,7 +33,7 @@ func TestGetHeadRequestBodyNormalization(t *testing.T) {
 						event["body"] = "not base64!!!"
 						event["isBase64Encoded"] = true
 					}
-					original, err := json.Marshal(event)
+					original, err := json.Marshal(event, json.Deterministic(true))
 					if err != nil {
 						t.Fatal(err)
 					}
@@ -67,7 +67,7 @@ func TestGetHeadRequestBodyNormalization(t *testing.T) {
 					if err != nil || result.StatusCode != 200 || calls != 1 {
 						t.Fatalf("normalized route: %+v / %v, calls=%d", result, err, calls)
 					}
-					after, _ := json.Marshal(event)
+					after, _ := json.Marshal(event, json.Deterministic(true))
 					if string(after) != string(original) {
 						t.Fatal("caller event mutated")
 					}
