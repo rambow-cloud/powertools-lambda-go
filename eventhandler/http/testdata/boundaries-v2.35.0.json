@@ -1,0 +1,2141 @@
+{
+  "version": "2.35.0",
+  "cases": [
+    {
+      "name": "v1-token",
+      "mode": "request",
+      "input": {
+        "httpMethod": "GET",
+        "path": "/items/a",
+        "resource": "/{proxy+}",
+        "headers": {
+          "!#$%&'*+-.^_`|~09AZaz": "ok"
+        },
+        "requestContext": {
+          "domainName": "api.example.test"
+        },
+        "body": null,
+        "isBase64Encoded": false,
+        "pathParameters": null,
+        "queryStringParameters": null,
+        "multiValueQueryStringParameters": null,
+        "stageVariables": null
+      },
+      "expected": {
+        "value": {
+          "url": "https://api.example.test/items/a",
+          "headers": {
+            "!#$%&'*+-.^_`|~09azaz": "ok"
+          }
+        }
+      }
+    },
+    {
+      "name": "v1-control-name",
+      "mode": "request",
+      "input": {
+        "httpMethod": "GET",
+        "path": "/items/a",
+        "resource": "/{proxy+}",
+        "headers": {
+          "x-\u0001": "ok"
+        },
+        "requestContext": {
+          "domainName": "api.example.test"
+        },
+        "body": null,
+        "isBase64Encoded": false,
+        "pathParameters": null,
+        "queryStringParameters": null,
+        "multiValueQueryStringParameters": null,
+        "stageVariables": null
+      },
+      "expected": {
+        "error": "TypeError",
+        "message": "Headers.set: \"x-\u0001\" is an invalid header name."
+      }
+    },
+    {
+      "name": "v1-del-name",
+      "mode": "request",
+      "input": {
+        "httpMethod": "GET",
+        "path": "/items/a",
+        "resource": "/{proxy+}",
+        "headers": {
+          "x-": "ok"
+        },
+        "requestContext": {
+          "domainName": "api.example.test"
+        },
+        "body": null,
+        "isBase64Encoded": false,
+        "pathParameters": null,
+        "queryStringParameters": null,
+        "multiValueQueryStringParameters": null,
+        "stageVariables": null
+      },
+      "expected": {
+        "error": "TypeError",
+        "message": "Headers.set: \"x-\" is an invalid header name."
+      }
+    },
+    {
+      "name": "v1-unicode-name",
+      "mode": "request",
+      "input": {
+        "httpMethod": "GET",
+        "path": "/items/a",
+        "resource": "/{proxy+}",
+        "headers": {
+          "x-é": "ok"
+        },
+        "requestContext": {
+          "domainName": "api.example.test"
+        },
+        "body": null,
+        "isBase64Encoded": false,
+        "pathParameters": null,
+        "queryStringParameters": null,
+        "multiValueQueryStringParameters": null,
+        "stageVariables": null
+      },
+      "expected": {
+        "error": "TypeError",
+        "message": "Headers.set: \"x-é\" is an invalid header name."
+      }
+    },
+    {
+      "name": "v1-space-name",
+      "mode": "request",
+      "input": {
+        "httpMethod": "GET",
+        "path": "/items/a",
+        "resource": "/{proxy+}",
+        "headers": {
+          "bad name": "ok"
+        },
+        "requestContext": {
+          "domainName": "api.example.test"
+        },
+        "body": null,
+        "isBase64Encoded": false,
+        "pathParameters": null,
+        "queryStringParameters": null,
+        "multiValueQueryStringParameters": null,
+        "stageVariables": null
+      },
+      "expected": {
+        "error": "TypeError",
+        "message": "Headers.set: \"bad name\" is an invalid header name."
+      }
+    },
+    {
+      "name": "v1-colon-name",
+      "mode": "request",
+      "input": {
+        "httpMethod": "GET",
+        "path": "/items/a",
+        "resource": "/{proxy+}",
+        "headers": {
+          "bad:name": "ok"
+        },
+        "requestContext": {
+          "domainName": "api.example.test"
+        },
+        "body": null,
+        "isBase64Encoded": false,
+        "pathParameters": null,
+        "queryStringParameters": null,
+        "multiValueQueryStringParameters": null,
+        "stageVariables": null
+      },
+      "expected": {
+        "error": "TypeError",
+        "message": "Headers.set: \"bad:name\" is an invalid header name."
+      }
+    },
+    {
+      "name": "v1-empty-name",
+      "mode": "request",
+      "input": {
+        "httpMethod": "GET",
+        "path": "/items/a",
+        "resource": "/{proxy+}",
+        "headers": {
+          "": "ok"
+        },
+        "requestContext": {
+          "domainName": "api.example.test"
+        },
+        "body": null,
+        "isBase64Encoded": false,
+        "pathParameters": null,
+        "queryStringParameters": null,
+        "multiValueQueryStringParameters": null,
+        "stageVariables": null
+      },
+      "expected": {
+        "error": "TypeError",
+        "message": "Headers.set: \"\" is an invalid header name."
+      }
+    },
+    {
+      "name": "v1-crlf-value",
+      "mode": "request",
+      "input": {
+        "httpMethod": "GET",
+        "path": "/items/a",
+        "resource": "/{proxy+}",
+        "headers": {
+          "x-test": "a\r\nb"
+        },
+        "requestContext": {
+          "domainName": "api.example.test"
+        },
+        "body": null,
+        "isBase64Encoded": false,
+        "pathParameters": null,
+        "queryStringParameters": null,
+        "multiValueQueryStringParameters": null,
+        "stageVariables": null
+      },
+      "expected": {
+        "error": "TypeError",
+        "message": "Headers.set: \"a\r\nb\" is an invalid header value."
+      }
+    },
+    {
+      "name": "v1-null-value",
+      "mode": "request",
+      "input": {
+        "httpMethod": "GET",
+        "path": "/items/a",
+        "resource": "/{proxy+}",
+        "headers": {
+          "x-test": "a\u0000b"
+        },
+        "requestContext": {
+          "domainName": "api.example.test"
+        },
+        "body": null,
+        "isBase64Encoded": false,
+        "pathParameters": null,
+        "queryStringParameters": null,
+        "multiValueQueryStringParameters": null,
+        "stageVariables": null
+      },
+      "expected": {
+        "error": "TypeError",
+        "message": "Headers.set: \"a\u0000b\" is an invalid header value."
+      }
+    },
+    {
+      "name": "v1-padding",
+      "mode": "request",
+      "input": {
+        "httpMethod": "GET",
+        "path": "/items/a",
+        "resource": "/{proxy+}",
+        "headers": {
+          "x-test": " \tvalue\t "
+        },
+        "requestContext": {
+          "domainName": "api.example.test"
+        },
+        "body": null,
+        "isBase64Encoded": false,
+        "pathParameters": null,
+        "queryStringParameters": null,
+        "multiValueQueryStringParameters": null,
+        "stageVariables": null
+      },
+      "expected": {
+        "value": {
+          "url": "https://api.example.test/items/a",
+          "headers": {
+            "x-test": "value"
+          }
+        }
+      }
+    },
+    {
+      "name": "v1-tab",
+      "mode": "request",
+      "input": {
+        "httpMethod": "GET",
+        "path": "/items/a",
+        "resource": "/{proxy+}",
+        "headers": {
+          "x-test": "a\tb"
+        },
+        "requestContext": {
+          "domainName": "api.example.test"
+        },
+        "body": null,
+        "isBase64Encoded": false,
+        "pathParameters": null,
+        "queryStringParameters": null,
+        "multiValueQueryStringParameters": null,
+        "stageVariables": null
+      },
+      "expected": {
+        "value": {
+          "url": "https://api.example.test/items/a",
+          "headers": {
+            "x-test": "a\tb"
+          }
+        }
+      }
+    },
+    {
+      "name": "v1-latin1",
+      "mode": "request",
+      "input": {
+        "httpMethod": "GET",
+        "path": "/items/a",
+        "resource": "/{proxy+}",
+        "headers": {
+          "x-test": "é"
+        },
+        "requestContext": {
+          "domainName": "api.example.test"
+        },
+        "body": null,
+        "isBase64Encoded": false,
+        "pathParameters": null,
+        "queryStringParameters": null,
+        "multiValueQueryStringParameters": null,
+        "stageVariables": null
+      },
+      "expected": {
+        "value": {
+          "url": "https://api.example.test/items/a",
+          "headers": {
+            "x-test": "é"
+          }
+        }
+      }
+    },
+    {
+      "name": "v1-encoded-slash",
+      "mode": "url",
+      "input": {
+        "httpMethod": "GET",
+        "path": "/items/a%2Fb",
+        "resource": "/{proxy+}",
+        "headers": {},
+        "requestContext": {
+          "domainName": "api.example.test"
+        },
+        "body": null,
+        "isBase64Encoded": false,
+        "pathParameters": null,
+        "queryStringParameters": null,
+        "multiValueQueryStringParameters": null,
+        "stageVariables": null
+      },
+      "expected": {
+        "value": {
+          "url": "https://api.example.test/items/a%2Fb",
+          "headers": {}
+        }
+      }
+    },
+    {
+      "name": "v1-plus",
+      "mode": "url",
+      "input": {
+        "httpMethod": "GET",
+        "path": "/items/a+b",
+        "resource": "/{proxy+}",
+        "headers": {},
+        "requestContext": {
+          "domainName": "api.example.test"
+        },
+        "body": null,
+        "isBase64Encoded": false,
+        "pathParameters": null,
+        "queryStringParameters": null,
+        "multiValueQueryStringParameters": null,
+        "stageVariables": null
+      },
+      "expected": {
+        "value": {
+          "url": "https://api.example.test/items/a+b",
+          "headers": {}
+        }
+      }
+    },
+    {
+      "name": "v1-ipv6",
+      "mode": "url",
+      "input": {
+        "httpMethod": "GET",
+        "path": "/items/a",
+        "resource": "/{proxy+}",
+        "headers": {
+          "host": "[::1]:8443"
+        },
+        "requestContext": {
+          "domainName": "api.example.test"
+        },
+        "body": null,
+        "isBase64Encoded": false,
+        "pathParameters": null,
+        "queryStringParameters": null,
+        "multiValueQueryStringParameters": null,
+        "stageVariables": null
+      },
+      "expected": {
+        "value": {
+          "url": "https://[::1]:8443/items/a",
+          "headers": {
+            "host": "[::1]:8443"
+          }
+        }
+      }
+    },
+    {
+      "name": "v1-bad-host",
+      "mode": "url",
+      "input": {
+        "httpMethod": "GET",
+        "path": "/items/a",
+        "resource": "/{proxy+}",
+        "headers": {
+          "host": "[::1"
+        },
+        "requestContext": {
+          "domainName": "api.example.test"
+        },
+        "body": null,
+        "isBase64Encoded": false,
+        "pathParameters": null,
+        "queryStringParameters": null,
+        "multiValueQueryStringParameters": null,
+        "stageVariables": null
+      },
+      "expected": {
+        "error": "TypeError",
+        "message": "Invalid URL"
+      }
+    },
+    {
+      "name": "v1-credentials",
+      "mode": "url",
+      "input": {
+        "httpMethod": "GET",
+        "path": "/items/a",
+        "resource": "/{proxy+}",
+        "headers": {
+          "host": "user:pass@example.test"
+        },
+        "requestContext": {
+          "domainName": "api.example.test"
+        },
+        "body": null,
+        "isBase64Encoded": false,
+        "pathParameters": null,
+        "queryStringParameters": null,
+        "multiValueQueryStringParameters": null,
+        "stageVariables": null
+      },
+      "expected": {
+        "error": "TypeError",
+        "message": "Request cannot be constructed from a URL that includes credentials: https://user:pass@example.test/items/a"
+      }
+    },
+    {
+      "name": "v1-malformed-escape",
+      "mode": "url",
+      "input": {
+        "httpMethod": "GET",
+        "path": "/items/%",
+        "resource": "/{proxy+}",
+        "headers": {},
+        "requestContext": {
+          "domainName": "api.example.test"
+        },
+        "body": null,
+        "isBase64Encoded": false,
+        "pathParameters": null,
+        "queryStringParameters": null,
+        "multiValueQueryStringParameters": null,
+        "stageVariables": null
+      },
+      "expected": {
+        "value": {
+          "url": "https://api.example.test/items/%",
+          "headers": {}
+        }
+      }
+    },
+    {
+      "name": "v2-token",
+      "mode": "request",
+      "input": {
+        "version": "2.0",
+        "routeKey": "$default",
+        "rawPath": "/items/a",
+        "rawQueryString": "",
+        "headers": {
+          "!#$%&'*+-.^_`|~09AZaz": "ok"
+        },
+        "requestContext": {
+          "http": {
+            "method": "GET"
+          },
+          "domainName": "api.example.test"
+        },
+        "isBase64Encoded": false
+      },
+      "expected": {
+        "value": {
+          "url": "https://api.example.test/items/a",
+          "headers": {
+            "!#$%&'*+-.^_`|~09azaz": "ok"
+          }
+        }
+      }
+    },
+    {
+      "name": "v2-control-name",
+      "mode": "request",
+      "input": {
+        "version": "2.0",
+        "routeKey": "$default",
+        "rawPath": "/items/a",
+        "rawQueryString": "",
+        "headers": {
+          "x-\u0001": "ok"
+        },
+        "requestContext": {
+          "http": {
+            "method": "GET"
+          },
+          "domainName": "api.example.test"
+        },
+        "isBase64Encoded": false
+      },
+      "expected": {
+        "error": "TypeError",
+        "message": "Headers.set: \"x-\u0001\" is an invalid header name."
+      }
+    },
+    {
+      "name": "v2-del-name",
+      "mode": "request",
+      "input": {
+        "version": "2.0",
+        "routeKey": "$default",
+        "rawPath": "/items/a",
+        "rawQueryString": "",
+        "headers": {
+          "x-": "ok"
+        },
+        "requestContext": {
+          "http": {
+            "method": "GET"
+          },
+          "domainName": "api.example.test"
+        },
+        "isBase64Encoded": false
+      },
+      "expected": {
+        "error": "TypeError",
+        "message": "Headers.set: \"x-\" is an invalid header name."
+      }
+    },
+    {
+      "name": "v2-unicode-name",
+      "mode": "request",
+      "input": {
+        "version": "2.0",
+        "routeKey": "$default",
+        "rawPath": "/items/a",
+        "rawQueryString": "",
+        "headers": {
+          "x-é": "ok"
+        },
+        "requestContext": {
+          "http": {
+            "method": "GET"
+          },
+          "domainName": "api.example.test"
+        },
+        "isBase64Encoded": false
+      },
+      "expected": {
+        "error": "TypeError",
+        "message": "Headers.set: \"x-é\" is an invalid header name."
+      }
+    },
+    {
+      "name": "v2-space-name",
+      "mode": "request",
+      "input": {
+        "version": "2.0",
+        "routeKey": "$default",
+        "rawPath": "/items/a",
+        "rawQueryString": "",
+        "headers": {
+          "bad name": "ok"
+        },
+        "requestContext": {
+          "http": {
+            "method": "GET"
+          },
+          "domainName": "api.example.test"
+        },
+        "isBase64Encoded": false
+      },
+      "expected": {
+        "error": "TypeError",
+        "message": "Headers.set: \"bad name\" is an invalid header name."
+      }
+    },
+    {
+      "name": "v2-colon-name",
+      "mode": "request",
+      "input": {
+        "version": "2.0",
+        "routeKey": "$default",
+        "rawPath": "/items/a",
+        "rawQueryString": "",
+        "headers": {
+          "bad:name": "ok"
+        },
+        "requestContext": {
+          "http": {
+            "method": "GET"
+          },
+          "domainName": "api.example.test"
+        },
+        "isBase64Encoded": false
+      },
+      "expected": {
+        "error": "TypeError",
+        "message": "Headers.set: \"bad:name\" is an invalid header name."
+      }
+    },
+    {
+      "name": "v2-empty-name",
+      "mode": "request",
+      "input": {
+        "version": "2.0",
+        "routeKey": "$default",
+        "rawPath": "/items/a",
+        "rawQueryString": "",
+        "headers": {
+          "": "ok"
+        },
+        "requestContext": {
+          "http": {
+            "method": "GET"
+          },
+          "domainName": "api.example.test"
+        },
+        "isBase64Encoded": false
+      },
+      "expected": {
+        "error": "TypeError",
+        "message": "Headers.set: \"\" is an invalid header name."
+      }
+    },
+    {
+      "name": "v2-crlf-value",
+      "mode": "request",
+      "input": {
+        "version": "2.0",
+        "routeKey": "$default",
+        "rawPath": "/items/a",
+        "rawQueryString": "",
+        "headers": {
+          "x-test": "a\r\nb"
+        },
+        "requestContext": {
+          "http": {
+            "method": "GET"
+          },
+          "domainName": "api.example.test"
+        },
+        "isBase64Encoded": false
+      },
+      "expected": {
+        "error": "TypeError",
+        "message": "Headers.set: \"a\r\nb\" is an invalid header value."
+      }
+    },
+    {
+      "name": "v2-null-value",
+      "mode": "request",
+      "input": {
+        "version": "2.0",
+        "routeKey": "$default",
+        "rawPath": "/items/a",
+        "rawQueryString": "",
+        "headers": {
+          "x-test": "a\u0000b"
+        },
+        "requestContext": {
+          "http": {
+            "method": "GET"
+          },
+          "domainName": "api.example.test"
+        },
+        "isBase64Encoded": false
+      },
+      "expected": {
+        "error": "TypeError",
+        "message": "Headers.set: \"a\u0000b\" is an invalid header value."
+      }
+    },
+    {
+      "name": "v2-padding",
+      "mode": "request",
+      "input": {
+        "version": "2.0",
+        "routeKey": "$default",
+        "rawPath": "/items/a",
+        "rawQueryString": "",
+        "headers": {
+          "x-test": " \tvalue\t "
+        },
+        "requestContext": {
+          "http": {
+            "method": "GET"
+          },
+          "domainName": "api.example.test"
+        },
+        "isBase64Encoded": false
+      },
+      "expected": {
+        "value": {
+          "url": "https://api.example.test/items/a",
+          "headers": {
+            "x-test": "value"
+          }
+        }
+      }
+    },
+    {
+      "name": "v2-tab",
+      "mode": "request",
+      "input": {
+        "version": "2.0",
+        "routeKey": "$default",
+        "rawPath": "/items/a",
+        "rawQueryString": "",
+        "headers": {
+          "x-test": "a\tb"
+        },
+        "requestContext": {
+          "http": {
+            "method": "GET"
+          },
+          "domainName": "api.example.test"
+        },
+        "isBase64Encoded": false
+      },
+      "expected": {
+        "value": {
+          "url": "https://api.example.test/items/a",
+          "headers": {
+            "x-test": "a\tb"
+          }
+        }
+      }
+    },
+    {
+      "name": "v2-latin1",
+      "mode": "request",
+      "input": {
+        "version": "2.0",
+        "routeKey": "$default",
+        "rawPath": "/items/a",
+        "rawQueryString": "",
+        "headers": {
+          "x-test": "é"
+        },
+        "requestContext": {
+          "http": {
+            "method": "GET"
+          },
+          "domainName": "api.example.test"
+        },
+        "isBase64Encoded": false
+      },
+      "expected": {
+        "value": {
+          "url": "https://api.example.test/items/a",
+          "headers": {
+            "x-test": "é"
+          }
+        }
+      }
+    },
+    {
+      "name": "v2-encoded-slash",
+      "mode": "url",
+      "input": {
+        "version": "2.0",
+        "routeKey": "$default",
+        "rawPath": "/items/a%2Fb",
+        "rawQueryString": "",
+        "headers": {},
+        "requestContext": {
+          "http": {
+            "method": "GET"
+          },
+          "domainName": "api.example.test"
+        },
+        "isBase64Encoded": false
+      },
+      "expected": {
+        "value": {
+          "url": "https://api.example.test/items/a%2Fb",
+          "headers": {}
+        }
+      }
+    },
+    {
+      "name": "v2-plus",
+      "mode": "url",
+      "input": {
+        "version": "2.0",
+        "routeKey": "$default",
+        "rawPath": "/items/a+b",
+        "rawQueryString": "",
+        "headers": {},
+        "requestContext": {
+          "http": {
+            "method": "GET"
+          },
+          "domainName": "api.example.test"
+        },
+        "isBase64Encoded": false
+      },
+      "expected": {
+        "value": {
+          "url": "https://api.example.test/items/a+b",
+          "headers": {}
+        }
+      }
+    },
+    {
+      "name": "v2-ipv6",
+      "mode": "url",
+      "input": {
+        "version": "2.0",
+        "routeKey": "$default",
+        "rawPath": "/items/a",
+        "rawQueryString": "",
+        "headers": {
+          "host": "[::1]:8443"
+        },
+        "requestContext": {
+          "http": {
+            "method": "GET"
+          },
+          "domainName": "api.example.test"
+        },
+        "isBase64Encoded": false
+      },
+      "expected": {
+        "value": {
+          "url": "https://[::1]:8443/items/a",
+          "headers": {
+            "host": "[::1]:8443"
+          }
+        }
+      }
+    },
+    {
+      "name": "v2-bad-host",
+      "mode": "url",
+      "input": {
+        "version": "2.0",
+        "routeKey": "$default",
+        "rawPath": "/items/a",
+        "rawQueryString": "",
+        "headers": {
+          "host": "[::1"
+        },
+        "requestContext": {
+          "http": {
+            "method": "GET"
+          },
+          "domainName": "api.example.test"
+        },
+        "isBase64Encoded": false
+      },
+      "expected": {
+        "error": "TypeError",
+        "message": "Failed to parse URL from https://[::1/items/a"
+      }
+    },
+    {
+      "name": "v2-credentials",
+      "mode": "url",
+      "input": {
+        "version": "2.0",
+        "routeKey": "$default",
+        "rawPath": "/items/a",
+        "rawQueryString": "",
+        "headers": {
+          "host": "user:pass@example.test"
+        },
+        "requestContext": {
+          "http": {
+            "method": "GET"
+          },
+          "domainName": "api.example.test"
+        },
+        "isBase64Encoded": false
+      },
+      "expected": {
+        "error": "TypeError",
+        "message": "Request cannot be constructed from a URL that includes credentials: https://user:pass@example.test/items/a"
+      }
+    },
+    {
+      "name": "v2-malformed-escape",
+      "mode": "url",
+      "input": {
+        "version": "2.0",
+        "routeKey": "$default",
+        "rawPath": "/items/%",
+        "rawQueryString": "",
+        "headers": {},
+        "requestContext": {
+          "http": {
+            "method": "GET"
+          },
+          "domainName": "api.example.test"
+        },
+        "isBase64Encoded": false
+      },
+      "expected": {
+        "value": {
+          "url": "https://api.example.test/items/%",
+          "headers": {}
+        }
+      }
+    },
+    {
+      "name": "alb-token",
+      "mode": "request",
+      "input": {
+        "httpMethod": "GET",
+        "path": "/items/a",
+        "headers": {
+          "!#$%&'*+-.^_`|~09AZaz": "ok"
+        },
+        "requestContext": {
+          "elb": {}
+        },
+        "body": null,
+        "isBase64Encoded": false
+      },
+      "expected": {
+        "value": {
+          "url": "https://localhost/items/a",
+          "headers": {
+            "!#$%&'*+-.^_`|~09azaz": "ok"
+          }
+        }
+      }
+    },
+    {
+      "name": "alb-control-name",
+      "mode": "request",
+      "input": {
+        "httpMethod": "GET",
+        "path": "/items/a",
+        "headers": {
+          "x-\u0001": "ok"
+        },
+        "requestContext": {
+          "elb": {}
+        },
+        "body": null,
+        "isBase64Encoded": false
+      },
+      "expected": {
+        "error": "TypeError",
+        "message": "Headers.set: \"x-\u0001\" is an invalid header name."
+      }
+    },
+    {
+      "name": "alb-del-name",
+      "mode": "request",
+      "input": {
+        "httpMethod": "GET",
+        "path": "/items/a",
+        "headers": {
+          "x-": "ok"
+        },
+        "requestContext": {
+          "elb": {}
+        },
+        "body": null,
+        "isBase64Encoded": false
+      },
+      "expected": {
+        "error": "TypeError",
+        "message": "Headers.set: \"x-\" is an invalid header name."
+      }
+    },
+    {
+      "name": "alb-unicode-name",
+      "mode": "request",
+      "input": {
+        "httpMethod": "GET",
+        "path": "/items/a",
+        "headers": {
+          "x-é": "ok"
+        },
+        "requestContext": {
+          "elb": {}
+        },
+        "body": null,
+        "isBase64Encoded": false
+      },
+      "expected": {
+        "error": "TypeError",
+        "message": "Headers.set: \"x-é\" is an invalid header name."
+      }
+    },
+    {
+      "name": "alb-space-name",
+      "mode": "request",
+      "input": {
+        "httpMethod": "GET",
+        "path": "/items/a",
+        "headers": {
+          "bad name": "ok"
+        },
+        "requestContext": {
+          "elb": {}
+        },
+        "body": null,
+        "isBase64Encoded": false
+      },
+      "expected": {
+        "error": "TypeError",
+        "message": "Headers.set: \"bad name\" is an invalid header name."
+      }
+    },
+    {
+      "name": "alb-colon-name",
+      "mode": "request",
+      "input": {
+        "httpMethod": "GET",
+        "path": "/items/a",
+        "headers": {
+          "bad:name": "ok"
+        },
+        "requestContext": {
+          "elb": {}
+        },
+        "body": null,
+        "isBase64Encoded": false
+      },
+      "expected": {
+        "error": "TypeError",
+        "message": "Headers.set: \"bad:name\" is an invalid header name."
+      }
+    },
+    {
+      "name": "alb-empty-name",
+      "mode": "request",
+      "input": {
+        "httpMethod": "GET",
+        "path": "/items/a",
+        "headers": {
+          "": "ok"
+        },
+        "requestContext": {
+          "elb": {}
+        },
+        "body": null,
+        "isBase64Encoded": false
+      },
+      "expected": {
+        "error": "TypeError",
+        "message": "Headers.set: \"\" is an invalid header name."
+      }
+    },
+    {
+      "name": "alb-crlf-value",
+      "mode": "request",
+      "input": {
+        "httpMethod": "GET",
+        "path": "/items/a",
+        "headers": {
+          "x-test": "a\r\nb"
+        },
+        "requestContext": {
+          "elb": {}
+        },
+        "body": null,
+        "isBase64Encoded": false
+      },
+      "expected": {
+        "error": "TypeError",
+        "message": "Headers.set: \"a\r\nb\" is an invalid header value."
+      }
+    },
+    {
+      "name": "alb-null-value",
+      "mode": "request",
+      "input": {
+        "httpMethod": "GET",
+        "path": "/items/a",
+        "headers": {
+          "x-test": "a\u0000b"
+        },
+        "requestContext": {
+          "elb": {}
+        },
+        "body": null,
+        "isBase64Encoded": false
+      },
+      "expected": {
+        "error": "TypeError",
+        "message": "Headers.set: \"a\u0000b\" is an invalid header value."
+      }
+    },
+    {
+      "name": "alb-padding",
+      "mode": "request",
+      "input": {
+        "httpMethod": "GET",
+        "path": "/items/a",
+        "headers": {
+          "x-test": " \tvalue\t "
+        },
+        "requestContext": {
+          "elb": {}
+        },
+        "body": null,
+        "isBase64Encoded": false
+      },
+      "expected": {
+        "value": {
+          "url": "https://localhost/items/a",
+          "headers": {
+            "x-test": "value"
+          }
+        }
+      }
+    },
+    {
+      "name": "alb-tab",
+      "mode": "request",
+      "input": {
+        "httpMethod": "GET",
+        "path": "/items/a",
+        "headers": {
+          "x-test": "a\tb"
+        },
+        "requestContext": {
+          "elb": {}
+        },
+        "body": null,
+        "isBase64Encoded": false
+      },
+      "expected": {
+        "value": {
+          "url": "https://localhost/items/a",
+          "headers": {
+            "x-test": "a\tb"
+          }
+        }
+      }
+    },
+    {
+      "name": "alb-latin1",
+      "mode": "request",
+      "input": {
+        "httpMethod": "GET",
+        "path": "/items/a",
+        "headers": {
+          "x-test": "é"
+        },
+        "requestContext": {
+          "elb": {}
+        },
+        "body": null,
+        "isBase64Encoded": false
+      },
+      "expected": {
+        "value": {
+          "url": "https://localhost/items/a",
+          "headers": {
+            "x-test": "é"
+          }
+        }
+      }
+    },
+    {
+      "name": "alb-encoded-slash",
+      "mode": "url",
+      "input": {
+        "httpMethod": "GET",
+        "path": "/items/a%2Fb",
+        "headers": {},
+        "requestContext": {
+          "elb": {}
+        },
+        "body": null,
+        "isBase64Encoded": false
+      },
+      "expected": {
+        "value": {
+          "url": "https://localhost/items/a%2Fb",
+          "headers": {}
+        }
+      }
+    },
+    {
+      "name": "alb-plus",
+      "mode": "url",
+      "input": {
+        "httpMethod": "GET",
+        "path": "/items/a+b",
+        "headers": {},
+        "requestContext": {
+          "elb": {}
+        },
+        "body": null,
+        "isBase64Encoded": false
+      },
+      "expected": {
+        "value": {
+          "url": "https://localhost/items/a+b",
+          "headers": {}
+        }
+      }
+    },
+    {
+      "name": "alb-ipv6",
+      "mode": "url",
+      "input": {
+        "httpMethod": "GET",
+        "path": "/items/a",
+        "headers": {
+          "host": "[::1]:8443"
+        },
+        "requestContext": {
+          "elb": {}
+        },
+        "body": null,
+        "isBase64Encoded": false
+      },
+      "expected": {
+        "value": {
+          "url": "https://[::1]:8443/items/a",
+          "headers": {
+            "host": "[::1]:8443"
+          }
+        }
+      }
+    },
+    {
+      "name": "alb-bad-host",
+      "mode": "url",
+      "input": {
+        "httpMethod": "GET",
+        "path": "/items/a",
+        "headers": {
+          "host": "[::1"
+        },
+        "requestContext": {
+          "elb": {}
+        },
+        "body": null,
+        "isBase64Encoded": false
+      },
+      "expected": {
+        "error": "TypeError",
+        "message": "Invalid URL"
+      }
+    },
+    {
+      "name": "alb-credentials",
+      "mode": "url",
+      "input": {
+        "httpMethod": "GET",
+        "path": "/items/a",
+        "headers": {
+          "host": "user:pass@example.test"
+        },
+        "requestContext": {
+          "elb": {}
+        },
+        "body": null,
+        "isBase64Encoded": false
+      },
+      "expected": {
+        "error": "TypeError",
+        "message": "Request cannot be constructed from a URL that includes credentials: https://user:pass@example.test/items/a"
+      }
+    },
+    {
+      "name": "alb-malformed-escape",
+      "mode": "url",
+      "input": {
+        "httpMethod": "GET",
+        "path": "/items/%",
+        "headers": {},
+        "requestContext": {
+          "elb": {}
+        },
+        "body": null,
+        "isBase64Encoded": false
+      },
+      "expected": {
+        "value": {
+          "url": "https://localhost/items/%",
+          "headers": {}
+        }
+      }
+    },
+    {
+      "name": "url-token",
+      "mode": "request",
+      "input": {
+        "version": "2.0",
+        "routeKey": "$default",
+        "rawPath": "/items/a",
+        "rawQueryString": "",
+        "headers": {
+          "!#$%&'*+-.^_`|~09AZaz": "ok"
+        },
+        "requestContext": {
+          "http": {
+            "method": "GET"
+          },
+          "domainName": "api.example.test"
+        },
+        "isBase64Encoded": false
+      },
+      "expected": {
+        "value": {
+          "url": "https://api.example.test/items/a",
+          "headers": {
+            "!#$%&'*+-.^_`|~09azaz": "ok"
+          }
+        }
+      }
+    },
+    {
+      "name": "url-control-name",
+      "mode": "request",
+      "input": {
+        "version": "2.0",
+        "routeKey": "$default",
+        "rawPath": "/items/a",
+        "rawQueryString": "",
+        "headers": {
+          "x-\u0001": "ok"
+        },
+        "requestContext": {
+          "http": {
+            "method": "GET"
+          },
+          "domainName": "api.example.test"
+        },
+        "isBase64Encoded": false
+      },
+      "expected": {
+        "error": "TypeError",
+        "message": "Headers.set: \"x-\u0001\" is an invalid header name."
+      }
+    },
+    {
+      "name": "url-del-name",
+      "mode": "request",
+      "input": {
+        "version": "2.0",
+        "routeKey": "$default",
+        "rawPath": "/items/a",
+        "rawQueryString": "",
+        "headers": {
+          "x-": "ok"
+        },
+        "requestContext": {
+          "http": {
+            "method": "GET"
+          },
+          "domainName": "api.example.test"
+        },
+        "isBase64Encoded": false
+      },
+      "expected": {
+        "error": "TypeError",
+        "message": "Headers.set: \"x-\" is an invalid header name."
+      }
+    },
+    {
+      "name": "url-unicode-name",
+      "mode": "request",
+      "input": {
+        "version": "2.0",
+        "routeKey": "$default",
+        "rawPath": "/items/a",
+        "rawQueryString": "",
+        "headers": {
+          "x-é": "ok"
+        },
+        "requestContext": {
+          "http": {
+            "method": "GET"
+          },
+          "domainName": "api.example.test"
+        },
+        "isBase64Encoded": false
+      },
+      "expected": {
+        "error": "TypeError",
+        "message": "Headers.set: \"x-é\" is an invalid header name."
+      }
+    },
+    {
+      "name": "url-space-name",
+      "mode": "request",
+      "input": {
+        "version": "2.0",
+        "routeKey": "$default",
+        "rawPath": "/items/a",
+        "rawQueryString": "",
+        "headers": {
+          "bad name": "ok"
+        },
+        "requestContext": {
+          "http": {
+            "method": "GET"
+          },
+          "domainName": "api.example.test"
+        },
+        "isBase64Encoded": false
+      },
+      "expected": {
+        "error": "TypeError",
+        "message": "Headers.set: \"bad name\" is an invalid header name."
+      }
+    },
+    {
+      "name": "url-colon-name",
+      "mode": "request",
+      "input": {
+        "version": "2.0",
+        "routeKey": "$default",
+        "rawPath": "/items/a",
+        "rawQueryString": "",
+        "headers": {
+          "bad:name": "ok"
+        },
+        "requestContext": {
+          "http": {
+            "method": "GET"
+          },
+          "domainName": "api.example.test"
+        },
+        "isBase64Encoded": false
+      },
+      "expected": {
+        "error": "TypeError",
+        "message": "Headers.set: \"bad:name\" is an invalid header name."
+      }
+    },
+    {
+      "name": "url-empty-name",
+      "mode": "request",
+      "input": {
+        "version": "2.0",
+        "routeKey": "$default",
+        "rawPath": "/items/a",
+        "rawQueryString": "",
+        "headers": {
+          "": "ok"
+        },
+        "requestContext": {
+          "http": {
+            "method": "GET"
+          },
+          "domainName": "api.example.test"
+        },
+        "isBase64Encoded": false
+      },
+      "expected": {
+        "error": "TypeError",
+        "message": "Headers.set: \"\" is an invalid header name."
+      }
+    },
+    {
+      "name": "url-crlf-value",
+      "mode": "request",
+      "input": {
+        "version": "2.0",
+        "routeKey": "$default",
+        "rawPath": "/items/a",
+        "rawQueryString": "",
+        "headers": {
+          "x-test": "a\r\nb"
+        },
+        "requestContext": {
+          "http": {
+            "method": "GET"
+          },
+          "domainName": "api.example.test"
+        },
+        "isBase64Encoded": false
+      },
+      "expected": {
+        "error": "TypeError",
+        "message": "Headers.set: \"a\r\nb\" is an invalid header value."
+      }
+    },
+    {
+      "name": "url-null-value",
+      "mode": "request",
+      "input": {
+        "version": "2.0",
+        "routeKey": "$default",
+        "rawPath": "/items/a",
+        "rawQueryString": "",
+        "headers": {
+          "x-test": "a\u0000b"
+        },
+        "requestContext": {
+          "http": {
+            "method": "GET"
+          },
+          "domainName": "api.example.test"
+        },
+        "isBase64Encoded": false
+      },
+      "expected": {
+        "error": "TypeError",
+        "message": "Headers.set: \"a\u0000b\" is an invalid header value."
+      }
+    },
+    {
+      "name": "url-padding",
+      "mode": "request",
+      "input": {
+        "version": "2.0",
+        "routeKey": "$default",
+        "rawPath": "/items/a",
+        "rawQueryString": "",
+        "headers": {
+          "x-test": " \tvalue\t "
+        },
+        "requestContext": {
+          "http": {
+            "method": "GET"
+          },
+          "domainName": "api.example.test"
+        },
+        "isBase64Encoded": false
+      },
+      "expected": {
+        "value": {
+          "url": "https://api.example.test/items/a",
+          "headers": {
+            "x-test": "value"
+          }
+        }
+      }
+    },
+    {
+      "name": "url-tab",
+      "mode": "request",
+      "input": {
+        "version": "2.0",
+        "routeKey": "$default",
+        "rawPath": "/items/a",
+        "rawQueryString": "",
+        "headers": {
+          "x-test": "a\tb"
+        },
+        "requestContext": {
+          "http": {
+            "method": "GET"
+          },
+          "domainName": "api.example.test"
+        },
+        "isBase64Encoded": false
+      },
+      "expected": {
+        "value": {
+          "url": "https://api.example.test/items/a",
+          "headers": {
+            "x-test": "a\tb"
+          }
+        }
+      }
+    },
+    {
+      "name": "url-latin1",
+      "mode": "request",
+      "input": {
+        "version": "2.0",
+        "routeKey": "$default",
+        "rawPath": "/items/a",
+        "rawQueryString": "",
+        "headers": {
+          "x-test": "é"
+        },
+        "requestContext": {
+          "http": {
+            "method": "GET"
+          },
+          "domainName": "api.example.test"
+        },
+        "isBase64Encoded": false
+      },
+      "expected": {
+        "value": {
+          "url": "https://api.example.test/items/a",
+          "headers": {
+            "x-test": "é"
+          }
+        }
+      }
+    },
+    {
+      "name": "url-encoded-slash",
+      "mode": "url",
+      "input": {
+        "version": "2.0",
+        "routeKey": "$default",
+        "rawPath": "/items/a%2Fb",
+        "rawQueryString": "",
+        "headers": {},
+        "requestContext": {
+          "http": {
+            "method": "GET"
+          },
+          "domainName": "api.example.test"
+        },
+        "isBase64Encoded": false
+      },
+      "expected": {
+        "value": {
+          "url": "https://api.example.test/items/a%2Fb",
+          "headers": {}
+        }
+      }
+    },
+    {
+      "name": "url-plus",
+      "mode": "url",
+      "input": {
+        "version": "2.0",
+        "routeKey": "$default",
+        "rawPath": "/items/a+b",
+        "rawQueryString": "",
+        "headers": {},
+        "requestContext": {
+          "http": {
+            "method": "GET"
+          },
+          "domainName": "api.example.test"
+        },
+        "isBase64Encoded": false
+      },
+      "expected": {
+        "value": {
+          "url": "https://api.example.test/items/a+b",
+          "headers": {}
+        }
+      }
+    },
+    {
+      "name": "url-ipv6",
+      "mode": "url",
+      "input": {
+        "version": "2.0",
+        "routeKey": "$default",
+        "rawPath": "/items/a",
+        "rawQueryString": "",
+        "headers": {
+          "host": "[::1]:8443"
+        },
+        "requestContext": {
+          "http": {
+            "method": "GET"
+          },
+          "domainName": "api.example.test"
+        },
+        "isBase64Encoded": false
+      },
+      "expected": {
+        "value": {
+          "url": "https://[::1]:8443/items/a",
+          "headers": {
+            "host": "[::1]:8443"
+          }
+        }
+      }
+    },
+    {
+      "name": "url-bad-host",
+      "mode": "url",
+      "input": {
+        "version": "2.0",
+        "routeKey": "$default",
+        "rawPath": "/items/a",
+        "rawQueryString": "",
+        "headers": {
+          "host": "[::1"
+        },
+        "requestContext": {
+          "http": {
+            "method": "GET"
+          },
+          "domainName": "api.example.test"
+        },
+        "isBase64Encoded": false
+      },
+      "expected": {
+        "error": "TypeError",
+        "message": "Failed to parse URL from https://[::1/items/a"
+      }
+    },
+    {
+      "name": "url-credentials",
+      "mode": "url",
+      "input": {
+        "version": "2.0",
+        "routeKey": "$default",
+        "rawPath": "/items/a",
+        "rawQueryString": "",
+        "headers": {
+          "host": "user:pass@example.test"
+        },
+        "requestContext": {
+          "http": {
+            "method": "GET"
+          },
+          "domainName": "api.example.test"
+        },
+        "isBase64Encoded": false
+      },
+      "expected": {
+        "error": "TypeError",
+        "message": "Request cannot be constructed from a URL that includes credentials: https://user:pass@example.test/items/a"
+      }
+    },
+    {
+      "name": "url-malformed-escape",
+      "mode": "url",
+      "input": {
+        "version": "2.0",
+        "routeKey": "$default",
+        "rawPath": "/items/%",
+        "rawQueryString": "",
+        "headers": {},
+        "requestContext": {
+          "http": {
+            "method": "GET"
+          },
+          "domainName": "api.example.test"
+        },
+        "isBase64Encoded": false
+      },
+      "expected": {
+        "value": {
+          "url": "https://api.example.test/items/%",
+          "headers": {}
+        }
+      }
+    },
+    {
+      "name": "response-control-name",
+      "mode": "response",
+      "input": {
+        "statusCode": 200,
+        "body": "ok",
+        "headers": {
+          "x-\u0001": "ok"
+        }
+      },
+      "expected": {
+        "error": "TypeError",
+        "message": "Headers.set: \"x-\u0001\" is an invalid header name."
+      }
+    },
+    {
+      "name": "response-del-name",
+      "mode": "response",
+      "input": {
+        "statusCode": 200,
+        "body": "ok",
+        "headers": {
+          "x-": "ok"
+        }
+      },
+      "expected": {
+        "error": "TypeError",
+        "message": "Headers.set: \"x-\" is an invalid header name."
+      }
+    },
+    {
+      "name": "response-unicode-name",
+      "mode": "response",
+      "input": {
+        "statusCode": 200,
+        "body": "ok",
+        "headers": {
+          "x-é": "ok"
+        }
+      },
+      "expected": {
+        "error": "TypeError",
+        "message": "Headers.set: \"x-é\" is an invalid header name."
+      }
+    },
+    {
+      "name": "response-crlf-value",
+      "mode": "response",
+      "input": {
+        "statusCode": 200,
+        "body": "ok",
+        "headers": {
+          "x-test": "a\r\nb"
+        }
+      },
+      "expected": {
+        "error": "TypeError",
+        "message": "Headers.set: \"a\r\nb\" is an invalid header value."
+      }
+    },
+    {
+      "name": "response-null-value",
+      "mode": "response",
+      "input": {
+        "statusCode": 200,
+        "body": "ok",
+        "headers": {
+          "x-test": "a\u0000b"
+        }
+      },
+      "expected": {
+        "error": "TypeError",
+        "message": "Headers.set: \"a\u0000b\" is an invalid header value."
+      }
+    },
+    {
+      "name": "response-multi-invalid",
+      "mode": "response",
+      "input": {
+        "statusCode": 200,
+        "body": "ok",
+        "multiValueHeaders": {
+          "x-test": [
+            "ok",
+            "a\r\nb"
+          ]
+        }
+      },
+      "expected": {
+        "error": "TypeError",
+        "message": "Headers.append: \"a\r\nb\" is an invalid header value."
+      }
+    },
+    {
+      "name": "response-cookie-invalid",
+      "mode": "response",
+      "input": {
+        "statusCode": 200,
+        "body": "ok",
+        "cookies": [
+          "a=1\r\nb=2"
+        ]
+      },
+      "expected": {
+        "error": "TypeError",
+        "message": "Headers.append: \"a=1\r\nb=2\" is an invalid header value."
+      }
+    },
+    {
+      "name": "response-cookies",
+      "mode": "response",
+      "input": {
+        "statusCode": 200,
+        "body": "ok",
+        "cookies": [
+          "a=1; Expires=Mon, 21 Oct 2030 07:28:00 GMT",
+          "b=2"
+        ]
+      },
+      "expected": {
+        "value": {
+          "status": 200,
+          "headers": {
+            "content-type": "application/json",
+            "set-cookie": "b=2"
+          },
+          "cookies": [
+            "a=1; Expires=Mon, 21 Oct 2030 07:28:00 GMT",
+            "b=2"
+          ],
+          "body": "ok"
+        }
+      }
+    },
+    {
+      "name": "regex-named",
+      "mode": "regex",
+      "input": {
+        "pattern": "/items/(?<id>[0-9]+)",
+        "event": {
+          "version": "2.0",
+          "routeKey": "$default",
+          "rawPath": "/items/42",
+          "rawQueryString": "",
+          "headers": {},
+          "requestContext": {
+            "http": {
+              "method": "GET"
+            },
+            "domainName": "api.example.test"
+          },
+          "isBase64Encoded": false
+        }
+      },
+      "expected": {
+        "value": {
+          "statusCode": 200,
+          "headers": {
+            "content-type": "application/json"
+          },
+          "body": "{\"params\":{\"id\":\"42\"}}",
+          "isBase64Encoded": false
+        }
+      }
+    },
+    {
+      "name": "regex-named-miss",
+      "mode": "regex",
+      "input": {
+        "pattern": "/items/(?<id>[0-9]+)",
+        "event": {
+          "version": "2.0",
+          "routeKey": "$default",
+          "rawPath": "/items/no",
+          "rawQueryString": "",
+          "headers": {},
+          "requestContext": {
+            "http": {
+              "method": "GET"
+            },
+            "domainName": "api.example.test"
+          },
+          "isBase64Encoded": false
+        }
+      },
+      "expected": {
+        "value": {
+          "statusCode": 404,
+          "headers": {
+            "content-type": "application/json"
+          },
+          "body": "{\"statusCode\":404,\"error\":\"NotFoundError\",\"message\":\"Route /items/no for method GET not found\"}",
+          "isBase64Encoded": false
+        }
+      }
+    },
+    {
+      "name": "regex-slash",
+      "mode": "regex",
+      "input": {
+        "pattern": "/items/(?<id>.+)",
+        "event": {
+          "version": "2.0",
+          "routeKey": "$default",
+          "rawPath": "/items/a%2Fb",
+          "rawQueryString": "",
+          "headers": {},
+          "requestContext": {
+            "http": {
+              "method": "GET"
+            },
+            "domainName": "api.example.test"
+          },
+          "isBase64Encoded": false
+        }
+      },
+      "expected": {
+        "value": {
+          "statusCode": 200,
+          "headers": {
+            "content-type": "application/json"
+          },
+          "body": "{\"params\":{\"id\":\"a/b\"}}",
+          "isBase64Encoded": false
+        }
+      }
+    },
+    {
+      "name": "regex-invalid-utf8",
+      "mode": "regex",
+      "input": {
+        "pattern": "/items/(?<id>.+)",
+        "event": {
+          "version": "2.0",
+          "routeKey": "$default",
+          "rawPath": "/items/%FF",
+          "rawQueryString": "",
+          "headers": {},
+          "requestContext": {
+            "http": {
+              "method": "GET"
+            },
+            "domainName": "api.example.test"
+          },
+          "isBase64Encoded": false
+        }
+      },
+      "expected": {
+        "value": {
+          "statusCode": 500,
+          "headers": {
+            "content-type": "application/json"
+          },
+          "body": "{\"statusCode\":500,\"error\":\"Internal Server Error\",\"message\":\"Internal Server Error\"}",
+          "isBase64Encoded": false
+        }
+      }
+    },
+    {
+      "name": "regex-blank",
+      "mode": "regex",
+      "input": {
+        "pattern": "/items/(?<id>.+)",
+        "event": {
+          "version": "2.0",
+          "routeKey": "$default",
+          "rawPath": "/items/%20",
+          "rawQueryString": "",
+          "headers": {},
+          "requestContext": {
+            "http": {
+              "method": "GET"
+            },
+            "domainName": "api.example.test"
+          },
+          "isBase64Encoded": false
+        }
+      },
+      "expected": {
+        "value": {
+          "statusCode": 500,
+          "headers": {
+            "content-type": "application/json"
+          },
+          "body": "{\"statusCode\":500,\"error\":\"Internal Server Error\",\"message\":\"Internal Server Error\"}",
+          "isBase64Encoded": false
+        }
+      }
+    },
+    {
+      "name": "regex-alternation-first",
+      "mode": "regex",
+      "input": {
+        "pattern": "/items/a|/other",
+        "event": {
+          "version": "2.0",
+          "routeKey": "$default",
+          "rawPath": "/items/abc",
+          "rawQueryString": "",
+          "headers": {},
+          "requestContext": {
+            "http": {
+              "method": "GET"
+            },
+            "domainName": "api.example.test"
+          },
+          "isBase64Encoded": false
+        }
+      },
+      "expected": {
+        "value": {
+          "statusCode": 200,
+          "headers": {
+            "content-type": "application/json"
+          },
+          "body": "{\"params\":{}}",
+          "isBase64Encoded": false
+        }
+      }
+    },
+    {
+      "name": "regex-alternation-last",
+      "mode": "regex",
+      "input": {
+        "pattern": "/items/a|/other",
+        "event": {
+          "version": "2.0",
+          "routeKey": "$default",
+          "rawPath": "/prefix/other",
+          "rawQueryString": "",
+          "headers": {},
+          "requestContext": {
+            "http": {
+              "method": "GET"
+            },
+            "domainName": "api.example.test"
+          },
+          "isBase64Encoded": false
+        }
+      },
+      "expected": {
+        "value": {
+          "statusCode": 200,
+          "headers": {
+            "content-type": "application/json"
+          },
+          "body": "{\"params\":{}}",
+          "isBase64Encoded": false
+        }
+      }
+    },
+    {
+      "name": "regex-anchors",
+      "mode": "regex",
+      "input": {
+        "pattern": "^/items/(?<id>[0-9]+)$",
+        "event": {
+          "version": "2.0",
+          "routeKey": "$default",
+          "rawPath": "/items/42",
+          "rawQueryString": "",
+          "headers": {},
+          "requestContext": {
+            "http": {
+              "method": "GET"
+            },
+            "domainName": "api.example.test"
+          },
+          "isBase64Encoded": false
+        }
+      },
+      "expected": {
+        "value": {
+          "statusCode": 200,
+          "headers": {
+            "content-type": "application/json"
+          },
+          "body": "{\"params\":{\"id\":\"42\"}}",
+          "isBase64Encoded": false
+        }
+      }
+    }
+  ]
+}

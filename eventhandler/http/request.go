@@ -42,6 +42,11 @@ type RequestContext struct {
 // Respond replaces the response while retaining headers already set by middleware.
 func (r *RequestContext) Respond(value any) error {
 	response, encoding, err := handlerResponse(value, r.Response.Header, nethttp.StatusOK, r.IsHTTPStreaming)
+	if source, ok := value.(*nethttp.Response); ok && source == r.Response {
+		// Native conversion either transfers the stream or consumes/closes
+		// the body. Deferred request cleanup must not close it a second time.
+		r.Response.Body = nethttp.NoBody
+	}
 	if err != nil {
 		return err
 	}
@@ -141,11 +146,33 @@ func headerValue(raw jsonv1.RawMessage) (string, error) {
 	return "", fmt.Errorf("header value must be a scalar")
 }
 func validateHeader(name, value string) error {
-	if name == "" || strings.ContainsAny(name, " ()<>@,;:\\\"/[]?={}\t\r\n") || strings.ContainsAny(value, "\r\n\x00") {
+	if name == "" || strings.ContainsAny(value, "\r\n\x00") {
 		return fmt.Errorf("invalid HTTP header")
+	}
+	// Header names are ASCII tokens, including the permitted punctuation.
+	for i := range len(name) {
+		c := name[i]
+		if !(c >= 'a' && c <= 'z' || c >= 'A' && c <= 'Z' || c >= '0' && c <= '9' || strings.ContainsRune("!#$%&'*+-.^_`|~", rune(c))) {
+			return fmt.Errorf("invalid HTTP header")
+		}
 	}
 	return nil
 }
+
+func validateHeaders(headers nethttp.Header) error {
+	for name, values := range headers {
+		if err := validateHeader(name, ""); err != nil {
+			return err
+		}
+		for _, value := range values {
+			if err := validateHeader(name, value); err != nil {
+				return err
+			}
+		}
+	}
+	return nil
+}
+
 func setHeader(headers nethttp.Header, name, value string, appendValue bool) error {
 	if err := validateHeader(name, value); err != nil {
 		return err

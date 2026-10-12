@@ -67,6 +67,14 @@ Go's synchronous destination remains caller-owned, unlike the Node pipeline's de
 
 ## Verification and limits
 
+The [finite HTTP boundary audit #190](HTTP_PLAN.md#finite-boundary-audit-190)
+additionally verifies raw NUL/non-UTF-8 bytes after the metadata delimiter,
+short metadata/body writes, replacement/error/panic/retained-body ownership and
+sixteen concurrent Close calls with invocation snapshot and cleanup checks.
+Invalid response headers, including middleware changes after `next`, fail before
+metadata output and close the owned body. This adds local source evidence without
+changing the final-cookie projection, caller-owned destination or AWS gates.
+
 The 272 streaming reference cases add to the existing 414 router/validation and 1,076 CORS/compression cases. They cover all four event forms, JSON/text/binary/readers, null/empty/large bodies, HEAD, unsupported methods, HTTP errors, missing routes, CORS, compression skipping and header/cookie representation.
 
 Go lifecycle tests prove first-byte delivery before a gated second chunk, reader cancellation, write/read/close failures, error and panic identity, body cleanup, 32 concurrent streams and bounded reads for a 32 MiB generated body. They do not assert an allocation budget or substitute for performance benchmarks.
