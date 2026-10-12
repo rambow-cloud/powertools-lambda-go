@@ -2,7 +2,8 @@ package idempotency
 
 import (
 	"context"
-	"encoding/json"
+	jsonv1 "encoding/json"
+	json "encoding/json/v2"
 	"errors"
 	"os"
 	"reflect"
@@ -99,25 +100,31 @@ func (c fixtureConfig) options(now func() time.Time) Options {
 
 type fixtures struct {
 	Keys []struct {
-		Raw, Canonical, Key, Validation string
-		Config                          fixtureConfig
-	}
+		Raw        string        `json:"raw"`
+		Canonical  string        `json:"canonical"`
+		Key        string        `json:"key"`
+		Validation string        `json:"validation"`
+		Config     fixtureConfig `json:"config"`
+	} `json:"keys"`
 	Scenarios []struct {
-		Name, Seed string
-		Config     fixtureConfig
-		Steps      []struct {
-			Event         json.RawMessage
-			Fail          bool
-			Advance, Work int64
-		}
+		Name   string        `json:"name"`
+		Seed   string        `json:"seed"`
+		Config fixtureConfig `json:"config"`
+		Steps  []struct {
+			Event   jsonv1.RawMessage `json:"event"`
+			Fail    bool              `json:"fail"`
+			Advance int64             `json:"advance"`
+			Work    int64             `json:"work"`
+		} `json:"steps"`
 		Results []struct {
-			Response     json.RawMessage
-			Error, Cause string
-		}
-		Calls      int
-		Operations []string
-		Records    []Record
-	}
+			Response jsonv1.RawMessage `json:"response"`
+			Error    string            `json:"error"`
+			Cause    string            `json:"cause"`
+		} `json:"results"`
+		Calls      int      `json:"calls"`
+		Operations []string `json:"operations"`
+		Records    []Record `json:"records"`
+	} `json:"scenarios"`
 }
 
 func readFixtures(t *testing.T) fixtures {
@@ -154,7 +161,7 @@ func TestReferenceKeys(t *testing.T) {
 			if err != nil {
 				t.Fatal(err)
 			}
-			key, validation, skip, err := m.Key(json.RawMessage(fixture.Raw))
+			key, validation, skip, err := m.Key(jsonv1.RawMessage(fixture.Raw))
 			if fixture.Raw == `{"same":1,"same":2}` {
 				// JSON v2 rejects duplicate members before a key can be created.
 				if err == nil || key != "" || !strings.Contains(err.Error(), "duplicate object member name") {
@@ -166,7 +173,7 @@ func TestReferenceKeys(t *testing.T) {
 				t.Fatalf("key=%s validation=%s skip=%v error=%v; expected %s %s", key, validation, skip, err, fixture.Key, fixture.Validation)
 			}
 			if fixture.Canonical != "" {
-				encoded, err := CanonicalJSON(json.RawMessage(fixture.Raw))
+				encoded, err := CanonicalJSON(jsonv1.RawMessage(fixture.Raw))
 				if err != nil || string(encoded) != fixture.Canonical {
 					t.Fatalf("canonical: %s (%v), want %s", encoded, err, fixture.Canonical)
 				}
@@ -187,7 +194,7 @@ func TestReferenceLifecycle(t *testing.T) {
 				t.Fatal(err)
 			}
 			if fixture.Seed != "" {
-				key, _, _, _ := m.Key(json.RawMessage(`{"id":"a"}`))
+				key, _, _, _ := m.Key(jsonv1.RawMessage(`{"id":"a"}`))
 				deadline := now.UnixMilli() + 5000
 				if fixture.Seed == "expired" {
 					deadline = now.UnixMilli() - 1

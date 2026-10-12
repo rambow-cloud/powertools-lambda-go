@@ -2,7 +2,7 @@ package batch
 
 import (
 	"context"
-	"encoding/json"
+	json "encoding/json/v2"
 	"errors"
 	"fmt"
 	"os"
@@ -30,18 +30,28 @@ func TestTypeScriptReference(t *testing.T) {
 	}
 	var fixture struct {
 		Cases []struct {
-			Name, Source               string
-			FIFO, Sync, Skip, Suppress bool
-			Records                    []fixtureRecord
-			Expected                   struct {
-				Response                                 Response
-				Visited, Successes, Failures, ErrorTypes []string
-				Error                                    *string
-			}
-		}
+			Name     string          `json:"name"`
+			Source   string          `json:"source"`
+			FIFO     bool            `json:"fifo"`
+			Sync     bool            `json:"sync"`
+			Skip     bool            `json:"skip"`
+			Suppress bool            `json:"suppress"`
+			Records  []fixtureRecord `json:"records"`
+			Expected struct {
+				Response   Response `json:"response"`
+				Visited    []string `json:"visited"`
+				Successes  []string `json:"successes"`
+				Failures   []string `json:"failures"`
+				ErrorTypes []string `json:"errorTypes"`
+				Error      *string  `json:"error"`
+			} `json:"expected"`
+		} `json:"cases"`
 	}
 	if err = json.Unmarshal(data, &fixture); err != nil {
 		t.Fatal(err)
+	}
+	if len(fixture.Cases) == 0 {
+		t.Fatal("reference corpus has no cases")
 	}
 	for _, item := range fixture.Cases {
 		t.Run(item.Name, func(t *testing.T) {

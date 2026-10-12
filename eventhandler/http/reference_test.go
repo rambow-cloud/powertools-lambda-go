@@ -2,7 +2,8 @@ package http
 
 import (
 	"context"
-	"encoding/json"
+	jsonv1 "encoding/json"
+	json "encoding/json/v2"
 	"errors"
 	"io"
 	nethttp "net/http"
@@ -13,12 +14,16 @@ import (
 )
 
 type referenceRoute struct {
-	Path, Method, Action, Error, Message string
-	Regex                                bool
-	Middleware                           []string
-	Value                                json.RawMessage
-	Details                              any
-	Validation                           map[string]map[string]string
+	Path       string                       `json:"path"`
+	Method     string                       `json:"method"`
+	Action     string                       `json:"action"`
+	Error      string                       `json:"error"`
+	Message    string                       `json:"message"`
+	Regex      bool                         `json:"regex"`
+	Middleware []string                     `json:"middleware"`
+	Value      jsonv1.RawMessage            `json:"value"`
+	Details    any                          `json:"details"`
+	Validation map[string]map[string]string `json:"validation"`
 }
 
 func referenceMiddleware(name string) Middleware {
@@ -53,7 +58,7 @@ func referenceMiddleware(name string) Middleware {
 		return nil
 	}
 }
-func referenceHandler(route referenceRoute) Handler {
+func referenceHandler(t *testing.T, route referenceRoute) Handler {
 	return func(ctx *RequestContext) (any, error) {
 		order := []string{}
 		if value, exists := ctx.Store.Get("order"); exists {
@@ -75,13 +80,13 @@ func referenceHandler(route referenceRoute) Handler {
 			return route.Value, nil
 		case "proxy", "native":
 			var value struct {
-				StatusCode        int
-				Body              json.RawMessage
-				Headers           map[string]string
-				MultiValueHeaders map[string][]string
-				Cookies           []string
-				StatusText        string
-				IsBase64Encoded   *bool
+				StatusCode        int                 `json:"statusCode"`
+				Body              jsonv1.RawMessage   `json:"body"`
+				Headers           map[string]string   `json:"headers"`
+				MultiValueHeaders map[string][]string `json:"multiValueHeaders"`
+				Cookies           []string            `json:"cookies"`
+				StatusText        string              `json:"statusText"`
+				IsBase64Encoded   *bool               `json:"isBase64Encoded"`
 			}
 			if err := json.Unmarshal(route.Value, &value); err != nil {
 				return nil, err
@@ -116,11 +121,11 @@ func referenceHandler(route referenceRoute) Handler {
 			}
 			return Response{StatusCode: value.StatusCode, Headers: headers, MultiValueHeaders: multiHeaders, Body: body, Cookies: value.Cookies, IsBase64Encoded: value.IsBase64Encoded}, nil
 		case "bytes":
-			var values []byte
+			var values []int
 			if err := json.Unmarshal(route.Value, &values); err != nil {
 				return nil, err
 			}
-			return values, nil
+			return referenceBytes(t, values), nil
 		case "error":
 			message := route.Message
 			if message == "" {
@@ -145,6 +150,18 @@ func referenceHandler(route referenceRoute) Handler {
 			return map[string]any{"method": ctx.Request.Method, "url": ctx.Request.URL.String(), "headers": headers, "body": string(body), "params": ctx.Params, "route": ctx.Route, "responseType": ctx.ResponseType, "order": order}, nil
 		}
 	}
+}
+
+func referenceBytes(t *testing.T, values []int) []byte {
+	t.Helper()
+	result := make([]byte, len(values))
+	for index, value := range values {
+		if value < 0 || value > 255 {
+			t.Fatalf("reference byte outside [0,255]: %d", value)
+		}
+		result[index] = byte(value)
+	}
+	return result
 }
 
 func referenceCheck(rule string) Check {
@@ -180,30 +197,36 @@ func TestHTTPReference(t *testing.T) {
 	}
 	var corpus struct {
 		Cases []struct {
-			Name, Prefix string
-			Event        json.RawMessage
-			Routes       []referenceRoute
-			Middleware   []string
-			Child        *struct {
-				Prefix, Mount string
-				Middleware    []string
-				Routes        []referenceRoute
-			}
+			Name       string            `json:"name"`
+			Prefix     string            `json:"prefix"`
+			Event      jsonv1.RawMessage `json:"event"`
+			Routes     []referenceRoute  `json:"routes"`
+			Middleware []string          `json:"middleware"`
+			Child      *struct {
+				Prefix     string           `json:"prefix"`
+				Mount      string           `json:"mount"`
+				Middleware []string         `json:"middleware"`
+				Routes     []referenceRoute `json:"routes"`
+			} `json:"child"`
 			ErrorHandler *struct {
-				Name  string
-				Value any
-			}
+				Name  string `json:"name"`
+				Value any    `json:"value"`
+			} `json:"errorHandler"`
 			Expected struct {
-				Response       json.RawMessage
-				Error, Message string
-				Warnings       []string
-			}
-		}
+				Response jsonv1.RawMessage `json:"response"`
+				Error    string            `json:"error"`
+				Message  string            `json:"message"`
+				Warnings []string          `json:"warnings"`
+			} `json:"expected"`
+		} `json:"cases"`
 	}
 	if err := json.Unmarshal(raw, &corpus); err != nil {
 		t.Fatal(err)
 	}
-	var albGetExpected json.RawMessage
+	if len(corpus.Cases) == 0 {
+		t.Fatal("reference corpus has no cases")
+	}
+	var albGetExpected jsonv1.RawMessage
 	for _, item := range corpus.Cases {
 		if item.Name == "alb-method-GET" {
 			albGetExpected = item.Expected.Response
@@ -249,9 +272,9 @@ func TestHTTPReference(t *testing.T) {
 						middleware = append(middleware, Validate(config))
 					}
 					if route.Regex {
-						_ = router.HandleRegex(route.Method, route.Path, referenceHandler(route), middleware...)
+						_ = router.HandleRegex(route.Method, route.Path, referenceHandler(t, route), middleware...)
 					} else {
-						_ = router.Handle(route.Method, route.Path, referenceHandler(route), middleware...)
+						_ = router.Handle(route.Method, route.Path, referenceHandler(t, route), middleware...)
 					}
 				}
 			}
@@ -317,7 +340,9 @@ func TestHTTPReference(t *testing.T) {
 			// Issue #65: a Set-Cookie field is one value, including Expires.
 			switch item.Name {
 			case "v1-proxy-47", "v2-proxy-134", "alb-proxy-221", "url-proxy-308":
-				var value struct{ Headers map[string]string }
+				var value struct {
+					Headers map[string]string `json:"headers"`
+				}
 				if err := json.Unmarshal(item.Routes[0].Value, &value); err != nil {
 					t.Fatal(err)
 				}
@@ -330,7 +355,9 @@ func TestHTTPReference(t *testing.T) {
 					delete(response["multiValueHeaders"].(map[string]any), "set-cookie")
 				}
 			case "v1-proxy-46", "alb-proxy-220":
-				var value struct{ MultiValueHeaders map[string]any }
+				var value struct {
+					MultiValueHeaders map[string]any `json:"multiValueHeaders"`
+				}
 				if err := json.Unmarshal(item.Routes[0].Value, &value); err != nil {
 					t.Fatal(err)
 				}

@@ -2,7 +2,7 @@ package parser_test
 
 import (
 	"context"
-	"encoding/json"
+	json "encoding/json/v2"
 	"os"
 	"reflect"
 	"testing"
@@ -19,12 +19,15 @@ func serviceFixture(t *testing.T, file, name string) map[string]any {
 	}
 	var fixture struct {
 		Cases []struct {
-			Name  string
-			Input any
-		}
+			Name  string `json:"name"`
+			Input any    `json:"input"`
+		} `json:"cases"`
 	}
 	if err := json.Unmarshal(data, &fixture); err != nil {
 		t.Fatal(err)
+	}
+	if len(fixture.Cases) == 0 {
+		t.Fatal("reference corpus has no cases")
 	}
 	for _, item := range fixture.Cases {
 		if item.Name == name+"-valid" {

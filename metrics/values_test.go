@@ -2,7 +2,8 @@ package metrics
 
 import (
 	"bytes"
-	"encoding/json"
+	jsonv1 "encoding/json"
+	json "encoding/json/v2"
 	"fmt"
 	"math"
 	"os"
@@ -17,18 +18,20 @@ func TestValueReference(t *testing.T) {
 		t.Fatal(err)
 	}
 	var fixture struct {
-		Now   int64
+		Now   int64 `json:"now"`
 		Cases []struct {
-			Name                       string
-			Disabled, Required, Single bool
-			Steps                      [][]json.RawMessage
-			Results                    []struct {
-				Value any
-				Error *string
-			}
-			Warnings []string
-			Emitted  []map[string]any
-		}
+			Name     string                `json:"name"`
+			Disabled bool                  `json:"disabled"`
+			Required bool                  `json:"required"`
+			Single   bool                  `json:"single"`
+			Steps    [][]jsonv1.RawMessage `json:"steps"`
+			Results  []struct {
+				Value any     `json:"value"`
+				Error *string `json:"error"`
+			} `json:"results"`
+			Warnings []string         `json:"warnings"`
+			Emitted  []map[string]any `json:"emitted"`
+		} `json:"cases"`
 	}
 	if err := json.Unmarshal(data, &fixture); err != nil {
 		t.Fatal(err)
@@ -130,13 +133,15 @@ func TestValueReference(t *testing.T) {
 	}
 }
 
-func referenceMetricNumber(t *testing.T, data json.RawMessage) float64 {
+func referenceMetricNumber(t *testing.T, data jsonv1.RawMessage) float64 {
 	t.Helper()
 	var value float64
 	if json.Unmarshal(data, &value) == nil {
 		return value
 	}
-	var tag struct{ Number string }
+	var tag struct {
+		Number string `json:"number"`
+	}
 	if err := json.Unmarshal(data, &tag); err != nil {
 		t.Fatal(err)
 	}

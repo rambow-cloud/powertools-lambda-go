@@ -1,7 +1,8 @@
 package idempotency
 
 import (
-	"encoding/json"
+	jsonv1 "encoding/json"
+	json "encoding/json/v2"
 	"testing"
 )
 
@@ -23,7 +24,7 @@ func TestKeyUsesOneMarshalerSnapshot(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	want, _, _, err := manager.Key(json.RawMessage(`{"value":1}`))
+	want, _, _, err := manager.Key(jsonv1.RawMessage(`{"value":1}`))
 	if err != nil || key != want || payload.calls != 1 {
 		t.Fatalf("key=%s want=%s calls=%d error=%v", key, want, payload.calls, err)
 	}

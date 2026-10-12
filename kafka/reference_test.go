@@ -2,7 +2,8 @@ package kafka
 
 import (
 	"context"
-	"encoding/json"
+	jsonv1 "encoding/json"
+	json "encoding/json/v2"
 	"errors"
 	"math"
 	"os"
@@ -11,7 +12,9 @@ import (
 	"testing"
 )
 
-type fixtureError struct{ name, message string }
+type fixtureError struct {
+	name, message string
+}
 
 func (e *fixtureError) Error() string     { return e.message }
 func (e *fixtureError) ErrorName() string { return e.name }
@@ -46,6 +49,11 @@ func normalize(value any) any {
 			out[i] = normalize(item)
 		}
 		return out
+	case []map[string]string:
+		// The native Headers API uses a nil slice for a JSON null header value.
+		if v == nil {
+			return nil
+		}
 	}
 	return value
 }
@@ -73,17 +81,18 @@ func TestTypeScriptReference(t *testing.T) {
 		t.Fatal(err)
 	}
 	var corpus struct {
-		Version string
+		Version string `json:"version"`
 		Cases   []struct {
-			Name, Event string
-			Config      map[string]struct {
-				Type   SchemaType
+			Name   string `json:"name"`
+			Event  string `json:"event"`
+			Config map[string]struct {
+				Type   SchemaType `json:"type"`
 				Schema any
-				Parser string
-			}
-			Access   []string
-			Expected any
-		}
+				Parser string `json:"parser"`
+			} `json:"config"`
+			Access   []string `json:"access"`
+			Expected any      `json:"expected"`
+		} `json:"cases"`
 	}
 	if err := json.Unmarshal(data, &corpus); err != nil {
 		t.Fatal(err)
@@ -127,7 +136,7 @@ func TestTypeScriptReference(t *testing.T) {
 					config.Value = item
 				}
 			}
-			output, err := New(config).Deserialize(context.Background(), json.RawMessage(tc.Event))
+			output, err := New(config).Deserialize(context.Background(), jsonv1.RawMessage(tc.Event))
 			if tc.Name == "topic-order" {
 				// The pinned JavaScript fixture repeats a topic member. JSON v2
 				// rejects it instead of applying the reference's last-value rule.

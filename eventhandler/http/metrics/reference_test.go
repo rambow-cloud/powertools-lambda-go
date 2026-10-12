@@ -3,7 +3,8 @@ package metrics_test
 import (
 	"bytes"
 	"context"
-	"encoding/json"
+	jsonv1 "encoding/json"
+	json "encoding/json/v2"
 	"errors"
 	"os"
 	"reflect"
@@ -22,11 +23,12 @@ func TestReference(t *testing.T) {
 	}
 	var fixture struct {
 		Cases []struct {
-			Name, Action string
-			Event        json.RawMessage
-			Status       int
-			Documents    []map[string]any
-		}
+			Name      string            `json:"name"`
+			Action    string            `json:"action"`
+			Event     jsonv1.RawMessage `json:"event"`
+			Status    int               `json:"status"`
+			Documents []map[string]any  `json:"documents"`
+		} `json:"cases"`
 	}
 	if err := json.Unmarshal(data, &fixture); err != nil {
 		t.Fatal(err)

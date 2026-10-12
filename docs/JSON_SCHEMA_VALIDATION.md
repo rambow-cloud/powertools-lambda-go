@@ -197,6 +197,11 @@ remain regression gates after factoring the shared implementation.
 
 `SchemaCompilationError` has the reference message `Failed to compile schema` and unwraps its compilation cause. `SchemaValidationError` carries `Issues` with instance path, schema path, keyword, message, params and an optional property name. An empty property name remains distinguishable from an absent field. Wrapper messages distinguish `Inbound schema validation failed` and `Outbound schema validation failed`. Query and operational errors remain distinct for standalone calls; wrappers retain operational errors as their cause.
 
+Serialize issues with `encoding/json/v2`. An empty `propertyName` remains
+present, while an absent name is omitted. For the default compiler's `oneOf`
+diagnostics, `Params.passingSchemas` is JSON `null` when no branch matched and
+an index array when multiple branches matched; these are explicit domain values.
+
 The initial reference fixture records complete ordered diagnostics for 502 cases; the Go comparison does not sort away mismatches. Covered cases include scalar/object/array constraints, multiple simultaneous failures, nullable/enum behavior, logical combinations, reference siblings, invalid schemas, custom string/numeric formats, external references and extraction. Its generator uses the actual Powertools utility and an AJV instance with the same `allErrors: true` setting; only AJV's warning logger is disabled during fixture generation. An additional 6,085 regex cases use the default reference utility and cover JavaScript Unicode patterns and all 1,683 supported Unicode property aliases, bringing the total to 6,587.
 
 An additional 1,207 applicator cases bring the Validation corpus to 7,794. Conditionals, dependencies, property names, tuple limits, nested diagnostic ordering and `oneOf` branch retention now have scoped reference coverage. See [applicator diagnostics and object-order semantics](VALIDATION_APPLICATORS.md). The fixture reader compares every reference field, including fields absent from the Go issue type, without sorting expected errors.

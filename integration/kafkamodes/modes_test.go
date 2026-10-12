@@ -1,10 +1,11 @@
 package kafkamodes
 
 import (
-	"bytes"
 	"context"
 	"encoding/base64"
-	"encoding/json"
+	jsonv1 "encoding/json"
+	"encoding/json/jsontext"
+	json "encoding/json/v2"
 	"errors"
 	"os"
 	"reflect"
@@ -66,17 +67,19 @@ func TestMixedReferenceEventsThroughNativeLambdaSDK(t *testing.T) {
 		t.Fatal(err)
 	}
 	var corpus struct {
-		Version, AvroSchema, ProtobufSchema string
-		ProtobufDescription                 json.RawMessage
-		Cases                               []struct {
-			Name   string
-			Event  json.RawMessage
+		Version             string            `json:"version"`
+		AvroSchema          string            `json:"avroSchema"`
+		ProtobufSchema      string            `json:"protobufSchema"`
+		ProtobufDescription jsonv1.RawMessage `json:"protobufDescription"`
+		Cases               []struct {
+			Name   string            `json:"name"`
+			Event  jsonv1.RawMessage `json:"event"`
 			Config map[string]struct {
-				Type  kafka.SchemaType
-				Parse bool
-			}
-			Expected any
-		}
+				Type  kafka.SchemaType `json:"type"`
+				Parse bool             `json:"parse"`
+			} `json:"config"`
+			Expected any `json:"expected"`
+		} `json:"cases"`
 	}
 	if err := json.Unmarshal(data, &corpus); err != nil {
 		t.Fatal(err)
@@ -100,8 +103,8 @@ func TestMixedReferenceEventsThroughNativeLambdaSDK(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	var description bytes.Buffer
-	if err := json.Compact(&description, corpus.ProtobufDescription); err != nil {
+	description := jsontext.Value(corpus.ProtobufDescription).Clone()
+	if err := description.Compact(); err != nil {
 		t.Fatal(err)
 	}
 	for _, tc := range corpus.Cases {
@@ -119,7 +122,7 @@ func TestMixedReferenceEventsThroughNativeLambdaSDK(t *testing.T) {
 						field = kafkaavro.New(corpus.AvroSchema)
 					case kafka.Protobuf:
 						message := kafkaproto.FromDescriptor(descriptor.(protoreflect.MessageDescriptor))
-						message.Description = description.Bytes()
+						message.Description = description
 						field = decoder.Field(message)
 					default:
 						t.Fatal("unknown fixture codec", spec.Type)

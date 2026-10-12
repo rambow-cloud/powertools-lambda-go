@@ -3,7 +3,7 @@ package metrics
 import (
 	"bytes"
 	"context"
-	"encoding/json"
+	json "encoding/json/v2"
 	"errors"
 	"fmt"
 	"io"
@@ -20,15 +20,19 @@ func TestColdStartReference(t *testing.T) {
 		t.Fatal(err)
 	}
 	var fixture struct {
-		Now   int64
+		Now   int64 `json:"now"`
 		Cases []struct {
-			Initialization, Lifecycle         string
-			Disabled                          bool
-			EnvName, Option, Setter, Argument *string
-			Parent                            map[string]any
-			Emitted                           []map[string]any
-			Warnings                          []string
-		}
+			Initialization string           `json:"initialization"`
+			Lifecycle      string           `json:"lifecycle"`
+			Disabled       bool             `json:"disabled"`
+			EnvName        *string          `json:"envName"`
+			Option         *string          `json:"option"`
+			Setter         *string          `json:"setter"`
+			Argument       *string          `json:"argument"`
+			Parent         map[string]any   `json:"parent"`
+			Emitted        []map[string]any `json:"emitted"`
+			Warnings       []string         `json:"warnings"`
+		} `json:"cases"`
 	}
 	if err := json.Unmarshal(data, &fixture); err != nil {
 		t.Fatal(err)

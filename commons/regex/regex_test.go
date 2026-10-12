@@ -1,7 +1,7 @@
 package regex
 
 import (
-	"encoding/json"
+	json "encoding/json/v2"
 	"errors"
 	"os"
 	"slices"
@@ -15,11 +15,18 @@ import (
 func TestNodeReplacements(t *testing.T) {
 	var fixture struct {
 		Cases []struct {
-			Pattern, Flags        string
-			Input, Format, Result []rune
-			LastIndex, FinalIndex int
-		}
-		Invalid []struct{ Pattern, Flags string }
+			Pattern    string `json:"pattern"`
+			Flags      string `json:"flags"`
+			Input      []rune `json:"input"`
+			Format     []rune `json:"format"`
+			Result     []rune `json:"result"`
+			LastIndex  int    `json:"lastIndex"`
+			FinalIndex int    `json:"finalIndex"`
+		} `json:"cases"`
+		Invalid []struct {
+			Pattern string `json:"pattern"`
+			Flags   string `json:"flags"`
+		} `json:"invalid"`
 	}
 	data, err := os.ReadFile("testdata/node.json")
 	if err != nil {
@@ -27,6 +34,9 @@ func TestNodeReplacements(t *testing.T) {
 	}
 	if err := json.Unmarshal(data, &fixture); err != nil {
 		t.Fatal(err)
+	}
+	if len(fixture.Cases) == 0 {
+		t.Fatal("reference corpus has no cases")
 	}
 	for i, item := range fixture.Cases {
 		r, err := Compile(item.Pattern, item.Flags, Options{})

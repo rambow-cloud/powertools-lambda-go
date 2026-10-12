@@ -4,7 +4,8 @@ import (
 	"bytes"
 	"context"
 	"encoding/base64"
-	"encoding/json"
+	jsonv1 "encoding/json"
+	json "encoding/json/v2"
 	"io"
 	nethttp "net/http"
 	"os"
@@ -33,21 +34,27 @@ func TestHTTPStreamReference(t *testing.T) {
 	}
 	var corpus struct {
 		Cases []struct {
-			Name, Method, Action    string
-			Event, Value, Body      json.RawMessage
-			Status                  int
-			Bytes                   []byte
-			Chunks                  []string
-			Headers                 map[string]string
-			MultiValueHeaders       map[string][]string
-			CORS, Compress, Missing bool
-			Expected                struct {
-				Metadata map[string]any
-				Body     string
-				Ended    bool
+			Name              string              `json:"name"`
+			Method            string              `json:"method"`
+			Action            string              `json:"action"`
+			Event             jsonv1.RawMessage   `json:"event"`
+			Value             jsonv1.RawMessage   `json:"value"`
+			Body              jsonv1.RawMessage   `json:"body"`
+			Status            int                 `json:"status"`
+			Bytes             []int               `json:"bytes"`
+			Chunks            []string            `json:"chunks"`
+			Headers           map[string]string   `json:"headers"`
+			MultiValueHeaders map[string][]string `json:"multiValueHeaders"`
+			CORS              bool                `json:"cors"`
+			Compress          bool                `json:"compress"`
+			Missing           bool                `json:"missing"`
+			Expected          struct {
+				Metadata map[string]any `json:"metadata"`
+				Body     string         `json:"body"`
+				Ended    bool           `json:"ended"`
 				Error    any
-			}
-		}
+			} `json:"expected"`
+		} `json:"cases"`
 	}
 	if err := json.Unmarshal(data, &corpus); err != nil {
 		t.Fatal(err)
@@ -89,7 +96,7 @@ func TestHTTPStreamReference(t *testing.T) {
 					case "json":
 						return item.Value, nil
 					case "bytes":
-						return item.Bytes, nil
+						return referenceBytes(t, item.Bytes), nil
 					case "reader":
 						var parts []io.Reader
 						for _, chunk := range item.Chunks {

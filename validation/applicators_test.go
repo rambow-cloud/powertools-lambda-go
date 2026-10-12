@@ -2,7 +2,8 @@ package validation
 
 import (
 	"context"
-	"encoding/json"
+	jsonv1 "encoding/json"
+	json "encoding/json/v2"
 	"errors"
 	"fmt"
 	"reflect"
@@ -11,8 +12,8 @@ import (
 )
 
 func TestApplicatorConcurrentDiagnostics(t *testing.T) {
-	schema := mustCompile(t, json.RawMessage(`{"properties":{"zebra":{"if":{"required":["card"]},"then":{"dependencies":{"card":["zip","name"]}},"propertyNames":{"pattern":"^[a-z]+$"}},"alpha":{"items":[{"type":"integer"}],"additionalItems":false}}}`), Options{})
-	payload := json.RawMessage(`{"alpha":[false,2],"zebra":{"card":true,"BAD/~":1}}`)
+	schema := mustCompile(t, jsonv1.RawMessage(`{"properties":{"zebra":{"if":{"required":["card"]},"then":{"dependencies":{"card":["zip","name"]}},"propertyNames":{"pattern":"^[a-z]+$"}},"alpha":{"items":[{"type":"integer"}],"additionalItems":false}}}`), Options{})
+	payload := jsonv1.RawMessage(`{"alpha":[false,2],"zebra":{"card":true,"BAD/~":1}}`)
 	var workers sync.WaitGroup
 	for i := 0; i < 32; i++ {
 		workers.Go(func() {
@@ -51,7 +52,7 @@ func TestOneOfEvaluatesEachVisitedBranchOnce(t *testing.T) {
 			return nil
 		}
 	}
-	schema := mustCompile(t, json.RawMessage(`{"oneOf":[{"format":"first"},{"format":"fail"},{"format":"second"},{"format":"unvisited"}]}`), Options{CompileOptions: CompileOptions{Formats: formats}})
+	schema := mustCompile(t, jsonv1.RawMessage(`{"oneOf":[{"format":"first"},{"format":"fail"},{"format":"second"},{"format":"unvisited"}]}`), Options{CompileOptions: CompileOptions{Formats: formats}})
 	_, err := schema.Validate(context.Background(), "value")
 	var failure *SchemaValidationError
 	if !errors.As(err, &failure) || len(failure.Issues) != 2 || failure.Issues[0].Keyword != "format" {
@@ -63,13 +64,13 @@ func TestOneOfEvaluatesEachVisitedBranchOnce(t *testing.T) {
 }
 
 func TestDiagnosticValuesDoNotMutateCompiledSchema(t *testing.T) {
-	schema := mustCompile(t, json.RawMessage(`{"type":["object","array"],"const":{"nested":["safe"]},"enum":[{"nested":["safe"]}]}`), Options{})
+	schema := mustCompile(t, jsonv1.RawMessage(`{"type":["object","array"],"const":{"nested":["safe"]},"enum":[{"nested":["safe"]}]}`), Options{})
 	_, err := schema.Validate(context.Background(), false)
 	var first *SchemaValidationError
 	if !errors.As(err, &first) {
 		t.Fatal(err)
 	}
-	want, _ := json.Marshal(first.Issues)
+	want, _ := json.Marshal(first.Issues, json.Deterministic(true))
 	first.Issues[0].Params["type"].([]any)[0] = "boolean"
 	first.Issues[1].Params["allowedValue"].(map[string]any)["nested"].([]any)[0] = "changed"
 	first.Issues[2].Params["allowedValues"].([]any)[0].(map[string]any)["nested"].([]any)[0] = "changed"
@@ -78,7 +79,7 @@ func TestDiagnosticValuesDoNotMutateCompiledSchema(t *testing.T) {
 	if !errors.As(err, &second) {
 		t.Fatal(err)
 	}
-	got, _ := json.Marshal(second.Issues)
+	got, _ := json.Marshal(second.Issues, json.Deterministic(true))
 	if string(got) != string(want) {
 		t.Fatalf("caller mutated schema diagnostics: %s", got)
 	}

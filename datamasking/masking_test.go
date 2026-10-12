@@ -2,7 +2,8 @@ package datamasking
 
 import (
 	"context"
-	"encoding/json"
+	jsonv1 "encoding/json"
+	json "encoding/json/v2"
 	"errors"
 	"os"
 	"reflect"
@@ -51,27 +52,40 @@ func TestTypeScriptReference(t *testing.T) {
 		t.Fatal(err)
 	}
 	type call struct {
-		Method, Data string
-		Context      map[string]string
+		Method  string            `json:"method"`
+		Data    string            `json:"data"`
+		Context map[string]string `json:"context"`
 	}
 	var corpus struct {
-		Version      string
-		AsyncFailure []string
+		Version      string   `json:"version"`
+		AsyncFailure []string `json:"asyncFailure"`
 		Cases        []struct {
-			Name, Method, Data string
-			Options            struct {
-				Fields      []string
-				Rules       []FieldRule
-				CustomMask  *string
-				DynamicMask *bool
-				Context     map[string]string
-			}
-			IgnoreMissing, Provider bool
-			Value                   any
-			Error                   *struct{ Name, Message string }
-			Warnings                []string
-			Calls                   []call
-		}
+			Name    string `json:"name"`
+			Method  string `json:"method"`
+			Data    string `json:"data"`
+			Options struct {
+				Fields []string `json:"fields"`
+				Rules  []struct {
+					Field string `json:"field"`
+					Rule  struct {
+						CustomMask  *string `json:"customMask"`
+						DynamicMask *bool   `json:"dynamicMask"`
+					} `json:"rule"`
+				} `json:"rules"`
+				CustomMask  *string           `json:"customMask"`
+				DynamicMask *bool             `json:"dynamicMask"`
+				Context     map[string]string `json:"context"`
+			} `json:"options"`
+			IgnoreMissing bool `json:"ignoreMissing"`
+			Provider      bool `json:"provider"`
+			Value         any  `json:"value"`
+			Error         *struct {
+				Name    string `json:"name"`
+				Message string `json:"message"`
+			} `json:"error"`
+			Warnings []string `json:"warnings"`
+			Calls    []call   `json:"calls"`
+		} `json:"cases"`
 	}
 	if err := json.Unmarshal(data, &corpus); err != nil {
 		t.Fatal(err)
@@ -86,7 +100,10 @@ func TestTypeScriptReference(t *testing.T) {
 		// Issue #69: strict missing Rules obey the same policy as Fields.
 		// Preserve the original TypeScript fixture and correct this named case.
 		if tc.Name == "erase-154" {
-			tc.Error = &struct{ Name, Message string }{"DataMaskingFieldNotFoundError", "Field not found: 'missing'"}
+			tc.Error = &struct {
+				Name    string `json:"name"`
+				Message string `json:"message"`
+			}{"DataMaskingFieldNotFoundError", "Field not found: 'missing'"}
 		}
 		t.Run(tc.Name, func(t *testing.T) {
 			calls, warnings := []call{}, []string{}
@@ -118,10 +135,17 @@ func TestTypeScriptReference(t *testing.T) {
 			var result any
 			var err error
 			ctx := context.Background()
-			input := json.RawMessage(tc.Data)
+			input := jsonv1.RawMessage(tc.Data)
 			switch tc.Method {
 			case "erase":
-				result, err = masker.Erase(ctx, input, EraseOptions{Fields: tc.Options.Fields, Rules: tc.Options.Rules, Rule: Rule{CustomMask: tc.Options.CustomMask, DynamicMask: tc.Options.DynamicMask}})
+				var rules []FieldRule
+				if tc.Options.Rules != nil {
+					rules = make([]FieldRule, len(tc.Options.Rules))
+				}
+				for index, rule := range tc.Options.Rules {
+					rules[index] = FieldRule{Field: rule.Field, Rule: Rule{CustomMask: rule.Rule.CustomMask, DynamicMask: rule.Rule.DynamicMask}}
+				}
+				result, err = masker.Erase(ctx, input, EraseOptions{Fields: tc.Options.Fields, Rules: rules, Rule: Rule{CustomMask: tc.Options.CustomMask, DynamicMask: tc.Options.DynamicMask}})
 			case "encrypt":
 				result, err = masker.Encrypt(ctx, input, TransformOptions{Fields: tc.Options.Fields, Context: tc.Options.Context})
 			case "decrypt":
@@ -148,7 +172,7 @@ func TestTypeScriptReference(t *testing.T) {
 			canonical := func(items []call) []string {
 				result := make([]string, len(items))
 				for i, item := range items {
-					data, _ := json.Marshal(item)
+					data, _ := json.Marshal(item, json.Deterministic(true))
 					result[i] = string(data)
 				}
 				slices.Sort(result)

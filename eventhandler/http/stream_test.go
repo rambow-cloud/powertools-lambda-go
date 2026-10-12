@@ -4,7 +4,8 @@ import (
 	"bufio"
 	"bytes"
 	"context"
-	"encoding/json"
+	jsonv1 "encoding/json"
+	json "encoding/json/v2"
 	"errors"
 	"fmt"
 	"io"
@@ -88,7 +89,7 @@ func TestStreamingFirstByteAndCancellation(t *testing.T) {
 				t.Fatal(err)
 			}
 			var cleaned atomic.Bool
-			handler := Streamify(func(ctx context.Context, event json.RawMessage, writer io.Writer) error {
+			handler := Streamify(func(ctx context.Context, event jsonv1.RawMessage, writer io.Writer) error {
 				defer cleaned.Store(true)
 				return app.ResolveStream(ctx, event, writer)
 			})
@@ -190,7 +191,7 @@ func TestStreamifyErrorStages(t *testing.T) {
 			t.Run(fmt.Sprintf("late=%t/panic=%t", late, panicValue), func(t *testing.T) {
 				failure := errors.New("producer failed")
 				cleaned := false
-				handler := Streamify(func(_ context.Context, _ json.RawMessage, writer io.Writer) error {
+				handler := Streamify(func(_ context.Context, _ jsonv1.RawMessage, writer io.Writer) error {
 					defer func() { cleaned = true }()
 					if late {
 						if _, err := writer.Write([]byte("prefix")); err != nil {
@@ -267,7 +268,7 @@ func TestConcurrentStreamIsolation(t *testing.T) {
 	}); err != nil {
 		t.Fatal(err)
 	}
-	handler := Streamify(func(ctx context.Context, event json.RawMessage, writer io.Writer) error {
+	handler := Streamify(func(ctx context.Context, event jsonv1.RawMessage, writer io.Writer) error {
 		return app.ResolveStream(ctx, event, writer)
 	})
 	var group sync.WaitGroup
@@ -296,7 +297,7 @@ func TestStreamCancellationWaitsForProducerCleanup(t *testing.T) {
 	cleaning, release := make(chan struct{}), make(chan struct{})
 	var releaseOnce sync.Once
 	defer releaseOnce.Do(func() { close(release) })
-	handler := Streamify(func(ctx context.Context, _ json.RawMessage, writer io.Writer) error {
+	handler := Streamify(func(ctx context.Context, _ jsonv1.RawMessage, writer io.Writer) error {
 		if _, err := writer.Write([]byte("a")); err != nil {
 			return err
 		}

@@ -2,7 +2,8 @@ package tracer_test
 
 import (
 	"context"
-	"encoding/json"
+	jsonv1 "encoding/json"
+	json "encoding/json/v2"
 	"errors"
 	"net/http"
 	"os"
@@ -26,21 +27,23 @@ func TestReference(t *testing.T) {
 	}
 	var fixture struct {
 		Cases []struct {
-			Name, Action string
-			Event        json.RawMessage
-			Status       int
-			Spans        []struct {
-				Name   string
-				HTTP   map[string]any
-				Closed bool
-			}
+			Name   string            `json:"name"`
+			Action string            `json:"action"`
+			Event  jsonv1.RawMessage `json:"event"`
+			Status int               `json:"status"`
+			Spans  []struct {
+				Name   string         `json:"name"`
+				HTTP   map[string]any `json:"http"`
+				Closed bool           `json:"closed"`
+			} `json:"spans"`
 			Responses []struct {
-				Name  string
-				Value any
-			}
-			Errors, Annotations []string
-			Restored            bool
-		}
+				Name  string `json:"name"`
+				Value any    `json:"value"`
+			} `json:"responses"`
+			Errors      []string `json:"errors"`
+			Annotations []string `json:"annotations"`
+			Restored    bool     `json:"restored"`
+		} `json:"cases"`
 	}
 	if err := json.Unmarshal(data, &fixture); err != nil {
 		t.Fatal(err)

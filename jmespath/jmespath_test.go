@@ -1,7 +1,7 @@
 package jmespath
 
 import (
-	"encoding/json"
+	json "encoding/json/v2"
 	"errors"
 	"os"
 	"reflect"
@@ -17,14 +17,21 @@ func TestTypeScriptReference(t *testing.T) {
 	}
 	var fixture struct {
 		Cases []struct {
-			Name, Expression, Envelope, Error string
-			Data, Expected                    any
-			Powertools                        bool
-			ExpectedUndefined                 bool
-		}
+			Name              string `json:"name"`
+			Expression        string `json:"expression"`
+			Envelope          string `json:"envelope"`
+			Error             string `json:"error"`
+			Data              any    `json:"data"`
+			Expected          any    `json:"expected"`
+			Powertools        bool   `json:"powertools"`
+			ExpectedUndefined bool   `json:"expectedUndefined"`
+		} `json:"cases"`
 	}
 	if err = json.Unmarshal(data, &fixture); err != nil {
 		t.Fatal(err)
+	}
+	if len(fixture.Cases) == 0 {
+		t.Fatal("reference corpus has no cases")
 	}
 	envelopes := map[string]string{"API_GATEWAY_REST": APIGatewayREST, "API_GATEWAY_HTTP": APIGatewayHTTP, "SQS": SQS, "SNS": SNS, "EVENTBRIDGE": EventBridge, "CLOUDWATCH_EVENTS_SCHEDULED": CloudWatchEventsScheduled, "KINESIS_DATA_STREAM": KinesisDataStream, "CLOUDWATCH_LOGS": CloudWatchLogs, "S3_SNS_SQS": S3SNSSQS, "S3_SQS": S3SQS, "S3_SNS_KINESIS_FIREHOSE": S3SNSKinesisFirehose, "S3_KINESIS_FIREHOSE": S3KinesisFirehose, "S3_EVENTBRIDGE_SQS": S3EventBridgeSQS}
 	for _, item := range fixture.Cases {

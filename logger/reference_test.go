@@ -2,7 +2,7 @@ package logger
 
 import (
 	"bytes"
-	"encoding/json"
+	json "encoding/json/v2"
 	"os"
 	"reflect"
 	"testing"

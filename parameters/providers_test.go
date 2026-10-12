@@ -2,7 +2,7 @@ package parameters_test
 
 import (
 	"context"
-	"encoding/json"
+	json "encoding/json/v2"
 	"errors"
 	"fmt"
 	"net/http"
@@ -38,7 +38,7 @@ func TestSSMProtocolAndBatch(t *testing.T) {
 			t.Error("missing SDK signature")
 		}
 		var input map[string]any
-		if err := json.NewDecoder(r.Body).Decode(&input); err != nil {
+		if err := json.UnmarshalRead(r.Body, &input); err != nil {
 			t.Error(err)
 		}
 		w.Header().Set("Content-Type", "application/x-amz-json-1.1")
@@ -79,7 +79,7 @@ func TestSSMProtocolAndBatch(t *testing.T) {
 					values = append(values, map[string]string{"Name": name.(string), "Value": "true"})
 				}
 			}
-			_ = json.NewEncoder(w).Encode(map[string]any{"Parameters": values, "InvalidParameters": invalid})
+			_ = json.MarshalWrite(w, map[string]any{"Parameters": values, "InvalidParameters": invalid})
 		case "AmazonSSM.PutParameter":
 			writes++
 			if input["Name"] != "config" || input["Value"] != "new" || input["Type"] != "String" || input["Tier"] != "Standard" || input["Overwrite"] != false {
@@ -171,8 +171,8 @@ func TestSSMBatchReference(t *testing.T) {
 		t.Fatal(err)
 	}
 	var fixture struct {
-		Batches  []map[string]any
-		SDKCalls []any
+		Batches  []map[string]any `json:"batches"`
+		SDKCalls []any            `json:"sdkCalls"`
 	}
 	if err := json.Unmarshal(data, &fixture); err != nil {
 		t.Fatal(err)
@@ -180,7 +180,7 @@ func TestSSMBatchReference(t *testing.T) {
 	var calls []any
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		var input map[string]any
-		_ = json.NewDecoder(r.Body).Decode(&input)
+		_ = json.UnmarshalRead(r.Body, &input)
 		operation := strings.TrimPrefix(r.Header.Get("X-Amz-Target"), "AmazonSSM.")
 		// The SDK omits WithDecryption for unencrypted reference batches.
 		if input["WithDecryption"] == false {
@@ -205,7 +205,7 @@ func TestSSMBatchReference(t *testing.T) {
 			}
 			values = append(values, map[string]string{"Name": name.(string), "Value": value})
 		}
-		_ = json.NewEncoder(w).Encode(map[string]any{"Parameters": values, "InvalidParameters": invalid})
+		_ = json.MarshalWrite(w, map[string]any{"Parameters": values, "InvalidParameters": invalid})
 	}))
 	defer server.Close()
 	p := ssm.New(ssmsdk.NewFromConfig(sdkConfig(server.URL)))
@@ -232,7 +232,7 @@ func TestSecretsProtocol(t *testing.T) {
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		calls.Add(1)
 		var input map[string]any
-		_ = json.NewDecoder(r.Body).Decode(&input)
+		_ = json.UnmarshalRead(r.Body, &input)
 		w.Header().Set("Content-Type", "application/x-amz-json-1.1")
 		switch input["SecretId"] {
 		case "json":
@@ -280,7 +280,7 @@ func TestDynamoDBProtocol(t *testing.T) {
 	var pages, singles int
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		var input map[string]any
-		_ = json.NewDecoder(r.Body).Decode(&input)
+		_ = json.UnmarshalRead(r.Body, &input)
 		if input["TableName"] != "settings" {
 			t.Error("table option")
 		}

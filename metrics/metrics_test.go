@@ -3,7 +3,8 @@ package metrics
 import (
 	"bytes"
 	"context"
-	"encoding/json"
+	"encoding/json/jsontext"
+	json "encoding/json/v2"
 	"errors"
 	"fmt"
 	"io"
@@ -36,10 +37,10 @@ func setup(t *testing.T, opts ...Option) (*Metrics, *bytes.Buffer) {
 func documents(t *testing.T, out *bytes.Buffer) []map[string]any {
 	t.Helper()
 	result := []map[string]any{}
-	decoder := json.NewDecoder(bytes.NewReader(out.Bytes()))
+	decoder := jsontext.NewDecoder(bytes.NewReader(out.Bytes()))
 	for {
 		var document map[string]any
-		err := decoder.Decode(&document)
+		err := json.UnmarshalDecode(decoder, &document)
 		if err == io.EOF {
 			return result
 		}

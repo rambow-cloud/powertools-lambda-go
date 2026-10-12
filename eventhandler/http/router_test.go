@@ -2,7 +2,8 @@ package http
 
 import (
 	"context"
-	"encoding/json"
+	jsonv1 "encoding/json"
+	json "encoding/json/v2"
 	"errors"
 	"fmt"
 	"io"
@@ -13,8 +14,8 @@ import (
 	"testing"
 )
 
-func testEvent(path string) json.RawMessage {
-	return json.RawMessage(fmt.Sprintf(`{"version":"2.0","routeKey":"$default","rawPath":%q,"rawQueryString":"","headers":{},"requestContext":{"http":{"method":"GET"},"domainName":"api.example.test"},"isBase64Encoded":false}`, path))
+func testEvent(path string) jsonv1.RawMessage {
+	return jsonv1.RawMessage(fmt.Sprintf(`{"version":"2.0","routeKey":"$default","rawPath":%q,"rawQueryString":"","headers":{},"requestContext":{"http":{"method":"GET"},"domainName":"api.example.test"},"isBase64Encoded":false}`, path))
 }
 
 func TestConcurrentInvocationIsolation(t *testing.T) {

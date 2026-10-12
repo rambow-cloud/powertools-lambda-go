@@ -3,7 +3,8 @@ package parser_test
 import (
 	"context"
 	"encoding/base64"
-	"encoding/json"
+	jsonv1 "encoding/json"
+	json "encoding/json/v2"
 	"errors"
 	"fmt"
 	"reflect"
@@ -17,8 +18,8 @@ import (
 func kafkaRecordText(value string) string {
 	return fmt.Sprintf(`{"topic":"orders","partition":0,"offset":1,"timestamp":1,"timestampType":"CREATE_TIME","value":%q,"headers":[]}`, base64.StdEncoding.EncodeToString([]byte(value)))
 }
-func kafkaEventText(records string) json.RawMessage {
-	return json.RawMessage(`{"eventSource":"aws:kafka","eventSourceArn":"arn:cluster","records":{` + records + `}}`)
+func kafkaEventText(records string) jsonv1.RawMessage {
+	return jsonv1.RawMessage(`{"eventSource":"aws:kafka","eventSourceArn":"arn:cluster","records":{` + records + `}}`)
 }
 
 func TestKafkaOrderingAndReuse(t *testing.T) {
@@ -126,7 +127,7 @@ func TestKafkaOperationalContracts(t *testing.T) {
 		}()
 		_, _ = parser.Parse(context.Background(), input, envelopes.Kafka(parser.SchemaFunc[string](func(context.Context, any) (string, []parser.Issue, error) { panic(sentinel) })))
 	})
-	for _, bad := range []any{json.RawMessage(`{broken`), make(chan int)} {
+	for _, bad := range []any{jsonv1.RawMessage(`{broken`), make(chan int)} {
 		if _, err := parser.Parse(context.Background(), bad, envelopes.Kafka(parser.String())); err == nil {
 			t.Fatalf("invalid JSON accepted: %T", bad)
 		}

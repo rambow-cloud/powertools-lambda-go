@@ -3,7 +3,7 @@ package protobuf
 import (
 	"context"
 	"encoding/base64"
-	"encoding/json"
+	json "encoding/json/v2"
 	"errors"
 	"fmt"
 	"os"
@@ -33,16 +33,26 @@ func TestTypeScriptReference(t *testing.T) {
 		t.Fatal(err)
 	}
 	var corpus struct {
-		Version, Schema string
-		Cases           []struct {
-			Name, Data, Mode       string
-			Metadata, Value, Calls any
-			Error                  *struct{ Name, Message string }
-		}
+		Version string `json:"version"`
+		Schema  string `json:"schema"`
+		Cases   []struct {
+			Name     string `json:"name"`
+			Data     string `json:"data"`
+			Mode     string `json:"mode"`
+			Metadata any    `json:"metadata"`
+			Value    any    `json:"value"`
+			Calls    any    `json:"calls"`
+			Error    *struct {
+				Name    string `json:"name"`
+				Message string `json:"message"`
+			} `json:"error"`
+		} `json:"cases"`
 		Native []struct {
-			Mode, Data      string
-			Metadata, Value any
-		}
+			Mode     string `json:"mode"`
+			Data     string `json:"data"`
+			Metadata any    `json:"metadata"`
+			Value    any    `json:"value"`
+		} `json:"native"`
 	}
 	if err := json.Unmarshal(data, &corpus); err != nil {
 		t.Fatal(err)

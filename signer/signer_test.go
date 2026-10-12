@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"context"
 	"encoding/base64"
-	"encoding/json"
+	json "encoding/json/v2"
 	"errors"
 	"io"
 	"net/http"
@@ -50,13 +50,23 @@ func TestTypeScriptSignatures(t *testing.T) {
 	}
 	var fixture struct {
 		Cases []struct {
-			Name, URL, Method, BodyBase64, Service, SignedBodyBase64 string
-			Headers, SignedHeaders                                   map[string]string
-			Tokenless, IntentionalDifference                         bool
-		}
+			Name                  string            `json:"name"`
+			URL                   string            `json:"url"`
+			Method                string            `json:"method"`
+			BodyBase64            string            `json:"bodyBase64"`
+			Service               string            `json:"service"`
+			SignedBodyBase64      string            `json:"signedBodyBase64"`
+			Headers               map[string]string `json:"headers"`
+			SignedHeaders         map[string]string `json:"signedHeaders"`
+			Tokenless             bool              `json:"tokenless"`
+			IntentionalDifference bool              `json:"intentionalDifference"`
+		} `json:"cases"`
 	}
 	if err = json.Unmarshal(data, &fixture); err != nil {
 		t.Fatal(err)
+	}
+	if len(fixture.Cases) == 0 {
+		t.Fatal("reference corpus has no cases")
 	}
 	for _, item := range fixture.Cases {
 		t.Run(item.Name, func(t *testing.T) {

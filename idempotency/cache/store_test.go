@@ -2,7 +2,8 @@ package cache
 
 import (
 	"context"
-	"encoding/json"
+	jsonv1 "encoding/json"
+	json "encoding/json/v2"
 	"errors"
 	"fmt"
 	"os"
@@ -107,15 +108,20 @@ func TestReferenceCacheScenarios(t *testing.T) {
 		t.Fatal(err)
 	}
 	var fixtures struct {
-		Now       int64
+		Now       int64 `json:"now"`
 		Scenarios []struct {
-			Name, Operation, Seed, Error string
-			Locked, Disappear, Custom    bool
-			Record                       idempotency.Record
-			Response                     *idempotency.Record
-			Calls                        []map[string]any
-			Final                        map[string]any
-		}
+			Name      string              `json:"name"`
+			Operation string              `json:"operation"`
+			Seed      string              `json:"seed"`
+			Error     string              `json:"error"`
+			Locked    bool                `json:"locked"`
+			Disappear bool                `json:"disappear"`
+			Custom    bool                `json:"custom"`
+			Record    idempotency.Record  `json:"record"`
+			Response  *idempotency.Record `json:"response"`
+			Calls     []map[string]any    `json:"calls"`
+			Final     map[string]any      `json:"final"`
+		} `json:"scenarios"`
 	}
 	if err = json.Unmarshal(encoded, &fixtures); err != nil {
 		t.Fatal(err)
@@ -225,7 +231,7 @@ func TestValidationPreservedAndResponseIsolated(t *testing.T) {
 	now := time.Unix(1800000000, 0)
 	f := newFake()
 	store, _ := New(f, Options{Now: func() time.Time { return now }})
-	r := idempotency.Record{Key: "key", Status: idempotency.Completed, Expiration: 1800003600, Data: json.RawMessage(`{"large":9007199254740993}`), Validation: "hash"}
+	r := idempotency.Record{Key: "key", Status: idempotency.Completed, Expiration: 1800003600, Data: jsonv1.RawMessage(`{"large":9007199254740993}`), Validation: "hash"}
 	if err := store.Update(context.Background(), r); err != nil {
 		t.Fatal(err)
 	}

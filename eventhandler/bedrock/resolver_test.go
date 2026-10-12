@@ -2,7 +2,7 @@ package bedrock
 
 import (
 	"context"
-	"encoding/json"
+
 	jsonv2 "encoding/json/v2"
 	"errors"
 	"fmt"
@@ -132,7 +132,7 @@ func TestResponseOwnershipAndParametersOrder(t *testing.T) {
 	parameters.Set("a", 3)
 	parameters.Delete("b")
 	parameters.Set("b", 4)
-	encoded, err := json.Marshal(parameters)
+	encoded, err := jsonv2.Marshal(parameters)
 	if err != nil || string(encoded) != `{"2":2,"a":3,"b":4}` {
 		t.Fatalf("ordered JSON: %s %v", encoded, err)
 	}

@@ -148,6 +148,14 @@ and [module development](MODULES.md). Use Go 1.27 or newer, uv, and Python 3.14
 for documentation. Always set `CGO_ENABLED=0`; do not run the race detector.
 Root `go test ./...` does **not** cover nested modules.
 
+Use `encoding/json/v2` for JSON serialization and `encoding/json/jsontext` for
+tokens, streams and new raw JSON values. Do not use v1 operations or legacy
+default options. The `encoding/json.Number` type remains necessary for exact
+numeric interoperability, and existing public `RawMessage` signatures retain
+their types. These type references do not select v1 serialization behavior.
+Run `go run ./tools/jsonapi` with `CGO_ENABLED=0` to check this policy; CI checks
+all first-party Go files, including tests and examples.
+
 For code changes, add regression tests and run the packaged module and license
 checks from the repository root:
 

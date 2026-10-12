@@ -4,7 +4,8 @@ import (
 	"bytes"
 	"context"
 	"encoding/base64"
-	"encoding/json"
+	jsonv1 "encoding/json"
+	json "encoding/json/v2"
 	"fmt"
 	nethttp "net/http"
 	"testing"
@@ -24,7 +25,7 @@ func TestBinaryResponseContracts(t *testing.T) {
 						value := map[string]any{"statusCode": 200, "body": "AAH/", "isBase64Encoded": true}
 						if form == "proxy-json" {
 							raw, err := json.Marshal(value)
-							return json.RawMessage(raw), err
+							return jsonv1.RawMessage(raw), err
 						}
 						return value, nil
 					case "proxy-struct":

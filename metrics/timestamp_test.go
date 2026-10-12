@@ -3,7 +3,8 @@ package metrics
 import (
 	"bytes"
 	"context"
-	"encoding/json"
+	jsonv1 "encoding/json"
+	json "encoding/json/v2"
 	"errors"
 	"fmt"
 	"math"
@@ -21,19 +22,21 @@ func TestTimestampReference(t *testing.T) {
 	}
 	var fixture struct {
 		Cases []struct {
-			Clock              int64
-			Kind, Lifecycle    string
-			Value              json.RawMessage
-			Disabled, Required bool
-			Steps              []string
-			Results            []struct {
-				Value      any
-				Error      *string
-				ClockCalls int
-			}
-			Warnings []string
-			Emitted  []map[string]any
-		}
+			Clock     int64             `json:"clock"`
+			Kind      string            `json:"kind"`
+			Lifecycle string            `json:"lifecycle"`
+			Value     jsonv1.RawMessage `json:"value"`
+			Disabled  bool              `json:"disabled"`
+			Required  bool              `json:"required"`
+			Steps     []string          `json:"steps"`
+			Results   []struct {
+				Value      any     `json:"value"`
+				Error      *string `json:"error"`
+				ClockCalls int     `json:"clockCalls"`
+			} `json:"results"`
+			Warnings []string         `json:"warnings"`
+			Emitted  []map[string]any `json:"emitted"`
+		} `json:"cases"`
 	}
 	if err := json.Unmarshal(data, &fixture); err != nil {
 		t.Fatal(err)
@@ -138,7 +141,9 @@ func TestTimestampScopesAndClosedCalls(t *testing.T) {
 				return
 			}
 			var document struct {
-				AWS struct{ Timestamp float64 } `json:"_aws"`
+				AWS struct {
+					Timestamp float64 `json:"Timestamp"`
+				} `json:"_aws"`
 			}
 			if err := json.Unmarshal(data, &document); err != nil || document.AWS.Timestamp != value {
 				t.Errorf("timestamp: %s; %v", data, err)

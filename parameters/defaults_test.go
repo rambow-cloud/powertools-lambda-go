@@ -2,7 +2,7 @@ package parameters_test
 
 import (
 	"context"
-	"encoding/json"
+	json "encoding/json/v2"
 	"fmt"
 	"net/http"
 	"net/http/httptest"
@@ -36,7 +36,7 @@ func TestDefaultHelpersAndGlobalClear(t *testing.T) {
 			fmt.Fprint(w, `{"SecretString":"value"}`)
 		case "/configurationsessions":
 			var input map[string]any
-			_ = json.NewDecoder(r.Body).Decode(&input)
+			_ = json.UnmarshalRead(r.Body, &input)
 			if input["ApplicationIdentifier"] != "app" || input["EnvironmentIdentifier"] != "test" {
 				t.Errorf("default AppConfig identity: %v", input)
 			}

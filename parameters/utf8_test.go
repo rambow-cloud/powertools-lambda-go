@@ -2,7 +2,7 @@ package parameters_test
 
 import (
 	"encoding/base64"
-	"encoding/json"
+	json "encoding/json/v2"
 	"os"
 	"reflect"
 	"testing"
@@ -18,12 +18,17 @@ func TestTransformUTF8Reference(t *testing.T) {
 	}
 	var fixture struct {
 		Cases []struct {
-			Name, Kind, Input string
-			Expected          any
-		}
+			Name     string `json:"name"`
+			Kind     string `json:"kind"`
+			Input    string `json:"input"`
+			Expected any    `json:"expected"`
+		} `json:"cases"`
 	}
 	if err := json.Unmarshal(raw, &fixture); err != nil {
 		t.Fatal(err)
+	}
+	if len(fixture.Cases) == 0 {
+		t.Fatal("reference corpus has no cases")
 	}
 	for _, item := range fixture.Cases {
 		t.Run(item.Kind+"/"+item.Name, func(t *testing.T) {
