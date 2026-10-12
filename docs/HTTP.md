@@ -212,6 +212,16 @@ The OpenAPI inventory audit is complete (2026-09-23): v2.35.0 exports no OpenAPI
 
 ## Evidence and limits
 
+The [finite boundary audit #190](HTTP_PLAN.md#finite-boundary-audit-190) adds 88
+actual TypeScript v2.35.0 observations for request/response headers, cookies,
+URLs and named regexes, together with native middleware and streaming lifecycle
+regressions. Header names must be ASCII tokens and values must exclude CR/LF/NUL.
+Typed/native results, cookies and final middleware mutations receive the same
+validation as proxy values; invalid final headers fail before output. Failed
+conversion of a retained native response closes its owned body once. Native URL,
+diagnostic and cookie-view differences are recorded in the matrix; broader
+acceptance gates remain open.
+
 Observability acceptance: Verified 176 Metrics and 128 Tracer middleware reference cases (2,066 HTTP cases across the three modules), scope/span concurrency and body lifecycle tests, all 22 packaged modules/19 independent consumers, both CGO-disabled Linux builds, 622/622 RIE assertions, 95/95 streaming Runtime API checks and 14/14 Batch artifact checks (2026-09-22, Asia/Shanghai). Docker ran amd64; arm64 was cross-compiled. No AWS resources were used. See [HTTP_OBSERVABILITY.md](HTTP_OBSERVABILITY.md). The following paragraphs retain earlier milestone counts.
 
 Streaming adds 272 reference cases (1,762 HTTP total), ResolveStream/Streamify and 95/95 real-Go-SDK/local-Runtime-API Docker assertions. The 609/609 RIE suite remains separate. See [HTTP_STREAMING.md](HTTP_STREAMING.md) for owned-reader transfer, framing, cancellation, callback placement and cloud/platform gates. The paragraphs below preserve earlier milestone counts.

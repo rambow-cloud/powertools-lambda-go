@@ -175,6 +175,14 @@ func handlerResponse(value any, previous nethttp.Header, fallback int, streaming
 	if err != nil {
 		return nil, responseEncoding{}, err
 	}
+	// Native and typed results, cookies and middleware headers must use the
+	// same validation as JSON proxy results. Reject before transferring a stream.
+	if err := validateHeaders(headers); err != nil {
+		if stream != nil {
+			_ = stream.Close()
+		}
+		return nil, responseEncoding{}, err
+	}
 	if status < 200 || status > 599 {
 		if stream != nil {
 			_ = stream.Close()
@@ -225,6 +233,12 @@ func HandlerResultToWebResponse(value any) (*nethttp.Response, error) {
 
 // WebResponseToProxyResult serializes an owned response body and closes it.
 func WebResponseToProxyResult(response *nethttp.Response, kind ResponseType, encoded bool) (ProxyResponse, error) {
+	if err := validateHeaders(response.Header); err != nil {
+		if response.Body != nil {
+			_ = response.Body.Close()
+		}
+		return ProxyResponse{}, err
+	}
 	result := ProxyResponse{StatusCode: response.StatusCode, Headers: map[string]string{}, IsBase64Encoded: encoded}
 	var body []byte
 	var err error

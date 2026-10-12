@@ -274,6 +274,11 @@ func (r *Router) resolve(ctx context.Context, event any, streaming bool, consume
 			return err
 		}
 	}
+	// Middleware can mutate native headers after Respond; validate the final
+	// response before writing buffered output or streaming metadata.
+	if err := validateHeaders(current.Response.Header); err != nil {
+		return err
+	}
 	err = consume(current)
 	if cancelled := ctx.Err(); cancelled != nil {
 		return cancelled

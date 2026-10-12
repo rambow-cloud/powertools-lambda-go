@@ -34,6 +34,7 @@ npm run fixtures
 | `generate-validation-shapes.mjs` | 5,764 reachable/unused keyword types, annotations, primitive fragments, conditionals and property-dependency cases |
 | `generate-validation-graphs.mjs` | 1,104 conditional reachability, dialect, external resource identity, relative scope and registration-order cases |
 | `generate-http.mjs` | 414 HTTP event, routing, request/response, middleware, error and Standard Schema validation cases |
+| `generate-http-boundaries.mjs` | 88 actual v2.35.0 request/response header, cookie, URL and named-regex observations; native differences are explicit in `docs/HTTP_PLAN.md` |
 | `generate-validation-unicode.mjs` | Explicit Unicode 16 table regeneration from official alias files and Node v22.21.1; not required for normal fixture generation |
 | `bridge-idempotency-cache.mjs` | Actual TypeScript writes/reads against the disposable Valkey container; invoked by the local Docker runner |
 

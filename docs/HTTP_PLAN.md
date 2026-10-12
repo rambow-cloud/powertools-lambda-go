@@ -21,6 +21,54 @@ Reference: Powertools TypeScript v2.35.0. The HTTP utility is an independent `ev
 - [x] H-10: Verify the initial 414 reference cases, concurrent reuse, all 20 packaged module tests/vet/tidy checks, seventeen independent consumers, both CGO-disabled Linux builds and 501/501 Docker assertions (2026-09-16, Asia/Shanghai). The same saved artifacts passed 14/14 Batch checks. Temporary containers/network were cleaned. Docker executed amd64; arm64 was cross-compiled only. No AWS resources were used. Root Commons, Parser and HTTP have no third-party module dependencies. Full parity remains under H-01 through H-09 and H-11.
 - [ ] H-11: Complete remaining public API/default/error parity, performance/resource budgets, dependency/license review and independent publication requirements.
 
+## Finite boundary audit #190
+
+- [x] H-FINITE-190: Complete the matrix below, reproduce and fix header validation
+  bypasses and retained-native body cleanup, and pass three affected packaged
+  modules/three independent consumers with CGO disabled and GOWORK off. JSON v2,
+  licenses, navigation, eighteen guides, strict site build and discovery checks
+  pass (2026-10-13). Local Docker was unavailable; hosted runtime checks and AWS
+  acceptance remain separate evidence.
+
+This matrix reviews the named HTTP/Streaming boundaries in issue #190 against
+the installed TypeScript **v2.35.0** package. It does not close the broad H-01
+through H-05, H-07, H-09 or H-11 gates above. Existing evidence is reused before
+adding cases: 414 core, 1,076 CORS/compression, 272 streaming and 128 maintained
+OTel middleware fixtures, plus native header/cookie, request-body, JSON v2,
+error-redispatch and stream lifecycle tests.
+
+`tools/reference/generate-http-boundaries.mjs` executes the actual public
+converters and Router and saves **88 observations** in the HTTP module's own
+`testdata/boundaries-v2.35.0.json`. The upstream errors/messages and original
+outputs are retained. Tests compare successful URL/header/body/cookie values
+directly, with structural comparison only for JSON router bodies. Native Go
+error classes and messages are checked by their conversion/cause contract,
+rather than asserting Node's diagnostic spelling.
+
+| Boundary and public Go APIs | Existing evidence | Added evidence and classification |
+| --- | --- | --- |
+| Request headers, `ProxyEventToWebRequest` | Core fixtures and adapter/header tests | 48 upstream cases across REST/v2/ALB/Function URL: valid token punctuation, padding, tabs and Latin-1 values verified; reproduced acceptance of control/DEL/non-ASCII names fixed with ASCII token validation. CR/LF/NUL values remain rejected. |
+| URL conversion, `ProxyEventToWebRequest` | Core request-field, encoded parameter and query cases | 24 upstream observations: encoded slashes, literal plus, IPv6/port, malformed host and credentials reviewed. Four malformed-percent paths remain an intentional native difference: WHATWG retains `%`; Go `net/url` returns a wrapped native error before routing. The fixture is unchanged. |
+| Named regex and `HandleRegex` | Core specificity, named-regex and parameter cases | Eight upstream cases verify named capture/miss, encoded slash, invalid UTF-8, blank parameter, explicit anchors and both ungrouped alternation branches. Registration wraps the pattern with `^`/`$`; ungrouped alternation retains regex operator precedence in both implementations, so it can match a partial path. JavaScript-only forms/flags are outside this row. |
+| Response headers/cookies, `HandlerResultToWebResponse`, `Response`, `WebResponseToProxyResult` | Existing native/proxy/typed cookie and multi-value tests | Eight upstream observations plus buffered/streaming native, typed, multi-value, cookie and inherited-header failures. Reproduced typed/native/cookie validation bypass fixed. Final middleware mutations and direct proxy conversion reject invalid fields before output and close owned bodies. Empty value slices still require a valid name. |
+| Cookie representation | Existing buffered and streaming projections | Intentional native difference: Go Header retains every Set-Cookie value; pinned Web Headers `entries()` exposes the last while `getSetCookie()` preserves both. The single converter fixture explicitly maps this known view difference and still compares both cookie strings exactly, including Expires commas. Buffered output preserves all cookies; streaming metadata keeps the final cookie. |
+| `RequestContext.Respond` and middleware body ownership | Native ownership, cancellation/panic cleanup and middleware fixtures | Replacement, error, panic and retaining the same native response verified. A failed retained-native conversion closes its body once and detaches it from deferred cleanup; buffered and streaming regressions cover that path. Headers remain caller-owned snapshots. |
+| `ResolveStream`, `Streamify`, `ResponseStream` | 272 upstream cases, staged first-byte/backpressure, blocking-read cancellation, failure/panic identity, 32 concurrent streams, bounded 32 MiB reads and cleanup-before-EOF | Raw NUL/non-UTF-8 body bytes and two-field metadata/eight-byte framing verified. Short metadata/body writes preserve `io.ErrShortWrite`, close once and stop transfer. Sixteen concurrent Close calls cancel one blocked producer, preserve the event snapshot, wait for one cleanup and retain the cancellation cause on later reads. Destination ownership is unchanged. |
+| Errors, validation and OTel composition | Error-redispatch regressions, native read/write/close failures, JSON v2/validation suites and maintained HTTP Tracer's 128 fixtures plus #182 | Verified existing Go error/cause, panic and iterative dispatch policies. No new error hierarchy, parser default or OTel capture behavior is introduced. Middleware parsing remains independent of the Tracer's metadata storage switch; the frozen X-Ray adapter is unchanged. |
+
+The fixes add no public API or dependency. They reject invalid header names and
+CR/LF/NUL values that previously passed some native paths; otherwise JSON v2,
+response encoding, ownership and maintained OTel policies remain intact.
+
+Unreviewed boundaries remain explicit: exhaustive WHATWG URL/Headers/Unicode
+semantics, JavaScript regex flags/unsupported forms and regex prefixes, arbitrary
+native objects, async middleware misuse, default console/ALC logging, resource
+budgets (#200), publication and AWS streaming/integration acceptance (#201/#202).
+The local Runtime API's historical 95 checks are existing evidence, not a new
+AWS acceptance claim; the pinned SDK's missing response-mode header remains
+documented in [HTTP_STREAMING.md](HTTP_STREAMING.md). No cloud calls are needed
+to close this finite audit.
+
 Streaming acceptance (2026-09-17, Asia/Shanghai): HTTP has 1,762 reference cases and a separate 95/95 real-SDK/local-Runtime-API acceptance suite. ResolveStream shares the original routing/middleware pipeline, and Streamify keeps producer cleanup inside the invocation lifetime. Cloud streaming and exhaustive API/platform parity remain open. See HTTP_STREAMING.md.
 
 Final post-fix packaged verification passed all 20 modules and seventeen consumers with CGO disabled and GOWORK off; MODULE_ACCEPTANCE.json reflects that completed run. The passing 609-check RIE and 95-check streaming suites were reused. Both normal and streaming handlers were built for Linux amd64/arm64; Docker ran amd64 only.
