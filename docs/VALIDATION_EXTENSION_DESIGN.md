@@ -2,6 +2,13 @@
 
 Planning acceptance for [issue #118](https://github.com/rambow-cloud/powertools-lambda-go/issues/118), reviewed on 2026-10-08. The current default remains the documented Draft 7/AJV-compatible subset. No new option, engine or dependency is implemented by this design.
 
+Implementation update (2026-10-12): [#168](https://github.com/rambow-cloud/powertools-lambda-go/issues/168)
+adds the opt-in `Draft202012Compiler` on `main`, with registered-only resource
+loading, owned native diagnostics and a pinned 56-case injected-Ajv2020 corpus.
+Two native result differences are measured explicitly. This implementation does
+not change the historical design acceptance or default Draft 7 behavior; see the
+[current compiler contract](JSON_SCHEMA_VALIDATION.md#optional-draft-2020-12-compiler).
+
 ## Support matrix
 
 Powertools TypeScript v2.35.0 creates AJV with `allErrors: true` unless the caller injects an instance. AJV v8.20.0 is pinned in `tools/reference/package-lock.json`. Capabilities available to an injected instance are not defaults of the utility. [AJV's dialect guide](https://ajv.js.org/guide/schema-language.html) distinguishes its default export from the 2019/2020 engines.

@@ -1,0 +1,1628 @@
+{
+  "version": "2.35.0",
+  "ajvVersion": "8.20.0",
+  "dialect": "https://json-schema.org/draft/2020-12/schema",
+  "cases": [
+    {
+      "name": "prefix-items-valid",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "array",
+        "prefixItems": [
+          {
+            "type": "integer"
+          },
+          {
+            "type": "string"
+          }
+        ],
+        "items": false
+      },
+      "payload": [
+        1,
+        "ok"
+      ],
+      "references": [],
+      "expected": {
+        "success": true,
+        "value": [
+          1,
+          "ok"
+        ]
+      }
+    },
+    {
+      "name": "prefix-items-invalid",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "array",
+        "prefixItems": [
+          {
+            "type": "integer"
+          },
+          {
+            "type": "string"
+          }
+        ],
+        "items": false
+      },
+      "payload": [
+        1,
+        "ok",
+        true
+      ],
+      "references": [],
+      "expected": {
+        "success": false,
+        "stage": "validation",
+        "error": "SchemaValidationError",
+        "message": "Schema validation failed",
+        "issues": [
+          {
+            "instancePath": "",
+            "schemaPath": "#/items",
+            "keyword": "items",
+            "params": {
+              "limit": 2
+            },
+            "message": "must NOT have more than 2 items"
+          }
+        ]
+      }
+    },
+    {
+      "name": "tuple-type-valid",
+      "schema": {
+        "type": "array",
+        "prefixItems": [
+          {
+            "type": "integer"
+          }
+        ],
+        "items": {
+          "type": "string"
+        }
+      },
+      "payload": [
+        1,
+        "ok"
+      ],
+      "references": [],
+      "expected": {
+        "success": true,
+        "value": [
+          1,
+          "ok"
+        ]
+      }
+    },
+    {
+      "name": "tuple-type-invalid",
+      "schema": {
+        "type": "array",
+        "prefixItems": [
+          {
+            "type": "integer"
+          }
+        ],
+        "items": {
+          "type": "string"
+        }
+      },
+      "payload": [
+        "bad",
+        2
+      ],
+      "references": [],
+      "expected": {
+        "success": false,
+        "stage": "validation",
+        "error": "SchemaValidationError",
+        "message": "Schema validation failed",
+        "issues": [
+          {
+            "instancePath": "/0",
+            "schemaPath": "#/prefixItems/0/type",
+            "keyword": "type",
+            "params": {
+              "type": "integer"
+            },
+            "message": "must be integer"
+          },
+          {
+            "instancePath": "/1",
+            "schemaPath": "#/items/type",
+            "keyword": "type",
+            "params": {
+              "type": "string"
+            },
+            "message": "must be string"
+          }
+        ]
+      }
+    },
+    {
+      "name": "dependent-required-valid",
+      "schema": {
+        "type": "object",
+        "dependentRequired": {
+          "card": [
+            "address"
+          ]
+        }
+      },
+      "payload": {
+        "card": 1,
+        "address": "here"
+      },
+      "references": [],
+      "expected": {
+        "success": true,
+        "value": {
+          "card": 1,
+          "address": "here"
+        }
+      }
+    },
+    {
+      "name": "dependent-required-invalid",
+      "schema": {
+        "type": "object",
+        "dependentRequired": {
+          "card": [
+            "address"
+          ]
+        }
+      },
+      "payload": {
+        "card": 1
+      },
+      "references": [],
+      "expected": {
+        "success": false,
+        "stage": "validation",
+        "error": "SchemaValidationError",
+        "message": "Schema validation failed",
+        "issues": [
+          {
+            "instancePath": "",
+            "schemaPath": "#/dependentRequired",
+            "keyword": "dependentRequired",
+            "params": {
+              "property": "card",
+              "missingProperty": "address",
+              "depsCount": 1,
+              "deps": "address"
+            },
+            "message": "must have property address when property card is present"
+          }
+        ]
+      }
+    },
+    {
+      "name": "dependent-schemas-valid",
+      "schema": {
+        "type": "object",
+        "dependentSchemas": {
+          "card": {
+            "required": [
+              "address"
+            ],
+            "properties": {
+              "address": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      },
+      "payload": {
+        "card": 1,
+        "address": "here"
+      },
+      "references": [],
+      "expected": {
+        "success": true,
+        "value": {
+          "card": 1,
+          "address": "here"
+        }
+      }
+    },
+    {
+      "name": "dependent-schemas-invalid",
+      "schema": {
+        "type": "object",
+        "dependentSchemas": {
+          "card": {
+            "required": [
+              "address"
+            ],
+            "properties": {
+              "address": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      },
+      "payload": {
+        "card": 1,
+        "address": 2
+      },
+      "references": [],
+      "expected": {
+        "success": false,
+        "stage": "validation",
+        "error": "SchemaValidationError",
+        "message": "Schema validation failed",
+        "issues": [
+          {
+            "instancePath": "/address",
+            "schemaPath": "#/dependentSchemas/card/properties/address/type",
+            "keyword": "type",
+            "params": {
+              "type": "string"
+            },
+            "message": "must be string"
+          }
+        ]
+      }
+    },
+    {
+      "name": "all-of-evaluated-valid",
+      "schema": {
+        "type": "object",
+        "allOf": [
+          {
+            "properties": {
+              "a": {
+                "type": "integer"
+              }
+            }
+          },
+          {
+            "properties": {
+              "b": {
+                "type": "string"
+              }
+            }
+          }
+        ],
+        "unevaluatedProperties": false
+      },
+      "payload": {
+        "a": 1,
+        "b": "ok"
+      },
+      "references": [],
+      "expected": {
+        "success": true,
+        "value": {
+          "a": 1,
+          "b": "ok"
+        }
+      }
+    },
+    {
+      "name": "all-of-evaluated-invalid",
+      "schema": {
+        "type": "object",
+        "allOf": [
+          {
+            "properties": {
+              "a": {
+                "type": "integer"
+              }
+            }
+          },
+          {
+            "properties": {
+              "b": {
+                "type": "string"
+              }
+            }
+          }
+        ],
+        "unevaluatedProperties": false
+      },
+      "payload": {
+        "a": 1,
+        "b": "ok",
+        "extra": true
+      },
+      "references": [],
+      "expected": {
+        "success": false,
+        "stage": "validation",
+        "error": "SchemaValidationError",
+        "message": "Schema validation failed",
+        "issues": [
+          {
+            "instancePath": "",
+            "schemaPath": "#/unevaluatedProperties",
+            "keyword": "unevaluatedProperties",
+            "params": {
+              "unevaluatedProperty": "extra"
+            },
+            "message": "must NOT have unevaluated properties"
+          }
+        ]
+      }
+    },
+    {
+      "name": "any-of-evaluated-valid",
+      "schema": {
+        "type": "object",
+        "anyOf": [
+          {
+            "properties": {
+              "a": {
+                "type": "integer"
+              }
+            },
+            "required": [
+              "a"
+            ]
+          },
+          {
+            "properties": {
+              "b": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "b"
+            ]
+          }
+        ],
+        "unevaluatedProperties": false
+      },
+      "payload": {
+        "a": 1,
+        "b": "ok"
+      },
+      "references": [],
+      "expected": {
+        "success": true,
+        "value": {
+          "a": 1,
+          "b": "ok"
+        }
+      }
+    },
+    {
+      "name": "any-of-evaluated-invalid",
+      "schema": {
+        "type": "object",
+        "anyOf": [
+          {
+            "properties": {
+              "a": {
+                "type": "integer"
+              }
+            },
+            "required": [
+              "a"
+            ]
+          },
+          {
+            "properties": {
+              "b": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "b"
+            ]
+          }
+        ],
+        "unevaluatedProperties": false
+      },
+      "payload": {
+        "a": 1,
+        "b": 2
+      },
+      "references": [],
+      "expected": {
+        "success": false,
+        "stage": "validation",
+        "error": "SchemaValidationError",
+        "message": "Schema validation failed",
+        "issues": [
+          {
+            "instancePath": "",
+            "schemaPath": "#/unevaluatedProperties",
+            "keyword": "unevaluatedProperties",
+            "params": {
+              "unevaluatedProperty": "b"
+            },
+            "message": "must NOT have unevaluated properties"
+          }
+        ]
+      }
+    },
+    {
+      "name": "one-of-evaluated-valid",
+      "schema": {
+        "type": "object",
+        "oneOf": [
+          {
+            "properties": {
+              "a": {
+                "type": "integer"
+              }
+            },
+            "required": [
+              "a"
+            ]
+          },
+          {
+            "properties": {
+              "b": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "b"
+            ]
+          }
+        ],
+        "unevaluatedProperties": false
+      },
+      "payload": {
+        "a": 1
+      },
+      "references": [],
+      "expected": {
+        "success": true,
+        "value": {
+          "a": 1
+        }
+      }
+    },
+    {
+      "name": "one-of-evaluated-invalid",
+      "schema": {
+        "type": "object",
+        "oneOf": [
+          {
+            "properties": {
+              "a": {
+                "type": "integer"
+              }
+            },
+            "required": [
+              "a"
+            ]
+          },
+          {
+            "properties": {
+              "b": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "b"
+            ]
+          }
+        ],
+        "unevaluatedProperties": false
+      },
+      "payload": {
+        "a": 1,
+        "b": "ok"
+      },
+      "references": [],
+      "expected": {
+        "success": false,
+        "stage": "validation",
+        "error": "SchemaValidationError",
+        "message": "Schema validation failed",
+        "issues": [
+          {
+            "instancePath": "",
+            "schemaPath": "#/oneOf",
+            "keyword": "oneOf",
+            "params": {
+              "passingSchemas": [
+                0,
+                1
+              ]
+            },
+            "message": "must match exactly one schema in oneOf"
+          },
+          {
+            "instancePath": "",
+            "schemaPath": "#/unevaluatedProperties",
+            "keyword": "unevaluatedProperties",
+            "params": {
+              "unevaluatedProperty": "b"
+            },
+            "message": "must NOT have unevaluated properties"
+          }
+        ]
+      }
+    },
+    {
+      "name": "conditional-evaluated-valid",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "mode": true
+        },
+        "if": {
+          "properties": {
+            "mode": {
+              "const": "a"
+            }
+          },
+          "required": [
+            "mode"
+          ]
+        },
+        "then": {
+          "properties": {
+            "a": true
+          }
+        },
+        "else": {
+          "properties": {
+            "b": true
+          }
+        },
+        "unevaluatedProperties": false
+      },
+      "payload": {
+        "mode": "a",
+        "a": 1
+      },
+      "references": [],
+      "expected": {
+        "success": true,
+        "value": {
+          "mode": "a",
+          "a": 1
+        }
+      }
+    },
+    {
+      "name": "conditional-evaluated-invalid",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "mode": true
+        },
+        "if": {
+          "properties": {
+            "mode": {
+              "const": "a"
+            }
+          },
+          "required": [
+            "mode"
+          ]
+        },
+        "then": {
+          "properties": {
+            "a": true
+          }
+        },
+        "else": {
+          "properties": {
+            "b": true
+          }
+        },
+        "unevaluatedProperties": false
+      },
+      "payload": {
+        "mode": "a",
+        "b": 1
+      },
+      "references": [],
+      "expected": {
+        "success": false,
+        "stage": "validation",
+        "error": "SchemaValidationError",
+        "message": "Schema validation failed",
+        "issues": [
+          {
+            "instancePath": "",
+            "schemaPath": "#/unevaluatedProperties",
+            "keyword": "unevaluatedProperties",
+            "params": {
+              "unevaluatedProperty": "b"
+            },
+            "message": "must NOT have unevaluated properties"
+          }
+        ]
+      }
+    },
+    {
+      "name": "failed-branch-evaluation-valid",
+      "schema": {
+        "type": "object",
+        "anyOf": [
+          {
+            "properties": {
+              "a": {
+                "const": 1
+              }
+            },
+            "required": [
+              "a"
+            ]
+          },
+          {
+            "properties": {
+              "b": {
+                "const": 2
+              }
+            },
+            "required": [
+              "b"
+            ]
+          }
+        ],
+        "unevaluatedProperties": false
+      },
+      "payload": {
+        "a": 1,
+        "b": 2
+      },
+      "references": [],
+      "expected": {
+        "success": true,
+        "value": {
+          "a": 1,
+          "b": 2
+        }
+      }
+    },
+    {
+      "name": "failed-branch-evaluation-invalid",
+      "schema": {
+        "type": "object",
+        "anyOf": [
+          {
+            "properties": {
+              "a": {
+                "const": 1
+              }
+            },
+            "required": [
+              "a"
+            ]
+          },
+          {
+            "properties": {
+              "b": {
+                "const": 2
+              }
+            },
+            "required": [
+              "b"
+            ]
+          }
+        ],
+        "unevaluatedProperties": false
+      },
+      "payload": {
+        "a": 1,
+        "b": 3
+      },
+      "references": [],
+      "expected": {
+        "success": false,
+        "stage": "validation",
+        "error": "SchemaValidationError",
+        "message": "Schema validation failed",
+        "issues": [
+          {
+            "instancePath": "",
+            "schemaPath": "#/unevaluatedProperties",
+            "keyword": "unevaluatedProperties",
+            "params": {
+              "unevaluatedProperty": "b"
+            },
+            "message": "must NOT have unevaluated properties"
+          }
+        ]
+      }
+    },
+    {
+      "name": "contains-evaluated-valid",
+      "schema": {
+        "type": "array",
+        "contains": {
+          "type": "integer"
+        },
+        "minContains": 1,
+        "maxContains": 2,
+        "unevaluatedItems": false
+      },
+      "payload": [
+        1,
+        2
+      ],
+      "references": [],
+      "expected": {
+        "success": true,
+        "value": [
+          1,
+          2
+        ]
+      }
+    },
+    {
+      "name": "contains-evaluated-invalid",
+      "schema": {
+        "type": "array",
+        "contains": {
+          "type": "integer"
+        },
+        "minContains": 1,
+        "maxContains": 2,
+        "unevaluatedItems": false
+      },
+      "payload": [
+        1,
+        "bad"
+      ],
+      "references": [],
+      "nativeSuccess": false,
+      "nativeReason": "Native 2020-12 evaluation rejects the nonmatching item; pinned Ajv2020 accepts it. The reference result is preserved separately.",
+      "expected": {
+        "success": true,
+        "value": [
+          1,
+          "bad"
+        ]
+      }
+    },
+    {
+      "name": "contains-bounds-valid",
+      "schema": {
+        "type": "array",
+        "contains": {
+          "const": 1
+        },
+        "minContains": 2,
+        "maxContains": 3
+      },
+      "payload": [
+        1,
+        2,
+        1
+      ],
+      "references": [],
+      "expected": {
+        "success": true,
+        "value": [
+          1,
+          2,
+          1
+        ]
+      }
+    },
+    {
+      "name": "contains-bounds-invalid",
+      "schema": {
+        "type": "array",
+        "contains": {
+          "const": 1
+        },
+        "minContains": 2,
+        "maxContains": 3
+      },
+      "payload": [
+        1
+      ],
+      "references": [],
+      "expected": {
+        "success": false,
+        "stage": "validation",
+        "error": "SchemaValidationError",
+        "message": "Schema validation failed",
+        "issues": [
+          {
+            "instancePath": "",
+            "schemaPath": "#/contains",
+            "keyword": "contains",
+            "params": {
+              "minContains": 2,
+              "maxContains": 3
+            },
+            "message": "must contain at least 2 and no more than 3 valid item(s)"
+          }
+        ]
+      }
+    },
+    {
+      "name": "prefix-evaluated-valid",
+      "schema": {
+        "type": "array",
+        "prefixItems": [
+          {
+            "type": "string"
+          }
+        ],
+        "unevaluatedItems": false
+      },
+      "payload": [
+        "ok"
+      ],
+      "references": [],
+      "expected": {
+        "success": true,
+        "value": [
+          "ok"
+        ]
+      }
+    },
+    {
+      "name": "prefix-evaluated-invalid",
+      "schema": {
+        "type": "array",
+        "prefixItems": [
+          {
+            "type": "string"
+          }
+        ],
+        "unevaluatedItems": false
+      },
+      "payload": [
+        "ok",
+        2
+      ],
+      "references": [],
+      "expected": {
+        "success": false,
+        "stage": "validation",
+        "error": "SchemaValidationError",
+        "message": "Schema validation failed",
+        "issues": [
+          {
+            "instancePath": "",
+            "schemaPath": "#/unevaluatedItems",
+            "keyword": "unevaluatedItems",
+            "params": {
+              "limit": 1
+            },
+            "message": "must NOT have more than 1 items"
+          }
+        ]
+      }
+    },
+    {
+      "name": "ref-siblings-valid",
+      "schema": {
+        "$defs": {
+          "text": {
+            "type": "string"
+          }
+        },
+        "$ref": "#/$defs/text",
+        "minLength": 2
+      },
+      "payload": "ok",
+      "references": [],
+      "expected": {
+        "success": true,
+        "value": "ok"
+      }
+    },
+    {
+      "name": "ref-siblings-invalid",
+      "schema": {
+        "$defs": {
+          "text": {
+            "type": "string"
+          }
+        },
+        "$ref": "#/$defs/text",
+        "minLength": 2
+      },
+      "payload": "x",
+      "references": [],
+      "expected": {
+        "success": false,
+        "stage": "validation",
+        "error": "SchemaValidationError",
+        "message": "Schema validation failed",
+        "issues": [
+          {
+            "instancePath": "",
+            "schemaPath": "#/minLength",
+            "keyword": "minLength",
+            "params": {
+              "limit": 2
+            },
+            "message": "must NOT have fewer than 2 characters"
+          }
+        ]
+      }
+    },
+    {
+      "name": "external-evaluated-valid",
+      "schema": {
+        "type": "object",
+        "$ref": "https://example.test/common",
+        "unevaluatedProperties": false
+      },
+      "payload": {
+        "id": 1
+      },
+      "references": [
+        {
+          "$id": "https://example.test/common",
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "properties": {
+            "id": {
+              "type": "integer"
+            }
+          }
+        }
+      ],
+      "expected": {
+        "success": true,
+        "value": {
+          "id": 1
+        }
+      }
+    },
+    {
+      "name": "external-evaluated-invalid",
+      "schema": {
+        "type": "object",
+        "$ref": "https://example.test/common",
+        "unevaluatedProperties": false
+      },
+      "payload": {
+        "id": 1,
+        "extra": true
+      },
+      "references": [
+        {
+          "$id": "https://example.test/common",
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "properties": {
+            "id": {
+              "type": "integer"
+            }
+          }
+        }
+      ],
+      "expected": {
+        "success": false,
+        "stage": "validation",
+        "error": "SchemaValidationError",
+        "message": "Schema validation failed",
+        "issues": [
+          {
+            "instancePath": "",
+            "schemaPath": "#/unevaluatedProperties",
+            "keyword": "unevaluatedProperties",
+            "params": {
+              "unevaluatedProperty": "extra"
+            },
+            "message": "must NOT have unevaluated properties"
+          }
+        ]
+      }
+    },
+    {
+      "name": "nested-resource-valid",
+      "schema": {
+        "$id": "https://example.test/root",
+        "$defs": {
+          "text": {
+            "$id": "nested/text",
+            "type": "string"
+          }
+        },
+        "$ref": "nested/text"
+      },
+      "payload": "ok",
+      "references": [],
+      "expected": {
+        "success": true,
+        "value": "ok"
+      }
+    },
+    {
+      "name": "nested-resource-invalid",
+      "schema": {
+        "$id": "https://example.test/root",
+        "$defs": {
+          "text": {
+            "$id": "nested/text",
+            "type": "string"
+          }
+        },
+        "$ref": "nested/text"
+      },
+      "payload": 2,
+      "references": [],
+      "expected": {
+        "success": false,
+        "stage": "validation",
+        "error": "SchemaValidationError",
+        "message": "Schema validation failed",
+        "issues": [
+          {
+            "instancePath": "",
+            "schemaPath": "nested/text/type",
+            "keyword": "type",
+            "params": {
+              "type": "string"
+            },
+            "message": "must be string"
+          }
+        ]
+      }
+    },
+    {
+      "name": "external-nested-resource-valid",
+      "schema": {
+        "$ref": "https://example.test/library/nested/text"
+      },
+      "payload": "ok",
+      "references": [
+        {
+          "$id": "https://example.test/library/",
+          "$defs": {
+            "text": {
+              "$id": "nested/text",
+              "type": "string"
+            }
+          }
+        }
+      ],
+      "expected": {
+        "success": true,
+        "value": "ok"
+      }
+    },
+    {
+      "name": "external-nested-resource-invalid",
+      "schema": {
+        "$ref": "https://example.test/library/nested/text"
+      },
+      "payload": 2,
+      "references": [
+        {
+          "$id": "https://example.test/library/",
+          "$defs": {
+            "text": {
+              "$id": "nested/text",
+              "type": "string"
+            }
+          }
+        }
+      ],
+      "expected": {
+        "success": false,
+        "stage": "validation",
+        "error": "SchemaValidationError",
+        "message": "Schema validation failed",
+        "issues": [
+          {
+            "instancePath": "",
+            "schemaPath": "https://example.test/library/nested/text/type",
+            "keyword": "type",
+            "params": {
+              "type": "string"
+            },
+            "message": "must be string"
+          }
+        ]
+      }
+    },
+    {
+      "name": "dynamic-extension-valid",
+      "schema": {
+        "$id": "https://example.test/strict-tree",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "$dynamicAnchor": "node",
+        "$ref": "https://example.test/tree",
+        "unevaluatedProperties": false
+      },
+      "payload": {
+        "data": 1,
+        "children": [
+          {
+            "data": 2
+          }
+        ]
+      },
+      "references": [
+        {
+          "$id": "https://example.test/tree",
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "$dynamicAnchor": "node",
+          "type": "object",
+          "properties": {
+            "data": true,
+            "children": {
+              "type": "array",
+              "items": {
+                "$dynamicRef": "#node"
+              }
+            }
+          }
+        }
+      ],
+      "expected": {
+        "success": true,
+        "value": {
+          "data": 1,
+          "children": [
+            {
+              "data": 2
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "dynamic-extension-invalid",
+      "schema": {
+        "$id": "https://example.test/strict-tree",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "$dynamicAnchor": "node",
+        "$ref": "https://example.test/tree",
+        "unevaluatedProperties": false
+      },
+      "payload": {
+        "data": 1,
+        "children": [
+          {
+            "data": 2,
+            "extra": true
+          }
+        ]
+      },
+      "references": [
+        {
+          "$id": "https://example.test/tree",
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "$dynamicAnchor": "node",
+          "type": "object",
+          "properties": {
+            "data": true,
+            "children": {
+              "type": "array",
+              "items": {
+                "$dynamicRef": "#node"
+              }
+            }
+          }
+        }
+      ],
+      "expected": {
+        "success": false,
+        "stage": "validation",
+        "error": "SchemaValidationError",
+        "message": "Schema validation failed",
+        "issues": [
+          {
+            "instancePath": "/children/0",
+            "schemaPath": "#/unevaluatedProperties",
+            "keyword": "unevaluatedProperties",
+            "params": {
+              "unevaluatedProperty": "extra"
+            },
+            "message": "must NOT have unevaluated properties"
+          }
+        ]
+      }
+    },
+    {
+      "name": "unicode-pattern-valid",
+      "schema": {
+        "type": "string",
+        "pattern": "^\\p{L}+$"
+      },
+      "payload": "你好é",
+      "references": [],
+      "expected": {
+        "success": true,
+        "value": "你好é"
+      }
+    },
+    {
+      "name": "unicode-pattern-invalid",
+      "schema": {
+        "type": "string",
+        "pattern": "^\\p{L}+$"
+      },
+      "payload": "123",
+      "references": [],
+      "expected": {
+        "success": false,
+        "stage": "validation",
+        "error": "SchemaValidationError",
+        "message": "Schema validation failed",
+        "issues": [
+          {
+            "instancePath": "",
+            "schemaPath": "#/pattern",
+            "keyword": "pattern",
+            "params": {
+              "pattern": "^\\p{L}+$"
+            },
+            "message": "must match pattern \"^\\p{L}+$\""
+          }
+        ]
+      }
+    },
+    {
+      "name": "astral-length-valid",
+      "schema": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 1
+      },
+      "payload": "😀",
+      "references": [],
+      "expected": {
+        "success": true,
+        "value": "😀"
+      }
+    },
+    {
+      "name": "astral-length-invalid",
+      "schema": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 1
+      },
+      "payload": "é",
+      "references": [],
+      "expected": {
+        "success": false,
+        "stage": "validation",
+        "error": "SchemaValidationError",
+        "message": "Schema validation failed",
+        "issues": [
+          {
+            "instancePath": "",
+            "schemaPath": "#/maxLength",
+            "keyword": "maxLength",
+            "params": {
+              "limit": 1
+            },
+            "message": "must NOT have more than 1 characters"
+          }
+        ]
+      }
+    },
+    {
+      "name": "lookaround-valid",
+      "schema": {
+        "type": "string",
+        "pattern": "^(?=a+$)a{2,}$"
+      },
+      "payload": "aa",
+      "references": [],
+      "expected": {
+        "success": true,
+        "value": "aa"
+      }
+    },
+    {
+      "name": "lookaround-invalid",
+      "schema": {
+        "type": "string",
+        "pattern": "^(?=a+$)a{2,}$"
+      },
+      "payload": "ab",
+      "references": [],
+      "expected": {
+        "success": false,
+        "stage": "validation",
+        "error": "SchemaValidationError",
+        "message": "Schema validation failed",
+        "issues": [
+          {
+            "instancePath": "",
+            "schemaPath": "#/pattern",
+            "keyword": "pattern",
+            "params": {
+              "pattern": "^(?=a+$)a{2,}$"
+            },
+            "message": "must match pattern \"^(?=a+$)a{2,}$\""
+          }
+        ]
+      }
+    },
+    {
+      "name": "backreference-valid",
+      "schema": {
+        "type": "string",
+        "pattern": "^(a+)\\1$"
+      },
+      "payload": "aaaa",
+      "references": [],
+      "expected": {
+        "success": true,
+        "value": "aaaa"
+      }
+    },
+    {
+      "name": "backreference-invalid",
+      "schema": {
+        "type": "string",
+        "pattern": "^(a+)\\1$"
+      },
+      "payload": "aaa",
+      "references": [],
+      "expected": {
+        "success": false,
+        "stage": "validation",
+        "error": "SchemaValidationError",
+        "message": "Schema validation failed",
+        "issues": [
+          {
+            "instancePath": "",
+            "schemaPath": "#/pattern",
+            "keyword": "pattern",
+            "params": {
+              "pattern": "^(a+)\\1$"
+            },
+            "message": "must match pattern \"^(a+)\\1$\""
+          }
+        ]
+      }
+    },
+    {
+      "name": "fractional-multiple-native-exact",
+      "schema": {
+        "type": "number",
+        "multipleOf": 0.1
+      },
+      "payload": 1.2,
+      "references": [],
+      "nativeSuccess": true,
+      "nativeReason": "Native exact JSON-number arithmetic accepts 1.2 as a multiple of 0.1; pinned AJV JavaScript division rejects it.",
+      "expected": {
+        "success": false,
+        "stage": "validation",
+        "error": "SchemaValidationError",
+        "message": "Schema validation failed",
+        "issues": [
+          {
+            "instancePath": "",
+            "schemaPath": "#/multipleOf",
+            "keyword": "multipleOf",
+            "params": {
+              "multipleOf": 0.1
+            },
+            "message": "must be multiple of 0.1"
+          }
+        ]
+      }
+    },
+    {
+      "name": "empty-dependent-required",
+      "schema": {
+        "type": "object",
+        "dependentRequired": {
+          "a": []
+        }
+      },
+      "payload": {
+        "a": 1
+      },
+      "references": [],
+      "expected": {
+        "success": true,
+        "value": {
+          "a": 1
+        }
+      }
+    },
+    {
+      "name": "annotations-are-data",
+      "schema": {
+        "type": "string",
+        "default": {
+          "unknown": true,
+          "$schema": "not-a-schema"
+        },
+        "examples": [
+          {
+            "typo": true
+          }
+        ]
+      },
+      "payload": "ok",
+      "references": [],
+      "expected": {
+        "success": true,
+        "value": "ok"
+      }
+    },
+    {
+      "name": "false-schema",
+      "schema": false,
+      "payload": "anything",
+      "references": [],
+      "expected": {
+        "success": false,
+        "stage": "validation",
+        "error": "SchemaValidationError",
+        "message": "Schema validation failed",
+        "issues": [
+          {
+            "instancePath": "",
+            "schemaPath": "#/false schema",
+            "keyword": "false schema",
+            "params": {},
+            "message": "boolean schema is false"
+          }
+        ]
+      }
+    },
+    {
+      "name": "true-schema",
+      "schema": true,
+      "payload": {
+        "anything": true
+      },
+      "references": [],
+      "expected": {
+        "success": true,
+        "value": {
+          "anything": true
+        }
+      }
+    },
+    {
+      "name": "compile-unknown",
+      "schema": {
+        "typo": true
+      },
+      "payload": {},
+      "references": [],
+      "expected": {
+        "success": false,
+        "stage": "compilation",
+        "error": "SchemaCompilationError",
+        "message": "Failed to compile schema"
+      }
+    },
+    {
+      "name": "compile-wrongDialect",
+      "schema": {
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      },
+      "payload": {},
+      "references": [],
+      "expected": {
+        "success": false,
+        "stage": "compilation",
+        "error": "SchemaCompilationError",
+        "message": "Failed to compile schema"
+      }
+    },
+    {
+      "name": "compile-malformedPrefix",
+      "schema": {
+        "prefixItems": {
+          "type": "integer"
+        }
+      },
+      "payload": {},
+      "references": [],
+      "expected": {
+        "success": false,
+        "stage": "compilation",
+        "error": "SchemaCompilationError",
+        "message": "Failed to compile schema"
+      }
+    },
+    {
+      "name": "compile-malformedDependency",
+      "schema": {
+        "dependentRequired": {
+          "a": "b"
+        }
+      },
+      "payload": {},
+      "references": [],
+      "expected": {
+        "success": false,
+        "stage": "compilation",
+        "error": "SchemaCompilationError",
+        "message": "Failed to compile schema"
+      }
+    },
+    {
+      "name": "compile-malformedPattern",
+      "schema": {
+        "pattern": "["
+      },
+      "payload": {},
+      "references": [],
+      "expected": {
+        "success": false,
+        "stage": "compilation",
+        "error": "SchemaCompilationError",
+        "message": "Failed to compile schema"
+      }
+    },
+    {
+      "name": "compile-missingReference",
+      "schema": {
+        "$ref": "https://example.test/not-registered"
+      },
+      "payload": {},
+      "references": [],
+      "expected": {
+        "success": false,
+        "stage": "compilation",
+        "error": "SchemaCompilationError",
+        "message": "Failed to compile schema"
+      }
+    },
+    {
+      "name": "compile-duplicateResource",
+      "schema": {
+        "$defs": {
+          "a": {
+            "$id": "https://example.test/duplicate"
+          },
+          "b": {
+            "$id": "https://example.test/duplicate"
+          }
+        }
+      },
+      "payload": {},
+      "references": [],
+      "expected": {
+        "success": false,
+        "stage": "compilation",
+        "error": "SchemaCompilationError",
+        "message": "Failed to compile schema"
+      }
+    },
+    {
+      "name": "compile-duplicateAnchor",
+      "schema": {
+        "$defs": {
+          "a": {
+            "$anchor": "same"
+          },
+          "b": {
+            "$anchor": "same"
+          }
+        }
+      },
+      "payload": {},
+      "references": [],
+      "expected": {
+        "success": false,
+        "stage": "compilation",
+        "error": "SchemaCompilationError",
+        "message": "Failed to compile schema"
+      }
+    },
+    {
+      "name": "compile-unknownVocabulary",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "$vocabulary": {
+          "https://example.test/vocabulary": true
+        }
+      },
+      "payload": {},
+      "references": [],
+      "expected": {
+        "success": true,
+        "value": {}
+      }
+    }
+  ]
+}
