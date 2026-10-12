@@ -1,0 +1,326 @@
+{
+  "version": "2.35.0",
+  "now": 1800000000250,
+  "rows": [
+    {
+      "name": "null",
+      "custom": false,
+      "record": {
+        "id": "audit#key",
+        "status": "COMPLETED",
+        "expiration": 1800003600,
+        "data": null,
+        "validation": "validation-hash"
+      },
+      "cache": "{\"status\":\"COMPLETED\",\"expiration\":1800003600,\"data\":null}",
+      "cacheRead": {
+        "id": "audit#key",
+        "status": "COMPLETED",
+        "expiration": 1800003600,
+        "data": null
+      }
+    },
+    {
+      "name": "false",
+      "custom": false,
+      "record": {
+        "id": "audit#key",
+        "status": "COMPLETED",
+        "expiration": 1800003600,
+        "data": false,
+        "validation": "validation-hash"
+      },
+      "cache": "{\"status\":\"COMPLETED\",\"expiration\":1800003600,\"data\":false}",
+      "cacheRead": {
+        "id": "audit#key",
+        "status": "COMPLETED",
+        "expiration": 1800003600,
+        "data": false
+      }
+    },
+    {
+      "name": "zero",
+      "custom": false,
+      "record": {
+        "id": "audit#key",
+        "status": "COMPLETED",
+        "expiration": 1800003600,
+        "data": 0,
+        "validation": "validation-hash"
+      },
+      "cache": "{\"status\":\"COMPLETED\",\"expiration\":1800003600,\"data\":0}",
+      "cacheRead": {
+        "id": "audit#key",
+        "status": "COMPLETED",
+        "expiration": 1800003600,
+        "data": 0
+      }
+    },
+    {
+      "name": "string",
+      "custom": false,
+      "record": {
+        "id": "audit#key",
+        "status": "COMPLETED",
+        "expiration": 1800003600,
+        "data": "",
+        "validation": "validation-hash"
+      },
+      "cache": "{\"status\":\"COMPLETED\",\"expiration\":1800003600,\"data\":\"\"}",
+      "cacheRead": {
+        "id": "audit#key",
+        "status": "COMPLETED",
+        "expiration": 1800003600,
+        "data": ""
+      }
+    },
+    {
+      "name": "array",
+      "custom": false,
+      "record": {
+        "id": "audit#key",
+        "status": "COMPLETED",
+        "expiration": 1800003600,
+        "data": [],
+        "validation": "validation-hash"
+      },
+      "cache": "{\"status\":\"COMPLETED\",\"expiration\":1800003600,\"data\":[]}",
+      "cacheRead": {
+        "id": "audit#key",
+        "status": "COMPLETED",
+        "expiration": 1800003600,
+        "data": []
+      }
+    },
+    {
+      "name": "object",
+      "custom": false,
+      "record": {
+        "id": "audit#key",
+        "status": "COMPLETED",
+        "expiration": 1800003600,
+        "data": {
+          "nested": [
+            null,
+            1.5,
+            true
+          ],
+          "large": 9007199254740991
+        },
+        "validation": "validation-hash"
+      },
+      "cache": "{\"status\":\"COMPLETED\",\"expiration\":1800003600,\"data\":{\"nested\":[null,1.5,true],\"large\":9007199254740991}}",
+      "cacheRead": {
+        "id": "audit#key",
+        "status": "COMPLETED",
+        "expiration": 1800003600,
+        "data": {
+          "nested": [
+            null,
+            1.5,
+            true
+          ],
+          "large": 9007199254740991
+        }
+      }
+    },
+    {
+      "name": "live",
+      "custom": false,
+      "record": {
+        "id": "audit#key",
+        "status": "INPROGRESS",
+        "expiration": 1800003600,
+        "in_progress_expiration": 1800000005250,
+        "validation": "validation-hash"
+      },
+      "cache": "{\"status\":\"INPROGRESS\",\"expiration\":1800003600,\"in_progress_expiration\":1800000005250,\"validation\":\"validation-hash\"}",
+      "cacheRead": {
+        "id": "audit#key",
+        "status": "INPROGRESS",
+        "expiration": 1800003600,
+        "in_progress_expiration": 1800000005250,
+        "validation": "validation-hash"
+      }
+    },
+    {
+      "name": "no-lease",
+      "custom": false,
+      "record": {
+        "id": "audit#key",
+        "status": "INPROGRESS",
+        "expiration": 1800003600,
+        "validation": "validation-hash"
+      },
+      "cache": "{\"status\":\"INPROGRESS\",\"expiration\":1800003600,\"validation\":\"validation-hash\"}",
+      "cacheRead": {
+        "id": "audit#key",
+        "status": "INPROGRESS",
+        "expiration": 1800003600,
+        "validation": "validation-hash"
+      }
+    },
+    {
+      "name": "null",
+      "custom": true,
+      "record": {
+        "id": "audit#key",
+        "status": "COMPLETED",
+        "expiration": 1800003600,
+        "data": null,
+        "validation": "validation-hash"
+      },
+      "cache": "{\"s\":\"COMPLETED\",\"e\":1800003600,\"d\":null}",
+      "cacheRead": {
+        "id": "audit#key",
+        "status": "COMPLETED",
+        "expiration": 1800003600,
+        "data": null
+      }
+    },
+    {
+      "name": "false",
+      "custom": true,
+      "record": {
+        "id": "audit#key",
+        "status": "COMPLETED",
+        "expiration": 1800003600,
+        "data": false,
+        "validation": "validation-hash"
+      },
+      "cache": "{\"s\":\"COMPLETED\",\"e\":1800003600,\"d\":false}",
+      "cacheRead": {
+        "id": "audit#key",
+        "status": "COMPLETED",
+        "expiration": 1800003600,
+        "data": false
+      }
+    },
+    {
+      "name": "zero",
+      "custom": true,
+      "record": {
+        "id": "audit#key",
+        "status": "COMPLETED",
+        "expiration": 1800003600,
+        "data": 0,
+        "validation": "validation-hash"
+      },
+      "cache": "{\"s\":\"COMPLETED\",\"e\":1800003600,\"d\":0}",
+      "cacheRead": {
+        "id": "audit#key",
+        "status": "COMPLETED",
+        "expiration": 1800003600,
+        "data": 0
+      }
+    },
+    {
+      "name": "string",
+      "custom": true,
+      "record": {
+        "id": "audit#key",
+        "status": "COMPLETED",
+        "expiration": 1800003600,
+        "data": "",
+        "validation": "validation-hash"
+      },
+      "cache": "{\"s\":\"COMPLETED\",\"e\":1800003600,\"d\":\"\"}",
+      "cacheRead": {
+        "id": "audit#key",
+        "status": "COMPLETED",
+        "expiration": 1800003600,
+        "data": ""
+      }
+    },
+    {
+      "name": "array",
+      "custom": true,
+      "record": {
+        "id": "audit#key",
+        "status": "COMPLETED",
+        "expiration": 1800003600,
+        "data": [],
+        "validation": "validation-hash"
+      },
+      "cache": "{\"s\":\"COMPLETED\",\"e\":1800003600,\"d\":[]}",
+      "cacheRead": {
+        "id": "audit#key",
+        "status": "COMPLETED",
+        "expiration": 1800003600,
+        "data": []
+      }
+    },
+    {
+      "name": "object",
+      "custom": true,
+      "record": {
+        "id": "audit#key",
+        "status": "COMPLETED",
+        "expiration": 1800003600,
+        "data": {
+          "nested": [
+            null,
+            1.5,
+            true
+          ],
+          "large": 9007199254740991
+        },
+        "validation": "validation-hash"
+      },
+      "cache": "{\"s\":\"COMPLETED\",\"e\":1800003600,\"d\":{\"nested\":[null,1.5,true],\"large\":9007199254740991}}",
+      "cacheRead": {
+        "id": "audit#key",
+        "status": "COMPLETED",
+        "expiration": 1800003600,
+        "data": {
+          "nested": [
+            null,
+            1.5,
+            true
+          ],
+          "large": 9007199254740991
+        }
+      }
+    },
+    {
+      "name": "live",
+      "custom": true,
+      "record": {
+        "id": "audit#key",
+        "status": "INPROGRESS",
+        "expiration": 1800003600,
+        "in_progress_expiration": 1800000005250,
+        "validation": "validation-hash"
+      },
+      "cache": "{\"s\":\"INPROGRESS\",\"e\":1800003600,\"ip\":1800000005250,\"v\":\"validation-hash\"}",
+      "cacheRead": {
+        "id": "audit#key",
+        "status": "INPROGRESS",
+        "expiration": 1800003600,
+        "in_progress_expiration": 1800000005250,
+        "validation": "validation-hash"
+      }
+    },
+    {
+      "name": "no-lease",
+      "custom": true,
+      "record": {
+        "id": "audit#key",
+        "status": "INPROGRESS",
+        "expiration": 1800003600,
+        "validation": "validation-hash"
+      },
+      "cache": "{\"s\":\"INPROGRESS\",\"e\":1800003600,\"v\":\"validation-hash\"}",
+      "cacheRead": {
+        "id": "audit#key",
+        "status": "INPROGRESS",
+        "expiration": 1800003600,
+        "validation": "validation-hash"
+      }
+    }
+  ],
+  "equalLease": {
+    "seed": "{\"status\":\"INPROGRESS\",\"expiration\":1800003600,\"in_progress_expiration\":1800000000250}",
+    "referenceFinal": "{\"status\":\"INPROGRESS\",\"expiration\":1800003600,\"in_progress_expiration\":1800000005250}"
+  }
+}

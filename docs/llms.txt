@@ -113,6 +113,7 @@ These pages do not override current usage guides or published release contracts.
 - [Local performance baseline](https://powertools-lambda-go.rambow.cloud/PERFORMANCE/)
 - [Validation evidence](https://powertools-lambda-go.rambow.cloud/VALIDATION/)
 - [Module review, 2026-10-05](https://powertools-lambda-go.rambow.cloud/MODULE_REVIEW_2026_10_05/)
+- [Idempotency persistence boundary audit](https://powertools-lambda-go.rambow.cloud/IDEMPOTENCY_AUDIT/)
 - [Local Docker integration runner](https://powertools-lambda-go.rambow.cloud/LOCAL_INTEGRATION/)
 - [Local Docker validation](https://powertools-lambda-go.rambow.cloud/LOCAL_VALIDATION/)
 - [AWS acceptance results](https://powertools-lambda-go.rambow.cloud/AWS_VALIDATION/)

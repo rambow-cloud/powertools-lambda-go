@@ -21,6 +21,7 @@ npm run fixtures
 | `generate-batch.mjs` | Forty-three sync/async sequential, FIFO/group, stream and failure-policy cases, plus four invalid envelopes |
 | `generate-idempotency.mjs` | Twenty-five canonical keys, fourteen lifecycle scenarios, and two DynamoDB SDK command sequences |
 | `generate-idempotency-cache.mjs` | Sixteen cache persistence, expiry/lock, conflict, custom-field and malformed-record scenarios |
+| `generate-idempotency-boundaries.mjs` | Six canonical boundaries, sixteen records per persistence backend, the upstream lease-equality behavior, and actual Go-to-TypeScript record reads; see `docs/IDEMPOTENCY_AUDIT.md` |
 | `generate-validation.mjs` | 502 JSON Schema validation results, ordered AJV diagnostics, compilation errors, formats, references and extraction cases |
 | `generate-validation-regex.mjs` | 6,085 JavaScript Unicode regex/property/alias cases with exact results and errors |
 | `generate-validation-applicators.mjs` | 1,207 nested applicator, ordering, conditional, dependency and property-name cases |
