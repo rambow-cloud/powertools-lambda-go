@@ -2,7 +2,7 @@ package validationdialects_test
 
 import (
 	"context"
-	jsonv1 "encoding/json"
+	"encoding/json/jsontext"
 	"errors"
 	"strings"
 	"testing"
@@ -17,12 +17,25 @@ type request struct {
 }
 
 func TestDraft202012HandlerParserComposition(t *testing.T) {
+	testDialectComposition(t, validation.Draft202012Compiler{},
+		jsontext.Value(`{"type":"object","required":["names"],"properties":{"names":{"type":"array","prefixItems":[{"type":"string"}],"items":false}}}`),
+		jsontext.Value(`{"type":"array","prefixItems":[{"type":"string"}],"items":false}`))
+}
+
+func TestDraft201909HandlerParserComposition(t *testing.T) {
+	testDialectComposition(t, validation.Draft201909Compiler{},
+		jsontext.Value(`{"type":"object","required":["names"],"properties":{"names":{"type":"array","items":[{"type":"string"}],"additionalItems":false}}}`),
+		jsontext.Value(`{"type":"array","items":[{"type":"string"}],"additionalItems":false}`))
+}
+
+func testDialectComposition(t *testing.T, compiler validation.Compiler, inputSchema, outputSchema jsontext.Value) {
+	t.Helper()
 	ctx := context.Background()
-	inbound, err := validation.Compile(ctx, jsonv1.RawMessage(`{"type":"object","required":["names"],"properties":{"names":{"type":"array","prefixItems":[{"type":"string"}],"items":false}}}`), validation.Options{Compiler: validation.Draft202012Compiler{}})
+	inbound, err := validation.Compile(ctx, inputSchema, validation.Options{Compiler: compiler})
 	if err != nil {
 		t.Fatal(err)
 	}
-	outbound, err := validation.Compile(ctx, jsonv1.RawMessage(`{"type":"array","prefixItems":[{"type":"string"}],"items":false}`), validation.Options{Compiler: validation.Draft202012Compiler{}})
+	outbound, err := validation.Compile(ctx, outputSchema, validation.Options{Compiler: compiler})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -33,9 +46,9 @@ func TestDraft202012HandlerParserComposition(t *testing.T) {
 			var handler any
 			if parse {
 				schema := parser.Typed[request](parser.Object(parser.Field{Name: "names", Schema: parser.Any(parser.Array(parser.String()))}))
-				handler = parser.WrapHandler[jsonv1.RawMessage](schema, validation.WrapHandler[request](inbound, outbound, business))
+				handler = parser.WrapHandler[jsontext.Value](schema, validation.WrapHandler[request](inbound, outbound, business))
 			} else {
-				handler = validation.WrapHandler[jsonv1.RawMessage](inbound, outbound, business)
+				handler = validation.WrapHandler[jsontext.Value](inbound, outbound, business)
 			}
 			entry := lambda.NewHandler(handler)
 			result, err := entry.Invoke(ctx, []byte(`{"names":["Ada"]}`))
@@ -49,16 +62,16 @@ func TestDraft202012HandlerParserComposition(t *testing.T) {
 			}
 		})
 	}
-	envelope, err := validation.Compile(ctx, jsonv1.RawMessage(`{"type":"object","dependentRequired":{"name":["id"]}}`), validation.Options{Compiler: validation.Draft202012Compiler{}, Envelope: "payload"})
+	envelope, err := validation.Compile(ctx, jsontext.Value(`{"type":"object","dependentRequired":{"name":["id"]}}`), validation.Options{Compiler: compiler, Envelope: "payload"})
 	if err != nil {
 		t.Fatal(err)
 	}
 	for _, item := range []struct {
-		input jsonv1.RawMessage
+		input jsontext.Value
 		valid bool
 	}{
-		{jsonv1.RawMessage(`{"payload":{"name":"Ada","id":1}}`), true},
-		{jsonv1.RawMessage(`{"payload":{"name":"Ada"}}`), false},
+		{jsontext.Value(`{"payload":{"name":"Ada","id":1}}`), true},
+		{jsontext.Value(`{"payload":{"name":"Ada"}}`), false},
 	} {
 		_, err := envelope.Validate(ctx, item.input)
 		if item.valid != (err == nil) {

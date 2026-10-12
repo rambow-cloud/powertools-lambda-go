@@ -11,8 +11,8 @@
 // scope, with controlled keyword, format, reference and regular-expression rules.
 // Structured issues retain schema and payload locations. It is not a claim of
 // complete compatibility with every JSON Schema engine or extension.
-// [Draft202012Compiler] explicitly selects Draft 2020-12 with native engine
-// diagnostics; it does not expand the default compiler's dialect or AJV contract.
+// [Draft202012Compiler] and [Draft201909Compiler] select their native dialects
+// with native diagnostics, leaving the default compiler's dialect/AJV contract unchanged.
 //
 // Compile stable schemas during initialization and reuse them during invocations.
 // Use the separate Parser module for composable typed Go schemas; Validation's

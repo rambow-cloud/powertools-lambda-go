@@ -9,6 +9,12 @@ Two native result differences are measured explicitly. This implementation does
 not change the historical design acceptance or default Draft 7 behavior; see the
 [current compiler contract](JSON_SCHEMA_VALIDATION.md#optional-draft-2020-12-compiler).
 
+The next slice, [#169](https://github.com/rambow-cloud/powertools-lambda-go/issues/169),
+adds `Draft201909Compiler` with a separate 58-case injected-Ajv2019 corpus and three
+explicit native result differences. Shared private registration/diagnostics are
+reused, while each dialect retains its own metaschema and keyword checks. See
+[the 2019-09 contract](JSON_SCHEMA_VALIDATION.md#optional-draft-2019-09-compiler).
+
 ## Support matrix
 
 Powertools TypeScript v2.35.0 creates AJV with `allErrors: true` unless the caller injects an instance. AJV v8.20.0 is pinned in `tools/reference/package-lock.json`. Capabilities available to an injected instance are not defaults of the utility. [AJV's dialect guide](https://ajv.js.org/guide/schema-language.html) distinguishes its default export from the 2019/2020 engines.

@@ -2,7 +2,7 @@ package validation_test
 
 import (
 	"context"
-	jsonv1 "encoding/json"
+	"encoding/json/jsontext"
 	"fmt"
 
 	"github.com/rambow-cloud/powertools-lambda-go/validation"
@@ -26,10 +26,24 @@ func ExampleCompile() {
 }
 
 func ExampleDraft202012Compiler() {
-	schema, err := validation.Compile(context.Background(), jsonv1.RawMessage(`{
+	schema, err := validation.Compile(context.Background(), jsontext.Value(`{
         "$schema":"https://json-schema.org/draft/2020-12/schema",
         "type":"array","prefixItems":[{"type":"integer"},{"type":"string"}],"items":false
     }`), validation.Options{Compiler: validation.Draft202012Compiler{}})
+	if err != nil {
+		panic(err)
+	}
+	_, valid := schema.Validate(context.Background(), []any{1, "ok"})
+	_, extra := schema.Validate(context.Background(), []any{1, "ok", true})
+	fmt.Println(valid == nil, extra != nil)
+	// Output: true true
+}
+
+func ExampleDraft201909Compiler() {
+	schema, err := validation.Compile(context.Background(), jsontext.Value(`{
+        "$schema":"https://json-schema.org/draft/2019-09/schema",
+        "type":"array","items":[{"type":"integer"},{"type":"string"}],"additionalItems":false
+    }`), validation.Options{Compiler: validation.Draft201909Compiler{}})
 	if err != nil {
 		panic(err)
 	}
