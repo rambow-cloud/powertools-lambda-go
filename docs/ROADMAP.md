@@ -12,7 +12,7 @@ The comparison remains pinned to TypeScript **v2.35.0**, commit `7bcc27b1574493f
 
 | Order | Milestone | Work issues | First slice and completion gate |
 | --- | --- | --- | --- |
-| 1 | [01 - Schema and regex extensions](https://github.com/rambow-cloud/powertools-lambda-go/milestone/1) | 10 | Start with opt-in Draft 2020-12, then 2019-09 and shared regex `v`. Review transformation/extension ownership before other additions; preserve default Draft 7 behavior. |
+| 1 | [01 - Schema and regex extensions](https://github.com/rambow-cloud/powertools-lambda-go/milestone/1) | 10 total | Opt-in Draft 2020-12 is implemented on main; 2019-09 and shared regex `v` follow. Review transformation/extension ownership before other additions; preserve default Draft 7 behavior. |
 | 2 | [02 - Kafka registry wire formats](https://github.com/rambow-cloud/powertools-lambda-go/milestone/2) | 3 | Confluent version-0 raw frames first; Glue and GUID-header modes follow the explicit framing/resolver contract. Producer fixtures and lazy bounded decoding are required. |
 | 3 | [03 - KMS bounded materials cache](https://github.com/rambow-cloud/powertools-lambda-go/milestone/3) | 1 | Review supported CMM interfaces first. Implement only a reviewed cache with finite limits and authenticated interoperability; retain SDK blockers explicitly. |
 | 4 | [04 - Utility compatibility contracts](https://github.com/rambow-cloud/powertools-lambda-go/milestone/4) | 17 | Finish the finite per-utility contract matrices, fix reproduced defects and document intentional Go differences. Existing implementations remain available. |
@@ -25,10 +25,16 @@ Numbers describe the proposed sequence, not release versions or deadlines. Indep
 
 These built-in capabilities are absent. Existing application-owned `Compiler`, decoder and masking-provider interfaces remain usable.
 
+The first optional compiler slice is implemented on `main`: #168 provides
+`Draft202012Compiler`, with 54 matching pinned reference verdicts, two explicitly
+measured native differences, and scoped ownership/reference/lifecycle acceptance.
+It is not included in published v1.1.0. Its
+[contract](JSON_SCHEMA_VALIDATION.md#optional-draft-2020-12-compiler) leaves Draft 7
+unchanged; the remaining compiler and transformation slices below stay open.
+
 | Capability | Classification | Issue | Milestone |
 | --- | --- | --- | --- |
 | ECMAScript Unicode sets (`v`) | Missing shared regex syntax | [#167](https://github.com/rambow-cloud/powertools-lambda-go/issues/167) | 01 |
-| Draft 2020-12 compiler | Optional injected-engine addition | [#168](https://github.com/rambow-cloud/powertools-lambda-go/issues/168) | 01 |
 | Draft 2019-09 compiler | Optional injected-engine addition | [#169](https://github.com/rambow-cloud/powertools-lambda-go/issues/169) | 01 |
 | Draft 4 compiler | Optional injected-engine addition | [#170](https://github.com/rambow-cloud/powertools-lambda-go/issues/170) | 01 |
 | Draft 6 compiler | Optional injected-engine addition | [#171](https://github.com/rambow-cloud/powertools-lambda-go/issues/171) | 01 |

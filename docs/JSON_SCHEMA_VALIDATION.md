@@ -102,6 +102,66 @@ fails before business code runs, and an invalid successful result fails outbound
 
 The default backend is the pure-Go [jsonschema v6.0.3 engine](https://pkg.go.dev/github.com/santhosh-tekuri/jsonschema/v6@v6.0.3). Original documents receive Draft 7 structural validation; a private shared assertion core and compiler vocabulary control Draft 7 conditional reachability. The adapter rejects unknown keywords/formats, widens nullable types without widening enum/const, evaluates reference siblings and splits constraints that the engine would otherwise short-circuit. Source locations are retained for diagnostics. Root Commons and Parser gain no third-party dependencies from this module. See [condition graphs](VALIDATION_GRAPHS.md) for the engine configuration and dialect boundaries.
 
+## Optional Draft 2020-12 compiler
+
+`Draft202012Compiler` is an opt-in addition on `main`; the published `v1.1.0`
+does not include it. Select it through the existing compiler interface:
+
+~~~go
+schema, err := validation.Compile(ctx, json.RawMessage(`{
+    "$schema":"https://json-schema.org/draft/2020-12/schema",
+    "type":"array","prefixItems":[{"type":"integer"},{"type":"string"}],"items":false
+}`), validation.Options{Compiler: validation.Draft202012Compiler{}})
+~~~
+
+Here `json` is `encoding/json`. `[1,"ok"]` passes; `[1,"ok",true]` fails.
+The executable [compiler example](https://github.com/rambow-cloud/powertools-lambda-go/blob/main/validation/example_test.go)
+shows the complete local call. Omitting `Options.Compiler` retains Draft 7.
+
+The adapter uses the already pinned jsonschema/v6 v6.0.3 engine, its standard
+2020-12 metaschema and this project's ECMAScript Unicode regex adapter. It covers
+`prefixItems`, dependency keywords, evaluated properties/items and dynamic
+references. It rejects unsupported keywords and declarations of another dialect,
+including in registered documents and schema-valued definitions. Annotations
+such as `default`, `examples` and enum values remain data. No defaults,
+coercion or property removal are enabled.
+
+Compilation snapshots input and registered documents. `ExternalRefs` keys must
+be absolute resource URLs without fragments; `ExternalSchemas` requires a
+nonempty `$id`. Nested relative IDs and named/dynamic anchors are indexed for
+registered references; duplicate resource identities fail. Unregistered HTTP
+or file resources cannot load. String/numeric format callbacks retain the
+existing `CompileOptions` interface and must be concurrency-safe. Known engine
+formats and callbacks are asserted; unknown format names follow the engine's
+annotation behavior. The native reserved `regex` format cannot be overridden.
+Content keywords remain annotations. Regex limits apply; regex resource failures
+remain operational errors. Cancellation is checked before/after synchronous
+engine work, not an interruption guarantee.
+
+Validation rejection uses `SchemaValidationError` with independent leaf `Issues`.
+`InstancePath` is an escaped JSON Pointer; `SchemaPath` is the engine's absolute
+schema URI plus keyword path. `Params.absoluteKeywordLocation` repeats that
+location. `Keyword` uses the native keyword path, with `falseSchema` for literal
+false schemas; `Message` is the native English diagnostic. Issues are ordered by
+instance path, schema path, keyword and message, rather than AJV evaluation order.
+This profile does not promise AJV parameter keys, parent-error trees or messages.
+Compilation errors still use `SchemaCompilationError` and preserve their cause.
+
+The [56-case injected-Ajv2020 corpus](https://github.com/rambow-cloud/powertools-lambda-go/blob/main/validation/testdata/draft-2020-12-v2.35.0.json)
+retains complete Powertools v2.35.0/AJV v8.20.0 reference results. Fifty-four
+verdicts agree; two measured native differences are explicit, not normalization:
+
+| Input and constraint | Pinned Ajv2020 | Native compiler |
+| --- | --- | --- |
+| `[1,"bad"]`, integer `contains`, `unevaluatedItems:false` | Accepts | Rejects the unmatched item |
+| `1.2`, `multipleOf:0.1` | Rejects through JavaScript division | Accepts through exact JSON-number arithmetic |
+
+The existing Draft 7 corpus and error-order contract are unchanged. Additional
+native tests cover ownership, 48 overlapping callers, reentrant formats,
+cancellation, JSON/regex failures and registered-only loading. Local
+Handler/Parser, inbound/outbound and envelope composition are covered separately.
+See [the implementation issue](https://github.com/rambow-cloud/powertools-lambda-go/issues/168).
+
 ## Errors and current boundaries
 
 `SchemaCompilationError` has the reference message `Failed to compile schema` and unwraps its compilation cause. `SchemaValidationError` carries `Issues` with instance path, schema path, keyword, message, params and an optional property name. An empty property name remains distinguishable from an absent field. Wrapper messages distinguish `Inbound schema validation failed` and `Outbound schema validation failed`. Query and operational errors remain distinct for standalone calls; wrappers retain operational errors as their cause.
