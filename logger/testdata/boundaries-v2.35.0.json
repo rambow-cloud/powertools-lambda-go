@@ -1,0 +1,1270 @@
+{
+  "version": "2.35.0",
+  "cases": [
+    {
+      "name": "UTC-2026-01-01T00:00:00.123Z",
+      "now": "2026-01-01T00:00:00.123Z",
+      "env": {
+        "TZ": "UTC"
+      },
+      "level": "INFO",
+      "records": [
+        {
+          "sink": "stdout",
+          "record": {
+            "level": "INFO",
+            "message": "info",
+            "timestamp": "2026-01-01T00:00:00.123Z",
+            "service": "audit",
+            "sampling_rate": 0
+          }
+        },
+        {
+          "sink": "stderr",
+          "record": {
+            "level": "WARN",
+            "message": "warn",
+            "timestamp": "2026-01-01T00:00:00.123Z",
+            "service": "audit",
+            "sampling_rate": 0
+          }
+        },
+        {
+          "sink": "stderr",
+          "record": {
+            "level": "ERROR",
+            "message": "error",
+            "timestamp": "2026-01-01T00:00:00.123Z",
+            "service": "audit",
+            "sampling_rate": 0
+          }
+        },
+        {
+          "sink": "stderr",
+          "record": {
+            "level": "CRITICAL",
+            "message": "critical",
+            "timestamp": "2026-01-01T00:00:00.123Z",
+            "service": "audit",
+            "sampling_rate": 0
+          }
+        }
+      ],
+      "diagnostics": []
+    },
+    {
+      "name": "UTC-2026-07-01T00:00:00.123Z",
+      "now": "2026-07-01T00:00:00.123Z",
+      "env": {
+        "TZ": "UTC"
+      },
+      "level": "INFO",
+      "records": [
+        {
+          "sink": "stdout",
+          "record": {
+            "level": "INFO",
+            "message": "info",
+            "timestamp": "2026-07-01T00:00:00.123Z",
+            "service": "audit",
+            "sampling_rate": 0
+          }
+        },
+        {
+          "sink": "stderr",
+          "record": {
+            "level": "WARN",
+            "message": "warn",
+            "timestamp": "2026-07-01T00:00:00.123Z",
+            "service": "audit",
+            "sampling_rate": 0
+          }
+        },
+        {
+          "sink": "stderr",
+          "record": {
+            "level": "ERROR",
+            "message": "error",
+            "timestamp": "2026-07-01T00:00:00.123Z",
+            "service": "audit",
+            "sampling_rate": 0
+          }
+        },
+        {
+          "sink": "stderr",
+          "record": {
+            "level": "CRITICAL",
+            "message": "critical",
+            "timestamp": "2026-07-01T00:00:00.123Z",
+            "service": "audit",
+            "sampling_rate": 0
+          }
+        }
+      ],
+      "diagnostics": []
+    },
+    {
+      "name": "Asia/Hong_Kong-2026-01-01T00:00:00.123Z",
+      "now": "2026-01-01T00:00:00.123Z",
+      "env": {
+        "TZ": "Asia/Hong_Kong"
+      },
+      "level": "INFO",
+      "records": [
+        {
+          "sink": "stdout",
+          "record": {
+            "level": "INFO",
+            "message": "info",
+            "timestamp": "2026-01-01T08:00:00.123+08:00",
+            "service": "audit",
+            "sampling_rate": 0
+          }
+        },
+        {
+          "sink": "stderr",
+          "record": {
+            "level": "WARN",
+            "message": "warn",
+            "timestamp": "2026-01-01T08:00:00.123+08:00",
+            "service": "audit",
+            "sampling_rate": 0
+          }
+        },
+        {
+          "sink": "stderr",
+          "record": {
+            "level": "ERROR",
+            "message": "error",
+            "timestamp": "2026-01-01T08:00:00.123+08:00",
+            "service": "audit",
+            "sampling_rate": 0
+          }
+        },
+        {
+          "sink": "stderr",
+          "record": {
+            "level": "CRITICAL",
+            "message": "critical",
+            "timestamp": "2026-01-01T08:00:00.123+08:00",
+            "service": "audit",
+            "sampling_rate": 0
+          }
+        }
+      ],
+      "diagnostics": []
+    },
+    {
+      "name": "Asia/Hong_Kong-2026-07-01T00:00:00.123Z",
+      "now": "2026-07-01T00:00:00.123Z",
+      "env": {
+        "TZ": "Asia/Hong_Kong"
+      },
+      "level": "INFO",
+      "records": [
+        {
+          "sink": "stdout",
+          "record": {
+            "level": "INFO",
+            "message": "info",
+            "timestamp": "2026-07-01T08:00:00.123+08:00",
+            "service": "audit",
+            "sampling_rate": 0
+          }
+        },
+        {
+          "sink": "stderr",
+          "record": {
+            "level": "WARN",
+            "message": "warn",
+            "timestamp": "2026-07-01T08:00:00.123+08:00",
+            "service": "audit",
+            "sampling_rate": 0
+          }
+        },
+        {
+          "sink": "stderr",
+          "record": {
+            "level": "ERROR",
+            "message": "error",
+            "timestamp": "2026-07-01T08:00:00.123+08:00",
+            "service": "audit",
+            "sampling_rate": 0
+          }
+        },
+        {
+          "sink": "stderr",
+          "record": {
+            "level": "CRITICAL",
+            "message": "critical",
+            "timestamp": "2026-07-01T08:00:00.123+08:00",
+            "service": "audit",
+            "sampling_rate": 0
+          }
+        }
+      ],
+      "diagnostics": []
+    },
+    {
+      "name": "America/New_York-2026-01-01T00:00:00.123Z",
+      "now": "2026-01-01T00:00:00.123Z",
+      "env": {
+        "TZ": "America/New_York"
+      },
+      "level": "INFO",
+      "records": [
+        {
+          "sink": "stdout",
+          "record": {
+            "level": "INFO",
+            "message": "info",
+            "timestamp": "2025-12-31T19:00:00.123-05:00",
+            "service": "audit",
+            "sampling_rate": 0
+          }
+        },
+        {
+          "sink": "stderr",
+          "record": {
+            "level": "WARN",
+            "message": "warn",
+            "timestamp": "2025-12-31T19:00:00.123-05:00",
+            "service": "audit",
+            "sampling_rate": 0
+          }
+        },
+        {
+          "sink": "stderr",
+          "record": {
+            "level": "ERROR",
+            "message": "error",
+            "timestamp": "2025-12-31T19:00:00.123-05:00",
+            "service": "audit",
+            "sampling_rate": 0
+          }
+        },
+        {
+          "sink": "stderr",
+          "record": {
+            "level": "CRITICAL",
+            "message": "critical",
+            "timestamp": "2025-12-31T19:00:00.123-05:00",
+            "service": "audit",
+            "sampling_rate": 0
+          }
+        }
+      ],
+      "diagnostics": []
+    },
+    {
+      "name": "America/New_York-2026-07-01T00:00:00.123Z",
+      "now": "2026-07-01T00:00:00.123Z",
+      "env": {
+        "TZ": "America/New_York"
+      },
+      "level": "INFO",
+      "records": [
+        {
+          "sink": "stdout",
+          "record": {
+            "level": "INFO",
+            "message": "info",
+            "timestamp": "2026-06-30T20:00:00.123-04:00",
+            "service": "audit",
+            "sampling_rate": 0
+          }
+        },
+        {
+          "sink": "stderr",
+          "record": {
+            "level": "WARN",
+            "message": "warn",
+            "timestamp": "2026-06-30T20:00:00.123-04:00",
+            "service": "audit",
+            "sampling_rate": 0
+          }
+        },
+        {
+          "sink": "stderr",
+          "record": {
+            "level": "ERROR",
+            "message": "error",
+            "timestamp": "2026-06-30T20:00:00.123-04:00",
+            "service": "audit",
+            "sampling_rate": 0
+          }
+        },
+        {
+          "sink": "stderr",
+          "record": {
+            "level": "CRITICAL",
+            "message": "critical",
+            "timestamp": "2026-06-30T20:00:00.123-04:00",
+            "service": "audit",
+            "sampling_rate": 0
+          }
+        }
+      ],
+      "diagnostics": []
+    },
+    {
+      "name": "Europe/London-2026-01-01T00:00:00.123Z",
+      "now": "2026-01-01T00:00:00.123Z",
+      "env": {
+        "TZ": "Europe/London"
+      },
+      "level": "INFO",
+      "records": [
+        {
+          "sink": "stdout",
+          "record": {
+            "level": "INFO",
+            "message": "info",
+            "timestamp": "2026-01-01T00:00:00.123+00:00",
+            "service": "audit",
+            "sampling_rate": 0
+          }
+        },
+        {
+          "sink": "stderr",
+          "record": {
+            "level": "WARN",
+            "message": "warn",
+            "timestamp": "2026-01-01T00:00:00.123+00:00",
+            "service": "audit",
+            "sampling_rate": 0
+          }
+        },
+        {
+          "sink": "stderr",
+          "record": {
+            "level": "ERROR",
+            "message": "error",
+            "timestamp": "2026-01-01T00:00:00.123+00:00",
+            "service": "audit",
+            "sampling_rate": 0
+          }
+        },
+        {
+          "sink": "stderr",
+          "record": {
+            "level": "CRITICAL",
+            "message": "critical",
+            "timestamp": "2026-01-01T00:00:00.123+00:00",
+            "service": "audit",
+            "sampling_rate": 0
+          }
+        }
+      ],
+      "diagnostics": []
+    },
+    {
+      "name": "Europe/London-2026-07-01T00:00:00.123Z",
+      "now": "2026-07-01T00:00:00.123Z",
+      "env": {
+        "TZ": "Europe/London"
+      },
+      "level": "INFO",
+      "records": [
+        {
+          "sink": "stdout",
+          "record": {
+            "level": "INFO",
+            "message": "info",
+            "timestamp": "2026-07-01T01:00:00.123+01:00",
+            "service": "audit",
+            "sampling_rate": 0
+          }
+        },
+        {
+          "sink": "stderr",
+          "record": {
+            "level": "WARN",
+            "message": "warn",
+            "timestamp": "2026-07-01T01:00:00.123+01:00",
+            "service": "audit",
+            "sampling_rate": 0
+          }
+        },
+        {
+          "sink": "stderr",
+          "record": {
+            "level": "ERROR",
+            "message": "error",
+            "timestamp": "2026-07-01T01:00:00.123+01:00",
+            "service": "audit",
+            "sampling_rate": 0
+          }
+        },
+        {
+          "sink": "stderr",
+          "record": {
+            "level": "CRITICAL",
+            "message": "critical",
+            "timestamp": "2026-07-01T01:00:00.123+01:00",
+            "service": "audit",
+            "sampling_rate": 0
+          }
+        }
+      ],
+      "diagnostics": []
+    },
+    {
+      "name": "Asia/Kathmandu-2026-01-01T00:00:00.123Z",
+      "now": "2026-01-01T00:00:00.123Z",
+      "env": {
+        "TZ": "Asia/Kathmandu"
+      },
+      "level": "INFO",
+      "records": [
+        {
+          "sink": "stdout",
+          "record": {
+            "level": "INFO",
+            "message": "info",
+            "timestamp": "2026-01-01T05:45:00.123+05:45",
+            "service": "audit",
+            "sampling_rate": 0
+          }
+        },
+        {
+          "sink": "stderr",
+          "record": {
+            "level": "WARN",
+            "message": "warn",
+            "timestamp": "2026-01-01T05:45:00.123+05:45",
+            "service": "audit",
+            "sampling_rate": 0
+          }
+        },
+        {
+          "sink": "stderr",
+          "record": {
+            "level": "ERROR",
+            "message": "error",
+            "timestamp": "2026-01-01T05:45:00.123+05:45",
+            "service": "audit",
+            "sampling_rate": 0
+          }
+        },
+        {
+          "sink": "stderr",
+          "record": {
+            "level": "CRITICAL",
+            "message": "critical",
+            "timestamp": "2026-01-01T05:45:00.123+05:45",
+            "service": "audit",
+            "sampling_rate": 0
+          }
+        }
+      ],
+      "diagnostics": []
+    },
+    {
+      "name": "Asia/Kathmandu-2026-07-01T00:00:00.123Z",
+      "now": "2026-07-01T00:00:00.123Z",
+      "env": {
+        "TZ": "Asia/Kathmandu"
+      },
+      "level": "INFO",
+      "records": [
+        {
+          "sink": "stdout",
+          "record": {
+            "level": "INFO",
+            "message": "info",
+            "timestamp": "2026-07-01T05:45:00.123+05:45",
+            "service": "audit",
+            "sampling_rate": 0
+          }
+        },
+        {
+          "sink": "stderr",
+          "record": {
+            "level": "WARN",
+            "message": "warn",
+            "timestamp": "2026-07-01T05:45:00.123+05:45",
+            "service": "audit",
+            "sampling_rate": 0
+          }
+        },
+        {
+          "sink": "stderr",
+          "record": {
+            "level": "ERROR",
+            "message": "error",
+            "timestamp": "2026-07-01T05:45:00.123+05:45",
+            "service": "audit",
+            "sampling_rate": 0
+          }
+        },
+        {
+          "sink": "stderr",
+          "record": {
+            "level": "CRITICAL",
+            "message": "critical",
+            "timestamp": "2026-07-01T05:45:00.123+05:45",
+            "service": "audit",
+            "sampling_rate": 0
+          }
+        }
+      ],
+      "diagnostics": []
+    },
+    {
+      "name": "Etc/GMT+5-2026-01-01T00:00:00.123Z",
+      "now": "2026-01-01T00:00:00.123Z",
+      "env": {
+        "TZ": "Etc/GMT+5"
+      },
+      "level": "INFO",
+      "records": [
+        {
+          "sink": "stdout",
+          "record": {
+            "level": "INFO",
+            "message": "info",
+            "timestamp": "2025-12-31T19:00:00.123-05:00",
+            "service": "audit",
+            "sampling_rate": 0
+          }
+        },
+        {
+          "sink": "stderr",
+          "record": {
+            "level": "WARN",
+            "message": "warn",
+            "timestamp": "2025-12-31T19:00:00.123-05:00",
+            "service": "audit",
+            "sampling_rate": 0
+          }
+        },
+        {
+          "sink": "stderr",
+          "record": {
+            "level": "ERROR",
+            "message": "error",
+            "timestamp": "2025-12-31T19:00:00.123-05:00",
+            "service": "audit",
+            "sampling_rate": 0
+          }
+        },
+        {
+          "sink": "stderr",
+          "record": {
+            "level": "CRITICAL",
+            "message": "critical",
+            "timestamp": "2025-12-31T19:00:00.123-05:00",
+            "service": "audit",
+            "sampling_rate": 0
+          }
+        }
+      ],
+      "diagnostics": []
+    },
+    {
+      "name": "Etc/GMT+5-2026-07-01T00:00:00.123Z",
+      "now": "2026-07-01T00:00:00.123Z",
+      "env": {
+        "TZ": "Etc/GMT+5"
+      },
+      "level": "INFO",
+      "records": [
+        {
+          "sink": "stdout",
+          "record": {
+            "level": "INFO",
+            "message": "info",
+            "timestamp": "2026-06-30T19:00:00.123-05:00",
+            "service": "audit",
+            "sampling_rate": 0
+          }
+        },
+        {
+          "sink": "stderr",
+          "record": {
+            "level": "WARN",
+            "message": "warn",
+            "timestamp": "2026-06-30T19:00:00.123-05:00",
+            "service": "audit",
+            "sampling_rate": 0
+          }
+        },
+        {
+          "sink": "stderr",
+          "record": {
+            "level": "ERROR",
+            "message": "error",
+            "timestamp": "2026-06-30T19:00:00.123-05:00",
+            "service": "audit",
+            "sampling_rate": 0
+          }
+        },
+        {
+          "sink": "stderr",
+          "record": {
+            "level": "CRITICAL",
+            "message": "critical",
+            "timestamp": "2026-06-30T19:00:00.123-05:00",
+            "service": "audit",
+            "sampling_rate": 0
+          }
+        }
+      ],
+      "diagnostics": []
+    },
+    {
+      "name": "Etc/UTC-2026-01-01T00:00:00.123Z",
+      "now": "2026-01-01T00:00:00.123Z",
+      "env": {
+        "TZ": "Etc/UTC"
+      },
+      "level": "INFO",
+      "records": [
+        {
+          "sink": "stdout",
+          "record": {
+            "level": "INFO",
+            "message": "info",
+            "timestamp": "2026-01-01T00:00:00.123Z",
+            "service": "audit",
+            "sampling_rate": 0
+          }
+        },
+        {
+          "sink": "stderr",
+          "record": {
+            "level": "WARN",
+            "message": "warn",
+            "timestamp": "2026-01-01T00:00:00.123Z",
+            "service": "audit",
+            "sampling_rate": 0
+          }
+        },
+        {
+          "sink": "stderr",
+          "record": {
+            "level": "ERROR",
+            "message": "error",
+            "timestamp": "2026-01-01T00:00:00.123Z",
+            "service": "audit",
+            "sampling_rate": 0
+          }
+        },
+        {
+          "sink": "stderr",
+          "record": {
+            "level": "CRITICAL",
+            "message": "critical",
+            "timestamp": "2026-01-01T00:00:00.123Z",
+            "service": "audit",
+            "sampling_rate": 0
+          }
+        }
+      ],
+      "diagnostics": []
+    },
+    {
+      "name": "Etc/UTC-2026-07-01T00:00:00.123Z",
+      "now": "2026-07-01T00:00:00.123Z",
+      "env": {
+        "TZ": "Etc/UTC"
+      },
+      "level": "INFO",
+      "records": [
+        {
+          "sink": "stdout",
+          "record": {
+            "level": "INFO",
+            "message": "info",
+            "timestamp": "2026-07-01T00:00:00.123Z",
+            "service": "audit",
+            "sampling_rate": 0
+          }
+        },
+        {
+          "sink": "stderr",
+          "record": {
+            "level": "WARN",
+            "message": "warn",
+            "timestamp": "2026-07-01T00:00:00.123Z",
+            "service": "audit",
+            "sampling_rate": 0
+          }
+        },
+        {
+          "sink": "stderr",
+          "record": {
+            "level": "ERROR",
+            "message": "error",
+            "timestamp": "2026-07-01T00:00:00.123Z",
+            "service": "audit",
+            "sampling_rate": 0
+          }
+        },
+        {
+          "sink": "stderr",
+          "record": {
+            "level": "CRITICAL",
+            "message": "critical",
+            "timestamp": "2026-07-01T00:00:00.123Z",
+            "service": "audit",
+            "sampling_rate": 0
+          }
+        }
+      ],
+      "diagnostics": []
+    },
+    {
+      "name": "Not/AZone-2026-01-01T00:00:00.123Z",
+      "now": "2026-01-01T00:00:00.123Z",
+      "env": {
+        "TZ": "Not/AZone"
+      },
+      "level": "INFO",
+      "records": [
+        {
+          "sink": "stdout",
+          "record": {
+            "level": "INFO",
+            "message": "info",
+            "timestamp": "2026-01-01T00:00:00.123+00:00",
+            "service": "audit",
+            "sampling_rate": 0
+          }
+        },
+        {
+          "sink": "stderr",
+          "record": {
+            "level": "WARN",
+            "message": "warn",
+            "timestamp": "2026-01-01T00:00:00.123+00:00",
+            "service": "audit",
+            "sampling_rate": 0
+          }
+        },
+        {
+          "sink": "stderr",
+          "record": {
+            "level": "ERROR",
+            "message": "error",
+            "timestamp": "2026-01-01T00:00:00.123+00:00",
+            "service": "audit",
+            "sampling_rate": 0
+          }
+        },
+        {
+          "sink": "stderr",
+          "record": {
+            "level": "CRITICAL",
+            "message": "critical",
+            "timestamp": "2026-01-01T00:00:00.123+00:00",
+            "service": "audit",
+            "sampling_rate": 0
+          }
+        }
+      ],
+      "diagnostics": [
+        "Invalid or unresolvable time zone: \"Not/AZone\" - falling back to UTC."
+      ]
+    },
+    {
+      "name": "Not/AZone-2026-07-01T00:00:00.123Z",
+      "now": "2026-07-01T00:00:00.123Z",
+      "env": {
+        "TZ": "Not/AZone"
+      },
+      "level": "INFO",
+      "records": [
+        {
+          "sink": "stdout",
+          "record": {
+            "level": "INFO",
+            "message": "info",
+            "timestamp": "2026-07-01T00:00:00.123+00:00",
+            "service": "audit",
+            "sampling_rate": 0
+          }
+        },
+        {
+          "sink": "stderr",
+          "record": {
+            "level": "WARN",
+            "message": "warn",
+            "timestamp": "2026-07-01T00:00:00.123+00:00",
+            "service": "audit",
+            "sampling_rate": 0
+          }
+        },
+        {
+          "sink": "stderr",
+          "record": {
+            "level": "ERROR",
+            "message": "error",
+            "timestamp": "2026-07-01T00:00:00.123+00:00",
+            "service": "audit",
+            "sampling_rate": 0
+          }
+        },
+        {
+          "sink": "stderr",
+          "record": {
+            "level": "CRITICAL",
+            "message": "critical",
+            "timestamp": "2026-07-01T00:00:00.123+00:00",
+            "service": "audit",
+            "sampling_rate": 0
+          }
+        }
+      ],
+      "diagnostics": [
+        "Invalid or unresolvable time zone: \"Not/AZone\" - falling back to UTC."
+      ]
+    },
+    {
+      "name": "invalid-level",
+      "env": {
+        "POWERTOOLS_LOG_LEVEL": "invalid"
+      },
+      "now": "2026-01-01T00:00:00.123Z",
+      "level": "INFO",
+      "records": [
+        {
+          "sink": "stdout",
+          "record": {
+            "level": "INFO",
+            "message": "info",
+            "timestamp": "2026-01-01T00:00:00.123Z",
+            "service": "audit",
+            "sampling_rate": 0
+          }
+        },
+        {
+          "sink": "stderr",
+          "record": {
+            "level": "WARN",
+            "message": "warn",
+            "timestamp": "2026-01-01T00:00:00.123Z",
+            "service": "audit",
+            "sampling_rate": 0
+          }
+        },
+        {
+          "sink": "stderr",
+          "record": {
+            "level": "ERROR",
+            "message": "error",
+            "timestamp": "2026-01-01T00:00:00.123Z",
+            "service": "audit",
+            "sampling_rate": 0
+          }
+        },
+        {
+          "sink": "stderr",
+          "record": {
+            "level": "CRITICAL",
+            "message": "critical",
+            "timestamp": "2026-01-01T00:00:00.123Z",
+            "service": "audit",
+            "sampling_rate": 0
+          }
+        }
+      ],
+      "diagnostics": []
+    },
+    {
+      "name": "lowercase-level",
+      "env": {
+        "POWERTOOLS_LOG_LEVEL": "debug"
+      },
+      "now": "2026-01-01T00:00:00.123Z",
+      "level": "INFO",
+      "records": [
+        {
+          "sink": "stdout",
+          "record": {
+            "level": "INFO",
+            "message": "info",
+            "timestamp": "2026-01-01T00:00:00.123Z",
+            "service": "audit",
+            "sampling_rate": 0
+          }
+        },
+        {
+          "sink": "stderr",
+          "record": {
+            "level": "WARN",
+            "message": "warn",
+            "timestamp": "2026-01-01T00:00:00.123Z",
+            "service": "audit",
+            "sampling_rate": 0
+          }
+        },
+        {
+          "sink": "stderr",
+          "record": {
+            "level": "ERROR",
+            "message": "error",
+            "timestamp": "2026-01-01T00:00:00.123Z",
+            "service": "audit",
+            "sampling_rate": 0
+          }
+        },
+        {
+          "sink": "stderr",
+          "record": {
+            "level": "CRITICAL",
+            "message": "critical",
+            "timestamp": "2026-01-01T00:00:00.123Z",
+            "service": "audit",
+            "sampling_rate": 0
+          }
+        }
+      ],
+      "diagnostics": []
+    },
+    {
+      "name": "alias",
+      "env": {
+        "LOG_LEVEL": "DEBUG"
+      },
+      "now": "2026-01-01T00:00:00.123Z",
+      "level": "DEBUG",
+      "records": [
+        {
+          "sink": "stdout",
+          "record": {
+            "level": "DEBUG",
+            "message": "debug",
+            "timestamp": "2026-01-01T00:00:00.123Z",
+            "service": "audit",
+            "sampling_rate": 0
+          }
+        },
+        {
+          "sink": "stdout",
+          "record": {
+            "level": "INFO",
+            "message": "info",
+            "timestamp": "2026-01-01T00:00:00.123Z",
+            "service": "audit",
+            "sampling_rate": 0
+          }
+        },
+        {
+          "sink": "stderr",
+          "record": {
+            "level": "WARN",
+            "message": "warn",
+            "timestamp": "2026-01-01T00:00:00.123Z",
+            "service": "audit",
+            "sampling_rate": 0
+          }
+        },
+        {
+          "sink": "stderr",
+          "record": {
+            "level": "ERROR",
+            "message": "error",
+            "timestamp": "2026-01-01T00:00:00.123Z",
+            "service": "audit",
+            "sampling_rate": 0
+          }
+        },
+        {
+          "sink": "stderr",
+          "record": {
+            "level": "CRITICAL",
+            "message": "critical",
+            "timestamp": "2026-01-01T00:00:00.123Z",
+            "service": "audit",
+            "sampling_rate": 0
+          }
+        }
+      ],
+      "diagnostics": []
+    },
+    {
+      "name": "primary",
+      "env": {
+        "POWERTOOLS_LOG_LEVEL": "WARN",
+        "LOG_LEVEL": "DEBUG"
+      },
+      "now": "2026-01-01T00:00:00.123Z",
+      "level": "WARN",
+      "records": [
+        {
+          "sink": "stderr",
+          "record": {
+            "level": "WARN",
+            "message": "warn",
+            "timestamp": "2026-01-01T00:00:00.123Z",
+            "service": "audit",
+            "sampling_rate": 0
+          }
+        },
+        {
+          "sink": "stderr",
+          "record": {
+            "level": "ERROR",
+            "message": "error",
+            "timestamp": "2026-01-01T00:00:00.123Z",
+            "service": "audit",
+            "sampling_rate": 0
+          }
+        },
+        {
+          "sink": "stderr",
+          "record": {
+            "level": "CRITICAL",
+            "message": "critical",
+            "timestamp": "2026-01-01T00:00:00.123Z",
+            "service": "audit",
+            "sampling_rate": 0
+          }
+        }
+      ],
+      "diagnostics": []
+    },
+    {
+      "name": "invalid-primary",
+      "env": {
+        "POWERTOOLS_LOG_LEVEL": "invalid",
+        "LOG_LEVEL": "DEBUG"
+      },
+      "now": "2026-01-01T00:00:00.123Z",
+      "level": "INFO",
+      "records": [
+        {
+          "sink": "stdout",
+          "record": {
+            "level": "INFO",
+            "message": "info",
+            "timestamp": "2026-01-01T00:00:00.123Z",
+            "service": "audit",
+            "sampling_rate": 0
+          }
+        },
+        {
+          "sink": "stderr",
+          "record": {
+            "level": "WARN",
+            "message": "warn",
+            "timestamp": "2026-01-01T00:00:00.123Z",
+            "service": "audit",
+            "sampling_rate": 0
+          }
+        },
+        {
+          "sink": "stderr",
+          "record": {
+            "level": "ERROR",
+            "message": "error",
+            "timestamp": "2026-01-01T00:00:00.123Z",
+            "service": "audit",
+            "sampling_rate": 0
+          }
+        },
+        {
+          "sink": "stderr",
+          "record": {
+            "level": "CRITICAL",
+            "message": "critical",
+            "timestamp": "2026-01-01T00:00:00.123Z",
+            "service": "audit",
+            "sampling_rate": 0
+          }
+        }
+      ],
+      "diagnostics": []
+    },
+    {
+      "name": "invalid-rate",
+      "env": {
+        "POWERTOOLS_LOGGER_SAMPLE_RATE": "invalid"
+      },
+      "now": "2026-01-01T00:00:00.123Z",
+      "error": {
+        "name": "TypeError",
+        "message": "Environment variable POWERTOOLS_LOGGER_SAMPLE_RATE must be a number"
+      },
+      "records": [],
+      "diagnostics": []
+    },
+    {
+      "name": "negative-rate",
+      "env": {
+        "POWERTOOLS_LOGGER_SAMPLE_RATE": "-1"
+      },
+      "now": "2026-01-01T00:00:00.123Z",
+      "level": "INFO",
+      "records": [
+        {
+          "sink": "stdout",
+          "record": {
+            "level": "INFO",
+            "message": "info",
+            "timestamp": "2026-01-01T00:00:00.123Z",
+            "service": "audit",
+            "sampling_rate": 0
+          }
+        },
+        {
+          "sink": "stderr",
+          "record": {
+            "level": "WARN",
+            "message": "warn",
+            "timestamp": "2026-01-01T00:00:00.123Z",
+            "service": "audit",
+            "sampling_rate": 0
+          }
+        },
+        {
+          "sink": "stderr",
+          "record": {
+            "level": "ERROR",
+            "message": "error",
+            "timestamp": "2026-01-01T00:00:00.123Z",
+            "service": "audit",
+            "sampling_rate": 0
+          }
+        },
+        {
+          "sink": "stderr",
+          "record": {
+            "level": "CRITICAL",
+            "message": "critical",
+            "timestamp": "2026-01-01T00:00:00.123Z",
+            "service": "audit",
+            "sampling_rate": 0
+          }
+        }
+      ],
+      "diagnostics": []
+    },
+    {
+      "name": "large-rate",
+      "env": {
+        "POWERTOOLS_LOGGER_SAMPLE_RATE": "2"
+      },
+      "now": "2026-01-01T00:00:00.123Z",
+      "level": "INFO",
+      "records": [
+        {
+          "sink": "stdout",
+          "record": {
+            "level": "INFO",
+            "message": "info",
+            "timestamp": "2026-01-01T00:00:00.123Z",
+            "service": "audit",
+            "sampling_rate": 0
+          }
+        },
+        {
+          "sink": "stderr",
+          "record": {
+            "level": "WARN",
+            "message": "warn",
+            "timestamp": "2026-01-01T00:00:00.123Z",
+            "service": "audit",
+            "sampling_rate": 0
+          }
+        },
+        {
+          "sink": "stderr",
+          "record": {
+            "level": "ERROR",
+            "message": "error",
+            "timestamp": "2026-01-01T00:00:00.123Z",
+            "service": "audit",
+            "sampling_rate": 0
+          }
+        },
+        {
+          "sink": "stderr",
+          "record": {
+            "level": "CRITICAL",
+            "message": "critical",
+            "timestamp": "2026-01-01T00:00:00.123Z",
+            "service": "audit",
+            "sampling_rate": 0
+          }
+        }
+      ],
+      "diagnostics": []
+    },
+    {
+      "name": "alc-fatal",
+      "env": {
+        "AWS_LAMBDA_LOG_LEVEL": "FATAL",
+        "POWERTOOLS_LOG_LEVEL": "DEBUG"
+      },
+      "now": "2026-01-01T00:00:00.123Z",
+      "level": "CRITICAL",
+      "records": [
+        {
+          "sink": "stderr",
+          "record": {
+            "level": "CRITICAL",
+            "message": "critical",
+            "timestamp": "2026-01-01T00:00:00.123Z",
+            "service": "audit",
+            "sampling_rate": 0
+          }
+        }
+      ],
+      "diagnostics": []
+    },
+    {
+      "name": "alc-invalid",
+      "env": {
+        "AWS_LAMBDA_LOG_LEVEL": "invalid"
+      },
+      "now": "2026-01-01T00:00:00.123Z",
+      "level": "INFO",
+      "records": [
+        {
+          "sink": "stdout",
+          "record": {
+            "level": "INFO",
+            "message": "info",
+            "timestamp": "2026-01-01T00:00:00.123Z",
+            "service": "audit",
+            "sampling_rate": 0
+          }
+        },
+        {
+          "sink": "stderr",
+          "record": {
+            "level": "WARN",
+            "message": "warn",
+            "timestamp": "2026-01-01T00:00:00.123Z",
+            "service": "audit",
+            "sampling_rate": 0
+          }
+        },
+        {
+          "sink": "stderr",
+          "record": {
+            "level": "ERROR",
+            "message": "error",
+            "timestamp": "2026-01-01T00:00:00.123Z",
+            "service": "audit",
+            "sampling_rate": 0
+          }
+        },
+        {
+          "sink": "stderr",
+          "record": {
+            "level": "CRITICAL",
+            "message": "critical",
+            "timestamp": "2026-01-01T00:00:00.123Z",
+            "service": "audit",
+            "sampling_rate": 0
+          }
+        }
+      ],
+      "diagnostics": []
+    }
+  ]
+}
