@@ -79,6 +79,8 @@ Usage belongs in the utility guides. [Feature comparison](FEATURE_PARITY.md) map
 
 ## Tracer
 
+- [x] AUDIT-TRACER-182-LOCAL: Complete the finite [OTel capture/lifecycle matrix](TRACER.md#finite-lifecycle-and-capture-audit-182), reusing 128 pinned HTTP middleware cases and adding capture/environment/SDK gates, five flush-context/ownership paths, 32 concurrent closed-span scopes, sibling survival, instrumentation-error preservation and eight independent HTTP parsing/storage cases. Both affected packaged modules pass tests/vet/tidy/isolation and two independent consumers with CGO disabled. No new production defect was reproduced. Preserve native OTel/error/late-write and middleware defaults; leave collector/platform/resource and exhaustive native acceptance separate. The frozen SDK adapter is unchanged (2026-10-13).
+
 - [x] T-14: Add opt-in HTTP event-envelope extraction for API Gateway/Function URL/ALB/AppSync, preserving existing OTel context and cancellation. Verify typed/map events, multi-value precedence, and malformed/non-HTTP fallback.
 
 - [x] T-01: Implement an interchangeable backend interface and a private OTel provider with OTLP/HTTP export.
