@@ -171,3 +171,40 @@ combined example after the Tracer-only handler above.
     | Tracing enablement and sampling | `WithLocalTracing`, OTel sampler environment | OTel extension; deprecated SDK backend is frozen. |
 
     Executable evidence: [tracer/tracer_test.go](https://github.com/rambow-cloud/powertools-lambda-go/blob/main/tracer/tracer_test.go). See [the verification scope](FEATURE_PARITY.md) and [project progress](CHECKLIST.md) for open gates.
+
+## Finite lifecycle and capture audit (#182)
+
+This audit covers maintained OTel APIs and reuses the 128 pinned TypeScript 2.35.0
+HTTP middleware contract cases. The recording reference contract checks high-level
+calls; it does not execute the frozen X-Ray SDK or establish native SDK document
+equivalence. The new local tests use real OTel SDK spans and injected transports.
+
+| Boundary / APIs | Evidence | Classification |
+| --- | --- | --- |
+| Response/error/HTTP capture options and environment vetoes | Fifteen control combinations in `TestCaptureConfigurationBoundaries`, with handler-level response suppression | Verified constructor opt-out, case-insensitive environment veto, and preserved typed results/native error status |
+| Tracing enablement | `TestTracingEnablementVetoBoundaries` and existing disabled-provider tests | Verified explicit opt-out, environment/development veto and local-runtime defaults without creating spans |
+| `HTTPClient`, `InstrumentAWS` | Existing propagation/client tests; `TestSDKTracingGateAndHTTPControlIndependence` | Verified copied clients, request immutability, enabled/disabled SDK tracing and one SDK identity marker. HTTP capture opt-out does not disable explicit SDK instrumentation |
+| `WrapHandler` flush, errors and panic | Five cases in `TestInvocationFlushBoundaries` plus the existing bounded waiting-flush test | Verified span completion before flush, caller values, detached cancellation within the original deadline/timeout, expired deadlines, diagnostic errors and original business result/error/panic |
+| Provider ownership | Injected/owned provider counters in the flush cases and existing provider tests | Invocation cleanup never shuts down an injected provider; only an owned backend delegates shutdown |
+| Span completion, late writes and concurrent scopes | `TestClosedSpansAndConcurrentInvocationIsolation` across 32 calls; `TestOTelSiblingSpanSurvivesCompletion` | Verified idempotent completion, distinct span/request attributes and sibling survival. Closed SDK spans ignore late metadata/annotations while retaining trace identity; no new export is produced |
+| Metadata and backend start failures | `TestStartFailureAndMetadataFailurePreserveResults` and existing namespace-key regression | Verified instrumentation diagnostics preserve the business result; metadata uses strict JSON v2 and separate escaped namespace/key components |
+| Context fallback and sampling | Existing HTTP/event-envelope precedence, malformed-input/cancellation, default-provider sampler/X-Ray-ID tests | Verified existing OTel parent, W3C then X-Ray propagation, runtime fallback, baggage, deadlines and sampled/unsampled decisions |
+| HTTP route defaults, ownership and closure | Existing 128 contract cases, body/error/panic/cancellation/streaming tests and eight `TestResponseCaptureStorageAndParsingControls` cases | Verified route parent restoration, exact Content-Type/default capture, body replay/close ownership, and independent parsing/storage controls |
+
+No new production defect was reproduced by this finite audit. Native differences
+remain explicit: OTel attributes/events and errors replace X-Ray documents; closed
+SDK spans are no-ops rather than Logger-style closed-scope errors. An injected
+custom backend must implement its documented concurrency, completion, ownership
+and cancellation contracts; the wrapper cannot force-stop arbitrary callbacks.
+
+For HTTP middleware, disabling Tracer-wide response capture suppresses metadata
+storage but still permits middleware JSON parsing and its errors. Set
+`httptracer.Options.DisableCaptureResponse` to bypass body reading/parsing. This
+preserves the pinned high-level middleware contract rather than changing defaults.
+
+Both affected packaged modules pass tests/vet/tidy/isolation and independent
+consumers with CGO disabled. Collector/X-Ray service indexing, freeze/timeout and
+Managed Instances behavior remain separate in #197/#202 and T-08. Exhaustive native
+type/error, propagator, exporter and resource-budget acceptance is outside this
+case matrix; #200 tracks resource budgets. The frozen `tracer/xray` adapter is
+unchanged.

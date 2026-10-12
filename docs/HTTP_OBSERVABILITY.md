@@ -134,6 +134,11 @@ Response capture defaults to the exact Content-Type `application/json`; charset 
 
 Tracer before Compress observes the headers that compression leaves behind. Actual compression deletes Content-Length, so tracing then omits body size. A length can remain when compression is skipped, including an outer compressor measuring a body already compressed by route middleware. JSON capture after compression reads compressed bytes and can fail. Disable capture in this order, as in the example. Tracer inside Compress captures JSON before compression; its attributes describe the response at that stage.
 
+The [finite Tracer audit](TRACER.md#finite-lifecycle-and-capture-audit-182) verifies
+the independent parsing/storage controls with valid and invalid JSON bodies,
+including body replay and exact close ownership. It also records OTel lifecycle,
+provider ownership and capture-policy acceptance separately from cloud delivery.
+
 Dedicated route tracing skips streaming and disabled tracers, matching the reference. Use the invocation wrapper inside `Streamify` for complete streaming lifetimes/errors/flushing; see [HTTP_STREAMING.md](HTTP_STREAMING.md).
 
 ## Evidence and remaining gates
