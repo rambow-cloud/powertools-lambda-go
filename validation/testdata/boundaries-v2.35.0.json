@@ -1,0 +1,1069 @@
+{
+  "version": "2.35.0",
+  "ajvVersion": "8.20.0",
+  "cases": [
+    {
+      "name": "default-unknown-false-0",
+      "schema": {
+        "definitions": {
+          "target": {
+            "typo": true
+          }
+        }
+      },
+      "payload": "value",
+      "options": {},
+      "expected": {
+        "success": true,
+        "value": "value"
+      },
+      "warnings": []
+    },
+    {
+      "name": "default-unknown-false-1",
+      "schema": {
+        "definitions": {
+          "target": {
+            "typo": true
+          }
+        }
+      },
+      "payload": 1,
+      "options": {},
+      "expected": {
+        "success": true,
+        "value": 1
+      },
+      "warnings": []
+    },
+    {
+      "name": "default-unknown-true-0",
+      "schema": {
+        "definitions": {
+          "target": {
+            "typo": true
+          }
+        },
+        "$ref": "#/definitions/target"
+      },
+      "payload": "value",
+      "options": {},
+      "expected": {
+        "success": false,
+        "error": "SchemaCompilationError",
+        "message": "Failed to compile schema",
+        "cause": "strict mode: unknown keyword: \"typo\""
+      },
+      "warnings": []
+    },
+    {
+      "name": "default-unknown-true-1",
+      "schema": {
+        "definitions": {
+          "target": {
+            "typo": true
+          }
+        },
+        "$ref": "#/definitions/target"
+      },
+      "payload": 1,
+      "options": {},
+      "expected": {
+        "success": false,
+        "error": "SchemaCompilationError",
+        "message": "Failed to compile schema",
+        "cause": "strict mode: unknown keyword: \"typo\""
+      },
+      "warnings": []
+    },
+    {
+      "name": "default-format-false-0",
+      "schema": {
+        "definitions": {
+          "target": {
+            "format": "email"
+          }
+        }
+      },
+      "payload": "value",
+      "options": {},
+      "expected": {
+        "success": true,
+        "value": "value"
+      },
+      "warnings": []
+    },
+    {
+      "name": "default-format-false-1",
+      "schema": {
+        "definitions": {
+          "target": {
+            "format": "email"
+          }
+        }
+      },
+      "payload": 1,
+      "options": {},
+      "expected": {
+        "success": true,
+        "value": 1
+      },
+      "warnings": []
+    },
+    {
+      "name": "default-format-true-0",
+      "schema": {
+        "definitions": {
+          "target": {
+            "format": "email"
+          }
+        },
+        "$ref": "#/definitions/target"
+      },
+      "payload": "value",
+      "options": {},
+      "expected": {
+        "success": false,
+        "error": "SchemaCompilationError",
+        "message": "Failed to compile schema",
+        "cause": "unknown format \"email\" ignored in schema at path \"#/definitions/target\""
+      },
+      "warnings": [
+        "strict mode: missing type \"number,string\" for keyword \"format\" at \"#/definitions/target\" (strictTypes)"
+      ]
+    },
+    {
+      "name": "default-format-true-1",
+      "schema": {
+        "definitions": {
+          "target": {
+            "format": "email"
+          }
+        },
+        "$ref": "#/definitions/target"
+      },
+      "payload": 1,
+      "options": {},
+      "expected": {
+        "success": false,
+        "error": "SchemaCompilationError",
+        "message": "Failed to compile schema",
+        "cause": "unknown format \"email\" ignored in schema at path \"#/definitions/target\""
+      },
+      "warnings": [
+        "strict mode: missing type \"number,string\" for keyword \"format\" at \"#/definitions/target\" (strictTypes)"
+      ]
+    },
+    {
+      "name": "default-pattern-false-0",
+      "schema": {
+        "definitions": {
+          "target": {
+            "pattern": "["
+          }
+        }
+      },
+      "payload": "value",
+      "options": {},
+      "expected": {
+        "success": true,
+        "value": "value"
+      },
+      "warnings": []
+    },
+    {
+      "name": "default-pattern-false-1",
+      "schema": {
+        "definitions": {
+          "target": {
+            "pattern": "["
+          }
+        }
+      },
+      "payload": 1,
+      "options": {},
+      "expected": {
+        "success": true,
+        "value": 1
+      },
+      "warnings": []
+    },
+    {
+      "name": "default-pattern-true-0",
+      "schema": {
+        "definitions": {
+          "target": {
+            "pattern": "["
+          }
+        },
+        "$ref": "#/definitions/target"
+      },
+      "payload": "value",
+      "options": {},
+      "expected": {
+        "success": false,
+        "error": "SchemaCompilationError",
+        "message": "Failed to compile schema",
+        "cause": "Invalid regular expression: /[/u: Unterminated character class"
+      },
+      "warnings": [
+        "strict mode: missing type \"string\" for keyword \"pattern\" at \"#/definitions/target\" (strictTypes)"
+      ]
+    },
+    {
+      "name": "default-pattern-true-1",
+      "schema": {
+        "definitions": {
+          "target": {
+            "pattern": "["
+          }
+        },
+        "$ref": "#/definitions/target"
+      },
+      "payload": 1,
+      "options": {},
+      "expected": {
+        "success": false,
+        "error": "SchemaCompilationError",
+        "message": "Failed to compile schema",
+        "cause": "Invalid regular expression: /[/u: Unterminated character class"
+      },
+      "warnings": [
+        "strict mode: missing type \"string\" for keyword \"pattern\" at \"#/definitions/target\" (strictTypes)"
+      ]
+    },
+    {
+      "name": "default-length-false-0",
+      "schema": {
+        "definitions": {
+          "target": {
+            "minLength": -1
+          }
+        }
+      },
+      "payload": "value",
+      "options": {},
+      "expected": {
+        "success": false,
+        "error": "SchemaCompilationError",
+        "message": "Failed to compile schema",
+        "cause": "schema is invalid: data/definitions/target/minLength must be >= 0"
+      },
+      "warnings": []
+    },
+    {
+      "name": "default-length-false-1",
+      "schema": {
+        "definitions": {
+          "target": {
+            "minLength": -1
+          }
+        }
+      },
+      "payload": 1,
+      "options": {},
+      "expected": {
+        "success": false,
+        "error": "SchemaCompilationError",
+        "message": "Failed to compile schema",
+        "cause": "schema is invalid: data/definitions/target/minLength must be >= 0"
+      },
+      "warnings": []
+    },
+    {
+      "name": "default-length-true-0",
+      "schema": {
+        "definitions": {
+          "target": {
+            "minLength": -1
+          }
+        },
+        "$ref": "#/definitions/target"
+      },
+      "payload": "value",
+      "options": {},
+      "expected": {
+        "success": false,
+        "error": "SchemaCompilationError",
+        "message": "Failed to compile schema",
+        "cause": "schema is invalid: data/definitions/target/minLength must be >= 0"
+      },
+      "warnings": []
+    },
+    {
+      "name": "default-length-true-1",
+      "schema": {
+        "definitions": {
+          "target": {
+            "minLength": -1
+          }
+        },
+        "$ref": "#/definitions/target"
+      },
+      "payload": 1,
+      "options": {},
+      "expected": {
+        "success": false,
+        "error": "SchemaCompilationError",
+        "message": "Failed to compile schema",
+        "cause": "schema is invalid: data/definitions/target/minLength must be >= 0"
+      },
+      "warnings": []
+    },
+    {
+      "name": "default-nullable-false-0",
+      "schema": {
+        "definitions": {
+          "target": {
+            "nullable": true
+          }
+        }
+      },
+      "payload": "value",
+      "options": {},
+      "expected": {
+        "success": true,
+        "value": "value"
+      },
+      "warnings": []
+    },
+    {
+      "name": "default-nullable-false-1",
+      "schema": {
+        "definitions": {
+          "target": {
+            "nullable": true
+          }
+        }
+      },
+      "payload": 1,
+      "options": {},
+      "expected": {
+        "success": true,
+        "value": 1
+      },
+      "warnings": []
+    },
+    {
+      "name": "default-nullable-true-0",
+      "schema": {
+        "definitions": {
+          "target": {
+            "nullable": true
+          }
+        },
+        "$ref": "#/definitions/target"
+      },
+      "payload": "value",
+      "options": {},
+      "expected": {
+        "success": false,
+        "error": "SchemaCompilationError",
+        "message": "Failed to compile schema",
+        "cause": "\"nullable\" cannot be used without \"type\""
+      },
+      "warnings": []
+    },
+    {
+      "name": "default-nullable-true-1",
+      "schema": {
+        "definitions": {
+          "target": {
+            "nullable": true
+          }
+        },
+        "$ref": "#/definitions/target"
+      },
+      "payload": 1,
+      "options": {},
+      "expected": {
+        "success": false,
+        "error": "SchemaCompilationError",
+        "message": "Failed to compile schema",
+        "cause": "\"nullable\" cannot be used without \"type\""
+      },
+      "warnings": []
+    },
+    {
+      "name": "identity-0",
+      "schema": {
+        "definitions": {
+          "a": {
+            "$id": "https://example.test/id"
+          },
+          "b": {
+            "$id": "https://example.test/id"
+          }
+        }
+      },
+      "payload": "value",
+      "options": {},
+      "expected": {
+        "success": false,
+        "error": "SchemaCompilationError",
+        "message": "Failed to compile schema",
+        "cause": "reference \"https://example.test/id\" resolves to more than one schema"
+      },
+      "warnings": []
+    },
+    {
+      "name": "identity-1",
+      "schema": {
+        "$id": "https://example.test/root",
+        "definitions": {
+          "a": {
+            "$id": "#same"
+          },
+          "b": {
+            "$id": "#same"
+          }
+        }
+      },
+      "payload": "value",
+      "options": {},
+      "expected": {
+        "success": false,
+        "error": "SchemaCompilationError",
+        "message": "Failed to compile schema",
+        "cause": "reference \"https://example.test/root#same\" resolves to more than one schema"
+      },
+      "warnings": []
+    },
+    {
+      "name": "identity-2",
+      "schema": {
+        "$ref": "https://example.test/missing"
+      },
+      "payload": "value",
+      "options": {},
+      "expected": {
+        "success": false,
+        "error": "SchemaCompilationError",
+        "message": "Failed to compile schema",
+        "cause": "can't resolve reference https://example.test/missing from id #"
+      },
+      "warnings": []
+    },
+    {
+      "name": "conditional-0",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "kind": {
+            "type": "string"
+          },
+          "value": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "kind",
+          "value"
+        ],
+        "if": {
+          "properties": {
+            "kind": {
+              "const": "positive"
+            }
+          },
+          "required": [
+            "kind"
+          ]
+        },
+        "then": {
+          "properties": {
+            "value": {
+              "minimum": 1
+            }
+          }
+        },
+        "else": {
+          "properties": {
+            "value": {
+              "maximum": 0
+            }
+          }
+        }
+      },
+      "payload": {
+        "kind": "positive",
+        "value": 0
+      },
+      "options": {},
+      "expected": {
+        "success": false,
+        "error": "SchemaValidationError",
+        "message": "Schema validation failed",
+        "issues": [
+          {
+            "instancePath": "/value",
+            "schemaPath": "#/then/properties/value/minimum",
+            "keyword": "minimum",
+            "params": {
+              "comparison": ">=",
+              "limit": 1
+            },
+            "message": "must be >= 1"
+          },
+          {
+            "instancePath": "",
+            "schemaPath": "#/if",
+            "keyword": "if",
+            "params": {
+              "failingKeyword": "then"
+            },
+            "message": "must match \"then\" schema"
+          }
+        ]
+      },
+      "warnings": [
+        "strict mode: missing type \"number\" for keyword \"minimum\" at \"#/then/properties/value\" (strictTypes)",
+        "strict mode: missing type \"number\" for keyword \"maximum\" at \"#/else/properties/value\" (strictTypes)"
+      ]
+    },
+    {
+      "name": "conditional-1",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "kind": {
+            "type": "string"
+          },
+          "value": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "kind",
+          "value"
+        ],
+        "if": {
+          "properties": {
+            "kind": {
+              "const": "positive"
+            }
+          },
+          "required": [
+            "kind"
+          ]
+        },
+        "then": {
+          "properties": {
+            "value": {
+              "minimum": 1
+            }
+          }
+        },
+        "else": {
+          "properties": {
+            "value": {
+              "maximum": 0
+            }
+          }
+        }
+      },
+      "payload": {
+        "kind": "positive",
+        "value": 1
+      },
+      "options": {},
+      "expected": {
+        "success": true,
+        "value": {
+          "kind": "positive",
+          "value": 1
+        }
+      },
+      "warnings": [
+        "strict mode: missing type \"number\" for keyword \"minimum\" at \"#/then/properties/value\" (strictTypes)",
+        "strict mode: missing type \"number\" for keyword \"maximum\" at \"#/else/properties/value\" (strictTypes)"
+      ]
+    },
+    {
+      "name": "conditional-2",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "kind": {
+            "type": "string"
+          },
+          "value": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "kind",
+          "value"
+        ],
+        "if": {
+          "properties": {
+            "kind": {
+              "const": "positive"
+            }
+          },
+          "required": [
+            "kind"
+          ]
+        },
+        "then": {
+          "properties": {
+            "value": {
+              "minimum": 1
+            }
+          }
+        },
+        "else": {
+          "properties": {
+            "value": {
+              "maximum": 0
+            }
+          }
+        }
+      },
+      "payload": {
+        "kind": "other",
+        "value": 1
+      },
+      "options": {},
+      "expected": {
+        "success": false,
+        "error": "SchemaValidationError",
+        "message": "Schema validation failed",
+        "issues": [
+          {
+            "instancePath": "/value",
+            "schemaPath": "#/else/properties/value/maximum",
+            "keyword": "maximum",
+            "params": {
+              "comparison": "<=",
+              "limit": 0
+            },
+            "message": "must be <= 0"
+          },
+          {
+            "instancePath": "",
+            "schemaPath": "#/if",
+            "keyword": "if",
+            "params": {
+              "failingKeyword": "else"
+            },
+            "message": "must match \"else\" schema"
+          }
+        ]
+      },
+      "warnings": [
+        "strict mode: missing type \"number\" for keyword \"minimum\" at \"#/then/properties/value\" (strictTypes)",
+        "strict mode: missing type \"number\" for keyword \"maximum\" at \"#/else/properties/value\" (strictTypes)"
+      ]
+    },
+    {
+      "name": "conditional-3",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "kind": {
+            "type": "string"
+          },
+          "value": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "kind",
+          "value"
+        ],
+        "if": {
+          "properties": {
+            "kind": {
+              "const": "positive"
+            }
+          },
+          "required": [
+            "kind"
+          ]
+        },
+        "then": {
+          "properties": {
+            "value": {
+              "minimum": 1
+            }
+          }
+        },
+        "else": {
+          "properties": {
+            "value": {
+              "maximum": 0
+            }
+          }
+        }
+      },
+      "payload": {
+        "kind": "other",
+        "value": 0
+      },
+      "options": {},
+      "expected": {
+        "success": true,
+        "value": {
+          "kind": "other",
+          "value": 0
+        }
+      },
+      "warnings": [
+        "strict mode: missing type \"number\" for keyword \"minimum\" at \"#/then/properties/value\" (strictTypes)",
+        "strict mode: missing type \"number\" for keyword \"maximum\" at \"#/else/properties/value\" (strictTypes)"
+      ]
+    },
+    {
+      "name": "numeric-0",
+      "schema": {
+        "type": "number",
+        "multipleOf": 0.1,
+        "maximum": 1
+      },
+      "payload": 0.3,
+      "options": {},
+      "expected": {
+        "success": false,
+        "error": "SchemaValidationError",
+        "message": "Schema validation failed",
+        "issues": [
+          {
+            "instancePath": "",
+            "schemaPath": "#/multipleOf",
+            "keyword": "multipleOf",
+            "params": {
+              "multipleOf": 0.1
+            },
+            "message": "must be multiple of 0.1"
+          }
+        ]
+      },
+      "warnings": []
+    },
+    {
+      "name": "numeric-1",
+      "schema": {
+        "type": "number",
+        "multipleOf": 0.1,
+        "maximum": 1
+      },
+      "payload": 0.30000000000000004,
+      "options": {},
+      "expected": {
+        "success": false,
+        "error": "SchemaValidationError",
+        "message": "Schema validation failed",
+        "issues": [
+          {
+            "instancePath": "",
+            "schemaPath": "#/multipleOf",
+            "keyword": "multipleOf",
+            "params": {
+              "multipleOf": 0.1
+            },
+            "message": "must be multiple of 0.1"
+          }
+        ]
+      },
+      "warnings": []
+    },
+    {
+      "name": "numeric-2",
+      "schema": {
+        "type": "number",
+        "multipleOf": 0.1,
+        "maximum": 1
+      },
+      "payload": 1.0000000000000002,
+      "options": {},
+      "expected": {
+        "success": false,
+        "error": "SchemaValidationError",
+        "message": "Schema validation failed",
+        "issues": [
+          {
+            "instancePath": "",
+            "schemaPath": "#/maximum",
+            "keyword": "maximum",
+            "params": {
+              "comparison": "<=",
+              "limit": 1
+            },
+            "message": "must be <= 1"
+          },
+          {
+            "instancePath": "",
+            "schemaPath": "#/multipleOf",
+            "keyword": "multipleOf",
+            "params": {
+              "multipleOf": 0.1
+            },
+            "message": "must be multiple of 0.1"
+          }
+        ]
+      },
+      "warnings": []
+    },
+    {
+      "name": "numeric-3",
+      "schema": {
+        "type": "number",
+        "multipleOf": 0.1,
+        "maximum": 1
+      },
+      "payload": 0.7,
+      "options": {},
+      "expected": {
+        "success": false,
+        "error": "SchemaValidationError",
+        "message": "Schema validation failed",
+        "issues": [
+          {
+            "instancePath": "",
+            "schemaPath": "#/multipleOf",
+            "keyword": "multipleOf",
+            "params": {
+              "multipleOf": 0.1
+            },
+            "message": "must be multiple of 0.1"
+          }
+        ]
+      },
+      "warnings": []
+    },
+    {
+      "name": "regex-0-0",
+      "schema": {
+        "type": "string",
+        "pattern": "^.$"
+      },
+      "payload": "😀",
+      "options": {},
+      "expected": {
+        "success": true,
+        "value": "😀"
+      },
+      "warnings": []
+    },
+    {
+      "name": "regex-0-1",
+      "schema": {
+        "type": "string",
+        "pattern": "^.$"
+      },
+      "payload": "A",
+      "options": {},
+      "expected": {
+        "success": true,
+        "value": "A"
+      },
+      "warnings": []
+    },
+    {
+      "name": "regex-1-0",
+      "schema": {
+        "type": "string",
+        "pattern": "^\\p{Letter}+$"
+      },
+      "payload": "😀",
+      "options": {},
+      "expected": {
+        "success": false,
+        "error": "SchemaValidationError",
+        "message": "Schema validation failed",
+        "issues": [
+          {
+            "instancePath": "",
+            "schemaPath": "#/pattern",
+            "keyword": "pattern",
+            "params": {
+              "pattern": "^\\p{Letter}+$"
+            },
+            "message": "must match pattern \"^\\p{Letter}+$\""
+          }
+        ]
+      },
+      "warnings": []
+    },
+    {
+      "name": "regex-1-1",
+      "schema": {
+        "type": "string",
+        "pattern": "^\\p{Letter}+$"
+      },
+      "payload": "A",
+      "options": {},
+      "expected": {
+        "success": true,
+        "value": "A"
+      },
+      "warnings": []
+    },
+    {
+      "name": "regex-2-0",
+      "schema": {
+        "type": "string",
+        "pattern": "(?i)a"
+      },
+      "payload": "😀",
+      "options": {},
+      "expected": {
+        "success": false,
+        "error": "SchemaCompilationError",
+        "message": "Failed to compile schema",
+        "cause": "Invalid regular expression: /(?i)a/u: Invalid group"
+      },
+      "warnings": []
+    },
+    {
+      "name": "regex-2-1",
+      "schema": {
+        "type": "string",
+        "pattern": "(?i)a"
+      },
+      "payload": "A",
+      "options": {},
+      "expected": {
+        "success": false,
+        "error": "SchemaCompilationError",
+        "message": "Failed to compile schema",
+        "cause": "Invalid regular expression: /(?i)a/u: Invalid group"
+      },
+      "warnings": []
+    },
+    {
+      "name": "factory-true",
+      "schema": true,
+      "payload": null,
+      "options": {},
+      "expected": {
+        "success": true,
+        "value": null
+      },
+      "warnings": []
+    },
+    {
+      "name": "factory-false",
+      "schema": false,
+      "payload": 0,
+      "options": {},
+      "expected": {
+        "success": false,
+        "error": "SchemaValidationError",
+        "message": "Schema validation failed",
+        "issues": [
+          {
+            "instancePath": "",
+            "schemaPath": "#/false schema",
+            "keyword": "false schema",
+            "params": {},
+            "message": "boolean schema is false"
+          }
+        ]
+      },
+      "warnings": []
+    },
+    {
+      "name": "factory-nullable",
+      "schema": {
+        "type": "string",
+        "nullable": true
+      },
+      "payload": null,
+      "options": {},
+      "expected": {
+        "success": true,
+        "value": null
+      },
+      "warnings": []
+    },
+    {
+      "name": "factory-no-coercion",
+      "schema": {
+        "type": "number"
+      },
+      "payload": "1",
+      "options": {},
+      "expected": {
+        "success": false,
+        "error": "SchemaValidationError",
+        "message": "Schema validation failed",
+        "issues": [
+          {
+            "instancePath": "",
+            "schemaPath": "#/type",
+            "keyword": "type",
+            "params": {
+              "type": "number"
+            },
+            "message": "must be number"
+          }
+        ]
+      },
+      "warnings": []
+    },
+    {
+      "name": "factory-no-default",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "number",
+            "default": 1
+          }
+        },
+        "required": [
+          "value"
+        ]
+      },
+      "payload": {},
+      "options": {},
+      "expected": {
+        "success": false,
+        "error": "SchemaValidationError",
+        "message": "Schema validation failed",
+        "issues": [
+          {
+            "instancePath": "",
+            "schemaPath": "#/required",
+            "keyword": "required",
+            "params": {
+              "missingProperty": "value"
+            },
+            "message": "must have required property 'value'"
+          }
+        ]
+      },
+      "warnings": []
+    },
+    {
+      "name": "factory-no-removal",
+      "schema": {
+        "type": "object",
+        "additionalProperties": false
+      },
+      "payload": {
+        "extra": true
+      },
+      "options": {},
+      "expected": {
+        "success": false,
+        "error": "SchemaValidationError",
+        "message": "Schema validation failed",
+        "issues": [
+          {
+            "instancePath": "",
+            "schemaPath": "#/additionalProperties",
+            "keyword": "additionalProperties",
+            "params": {
+              "additionalProperty": "extra"
+            },
+            "message": "must NOT have additional properties"
+          }
+        ]
+      },
+      "warnings": []
+    }
+  ]
+}

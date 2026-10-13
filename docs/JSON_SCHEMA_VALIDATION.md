@@ -249,6 +249,11 @@ This map was inspected against the installed package's export manifest, declarat
 CGO is disabled for all development, tests and builds. Functional concurrency tests do not replace a race-detector run; the latter is intentionally excluded by repository policy.
 ## Objects and lifecycle
 
+The [finite default boundary audit](VALIDATION_PLAN.md#finite-default-boundary-audit-189)
+records actual default AJV behavior, exact diagnostics and explicit native
+registration/JSON/warning differences. Exhaustive and optional dialect gates
+remain independent.
+
 | Object | How to use it |
 | --- | --- |
 | Schema document | Describe the accepted payload with JSON Schema. |
