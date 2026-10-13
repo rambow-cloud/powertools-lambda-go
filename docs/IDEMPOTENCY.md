@@ -14,7 +14,7 @@ Create the persistence store and manager once, then wrap your handler.
 Use Go 1.27 or newer and install the module in your own application:
 
 ```sh
-CGO_ENABLED=0 go get github.com/rambow-cloud/powertools-lambda-go/idempotency@v1.1.0
+CGO_ENABLED=0 go get github.com/rambow-cloud/powertools-lambda-go/idempotency@v1.2.0
 CGO_ENABLED=0 go get github.com/aws/aws-lambda-go@v1.55.0
 CGO_ENABLED=0 go get github.com/aws/aws-sdk-go-v2/config@v1.33.4
 ```

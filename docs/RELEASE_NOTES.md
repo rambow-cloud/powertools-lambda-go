@@ -6,6 +6,30 @@ description: "Read published Powertools for Go release notes, stable and prerele
 
 All 27 maintained modules share one version. [Browse all GitHub Releases](https://github.com/rambow-cloud/powertools-lambda-go/releases) for full changelogs.
 
+## v1.2.0
+
+2026-10-13 · [GitHub Release](https://github.com/rambow-cloud/powertools-lambda-go/releases/tag/v1.2.0)
+
+### Features
+
+- **Validation:** Add opt-in [Draft 2020-12 and 2019-09 compilers](JSON_SCHEMA_VALIDATION.md#optional-draft-2020-12-compiler) with registered references, input snapshots and native diagnostics. Default Draft 7 behavior remains unchanged. ([#212](https://github.com/rambow-cloud/powertools-lambda-go/pull/212), [#213](https://github.com/rambow-cloud/powertools-lambda-go/pull/213))
+
+### Fixes
+
+- **Logger:** Preserve native TextMarshaler values and errors without invoking a failed marshaler twice. ([#219](https://github.com/rambow-cloud/powertools-lambda-go/pull/219))
+- **Idempotency:** Retain in-progress records until their execution deadline is strictly earlier than acquisition time. ([#217](https://github.com/rambow-cloud/powertools-lambda-go/pull/217))
+- **HTTP:** Reject invalid response headers before output and close retained bodies once when conversion fails. ([#221](https://github.com/rambow-cloud/powertools-lambda-go/pull/221))
+- **Commons:** Deduplicate NaN DynamoDB numeric set members and preserve numeric BOOL semantics for native Go values. ([#222](https://github.com/rambow-cloud/powertools-lambda-go/pull/222))
+- **Metrics:** Reject metadata writes to closed invocation scopes before calling user serializers. ([#223](https://github.com/rambow-cloud/powertools-lambda-go/pull/223))
+- **JMESPath:** Correct numeric conversion, JSON v2 serialization and null multi-select evaluation. ([#226](https://github.com/rambow-cloud/powertools-lambda-go/pull/226))
+- **Validation:** Preserve null oneOf branch indices and empty property names in JSON v2 diagnostics. ([#215](https://github.com/rambow-cloud/powertools-lambda-go/pull/215))
+
+### Changes
+
+- Complete first-party JSON v2 API adoption and expand finite compatibility audits across utility modules. Go 1.27 remains required.
+- Align all 27 maintained module versions and internal dependencies at v1.2.0. The frozen X-Ray SDK adapter remains excluded from new publication.
+- Improve quickstart, utility guides and documentation discovery. See [publication acceptance](RELEASE_ACCEPTANCE_V1_2_0.json) for verified public consumers and source identity.
+
 ## v1.1.0
 
 2026-10-10 · [GitHub Release](https://github.com/rambow-cloud/powertools-lambda-go/releases/tag/v1.1.0)

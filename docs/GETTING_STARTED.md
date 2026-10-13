@@ -11,15 +11,15 @@ Use Go 1.27 or newer. The Lambda executable runs on `provided.al2023`; it does n
 
 Use explicit `json` tags on application structs. See [JSON decoding and encoding](#json-decoding-and-encoding) for the full serialization rules.
 
-The latest stable cohort is [v1.1.0](https://github.com/rambow-cloud/powertools-lambda-go/releases/tag/v1.1.0),
+The latest stable cohort is [v1.2.0](https://github.com/rambow-cloud/powertools-lambda-go/releases/tag/v1.2.0),
 including Go 1.27 and the JSON v2 behavior described above. Use the
 [README example](https://github.com/rambow-cloud/powertools-lambda-go/blob/main/README.md)
-for a minimal application pinned to v1.1.0. See [version policy](VERSION_POLICY.md).
+for a minimal application pinned to v1.2.0. See [version policy](VERSION_POLICY.md).
 
 Install Logger and the Lambda runtime in your application's Go module:
 
 ```sh
-CGO_ENABLED=0 go get github.com/rambow-cloud/powertools-lambda-go/logger@v1.1.0
+CGO_ENABLED=0 go get github.com/rambow-cloud/powertools-lambda-go/logger@v1.2.0
 CGO_ENABLED=0 go get github.com/aws/aws-lambda-go@v1.55.0
 ```
 
@@ -41,7 +41,7 @@ this Logger-only program.
 When you need traces, install the Tracer module and configure an OTLP collector:
 
 ```sh
-CGO_ENABLED=0 go get github.com/rambow-cloud/powertools-lambda-go/tracer@v1.1.0
+CGO_ENABLED=0 go get github.com/rambow-cloud/powertools-lambda-go/tracer@v1.2.0
 ```
 
 The maintained repository example composes Tracer and Logger:
@@ -85,7 +85,7 @@ To build and package both architectures of the maintained Logger/Tracer example,
 use the repository's packaging helper. Obtain a checkout:
 
 ~~~sh
-git clone --branch v1.1.0 https://github.com/rambow-cloud/powertools-lambda-go.git
+git clone --branch v1.2.0 https://github.com/rambow-cloud/powertools-lambda-go.git
 cd powertools-lambda-go
 ~~~
 
