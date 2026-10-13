@@ -187,6 +187,33 @@ JSON transforms use `encoding/json/v2`: duplicate object members, invalid UTF-8 
 
 ## Validation
 
+### Finite boundary audit #184
+
+- [x] P-FINITE-184: The affected packaged module passes tests/vet/tidy/isolation
+  and one independent consumer with CGO disabled/GOWORK off. Scoped JSON v2,
+  navigation, eighteen guides, strict site build and discovery checks pass
+  (2026-10-13); hosted runtime/service acceptance remains independent.
+
+Baseline: installed TypeScript v2.35.0 BaseProvider/GetOptions/ExpirableValue
+and existing Go reference, effective SDK cache-option, fake-client and real SDK
+protocol suites. New generator `generate-parameters-boundaries.mjs` retains
+nineteen actual duration/cache observations, including original TTL values.
+
+| Public surface | Evidence and classification |
+| --- | --- |
+| `Options.Lifetime`, `Cache.Get` | Fifteen environment inputs cover absent/empty, signed, hexadecimal, fractional, underflow, invalid/NaN, infinities and duration saturation. Retrieval/call/cache-insertion outcomes match the reference; typed Go configuration causes and the public Lifetime fallback remain native contracts. Fractional precision and bounded Go duration differ from Date.setSeconds/invalid Date TTL and are explicit. |
+| Expiry, `ForceFetch`, `ClearCache`, `GetMultiple` | Actual upstream sequences verify exact expiry, just-after expiry, forced refresh, clear and fresh zero-age storage bypass. With existing warm entries, TypeScript can return the old value for zero/negative age; Go deliberately bypasses lookup without evicting earlier valid entries. Both original warm observations and Go's policy are checked explicitly. The fractional sequence retains the reference's rounded expiry while Go keeps 100 ms. A channel-fenced native batch fetch verifies that clearing prevents an older callback from repopulating cache; byte results stay isolated across cached reads. |
+| Effective SDK request options | Reuse SSM single/path/batch decryption, recursive/filter/pagination and Secrets version/stage tests. Provider options override SDK values, then environment defaults; caller inputs are unchanged and value-affecting variants use separate cache keys. Invalid environment values are checked before warm lookup. |
+| Provider native values and errors | Reuse SSM/Secrets/DynamoDB fake SDK errors/missing-output/cancellation/recovery tests and strict real-SDK protocol corpus for all providers. Preserve native binary/large-number conversion, typed unwrap causes and missing policies. Fake tests and local HTTP tests prove distinct layers, not AWS service behavior. |
+| AppConfig and Agent | Reuse single-use token rotation/expiry/unchanged-output/concurrency/restart tests, Agent direct-fetch/development/timeout/error paths and global default-provider clearing. Their provider-specific ownership/cache policies are retained. |
+| `TransformValue`, ordinary/safe transforms | Reuse JSON/Binary/Auto, text/BOM/UTF-8 fixtures and strict JSON v2 duplicate/surrogate/invalid-byte rejection. Strict-transform flags remain outside cache keys; cached permissive results follow the documented policy. |
+
+No additional production defect was reproduced in this finite audit. Existing
+provider APIs/dependencies and duration, cache, JSON v2 and native error policies
+are preserved. Exhaustive native diagnostics/provider options, cache/resource
+budgets (#200) and service IAM/throttling/version/platform acceptance (#201/#202)
+remain open. The audit makes no cloud calls.
+
 Service tests use separate layers. Fake clients exercise provider inputs, typed
 error chains, failed-fetch recovery, cache reuse and cancellation without HTTP.
 They return synthetic SDK outputs and do not validate SDK serialization or AWS
