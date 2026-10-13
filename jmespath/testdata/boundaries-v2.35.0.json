@@ -343,6 +343,260 @@
       }
     },
     {
+      "name": "null-guard-list-0",
+      "expression": "[@]",
+      "data": null,
+      "expected": {
+        "value": null
+      }
+    },
+    {
+      "name": "null-guard-object-0",
+      "expression": "{value:@}",
+      "data": null,
+      "expected": {
+        "value": null
+      }
+    },
+    {
+      "name": "null-guard-list-1",
+      "expression": "[@]",
+      "data": false,
+      "expected": {
+        "value": [
+          false
+        ]
+      }
+    },
+    {
+      "name": "null-guard-object-1",
+      "expression": "{value:@}",
+      "data": false,
+      "expected": {
+        "value": {
+          "value": false
+        }
+      }
+    },
+    {
+      "name": "null-guard-list-2",
+      "expression": "[@]",
+      "data": 0,
+      "expected": {
+        "value": [
+          0
+        ]
+      }
+    },
+    {
+      "name": "null-guard-object-2",
+      "expression": "{value:@}",
+      "data": 0,
+      "expected": {
+        "value": {
+          "value": 0
+        }
+      }
+    },
+    {
+      "name": "null-guard-list-3",
+      "expression": "[@]",
+      "data": [],
+      "expected": {
+        "value": [
+          []
+        ]
+      }
+    },
+    {
+      "name": "null-guard-object-3",
+      "expression": "{value:@}",
+      "data": [],
+      "expected": {
+        "value": {
+          "value": []
+        }
+      }
+    },
+    {
+      "name": "null-guard-list-4",
+      "expression": "[@]",
+      "data": {},
+      "expected": {
+        "value": [
+          {}
+        ]
+      }
+    },
+    {
+      "name": "null-guard-object-4",
+      "expression": "{value:@}",
+      "data": {},
+      "expected": {
+        "value": {
+          "value": {}
+        }
+      }
+    },
+    {
+      "name": "null-guard-list-5",
+      "expression": "[@]",
+      "data": [
+        1
+      ],
+      "expected": {
+        "value": [
+          [
+            1
+          ]
+        ]
+      }
+    },
+    {
+      "name": "null-guard-object-5",
+      "expression": "{value:@}",
+      "data": [
+        1
+      ],
+      "expected": {
+        "value": {
+          "value": [
+            1
+          ]
+        }
+      }
+    },
+    {
+      "name": "null-guard-list-6",
+      "expression": "[@]",
+      "data": "",
+      "expected": {
+        "value": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "null-guard-object-6",
+      "expression": "{value:@}",
+      "data": "",
+      "expected": {
+        "value": {
+          "value": ""
+        }
+      }
+    },
+    {
+      "name": "null-guard-nested-list",
+      "expression": "missing.[@]",
+      "data": {},
+      "expected": {
+        "value": null
+      }
+    },
+    {
+      "name": "null-guard-nested-object",
+      "expression": "missing.{value:@}",
+      "data": {},
+      "expected": {
+        "value": null
+      }
+    },
+    {
+      "name": "null-guard-pipe-list",
+      "expression": "missing | [@]",
+      "data": {},
+      "expected": {
+        "value": null
+      }
+    },
+    {
+      "name": "null-guard-pipe-object",
+      "expression": "missing | {value:@}",
+      "data": {},
+      "expected": {
+        "value": null
+      }
+    },
+    {
+      "name": "null-guard-projection-list",
+      "expression": "items[*].[@]",
+      "data": {
+        "items": [
+          null,
+          false,
+          {},
+          []
+        ]
+      },
+      "expected": {
+        "value": [
+          [
+            false
+          ],
+          [
+            {}
+          ],
+          [
+            []
+          ]
+        ]
+      }
+    },
+    {
+      "name": "null-guard-projection-object",
+      "expression": "items[*].{value:@}",
+      "data": {
+        "items": [
+          null,
+          false,
+          {},
+          []
+        ]
+      },
+      "expected": {
+        "value": [
+          {
+            "value": false
+          },
+          {
+            "value": {}
+          },
+          {
+            "value": []
+          }
+        ]
+      }
+    },
+    {
+      "name": "null-guard-map",
+      "expression": "map(&[@], @)",
+      "data": [
+        null,
+        false,
+        {}
+      ],
+      "expected": {
+        "value": [
+          null,
+          [
+            false
+          ],
+          [
+            {}
+          ]
+        ]
+      }
+    },
+    {
+      "name": "null-guard-nested-string",
+      "expression": "to_string([@])",
+      "data": null,
+      "expected": {
+        "value": "null"
+      }
+    },
+    {
       "name": "syntax-0",
       "expression": "",
       "data": {},

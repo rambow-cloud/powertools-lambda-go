@@ -35,7 +35,7 @@ func TestJMESPathBoundaryReference(t *testing.T) {
 	if err := json.Unmarshal(raw, &fixture); err != nil {
 		t.Fatal(err)
 	}
-	if fixture.Version != "2.35.0" || len(fixture.Cases) != 51 {
+	if fixture.Version != "2.35.0" || len(fixture.Cases) != 73 {
 		t.Fatal("unexpected query corpus")
 	}
 	for _, item := range fixture.Cases {
@@ -73,14 +73,6 @@ func TestJMESPathBoundaryReference(t *testing.T) {
 				t.Fatal(err)
 			}
 			want := item.Expected.Value
-			// The engine's null multi-select defect is separately tracked in #225.
-			// Preserve the original observation and pin the current limitation.
-			if item.Name == "transient-array" {
-				if want != "null" {
-					t.Fatal("pinned null multi-select observation changed")
-				}
-				want = "[null,null,0]"
-			}
 			// Go maps do not retain JavaScript enumeration order. Keep the two
 			// original observations and require deterministic native key order.
 			if item.Name == "string-ascii-order" {
@@ -101,6 +93,38 @@ func TestJMESPathBoundaryReference(t *testing.T) {
 			}
 			if !reflect.DeepEqual(got, want) {
 				t.Fatalf("result=%#v; upstream/native decision=%#v", got, want)
+			}
+		})
+	}
+}
+
+func TestNullMultiSelectSkipsCustomCallbacks(t *testing.T) {
+	for _, source := range []string{"[touch(@)]", "{value:touch(@)}", "missing | [touch(@)]", "missing | {value:touch(@)}", "map(&[touch(@)], @)"} {
+		t.Run(source, func(t *testing.T) {
+			calls := 0
+			cause := errors.New("child failure")
+			compiled := MustCompile(source, WithFunctions(Function{Name: "touch", Arguments: []Argument{{Types: []Type{Any}}}, Handler: func([]any) (any, error) { calls++; return nil, cause }}))
+			var input any
+			if strings.HasPrefix(source, "missing") {
+				input = map[string]any{}
+			}
+			if strings.HasPrefix(source, "map") {
+				input = []any{nil}
+			}
+			got, err := compiled.Search(input)
+			if err != nil || calls != 0 {
+				t.Fatalf("null invoked callback: %v/%v/%d", got, err, calls)
+			}
+			if strings.HasPrefix(source, "missing") {
+				input = map[string]any{"missing": false}
+			} else if strings.HasPrefix(source, "map") {
+				input = []any{false}
+			} else {
+				input = false
+			}
+			_, err = compiled.Search(input)
+			if !errors.Is(err, cause) || calls != 1 {
+				t.Fatalf("non-null child error/count %v/%d", err, calls)
 			}
 		})
 	}

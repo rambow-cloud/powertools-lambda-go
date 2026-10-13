@@ -1,8 +1,8 @@
 # TypeScript reference fixtures
 
 `node tools/reference/generate-jmespath-boundaries.mjs` from the repository root
-records 51 actual numeric, serialization, grammar and signature observations.
-Original object-order and null multi-select differences remain explicit; see
+records 73 actual numeric, serialization, grammar, signature and null multi-select
+observations. Original object-order differences remain explicit; see
 `docs/JMESPATH_PLAN.md` and issue #225. Native input decoding stays strict.
 
 `node tools/reference/generate-parser-boundaries.mjs` from the repository root

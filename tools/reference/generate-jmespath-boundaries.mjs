@@ -17,6 +17,14 @@ for(const [name,input]of[
 ])add(`string-${name}`,'to_string(@)',input,name==='negative-zero'?'-0':undefined);
 add('transient-array',"to_string([to_number('NaN'),to_number('Infinity'),to_number('-0')])",null);
 add('transient-array-object',"to_string([to_number('NaN'),to_number('Infinity'),to_number('-0')])",{});
+for(const [i,data]of[null,false,0,[],{},[1],''].entries())for(const [kind,expression]of[['list','[@]'],['object','{value:@}']])add(`null-guard-${kind}-${i}`,expression,data);
+for(const [name,expression,data]of[
+ ['nested-list','missing.[@]',{}],['nested-object','missing.{value:@}',{}],
+ ['pipe-list','missing | [@]',{}],['pipe-object','missing | {value:@}',{}],
+ ['projection-list','items[*].[@]',{items:[null,false,{},[]]}],
+ ['projection-object','items[*].{value:@}',{items:[null,false,{},[]]}],
+ ['map','map(&[@], @)',[null,false,{}]],['nested-string','to_string([@])',null],
+])add(`null-guard-${name}`,expression,data);
 for(const [i,expression]of['',' ','items[','foo..bar',"'unterminated",'@ +','let $x = `1` in $x'].entries())add(`syntax-${i}`,expression,{});
 for(const [i,expression,data]of[
   [0,'unknown(@)',1],[1,'length()',1],[2,'length(@,@)','x'],[3,'sum(@)',[1,'x']],
