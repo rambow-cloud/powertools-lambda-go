@@ -1,0 +1,448 @@
+{
+  "version": "2.35.0",
+  "cases": [
+    {
+      "name": "number-0",
+      "expression": "to_number(@)",
+      "data": "",
+      "expected": {
+        "value": 0
+      }
+    },
+    {
+      "name": "string-number-0",
+      "expression": "to_string(to_number(@))",
+      "data": "",
+      "expected": {
+        "value": "0"
+      }
+    },
+    {
+      "name": "number-1",
+      "expression": "to_number(@)",
+      "data": " ",
+      "expected": {
+        "value": 0
+      }
+    },
+    {
+      "name": "string-number-1",
+      "expression": "to_string(to_number(@))",
+      "data": " ",
+      "expected": {
+        "value": "0"
+      }
+    },
+    {
+      "name": "number-2",
+      "expression": "to_number(@)",
+      "data": "0x10",
+      "expected": {
+        "value": 16
+      }
+    },
+    {
+      "name": "string-number-2",
+      "expression": "to_string(to_number(@))",
+      "data": "0x10",
+      "expected": {
+        "value": "16"
+      }
+    },
+    {
+      "name": "number-3",
+      "expression": "to_number(@)",
+      "data": "0b10",
+      "expected": {
+        "value": 2
+      }
+    },
+    {
+      "name": "string-number-3",
+      "expression": "to_string(to_number(@))",
+      "data": "0b10",
+      "expected": {
+        "value": "2"
+      }
+    },
+    {
+      "name": "number-4",
+      "expression": "to_number(@)",
+      "data": "0o10",
+      "expected": {
+        "value": 8
+      }
+    },
+    {
+      "name": "string-number-4",
+      "expression": "to_string(to_number(@))",
+      "data": "0o10",
+      "expected": {
+        "value": "8"
+      }
+    },
+    {
+      "name": "number-5",
+      "expression": "to_number(@)",
+      "data": "NaN",
+      "expected": {
+        "value": null
+      }
+    },
+    {
+      "name": "string-number-5",
+      "expression": "to_string(to_number(@))",
+      "data": "NaN",
+      "expected": {
+        "value": "null"
+      }
+    },
+    {
+      "name": "number-6",
+      "expression": "to_number(@)",
+      "data": "Infinity",
+      "expected": {
+        "value": {
+          "number": "Infinity"
+        }
+      }
+    },
+    {
+      "name": "string-number-6",
+      "expression": "to_string(to_number(@))",
+      "data": "Infinity",
+      "expected": {
+        "value": "null"
+      }
+    },
+    {
+      "name": "number-7",
+      "expression": "to_number(@)",
+      "data": "-Infinity",
+      "expected": {
+        "value": {
+          "number": "-Infinity"
+        }
+      }
+    },
+    {
+      "name": "string-number-7",
+      "expression": "to_string(to_number(@))",
+      "data": "-Infinity",
+      "expected": {
+        "value": "null"
+      }
+    },
+    {
+      "name": "number-8",
+      "expression": "to_number(@)",
+      "data": "1e309",
+      "expected": {
+        "value": {
+          "number": "Infinity"
+        }
+      }
+    },
+    {
+      "name": "string-number-8",
+      "expression": "to_string(to_number(@))",
+      "data": "1e309",
+      "expected": {
+        "value": "null"
+      }
+    },
+    {
+      "name": "number-9",
+      "expression": "to_number(@)",
+      "data": "-1e309",
+      "expected": {
+        "value": {
+          "number": "-Infinity"
+        }
+      }
+    },
+    {
+      "name": "string-number-9",
+      "expression": "to_string(to_number(@))",
+      "data": "-1e309",
+      "expected": {
+        "value": "null"
+      }
+    },
+    {
+      "name": "number-10",
+      "expression": "to_number(@)",
+      "data": "123bad",
+      "expected": {
+        "value": null
+      }
+    },
+    {
+      "name": "string-number-10",
+      "expression": "to_string(to_number(@))",
+      "data": "123bad",
+      "expected": {
+        "value": "null"
+      }
+    },
+    {
+      "name": "number-11",
+      "expression": "to_number(@)",
+      "data": "1e-324",
+      "expected": {
+        "value": 0
+      }
+    },
+    {
+      "name": "string-number-11",
+      "expression": "to_string(to_number(@))",
+      "data": "1e-324",
+      "expected": {
+        "value": "0"
+      }
+    },
+    {
+      "name": "number-12",
+      "expression": "to_number(@)",
+      "data": "1e2",
+      "expected": {
+        "value": 100
+      }
+    },
+    {
+      "name": "string-number-12",
+      "expression": "to_string(to_number(@))",
+      "data": "1e2",
+      "expected": {
+        "value": "100"
+      }
+    },
+    {
+      "name": "number-13",
+      "expression": "to_number(@)",
+      "data": "-0",
+      "expected": {
+        "value": {
+          "number": "-0"
+        }
+      }
+    },
+    {
+      "name": "string-number-13",
+      "expression": "to_string(to_number(@))",
+      "data": "-0",
+      "expected": {
+        "value": "0"
+      }
+    },
+    {
+      "name": "number-14",
+      "expression": "to_number(@)",
+      "data": "﻿1",
+      "expected": {
+        "value": 1
+      }
+    },
+    {
+      "name": "string-number-14",
+      "expression": "to_string(to_number(@))",
+      "data": "﻿1",
+      "expected": {
+        "value": "1"
+      }
+    },
+    {
+      "name": "string-html",
+      "expression": "to_string(@)",
+      "data": [
+        "<&>"
+      ],
+      "expected": {
+        "value": "[\"<&>\"]"
+      }
+    },
+    {
+      "name": "string-line-separators",
+      "expression": "to_string(@)",
+      "data": {
+        "value": "a b c"
+      },
+      "expected": {
+        "value": "{\"value\":\"a b c\"}"
+      }
+    },
+    {
+      "name": "string-unicode",
+      "expression": "to_string(@)",
+      "data": "你好",
+      "expected": {
+        "value": "你好"
+      }
+    },
+    {
+      "name": "string-ascii-order",
+      "expression": "to_string(@)",
+      "data": {
+        "b": 1,
+        "a": 2
+      },
+      "expected": {
+        "value": "{\"b\":1,\"a\":2}"
+      }
+    },
+    {
+      "name": "string-numeric-order",
+      "expression": "to_string(@)",
+      "data": {
+        "2": "two",
+        "10": "ten"
+      },
+      "expected": {
+        "value": "{\"2\":\"two\",\"10\":\"ten\"}"
+      }
+    },
+    {
+      "name": "string-number-small",
+      "expression": "to_string(@)",
+      "data": 1e-7,
+      "expected": {
+        "value": "1e-7"
+      }
+    },
+    {
+      "name": "string-number-large",
+      "expression": "to_string(@)",
+      "data": 1e+21,
+      "expected": {
+        "value": "1e+21"
+      }
+    },
+    {
+      "name": "string-negative-zero",
+      "expression": "to_string(@)",
+      "data": null,
+      "specialData": "-0",
+      "expected": {
+        "value": "0"
+      }
+    },
+    {
+      "name": "transient-array",
+      "expression": "to_string([to_number('NaN'),to_number('Infinity'),to_number('-0')])",
+      "data": null,
+      "expected": {
+        "value": "null"
+      }
+    },
+    {
+      "name": "transient-array-object",
+      "expression": "to_string([to_number('NaN'),to_number('Infinity'),to_number('-0')])",
+      "data": {},
+      "expected": {
+        "value": "[null,null,0]"
+      }
+    },
+    {
+      "name": "syntax-0",
+      "expression": "",
+      "data": {},
+      "expected": {
+        "error": "IncompleteExpressionError",
+        "message": "Invalid jmespath expression: parse error at column 0, found unexpected end of expression (EOF) in expression: "
+      }
+    },
+    {
+      "name": "syntax-1",
+      "expression": " ",
+      "data": {},
+      "expected": {
+        "error": "IncompleteExpressionError",
+        "message": "Invalid jmespath expression: parse error at column 1, found unexpected end of expression (EOF) in expression:  "
+      }
+    },
+    {
+      "name": "syntax-2",
+      "expression": "items[",
+      "data": {},
+      "expected": {
+        "error": "IncompleteExpressionError",
+        "message": "Invalid jmespath expression: parse error at column 6, found unexpected end of expression (EOF) in expression: items["
+      }
+    },
+    {
+      "name": "syntax-3",
+      "expression": "foo..bar",
+      "data": {},
+      "expected": {
+        "error": "ParseError",
+        "message": "Invalid jmespath expression: parse error at column 4, found unexpected token \".\" (dot) in expression: foo..bar"
+      }
+    },
+    {
+      "name": "syntax-4",
+      "expression": "'unterminated",
+      "data": {},
+      "expected": {
+        "error": "LexerError",
+        "message": "Bad jmespath expression: unknown token \"'unterminated\" at column 0 in expression: 'unterminated"
+      }
+    },
+    {
+      "name": "syntax-5",
+      "expression": "@ +",
+      "data": {},
+      "expected": {
+        "error": "LexerError",
+        "message": "Bad jmespath expression: unknown token \"+\" at column 2 in expression: @ +"
+      }
+    },
+    {
+      "name": "syntax-6",
+      "expression": "let $x = `1` in $x",
+      "data": {},
+      "expected": {
+        "error": "LexerError",
+        "message": "Bad jmespath expression: unknown token \"$\" at column 4 in expression: let $x = `1` in $x"
+      }
+    },
+    {
+      "name": "function-error-0",
+      "expression": "unknown(@)",
+      "data": 1,
+      "expected": {
+        "error": "UnknownFunctionError",
+        "message": "Unknown function: unknown() in expression: unknown(@)"
+      }
+    },
+    {
+      "name": "function-error-1",
+      "expression": "length()",
+      "data": 1,
+      "expected": {
+        "error": "ArityError",
+        "message": "Expected at least 1 argument for function length(), received 0 in expression: length()"
+      }
+    },
+    {
+      "name": "function-error-2",
+      "expression": "length(@,@)",
+      "data": "x",
+      "expected": {
+        "error": "ArityError",
+        "message": "Expected at most 1 argument for function length(), received 2 in expression: length(@,@)"
+      }
+    },
+    {
+      "name": "function-error-3",
+      "expression": "sum(@)",
+      "data": [
+        1,
+        "x"
+      ],
+      "expected": {
+        "error": "JMESPathTypeError",
+        "message": "Invalid argument type for function sum(), expected \"number\" but found \"string\" in expression: sum(@)"
+      }
+    }
+  ]
+}
