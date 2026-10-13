@@ -1,0 +1,288 @@
+{
+  "version": "2.35.0",
+  "cases": [
+    {
+      "mode": "environment",
+      "input": null,
+      "expected": {
+        "value": "value-1",
+        "calls": 1,
+        "cached": true,
+        "ttl": 15000
+      }
+    },
+    {
+      "mode": "environment",
+      "input": "",
+      "expected": {
+        "value": "value-1",
+        "calls": 1,
+        "cached": false,
+        "ttl": null
+      }
+    },
+    {
+      "mode": "environment",
+      "input": "0",
+      "expected": {
+        "value": "value-1",
+        "calls": 1,
+        "cached": false,
+        "ttl": null
+      }
+    },
+    {
+      "mode": "environment",
+      "input": "-1",
+      "expected": {
+        "value": "value-1",
+        "calls": 1,
+        "cached": false,
+        "ttl": null
+      }
+    },
+    {
+      "mode": "environment",
+      "input": "0.1",
+      "expected": {
+        "value": "value-1",
+        "calls": 1,
+        "cached": true,
+        "ttl": 10000
+      }
+    },
+    {
+      "mode": "environment",
+      "input": "1e-9",
+      "expected": {
+        "value": "value-1",
+        "calls": 1,
+        "cached": true,
+        "ttl": 10000
+      }
+    },
+    {
+      "mode": "environment",
+      "input": "0x10",
+      "expected": {
+        "value": "value-1",
+        "calls": 1,
+        "cached": true,
+        "ttl": 26000
+      }
+    },
+    {
+      "mode": "environment",
+      "input": "1e309",
+      "expected": {
+        "value": "value-1",
+        "calls": 1,
+        "cached": true,
+        "ttl": {
+          "number": "NaN"
+        }
+      }
+    },
+    {
+      "mode": "environment",
+      "input": "-Infinity",
+      "expected": {
+        "value": "value-1",
+        "calls": 1,
+        "cached": false,
+        "ttl": null
+      }
+    },
+    {
+      "mode": "environment",
+      "input": "Infinity",
+      "expected": {
+        "value": "value-1",
+        "calls": 1,
+        "cached": true,
+        "ttl": {
+          "number": "NaN"
+        }
+      }
+    },
+    {
+      "mode": "environment",
+      "input": "invalid",
+      "expected": {
+        "error": "TypeError",
+        "message": "Environment variable POWERTOOLS_PARAMETERS_MAX_AGE must be a number",
+        "calls": 0
+      }
+    },
+    {
+      "mode": "environment",
+      "input": "NaN",
+      "expected": {
+        "error": "TypeError",
+        "message": "Environment variable POWERTOOLS_PARAMETERS_MAX_AGE must be a number",
+        "calls": 0
+      }
+    },
+    {
+      "mode": "environment",
+      "input": "9.223372036854776e9",
+      "expected": {
+        "value": "value-1",
+        "calls": 1,
+        "cached": true,
+        "ttl": 9223372046000
+      }
+    },
+    {
+      "mode": "environment",
+      "input": "5",
+      "expected": {
+        "value": "value-1",
+        "calls": 1,
+        "cached": true,
+        "ttl": 15000
+      }
+    },
+    {
+      "mode": "environment",
+      "input": "1e-324",
+      "expected": {
+        "value": "value-1",
+        "calls": 1,
+        "cached": false,
+        "ttl": null
+      }
+    },
+    {
+      "mode": "sequence",
+      "name": "boundary-force-clear",
+      "age": 1,
+      "steps": [
+        {
+          "at": 10000
+        },
+        {
+          "at": 11000
+        },
+        {
+          "at": 11001
+        },
+        {
+          "at": 11001,
+          "force": true
+        },
+        {
+          "at": 11001,
+          "clear": true
+        }
+      ],
+      "expected": [
+        {
+          "value": "value-1",
+          "calls": 1
+        },
+        {
+          "value": "value-1",
+          "calls": 1
+        },
+        {
+          "value": "value-2",
+          "calls": 2
+        },
+        {
+          "value": "value-3",
+          "calls": 3
+        },
+        {
+          "value": "value-4",
+          "calls": 4
+        }
+      ]
+    },
+    {
+      "mode": "sequence",
+      "name": "fractional",
+      "age": 0.1,
+      "steps": [
+        {
+          "at": 10000
+        },
+        {
+          "at": 10001
+        }
+      ],
+      "expected": [
+        {
+          "value": "value-1",
+          "calls": 1
+        },
+        {
+          "value": "value-2",
+          "calls": 2
+        }
+      ]
+    },
+    {
+      "mode": "sequence",
+      "name": "zero",
+      "age": 0,
+      "steps": [
+        {
+          "at": 10000
+        },
+        {
+          "at": 10000
+        }
+      ],
+      "expected": [
+        {
+          "value": "value-1",
+          "calls": 1
+        },
+        {
+          "value": "value-2",
+          "calls": 2
+        }
+      ]
+    },
+    {
+      "mode": "sequence",
+      "name": "warm-nonpositive",
+      "age": 1,
+      "steps": [
+        {
+          "at": 10000
+        },
+        {
+          "at": 10000,
+          "age": 0
+        },
+        {
+          "at": 10000,
+          "age": -1
+        },
+        {
+          "at": 10000
+        }
+      ],
+      "expected": [
+        {
+          "value": "value-1",
+          "calls": 1
+        },
+        {
+          "value": "value-1",
+          "calls": 1
+        },
+        {
+          "value": "value-1",
+          "calls": 1
+        },
+        {
+          "value": "value-1",
+          "calls": 1
+        }
+      ]
+    }
+  ]
+}

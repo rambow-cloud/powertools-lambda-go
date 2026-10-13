@@ -123,6 +123,8 @@ Usage belongs in the utility guides. [Feature comparison](FEATURE_PARITY.md) map
 
 ## Parameters
 
+- [x] AUDIT-PARAMETERS-184-LOCAL: Complete the [finite duration/provider matrix](PARAMETERS.md#finite-boundary-audit-184) with nineteen actual TypeScript duration/cache observations, a channel-fenced in-flight batch clear and native byte snapshot/bypass checks. Reuse existing effective SDK-option, missing/error/cancellation, token and real-SDK protocol evidence. Preserve fractional/saturated Go duration, warm nonpositive lookup, strict JSON v2 and typed error differences; no new production defect was reproduced. Packaged Parameters tests/vet/tidy/isolation and one consumer pass with CGO disabled/GOWORK off; JSON v2 and documentation/discovery checks pass. Broader diagnostics/provider options, resources and service gates remain separate (2026-10-13).
+
 Parameters acceptance (2026-09-14): see [PARAMETERS.md](PARAMETERS.md) for the exact API and compatibility boundaries.
 
 - [x] P-01: Implement shared TTL caching, force fetch, clearing, transform-specific entries, isolated mutable results, missing/error handling, and cancellable callbacks. Verify expiry and functional concurrency tests.
