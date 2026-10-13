@@ -128,6 +128,10 @@ It prints decoded payloads followed by a log with `correlation_id: "order-1"`.
 
 ## Objects and lifecycle
 
+See the [finite boundary audit](JMESPATH_PLAN.md#finite-boundary-audit-187) for
+numeric conversion, JSON v2 serialization and null multi-select evidence, along
+with explicit native differences and remaining broad gates.
+
 | Object | How to use it |
 | --- | --- |
 | Input value | Supply the decoded Go object to query. |

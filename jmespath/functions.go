@@ -1,10 +1,13 @@
 package jmespath
 
 import (
+	json "encoding/json/v2"
 	"fmt"
+	"math"
 	"strings"
 
 	engine "github.com/jmespath-community/go-jmespath/pkg/functions"
+	commons "github.com/rambow-cloud/powertools-lambda-go/commons"
 )
 
 type Type = engine.JpType
@@ -87,6 +90,43 @@ func standardFunctions() functionTable {
 				copy := append([]any(nil), args...)
 				copy[0] = append([]any{}, args[0].([]any)...)
 				return handler(copy)
+			}
+		}
+		if entry.Name == "to_number" {
+			function.Handler = func(args []any) (any, error) {
+				switch value := args[0].(type) {
+				case float64:
+					return value, nil
+				case string:
+					number := commons.ParseNumber(value)
+					if !math.IsNaN(number) {
+						return number, nil
+					}
+				}
+				return nil, nil
+			}
+		}
+		if entry.Name == "to_string" {
+			// JSON.stringify emits null for intermediate non-finite numbers and
+			// canonicalizes negative zero. Native input validation stays strict.
+			marshalers := json.MarshalFunc[float64](func(value float64) ([]byte, error) {
+				if math.IsNaN(value) || math.IsInf(value, 0) {
+					return []byte("null"), nil
+				}
+				if value == 0 {
+					return []byte("0"), nil
+				}
+				return json.Marshal(value)
+			})
+			function.Handler = func(args []any) (any, error) {
+				if value, ok := args[0].(string); ok {
+					return value, nil
+				}
+				value, err := json.Marshal(args[0], json.Deterministic(true), json.WithMarshalers(marshalers))
+				if err != nil {
+					return nil, err
+				}
+				return string(value), nil
 			}
 		}
 		table[entry.Name] = function

@@ -1,5 +1,10 @@
 # TypeScript reference fixtures
 
+`node tools/reference/generate-jmespath-boundaries.mjs` from the repository root
+records 73 actual numeric, serialization, grammar, signature and null multi-select
+observations. Original object-order differences remain explicit; see
+`docs/JMESPATH_PLAN.md` and issue #225. Native input decoding stays strict.
+
 `node tools/reference/generate-parser-boundaries.mjs` from the repository root
 records 84 actual invalid-input cases for all fourteen Parser envelopes, using
 the existing recursive portable issue projection. See `docs/PARSER_PLAN.md` for

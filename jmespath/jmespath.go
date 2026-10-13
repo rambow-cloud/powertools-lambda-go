@@ -65,6 +65,7 @@ func Compile(source string, options ...Option) (*Expression, error) {
 		if err = validateSyntax(node); err != nil {
 			return nil, &Error{Kind: SyntaxError, Expression: source, Err: err}
 		}
+		node = guardMultiSelect(node)
 		parsedCache.Add(source, node)
 	}
 	functions := standardFunctions()
@@ -129,4 +130,25 @@ func validateSyntax(node parsing.ASTNode) error {
 		}
 	}
 	return nil
+}
+
+// guardMultiSelect adapts the engine's unconditional multi-select evaluation.
+// A singleton filter skips the original node on null, then index zero unwraps
+// its result. Unlike a truthiness guard, it retains false, zero and empty input.
+func guardMultiSelect(node parsing.ASTNode) parsing.ASTNode {
+	children := make([]parsing.ASTNode, len(node.Children))
+	for i, child := range node.Children {
+		children[i] = guardMultiSelect(child)
+	}
+	node.Children = children
+	if node.NodeType != parsing.ASTMultiSelectList && node.NodeType != parsing.ASTMultiSelectHash {
+		return node
+	}
+	current := parsing.ASTNode{NodeType: parsing.ASTCurrentNode}
+	// This synthetic singleton intentionally uses the engine's unguarded node;
+	// only the original source nodes are recursively adapted above.
+	singleton := parsing.ASTNode{NodeType: parsing.ASTMultiSelectList, Children: []parsing.ASTNode{current}}
+	condition := parsing.ASTNode{NodeType: parsing.ASTComparator, Value: parsing.TOKNE, Children: []parsing.ASTNode{current, {NodeType: parsing.ASTLiteral}}}
+	filter := parsing.ASTNode{NodeType: parsing.ASTFilterProjection, Children: []parsing.ASTNode{singleton, node, condition}}
+	return parsing.ASTNode{NodeType: parsing.ASTIndexExpression, Children: []parsing.ASTNode{filter, {NodeType: parsing.ASTIndex, Value: 0}}}
 }
