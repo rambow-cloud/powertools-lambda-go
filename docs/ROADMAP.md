@@ -12,7 +12,7 @@ The comparison remains pinned to TypeScript **v2.35.0**, commit `7bcc27b1574493f
 
 | Order | Milestone | Work issues | First slice and completion gate |
 | --- | --- | --- | --- |
-| 1 | [01 - Schema and regex extensions](https://github.com/rambow-cloud/powertools-lambda-go/milestone/1) | 10 total | Opt-in Draft 2020-12 and 2019-09 are implemented on main; shared regex `v` and older dialects follow. Review transformation/extension ownership before other additions; preserve default Draft 7 behavior. |
+| 1 | [01 - Schema and regex extensions](https://github.com/rambow-cloud/powertools-lambda-go/milestone/1) | 10 total | Opt-in Draft 2020-12 and 2019-09 are published in v1.2.0; shared regex `v` and older dialects follow. Review transformation/extension ownership before other additions; preserve default Draft 7 behavior. |
 | 2 | [02 - Kafka registry wire formats](https://github.com/rambow-cloud/powertools-lambda-go/milestone/2) | 3 | Confluent version-0 raw frames first; Glue and GUID-header modes follow the explicit framing/resolver contract. Producer fixtures and lazy bounded decoding are required. |
 | 3 | [03 - KMS bounded materials cache](https://github.com/rambow-cloud/powertools-lambda-go/milestone/3) | 1 | Review supported CMM interfaces first. Implement only a reviewed cache with finite limits and authenticated interoperability; retain SDK blockers explicitly. |
 | 4 | [04 - Utility compatibility contracts](https://github.com/rambow-cloud/powertools-lambda-go/milestone/4) | 17 | Finish the finite per-utility contract matrices, fix reproduced defects and document intentional Go differences. Existing implementations remain available. |
@@ -25,11 +25,10 @@ Numbers describe the proposed sequence, not release versions or deadlines. Indep
 
 These built-in capabilities are absent. Existing application-owned `Compiler`, decoder and masking-provider interfaces remain usable.
 
-The first two optional compiler slices are implemented on `main`: #168 provides
+The first two optional compiler slices are published in v1.2.0: #168 provides
 `Draft202012Compiler` (54 matching pinned reference verdicts, two measured native
 differences); #169 provides `Draft201909Compiler` (55 matching verdicts, three
-native differences). Both have scoped ownership/reference/lifecycle acceptance
-and are absent from published v1.1.0. Their
+native differences). Both have scoped ownership/reference/lifecycle acceptance. Their
 [contracts](JSON_SCHEMA_VALIDATION.md#optional-draft-2020-12-compiler) leave Draft 7
 unchanged; the remaining compiler and transformation slices below stay open.
 

@@ -13,7 +13,7 @@ See [installation](MODULES.md) and the [compatibility baseline](COMPATIBILITY.md
 Use Go 1.27 or newer and install the module in your own application:
 
 ```sh
-CGO_ENABLED=0 go get github.com/rambow-cloud/powertools-lambda-go/parser@v1.1.0
+CGO_ENABLED=0 go get github.com/rambow-cloud/powertools-lambda-go/parser@v1.2.0
 ```
 
 ## Complete example

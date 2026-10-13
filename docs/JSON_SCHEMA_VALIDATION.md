@@ -13,7 +13,7 @@ See [installation](MODULES.md) and the [compatibility baseline](COMPATIBILITY.md
 Use Go 1.27 or newer and install the module in your own application:
 
 ```sh
-CGO_ENABLED=0 go get github.com/rambow-cloud/powertools-lambda-go/validation@v1.1.0
+CGO_ENABLED=0 go get github.com/rambow-cloud/powertools-lambda-go/validation@v1.2.0
 ```
 
 ## Complete example
@@ -104,8 +104,8 @@ The default backend is the pure-Go [jsonschema v6.0.3 engine](https://pkg.go.dev
 
 ## Optional Draft 2020-12 compiler
 
-`Draft202012Compiler` is an opt-in addition on `main`; the published `v1.1.0`
-does not include it. Select it through the existing compiler interface:
+`Draft202012Compiler` is available as an opt-in compiler from `v1.2.0`.
+Select it through the existing compiler interface:
 
 ~~~go
 schema, err := validation.Compile(ctx, json.RawMessage(`{
@@ -164,10 +164,10 @@ See [the implementation issue](https://github.com/rambow-cloud/powertools-lambda
 
 ## Optional Draft 2019-09 compiler
 
-`Draft201909Compiler` is also available on `main`, through
-`Options{Compiler: validation.Draft201909Compiler{}}`; it is absent from published
-v1.1.0. Registration, snapshots, native diagnostics, formats, regex limits and
-cancellation follow the [2020-12 compiler contract](#optional-draft-2020-12-compiler).
+`Draft201909Compiler` is also available from `v1.2.0`, through
+`Options{Compiler: validation.Draft201909Compiler{}}`. Registration, snapshots,
+native diagnostics, formats, regex limits and cancellation follow the
+[2020-12 compiler contract](#optional-draft-2020-12-compiler).
 Each adapter selects and validates its own metaschema and vocabulary. Their
 shared private implementation does not select a dialect automatically or expand
 default Draft 7.

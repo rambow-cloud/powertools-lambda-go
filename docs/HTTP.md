@@ -13,7 +13,7 @@ The independent `github.com/rambow-cloud/powertools-lambda-go/eventhandler/http`
 Use Go 1.27 or newer in your application's Go module:
 
 ```sh
-CGO_ENABLED=0 go get github.com/rambow-cloud/powertools-lambda-go/eventhandler/http@v1.1.0
+CGO_ENABLED=0 go get github.com/rambow-cloud/powertools-lambda-go/eventhandler/http@v1.2.0
 CGO_ENABLED=0 go get github.com/aws/aws-lambda-go@v1.55.0
 ```
 

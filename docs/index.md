@@ -43,7 +43,7 @@ Powertools for AWS Lambda (Go) is an **independent community implementation**, b
 Install one utility to begin. For example, add structured logging:
 
 ```sh
-CGO_ENABLED=0 go get github.com/rambow-cloud/powertools-lambda-go/logger@v1.1.0
+CGO_ENABLED=0 go get github.com/rambow-cloud/powertools-lambda-go/logger@v1.2.0
 ```
 
 Use **Go 1.27 or newer**, target **arm64 or x86_64**, and keep **CGO disabled**. Install the published modules using the [module guide](MODULES.md), which explains dependencies, imports, and independent versioning.
