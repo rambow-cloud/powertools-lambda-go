@@ -15,6 +15,7 @@ npm run fixtures
 | `generate-sampling.mjs` | Deterministic constructor sampling and first/warm refresh decisions |
 | `generate-logger-boundaries.mjs` | Twenty-six actual configuration, winter/summer timezone, sink and diagnostic cases; native differences are recorded in `docs/LOGGER.md` |
 | `generate-metrics.mjs` | EMF dimensions, repeated values, automatic flush boundaries, and single metrics |
+| `generate-metrics-boundaries.mjs` | 15 actual metadata/snapshot/non-finite/reserved-key observations; documented Go decisions in `docs/METRICS_PLAN.md` |
 | `generate-parameters.mjs` | Cache and transform output plus SSM batching/decryption quirks and SDK operation sequences |
 | `generate-commons.mjs` | Environment/runtime, Base64, deep merge, LRU/types, DynamoDB values, and Metadata request/cache behavior |
 | `generate-commons-boundaries.mjs` | 71 numeric, malformed encoding and raw DynamoDB observations; 24 numbers also belong to the optional SDK module; see `docs/COMMONS_PLAN.md` |

@@ -1,0 +1,456 @@
+{
+  "version": "2.35.0",
+  "now": 1789992000000,
+  "cases": [
+    {
+      "name": "string",
+      "key": "payload",
+      "input": "hello",
+      "expected": {
+        "_aws": {
+          "Timestamp": 1789992000000,
+          "CloudWatchMetrics": [
+            {
+              "Namespace": "Example",
+              "Dimensions": [
+                [
+                  "service"
+                ]
+              ],
+              "Metrics": [
+                {
+                  "Name": "Count",
+                  "Unit": "Count"
+                }
+              ]
+            }
+          ]
+        },
+        "payload": "hello",
+        "service": "orders",
+        "Count": 1
+      }
+    },
+    {
+      "name": "boolean",
+      "key": "payload",
+      "input": false,
+      "expected": {
+        "_aws": {
+          "Timestamp": 1789992000000,
+          "CloudWatchMetrics": [
+            {
+              "Namespace": "Example",
+              "Dimensions": [
+                [
+                  "service"
+                ]
+              ],
+              "Metrics": [
+                {
+                  "Name": "Count",
+                  "Unit": "Count"
+                }
+              ]
+            }
+          ]
+        },
+        "payload": false,
+        "service": "orders",
+        "Count": 1
+      }
+    },
+    {
+      "name": "null",
+      "key": "payload",
+      "input": null,
+      "expected": {
+        "_aws": {
+          "Timestamp": 1789992000000,
+          "CloudWatchMetrics": [
+            {
+              "Namespace": "Example",
+              "Dimensions": [
+                [
+                  "service"
+                ]
+              ],
+              "Metrics": [
+                {
+                  "Name": "Count",
+                  "Unit": "Count"
+                }
+              ]
+            }
+          ]
+        },
+        "payload": null,
+        "service": "orders",
+        "Count": 1
+      }
+    },
+    {
+      "name": "number",
+      "key": "payload",
+      "input": 1.5,
+      "expected": {
+        "_aws": {
+          "Timestamp": 1789992000000,
+          "CloudWatchMetrics": [
+            {
+              "Namespace": "Example",
+              "Dimensions": [
+                [
+                  "service"
+                ]
+              ],
+              "Metrics": [
+                {
+                  "Name": "Count",
+                  "Unit": "Count"
+                }
+              ]
+            }
+          ]
+        },
+        "payload": 1.5,
+        "service": "orders",
+        "Count": 1
+      }
+    },
+    {
+      "name": "large-number",
+      "key": "payload",
+      "input": 9007199254740992,
+      "expected": {
+        "_aws": {
+          "Timestamp": 1789992000000,
+          "CloudWatchMetrics": [
+            {
+              "Namespace": "Example",
+              "Dimensions": [
+                [
+                  "service"
+                ]
+              ],
+              "Metrics": [
+                {
+                  "Name": "Count",
+                  "Unit": "Count"
+                }
+              ]
+            }
+          ]
+        },
+        "payload": 9007199254740992,
+        "service": "orders",
+        "Count": 1
+      }
+    },
+    {
+      "name": "object",
+      "key": "payload",
+      "input": {
+        "nested": {
+          "value": 1
+        }
+      },
+      "expected": {
+        "_aws": {
+          "Timestamp": 1789992000000,
+          "CloudWatchMetrics": [
+            {
+              "Namespace": "Example",
+              "Dimensions": [
+                [
+                  "service"
+                ]
+              ],
+              "Metrics": [
+                {
+                  "Name": "Count",
+                  "Unit": "Count"
+                }
+              ]
+            }
+          ]
+        },
+        "payload": {
+          "nested": {
+            "value": 1
+          }
+        },
+        "service": "orders",
+        "Count": 1
+      }
+    },
+    {
+      "name": "array",
+      "key": "payload",
+      "input": [
+        1,
+        "a",
+        null
+      ],
+      "expected": {
+        "_aws": {
+          "Timestamp": 1789992000000,
+          "CloudWatchMetrics": [
+            {
+              "Namespace": "Example",
+              "Dimensions": [
+                [
+                  "service"
+                ]
+              ],
+              "Metrics": [
+                {
+                  "Name": "Count",
+                  "Unit": "Count"
+                }
+              ]
+            }
+          ]
+        },
+        "payload": [
+          1,
+          "a",
+          null
+        ],
+        "service": "orders",
+        "Count": 1
+      }
+    },
+    {
+      "name": "prototype",
+      "key": "__proto__",
+      "input": "ignored",
+      "expected": {
+        "_aws": {
+          "Timestamp": 1789992000000,
+          "CloudWatchMetrics": [
+            {
+              "Namespace": "Example",
+              "Dimensions": [
+                [
+                  "service"
+                ]
+              ],
+              "Metrics": [
+                {
+                  "Name": "Count",
+                  "Unit": "Count"
+                }
+              ]
+            }
+          ]
+        },
+        "service": "orders",
+        "Count": 1
+      }
+    },
+    {
+      "name": "envelope",
+      "key": "_aws",
+      "input": {
+        "custom": true
+      },
+      "expected": {
+        "_aws": {
+          "custom": true
+        },
+        "service": "orders",
+        "Count": 1
+      }
+    },
+    {
+      "name": "constructor",
+      "key": "constructor",
+      "input": "metadata",
+      "expected": {
+        "_aws": {
+          "Timestamp": 1789992000000,
+          "CloudWatchMetrics": [
+            {
+              "Namespace": "Example",
+              "Dimensions": [
+                [
+                  "service"
+                ]
+              ],
+              "Metrics": [
+                {
+                  "Name": "Count",
+                  "Unit": "Count"
+                }
+              ]
+            }
+          ]
+        },
+        "constructor": "metadata",
+        "service": "orders",
+        "Count": 1
+      }
+    },
+    {
+      "name": "mutation-object",
+      "key": "payload",
+      "input": {
+        "nested": {
+          "value": "old"
+        }
+      },
+      "expected": {
+        "_aws": {
+          "Timestamp": 1789992000000,
+          "CloudWatchMetrics": [
+            {
+              "Namespace": "Example",
+              "Dimensions": [
+                [
+                  "service"
+                ]
+              ],
+              "Metrics": [
+                {
+                  "Name": "Count",
+                  "Unit": "Count"
+                }
+              ]
+            }
+          ]
+        },
+        "payload": {
+          "nested": {
+            "value": "new"
+          }
+        },
+        "service": "orders",
+        "Count": 1
+      }
+    },
+    {
+      "name": "mutation-array",
+      "key": "payload",
+      "input": [
+        "old"
+      ],
+      "expected": {
+        "_aws": {
+          "Timestamp": 1789992000000,
+          "CloudWatchMetrics": [
+            {
+              "Namespace": "Example",
+              "Dimensions": [
+                [
+                  "service"
+                ]
+              ],
+              "Metrics": [
+                {
+                  "Name": "Count",
+                  "Unit": "Count"
+                }
+              ]
+            }
+          ]
+        },
+        "payload": [
+          "new"
+        ],
+        "service": "orders",
+        "Count": 1
+      }
+    },
+    {
+      "name": "nan",
+      "key": "payload",
+      "input": null,
+      "special": "NaN",
+      "expected": {
+        "_aws": {
+          "Timestamp": 1789992000000,
+          "CloudWatchMetrics": [
+            {
+              "Namespace": "Example",
+              "Dimensions": [
+                [
+                  "service"
+                ]
+              ],
+              "Metrics": [
+                {
+                  "Name": "Count",
+                  "Unit": "Count"
+                }
+              ]
+            }
+          ]
+        },
+        "payload": null,
+        "service": "orders",
+        "Count": 1
+      }
+    },
+    {
+      "name": "infinity",
+      "key": "payload",
+      "input": null,
+      "special": "Infinity",
+      "expected": {
+        "_aws": {
+          "Timestamp": 1789992000000,
+          "CloudWatchMetrics": [
+            {
+              "Namespace": "Example",
+              "Dimensions": [
+                [
+                  "service"
+                ]
+              ],
+              "Metrics": [
+                {
+                  "Name": "Count",
+                  "Unit": "Count"
+                }
+              ]
+            }
+          ]
+        },
+        "payload": null,
+        "service": "orders",
+        "Count": 1
+      }
+    },
+    {
+      "name": "negative-infinity",
+      "key": "payload",
+      "input": null,
+      "special": "-Infinity",
+      "expected": {
+        "_aws": {
+          "Timestamp": 1789992000000,
+          "CloudWatchMetrics": [
+            {
+              "Namespace": "Example",
+              "Dimensions": [
+                [
+                  "service"
+                ]
+              ],
+              "Metrics": [
+                {
+                  "Name": "Count",
+                  "Unit": "Count"
+                }
+              ]
+            }
+          ]
+        },
+        "payload": null,
+        "service": "orders",
+        "Count": 1
+      }
+    }
+  ]
+}

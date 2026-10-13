@@ -103,6 +103,8 @@ Usage belongs in the utility guides. [Feature comparison](FEATURE_PARITY.md) map
 
 ## Metrics
 
+- [x] AUDIT-METRICS-183-LOCAL: Complete the [finite metadata/lifecycle matrix](METRICS_PLAN.md#finite-metadata-and-lifecycle-audit-183), reusing existing value/timestamp/wrapper/HTTP corpora and adding fifteen actual TypeScript metadata observations, exact native numeric snapshots/atomic failures, channel-fenced finish overlap and thirty-two two-instance invocations. Reproduce and fix serialization after scope closure; preserve insertion snapshots, JSON v2 non-finite rejection and default wrapper/HTTP policies. Both affected packaged modules and two independent consumers pass with CGO disabled/GOWORK off; scoped JSON v2 and documentation/discovery checks pass. Broad M-EDGES/M-WRAPPER, resources and service gates remain separate (2026-10-13).
+
 - [x] M-01: Add an independent EMF package using io.Writer, all 27 units, standard/high resolution, scalar/multiple values, and injected timestamps.
 - [x] M-02: Implement default/request dimensions, independent dimension sets, metadata snapshots, merge precedence, projected dimension limits, and metric collision rejection.
 - [x] M-03: Implement manual flush/clear, automatic 100-metric and 100-value boundaries, independent single metrics, and cleanup on failed writes.
