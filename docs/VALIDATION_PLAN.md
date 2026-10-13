@@ -36,3 +36,29 @@ Reference: Powertools TypeScript v2.35.0, installed AJV v8.20.0. The default Go 
 - [ ] V-09: Measure compilation/validation latency, allocations, binary size and schema/payload resource limits; complete dependency/license review and independent release setup.
 
 See [JSON_SCHEMA_VALIDATION.md](JSON_SCHEMA_VALIDATION.md) for current API behavior and known boundaries. The complete utility remains unfinished until all applicable gates pass.
+
+## Finite default boundary audit #189
+
+This finite audit executes the pinned public TypeScript v2.35.0 `validate` factory
+with its actual default `new Ajv({ allErrors: true })`, without injecting an engine
+or changing strictness. Forty-three observations supplement the existing setup,
+strictness, reference, graph, conditional, keyword and regex corpora. Two more
+observations retain errors thrown during external registration before AJV's
+compilation catch. The generator is `tools/reference/generate-validation-boundaries.mjs`.
+
+| Boundary | Reviewed result / native contract |
+| --- | --- |
+| Default factory | True/false schemas, nullable, no coercion, no defaults and no additional-property removal retain exact results or all-error arrays. Existing wrappers keep their separate literal-false policy. |
+| Reachable strictness | Unknown keywords, unregistered email format, invalid regex, nullable setup and invalid length definitions are compared in unused and referenced forms. Original-document structural checks remain distinct from reachable compilation. |
+| Default AJV warnings | Twelve strictTypes warnings are preserved in the fixture. Go has no logger option and deliberately does not emulate AJV's warning side effects; errors and payload diagnostics are compared exactly. |
+| Reference identities | Duplicate document IDs, duplicate fragment IDs and missing registered references fail compilation. Existing ordered registration, alias and recursive graph fixtures remain checked; schema loading stays local. |
+| External registration failure | Actual AJV emits raw Error before its compile catch. Go consistently returns `SchemaCompilationError` with its native cause for duplicate/invalid unused external documents; both original observations remain unmodified. |
+| Conditional/numeric/regex diagnostics | Both conditional branches, floating-point multipleOf/maximum boundaries, astral Unicode, property escapes and invalid patterns retain full keyword/message/params/schema-path arrays in original order. |
+| Native ownership/cancellation | Referenced object-valued enums and returned nested allowedValues remain private snapshots. A channel-fenced format callback runs once; cancellation during or before evaluation is retained. Existing compiled concurrent callers and extension error identity remain covered. |
+| Native JSON errors | JSON v2 duplicate-key, malformed UTF-8, lone-surrogate and non-finite failures remain operational decode/encode errors, without being converted to schema rejection. |
+
+No production defect was reproduced in these rows. Packaged Validation checks
+and its independent consumer use CGO disabled and GOWORK off. Exhaustive V-05,
+V-06, V-07 and V-09 resource gates remain open. Optional Draft 2019-09/2020-12
+contracts are unchanged; deferred Draft 4/6 work is excluded. No AWS acceptance
+is claimed.

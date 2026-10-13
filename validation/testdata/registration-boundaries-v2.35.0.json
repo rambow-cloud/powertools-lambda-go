@@ -1,0 +1,48 @@
+{
+  "version": "2.35.0",
+  "ajvVersion": "8.20.0",
+  "cases": [
+    {
+      "name": "duplicate-external",
+      "schema": true,
+      "payload": "value",
+      "options": {
+        "externalRefs": [
+          {
+            "$id": "https://example.test/duplicate",
+            "type": "string"
+          },
+          {
+            "$id": "https://example.test/duplicate",
+            "type": "number"
+          }
+        ]
+      },
+      "expected": {
+        "success": false,
+        "error": "Error",
+        "message": "schema with key or id \"https://example.test/duplicate\" already exists"
+      },
+      "warnings": []
+    },
+    {
+      "name": "invalid-unused-external",
+      "schema": true,
+      "payload": "value",
+      "options": {
+        "externalRefs": [
+          {
+            "$id": "https://example.test/invalid",
+            "type": "bogus"
+          }
+        ]
+      },
+      "expected": {
+        "success": false,
+        "error": "Error",
+        "message": "schema is invalid: data/type must be equal to one of the allowed values, data/type must be array, data/type must match a schema in anyOf"
+      },
+      "warnings": []
+    }
+  ]
+}

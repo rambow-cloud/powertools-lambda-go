@@ -1,5 +1,10 @@
 # TypeScript reference fixtures
 
+`node tools/reference/generate-validation-boundaries.mjs` from the repository root
+records 43 actual public default AJV cases and two raw external registration
+errors, retaining strictTypes warnings and original full diagnostics. It injects
+no AJV instance/options. See `docs/VALIDATION_PLAN.md` for native differences.
+
 `node tools/reference/generate-jmespath-boundaries.mjs` from the repository root
 records 73 actual numeric, serialization, grammar, signature and null multi-select
 observations. Original object-order differences remain explicit; see
