@@ -1,0 +1,2276 @@
+{
+  "version": "2.35.0",
+  "zodVersion": "4.1.12",
+  "cases": [
+    {
+      "name": "boundary-sqs-missing-false",
+      "schema": "unknown",
+      "envelope": "sqs",
+      "input": {},
+      "safe": false,
+      "expected": {
+        "success": false,
+        "thrown": true,
+        "error": "ParseError",
+        "message": "Failed to parse SQS Envelope. This error was caused by: [\n  {\n    \"expected\": \"array\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"Records\"\n    ],\n    \"message\": \"Invalid input: expected array, received undefined\"\n  }\n].",
+        "issues": [
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected array, received undefined",
+            "path": [
+              "Records"
+            ],
+            "expected": "array"
+          }
+        ]
+      }
+    },
+    {
+      "name": "boundary-sqs-missing-true",
+      "schema": "unknown",
+      "envelope": "sqs",
+      "input": {},
+      "safe": true,
+      "expected": {
+        "success": false,
+        "issues": [
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected array, received undefined",
+            "path": [
+              "Records"
+            ],
+            "expected": "array"
+          }
+        ],
+        "original": {}
+      }
+    },
+    {
+      "name": "boundary-sqs-scalar-false",
+      "schema": "unknown",
+      "envelope": "sqs",
+      "input": 0,
+      "safe": false,
+      "expected": {
+        "success": false,
+        "thrown": true,
+        "error": "ParseError",
+        "message": "Failed to parse SQS Envelope. This error was caused by: [\n  {\n    \"expected\": \"object\",\n    \"code\": \"invalid_type\",\n    \"path\": [],\n    \"message\": \"Invalid input: expected object, received number\"\n  }\n].",
+        "issues": [
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected object, received number",
+            "expected": "object"
+          }
+        ]
+      }
+    },
+    {
+      "name": "boundary-sqs-scalar-true",
+      "schema": "unknown",
+      "envelope": "sqs",
+      "input": 0,
+      "safe": true,
+      "expected": {
+        "success": false,
+        "issues": [
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected object, received number",
+            "expected": "object"
+          }
+        ],
+        "original": 0
+      }
+    },
+    {
+      "name": "boundary-sqs-array-false",
+      "schema": "unknown",
+      "envelope": "sqs",
+      "input": [],
+      "safe": false,
+      "expected": {
+        "success": false,
+        "thrown": true,
+        "error": "ParseError",
+        "message": "Failed to parse SQS Envelope. This error was caused by: [\n  {\n    \"expected\": \"object\",\n    \"code\": \"invalid_type\",\n    \"path\": [],\n    \"message\": \"Invalid input: expected object, received array\"\n  }\n].",
+        "issues": [
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected object, received array",
+            "expected": "object"
+          }
+        ]
+      }
+    },
+    {
+      "name": "boundary-sqs-array-true",
+      "schema": "unknown",
+      "envelope": "sqs",
+      "input": [],
+      "safe": true,
+      "expected": {
+        "success": false,
+        "issues": [
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected object, received array",
+            "expected": "object"
+          }
+        ],
+        "original": []
+      }
+    },
+    {
+      "name": "boundary-eventbridge-missing-false",
+      "schema": "unknown",
+      "envelope": "eventbridge",
+      "input": {},
+      "safe": false,
+      "expected": {
+        "success": false,
+        "thrown": true,
+        "error": "ParseError",
+        "message": "Failed to parse EventBridge envelope. This error was caused by: [\n  {\n    \"expected\": \"string\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"version\"\n    ],\n    \"message\": \"Invalid input: expected string, received undefined\"\n  },\n  {\n    \"expected\": \"string\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"id\"\n    ],\n    \"message\": \"Invalid input: expected string, received undefined\"\n  },\n  {\n    \"expected\": \"string\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"source\"\n    ],\n    \"message\": \"Invalid input: expected string, received undefined\"\n  },\n  {\n    \"expected\": \"string\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"account\"\n    ],\n    \"message\": \"Invalid input: expected string, received undefined\"\n  },\n  {\n    \"expected\": \"string\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"time\"\n    ],\n    \"message\": \"Invalid input: expected string, received undefined\"\n  },\n  {\n    \"expected\": \"string\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"region\"\n    ],\n    \"message\": \"Invalid input: expected string, received undefined\"\n  },\n  {\n    \"expected\": \"array\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"resources\"\n    ],\n    \"message\": \"Invalid input: expected array, received undefined\"\n  },\n  {\n    \"expected\": \"string\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"detail-type\"\n    ],\n    \"message\": \"Invalid input: expected string, received undefined\"\n  }\n].",
+        "issues": [
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected string, received undefined",
+            "path": [
+              "version"
+            ],
+            "expected": "string"
+          },
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected string, received undefined",
+            "path": [
+              "id"
+            ],
+            "expected": "string"
+          },
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected string, received undefined",
+            "path": [
+              "source"
+            ],
+            "expected": "string"
+          },
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected string, received undefined",
+            "path": [
+              "account"
+            ],
+            "expected": "string"
+          },
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected string, received undefined",
+            "path": [
+              "time"
+            ],
+            "expected": "string"
+          },
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected string, received undefined",
+            "path": [
+              "region"
+            ],
+            "expected": "string"
+          },
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected array, received undefined",
+            "path": [
+              "resources"
+            ],
+            "expected": "array"
+          },
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected string, received undefined",
+            "path": [
+              "detail-type"
+            ],
+            "expected": "string"
+          }
+        ]
+      }
+    },
+    {
+      "name": "boundary-eventbridge-missing-true",
+      "schema": "unknown",
+      "envelope": "eventbridge",
+      "input": {},
+      "safe": true,
+      "expected": {
+        "success": false,
+        "issues": [
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected string, received undefined",
+            "path": [
+              "version"
+            ],
+            "expected": "string"
+          },
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected string, received undefined",
+            "path": [
+              "id"
+            ],
+            "expected": "string"
+          },
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected string, received undefined",
+            "path": [
+              "source"
+            ],
+            "expected": "string"
+          },
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected string, received undefined",
+            "path": [
+              "account"
+            ],
+            "expected": "string"
+          },
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected string, received undefined",
+            "path": [
+              "time"
+            ],
+            "expected": "string"
+          },
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected string, received undefined",
+            "path": [
+              "region"
+            ],
+            "expected": "string"
+          },
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected array, received undefined",
+            "path": [
+              "resources"
+            ],
+            "expected": "array"
+          },
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected string, received undefined",
+            "path": [
+              "detail-type"
+            ],
+            "expected": "string"
+          }
+        ],
+        "original": {}
+      }
+    },
+    {
+      "name": "boundary-eventbridge-scalar-false",
+      "schema": "unknown",
+      "envelope": "eventbridge",
+      "input": 0,
+      "safe": false,
+      "expected": {
+        "success": false,
+        "thrown": true,
+        "error": "ParseError",
+        "message": "Failed to parse EventBridge envelope. This error was caused by: [\n  {\n    \"expected\": \"object\",\n    \"code\": \"invalid_type\",\n    \"path\": [],\n    \"message\": \"Invalid input: expected object, received number\"\n  }\n].",
+        "issues": [
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected object, received number",
+            "expected": "object"
+          }
+        ]
+      }
+    },
+    {
+      "name": "boundary-eventbridge-scalar-true",
+      "schema": "unknown",
+      "envelope": "eventbridge",
+      "input": 0,
+      "safe": true,
+      "expected": {
+        "success": false,
+        "issues": [
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected object, received number",
+            "expected": "object"
+          }
+        ],
+        "original": 0
+      }
+    },
+    {
+      "name": "boundary-eventbridge-array-false",
+      "schema": "unknown",
+      "envelope": "eventbridge",
+      "input": [],
+      "safe": false,
+      "expected": {
+        "success": false,
+        "thrown": true,
+        "error": "ParseError",
+        "message": "Failed to parse EventBridge envelope. This error was caused by: [\n  {\n    \"expected\": \"object\",\n    \"code\": \"invalid_type\",\n    \"path\": [],\n    \"message\": \"Invalid input: expected object, received array\"\n  }\n].",
+        "issues": [
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected object, received array",
+            "expected": "object"
+          }
+        ]
+      }
+    },
+    {
+      "name": "boundary-eventbridge-array-true",
+      "schema": "unknown",
+      "envelope": "eventbridge",
+      "input": [],
+      "safe": true,
+      "expected": {
+        "success": false,
+        "issues": [
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected object, received array",
+            "expected": "object"
+          }
+        ],
+        "original": []
+      }
+    },
+    {
+      "name": "boundary-sns-missing-false",
+      "schema": "unknown",
+      "envelope": "sns",
+      "input": {},
+      "safe": false,
+      "expected": {
+        "success": false,
+        "thrown": true,
+        "error": "ZodError",
+        "message": "[\n  {\n    \"expected\": \"array\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"Records\"\n    ],\n    \"message\": \"Invalid input: expected array, received undefined\"\n  }\n]",
+        "issues": [
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected array, received undefined",
+            "path": [
+              "Records"
+            ],
+            "expected": "array"
+          }
+        ]
+      }
+    },
+    {
+      "name": "boundary-sns-missing-true",
+      "schema": "unknown",
+      "envelope": "sns",
+      "input": {},
+      "safe": true,
+      "expected": {
+        "success": false,
+        "issues": [
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected array, received undefined",
+            "path": [
+              "Records"
+            ],
+            "expected": "array"
+          }
+        ],
+        "original": {}
+      }
+    },
+    {
+      "name": "boundary-sns-scalar-false",
+      "schema": "unknown",
+      "envelope": "sns",
+      "input": 0,
+      "safe": false,
+      "expected": {
+        "success": false,
+        "thrown": true,
+        "error": "ZodError",
+        "message": "[\n  {\n    \"expected\": \"object\",\n    \"code\": \"invalid_type\",\n    \"path\": [],\n    \"message\": \"Invalid input: expected object, received number\"\n  }\n]",
+        "issues": [
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected object, received number",
+            "expected": "object"
+          }
+        ]
+      }
+    },
+    {
+      "name": "boundary-sns-scalar-true",
+      "schema": "unknown",
+      "envelope": "sns",
+      "input": 0,
+      "safe": true,
+      "expected": {
+        "success": false,
+        "issues": [
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected object, received number",
+            "expected": "object"
+          }
+        ],
+        "original": 0
+      }
+    },
+    {
+      "name": "boundary-sns-array-false",
+      "schema": "unknown",
+      "envelope": "sns",
+      "input": [],
+      "safe": false,
+      "expected": {
+        "success": false,
+        "thrown": true,
+        "error": "ZodError",
+        "message": "[\n  {\n    \"expected\": \"object\",\n    \"code\": \"invalid_type\",\n    \"path\": [],\n    \"message\": \"Invalid input: expected object, received array\"\n  }\n]",
+        "issues": [
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected object, received array",
+            "expected": "object"
+          }
+        ]
+      }
+    },
+    {
+      "name": "boundary-sns-array-true",
+      "schema": "unknown",
+      "envelope": "sns",
+      "input": [],
+      "safe": true,
+      "expected": {
+        "success": false,
+        "issues": [
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected object, received array",
+            "expected": "object"
+          }
+        ],
+        "original": []
+      }
+    },
+    {
+      "name": "boundary-snssqs-missing-false",
+      "schema": "unknown",
+      "envelope": "snssqs",
+      "input": {},
+      "safe": false,
+      "expected": {
+        "success": false,
+        "thrown": true,
+        "error": "ParseError",
+        "message": "Failed to parse SQS Envelope. This error was caused by: [\n  {\n    \"expected\": \"array\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"Records\"\n    ],\n    \"message\": \"Invalid input: expected array, received undefined\"\n  }\n].",
+        "issues": [
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected array, received undefined",
+            "path": [
+              "Records"
+            ],
+            "expected": "array"
+          }
+        ]
+      }
+    },
+    {
+      "name": "boundary-snssqs-missing-true",
+      "schema": "unknown",
+      "envelope": "snssqs",
+      "input": {},
+      "safe": true,
+      "expected": {
+        "success": false,
+        "issues": [
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected array, received undefined",
+            "path": [
+              "Records"
+            ],
+            "expected": "array"
+          }
+        ],
+        "original": {}
+      }
+    },
+    {
+      "name": "boundary-snssqs-scalar-false",
+      "schema": "unknown",
+      "envelope": "snssqs",
+      "input": 0,
+      "safe": false,
+      "expected": {
+        "success": false,
+        "thrown": true,
+        "error": "ParseError",
+        "message": "Failed to parse SQS Envelope. This error was caused by: [\n  {\n    \"expected\": \"object\",\n    \"code\": \"invalid_type\",\n    \"path\": [],\n    \"message\": \"Invalid input: expected object, received number\"\n  }\n].",
+        "issues": [
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected object, received number",
+            "expected": "object"
+          }
+        ]
+      }
+    },
+    {
+      "name": "boundary-snssqs-scalar-true",
+      "schema": "unknown",
+      "envelope": "snssqs",
+      "input": 0,
+      "safe": true,
+      "expected": {
+        "success": false,
+        "issues": [
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected object, received number",
+            "expected": "object"
+          }
+        ],
+        "original": 0
+      }
+    },
+    {
+      "name": "boundary-snssqs-array-false",
+      "schema": "unknown",
+      "envelope": "snssqs",
+      "input": [],
+      "safe": false,
+      "expected": {
+        "success": false,
+        "thrown": true,
+        "error": "ParseError",
+        "message": "Failed to parse SQS Envelope. This error was caused by: [\n  {\n    \"expected\": \"object\",\n    \"code\": \"invalid_type\",\n    \"path\": [],\n    \"message\": \"Invalid input: expected object, received array\"\n  }\n].",
+        "issues": [
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected object, received array",
+            "expected": "object"
+          }
+        ]
+      }
+    },
+    {
+      "name": "boundary-snssqs-array-true",
+      "schema": "unknown",
+      "envelope": "snssqs",
+      "input": [],
+      "safe": true,
+      "expected": {
+        "success": false,
+        "issues": [
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected object, received array",
+            "expected": "object"
+          }
+        ],
+        "original": []
+      }
+    },
+    {
+      "name": "boundary-kinesis-missing-false",
+      "schema": "unknown",
+      "envelope": "kinesis",
+      "input": {},
+      "safe": false,
+      "expected": {
+        "success": false,
+        "thrown": true,
+        "error": "ParseError",
+        "message": "Failed to parse Kinesis Data Stream envelope. This error was caused by: [\n  {\n    \"expected\": \"array\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"Records\"\n    ],\n    \"message\": \"Invalid input: expected array, received undefined\"\n  }\n].",
+        "issues": [
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected array, received undefined",
+            "path": [
+              "Records"
+            ],
+            "expected": "array"
+          }
+        ]
+      }
+    },
+    {
+      "name": "boundary-kinesis-missing-true",
+      "schema": "unknown",
+      "envelope": "kinesis",
+      "input": {},
+      "safe": true,
+      "expected": {
+        "success": false,
+        "issues": [
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected array, received undefined",
+            "path": [
+              "Records"
+            ],
+            "expected": "array"
+          }
+        ],
+        "original": {}
+      }
+    },
+    {
+      "name": "boundary-kinesis-scalar-false",
+      "schema": "unknown",
+      "envelope": "kinesis",
+      "input": 0,
+      "safe": false,
+      "expected": {
+        "success": false,
+        "thrown": true,
+        "error": "ParseError",
+        "message": "Failed to parse Kinesis Data Stream envelope. This error was caused by: [\n  {\n    \"expected\": \"object\",\n    \"code\": \"invalid_type\",\n    \"path\": [],\n    \"message\": \"Invalid input: expected object, received number\"\n  }\n].",
+        "issues": [
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected object, received number",
+            "expected": "object"
+          }
+        ]
+      }
+    },
+    {
+      "name": "boundary-kinesis-scalar-true",
+      "schema": "unknown",
+      "envelope": "kinesis",
+      "input": 0,
+      "safe": true,
+      "expected": {
+        "success": false,
+        "issues": [
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected object, received number",
+            "expected": "object"
+          }
+        ],
+        "original": 0
+      }
+    },
+    {
+      "name": "boundary-kinesis-array-false",
+      "schema": "unknown",
+      "envelope": "kinesis",
+      "input": [],
+      "safe": false,
+      "expected": {
+        "success": false,
+        "thrown": true,
+        "error": "ParseError",
+        "message": "Failed to parse Kinesis Data Stream envelope. This error was caused by: [\n  {\n    \"expected\": \"object\",\n    \"code\": \"invalid_type\",\n    \"path\": [],\n    \"message\": \"Invalid input: expected object, received array\"\n  }\n].",
+        "issues": [
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected object, received array",
+            "expected": "object"
+          }
+        ]
+      }
+    },
+    {
+      "name": "boundary-kinesis-array-true",
+      "schema": "unknown",
+      "envelope": "kinesis",
+      "input": [],
+      "safe": true,
+      "expected": {
+        "success": false,
+        "issues": [
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected object, received array",
+            "expected": "object"
+          }
+        ],
+        "original": []
+      }
+    },
+    {
+      "name": "boundary-firehose-missing-false",
+      "schema": "unknown",
+      "envelope": "firehose",
+      "input": {},
+      "safe": false,
+      "expected": {
+        "success": false,
+        "thrown": true,
+        "error": "ParseError",
+        "message": "Failed to parse Kinesis Firehose envelope. This error was caused by: [\n  {\n    \"expected\": \"string\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"invocationId\"\n    ],\n    \"message\": \"Invalid input: expected string, received undefined\"\n  },\n  {\n    \"expected\": \"string\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"deliveryStreamArn\"\n    ],\n    \"message\": \"Invalid input: expected string, received undefined\"\n  },\n  {\n    \"expected\": \"string\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"region\"\n    ],\n    \"message\": \"Invalid input: expected string, received undefined\"\n  },\n  {\n    \"expected\": \"array\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"records\"\n    ],\n    \"message\": \"Invalid input: expected array, received undefined\"\n  }\n].",
+        "issues": [
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected string, received undefined",
+            "path": [
+              "invocationId"
+            ],
+            "expected": "string"
+          },
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected string, received undefined",
+            "path": [
+              "deliveryStreamArn"
+            ],
+            "expected": "string"
+          },
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected string, received undefined",
+            "path": [
+              "region"
+            ],
+            "expected": "string"
+          },
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected array, received undefined",
+            "path": [
+              "records"
+            ],
+            "expected": "array"
+          }
+        ]
+      }
+    },
+    {
+      "name": "boundary-firehose-missing-true",
+      "schema": "unknown",
+      "envelope": "firehose",
+      "input": {},
+      "safe": true,
+      "expected": {
+        "success": false,
+        "issues": [
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected string, received undefined",
+            "path": [
+              "invocationId"
+            ],
+            "expected": "string"
+          },
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected string, received undefined",
+            "path": [
+              "deliveryStreamArn"
+            ],
+            "expected": "string"
+          },
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected string, received undefined",
+            "path": [
+              "region"
+            ],
+            "expected": "string"
+          },
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected array, received undefined",
+            "path": [
+              "records"
+            ],
+            "expected": "array"
+          }
+        ],
+        "original": {}
+      }
+    },
+    {
+      "name": "boundary-firehose-scalar-false",
+      "schema": "unknown",
+      "envelope": "firehose",
+      "input": 0,
+      "safe": false,
+      "expected": {
+        "success": false,
+        "thrown": true,
+        "error": "ParseError",
+        "message": "Failed to parse Kinesis Firehose envelope. This error was caused by: [\n  {\n    \"expected\": \"object\",\n    \"code\": \"invalid_type\",\n    \"path\": [],\n    \"message\": \"Invalid input: expected object, received number\"\n  }\n].",
+        "issues": [
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected object, received number",
+            "expected": "object"
+          }
+        ]
+      }
+    },
+    {
+      "name": "boundary-firehose-scalar-true",
+      "schema": "unknown",
+      "envelope": "firehose",
+      "input": 0,
+      "safe": true,
+      "expected": {
+        "success": false,
+        "issues": [
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected object, received number",
+            "expected": "object"
+          }
+        ],
+        "original": 0
+      }
+    },
+    {
+      "name": "boundary-firehose-array-false",
+      "schema": "unknown",
+      "envelope": "firehose",
+      "input": [],
+      "safe": false,
+      "expected": {
+        "success": false,
+        "thrown": true,
+        "error": "ParseError",
+        "message": "Failed to parse Kinesis Firehose envelope. This error was caused by: [\n  {\n    \"expected\": \"object\",\n    \"code\": \"invalid_type\",\n    \"path\": [],\n    \"message\": \"Invalid input: expected object, received array\"\n  }\n].",
+        "issues": [
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected object, received array",
+            "expected": "object"
+          }
+        ]
+      }
+    },
+    {
+      "name": "boundary-firehose-array-true",
+      "schema": "unknown",
+      "envelope": "firehose",
+      "input": [],
+      "safe": true,
+      "expected": {
+        "success": false,
+        "issues": [
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected object, received array",
+            "expected": "object"
+          }
+        ],
+        "original": []
+      }
+    },
+    {
+      "name": "boundary-cloudwatch-missing-false",
+      "schema": "unknown",
+      "envelope": "cloudwatch",
+      "input": {},
+      "safe": false,
+      "expected": {
+        "success": false,
+        "thrown": true,
+        "error": "ZodError",
+        "message": "[\n  {\n    \"expected\": \"object\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"awslogs\"\n    ],\n    \"message\": \"Invalid input: expected object, received undefined\"\n  }\n]",
+        "issues": [
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected object, received undefined",
+            "path": [
+              "awslogs"
+            ],
+            "expected": "object"
+          }
+        ]
+      }
+    },
+    {
+      "name": "boundary-cloudwatch-missing-true",
+      "schema": "unknown",
+      "envelope": "cloudwatch",
+      "input": {},
+      "safe": true,
+      "expected": {
+        "success": false,
+        "issues": [
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected object, received undefined",
+            "path": [
+              "awslogs"
+            ],
+            "expected": "object"
+          }
+        ],
+        "original": {}
+      }
+    },
+    {
+      "name": "boundary-cloudwatch-scalar-false",
+      "schema": "unknown",
+      "envelope": "cloudwatch",
+      "input": 0,
+      "safe": false,
+      "expected": {
+        "success": false,
+        "thrown": true,
+        "error": "ZodError",
+        "message": "[\n  {\n    \"expected\": \"object\",\n    \"code\": \"invalid_type\",\n    \"path\": [],\n    \"message\": \"Invalid input: expected object, received number\"\n  }\n]",
+        "issues": [
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected object, received number",
+            "expected": "object"
+          }
+        ]
+      }
+    },
+    {
+      "name": "boundary-cloudwatch-scalar-true",
+      "schema": "unknown",
+      "envelope": "cloudwatch",
+      "input": 0,
+      "safe": true,
+      "expected": {
+        "success": false,
+        "issues": [
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected object, received number",
+            "expected": "object"
+          }
+        ],
+        "original": 0
+      }
+    },
+    {
+      "name": "boundary-cloudwatch-array-false",
+      "schema": "unknown",
+      "envelope": "cloudwatch",
+      "input": [],
+      "safe": false,
+      "expected": {
+        "success": false,
+        "thrown": true,
+        "error": "ZodError",
+        "message": "[\n  {\n    \"expected\": \"object\",\n    \"code\": \"invalid_type\",\n    \"path\": [],\n    \"message\": \"Invalid input: expected object, received array\"\n  }\n]",
+        "issues": [
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected object, received array",
+            "expected": "object"
+          }
+        ]
+      }
+    },
+    {
+      "name": "boundary-cloudwatch-array-true",
+      "schema": "unknown",
+      "envelope": "cloudwatch",
+      "input": [],
+      "safe": true,
+      "expected": {
+        "success": false,
+        "issues": [
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected object, received array",
+            "expected": "object"
+          }
+        ],
+        "original": []
+      }
+    },
+    {
+      "name": "boundary-dynamodb-missing-false",
+      "schema": "unknown",
+      "envelope": "dynamodb",
+      "input": {},
+      "safe": false,
+      "expected": {
+        "success": false,
+        "thrown": true,
+        "error": "ZodError",
+        "message": "[\n  {\n    \"expected\": \"array\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"Records\"\n    ],\n    \"message\": \"Invalid input: expected array, received undefined\"\n  }\n]",
+        "issues": [
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected array, received undefined",
+            "path": [
+              "Records"
+            ],
+            "expected": "array"
+          }
+        ]
+      }
+    },
+    {
+      "name": "boundary-dynamodb-missing-true",
+      "schema": "unknown",
+      "envelope": "dynamodb",
+      "input": {},
+      "safe": true,
+      "expected": {
+        "success": false,
+        "issues": [
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected array, received undefined",
+            "path": [
+              "Records"
+            ],
+            "expected": "array"
+          }
+        ],
+        "original": {}
+      }
+    },
+    {
+      "name": "boundary-dynamodb-scalar-false",
+      "schema": "unknown",
+      "envelope": "dynamodb",
+      "input": 0,
+      "safe": false,
+      "expected": {
+        "success": false,
+        "thrown": true,
+        "error": "ZodError",
+        "message": "[\n  {\n    \"expected\": \"object\",\n    \"code\": \"invalid_type\",\n    \"path\": [],\n    \"message\": \"Invalid input: expected object, received number\"\n  }\n]",
+        "issues": [
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected object, received number",
+            "expected": "object"
+          }
+        ]
+      }
+    },
+    {
+      "name": "boundary-dynamodb-scalar-true",
+      "schema": "unknown",
+      "envelope": "dynamodb",
+      "input": 0,
+      "safe": true,
+      "expected": {
+        "success": false,
+        "issues": [
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected object, received number",
+            "expected": "object"
+          }
+        ],
+        "original": 0
+      }
+    },
+    {
+      "name": "boundary-dynamodb-array-false",
+      "schema": "unknown",
+      "envelope": "dynamodb",
+      "input": [],
+      "safe": false,
+      "expected": {
+        "success": false,
+        "thrown": true,
+        "error": "ZodError",
+        "message": "[\n  {\n    \"expected\": \"object\",\n    \"code\": \"invalid_type\",\n    \"path\": [],\n    \"message\": \"Invalid input: expected object, received array\"\n  }\n]",
+        "issues": [
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected object, received array",
+            "expected": "object"
+          }
+        ]
+      }
+    },
+    {
+      "name": "boundary-dynamodb-array-true",
+      "schema": "unknown",
+      "envelope": "dynamodb",
+      "input": [],
+      "safe": true,
+      "expected": {
+        "success": false,
+        "issues": [
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected object, received array",
+            "expected": "object"
+          }
+        ],
+        "original": []
+      }
+    },
+    {
+      "name": "boundary-kafka-missing-false",
+      "schema": "unknown",
+      "envelope": "kafka",
+      "input": {},
+      "safe": false,
+      "expected": {
+        "success": false,
+        "thrown": true,
+        "error": "ZodError",
+        "message": "[\n  {\n    \"code\": \"invalid_union\",\n    \"errors\": [\n      [\n        {\n          \"code\": \"invalid_value\",\n          \"values\": [\n            \"aws:kafka\"\n          ],\n          \"path\": [],\n          \"message\": \"Invalid input: expected \\\"aws:kafka\\\"\"\n        }\n      ],\n      [\n        {\n          \"code\": \"invalid_value\",\n          \"values\": [\n            \"SelfManagedKafka\"\n          ],\n          \"path\": [],\n          \"message\": \"Invalid input: expected \\\"SelfManagedKafka\\\"\"\n        }\n      ]\n    ],\n    \"path\": [\n      \"eventSource\"\n    ],\n    \"message\": \"Invalid input\"\n  }\n]",
+        "issues": [
+          {
+            "code": "invalid_union",
+            "message": "Invalid input",
+            "path": [
+              "eventSource"
+            ],
+            "errors": [
+              [
+                {
+                  "code": "invalid_value",
+                  "message": "Invalid input: expected \"aws:kafka\""
+                }
+              ],
+              [
+                {
+                  "code": "invalid_value",
+                  "message": "Invalid input: expected \"SelfManagedKafka\""
+                }
+              ]
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "boundary-kafka-missing-true",
+      "schema": "unknown",
+      "envelope": "kafka",
+      "input": {},
+      "safe": true,
+      "expected": {
+        "success": false,
+        "issues": [
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected record, received undefined",
+            "path": [
+              "records"
+            ],
+            "expected": "record"
+          },
+          {
+            "code": "invalid_value",
+            "message": "Invalid input: expected \"SelfManagedKafka\"",
+            "path": [
+              "eventSource"
+            ]
+          }
+        ],
+        "original": {}
+      }
+    },
+    {
+      "name": "boundary-kafka-scalar-false",
+      "schema": "unknown",
+      "envelope": "kafka",
+      "input": 0,
+      "safe": false,
+      "expected": {
+        "success": false,
+        "thrown": true,
+        "error": "ZodError",
+        "message": "[\n  {\n    \"expected\": \"object\",\n    \"code\": \"invalid_type\",\n    \"path\": [],\n    \"message\": \"Invalid input: expected object, received number\"\n  }\n]",
+        "issues": [
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected object, received number",
+            "expected": "object"
+          }
+        ]
+      }
+    },
+    {
+      "name": "boundary-kafka-scalar-true",
+      "schema": "unknown",
+      "envelope": "kafka",
+      "input": 0,
+      "safe": true,
+      "expected": {
+        "success": false,
+        "issues": [
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected object, received number",
+            "expected": "object"
+          }
+        ],
+        "original": 0
+      }
+    },
+    {
+      "name": "boundary-kafka-array-false",
+      "schema": "unknown",
+      "envelope": "kafka",
+      "input": [],
+      "safe": false,
+      "expected": {
+        "success": false,
+        "thrown": true,
+        "error": "ZodError",
+        "message": "[\n  {\n    \"expected\": \"object\",\n    \"code\": \"invalid_type\",\n    \"path\": [],\n    \"message\": \"Invalid input: expected object, received array\"\n  }\n]",
+        "issues": [
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected object, received array",
+            "expected": "object"
+          }
+        ]
+      }
+    },
+    {
+      "name": "boundary-kafka-array-true",
+      "schema": "unknown",
+      "envelope": "kafka",
+      "input": [],
+      "safe": true,
+      "expected": {
+        "success": false,
+        "issues": [
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected object, received array",
+            "expected": "object"
+          }
+        ],
+        "original": []
+      }
+    },
+    {
+      "name": "boundary-apigateway-missing-false",
+      "schema": "unknown",
+      "envelope": "apigateway",
+      "input": {},
+      "safe": false,
+      "expected": {
+        "success": false,
+        "thrown": true,
+        "error": "ParseError",
+        "message": "Failed to parse API Gateway body. This error was caused by: [\n  {\n    \"expected\": \"string\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"resource\"\n    ],\n    \"message\": \"Invalid input: expected string, received undefined\"\n  },\n  {\n    \"expected\": \"string\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"path\"\n    ],\n    \"message\": \"Invalid input: expected string, received undefined\"\n  },\n  {\n    \"code\": \"invalid_value\",\n    \"values\": [\n      \"GET\",\n      \"POST\",\n      \"PUT\",\n      \"PATCH\",\n      \"DELETE\",\n      \"HEAD\",\n      \"OPTIONS\"\n    ],\n    \"path\": [\n      \"httpMethod\"\n    ],\n    \"message\": \"Invalid option: expected one of \\\"GET\\\"|\\\"POST\\\"|\\\"PUT\\\"|\\\"PATCH\\\"|\\\"DELETE\\\"|\\\"HEAD\\\"|\\\"OPTIONS\\\"\"\n  },\n  {\n    \"expected\": \"record\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"queryStringParameters\"\n    ],\n    \"message\": \"Invalid input: expected record, received undefined\"\n  },\n  {\n    \"expected\": \"record\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"multiValueQueryStringParameters\"\n    ],\n    \"message\": \"Invalid input: expected record, received undefined\"\n  },\n  {\n    \"expected\": \"object\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"requestContext\"\n    ],\n    \"message\": \"Invalid input: expected object, received undefined\"\n  },\n  {\n    \"expected\": \"boolean\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"isBase64Encoded\"\n    ],\n    \"message\": \"Invalid input: expected boolean, received undefined\"\n  }\n].",
+        "issues": [
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected string, received undefined",
+            "path": [
+              "resource"
+            ],
+            "expected": "string"
+          },
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected string, received undefined",
+            "path": [
+              "path"
+            ],
+            "expected": "string"
+          },
+          {
+            "code": "invalid_value",
+            "message": "Invalid option: expected one of \"GET\"|\"POST\"|\"PUT\"|\"PATCH\"|\"DELETE\"|\"HEAD\"|\"OPTIONS\"",
+            "path": [
+              "httpMethod"
+            ]
+          },
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected record, received undefined",
+            "path": [
+              "queryStringParameters"
+            ],
+            "expected": "record"
+          },
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected record, received undefined",
+            "path": [
+              "multiValueQueryStringParameters"
+            ],
+            "expected": "record"
+          },
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected object, received undefined",
+            "path": [
+              "requestContext"
+            ],
+            "expected": "object"
+          },
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected boolean, received undefined",
+            "path": [
+              "isBase64Encoded"
+            ],
+            "expected": "boolean"
+          }
+        ]
+      }
+    },
+    {
+      "name": "boundary-apigateway-missing-true",
+      "schema": "unknown",
+      "envelope": "apigateway",
+      "input": {},
+      "safe": true,
+      "expected": {
+        "success": false,
+        "issues": [
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected string, received undefined",
+            "path": [
+              "resource"
+            ],
+            "expected": "string"
+          },
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected string, received undefined",
+            "path": [
+              "path"
+            ],
+            "expected": "string"
+          },
+          {
+            "code": "invalid_value",
+            "message": "Invalid option: expected one of \"GET\"|\"POST\"|\"PUT\"|\"PATCH\"|\"DELETE\"|\"HEAD\"|\"OPTIONS\"",
+            "path": [
+              "httpMethod"
+            ]
+          },
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected record, received undefined",
+            "path": [
+              "queryStringParameters"
+            ],
+            "expected": "record"
+          },
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected record, received undefined",
+            "path": [
+              "multiValueQueryStringParameters"
+            ],
+            "expected": "record"
+          },
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected object, received undefined",
+            "path": [
+              "requestContext"
+            ],
+            "expected": "object"
+          },
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected boolean, received undefined",
+            "path": [
+              "isBase64Encoded"
+            ],
+            "expected": "boolean"
+          }
+        ],
+        "original": {}
+      }
+    },
+    {
+      "name": "boundary-apigateway-scalar-false",
+      "schema": "unknown",
+      "envelope": "apigateway",
+      "input": 0,
+      "safe": false,
+      "expected": {
+        "success": false,
+        "thrown": true,
+        "error": "ParseError",
+        "message": "Failed to parse API Gateway body. This error was caused by: [\n  {\n    \"expected\": \"object\",\n    \"code\": \"invalid_type\",\n    \"path\": [],\n    \"message\": \"Invalid input: expected object, received number\"\n  }\n].",
+        "issues": [
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected object, received number",
+            "expected": "object"
+          }
+        ]
+      }
+    },
+    {
+      "name": "boundary-apigateway-scalar-true",
+      "schema": "unknown",
+      "envelope": "apigateway",
+      "input": 0,
+      "safe": true,
+      "expected": {
+        "success": false,
+        "issues": [
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected object, received number",
+            "expected": "object"
+          }
+        ],
+        "original": 0
+      }
+    },
+    {
+      "name": "boundary-apigateway-array-false",
+      "schema": "unknown",
+      "envelope": "apigateway",
+      "input": [],
+      "safe": false,
+      "expected": {
+        "success": false,
+        "thrown": true,
+        "error": "ParseError",
+        "message": "Failed to parse API Gateway body. This error was caused by: [\n  {\n    \"expected\": \"object\",\n    \"code\": \"invalid_type\",\n    \"path\": [],\n    \"message\": \"Invalid input: expected object, received array\"\n  }\n].",
+        "issues": [
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected object, received array",
+            "expected": "object"
+          }
+        ]
+      }
+    },
+    {
+      "name": "boundary-apigateway-array-true",
+      "schema": "unknown",
+      "envelope": "apigateway",
+      "input": [],
+      "safe": true,
+      "expected": {
+        "success": false,
+        "issues": [
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected object, received array",
+            "expected": "object"
+          }
+        ],
+        "original": []
+      }
+    },
+    {
+      "name": "boundary-apigatewayv2-missing-false",
+      "schema": "unknown",
+      "envelope": "apigatewayv2",
+      "input": {},
+      "safe": false,
+      "expected": {
+        "success": false,
+        "thrown": true,
+        "error": "ParseError",
+        "message": "Failed to parse API Gateway HTTP body. This error was caused by: [\n  {\n    \"expected\": \"string\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"version\"\n    ],\n    \"message\": \"Invalid input: expected string, received undefined\"\n  },\n  {\n    \"expected\": \"string\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"routeKey\"\n    ],\n    \"message\": \"Invalid input: expected string, received undefined\"\n  },\n  {\n    \"expected\": \"string\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"rawPath\"\n    ],\n    \"message\": \"Invalid input: expected string, received undefined\"\n  },\n  {\n    \"expected\": \"string\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"rawQueryString\"\n    ],\n    \"message\": \"Invalid input: expected string, received undefined\"\n  },\n  {\n    \"expected\": \"record\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"headers\"\n    ],\n    \"message\": \"Invalid input: expected record, received undefined\"\n  },\n  {\n    \"expected\": \"object\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"requestContext\"\n    ],\n    \"message\": \"Invalid input: expected object, received undefined\"\n  },\n  {\n    \"expected\": \"boolean\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"isBase64Encoded\"\n    ],\n    \"message\": \"Invalid input: expected boolean, received undefined\"\n  }\n].",
+        "issues": [
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected string, received undefined",
+            "path": [
+              "version"
+            ],
+            "expected": "string"
+          },
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected string, received undefined",
+            "path": [
+              "routeKey"
+            ],
+            "expected": "string"
+          },
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected string, received undefined",
+            "path": [
+              "rawPath"
+            ],
+            "expected": "string"
+          },
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected string, received undefined",
+            "path": [
+              "rawQueryString"
+            ],
+            "expected": "string"
+          },
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected record, received undefined",
+            "path": [
+              "headers"
+            ],
+            "expected": "record"
+          },
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected object, received undefined",
+            "path": [
+              "requestContext"
+            ],
+            "expected": "object"
+          },
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected boolean, received undefined",
+            "path": [
+              "isBase64Encoded"
+            ],
+            "expected": "boolean"
+          }
+        ]
+      }
+    },
+    {
+      "name": "boundary-apigatewayv2-missing-true",
+      "schema": "unknown",
+      "envelope": "apigatewayv2",
+      "input": {},
+      "safe": true,
+      "expected": {
+        "success": false,
+        "issues": [
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected string, received undefined",
+            "path": [
+              "version"
+            ],
+            "expected": "string"
+          },
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected string, received undefined",
+            "path": [
+              "routeKey"
+            ],
+            "expected": "string"
+          },
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected string, received undefined",
+            "path": [
+              "rawPath"
+            ],
+            "expected": "string"
+          },
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected string, received undefined",
+            "path": [
+              "rawQueryString"
+            ],
+            "expected": "string"
+          },
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected record, received undefined",
+            "path": [
+              "headers"
+            ],
+            "expected": "record"
+          },
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected object, received undefined",
+            "path": [
+              "requestContext"
+            ],
+            "expected": "object"
+          },
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected boolean, received undefined",
+            "path": [
+              "isBase64Encoded"
+            ],
+            "expected": "boolean"
+          }
+        ],
+        "original": {}
+      }
+    },
+    {
+      "name": "boundary-apigatewayv2-scalar-false",
+      "schema": "unknown",
+      "envelope": "apigatewayv2",
+      "input": 0,
+      "safe": false,
+      "expected": {
+        "success": false,
+        "thrown": true,
+        "error": "ParseError",
+        "message": "Failed to parse API Gateway HTTP body. This error was caused by: [\n  {\n    \"expected\": \"object\",\n    \"code\": \"invalid_type\",\n    \"path\": [],\n    \"message\": \"Invalid input: expected object, received number\"\n  }\n].",
+        "issues": [
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected object, received number",
+            "expected": "object"
+          }
+        ]
+      }
+    },
+    {
+      "name": "boundary-apigatewayv2-scalar-true",
+      "schema": "unknown",
+      "envelope": "apigatewayv2",
+      "input": 0,
+      "safe": true,
+      "expected": {
+        "success": false,
+        "issues": [
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected object, received number",
+            "expected": "object"
+          }
+        ],
+        "original": 0
+      }
+    },
+    {
+      "name": "boundary-apigatewayv2-array-false",
+      "schema": "unknown",
+      "envelope": "apigatewayv2",
+      "input": [],
+      "safe": false,
+      "expected": {
+        "success": false,
+        "thrown": true,
+        "error": "ParseError",
+        "message": "Failed to parse API Gateway HTTP body. This error was caused by: [\n  {\n    \"expected\": \"object\",\n    \"code\": \"invalid_type\",\n    \"path\": [],\n    \"message\": \"Invalid input: expected object, received array\"\n  }\n].",
+        "issues": [
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected object, received array",
+            "expected": "object"
+          }
+        ]
+      }
+    },
+    {
+      "name": "boundary-apigatewayv2-array-true",
+      "schema": "unknown",
+      "envelope": "apigatewayv2",
+      "input": [],
+      "safe": true,
+      "expected": {
+        "success": false,
+        "issues": [
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected object, received array",
+            "expected": "object"
+          }
+        ],
+        "original": []
+      }
+    },
+    {
+      "name": "boundary-lambdaurl-missing-false",
+      "schema": "unknown",
+      "envelope": "lambdaurl",
+      "input": {},
+      "safe": false,
+      "expected": {
+        "success": false,
+        "thrown": true,
+        "error": "ParseError",
+        "message": "Failed to parse Lambda function URL body. This error was caused by: [\n  {\n    \"expected\": \"string\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"version\"\n    ],\n    \"message\": \"Invalid input: expected string, received undefined\"\n  },\n  {\n    \"expected\": \"string\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"routeKey\"\n    ],\n    \"message\": \"Invalid input: expected string, received undefined\"\n  },\n  {\n    \"expected\": \"string\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"rawPath\"\n    ],\n    \"message\": \"Invalid input: expected string, received undefined\"\n  },\n  {\n    \"expected\": \"string\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"rawQueryString\"\n    ],\n    \"message\": \"Invalid input: expected string, received undefined\"\n  },\n  {\n    \"expected\": \"record\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"headers\"\n    ],\n    \"message\": \"Invalid input: expected record, received undefined\"\n  },\n  {\n    \"expected\": \"object\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"requestContext\"\n    ],\n    \"message\": \"Invalid input: expected object, received undefined\"\n  },\n  {\n    \"expected\": \"boolean\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"isBase64Encoded\"\n    ],\n    \"message\": \"Invalid input: expected boolean, received undefined\"\n  }\n].",
+        "issues": [
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected string, received undefined",
+            "path": [
+              "version"
+            ],
+            "expected": "string"
+          },
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected string, received undefined",
+            "path": [
+              "routeKey"
+            ],
+            "expected": "string"
+          },
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected string, received undefined",
+            "path": [
+              "rawPath"
+            ],
+            "expected": "string"
+          },
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected string, received undefined",
+            "path": [
+              "rawQueryString"
+            ],
+            "expected": "string"
+          },
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected record, received undefined",
+            "path": [
+              "headers"
+            ],
+            "expected": "record"
+          },
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected object, received undefined",
+            "path": [
+              "requestContext"
+            ],
+            "expected": "object"
+          },
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected boolean, received undefined",
+            "path": [
+              "isBase64Encoded"
+            ],
+            "expected": "boolean"
+          }
+        ]
+      }
+    },
+    {
+      "name": "boundary-lambdaurl-missing-true",
+      "schema": "unknown",
+      "envelope": "lambdaurl",
+      "input": {},
+      "safe": true,
+      "expected": {
+        "success": false,
+        "issues": [
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected string, received undefined",
+            "path": [
+              "version"
+            ],
+            "expected": "string"
+          },
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected string, received undefined",
+            "path": [
+              "routeKey"
+            ],
+            "expected": "string"
+          },
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected string, received undefined",
+            "path": [
+              "rawPath"
+            ],
+            "expected": "string"
+          },
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected string, received undefined",
+            "path": [
+              "rawQueryString"
+            ],
+            "expected": "string"
+          },
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected record, received undefined",
+            "path": [
+              "headers"
+            ],
+            "expected": "record"
+          },
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected object, received undefined",
+            "path": [
+              "requestContext"
+            ],
+            "expected": "object"
+          },
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected boolean, received undefined",
+            "path": [
+              "isBase64Encoded"
+            ],
+            "expected": "boolean"
+          }
+        ],
+        "original": {}
+      }
+    },
+    {
+      "name": "boundary-lambdaurl-scalar-false",
+      "schema": "unknown",
+      "envelope": "lambdaurl",
+      "input": 0,
+      "safe": false,
+      "expected": {
+        "success": false,
+        "thrown": true,
+        "error": "ParseError",
+        "message": "Failed to parse Lambda function URL body. This error was caused by: [\n  {\n    \"expected\": \"object\",\n    \"code\": \"invalid_type\",\n    \"path\": [],\n    \"message\": \"Invalid input: expected object, received number\"\n  }\n].",
+        "issues": [
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected object, received number",
+            "expected": "object"
+          }
+        ]
+      }
+    },
+    {
+      "name": "boundary-lambdaurl-scalar-true",
+      "schema": "unknown",
+      "envelope": "lambdaurl",
+      "input": 0,
+      "safe": true,
+      "expected": {
+        "success": false,
+        "issues": [
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected object, received number",
+            "expected": "object"
+          }
+        ],
+        "original": 0
+      }
+    },
+    {
+      "name": "boundary-lambdaurl-array-false",
+      "schema": "unknown",
+      "envelope": "lambdaurl",
+      "input": [],
+      "safe": false,
+      "expected": {
+        "success": false,
+        "thrown": true,
+        "error": "ParseError",
+        "message": "Failed to parse Lambda function URL body. This error was caused by: [\n  {\n    \"expected\": \"object\",\n    \"code\": \"invalid_type\",\n    \"path\": [],\n    \"message\": \"Invalid input: expected object, received array\"\n  }\n].",
+        "issues": [
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected object, received array",
+            "expected": "object"
+          }
+        ]
+      }
+    },
+    {
+      "name": "boundary-lambdaurl-array-true",
+      "schema": "unknown",
+      "envelope": "lambdaurl",
+      "input": [],
+      "safe": true,
+      "expected": {
+        "success": false,
+        "issues": [
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected object, received array",
+            "expected": "object"
+          }
+        ],
+        "original": []
+      }
+    },
+    {
+      "name": "boundary-lattice-missing-false",
+      "schema": "unknown",
+      "envelope": "lattice",
+      "input": {},
+      "safe": false,
+      "expected": {
+        "success": false,
+        "thrown": true,
+        "error": "ParseError",
+        "message": "Failed to parse VPC Lattice body. This error was caused by: [\n  {\n    \"code\": \"invalid_value\",\n    \"values\": [\n      \"GET\",\n      \"POST\",\n      \"PUT\",\n      \"PATCH\",\n      \"DELETE\",\n      \"HEAD\",\n      \"OPTIONS\"\n    ],\n    \"path\": [\n      \"method\"\n    ],\n    \"message\": \"Invalid option: expected one of \\\"GET\\\"|\\\"POST\\\"|\\\"PUT\\\"|\\\"PATCH\\\"|\\\"DELETE\\\"|\\\"HEAD\\\"|\\\"OPTIONS\\\"\"\n  },\n  {\n    \"expected\": \"string\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"raw_path\"\n    ],\n    \"message\": \"Invalid input: expected string, received undefined\"\n  },\n  {\n    \"expected\": \"boolean\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"is_base64_encoded\"\n    ],\n    \"message\": \"Invalid input: expected boolean, received undefined\"\n  },\n  {\n    \"expected\": \"record\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"headers\"\n    ],\n    \"message\": \"Invalid input: expected record, received undefined\"\n  },\n  {\n    \"expected\": \"record\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"query_string_parameters\"\n    ],\n    \"message\": \"Invalid input: expected record, received undefined\"\n  }\n].",
+        "issues": [
+          {
+            "code": "invalid_value",
+            "message": "Invalid option: expected one of \"GET\"|\"POST\"|\"PUT\"|\"PATCH\"|\"DELETE\"|\"HEAD\"|\"OPTIONS\"",
+            "path": [
+              "method"
+            ]
+          },
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected string, received undefined",
+            "path": [
+              "raw_path"
+            ],
+            "expected": "string"
+          },
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected boolean, received undefined",
+            "path": [
+              "is_base64_encoded"
+            ],
+            "expected": "boolean"
+          },
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected record, received undefined",
+            "path": [
+              "headers"
+            ],
+            "expected": "record"
+          },
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected record, received undefined",
+            "path": [
+              "query_string_parameters"
+            ],
+            "expected": "record"
+          }
+        ]
+      }
+    },
+    {
+      "name": "boundary-lattice-missing-true",
+      "schema": "unknown",
+      "envelope": "lattice",
+      "input": {},
+      "safe": true,
+      "expected": {
+        "success": false,
+        "issues": [
+          {
+            "code": "invalid_value",
+            "message": "Invalid option: expected one of \"GET\"|\"POST\"|\"PUT\"|\"PATCH\"|\"DELETE\"|\"HEAD\"|\"OPTIONS\"",
+            "path": [
+              "method"
+            ]
+          },
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected string, received undefined",
+            "path": [
+              "raw_path"
+            ],
+            "expected": "string"
+          },
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected boolean, received undefined",
+            "path": [
+              "is_base64_encoded"
+            ],
+            "expected": "boolean"
+          },
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected record, received undefined",
+            "path": [
+              "headers"
+            ],
+            "expected": "record"
+          },
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected record, received undefined",
+            "path": [
+              "query_string_parameters"
+            ],
+            "expected": "record"
+          }
+        ],
+        "original": {}
+      }
+    },
+    {
+      "name": "boundary-lattice-scalar-false",
+      "schema": "unknown",
+      "envelope": "lattice",
+      "input": 0,
+      "safe": false,
+      "expected": {
+        "success": false,
+        "thrown": true,
+        "error": "ParseError",
+        "message": "Failed to parse VPC Lattice body. This error was caused by: [\n  {\n    \"expected\": \"object\",\n    \"code\": \"invalid_type\",\n    \"path\": [],\n    \"message\": \"Invalid input: expected object, received number\"\n  }\n].",
+        "issues": [
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected object, received number",
+            "expected": "object"
+          }
+        ]
+      }
+    },
+    {
+      "name": "boundary-lattice-scalar-true",
+      "schema": "unknown",
+      "envelope": "lattice",
+      "input": 0,
+      "safe": true,
+      "expected": {
+        "success": false,
+        "issues": [
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected object, received number",
+            "expected": "object"
+          }
+        ],
+        "original": 0
+      }
+    },
+    {
+      "name": "boundary-lattice-array-false",
+      "schema": "unknown",
+      "envelope": "lattice",
+      "input": [],
+      "safe": false,
+      "expected": {
+        "success": false,
+        "thrown": true,
+        "error": "ParseError",
+        "message": "Failed to parse VPC Lattice body. This error was caused by: [\n  {\n    \"expected\": \"object\",\n    \"code\": \"invalid_type\",\n    \"path\": [],\n    \"message\": \"Invalid input: expected object, received array\"\n  }\n].",
+        "issues": [
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected object, received array",
+            "expected": "object"
+          }
+        ]
+      }
+    },
+    {
+      "name": "boundary-lattice-array-true",
+      "schema": "unknown",
+      "envelope": "lattice",
+      "input": [],
+      "safe": true,
+      "expected": {
+        "success": false,
+        "issues": [
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected object, received array",
+            "expected": "object"
+          }
+        ],
+        "original": []
+      }
+    },
+    {
+      "name": "boundary-latticev2-missing-false",
+      "schema": "unknown",
+      "envelope": "latticev2",
+      "input": {},
+      "safe": false,
+      "expected": {
+        "success": false,
+        "thrown": true,
+        "error": "ParseError",
+        "message": "Failed to parse VPC Lattice v2 body. This error was caused by: [\n  {\n    \"expected\": \"string\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"version\"\n    ],\n    \"message\": \"Invalid input: expected string, received undefined\"\n  },\n  {\n    \"expected\": \"string\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"path\"\n    ],\n    \"message\": \"Invalid input: expected string, received undefined\"\n  },\n  {\n    \"code\": \"invalid_value\",\n    \"values\": [\n      \"GET\",\n      \"POST\",\n      \"PUT\",\n      \"PATCH\",\n      \"DELETE\",\n      \"HEAD\",\n      \"OPTIONS\"\n    ],\n    \"path\": [\n      \"method\"\n    ],\n    \"message\": \"Invalid option: expected one of \\\"GET\\\"|\\\"POST\\\"|\\\"PUT\\\"|\\\"PATCH\\\"|\\\"DELETE\\\"|\\\"HEAD\\\"|\\\"OPTIONS\\\"\"\n  },\n  {\n    \"expected\": \"record\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"headers\"\n    ],\n    \"message\": \"Invalid input: expected record, received undefined\"\n  },\n  {\n    \"expected\": \"object\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"requestContext\"\n    ],\n    \"message\": \"Invalid input: expected object, received undefined\"\n  }\n].",
+        "issues": [
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected string, received undefined",
+            "path": [
+              "version"
+            ],
+            "expected": "string"
+          },
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected string, received undefined",
+            "path": [
+              "path"
+            ],
+            "expected": "string"
+          },
+          {
+            "code": "invalid_value",
+            "message": "Invalid option: expected one of \"GET\"|\"POST\"|\"PUT\"|\"PATCH\"|\"DELETE\"|\"HEAD\"|\"OPTIONS\"",
+            "path": [
+              "method"
+            ]
+          },
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected record, received undefined",
+            "path": [
+              "headers"
+            ],
+            "expected": "record"
+          },
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected object, received undefined",
+            "path": [
+              "requestContext"
+            ],
+            "expected": "object"
+          }
+        ]
+      }
+    },
+    {
+      "name": "boundary-latticev2-missing-true",
+      "schema": "unknown",
+      "envelope": "latticev2",
+      "input": {},
+      "safe": true,
+      "expected": {
+        "success": false,
+        "issues": [
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected string, received undefined",
+            "path": [
+              "version"
+            ],
+            "expected": "string"
+          },
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected string, received undefined",
+            "path": [
+              "path"
+            ],
+            "expected": "string"
+          },
+          {
+            "code": "invalid_value",
+            "message": "Invalid option: expected one of \"GET\"|\"POST\"|\"PUT\"|\"PATCH\"|\"DELETE\"|\"HEAD\"|\"OPTIONS\"",
+            "path": [
+              "method"
+            ]
+          },
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected record, received undefined",
+            "path": [
+              "headers"
+            ],
+            "expected": "record"
+          },
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected object, received undefined",
+            "path": [
+              "requestContext"
+            ],
+            "expected": "object"
+          }
+        ],
+        "original": {}
+      }
+    },
+    {
+      "name": "boundary-latticev2-scalar-false",
+      "schema": "unknown",
+      "envelope": "latticev2",
+      "input": 0,
+      "safe": false,
+      "expected": {
+        "success": false,
+        "thrown": true,
+        "error": "ParseError",
+        "message": "Failed to parse VPC Lattice v2 body. This error was caused by: [\n  {\n    \"expected\": \"object\",\n    \"code\": \"invalid_type\",\n    \"path\": [],\n    \"message\": \"Invalid input: expected object, received number\"\n  }\n].",
+        "issues": [
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected object, received number",
+            "expected": "object"
+          }
+        ]
+      }
+    },
+    {
+      "name": "boundary-latticev2-scalar-true",
+      "schema": "unknown",
+      "envelope": "latticev2",
+      "input": 0,
+      "safe": true,
+      "expected": {
+        "success": false,
+        "issues": [
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected object, received number",
+            "expected": "object"
+          }
+        ],
+        "original": 0
+      }
+    },
+    {
+      "name": "boundary-latticev2-array-false",
+      "schema": "unknown",
+      "envelope": "latticev2",
+      "input": [],
+      "safe": false,
+      "expected": {
+        "success": false,
+        "thrown": true,
+        "error": "ParseError",
+        "message": "Failed to parse VPC Lattice v2 body. This error was caused by: [\n  {\n    \"expected\": \"object\",\n    \"code\": \"invalid_type\",\n    \"path\": [],\n    \"message\": \"Invalid input: expected object, received array\"\n  }\n].",
+        "issues": [
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected object, received array",
+            "expected": "object"
+          }
+        ]
+      }
+    },
+    {
+      "name": "boundary-latticev2-array-true",
+      "schema": "unknown",
+      "envelope": "latticev2",
+      "input": [],
+      "safe": true,
+      "expected": {
+        "success": false,
+        "issues": [
+          {
+            "code": "invalid_type",
+            "message": "Invalid input: expected object, received array",
+            "expected": "object"
+          }
+        ],
+        "original": []
+      }
+    }
+  ]
+}

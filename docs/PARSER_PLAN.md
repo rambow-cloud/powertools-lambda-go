@@ -21,3 +21,26 @@ Reference: TypeScript v2.35.0 and Zod v4.1.12. Check an item only after its acce
 - [x] PR-10a: Implement recursive union errors, sole continuable branch selection, continued refinements, array-check ordering and safe-mode propagation through containers/helpers. Compose nested ParseError failures without losing sibling diagnostics, preserve branch-relative paths and isolate shared error trees. Regenerate all corpora with recursive comparisons and add 1,152 cases (3,493 total). All 18 modules/15 consumers, both CGO-disabled Linux builds, 292/292 Docker assertions and 14/14 Batch artifact checks passed (2026-09-16, Asia/Shanghai). See PARSER_ERRORS.md.
 - [ ] PR-10: Complete remaining constraint/error metadata, primitive/union, numeric, malformed Unicode/encoding and invalid-schema edge parity, and measure throughput/allocations/payload-size costs.
 - [ ] PR-11: Complete Parser/Validation documentation and event-handler integration when those modules exist.
+
+## Finite boundary audit #188
+
+This audit reuses all 3,493 preserved TypeScript v2.35.0/Zod v4.1.12 cases,
+including 90 runtime schemas, numeric/UTF-16 checks and 1,152 recursive union
+cases. It adds 84 actual observations: missing-object, scalar and array input in
+ordinary and safe modes for every one of the fourteen implemented envelopes.
+`tools/reference/generate-parser-boundaries.mjs` fails on missing pinned exports.
+
+| Reviewed boundary | Result / native mapping |
+| --- | --- |
+| Fourteen envelopes: SQS, SNS, SNS-SQS, EventBridge, Kinesis, Firehose, CloudWatch, DynamoDB, Kafka, REST/v2 API Gateway, Lambda URL and VPC Lattice v1/v2 | All 84 invalid-input observations retain exact portable issue trees, failure mode and original safe input; existing fixtures cover source-specific body/image/record decoding. |
+| Runtime schema exports | Reuse the explicit 90-symbol `PARSER_SCHEMA_MAP.json` and public export inventory; no inferred TypeScript declarations are treated as automatic Go types. |
+| Application inferred shape | `Typed[T]` plus explicit JSON tags maps strings, optional/nullable pointers, arrays and numeric fields into caller-owned structs. Unknown fields follow the supplied schema policy. Unicode text and array ownership are verified. |
+| Numbers | The built-in `Number` returns float64: an int64 above 2^53 rounds as in JavaScript, negative zero is retained, and NaN/infinities fail. Exact integer domains require a custom schema. |
+| Constraint and union diagnostics | Existing corpora compare code, message, path, expected type and recursive branch errors in order. Thirty-two concurrent `Prefix` calls keep nested paths/branches private. Zod-specific minimum/maximum/origin/format metadata is intentionally outside the portable `Issue` contract; custom schemas supply domain diagnostics. |
+| Malformed JSON/Unicode | JSON v2 rejects duplicate keys, malformed UTF-8, lone surrogates and trailing documents. This native strict-input policy is deliberate; syntax suffixes alone use the existing documented cross-runtime comparison. Raw JSON values retain interoperability. |
+| Operational errors and cancellation | Transform failures preserve the original cause and execute once; pre-cancellation skips the transform. Existing union/composition tests retain panic and safe-mode contracts. |
+
+No production defect was reproduced in these reviewed rows. Packaged Parser
+checks and its standalone consumer use CGO disabled and GOWORK off. Full PR-06
+declaration equivalence, PR-08 extension permutations, PR-10 exhaustive native
+boundaries and resource budgets (#200) remain open. No AWS acceptance is claimed.

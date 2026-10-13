@@ -155,6 +155,10 @@ The eighteen HTTP schema exports and five HTTP body envelopes are mapped in [PAR
 
 ## Objects and lifecycle
 
+The [finite boundary audit](PARSER_PLAN.md#finite-boundary-audit-188) records
+fourteen-envelope invalid inputs, explicit native type/error mappings and strict
+JSON behavior; broader export and resource gates remain separate.
+
 | Object | How to use it |
 | --- | --- |
 | `schema` | Define once and reuse to validate payloads. |

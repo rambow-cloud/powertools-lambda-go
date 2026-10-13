@@ -1,5 +1,10 @@
 # TypeScript reference fixtures
 
+`node tools/reference/generate-parser-boundaries.mjs` from the repository root
+records 84 actual invalid-input cases for all fourteen Parser envelopes, using
+the existing recursive portable issue projection. See `docs/PARSER_PLAN.md` for
+the explicit native type, numeric, Unicode and metadata contracts.
+
 These `.mjs` files are JavaScript ES modules used only during development. Node.js runs the exact pinned TypeScript Powertools distributions and saves their observable output as JSON. Go tests consume those checked-in JSON files without invoking Node.js.
 
 From this directory:
