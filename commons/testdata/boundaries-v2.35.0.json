@@ -1,0 +1,581 @@
+{
+  "version": "2.35.0",
+  "cases": [
+    {
+      "mode": "number",
+      "input": "",
+      "value": 0
+    },
+    {
+      "mode": "number",
+      "input": " ",
+      "value": 0
+    },
+    {
+      "mode": "number",
+      "input": "-0",
+      "value": 0
+    },
+    {
+      "mode": "number",
+      "input": ".5",
+      "value": 0.5
+    },
+    {
+      "mode": "number",
+      "input": "1.",
+      "value": 1
+    },
+    {
+      "mode": "number",
+      "input": "+2",
+      "value": 2
+    },
+    {
+      "mode": "number",
+      "input": "1e-324",
+      "value": 0
+    },
+    {
+      "mode": "number",
+      "input": "5e-324",
+      "value": 5e-324
+    },
+    {
+      "mode": "number",
+      "input": "1e309",
+      "value": {
+        "number": "Infinity"
+      }
+    },
+    {
+      "mode": "number",
+      "input": "-1e309",
+      "value": {
+        "number": "-Infinity"
+      }
+    },
+    {
+      "mode": "number",
+      "input": "NaN",
+      "value": {
+        "number": "NaN"
+      }
+    },
+    {
+      "mode": "number",
+      "input": "nan",
+      "value": {
+        "number": "NaN"
+      }
+    },
+    {
+      "mode": "number",
+      "input": "Infinity",
+      "value": {
+        "number": "Infinity"
+      }
+    },
+    {
+      "mode": "number",
+      "input": "-Infinity",
+      "value": {
+        "number": "-Infinity"
+      }
+    },
+    {
+      "mode": "number",
+      "input": "0x20000000000001",
+      "value": {
+        "bigint": "9007199254740993"
+      }
+    },
+    {
+      "mode": "number",
+      "input": "0b10",
+      "value": 2
+    },
+    {
+      "mode": "number",
+      "input": "0o10",
+      "value": 8
+    },
+    {
+      "mode": "number",
+      "input": "0b2",
+      "value": {
+        "number": "NaN"
+      }
+    },
+    {
+      "mode": "number",
+      "input": "0x_1",
+      "value": {
+        "number": "NaN"
+      }
+    },
+    {
+      "mode": "number",
+      "input": "1_000",
+      "value": {
+        "number": "NaN"
+      }
+    },
+    {
+      "mode": "number",
+      "input": "9007199254740993",
+      "value": {
+        "bigint": "9007199254740993"
+      }
+    },
+    {
+      "mode": "number",
+      "input": "-9007199254740993",
+      "value": {
+        "bigint": "-9007199254740993"
+      }
+    },
+    {
+      "mode": "number",
+      "input": "9007199254740993.0",
+      "error": "UnmarshallDynamoDBAttributeError",
+      "message": "9007199254740993.0 can't be converted to BigInt"
+    },
+    {
+      "mode": "number",
+      "input": "1e20",
+      "error": "UnmarshallDynamoDBAttributeError",
+      "message": "1e20 can't be converted to BigInt"
+    },
+    {
+      "mode": "attribute",
+      "input": {
+        "NS": [
+          "invalid",
+          "NaN",
+          "invalid",
+          "0",
+          "-0",
+          "Infinity",
+          "Infinity"
+        ]
+      },
+      "value": [
+        {
+          "number": "NaN"
+        },
+        0,
+        {
+          "number": "Infinity"
+        }
+      ]
+    },
+    {
+      "mode": "attribute",
+      "input": {
+        "NS": [
+          "9007199254740993",
+          "9007199254740993",
+          "1"
+        ]
+      },
+      "value": [
+        {
+          "bigint": "9007199254740993"
+        },
+        1
+      ]
+    },
+    {
+      "mode": "attribute",
+      "input": {
+        "SS": [
+          "a",
+          "a",
+          "b"
+        ]
+      },
+      "value": [
+        "a",
+        "b"
+      ]
+    },
+    {
+      "mode": "attribute",
+      "input": {
+        "BOOL": 0
+      },
+      "value": false
+    },
+    {
+      "mode": "attribute",
+      "input": {
+        "BOOL": 1
+      },
+      "value": true
+    },
+    {
+      "mode": "attribute",
+      "input": {
+        "BOOL": ""
+      },
+      "value": false
+    },
+    {
+      "mode": "attribute",
+      "input": {
+        "BOOL": "0"
+      },
+      "value": true
+    },
+    {
+      "mode": "attribute",
+      "input": {
+        "BOOL": null
+      },
+      "value": false
+    },
+    {
+      "mode": "attribute",
+      "input": {
+        "L": [
+          {
+            "S": "a"
+          },
+          {
+            "M": {
+              "n": {
+                "N": "2"
+              }
+            }
+          }
+        ]
+      },
+      "value": [
+        "a",
+        {
+          "n": 2
+        }
+      ]
+    },
+    {
+      "mode": "attribute",
+      "input": {
+        "NULL": false
+      },
+      "value": null
+    },
+    {
+      "mode": "attribute",
+      "input": {
+        "UNKNOWN": "x"
+      },
+      "error": "UnmarshallDynamoDBAttributeError",
+      "message": "Unsupported type passed: UNKNOWN"
+    },
+    {
+      "mode": "attribute",
+      "input": {
+        "M": []
+      },
+      "value": {}
+    },
+    {
+      "mode": "attribute",
+      "input": {
+        "NS": "text"
+      },
+      "error": "TypeError",
+      "message": "value.map is not a function"
+    },
+    {
+      "mode": "base64",
+      "input": "A===",
+      "encoding": "base64",
+      "error": "TypeError",
+      "message": "Invalid base64 string."
+    },
+    {
+      "mode": "base64",
+      "input": "A===",
+      "encoding": "hex",
+      "error": "TypeError",
+      "message": "Invalid base64 string."
+    },
+    {
+      "mode": "base64",
+      "input": "A===",
+      "encoding": "utf16le",
+      "error": "TypeError",
+      "message": "Invalid base64 string."
+    },
+    {
+      "mode": "base64",
+      "input": "====",
+      "encoding": "base64",
+      "error": "TypeError",
+      "message": "Invalid base64 string."
+    },
+    {
+      "mode": "base64",
+      "input": "====",
+      "encoding": "hex",
+      "error": "TypeError",
+      "message": "Invalid base64 string."
+    },
+    {
+      "mode": "base64",
+      "input": "====",
+      "encoding": "utf16le",
+      "error": "TypeError",
+      "message": "Invalid base64 string."
+    },
+    {
+      "mode": "base64",
+      "input": "ab=c",
+      "encoding": "base64",
+      "error": "TypeError",
+      "message": "Invalid base64 string."
+    },
+    {
+      "mode": "base64",
+      "input": "ab=c",
+      "encoding": "hex",
+      "error": "TypeError",
+      "message": "Invalid base64 string."
+    },
+    {
+      "mode": "base64",
+      "input": "ab=c",
+      "encoding": "utf16le",
+      "error": "TypeError",
+      "message": "Invalid base64 string."
+    },
+    {
+      "mode": "base64",
+      "input": "aA==",
+      "encoding": "base64",
+      "value": [
+        104
+      ]
+    },
+    {
+      "mode": "base64",
+      "input": "aA==",
+      "encoding": "hex",
+      "value": [
+        170
+      ]
+    },
+    {
+      "mode": "base64",
+      "input": "aA==",
+      "encoding": "utf16le",
+      "value": [
+        97,
+        0,
+        65,
+        0,
+        61,
+        0,
+        61,
+        0
+      ]
+    },
+    {
+      "mode": "base64",
+      "input": "AA==",
+      "encoding": "base64",
+      "value": [
+        0
+      ]
+    },
+    {
+      "mode": "base64",
+      "input": "AA==",
+      "encoding": "hex",
+      "value": [
+        170
+      ]
+    },
+    {
+      "mode": "base64",
+      "input": "AA==",
+      "encoding": "utf16le",
+      "value": [
+        65,
+        0,
+        65,
+        0,
+        61,
+        0,
+        61,
+        0
+      ]
+    },
+    {
+      "mode": "base64",
+      "input": "AAAA",
+      "encoding": "base64",
+      "value": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "mode": "base64",
+      "input": "AAAA",
+      "encoding": "hex",
+      "value": [
+        170,
+        170
+      ]
+    },
+    {
+      "mode": "base64",
+      "input": "AAAA",
+      "encoding": "utf16le",
+      "value": [
+        65,
+        0,
+        65,
+        0,
+        65,
+        0,
+        65,
+        0
+      ]
+    },
+    {
+      "mode": "base64",
+      "input": "YWJj",
+      "encoding": "base64",
+      "value": [
+        97,
+        98,
+        99
+      ]
+    },
+    {
+      "mode": "base64",
+      "input": "YWJj",
+      "encoding": "hex",
+      "value": []
+    },
+    {
+      "mode": "base64",
+      "input": "YWJj",
+      "encoding": "utf16le",
+      "value": [
+        89,
+        0,
+        87,
+        0,
+        74,
+        0,
+        106,
+        0
+      ]
+    },
+    {
+      "mode": "base64",
+      "input": "aGVs bG8",
+      "encoding": "base64",
+      "error": "TypeError",
+      "message": "Invalid base64 string."
+    },
+    {
+      "mode": "base64",
+      "input": "aGVs bG8",
+      "encoding": "hex",
+      "error": "TypeError",
+      "message": "Invalid base64 string."
+    },
+    {
+      "mode": "base64",
+      "input": "aGVs bG8",
+      "encoding": "utf16le",
+      "error": "TypeError",
+      "message": "Invalid base64 string."
+    },
+    {
+      "mode": "base64",
+      "input": "aGVsbG8",
+      "encoding": "base64",
+      "error": "TypeError",
+      "message": "Incorrect padding on base64 string."
+    },
+    {
+      "mode": "base64",
+      "input": "aGVsbG8",
+      "encoding": "hex",
+      "error": "TypeError",
+      "message": "Incorrect padding on base64 string."
+    },
+    {
+      "mode": "base64",
+      "input": "aGVsbG8",
+      "encoding": "utf16le",
+      "error": "TypeError",
+      "message": "Incorrect padding on base64 string."
+    },
+    {
+      "mode": "base64",
+      "input": "ab-_",
+      "encoding": "base64",
+      "error": "TypeError",
+      "message": "Invalid base64 string."
+    },
+    {
+      "mode": "base64",
+      "input": "ab-_",
+      "encoding": "hex",
+      "error": "TypeError",
+      "message": "Invalid base64 string."
+    },
+    {
+      "mode": "base64",
+      "input": "ab-_",
+      "encoding": "utf16le",
+      "error": "TypeError",
+      "message": "Invalid base64 string."
+    },
+    {
+      "mode": "type",
+      "input": "NaN",
+      "value": {
+        "truthy": true,
+        "integer": false,
+        "type": "number"
+      }
+    },
+    {
+      "mode": "type",
+      "input": "Infinity",
+      "value": {
+        "truthy": true,
+        "integer": false,
+        "type": "number"
+      }
+    },
+    {
+      "mode": "type",
+      "input": "-Infinity",
+      "value": {
+        "truthy": true,
+        "integer": false,
+        "type": "number"
+      }
+    },
+    {
+      "mode": "type",
+      "input": "-0",
+      "value": {
+        "truthy": false,
+        "integer": true,
+        "type": "number"
+      }
+    }
+  ]
+}
