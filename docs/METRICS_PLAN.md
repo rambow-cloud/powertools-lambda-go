@@ -60,6 +60,33 @@ The pinned storeMetric validates JavaScript number type rather than finiteness. 
 
 Metadata stores retain JavaScript values until serialization, whereas Go snapshots JSON at insertion. Reference tests must separate mutation timing, unsupported native values, numeric precision and JSON encoding from ordinary dimension precedence. Full parity and performance/service gates remain open after the constructor milestone.
 
+## Finite metadata and lifecycle audit #183
+
+- [x] M-FINITE-183: The matrix passes both affected packaged modules and two
+  independent consumers with CGO disabled/GOWORK off, scoped JSON v2 and
+  documentation/discovery checks (2026-10-13). Hosted checks remain independent.
+
+Baseline: TypeScript v2.35.0 Metrics/store/middleware implementations. Reuse the
+641 value cases, 968 timestamp cases, 876 ordered/duplicate wrapper-hook cases,
+scope nesting/idempotent finish and callback-panic regressions, and HTTP's 176
+reference cases plus request-count opt-in coverage. The additional generator
+records 15 actual metadata observations without changing the original fixtures.
+
+| Public surface | Evidence and classification |
+| --- | --- |
+| `AddMetadata`, `Serialize` | Verify scalars, nested objects/arrays, reserved envelope/constructor keys and ignored __proto__. Two upstream live-reference mutation observations intentionally map to Go insertion snapshots; three upstream non-finite-to-null observations map to native JSON v2 rejection. Ordinary values compare the full EMF document. |
+| Native metadata encoding/ownership | Verify exact int64 9007199254740993, private returned bytes, snapshot mutation, failed custom marshaler cause and one callback, and atomic retention of previous metadata after invalid/non-finite/duplicate-key/UTF-8/channel values. Typed Go byte/number/object behavior is JSON v2, not JavaScript runtime emulation. |
+| `StartScope`, `WithContext`, late `AddMetadata` | Reproduce serialization of caller values after scope closure and fix it with an early closed check. The existing locked recheck still rejects a serialization that overlaps finish; a channel-fenced test proves it cannot add metadata after publication. Closed ignored keys also retain ErrInvocationClosed. |
+| `WrapHandlers`, handler options | Thirty-two concurrent two-instance invocations verify independent metadata/EMF, original target-list/default-dimension snapshots and retained late-write rejection. Existing 876 cases retain ordered/duplicate target and publication/business-error decisions; callback-panic tests prove closure of every owned scope. |
+| Optional HTTP Metrics `New`, `Options` | Existing 176 pinned cases retain latency/fault/error defaults; opt-in request count tests retain their additional metric, bounded route, parent/context restoration, concurrent scope and streaming publication policies. No middleware default or OTel policy changes. |
+
+The early guard adds no lock around user serialization and retains the final
+closed-state recheck. Default JSON v2, snapshot timing, scope ownership and
+business-preserving errors remain intentional Go contracts. M-EDGES/M-WRAPPER
+exhaustive symbol/decorator/framework/native acceptance and M-RELEASE/resource
+#200/cloud gates remain open; this finite audit introduces no public API or
+dependency and performs no AWS calls.
+
 Declaration audit: the pinned Metrics.d.ts declares AddMetadata's value as a string even though the executable store accepts arbitrary JavaScript values. Go's any-valued AddMetadata is a broader API. Keep declared string behavior, JavaScript runtime extensions and Go-native serialization behavior distinguishable in subsequent fixtures; a passing ordinary string case does not prove mutable-object or custom-marshaler equivalence.
 
 ## Wrapper source audit

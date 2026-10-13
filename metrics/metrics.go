@@ -203,6 +203,9 @@ func (m *Metrics) updateDimensions(values Dimensions, set, defaults bool) error 
 
 // AddMetadata snapshots JSON immediately so subsequent caller mutation cannot alter output.
 func (m *Metrics) AddMetadata(key string, value any) error {
+	if m.current.closed.Load() {
+		return ErrInvocationClosed
+	}
 	var data []byte
 	if key != "__proto__" {
 		var err error

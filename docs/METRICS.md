@@ -246,6 +246,13 @@ The failing target's WithErrorHandler observes a publication error after all own
 Compatibility boundaries remain explicit: Go snapshots mutable options and isolates each invocation, whereas the JavaScript middleware reuses its instances. The decorator configures defaults when decorating; these Go wrappers configure the invocation like Middy's before hook. Middy-specific repeated error-hook scheduling is not represented by direct hook fixtures. Go does not preserve unpublished failed-invocation buffers for a later invocation. Broader decorator/framework equivalence remains under M-WRAPPER; use PropagateErrors when migrating reference error precedence.
 ## Objects and lifecycle
 
+The [finite metadata/lifecycle audit #183](METRICS_PLAN.md#finite-metadata-and-lifecycle-audit-183)
+records native JSON v2 and insertion-snapshot differences against 15 additional
+upstream observations. Closed scopes reject AddMetadata before calling a user's
+serializer; serialization already in progress is rejected by the final closed
+check if finish overlaps it. Exact native integers, failed-value atomicity and
+multi-instance isolation have dedicated regression coverage.
+
 | Object | Responsibility |
 | --- | --- |
 | `appMetrics` | Reusable configuration and root store. `New` returns an error for invalid configuration. |
