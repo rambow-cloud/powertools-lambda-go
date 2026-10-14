@@ -8,6 +8,8 @@ Choose your decoder to match the event source mapping. Lambda can deliver origin
 
 ## Read JSON-mode messages
 
+Use the `kafka` and `logger` imports from the [JSON order example](KAFKA.md#read-a-json-order). This snippet runs in a function returning `error`.
+
 **Input**
 
 A JSON-mode Kafka record containing `{ "id": "ORD-123" }`.
@@ -37,23 +39,29 @@ A JSON-mode Kafka record containing `{ "id": "ORD-123" }`.
 **Code**
 
 ```go
+appLog := logger.New(logger.WithServiceName("orders"))
 consumer := kafka.New(kafka.Config{Value: &kafka.FieldConfig{Type: kafka.JSON}})
 records, err := consumer.Deserialize(ctx, event)
 if err != nil { return err }
 value, err := records.Records[0].Value(ctx)
+if err != nil { return err }
+return appLog.Info("Order received", logger.Fields{"order": value})
 ```
 
-`event` is the decoded input above. Handle `err` before using `value`.
+`event` is the decoded input above.
 
 **Output**
 
 ```json
 {
-  "id": "ORD-123"
+  "message": "Order received",
+  "order": {
+    "id": "ORD-123"
+  }
 }
 ```
 
-This is the decoded record value, not the Lambda handler response.
+This is a log excerpt; Logger also adds its level, timestamp, service and sampling rate. The `order` field contains the decoded value, not the Lambda handler response.
 
 ## Select a mode
 

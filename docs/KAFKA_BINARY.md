@@ -8,7 +8,7 @@ Decode binary values with optional adapters. Your application supplies the schem
 
 ## Decode an Avro order
 
-Install `kafka/avro@v1.2.0` and import it as `kafkaavro`. The Base64 value below encodes a record with one string field.
+Install `kafka/avro@v1.2.0` and `logger@v1.2.0`. Import the adapter as `kafkaavro` and Powertools Logger as `logger`. The Base64 value below encodes a record with one string field. Each snippet runs independently in a function returning `error`, with `ctx` available.
 
 **Input**
 
@@ -19,21 +19,23 @@ Dk9SRC0xMjM=
 **Code**
 
 ```go
+appLog := logger.New(logger.WithServiceName("orders"))
 schema := `{"type":"record","name":"Order","fields":[{"name":"id","type":"string"}]}`
 value, err := kafkaavro.Deserialize(ctx, "Dk9SRC0xMjM=", schema, nil)
 if err != nil { return err }
-encoded, err := json.Marshal(value)
-if err != nil { return err }
-fmt.Println(string(encoded))
+return appLog.Info("Decoded Avro order", logger.Fields{"order": value})
 ```
 
-Here `json` is `encoding/json/v2` and the surrounding function returns `error`.
+The output is a log excerpt; Logger also adds its level, timestamp, service and sampling rate.
 
 **Output**
 
 ```json
 {
-  "id": "ORD-123"
+  "message": "Decoded Avro order",
+  "order": {
+    "id": "ORD-123"
+  }
 }
 ```
 
@@ -45,9 +47,10 @@ consumer := kafka.New(kafka.Config{Value: kafkaavro.New(schema)})
 
 ## Decode a Protobuf message
 
-Install `kafka/protobuf@v1.2.0` and import it as `kafkaproto`. This example uses the well-known `StringValue` descriptor from `wrapperspb` and `protojson` from the official Go Protobuf library.
+Install `kafka/protobuf@v1.2.0` and import it as `kafkaproto`. This example uses the well-known `StringValue` descriptor from `wrapperspb` and `protojson` from the official Go Protobuf library. Import `encoding/json/jsontext` to attach the Protobuf JSON value to a structured log.
 
 ```go
+appLog := logger.New(logger.WithServiceName("orders"))
 descriptor := (&wrapperspb.StringValue{}).ProtoReflect().Descriptor()
 var decoder kafkaproto.Decoder
 value, err := decoder.Deserialize(ctx, "CgVIZWxsbw==",
@@ -55,16 +58,19 @@ value, err := decoder.Deserialize(ctx, "CgVIZWxsbw==",
 if err != nil { return err }
 encoded, err := protojson.Marshal(value.(proto.Message))
 if err != nil { return err }
-fmt.Println(string(encoded))
+return appLog.Info("Decoded Protobuf value", logger.Fields{"value": jsontext.Value(encoded)})
 ```
 
 **Output**
 
 ```json
-"Hello"
+{
+  "message": "Decoded Protobuf value",
+  "value": "Hello"
+}
 ```
 
-For consumer configuration use `kafkaproto.New(kafkaproto.FromDescriptor(descriptor))`. Use your own generated message descriptor for application messages.
+This is a log excerpt. `jsontext.Value` preserves the `protojson` representation instead of logging encoded bytes or an escaped JSON string. For consumer configuration use `kafkaproto.New(kafkaproto.FromDescriptor(descriptor))`. Use your own generated message descriptor for application messages.
 
 ## Things to know
 

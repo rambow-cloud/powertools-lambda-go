@@ -12,11 +12,12 @@ Use Go 1.27 or newer:
 
 ```sh
 CGO_ENABLED=0 go get github.com/rambow-cloud/powertools-lambda-go/datamasking@v1.2.0
+CGO_ENABLED=0 go get github.com/rambow-cloud/powertools-lambda-go/logger@v1.2.0
 ```
 
 ## Mask a customer field
 
-The program returns a masked copy. It leaves the original payload unchanged and needs no AWS credentials.
+Mask the payload before passing it to Powertools Logger. The original payload stays unchanged, so log the returned copy. This example needs no AWS credentials; its log timestamp varies on each run.
 
 **Input**
 
@@ -37,14 +38,14 @@ package main
 
 import (
 	"context"
-	json "encoding/json/v2"
-	"fmt"
 	stdlog "log"
 
 	"github.com/rambow-cloud/powertools-lambda-go/datamasking"
+	"github.com/rambow-cloud/powertools-lambda-go/logger"
 )
 
 func main() {
+	appLog := logger.New(logger.WithServiceName("orders"))
 	payload := map[string]any{
 		"customer": map[string]any{"name": "Ada", "ssn": "123-45-6789"},
 		"order_id": "ORD-123",
@@ -56,11 +57,9 @@ func main() {
 	if err != nil {
 		stdlog.Fatal(err)
 	}
-	encoded, err := json.Marshal(masked)
-	if err != nil {
+	if err := appLog.Info("Order received", logger.Fields{"order": masked}); err != nil {
 		stdlog.Fatal(err)
 	}
-	fmt.Println(string(encoded))
 }
 ```
 
@@ -68,15 +67,24 @@ func main() {
 
 ```json
 {
-  "customer": {
-    "name": "Ada",
-    "ssn": "*****"
-  },
-  "order_id": "ORD-123"
+  "level": "INFO",
+  "message": "Order received",
+  "timestamp": "2026-10-15T00:00:00.000Z",
+  "service": "orders",
+  "sampling_rate": 0,
+  "order": {
+    "customer": {
+      "name": "Ada",
+      "ssn": "*****"
+    },
+    "order_id": "ORD-123"
+  }
 }
 ```
 
 ## Choose a custom mask
+
+The default replacement is `"*****"`, regardless of the original string length. Set `CustomMask` to use `"[redacted]"` instead. The following snippets run independently inside a function returning `error`, with a context `ctx` and the `masker` and `appLog` created above. Log excerpts omit Logger's standard fields.
 
 ```go
 replacement := "[redacted]"
@@ -84,40 +92,56 @@ masked, err := masker.Erase(ctx, payload, datamasking.EraseOptions{
     Fields:     []string{"customer.ssn"},
     Rule:       datamasking.Rule{CustomMask: &replacement},
 })
+if err != nil { return err }
+return appLog.Info("Order received", logger.Fields{"order": masked})
 ```
 
-**Output**
+**Output (log excerpt)**
 
 ```json
 {
-  "customer": {
-    "name": "Ada",
-    "ssn": "[redacted]"
-  },
-  "order_id": "ORD-123"
+  "message": "Order received",
+  "order": {
+    "customer": {
+      "name": "Ada",
+      "ssn": "[redacted]"
+    },
+    "order_id": "ORD-123"
+  }
 }
 ```
 
 ## Mask every item in an array
 
+This separate call omits `CustomMask`, so each email uses the default `"*****"`. A custom mask affects only the call that supplies it; it does not change the `masker`. Pass the same `Rule` here if you want `"[redacted]"` for emails too.
+
 ```go
+payload := map[string]any{"customers": []any{
+    map[string]any{"email": "ada@example.com"},
+    map[string]any{"email": "grace@example.com"},
+}}
 masked, err := masker.Erase(ctx, payload, datamasking.EraseOptions{
     Fields: []string{"customers[*].email"},
 })
+if err != nil { return err }
+return appLog.Info("Customers received", logger.Fields{"payload": masked})
 ```
 
-For `{"customers":[{"email":"ada@example.com"},{"email":"grace@example.com"}]}`, the result is:
+**Output (log excerpt)**
 
 ```json
 {
-  "customers": [
-    {
-      "email": "*****"
-    },
-    {
-      "email": "*****"
-    }
-  ]
+  "message": "Customers received",
+  "payload": {
+    "customers": [
+      {
+        "email": "*****"
+      },
+      {
+        "email": "*****"
+      }
+    ]
+  }
 }
 ```
 

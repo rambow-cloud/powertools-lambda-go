@@ -12,12 +12,13 @@ Use Go 1.27 or newer:
 
 ```sh
 CGO_ENABLED=0 go get github.com/rambow-cloud/powertools-lambda-go/kafka@v1.2.0
+CGO_ENABLED=0 go get github.com/rambow-cloud/powertools-lambda-go/logger@v1.2.0
 CGO_ENABLED=0 go get github.com/aws/aws-lambda-go@v1.55.0
 ```
 
 ## Read a JSON order
 
-This local program decodes and prints one JSON value. The Kafka value below is Base64-encoded `{"id":"ORD-123"}`; no broker or Lambda runtime is needed.
+This local program decodes an order and logs it with Powertools Logger. The Kafka value below is Base64-encoded `{"id":"ORD-123"}`; no broker or Lambda runtime is needed. The log timestamp varies on each run.
 
 **Input**
 
@@ -49,32 +50,30 @@ package main
 
 import (
 	"context"
-	json "encoding/json/v2"
-	"fmt"
-	"log"
+	stdlog "log"
 
 	"github.com/rambow-cloud/powertools-lambda-go/kafka"
+	"github.com/rambow-cloud/powertools-lambda-go/logger"
 )
 
 func main() {
 	ctx := context.Background()
+	appLog := logger.New(logger.WithServiceName("orders"))
 	consumer := kafka.New(kafka.Config{Value: &kafka.FieldConfig{Type: kafka.JSON}})
 	event := map[string]any{"records": map[string]any{"orders-0": []any{
 		map[string]any{"value": "eyJpZCI6Ik9SRC0xMjMifQ=="},
 	}}}
 	records, err := consumer.Deserialize(ctx, event)
 	if err != nil {
-		log.Fatal(err)
+		stdlog.Fatal(err)
 	}
 	value, err := records.Records[0].Value(ctx)
 	if err != nil {
-		log.Fatal(err)
+		stdlog.Fatal(err)
 	}
-	encoded, err := json.Marshal(value)
-	if err != nil {
-		log.Fatal(err)
+	if err := appLog.Info("Order received", logger.Fields{"order": value}); err != nil {
+		stdlog.Fatal(err)
 	}
-	fmt.Println(string(encoded))
 }
 ```
 
@@ -82,11 +81,20 @@ func main() {
 
 ```json
 {
-  "id": "ORD-123"
+  "level": "INFO",
+  "message": "Order received",
+  "timestamp": "2026-10-15T00:00:00.000Z",
+  "service": "orders",
+  "sampling_rate": 0,
+  "order": {
+    "id": "ORD-123"
+  }
 }
 ```
 
-The output above is the decoded value returned by `record.Value(ctx)`, not the Lambda handler response. For a deployed Lambda, use `kafka.WrapHandler` and process the decoded values inside your callback; see the [complete handler](https://github.com/rambow-cloud/powertools-lambda-go/blob/main/examples/kafka/main.go).
+The `order` field contains the decoded value returned by `record.Value(ctx)`. Logger serializes it directly; there is no need to marshal it into a JSON string first. This is a log record, not the Lambda handler response.
+
+For a deployed Lambda, compose `kafka.WrapHandler` with `logger.WrapHandler` and use `appLog.WithContext(ctx)` inside the callback. This adds invocation fields such as `cold_start` and `function_request_id`; see the [complete handler](https://github.com/rambow-cloud/powertools-lambda-go/blob/main/examples/kafka/main.go).
 
 ## Read a record
 

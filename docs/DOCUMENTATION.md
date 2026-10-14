@@ -34,6 +34,7 @@ Write for application developers. Each guide should answer: what does this utili
 - Lead with a one-sentence purpose and installation, then a small task example.
 - Show **Input**, **Code** and **Output** together. Use fenced JSON, text or HTTP results, rather than describing results only in prose. Collapse a full AWS event envelope when it would obscure a short example.
 - Prefer one operation per example. Explain the few settings needed for that task; put large option tables, native edge cases and API mappings in `reference/`.
+- Reuse existing Powertools modules for application concerns: use Logger for structured application logs, pass objects as `logger.Fields` and show the emitted record. Keep protocol-specific serialization, such as `protojson`, when required by the value's contract. In masking examples, log only the returned masked copy. Explain when successive examples use different per-call options.
 - Mark excerpts and values that vary, such as timestamps, trace IDs and ciphertext. Label service prerequisites and illustrative responses honestly. Run local examples without AWS credentials; do not invent successful service calls.
 - Describe the project as an independent community Go port. Keep pinned upstream versions, fixture counts and audit matrices in contributor provenance/plans, not in each user guide.
 - Keep error handling, invocation lifetime, important limits and the deprecated X-Ray migration warning where they affect application decisions.

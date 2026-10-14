@@ -15,6 +15,7 @@ GUIDES = (
 )
 FENCE = re.compile(r"^[ \t]*(?P<mark>`{3}|~{3})(?P<language>\w*)[^\n]*\n(?P<code>.*?)\n[ \t]*(?P=mark)[ \t]*$", re.M | re.S)
 SOURCE_PREFIX = "https://github.com/rambow-cloud/powertools-lambda-go/blob/main/"
+LOGGER_GUIDES = {"KAFKA", "KAFKA_BINARY", "KAFKA_MODES", "DATAMASKING"}
 
 
 def invalid_constant(value: str) -> None:
@@ -26,6 +27,12 @@ def check_guide(content: str, name: str, root: Path = ROOT) -> list[str]:
     blocks = list(FENCE.finditer(content))
     if not any(block["language"] == "go" and block["code"].strip() for block in blocks):
         failures.append("missing Go example")
+    if name in LOGGER_GUIDES:
+        code = "\n".join(block["code"] for block in blocks if block["language"] == "go")
+        if not all(token in code for token in ("logger.New(", "logger.Fields{", ".Info(")):
+            failures.append("compose application logging examples with Powertools Logger")
+        if re.search(r"\bfmt\.Print(?:ln|f)?\(|\bjson\.Marshal\(", code):
+            failures.append("pass structured values to Logger instead of manually marshaling or printing application logs")
     if not re.search(r"^\*\*Input\*\*\s*$", content, re.M):
         failures.append("missing explicit example input")
     label = re.search(r"^\*\*Output\*\*\s*$", content, re.M)
