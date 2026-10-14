@@ -5,10 +5,12 @@ Start with the [Kafka consumer guide](../KAFKA.md) for examples and results. Thi
 ## Native Lambda usage
 
 ```go
+appLog := logger.New(logger.WithServiceName("orders"))
 consumer := kafka.New(kafka.Config{
     Value: &kafka.FieldConfig{Type: kafka.JSON},
 })
 handler := kafka.WrapHandler(consumer, func(ctx context.Context, event *kafka.ConsumerRecords) (any, error) {
+    requestLog := appLog.WithContext(ctx)
     for _, record := range event.Records {
         value, err := record.Value(ctx)
         if err != nil {
@@ -17,11 +19,13 @@ handler := kafka.WrapHandler(consumer, func(ctx context.Context, event *kafka.Co
         if value == nil {
             continue // Tombstone: apply the application's deletion policy.
         }
-        // Process value and record.Fields["offset"] here.
+        if err := requestLog.Info("Order received", logger.Fields{"order": value}); err != nil {
+            return nil, err
+        }
     }
     return nil, nil
 })
-lambda.Start(handler)
+lambda.Start(logger.WrapHandler(appLog, handler))
 ```
 
 Complete imports are in [the example](https://github.com/rambow-cloud/powertools-lambda-go/blob/main/examples/kafka/main.go). The wrapper receives `json.RawMessage`, preserves topic insertion order, checks the event and creates records, then passes the original context to the handler. Application response values and errors propagate unchanged. It does not generate partial batch responses or manage Kafka offsets.

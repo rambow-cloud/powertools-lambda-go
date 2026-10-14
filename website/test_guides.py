@@ -73,6 +73,26 @@ class GuideTests(unittest.TestCase):
     def test_missing_included_source_is_rejected(self):
         self.assertTrue(any("included example" in failure for failure in self.check(GUIDE + '\n--8<-- "missing.go"\n')))
 
+    def test_application_guides_require_powertools_logger(self):
+        text = GUIDE.replace("EXAMPLE.md", "KAFKA.md")
+        (self.root / "docs/reference/KAFKA.md").write_text("# Kafka notes\n", encoding="utf-8")
+        failures = check_guide(text, "KAFKA", self.root)
+        self.assertTrue(any("Powertools Logger" in failure for failure in failures))
+        text = text.replace('fmt.Println("Hello")', 'appLog := logger.New()\nappLog.Info("Hello", logger.Fields{})')
+        self.assertEqual([], check_guide(text, "KAFKA", self.root))
+
+    def test_logger_guides_preserve_protocol_serialization(self):
+        text = GUIDE.replace("EXAMPLE.md", "KAFKA_BINARY.md").replace(
+            'fmt.Println("Hello")',
+            'appLog := logger.New()\nencoded, err := protojson.Marshal(value)\nappLog.Info("Hello", logger.Fields{"value": jsontext.Value(encoded)})',
+        )
+        (self.root / "docs/reference/KAFKA_BINARY.md").write_text("# Binary notes\n", encoding="utf-8")
+        self.assertEqual([], check_guide(text, "KAFKA_BINARY", self.root))
+        for manual in ('json.Marshal(value)', 'fmt.Println(value)'):
+            with self.subTest(manual=manual):
+                failures = check_guide(text.replace('protojson.Marshal(value)', manual), "KAFKA_BINARY", self.root)
+                self.assertTrue(any("manually marshaling" in failure for failure in failures))
+
 
 if __name__ == "__main__":
     unittest.main()

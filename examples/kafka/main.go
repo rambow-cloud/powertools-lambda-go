@@ -6,11 +6,14 @@ import (
 
 	"github.com/aws/aws-lambda-go/lambda"
 	"github.com/rambow-cloud/powertools-lambda-go/kafka"
+	"github.com/rambow-cloud/powertools-lambda-go/logger"
 )
 
 func main() {
+	appLog := logger.New(logger.WithServiceName("orders"))
 	consumer := kafka.New(kafka.Config{Value: &kafka.FieldConfig{Type: kafka.JSON}})
-	lambda.Start(kafka.WrapHandler(consumer, func(ctx context.Context, event *kafka.ConsumerRecords) (any, error) {
+	handler := kafka.WrapHandler(consumer, func(ctx context.Context, event *kafka.ConsumerRecords) (any, error) {
+		requestLog := appLog.WithContext(ctx)
 		for _, record := range event.Records {
 			value, err := record.Value(ctx)
 			if err != nil {
@@ -19,8 +22,11 @@ func main() {
 			if value == nil {
 				continue
 			}
-			// Process the decoded value here. Return an error to fail this invocation.
+			if err := requestLog.Info("Order received", logger.Fields{"order": value}); err != nil {
+				return nil, err
+			}
 		}
 		return nil, nil
-	}))
+	})
+	lambda.Start(logger.WrapHandler(appLog, handler))
 }

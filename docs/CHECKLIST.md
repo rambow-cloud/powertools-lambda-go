@@ -6,6 +6,8 @@ Usage belongs in the utility guides. [Feature comparison](FEATURE_PARITY.md) map
 
 ## Documentation and feature audit
 
+- [x] DOC-237: Compose Kafka/Avro/Protobuf/delivery-mode and Data Masking examples with Logger, show structured results, and bind the runnable Kafka handler to invocation logging. Verify default/custom masking are per-call options on the same masker, preserve original payloads and Protobuf JSON, and run the affected local examples plus guide/build checks with CGO disabled. No AWS calls (2026-10-15).
+
 - [x] DOC-235: Rework 26 primary/optional-module guides around short code and visible input/output, covering all 27 maintained modules. Move detailed contracts and existing audit matrices to Development references, centralize upstream provenance, and update the quickstart/module installation for the shared v1.2.0 release. Verify 36 example cases: 30 local executions (including seven native Lambda SDK invocations) and six compile-only cases/options, including Linux KMS. Validate guide guards, navigation, strict site build, discovery and workflow regressions. No AWS calls, live-site browser acceptance or release publication is included (2026-10-15).
 
 - [x] DESIGN-92: Specify a bounded opt-in AWS IAM/KMS/SSM/DynamoDB acceptance plan with explicit authorization and cleanup. Reviewed historical evidence, current KMS pricing/deletion and IAM consistency; defined cases, scoped permissions, account/profile/region guards, time/request/resource limits and sanitized acceptance without AWS calls. Locked dependencies, navigation, eighteen guide checks and strict site build pass. See [design acceptance](AWS_ACCEPTANCE_PLAN.md); issue #92. Planning only; implementation/service gates remain open (2026-10-08).
