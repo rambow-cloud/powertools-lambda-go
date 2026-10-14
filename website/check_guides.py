@@ -1,5 +1,6 @@
-"""Require usable examples, observable results and pinned-source feature maps."""
+"""Keep utility guides focused on code, visible results and application guidance."""
 
+import json
 from pathlib import Path
 import re
 
@@ -9,35 +10,60 @@ GUIDES = (
     "LOGGER", "TRACER", "METRICS", "PARAMETERS", "BATCH", "IDEMPOTENCY",
     "JMESPATH", "PARSER", "JSON_SCHEMA_VALIDATION", "HTTP", "APPSYNC_EVENTS",
     "APPSYNC_GRAPHQL", "BEDROCK", "KAFKA", "DATAMASKING", "SIGNER", "METADATA",
-    "COMMONS",
+    "COMMONS", "HTTP_MIDDLEWARE", "HTTP_OBSERVABILITY", "HTTP_STREAMING",
+    "IDEMPOTENCY_CACHE", "KAFKA_BINARY", "KAFKA_MODES", "DATAMASKING_KMS", "REGEX",
 )
-BASELINE = "7bcc27b1574493f9452688673658f52b80c53847"
+FENCE = re.compile(r"^[ \t]*(?P<mark>`{3}|~{3})(?P<language>\w*)[^\n]*\n(?P<code>.*?)\n[ \t]*(?P=mark)[ \t]*$", re.M | re.S)
 SOURCE_PREFIX = "https://github.com/rambow-cloud/powertools-lambda-go/blob/main/"
+
+
+def invalid_constant(value: str) -> None:
+    raise ValueError(f"non-JSON number {value}")
+
+
+def check_guide(content: str, name: str, root: Path = ROOT) -> list[str]:
+    failures = []
+    blocks = list(FENCE.finditer(content))
+    if not any(block["language"] == "go" and block["code"].strip() for block in blocks):
+        failures.append("missing Go example")
+    if not re.search(r"^\*\*Input\*\*\s*$", content, re.M):
+        failures.append("missing explicit example input")
+    label = re.search(r"^\*\*Output\*\*\s*$", content, re.M)
+    output = FENCE.match(content[label.end():].lstrip()) if label else None
+    if not output or output["language"] == "go" or not output["code"].strip():
+        failures.append("missing fenced output; prose alone is not a demonstration")
+    for block in blocks:
+        if block["language"] == "json":
+            try:
+                json.loads(block["code"], parse_constant=invalid_constant)
+            except ValueError as exc:
+                failures.append(f"invalid JSON example: {exc}")
+    for heading in ("Things to know", "Next steps"):
+        if not re.search(r"^## " + heading + r"$", content, re.M):
+            failures.append(f"missing {heading!r} section")
+    if re.search(r"TypeScript\s+v?\d+\.\d+\.\d+|@aws-lambda-powertools/[^\s@]+@\d+", content):
+        failures.append("move pinned upstream versions to the contributor reference")
+    if re.search(r"^## (?:TypeScript feature coverage|Finite .+ audit|Evidence and limits|Verification scope)$", content, re.M):
+        failures.append("move implementation audits to reference pages")
+    if f"reference/{name}.md" not in content or not (root / "docs/reference" / f"{name}.md").is_file():
+        failures.append("missing linked API and behavior reference")
+    for target in re.findall(re.escape(SOURCE_PREFIX) + r"([^\s)#]+)", content):
+        if not (root / target).is_file():
+            failures.append(f"missing referenced source {target}")
+    for target in re.findall(r'--8<-- "([^"\n]+)"', content):
+        if not (root / target.split(":", 1)[0]).is_file():
+            failures.append(f"missing included example {target}")
+    return failures
 
 
 def main() -> None:
     failures = []
     for name in GUIDES:
-        path = ROOT / "docs" / f"{name}.md"
-        content = path.read_text(encoding="utf-8")
-        headings = set(re.findall(r"^## (.+)$", content, re.M))
-        required = {"Objects and lifecycle", "TypeScript feature coverage"}
-        required.add("Write your first log" if name == "LOGGER" else "Complete example")
-        required.add("Messages, fields, and errors" if name == "LOGGER" else "Input and output")
-        for heading in sorted(required - headings):
-            failures.append(f"{path.name}: missing section {heading!r}")
-        if BASELINE not in content:
-            failures.append(f"{path.name}: missing pinned TypeScript source")
-        if "| TypeScript feature | Go API or approach | Compatibility scope |" not in content:
-            failures.append(f"{path.name}: missing feature comparison table")
-        if not re.search(r"^~~~go\n(?:package main\b|--8<--)", content, re.M):
-            failures.append(f"{path.name}: missing complete or maintained Go example")
-        for target in re.findall(re.escape(SOURCE_PREFIX) + r"([^\s)#]+)", content):
-            if not (ROOT / target).is_file():
-                failures.append(f"{path.name}: missing referenced source {target}")
+        content = (ROOT / "docs" / f"{name}.md").read_text(encoding="utf-8")
+        failures.extend(f"{name}.md: {failure}" for failure in check_guide(content, name))
     if failures:
         raise SystemExit("\n".join(failures))
-    print(f"Verified {len(GUIDES)} utility guides: examples, results, lifecycle and pinned feature/source coverage.")
+    print(f"Verified {len(GUIDES)} utility guides: Go examples, fenced results and linked API notes.")
 
 
 if __name__ == "__main__":

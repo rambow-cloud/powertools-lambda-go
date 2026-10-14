@@ -6,7 +6,7 @@ description: "Compare Powertools for Go with Powertools for AWS Lambda TypeScrip
 
 This project uses **Powertools for AWS Lambda (TypeScript) v2.35.0**, source commit `7bcc27b1574493f9452688673658f52b80c53847`, as its behavioral baseline. The [official source](https://github.com/aws-powertools/powertools-lambda-typescript/tree/7bcc27b1574493f9452688673658f52b80c53847) and `tools/reference/package-lock.json` identify the version being compared. Latest upstream documentation can describe newer behavior; it does not silently change this baseline.
 
-Each guide maps the corresponding official feature documentation to Go APIs, shows a complete example and describes its output. Go function names, contexts, native values and error handling differ from JavaScript. The detailed mappings below distinguish implemented capabilities from remaining compatibility gates. [CHECKLIST.md](CHECKLIST.md) remains the authoritative project progress record.
+User guides show practical Go code and results. Detailed API mappings live under Development → API and behavior notes. Go function names, contexts, native values and error handling differ from JavaScript. The mappings below distinguish implemented capabilities from remaining compatibility work. [CHECKLIST.md](CHECKLIST.md) remains the authoritative project progress record.
 
 ## Scheduled remaining work
 

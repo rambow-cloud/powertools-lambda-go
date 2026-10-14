@@ -97,7 +97,6 @@ nav:
       - Usage patterns: USAGE_PATTERNS.md
       - Environment variables: ENVIRONMENT_VARIABLES.md
       - Compatibility: COMPATIBILITY.md
-      - TypeScript feature comparison: FEATURE_PARITY.md
   - Observability:
       - Observability: observability/index.md
       - Logger: LOGGER.md
@@ -161,6 +160,37 @@ nav:
       - Release plan: PUBLISHING_PLAN.md
   - Development:
       - Contributing: CONTRIBUTING.md
+      - Upstream feature comparison: FEATURE_PARITY.md
+      - API and behavior notes:
+          - Port provenance: reference/COMPATIBILITY.md
+          - Build and JSON notes: reference/GETTING_STARTED.md
+          - Module development: reference/MODULES.md
+          - "Logger": reference/LOGGER.md
+          - "Tracer": reference/TRACER.md
+          - "Metrics": reference/METRICS.md
+          - "Parameters": reference/PARAMETERS.md
+          - "Batch processing": reference/BATCH.md
+          - "Idempotency": reference/IDEMPOTENCY.md
+          - "JMESPath": reference/JMESPATH.md
+          - "Parser": reference/PARSER.md
+          - "JSON Schema Validation": reference/JSON_SCHEMA_VALIDATION.md
+          - "HTTP event handler": reference/HTTP.md
+          - "AppSync Events": reference/APPSYNC_EVENTS.md
+          - "AppSync GraphQL": reference/APPSYNC_GRAPHQL.md
+          - "Bedrock Agent function resolver": reference/BEDROCK.md
+          - "Kafka consumer": reference/KAFKA.md
+          - "Data Masking": reference/DATAMASKING.md
+          - "Signer": reference/SIGNER.md
+          - "Metadata": reference/METADATA.md
+          - "Commons and Metadata": reference/COMMONS.md
+          - "HTTP CORS and compression": reference/HTTP_MIDDLEWARE.md
+          - "HTTP observability": reference/HTTP_OBSERVABILITY.md
+          - "HTTP response streaming": reference/HTTP_STREAMING.md
+          - "Redis and Valkey persistence": reference/IDEMPOTENCY_CACHE.md
+          - "Kafka Avro and Protobuf": reference/KAFKA_BINARY.md
+          - "Kafka delivery modes": reference/KAFKA_MODES.md
+          - "Encrypt selected fields with KMS": reference/DATAMASKING_KMS.md
+          - "ECMAScript regular expressions": reference/REGEX.md
       - Maintainer setup: MAINTAINING.md
       - Releasing modules: RELEASING.md
       - v1 readiness: V1_READINESS.md

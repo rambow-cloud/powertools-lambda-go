@@ -29,7 +29,7 @@ The first two optional compiler slices are published in v1.2.0: #168 provides
 `Draft202012Compiler` (54 matching pinned reference verdicts, two measured native
 differences); #169 provides `Draft201909Compiler` (55 matching verdicts, three
 native differences). Both have scoped ownership/reference/lifecycle acceptance. Their
-[contracts](JSON_SCHEMA_VALIDATION.md#optional-draft-2020-12-compiler) leave Draft 7
+[contracts](reference/JSON_SCHEMA_VALIDATION.md#optional-draft-2020-12-compiler) leave Draft 7
 unchanged; the remaining compiler and transformation slices below stay open.
 
 | Capability | Classification | Issue | Milestone |

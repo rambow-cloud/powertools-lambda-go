@@ -12,7 +12,7 @@ The site uses [Zensical](https://zensical.org/docs/) with its default modern the
 - `website/pyproject.toml` and `website/uv.lock` isolate and lock documentation dependencies.
 - `website/check_navigation.py` checks that every Markdown guide appears exactly once in navigation and that every target exists inside `docs/`.
 - `dist/site/` contains generated HTML and is ignored by Git.
-- The quickstart includes the minimal README program through a named snippet and the composed Go example through a checked source snippet, avoiding duplicate code.
+- The quickstart includes the minimal README program through a checked named snippet, avoiding duplicate code.
 - `RELEASE_NOTES.md` lists published versions, newest first. Keep each entry to
   its version heading, publication date, prerelease status when applicable,
   canonical GitHub Release link and short user-facing change bullets. Use
@@ -29,15 +29,20 @@ Every guide belongs in navigation. Builds fail on missing navigation targets, br
 
 ## Utility guide contract
 
-The [feature comparison](FEATURE_PARITY.md) fixes the TypeScript baseline and maps implementation and evidence across all utility families. Follow the official TypeScript guides' progression: a brief purpose, installation, one minimal example, expected results, common tasks and advanced usage. Keep first examples focused on the utility being introduced. Add Logger, Tracer, Parser or other composition after readers have seen the basic API. Identify prerequisites for examples that contact AWS.
+Write for application developers. Each guide should answer: what does this utility do, what code should I write, and what will I see?
 
-Place detailed lifecycle tables, fixture history and TypeScript feature mappings after ordinary usage. Keep existing anchors, English text, accurate error handling and the pinned behavioral baseline. Incomplete fragments must identify their imports and required application symbols.
+- Lead with a one-sentence purpose and installation, then a small task example.
+- Show **Input**, **Code** and **Output** together. Use fenced JSON, text or HTTP results, rather than describing results only in prose. Collapse a full AWS event envelope when it would obscure a short example.
+- Prefer one operation per example. Explain the few settings needed for that task; put large option tables, native edge cases and API mappings in `reference/`.
+- Mark excerpts and values that vary, such as timestamps, trace IDs and ciphertext. Label service prerequisites and illustrative responses honestly. Run local examples without AWS credentials; do not invent successful service calls.
+- Describe the project as an independent community Go port. Keep pinned upstream versions, fixture counts and audit matrices in contributor provenance/plans, not in each user guide.
+- Keep error handling, invocation lifetime, important limits and the deprecated X-Ray migration warning where they affect application decisions.
 
-Create a documentation issue before making guide changes. When comparison reveals a missing implemented upstream capability, search existing issues and create or link a feature issue with evidence and acceptance criteria. Keep confirmed missing features distinct from intentional Go/JavaScript differences and incomplete exhaustive verification. Link the open feature issue from the affected guide and plan; do not claim unsupported behavior. See [documentation review #163](https://github.com/rambow-cloud/powertools-lambda-go/issues/163) and [data-key caching #164](https://github.com/rambow-cloud/powertools-lambda-go/issues/164).
+The official TypeScript [Logger](https://docs.aws.amazon.com/powertools/typescript/latest/features/logger/), [Batch](https://docs.aws.amazon.com/powertools/typescript/latest/features/batch/) and [Data Masking](https://docs.aws.amazon.com/powertools/typescript/latest/features/data-masking/) guides inform the task-based structure and visible results. Adapt examples to Go APIs and OpenTelemetry instead of copying language-specific runtime behavior.
 
-`website/check_guides.py` checks those sections, complete example presence, fixed-source attribution and referenced source-file existence for eighteen guides, including Commons. It checks documentation structure, not functional parity. Packaged tests and [the maintained Docker runner](LOCAL_INTEGRATION.md) establish the stated behavioral scope. Verify changed executable examples and compare their documented results before claiming acceptance.
+Create a documentation issue before changing guides. If an upstream comparison reveals a missing capability, link an existing feature issue or create one with evidence and acceptance criteria. Distinguish missing features from intentional language differences and unverified behavior.
 
-Use site-local links for usage and verification pages. Use source links for code, fixtures and the fixed upstream version. Keep historical dates/counts in acceptance records or plans and link to them from user guides; do not mix past milestones into configuration instructions. [CHECKLIST.md](CHECKLIST.md) remains the project progress record: ordinary wording repairs need no entry, but verified feature audits and acceptance milestones do.
+`website/check_guides.py` checks all 26 primary/optional-module guides for code, explicit inputs, fenced results, valid JSON and linked API notes. `website/test_guides.py` guards against replacing results with prose, broken references and repeated pinned-version boilerplate. A strict build validates links and included sources. These static checks do not execute Go or establish AWS service acceptance; record actual example execution in the implementation PR.
 
 ## Visual design
 
@@ -75,6 +80,7 @@ For the same strict build used in CI:
 uv lock --project website --check
 uv run --project website --frozen python website/check_navigation.py
 uv run --project website --frozen python website/check_guides.py
+uv run --project website --frozen python website/test_guides.py
 uv run --project website --frozen zensical build --clean --strict --config-file mkdocs.yml
 uv run --project website --frozen python website/check_discovery.py
 uv run --project website --frozen python website/test_discovery.py

@@ -5,206 +5,115 @@ description: "Trace Go Lambda handlers, HTTP requests and AWS SDK calls with Ope
 
 # Tracer
 
-Tracer captures Lambda handlers, application operations, outbound HTTP requests and AWS SDK v2 calls as OpenTelemetry spans. Export through an OTLP collector; use its `awsxray` exporter for AWS X-Ray. Import `github.com/rambow-cloud/powertools-lambda-go/tracer`.
-
-See [installation](MODULES.md) and the [compatibility baseline](COMPATIBILITY.md).
+Trace Lambda handlers, child operations, HTTP requests and AWS SDK calls with OpenTelemetry. Send spans to an OTLP collector and, if needed, onward to AWS X-Ray.
 
 ## Install
 
-Use Go 1.27 or newer and install the module in your own application:
+Use Go 1.27 or newer:
 
 ```sh
 CGO_ENABLED=0 go get github.com/rambow-cloud/powertools-lambda-go/tracer@v1.2.0
 CGO_ENABLED=0 go get github.com/aws/aws-lambda-go@v1.55.0
 ```
 
-## Complete example
+## See a handler span locally
 
-Create one tracer and wrap your Lambda handler. The wrapper creates and finishes
-the handler span; your business function returns its normal Go result.
+This example records spans in memory so you can see the result without a collector or AWS credentials. Install `go.opentelemetry.io/otel/sdk@v1.46.0` for this local exporter.
 
-~~~go
+**Input**
+
+```text
+Ada
+```
+
+**Code**
+
+```go
 package main
 
 import (
 	"context"
+	"fmt"
 	"log"
 
-	"github.com/aws/aws-lambda-go/lambda"
 	"github.com/rambow-cloud/powertools-lambda-go/tracer"
+	sdktrace "go.opentelemetry.io/otel/sdk/trace"
+	"go.opentelemetry.io/otel/sdk/trace/tracetest"
 )
 
 func main() {
-	trace, err := tracer.New(tracer.WithServiceName("greeting"))
+	ctx := context.Background()
+	exporter := tracetest.NewInMemoryExporter()
+	provider := sdktrace.NewTracerProvider(sdktrace.WithSyncer(exporter))
+	defer provider.Shutdown(ctx)
+	tr, err := tracer.New(tracer.WithLocalTracing(true),
+		tracer.WithBackend(tracer.NewOTelBackend(provider)))
 	if err != nil {
 		log.Fatal(err)
 	}
-	handler := func(_ context.Context, event map[string]string) (map[string]string, error) {
-		return map[string]string{"message": "Hello, " + event["name"]}, nil
+	handler := tracer.WrapHandler(tr, func(ctx context.Context, name string) (string, error) {
+		return "Hello, " + name, nil
+	})
+	result, err := handler(ctx, "Ada")
+	if err != nil {
+		log.Fatal(err)
 	}
-	lambda.Start(tracer.WrapHandler(trace, handler))
+	fmt.Println(result)
+	for _, span := range exporter.GetSpans() {
+		fmt.Println("Span:", span.Name)
+	}
 }
-~~~
-
-Deploy with a reachable OTLP
-collector; [collector setup](#collector-and-aws-x-ray) describes AWS X-Ray delivery.
-For an offline demonstration, use the [in-memory exporter example](#provider-ownership-and-delivery).
-
-## Input and output
-
-Input `{"name":"Go"}` returns `{"message":"Hello, Go"}`. Tracer records a handler
-span and exports it to the configured collector. It does not write an application
-log or change the handler's result. Trace IDs vary between invocations.
-
-## Common tasks
-
-- [Send traces to AWS X-Ray](#collector-and-aws-x-ray).
-- [Trace HTTP and AWS SDK calls](#http-and-aws-sdk-v2).
-- [Configure capture and sampling](#configuration).
-
-## Initialize and compose
-
-Create a tracer before `lambda.Start`:
-
-~~~go
-t, err := tracer.New(
-    tracer.WithServiceName("orders"),
-    tracer.WithCaptureResponse(false),
-    tracer.WithErrorHandler(func(err error) {
-        log.Printf("Tracing failed: %v", err)
-    }),
-)
-if err != nil {
-    log.Fatal(err)
-}
-~~~
-
-The fragment requires `log` and `tracer` imports. Wrap your typed handler with `tracer.WrapHandler(t, handler)`. When using Logger, put Tracer outside the Logger wrapper so logs can read the active span.
-
-Create a child operation with `tracer.Capture(ctx, t, name, operation)`, or use `StartSpan` and invoke the returned completion function exactly once. Pass the returned context into downstream operations.
-
-## Collector and AWS X-Ray
-
-The default backend owns a private OTel provider with an OTLP/HTTP exporter. It does not replace global providers.
-
-Set `OTEL_EXPORTER_OTLP_ENDPOINT` to a reachable collector base URL, such as `http://localhost:4318` for a local Lambda extension. Alternatively use `OTEL_EXPORTER_OTLP_TRACES_ENDPOINT` for a signal-specific URL. The default localhost destination does not install or start a collector.
-
-To deliver to AWS X-Ray, configure the collector's `awsxray` exporter, AWS region, and execution-role permissions. The library uses OTel's X-Ray-compatible ID generator and propagator without the X-Ray SDK. Enable Lambda active tracing when a native Lambda parent/service relationship is required. See the [collector configuration](XRAY_MIGRATION.md#maintained-path).
-
-## HTTP and AWS SDK v2
-
-Given an initialized tracer and AWS SDK configuration:
-
-~~~go
-client := t.HTTPClient(http.DefaultClient)
-ddb := dynamodb.NewFromConfig(cfg, func(o *dynamodb.Options) {
-    t.InstrumentAWS(&o.APIOptions)
-})
-~~~
-
-Import `net/http` and `github.com/aws/aws-sdk-go-v2/service/dynamodb` for this fragment. Pass the invocation context to each request. Instrument a transport or SDK client once; duplicate tracing middleware produces duplicate spans.
-
-HTTP event extraction is opt-in. Set `tracer.HandlerOptions.ExtractContext` to `tracer.ExtractLambdaHTTPContext` for supported API Gateway, Function URL, ALB, and AppSync HTTP header envelopes, or provide an application extractor. Existing valid OTel parents take precedence; otherwise valid W3C context takes precedence over X-Ray headers.
-
-## Configuration
-
-| Setting | Default / purpose |
-| --- | --- |
-| `WithServiceName` / `POWERTOOLS_SERVICE_NAME` | Service identity; fallback `service_undefined` |
-| `WithEnabled` / `POWERTOOLS_TRACE_ENABLED` | Enabled in Lambda unless disabled; environment `false` vetoes |
-| `WithLocalTracing(true)` | Explicitly allow tracing outside Lambda |
-| `WithCaptureResponse` / `POWERTOOLS_TRACER_CAPTURE_RESPONSE` | Response capture enabled by default |
-| `WithCaptureError` / `POWERTOOLS_TRACER_CAPTURE_ERROR` | Error capture enabled by default |
-| `WithCaptureHTTP` / `POWERTOOLS_TRACER_CAPTURE_HTTPS_REQUESTS` | HTTP capture enabled by default |
-| `WithFlushTimeout` | Two-second maximum by default, bounded by the invocation deadline |
-| `OTEL_TRACES_SAMPLER` / `OTEL_TRACES_SAMPLER_ARG` | SDK sampling policy; default parent-based always-on |
-| `POWERTOOLS_DEV=true` | Disable tracing, including local tracing |
-
-Disable response/error capture where payloads should not be recorded. `PutAnnotation` and `PutMetadata` attach explicit values and return errors. `TraceID`, `XRayTraceID`, and `IsTraceSampled` query current context.
-
-## Provider ownership and delivery
-
-Supply an application-owned provider with `tracer.WithBackend(tracer.NewOTelBackend(provider))`. The application configures its resource, exporter, sampler, limits, and any required X-Ray ID generator. It also owns that provider's shutdown; invocation wrappers flush supported providers but do not shut down an injected provider.
-
-Invocation completion ends spans and attempts a bounded flush. Hard timeouts or a failing collector can prevent delivery. Use `WithErrorHandler` for instrumentation and flush diagnostics; callbacks ignore errors by default.
-
-OTel metadata attributes and legacy X-Ray metadata documents differ. Local validation is not proof of every AWS indexing, freeze/thaw, or service behavior. See [compatibility](COMPATIBILITY.md), [local evidence](LOCAL_VALIDATION.md), and the [remaining Tracer work](CHECKLIST.md#tracer).
-### Try tracing offline
-
-The maintained local example uses an in-memory exporter and also shows Logger
-correlation. It needs no collector or AWS credentials:
-
-```sh
-CGO_ENABLED=0 go run ./examples/local
 ```
 
-~~~go
---8<-- "examples/local/main.go"
-~~~
+**Output**
 
-It prints a `Hello` log and a `Span: ## bootstrap, trace: ...` line. Use this
-combined example after the Tracer-only handler above.
+```text
+Hello, Ada
+Span: ## bootstrap
+```
 
-## Objects and lifecycle
+## Use it in Lambda
 
-| Object | How to use it |
+Create one tracer with `tracer.New`, then wrap the business handler:
+
+```go
+lambda.Start(tracer.WrapHandler(tr, handler))
+```
+
+For production, use the default OTLP exporter or your own provider. Configure a reachable collector with `OTEL_EXPORTER_OTLP_ENDPOINT`. To deliver traces to AWS X-Ray, use a collector with the `awsxray` exporter; see [collector setup](XRAY_MIGRATION.md).
+
+## Trace a child operation
+
+```go
+result, err := tracer.Capture(ctx, tr, "charge-payment", func(ctx context.Context) (string, error) {
+    return "approved", nil
+})
+```
+
+The trace gains a child span named `### charge-payment`; the business result remains `"approved"`.
+
+## Trace outbound calls
+
+| Call | API |
 | --- | --- |
-| `trace` | Create once before `lambda.Start`; reuse the tracer across invocations. |
-| Wrapped handler | Creates the invocation span and performs a bounded flush. |
-| `ctx` inside a handler | Pass it into child operations, HTTP requests and AWS SDK calls. |
-| Injected provider | Optional application-owned exporter/provider; your application owns its shutdown. |
+| HTTP | `tr.HTTPClient(baseClient)` |
+| AWS SDK v2 | `tr.InstrumentAWS(&cfg.APIOptions)` |
+| Searchable attribute | `tr.PutAnnotation(ctx, "order_id", "ORD-123")` |
+| Structured detail | `tr.PutMetadata(ctx, "order", value)` |
 
-## TypeScript feature coverage
+Pass the current context into downstream calls. When composing with Logger, put Tracer outside the Logger wrapper so records can include the active trace ID.
 
-??? info "Compare with TypeScript v2.35.0"
+## Control captured data
 
-    Compared with the [official v2.35.0 tracer guide](https://github.com/aws-powertools/powertools-lambda-typescript/blob/7bcc27b1574493f9452688673658f52b80c53847/docs/features/tracer.md) and the pinned npm implementation. The table maps capabilities; it does not certify every native type or service behavior.
+Use `WithCaptureResponse(false)` or `WithCaptureError(false)` when those values should not be stored in spans. `WithErrorHandler` observes instrumentation/export failures. Sampling is configured through `OTEL_TRACES_SAMPLER` and `OTEL_TRACES_SAMPLER_ARG`.
 
-    | TypeScript feature | Go API or approach | Compatibility scope |
-    | --- | --- | --- |
-    | Lambda handler / methods | `WrapHandler`, `Capture`, `StartSpan` | Typed callbacks replace decorators and Middy. |
-    | Annotations and metadata | `PutAnnotation`, `PutMetadata` | OTel attributes/events; metadata differs from native X-Ray documents. |
-    | AWS / HTTP instrumentation | `InstrumentAWS`, `HTTPClient` | Explicit SDK v2/client instrumentation, without global patching. |
-    | Response / error capture | `WithCaptureResponse`, `WithCaptureError` | Opt out at initialization; business results are preserved. |
-    | X-Ray root ID | `XRayTraceID(ctx)` | Formats an OTel ID or uses runtime context. |
-    | Escape hatch | `WithBackend`, `NewOTelBackend` | Injected provider ownership is explicit; no shared raw X-Ray Segment API. |
-    | Tracing enablement and sampling | `WithLocalTracing`, OTel sampler environment | OTel extension; deprecated SDK backend is frozen. |
+## Things to know
 
-    Executable evidence: [tracer/tracer_test.go](https://github.com/rambow-cloud/powertools-lambda-go/blob/main/tracer/tracer_test.go). See [the verification scope](FEATURE_PARITY.md) and [project progress](CHECKLIST.md) for open gates.
+- The local example uses a test exporter only for demonstration; it does not show a service-side X-Ray result.
+- Tracing is normally disabled outside Lambda; `WithLocalTracing(true)` opts in. `POWERTOOLS_DEV=true` disables tracing.
+- Your application owns the shutdown of an injected provider. Invocation wrappers finish and flush spans, but do not shut down that provider.
+- The legacy `tracer/xray` adapter is deprecated and frozen. Use OpenTelemetry for new integrations; retain the [migration warning](XRAY_MIGRATION.md).
 
-## Finite lifecycle and capture audit (#182)
+## Next steps
 
-This audit covers maintained OTel APIs and reuses the 128 pinned TypeScript 2.35.0
-HTTP middleware contract cases. The recording reference contract checks high-level
-calls; it does not execute the frozen X-Ray SDK or establish native SDK document
-equivalence. The new local tests use real OTel SDK spans and injected transports.
-
-| Boundary / APIs | Evidence | Classification |
-| --- | --- | --- |
-| Response/error/HTTP capture options and environment vetoes | Fifteen control combinations in `TestCaptureConfigurationBoundaries`, with handler-level response suppression | Verified constructor opt-out, case-insensitive environment veto, and preserved typed results/native error status |
-| Tracing enablement | `TestTracingEnablementVetoBoundaries` and existing disabled-provider tests | Verified explicit opt-out, environment/development veto and local-runtime defaults without creating spans |
-| `HTTPClient`, `InstrumentAWS` | Existing propagation/client tests; `TestSDKTracingGateAndHTTPControlIndependence` | Verified copied clients, request immutability, enabled/disabled SDK tracing and one SDK identity marker. HTTP capture opt-out does not disable explicit SDK instrumentation |
-| `WrapHandler` flush, errors and panic | Five cases in `TestInvocationFlushBoundaries` plus the existing bounded waiting-flush test | Verified span completion before flush, caller values, detached cancellation within the original deadline/timeout, expired deadlines, diagnostic errors and original business result/error/panic |
-| Provider ownership | Injected/owned provider counters in the flush cases and existing provider tests | Invocation cleanup never shuts down an injected provider; only an owned backend delegates shutdown |
-| Span completion, late writes and concurrent scopes | `TestClosedSpansAndConcurrentInvocationIsolation` across 32 calls; `TestOTelSiblingSpanSurvivesCompletion` | Verified idempotent completion, distinct span/request attributes and sibling survival. Closed SDK spans ignore late metadata/annotations while retaining trace identity; no new export is produced |
-| Metadata and backend start failures | `TestStartFailureAndMetadataFailurePreserveResults` and existing namespace-key regression | Verified instrumentation diagnostics preserve the business result; metadata uses strict JSON v2 and separate escaped namespace/key components |
-| Context fallback and sampling | Existing HTTP/event-envelope precedence, malformed-input/cancellation, default-provider sampler/X-Ray-ID tests | Verified existing OTel parent, W3C then X-Ray propagation, runtime fallback, baggage, deadlines and sampled/unsampled decisions |
-| HTTP route defaults, ownership and closure | Existing 128 contract cases, body/error/panic/cancellation/streaming tests and eight `TestResponseCaptureStorageAndParsingControls` cases | Verified route parent restoration, exact Content-Type/default capture, body replay/close ownership, and independent parsing/storage controls |
-
-No new production defect was reproduced by this finite audit. Native differences
-remain explicit: OTel attributes/events and errors replace X-Ray documents; closed
-SDK spans are no-ops rather than Logger-style closed-scope errors. An injected
-custom backend must implement its documented concurrency, completion, ownership
-and cancellation contracts; the wrapper cannot force-stop arbitrary callbacks.
-
-For HTTP middleware, disabling Tracer-wide response capture suppresses metadata
-storage but still permits middleware JSON parsing and its errors. Set
-`httptracer.Options.DisableCaptureResponse` to bypass body reading/parsing. This
-preserves the pinned high-level middleware contract rather than changing defaults.
-
-Both affected packaged modules pass tests/vet/tidy/isolation and independent
-consumers with CGO disabled. Collector/X-Ray service indexing, freeze/timeout and
-Managed Instances behavior remain separate in #197/#202 and T-08. Exhaustive native
-type/error, propagator, exporter and resource-budget acceptance is outside this
-case matrix; #200 tracks resource budgets. The frozen `tracer/xray` adapter is
-unchanged.
+See the [API and behavior notes](reference/TRACER.md) for advanced options, and [module installation](MODULES.md) for dependencies.

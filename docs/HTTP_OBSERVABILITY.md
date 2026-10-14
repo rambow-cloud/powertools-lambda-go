@@ -2,149 +2,72 @@
 description: "Add structured logging, OpenTelemetry tracing and CloudWatch metrics to Go Lambda HTTP routes with Powertools middleware."
 ---
 
-# HTTP observability middleware
+# HTTP observability
 
-Add request metrics or OpenTelemetry tracing to an existing HTTP router with
-`app.Use`. Both integrations are optional. Start with [basic routing](HTTP.md#complete-example)
-and choose the middleware your application needs.
+Add route metrics and OpenTelemetry spans to an existing HTTP router. Each integration is an optional module.
 
-## Request metrics
+## Count requests by route
 
-Install the metrics middleware:
+Install `eventhandler/http/metrics@v1.2.0`. Import it as `httpmetrics` and import the root Metrics module.
 
-```sh
-CGO_ENABLED=0 go get github.com/rambow-cloud/powertools-lambda-go/eventhandler/http/metrics@v1.2.0
+**Input**
+
+```http
+GET /orders/ORD-123
 ```
 
-This fragment assumes an initialized `app` and imports for `httpmetrics`, `metrics`
-and standard `log`. Create the root Metrics object once:
+**Code**
 
 ```go
-requestMetrics, err := metrics.New(metrics.WithNamespace("Orders"))
+metric, err := metrics.New(metrics.WithNamespace("Orders"))
 if err != nil {
     log.Fatal(err)
 }
-app.Use(httpmetrics.New(requestMetrics))
-```
-
-Each request emits latency and error/fault metrics. To also count requests, use
-`httpmetrics.Options{CaptureRequestCount: true}`; see [request count](#optional-request-count).
-
-## Request tracing
-
-Install the tracer middleware:
-
-```sh
-CGO_ENABLED=0 go get github.com/rambow-cloud/powertools-lambda-go/eventhandler/http/tracer@v1.2.0
-```
-
-Given an initialized `trace` from the [Tracer guide](TRACER.md#complete-example),
-and the `httptracer` import:
-
-```go
-app.Use(httptracer.New(trace, httptracer.Options{DisableCaptureResponse: true}))
-```
-
-The middleware creates route spans. Keep the outer `tracer.WrapHandler` to own the
-Lambda invocation span and exporter flush, and configure an OTLP collector.
-
-## Complete application
-
-The maintained [HTTP application](https://github.com/rambow-cloud/powertools-lambda-go/blob/main/examples/http/main.go)
-combines logging, request metrics, tracing, CORS and compression. Its imports are:
-
-```go
-import (
-    httpapi "github.com/rambow-cloud/powertools-lambda-go/eventhandler/http"
-    httpmetrics "github.com/rambow-cloud/powertools-lambda-go/eventhandler/http/metrics"
-    httptracer "github.com/rambow-cloud/powertools-lambda-go/eventhandler/http/tracer"
-    "github.com/rambow-cloud/powertools-lambda-go/metrics"
-    "github.com/rambow-cloud/powertools-lambda-go/tracer"
-)
-
-```
-
-The root objects below are called `metric` and `tr` in the contract discussion.
-Create each once; request-specific state is supplied by middleware. The HTTP core
-does not acquire these dependencies and the tracer adapter uses OpenTelemetry.
-
-## Metrics contracts
-
-- Each request creates a fresh scope through `Metrics.StartScope`, sharing the writer/configuration and inheriting active default dimensions. Pending metrics, temporary dimensions, and metadata are not copied from the parent.
-- Downstream code uses `metric.WithContext(request.Context)`. Both request contexts carry this scope and are restored on success, error, and panic.
-- The scope publishes once at middleware completion and rejects late writes. An outer Lambda Metrics wrapper retains separate invocation metrics. This explicit isolation adapts the TypeScript singleton model for concurrent Go requests.
-- Metrics are `latency` in Milliseconds, `fault` in Count for status >= 500, and `error` in Count for 400 <= status < 500. The route dimension uses matched `METHOD /template`, or `NOT_FOUND`; raw paths are metadata only.
-- Metadata includes method, escaped path without query, string status code, optional user agent/client IP, and available API Gateway identifiers. Null identifiers remain null; absent identifiers are omitted. Function URLs follow API Gateway v2 behavior.
-- API Gateway source IP comes from event context; ALB uses the first forwarded address. Both middleware modules reuse `RequestContext.ClientIP`.
-- Returned HTTP errors contribute their status; ordinary errors and panics contribute 500. Error conversion outside middleware can subsequently produce a different final response status, as in the reference.
-- Recording/publication errors propagate. Go retains simultaneous business and metric failures with `errors.Join`; panics keep their original value. Direct `StartScope` callers must call its idempotent finish function and handle the flush error.
-- Streaming metrics measure middleware/route execution before body transfer. They do not claim full transfer latency or capture later stream failures.
-
-### Optional request count
-
-Enable an explicit request counter when application dashboards need request volume
-or a denominator for error/fault ratios:
-
-```go
 app.Use(httpmetrics.New(metric, httpmetrics.Options{CaptureRequestCount: true}))
 ```
 
-The middleware adds `request=1` with unit `Count` to its existing request scope at
-completion, including HTTP errors, ordinary failures, panics and unmatched routes.
-It reuses the matched route template or `NOT_FOUND`, namespace and default
-dimensions. The route is a scope-local default when counting is enabled, so it
-survives the Metrics automatic flush limit and single-metric publication mode.
-Disabled Metrics instances publish nothing. Streaming counts middleware
-execution before body transfer; it does not count successful transfer completion.
-An outer Lambda Metrics wrapper retains its own invocation scope.
+**Output**
 
-Use CloudWatch `Sum` to aggregate published request samples. This is not a unique
-client-request count: Lambda retries and EMF's at-least-once delivery can repeat
-samples, while failed publication can lose them. Reserve the `request` metric and
-`route` dimension for the middleware instead of overriding them downstream. Each
-dimension combination adds a custom metric and can increase CloudWatch costs.
+```json
+{
+  "route": "GET /orders/:id",
+  "request": 1
+}
+```
 
-`New(metric)` and `Options{}` retain the three-metric TypeScript v2.35.0 contract.
-Request counting is an intentional opt-in Go extension. Direct constructor calls
-remain valid; code assigning `New` to an explicitly nonvariadic function type must
-adapt to its optional `...Options` argument. HTTP core and core Metrics gain no
-dependencies or runtime changes.
+This is an excerpt of the emitted EMF document. It also contains the namespace, dimensions, latency, `error` and `fault` metrics. The latter two are zero for successful responses, with `error=1` for 4xx or `fault=1` for 5xx. The route template avoids a separate metric series for every order ID.
 
-## Tracer contracts and OTel mapping
+## Trace a route
 
-The source contract is the actual TypeScript v2.35.0 HTTP tracer middleware. Its SDK representation is replaced with OTel. Internal route span names retain `METHOD /escaped/path`; `http.route` carries the template separately. The outer Lambda wrapper remains the server span.
+Install `eventhandler/http/tracer@v1.2.0` and import it as `httptracer`. Given `tr` from the [Tracer guide](TRACER.md):
 
-| Reference field | OTel attribute |
-| --- | --- |
-| `request.method` | `http.request.method` |
-| `request.url`, without query | `url.full`, plus `url.path`, `url.scheme`, `server.address` |
-| `request.user_agent` | `user_agent.original` |
-| `request.client_ip` | `client.address` |
-| `request.x_forwarded_for` | `powertools.http.x_forwarded_for` |
-| `response.status` | `http.response.status_code` |
-| `response.content_length` | `http.response.body.size`, when nonnegative and representable as int64 |
+```go
+app.Use(httptracer.New(tr, httptracer.Options{DisableCaptureResponse: true}))
+```
 
-HTTP attribute names follow the [OpenTelemetry HTTP semantic conventions](https://opentelemetry.io/docs/specs/semconv/http/http-spans/). The reference-shaped request/response object is also retained as `http` metadata through Tracer's namespace encoder. Negative and decimal-prefix Content-Length values are retained in reference metadata; invalid/overflow boundaries remain in the full parity audit.
+A request produces a route span under the invocation span. Keep the outer `tracer.WrapHandler` for invocation lifetime and exporter flushing. Configure your OpenTelemetry exporter/collector as described in the Tracer guide.
 
-`Tracer.AnnotateInvocation` reuses shared cold-start identity and service annotations. `Tracer.AddResponseAsMetadata` applies existing capture configuration. Both helpers are reused by the original invocation/operation wrappers. No new X-Ray SDK behavior is maintained.
+**Trace effect** — span name observed with the local in-memory exporter:
 
-Returned errors and panics close spans using existing Tracer error-capture policy. Explicit 5xx responses set OTel error status; ordinary 4xx responses do not. Both request contexts are restored. The application owns flushing and provider shutdown.
+```text
+GET /orders/ORD-123
+```
 
-Response capture defaults to the exact Content-Type `application/json`; charset variants are skipped. Bytes are replayed unchanged and owned readers close once. Invalid JSON propagates an error. `DisableCaptureResponse` bypasses parsing. Tracer-wide response capture configuration controls metadata storage, while middleware parsing follows its own option.
+This is a span name, not a log line automatically written by the middleware. Trace IDs and timing vary.
 
-Tracer before Compress observes the headers that compression leaves behind. Actual compression deletes Content-Length, so tracing then omits body size. A length can remain when compression is skipped, including an outer compressor measuring a body already compressed by route middleware. JSON capture after compression reads compressed bytes and can fail. Disable capture in this order, as in the example. Tracer inside Compress captures JSON before compression; its attributes describe the response at that stage.
+## Add application logs
 
-The [finite Tracer audit](TRACER.md#finite-lifecycle-and-capture-audit-182) verifies
-the independent parsing/storage controls with valid and invalid JSON bodies,
-including body replay and exact close ownership. It also records OTel lifecycle,
-provider ownership and capture-policy acceptance separately from cloud delivery.
+Inside a route, use your root logger's `WithContext(request.Context)` to include the active trace identity. Log only the request fields your application needs.
 
-Dedicated route tracing skips streaming and disabled tracers, matching the reference. Use the invocation wrapper inside `Streamify` for complete streaming lifetimes/errors/flushing; see [HTTP_STREAMING.md](HTTP_STREAMING.md).
+The [complete HTTP example](https://github.com/rambow-cloud/powertools-lambda-go/blob/main/examples/http/main.go) combines these integrations with CORS and compression.
 
-## Evidence and remaining gates
+## Things to know
 
-`generate-http-metrics.mjs` executes the pinned Router and Metrics implementation for 176 cases. Only timestamps, nonnegative latency values, and dimension-key order are normalized.
+- Create root Metrics and Tracer objects once; middleware creates request scopes.
+- `DisableCaptureResponse` avoids reading/parsing a body merely for trace capture.
+- Route latency measures middleware execution. For streamed responses it does not include the complete body transfer.
+- Tracing uses OpenTelemetry; new examples must not use the frozen X-Ray SDK adapter.
 
-`generate-http-tracer.mjs` executes the pinned Router and HTTP tracer middleware for 128 cases using a recording Tracer contract. This checks middleware calls and HTTP data, not the retired SDK. Go tests map the contract to real OTel SDK spans without dropping HTTP metadata fields. Separate tests verify that removed lengths stay absent and existing compressed lengths match actual Go wire bytes.
+## Next steps
 
-Concurrency, nested scope ownership, late writes, failed publication, panic identity, cancellation, response replay, parent restoration, and streaming bypass have dedicated tests. Verified 176 Metrics and 128 Tracer middleware reference cases (2,066 HTTP cases across the three modules), scope/span concurrency and body lifecycle tests, all 22 packaged modules/19 independent consumers, both CGO-disabled Linux builds, 622/622 RIE assertions, 95/95 streaming Runtime API checks and 14/14 Batch artifact checks (2026-09-22, Asia/Shanghai). Docker ran amd64; arm64 was cross-compiled. No AWS resources were used. Full HTTP and observability edge parity, AWS collector/indexing and streaming service acceptance, performance, and publication remain separate gates.
+[API and behavior notes](reference/HTTP_OBSERVABILITY.md) · [HTTP](HTTP.md) · [Modules](MODULES.md)

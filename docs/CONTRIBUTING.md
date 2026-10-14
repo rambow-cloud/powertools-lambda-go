@@ -178,6 +178,7 @@ For documentation changes (no Go toolchain is needed):
 uv lock --project website --check
 uv run --project website --frozen python website/check_navigation.py
 uv run --project website --frozen python website/check_guides.py
+uv run --project website --frozen python website/test_guides.py
 uv run --project website --frozen zensical build --clean --strict --config-file mkdocs.yml
 ```
 

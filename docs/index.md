@@ -25,7 +25,7 @@ Go Powertools brings structured logging, OpenTelemetry tracing, CloudWatch metri
 <div class="pt-mascot"><img src="assets/logo-ram-gopher.png" alt="Powertools for Go ram-gopher mascot" width="240" height="240"></div>
 </div>
 
-Powertools for AWS Lambda (Go) is an **independent community implementation**, based on Powertools for AWS Lambda (TypeScript) v2.35.0. The source repository is [`rambow-cloud/powertools-lambda-go`](https://github.com/rambow-cloud/powertools-lambda-go). See the [compatibility boundaries](COMPATIBILITY.md) and [release notes](RELEASE_NOTES.md). This is not an official AWS distribution.
+Powertools for AWS Lambda (Go) is an **independent community Go port of Powertools for AWS Lambda (TypeScript)**. The source repository is [`rambow-cloud/powertools-lambda-go`](https://github.com/rambow-cloud/powertools-lambda-go). See the [compatibility boundaries](COMPATIBILITY.md) and [release notes](RELEASE_NOTES.md). This is not an official AWS distribution.
 
 ## Explore the documentation
 
@@ -46,14 +46,14 @@ Install one utility to begin. For example, add structured logging:
 CGO_ENABLED=0 go get github.com/rambow-cloud/powertools-lambda-go/logger@v1.2.0
 ```
 
-Use **Go 1.27 or newer**, target **arm64 or x86_64**, and keep **CGO disabled**. Install the published modules using the [module guide](MODULES.md), which explains dependencies, imports, and independent versioning.
+Use **Go 1.27 or newer**, target **arm64 or x86_64**, and keep **CGO disabled**. Install the published modules using the [module guide](MODULES.md), which explains dependencies, imports, and the shared release version.
 
 <div class="pt-cards" markdown="1">
 <div class="pt-card" markdown="1">
 
 ### Your first Lambda
 
-Compose a typed handler with logging and tracing, then build a static Lambda executable.
+Write a typed handler with structured logging, then build a static Lambda executable.
 
 [Get started with Go Powertools](GETTING_STARTED.md)
 
@@ -64,7 +64,7 @@ Compose a typed handler with logging and tracing, then build a static Lambda exe
 
 Start with `app.Get` and `app.Post`. Read path parameters and JSON bodies, and return JSON responses.
 
-[Build a GET/POST handler](HTTP.md#complete-example)
+[Build a GET/POST handler](HTTP.md#return-an-order-as-json)
 
 </div>
 <div class="pt-card" markdown="1">
@@ -137,7 +137,7 @@ The manifest contains 31 modules, including 28 public modules. The legacy X-Ray 
 
 Every main utility guide starts with maintained code and expected results. Browse the [examples directory](https://github.com/rambow-cloud/powertools-lambda-go/tree/main/examples) or choose a use case:
 
-- [Simple GET/POST routing](HTTP.md#complete-example), then [middleware](HTTP_MIDDLEWARE.md), [observability](HTTP_OBSERVABILITY.md) or [response streaming](HTTP_STREAMING.md).
+- [Simple GET/POST routing](HTTP.md#return-an-order-as-json), then [middleware](HTTP_MIDDLEWARE.md), [observability](HTTP_OBSERVABILITY.md) or [response streaming](HTTP_STREAMING.md).
 - [Batch processing](BATCH.md) with [typed event parsing](PARSER.md).
 - [AppSync Events](APPSYNC_EVENTS.md), [AppSync GraphQL](APPSYNC_GRAPHQL.md), and [Bedrock Agents](BEDROCK.md).
 
@@ -157,7 +157,7 @@ Powertools Lambda Go is this community toolkit for AWS Lambda applications writt
 
 ### Is Powertools for Go an official AWS project?
 
-No. This is an independent community implementation maintained in the rambow-cloud repository. Its feature baseline is Powertools for AWS Lambda (TypeScript) v2.35.0; the [compatibility guide](COMPATIBILITY.md) describes the maintained subset and differences.
+No. This is an independent community implementation maintained in the rambow-cloud repository. It is a Go port of Powertools for AWS Lambda (TypeScript); the [compatibility guide](COMPATIBILITY.md) describes the maintained subset and differences.
 
 ### Do I need to install every utility?
 

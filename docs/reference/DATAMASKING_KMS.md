@@ -1,0 +1,53 @@
+# AWS Encryption SDK masking provider: API and behavior notes
+
+Start with the [usage guide](../DATAMASKING_KMS.md) for code and results. See [compatibility and provenance](COMPATIBILITY.md) for contributor reference material.
+
+
+The optional datamasking/kms module implements datamasking.Provider with the official AWS Encryption SDK for Go v0.4.0 and Materials Providers Library v0.4.0. It emits Base64 AWS Encryption SDK messages with the same committed, signed default suite (0x0578) as the pinned TypeScript provider. Root Commons and ordinary Data Masking do not acquire these dependencies.
+
+This initial provider is **uncached**. TypeScript enables a data-key caching materials manager by default. Cache capacity, age, message and byte limits remain unsupported. [Feature issue #164](https://github.com/rambow-cloud/powertools-lambda-go/issues/164) tracks implementation after the historical design issue #116; no ignored cache options are exposed.
+
+## Usage
+
+```go
+import (
+    "github.com/rambow-cloud/powertools-lambda-go/datamasking"
+    maskkms "github.com/rambow-cloud/powertools-lambda-go/datamasking/kms"
+)
+
+provider, err := maskkms.New(ctx, maskkms.Config{
+    Keys: []string{
+        "arn:aws:kms:ap-east-1:111122223333:key/11111111-1111-4111-8111-111111111111",
+    },
+})
+if err != nil {
+    return err
+}
+masker := datamasking.New(datamasking.Config{Provider: provider})
+encrypted, err := masker.Encrypt(ctx, payload, datamasking.TransformOptions{
+    Fields: []string{"customer.secret"},
+    Context: map[string]string{"tenant": "example"},
+})
+```
+
+The first key is the generator; subsequent keys protect the same data key as additional recipients. Use complete KMS key ARNs for encrypt/decrypt configurations. The constructor copies the key list and validates keyring construction. Default clients use the standard AWS configuration; ClientProvider can supply application-owned regional SDK client templates, including credentials, transport and tracing middleware. Templates are not mutated. Construct one provider and reuse it across invocations.
+
+Both encryption and decryption require key commitment. Decryption accepts the SDK's supported committed message suites and verifies each requested encryption-context entry against authenticated output before returning plaintext. Missing expected entries fail even when the expected value is empty. Context mismatches return DataMaskingEncryptionError with the upstream message. SDK failures retain native SDK error types and wording.
+
+The provider reuses Commons permissive Buffer Base64 decoding, UTF-8 decoding, object-key ordering and AWS SDK request identity. Decryption strips one leading UTF-8 BOM, matching TextDecoder. Plaintext strings are normalized as UTF-8; arbitrary invalid Go UTF-8 and WTF-8 lone surrogates are not fully equivalent to JavaScript TextEncoder. Multiple mismatching context entries follow deterministic native map ordering, not JavaScript insertion order.
+
+## Context and platform behavior
+
+On current source, client-factory errors, nil clients and supplier cancellation
+cross the pinned MPL bridge using its required opaque-error value. The adapter
+restores the original Go factory error afterward, preserving `errors.Is`/`As`
+instead of triggering the generated converter's panic. Invalid message headers
+and unsupported suite identifiers fail before any KMS request. These contracts
+have local Linux tests; they do not establish live KMS/IAM acceptance.
+
+The v0.4.0 generated ESDK/MPL bridge discards context.Context before calling KMS. The adapter constructs an operation-scoped client supplier and restores invocation cancellation, deadlines and values at the AWS SDK initialization boundary while retaining SDK stack metadata. This covers signing, retries and network I/O without global mutable invocation state. Calls check cancellation before and after SDK execution; pure cryptographic computation inside the upstream SDK is not interruptible.
+
+The upstream smithy-dafny-standard-library v0.4.0 calls syscall.Getrusage without Windows build constraints. Consequently, this provider cannot compile as a native Windows binary. Lambda's Linux amd64/arm64 target remains supported. Do not patch the module cache or substitute cryptography to hide this dependency limit.
+
+tools/modules.json marks this module for Linux verification. tools/modules.py propagates that target to dependent modules, uses local Go cross-compilation and runs test binaries in the pinned provided.al2023 Docker image on Windows. On Linux it runs them natively. tools/run-linux-test.py maps the read-only workspace and writable Go test-artifact directory; test networking is limited to the container's loopback interface. Standalone consumers are built for Linux and the report records their platform.
+

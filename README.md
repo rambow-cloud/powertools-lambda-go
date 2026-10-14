@@ -1,8 +1,8 @@
 # Go Powertools Lambda
 
 Go Powertools provides structured logging, OpenTelemetry tracing, metrics and
-other utilities for native Go AWS Lambda applications. This independent community project uses Powertools
-for AWS Lambda (TypeScript) v2.35.0 as its behavioral reference. See the
+other utilities for native Go AWS Lambda applications. This independent community project is a Go port of Powertools
+for AWS Lambda (TypeScript). See the
 [supported scope](docs/COMPATIBILITY.md) for differences and limitations.
 
 [Go Powertools documentation](https://powertools-lambda-go.rambow.cloud/) ·
@@ -75,9 +75,25 @@ func main() {
 ```
 <!-- --8<-- [end:first-lambda] -->
 
-An input of `{"name":"Ada"}` returns `{"message":"Hello, Ada"}` and writes
-a structured log with `message: "Handling request"`, `service: "hello"` and
-`name: "Ada"`. An empty name returns a handler error. Create the Logger once;
+**Input**
+
+```json
+{"name":"Ada"}
+```
+
+**Response**
+
+```json
+{"message":"Hello, Ada"}
+```
+
+**Log fields** (excerpt; Lambda also adds request metadata and a timestamp)
+
+```json
+{"level":"INFO","message":"Handling request","service":"hello","name":"Ada"}
+```
+
+An empty name returns a handler error. Create the Logger once;
 use `WithContext(ctx)` inside its wrapper to isolate invocation fields.
 
 Build for the architecture selected on your Lambda function:
@@ -110,8 +126,8 @@ Tracing uses OpenTelemetry, including X-Ray delivery through a collector's
 `awsxray` exporter. The legacy `tracer/xray` adapter is deprecated and frozen;
 retain its [migration warning](docs/XRAY_MIGRATION.md).
 
-See [Releases](https://github.com/rambow-cloud/powertools-lambda-go/releases),
-[v1 readiness](docs/V1_READINESS.md) and the [feature comparison](docs/FEATURE_PARITY.md).
+See [Releases](https://github.com/rambow-cloud/powertools-lambda-go/releases)
+for published changes and choose a utility guide above to get started.
 
 ## Contributing
 
