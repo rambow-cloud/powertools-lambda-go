@@ -1,0 +1,86 @@
+{
+  "upstream": "2.35.0",
+  "comparison": "Rejection and public error category; native parser cause text is retained separately.",
+  "cases": [
+    {
+      "schema": "{\"type\":",
+      "data": "AA==",
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: undefined type name: {\"type\":, message: AA==, schema: {\"type\":"
+      }
+    },
+    {
+      "schema": "{\"type\":\"missing\"}",
+      "data": "AA==",
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: unknown type: \"missing\", message: AA==, schema: {\"type\":\"missing\"}"
+      }
+    },
+    {
+      "schema": "{\"type\":\"array\"}",
+      "data": "AA==",
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: missing array items: {\"type\":\"array\"}, message: AA==, schema: {\"type\":\"array\"}"
+      }
+    },
+    {
+      "schema": "{\"type\":\"map\"}",
+      "data": "AA==",
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: missing map values: {\"type\":\"map\"}, message: AA==, schema: {\"type\":\"map\"}"
+      }
+    },
+    {
+      "schema": "{\"type\":\"fixed\",\"name\":\"Broken\",\"size\":-1}",
+      "data": "AA==",
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: invalid \"Broken\" fixed size: -1, message: AA==, schema: {\"type\":\"fixed\",\"name\":\"Broken\",\"size\":-1}"
+      }
+    },
+    {
+      "schema": "{\"type\":\"enum\",\"name\":\"Broken\",\"symbols\":[\"A\",\"A\"]}",
+      "data": "AA==",
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: duplicate \"Broken\" symbol: \"A\", message: AA==, schema: {\"type\":\"enum\",\"name\":\"Broken\",\"symbols\":[\"A\",\"A\"]}"
+      }
+    },
+    {
+      "schema": "{\"type\":\"record\",\"name\":\"Broken\",\"fields\":[{\"name\":\"a\",\"type\":\"int\"},{\"name\":\"a\",\"type\":\"int\"}]}",
+      "data": "AA==",
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: duplicate Broken field name, message: AA==, schema: {\"type\":\"record\",\"name\":\"Broken\",\"fields\":[{\"name\":\"a\",\"type\":\"int\"},{\"name\":\"a\",\"type\":\"int\"}]}"
+      }
+    },
+    {
+      "schema": "{\"type\":\"record\",\"name\":\"Broken\",\"fields\":[{\"name\":\"a\",\"type\":\"Missing\"}]}",
+      "data": "AA==",
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: undefined type name: Missing, message: AA==, schema: {\"type\":\"record\",\"name\":\"Broken\",\"fields\":[{\"name\":\"a\",\"type\":\"Missing\"}]}"
+      }
+    },
+    {
+      "schema": "[\"null\",\"null\"]",
+      "data": "AA==",
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: duplicate union name: \"null\", message: AA==, schema: [\"null\",\"null\"]"
+      }
+    },
+    {
+      "schema": "[[\"null\",\"string\"],\"int\"]",
+      "data": "AA==",
+      "error": {
+        "name": "KafkaConsumerDeserializationError",
+        "message": "Failed to deserialize Avro message: Error: unions cannot be directly nested, message: AA==, schema: [[\"null\",\"string\"],\"int\"]"
+      }
+    }
+  ]
+}
