@@ -1,0 +1,455 @@
+{
+  "upstream": "2.35.0",
+  "cases": [
+    {
+      "millis": -8640000000000001,
+      "offset": 0,
+      "timestamp": -8640000000001,
+      "values": {
+        "date": "NaN-NaN-NaNZ",
+        "time": "NaN:NaN:NaN.NaNZ",
+        "datetime": "NaN-NaN-NaNTNaN:NaN:NaN.NaNZ"
+      }
+    },
+    {
+      "millis": -8640000000000001,
+      "offset": -12,
+      "timestamp": -8640000000001,
+      "values": {
+        "date": "NaN-NaN-NaN-12:00:00",
+        "time": "NaN:NaN:NaN.NaN-12:00:00",
+        "datetime": "NaN-NaN-NaNTNaN:NaN:NaN.NaN-12:00:00"
+      }
+    },
+    {
+      "millis": -8640000000000001,
+      "offset": 14,
+      "timestamp": -8640000000001,
+      "values": {
+        "date": "NaN-NaN-NaN+14:00:00",
+        "time": "NaN:NaN:NaN.NaN+14:00:00",
+        "datetime": "NaN-NaN-NaNTNaN:NaN:NaN.NaN+14:00:00"
+      }
+    },
+    {
+      "millis": -8640000000000001,
+      "offset": 1e-7,
+      "timestamp": -8640000000001,
+      "values": {
+        "date": "NaN-NaN-NaN+00:00:00",
+        "time": "NaN:NaN:NaN.NaN+00:00:00",
+        "datetime": "NaN-NaN-NaNTNaN:NaN:NaN.NaN+00:00:00"
+      }
+    },
+    {
+      "millis": -8640000000000001,
+      "offset": "NaN",
+      "timestamp": -8640000000001,
+      "values": {
+        "date": "NaN-NaN-NaN-NaN:NaN:00",
+        "time": "NaN:NaN:NaN.NaN-NaN:NaN:00",
+        "datetime": "NaN-NaN-NaNTNaN:NaN:NaN.NaN-NaN:NaN:00"
+      }
+    },
+    {
+      "millis": -8640000000000000,
+      "offset": 0,
+      "timestamp": -8640000000000,
+      "values": {
+        "date": "-271821-04-20Z",
+        "time": "00:00:00.000Z",
+        "datetime": "-271821-04-20T00:00:00.000Z"
+      }
+    },
+    {
+      "millis": -8640000000000000,
+      "offset": -12,
+      "timestamp": -8640000000000,
+      "values": {
+        "date": "NaN-NaN-NaN-12:00:00",
+        "time": "NaN:NaN:NaN.NaN-12:00:00",
+        "datetime": "NaN-NaN-NaNTNaN:NaN:NaN.NaN-12:00:00"
+      }
+    },
+    {
+      "millis": -8640000000000000,
+      "offset": 14,
+      "timestamp": -8640000000000,
+      "values": {
+        "date": "-271821-04-20+14:00:00",
+        "time": "14:00:00.000+14:00:00",
+        "datetime": "-271821-04-20T14:00:00.000+14:00:00"
+      }
+    },
+    {
+      "millis": -8640000000000000,
+      "offset": 1e-7,
+      "timestamp": -8640000000000,
+      "values": {
+        "date": "-271821-04-20+00:00:00",
+        "time": "00:00:00.000+00:00:00",
+        "datetime": "-271821-04-20T00:00:00.000+00:00:00"
+      }
+    },
+    {
+      "millis": -8640000000000000,
+      "offset": "NaN",
+      "timestamp": -8640000000000,
+      "values": {
+        "date": "NaN-NaN-NaN-NaN:NaN:00",
+        "time": "NaN:NaN:NaN.NaN-NaN:NaN:00",
+        "datetime": "NaN-NaN-NaNTNaN:NaN:NaN.NaN-NaN:NaN:00"
+      }
+    },
+    {
+      "millis": -8639999999999999,
+      "offset": 0,
+      "timestamp": -8640000000000,
+      "values": {
+        "date": "-271821-04-20Z",
+        "time": "00:00:00.001Z",
+        "datetime": "-271821-04-20T00:00:00.001Z"
+      }
+    },
+    {
+      "millis": -8639999999999999,
+      "offset": -12,
+      "timestamp": -8640000000000,
+      "values": {
+        "date": "NaN-NaN-NaN-12:00:00",
+        "time": "NaN:NaN:NaN.NaN-12:00:00",
+        "datetime": "NaN-NaN-NaNTNaN:NaN:NaN.NaN-12:00:00"
+      }
+    },
+    {
+      "millis": -8639999999999999,
+      "offset": 14,
+      "timestamp": -8640000000000,
+      "values": {
+        "date": "-271821-04-20+14:00:00",
+        "time": "14:00:00.001+14:00:00",
+        "datetime": "-271821-04-20T14:00:00.001+14:00:00"
+      }
+    },
+    {
+      "millis": -8639999999999999,
+      "offset": 1e-7,
+      "timestamp": -8640000000000,
+      "values": {
+        "date": "-271821-04-20+00:00:00",
+        "time": "00:00:00.001+00:00:00",
+        "datetime": "-271821-04-20T00:00:00.001+00:00:00"
+      }
+    },
+    {
+      "millis": -8639999999999999,
+      "offset": "NaN",
+      "timestamp": -8640000000000,
+      "values": {
+        "date": "NaN-NaN-NaN-NaN:NaN:00",
+        "time": "NaN:NaN:NaN.NaN-NaN:NaN:00",
+        "datetime": "NaN-NaN-NaNTNaN:NaN:NaN.NaN-NaN:NaN:00"
+      }
+    },
+    {
+      "millis": -1,
+      "offset": 0,
+      "timestamp": -1,
+      "values": {
+        "date": "1969-12-31Z",
+        "time": "23:59:59.999Z",
+        "datetime": "1969-12-31T23:59:59.999Z"
+      }
+    },
+    {
+      "millis": -1,
+      "offset": -12,
+      "timestamp": -1,
+      "values": {
+        "date": "1969-12-31-12:00:00",
+        "time": "11:59:59.999-12:00:00",
+        "datetime": "1969-12-31T11:59:59.999-12:00:00"
+      }
+    },
+    {
+      "millis": -1,
+      "offset": 14,
+      "timestamp": -1,
+      "values": {
+        "date": "1970-01-01+14:00:00",
+        "time": "13:59:59.999+14:00:00",
+        "datetime": "1970-01-01T13:59:59.999+14:00:00"
+      }
+    },
+    {
+      "millis": -1,
+      "offset": 1e-7,
+      "timestamp": -1,
+      "values": {
+        "date": "1970-01-01+00:00:00",
+        "time": "00:00:00.000+00:00:00",
+        "datetime": "1970-01-01T00:00:00.000+00:00:00"
+      }
+    },
+    {
+      "millis": -1,
+      "offset": "NaN",
+      "timestamp": -1,
+      "values": {
+        "date": "NaN-NaN-NaN-NaN:NaN:00",
+        "time": "NaN:NaN:NaN.NaN-NaN:NaN:00",
+        "datetime": "NaN-NaN-NaNTNaN:NaN:NaN.NaN-NaN:NaN:00"
+      }
+    },
+    {
+      "millis": 0,
+      "offset": 0,
+      "timestamp": 0,
+      "values": {
+        "date": "1970-01-01Z",
+        "time": "00:00:00.000Z",
+        "datetime": "1970-01-01T00:00:00.000Z"
+      }
+    },
+    {
+      "millis": 0,
+      "offset": -12,
+      "timestamp": 0,
+      "values": {
+        "date": "1969-12-31-12:00:00",
+        "time": "12:00:00.000-12:00:00",
+        "datetime": "1969-12-31T12:00:00.000-12:00:00"
+      }
+    },
+    {
+      "millis": 0,
+      "offset": 14,
+      "timestamp": 0,
+      "values": {
+        "date": "1970-01-01+14:00:00",
+        "time": "14:00:00.000+14:00:00",
+        "datetime": "1970-01-01T14:00:00.000+14:00:00"
+      }
+    },
+    {
+      "millis": 0,
+      "offset": 1e-7,
+      "timestamp": 0,
+      "values": {
+        "date": "1970-01-01+00:00:00",
+        "time": "00:00:00.000+00:00:00",
+        "datetime": "1970-01-01T00:00:00.000+00:00:00"
+      }
+    },
+    {
+      "millis": 0,
+      "offset": "NaN",
+      "timestamp": 0,
+      "values": {
+        "date": "NaN-NaN-NaN-NaN:NaN:00",
+        "time": "NaN:NaN:NaN.NaN-NaN:NaN:00",
+        "datetime": "NaN-NaN-NaNTNaN:NaN:NaN.NaN-NaN:NaN:00"
+      }
+    },
+    {
+      "millis": 1,
+      "offset": 0,
+      "timestamp": 0,
+      "values": {
+        "date": "1970-01-01Z",
+        "time": "00:00:00.001Z",
+        "datetime": "1970-01-01T00:00:00.001Z"
+      }
+    },
+    {
+      "millis": 1,
+      "offset": -12,
+      "timestamp": 0,
+      "values": {
+        "date": "1969-12-31-12:00:00",
+        "time": "12:00:00.001-12:00:00",
+        "datetime": "1969-12-31T12:00:00.001-12:00:00"
+      }
+    },
+    {
+      "millis": 1,
+      "offset": 14,
+      "timestamp": 0,
+      "values": {
+        "date": "1970-01-01+14:00:00",
+        "time": "14:00:00.001+14:00:00",
+        "datetime": "1970-01-01T14:00:00.001+14:00:00"
+      }
+    },
+    {
+      "millis": 1,
+      "offset": 1e-7,
+      "timestamp": 0,
+      "values": {
+        "date": "1970-01-01+00:00:00",
+        "time": "00:00:00.001+00:00:00",
+        "datetime": "1970-01-01T00:00:00.001+00:00:00"
+      }
+    },
+    {
+      "millis": 1,
+      "offset": "NaN",
+      "timestamp": 0,
+      "values": {
+        "date": "NaN-NaN-NaN-NaN:NaN:00",
+        "time": "NaN:NaN:NaN.NaN-NaN:NaN:00",
+        "datetime": "NaN-NaN-NaNTNaN:NaN:NaN.NaN-NaN:NaN:00"
+      }
+    },
+    {
+      "millis": 8639999999999999,
+      "offset": 0,
+      "timestamp": 8639999999999,
+      "values": {
+        "date": "275760-09-12Z",
+        "time": "23:59:59.999Z",
+        "datetime": "275760-09-12T23:59:59.999Z"
+      }
+    },
+    {
+      "millis": 8639999999999999,
+      "offset": -12,
+      "timestamp": 8639999999999,
+      "values": {
+        "date": "275760-09-12-12:00:00",
+        "time": "11:59:59.999-12:00:00",
+        "datetime": "275760-09-12T11:59:59.999-12:00:00"
+      }
+    },
+    {
+      "millis": 8639999999999999,
+      "offset": 14,
+      "timestamp": 8639999999999,
+      "values": {
+        "date": "NaN-NaN-NaN+14:00:00",
+        "time": "NaN:NaN:NaN.NaN+14:00:00",
+        "datetime": "NaN-NaN-NaNTNaN:NaN:NaN.NaN+14:00:00"
+      }
+    },
+    {
+      "millis": 8639999999999999,
+      "offset": 1e-7,
+      "timestamp": 8639999999999,
+      "values": {
+        "date": "275760-09-12+00:00:00",
+        "time": "23:59:59.999+00:00:00",
+        "datetime": "275760-09-12T23:59:59.999+00:00:00"
+      }
+    },
+    {
+      "millis": 8639999999999999,
+      "offset": "NaN",
+      "timestamp": 8639999999999,
+      "values": {
+        "date": "NaN-NaN-NaN-NaN:NaN:00",
+        "time": "NaN:NaN:NaN.NaN-NaN:NaN:00",
+        "datetime": "NaN-NaN-NaNTNaN:NaN:NaN.NaN-NaN:NaN:00"
+      }
+    },
+    {
+      "millis": 8640000000000000,
+      "offset": 0,
+      "timestamp": 8640000000000,
+      "values": {
+        "date": "275760-09-13Z",
+        "time": "00:00:00.000Z",
+        "datetime": "275760-09-13T00:00:00.000Z"
+      }
+    },
+    {
+      "millis": 8640000000000000,
+      "offset": -12,
+      "timestamp": 8640000000000,
+      "values": {
+        "date": "275760-09-12-12:00:00",
+        "time": "12:00:00.000-12:00:00",
+        "datetime": "275760-09-12T12:00:00.000-12:00:00"
+      }
+    },
+    {
+      "millis": 8640000000000000,
+      "offset": 14,
+      "timestamp": 8640000000000,
+      "values": {
+        "date": "NaN-NaN-NaN+14:00:00",
+        "time": "NaN:NaN:NaN.NaN+14:00:00",
+        "datetime": "NaN-NaN-NaNTNaN:NaN:NaN.NaN+14:00:00"
+      }
+    },
+    {
+      "millis": 8640000000000000,
+      "offset": 1e-7,
+      "timestamp": 8640000000000,
+      "values": {
+        "date": "275760-09-13+00:00:00",
+        "time": "00:00:00.000+00:00:00",
+        "datetime": "275760-09-13T00:00:00.000+00:00:00"
+      }
+    },
+    {
+      "millis": 8640000000000000,
+      "offset": "NaN",
+      "timestamp": 8640000000000,
+      "values": {
+        "date": "NaN-NaN-NaN-NaN:NaN:00",
+        "time": "NaN:NaN:NaN.NaN-NaN:NaN:00",
+        "datetime": "NaN-NaN-NaNTNaN:NaN:NaN.NaN-NaN:NaN:00"
+      }
+    },
+    {
+      "millis": 8640000000000001,
+      "offset": 0,
+      "timestamp": 8640000000000,
+      "values": {
+        "date": "NaN-NaN-NaNZ",
+        "time": "NaN:NaN:NaN.NaNZ",
+        "datetime": "NaN-NaN-NaNTNaN:NaN:NaN.NaNZ"
+      }
+    },
+    {
+      "millis": 8640000000000001,
+      "offset": -12,
+      "timestamp": 8640000000000,
+      "values": {
+        "date": "NaN-NaN-NaN-12:00:00",
+        "time": "NaN:NaN:NaN.NaN-12:00:00",
+        "datetime": "NaN-NaN-NaNTNaN:NaN:NaN.NaN-12:00:00"
+      }
+    },
+    {
+      "millis": 8640000000000001,
+      "offset": 14,
+      "timestamp": 8640000000000,
+      "values": {
+        "date": "NaN-NaN-NaN+14:00:00",
+        "time": "NaN:NaN:NaN.NaN+14:00:00",
+        "datetime": "NaN-NaN-NaNTNaN:NaN:NaN.NaN+14:00:00"
+      }
+    },
+    {
+      "millis": 8640000000000001,
+      "offset": 1e-7,
+      "timestamp": 8640000000000,
+      "values": {
+        "date": "NaN-NaN-NaN+00:00:00",
+        "time": "NaN:NaN:NaN.NaN+00:00:00",
+        "datetime": "NaN-NaN-NaNTNaN:NaN:NaN.NaN+00:00:00"
+      }
+    },
+    {
+      "millis": 8640000000000001,
+      "offset": "NaN",
+      "timestamp": 8640000000000,
+      "values": {
+        "date": "NaN-NaN-NaN-NaN:NaN:00",
+        "time": "NaN:NaN:NaN.NaN-NaN:NaN:00",
+        "datetime": "NaN-NaN-NaNTNaN:NaN:NaN.NaN-NaN:NaN:00"
+      }
+    }
+  ]
+}

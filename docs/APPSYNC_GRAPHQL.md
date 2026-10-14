@@ -113,8 +113,11 @@ use hours, including fractions, in the inclusive range -12 to +14. Nonzero offse
 suffixes retain the reference's seconds component, for example `+05:30:00`.
 Date-only output also includes its suffix. Formatting preserves milliseconds,
 un-padded years, JavaScript Date clipping and NaN offset behavior in the tested
-range. Timestamp seconds floor negative instants. Go nanosecond inputs, instants
-outside the JavaScript Date domain and arbitrary native serialization remain
+range. Timestamp seconds floor negative instants. Native Go nanoseconds also
+floor to Unix milliseconds, including before the epoch. Date/time helpers return
+NaN components outside the JavaScript Date domain and validate extreme instants
+before millisecond conversion can overflow; AWSTimestamp retains Go's exact
+int64 seconds. Arbitrary native serialization and exhaustive date behavior remain
 explicit compatibility audit items.
 
 `tools/reference/generate-appsync-graphql.mjs` executes actual pinned public
