@@ -1,5 +1,21 @@
 # Bedrock Agent function resolver checklist
 
+## Finite boundary audit (#193)
+
+| Reviewed boundary | Evidence | Classification |
+| --- | --- | --- |
+| Resolver/tool/options/event/error, Parameters accessors, FunctionResponse/Build and state exports | Existing 371 actual scenarios and native parameter-order tests | Verified function-based mapping; no OpenAPI action-group API |
+| Number/boolean/duplicate parameter conversion and body strings | Existing exact reference outputs | Verified scoped values; native marshalers keep JSON v2 contracts |
+| Session/prompt/knowledge fields and explicit response overrides | Existing response ownership and 64-invocation tests | Invocation-owned references; replacement versus mutation follows documented captured-reference behavior |
+| Invalid UTF-8 in strings, map keys/values, arrays and parameter keys/values | Six `TestNativeInvalidStringsFailBeforeBodyPublication` rows | Reproduced and fixed: report encoding failures through the diagnostic/error-body path without partial JSON |
+| Unicode, binary, struct and nested nil containers | `TestNativeBodiesRetainJSONV2Contracts` and ancestor-identity regressions | Deliberate native JSON and typed-nil mapping; cycles differ from repeated references |
+
+BR-COMPLETE remains broader than this matrix. Explicit FunctionResponse values
+bypass ordinary conversion and remain caller-owned; arbitrary native/async
+behavior, live service acceptance and performance are not certified.
+
+## Implementation history
+
 Reference: installed Powertools TypeScript v2.35.0 `event-handler/bedrock-agent`
 runtime exports. This scope is the function-based action-group resolver. Do not
 silently substitute another runtime's OpenAPI action-group implementation.

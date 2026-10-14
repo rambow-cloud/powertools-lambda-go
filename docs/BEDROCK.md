@@ -165,6 +165,12 @@ to stdout only when Commons-trimmed `AWS_LAMBDA_LOG_LEVEL` equals `DEBUG`.
 
 ## TypeScript feature coverage
 
+Native invalid UTF-8 in ordinary strings, object names or parameter values fails
+JSON v2 encoding and follows the resolver's diagnostic/error-body path. Partial
+JSON is never published as a successful ordinary body. Explicit FunctionResponse
+values retain their caller-owned bypass contract. See the finite matrix in
+[the implementation plan](BEDROCK_PLAN.md#finite-boundary-audit-193).
+
 ??? info "Compare with TypeScript v2.35.0"
 
     Compared with the [official v2.35.0 bedrock-agents guide](https://github.com/aws-powertools/powertools-lambda-typescript/blob/7bcc27b1574493f9452688673658f52b80c53847/docs/features/event-handler/bedrock-agents.md) and the pinned npm implementation. The table maps capabilities; it does not certify every native type or service behavior.
