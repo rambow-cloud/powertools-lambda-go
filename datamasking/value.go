@@ -23,6 +23,9 @@ type node struct {
 }
 
 func copyInput(input any) (*node, error) {
+	if _, missing := input.(Undefined); missing {
+		return &node{scalar: Undefined{}}, nil
+	}
 	data, err := json.Marshal(input, json.Deterministic(true))
 	if err != nil {
 		return nil, err

@@ -7,3 +7,9 @@ JavaScript undefined is recorded as JSON null; this is an explicit Go mapping.
 Scalar fixtures replace the JavaScript clock, preserving the actual upstream
 formatters. UUID generation is checked structurally in Go rather than normalized
 into an equality assertion. No AWS service behavior is established by fixtures.
+
+`boundaries-v2.35.0.json` adds 45 exact formatter observations around both ends
+of the JavaScript Date domain, offsets and invalid dates. Generate it with
+`node tools/reference/generate-appsync-graphql-boundaries.mjs` from the repository
+root. Native Go tests separately cover nanosecond flooring, extreme times that
+would overflow UnixMilli, and aggregate slice/array/error contracts.

@@ -1,0 +1,60 @@
+{
+  "upstream": "2.35.0",
+  "cases": [
+    {
+      "name": "whole undefined",
+      "method": "encrypt",
+      "fields": null,
+      "value": "cipher:undefined",
+      "calls": [
+        {
+          "type": "undefined",
+          "value": null
+        }
+      ],
+      "classification": "Deliberate Go difference: string-only providers reject undefined plaintext before the call."
+    },
+    {
+      "name": "selected undefined",
+      "method": "encrypt",
+      "fields": [],
+      "value": {
+        "$": "undefined"
+      },
+      "calls": [],
+      "classification": "Verified marker, selector and captured-plaintext boundary."
+    },
+    {
+      "name": "decrypt undefined",
+      "method": "decrypt",
+      "fields": [],
+      "value": {
+        "$": "undefined"
+      },
+      "calls": [],
+      "classification": "Verified marker, selector and captured-plaintext boundary."
+    },
+    {
+      "name": "duplicate selectors",
+      "method": "encrypt",
+      "fields": [
+        "secret",
+        "secret"
+      ],
+      "value": {
+        "secret": "cipher:\"original\""
+      },
+      "calls": [
+        {
+          "type": "string",
+          "value": "\"original\""
+        },
+        {
+          "type": "string",
+          "value": "\"original\""
+        }
+      ],
+      "classification": "Verified marker, selector and captured-plaintext boundary."
+    }
+  ]
+}

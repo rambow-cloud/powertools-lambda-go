@@ -111,7 +111,12 @@ type decoder struct {
 	ctx       context.Context
 	reader    *codec.Reader
 	inputSize int
+	items     int64
 }
+
+// Null and empty-record array items consume no wire bytes. A byte bound alone
+// cannot limit their decoded allocation, so count entries across the datum.
+const maxCollectionItems = 1 << 20
 
 func (d *decoder) read(schema codec.Schema, depth int) (any, error) {
 	if err := d.ctx.Err(); err != nil {
@@ -225,6 +230,10 @@ func (d *decoder) read(schema codec.Schema, depth int) (any, error) {
 			if count < 0 {
 				return nil, errors.New("invalid block count")
 			}
+			if count > maxCollectionItems-d.items {
+				return nil, errors.New("Avro collections exceed 1048576 items")
+			}
+			d.items += count
 			for range count {
 				key := ""
 				if schema.Type() == codec.Map {

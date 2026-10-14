@@ -7,3 +7,11 @@ Tests compare complete decoded values and error names/messages without removing 
 Coverage includes every primitive, named/fixed/enum/record/recursive schema, unions, maps, arrays, negative block counts, Base64 permissiveness, malformed UTF-8, truncation, trailing data and 160 additional signed-integer boundary cases. The latter retain the reference's floating-point zigzag behavior, including loss of the negative sign at certain unsafe boundaries. Native tests cover lazy schema failure, null bypass, 64 concurrent decodes, result isolation and cancellation.
 
 These cases do not prove every invalid-schema diagnostic, arbitrary oversized/overlong wire value, file-based schema loading, JavaScript prototype behavior, native type mapping, service delivery or performance budget. Go rejects nesting deeper than 1024 levels. Do not treat a passing scoped corpus as complete Kafka parity.
+
+The additional `boundaries-v2.35.0.json` retains ten actual upstream invalid-schema
+errors. Generate it with `node tools/reference/generate-kafka-avro-boundaries.mjs`.
+The finite audit compares rejection and public error category; the Go parser's
+cause text is deliberately native, rather than rewritten to match avro-js.
+Native regressions verify a cumulative limit of 1,048,576 array/map entries per
+datum, including zero-byte null items, exact limits and multiple blocks. This is
+a deliberate Go resource bound; the TypeScript reference does not impose it.

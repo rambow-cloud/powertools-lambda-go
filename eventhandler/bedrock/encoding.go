@@ -57,7 +57,7 @@ func (w *jsonWriter) value(value any) error {
 	case Undefined:
 		w.WriteString("null")
 	case string:
-		w.string(v)
+		return w.string(v)
 	case bool:
 		w.WriteString(strconv.FormatBool(v))
 	case float64:
@@ -108,7 +108,9 @@ func (w *jsonWriter) object(keys []string, values map[string]any) error {
 			w.WriteByte(',')
 		}
 		first = false
-		w.string(key)
+		if err := w.string(key); err != nil {
+			return err
+		}
 		w.WriteByte(':')
 		if err := w.value(value); err != nil {
 			return err
@@ -118,9 +120,13 @@ func (w *jsonWriter) object(keys []string, values map[string]any) error {
 	return nil
 }
 
-func (w *jsonWriter) string(value string) {
-	encoded, _ := json.Marshal(value)
+func (w *jsonWriter) string(value string) error {
+	encoded, err := json.Marshal(value)
+	if err != nil {
+		return err
+	}
 	w.Write(encoded)
+	return nil
 }
 
 func numberString(number float64, jsonMode bool) string {

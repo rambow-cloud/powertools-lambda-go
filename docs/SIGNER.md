@@ -47,6 +47,12 @@ appsync true
 
 ## Ownership, redirects, and composition
 
+Native header map names are canonicalized before signing. Case-colliding entries
+join in sorted raw-name order; stale authentication/date/token headers are removed
+regardless of spelling. Explicit payload hashes use the same folded lookup.
+Transport gives the signer an owned request clone, preserving the caller's URL,
+headers and Body field while downstream upload and closure retain body ownership.
+
 `Sign(*http.Request)` signs without sending. It clones the URL and headers and returns a replayable body with `GetBody`. If the input supplies `GetBody`, its body stream is untouched. Otherwise the finite stream is buffered and restored on the original request, preserving its `Close`. After a read failure the successfully read prefix is restored in front of the unread stream. Standalone callers close both bodies and must not use the input concurrently with signing. Buffering is proportional to payload size; context checks cannot forcibly interrupt an arbitrary blocking application Reader.
 
 `Transport` accepts any `Signer` interface and any `http.RoundTripper`. It closes the incoming body if signing fails. After handoff, the downstream transport owns the signed body's lifetime; closing it also releases the incoming body. Custom signers may return the input request or a clone sharing its body. The base transport can finish reading and closing that body after `RoundTrip` returns, including error paths, as permitted by [Go's transport contract](https://pkg.go.dev/net/http#RoundTripper). Empty signed bodies retain Go's empty-body framing and release the incoming body immediately. It performs no retry loop. `HTTPClient` copies its supplied client and defaults to stopping at redirects. Supply a deliberate `CheckRedirect` policy to allow trusted destinations; each permitted redirect is signed again, and normal Go replay rules apply to 307/308 responses.

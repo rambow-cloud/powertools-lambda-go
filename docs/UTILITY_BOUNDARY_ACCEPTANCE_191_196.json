@@ -1,0 +1,232 @@
+{
+  "schema_version": 1,
+  "verified_at": "2026-10-14",
+  "repository": "rambow-cloud/powertools-lambda-go",
+  "issues": [
+    191,
+    192,
+    193,
+    194,
+    195,
+    196
+  ],
+  "source_base_sha": "81cd9c67d65a65feebe6fc90a0a4d21021d4aacd",
+  "source_identity": "Unpublished local source, identified by per-module archive hashes; these are local proxy fixtures, not public v1.2.0 retrieval.",
+  "local_acceptance_completed": true,
+  "remote_review_completed": false,
+  "publication": false,
+  "module_count": 11,
+  "independent_consumer_count": 10,
+  "modules": [
+    {
+      "directory": "commons/regex",
+      "public": true,
+      "version": "v1.2.0",
+      "archive_sha256": "2b0e86fc3beb51367a92a53ebb9cd9d4c4f2d21258904254d78a89286d6fd691",
+      "tests": true,
+      "vet": true,
+      "tidy": true,
+      "consumer_build": true,
+      "tests_runtime": "native-windows-amd64"
+    },
+    {
+      "directory": "datamasking",
+      "public": true,
+      "version": "v1.2.0",
+      "archive_sha256": "01a99f384715c089e8bf14867cd4a0b1d89bef93f426b8465327a083262b87c5",
+      "tests": true,
+      "vet": true,
+      "tidy": true,
+      "consumer_build": true,
+      "tests_runtime": "native-windows-amd64"
+    },
+    {
+      "directory": "datamasking/kms",
+      "public": true,
+      "version": "v1.2.0",
+      "archive_sha256": "3646f75185b3677357188e6d1b430a7b5f48e215c08c158236b3b83e614a9929",
+      "tests": true,
+      "vet": true,
+      "tidy": true,
+      "consumer_build": true,
+      "tests_runtime": "local-wsl-linux-amd64"
+    },
+    {
+      "directory": "eventhandler/appsyncevents",
+      "public": true,
+      "version": "v1.2.0",
+      "archive_sha256": "7b36b1751bef27dc36830b853ffafc4f30d0874dc3fd0d83c7816b4f3e0f7fa4",
+      "tests": true,
+      "vet": true,
+      "tidy": true,
+      "consumer_build": true,
+      "tests_runtime": "native-windows-amd64"
+    },
+    {
+      "directory": "eventhandler/appsyncgraphql",
+      "public": true,
+      "version": "v1.2.0",
+      "archive_sha256": "2e3eee1ecbc5845c765c3b929dd93b5f0e1eb80703dde2161f3bee2cdb52c238",
+      "tests": true,
+      "vet": true,
+      "tidy": true,
+      "consumer_build": true,
+      "tests_runtime": "native-windows-amd64"
+    },
+    {
+      "directory": "eventhandler/bedrock",
+      "public": true,
+      "version": "v1.2.0",
+      "archive_sha256": "22b34897dfa251bc7b89e822edc22037df9909c1a46d76da663e963e8844797d",
+      "tests": true,
+      "vet": true,
+      "tidy": true,
+      "consumer_build": true,
+      "tests_runtime": "native-windows-amd64"
+    },
+    {
+      "directory": "integration",
+      "public": false,
+      "version": "v0.1.0",
+      "archive_sha256": "493c5a14a3b1b43b0153f5be37b599f16d8f97b0422926c6917afa6f07ad209a",
+      "tests": true,
+      "vet": true,
+      "tidy": true,
+      "tests_runtime": "local-wsl-linux-amd64"
+    },
+    {
+      "directory": "kafka",
+      "public": true,
+      "version": "v1.2.0",
+      "archive_sha256": "543d918f652a6408c3dd975ee7d6a6f694fe41c3d0714376e166cb903dd1e986",
+      "tests": true,
+      "vet": true,
+      "tidy": true,
+      "consumer_build": true,
+      "tests_runtime": "native-windows-amd64"
+    },
+    {
+      "directory": "kafka/avro",
+      "public": true,
+      "version": "v1.2.0",
+      "archive_sha256": "cb317fe1ba7099ad55e1d29501ff0488e2aee09b6dad3c832424aa5ac64db245",
+      "tests": true,
+      "vet": true,
+      "tidy": true,
+      "consumer_build": true,
+      "tests_runtime": "native-windows-amd64"
+    },
+    {
+      "directory": "kafka/protobuf",
+      "public": true,
+      "version": "v1.2.0",
+      "archive_sha256": "c9b99ebf6255565f09c817409af83b3014413a9a7ad09c8fba5ec1764bfca520",
+      "tests": true,
+      "vet": true,
+      "tidy": true,
+      "consumer_build": true,
+      "tests_runtime": "native-windows-amd64"
+    },
+    {
+      "directory": "signer",
+      "public": true,
+      "version": "v1.2.0",
+      "archive_sha256": "77a66d25124b2c63d0c53d8f412a6f266828f09342b3eae8a2abdeb15b3a16f6",
+      "tests": true,
+      "vet": true,
+      "tidy": true,
+      "consumer_build": true,
+      "tests_runtime": "native-windows-amd64"
+    }
+  ],
+  "new_reference_corpora": [
+    {
+      "path": "eventhandler/appsyncgraphql/testdata/boundaries-v2.35.0.json",
+      "upstream": "2.35.0",
+      "cases": 45,
+      "sha256": "1522abd5a9d538918662a6ce8e890be689a70a32e4226228983d3c122a5e321d"
+    },
+    {
+      "path": "kafka/avro/testdata/boundaries-v2.35.0.json",
+      "upstream": "2.35.0",
+      "cases": 10,
+      "sha256": "fc0e9125dc010c5f509b4e6575570871fc27a934a767e2a5dc81a62d4f8c2309"
+    },
+    {
+      "path": "datamasking/testdata/boundaries-v2.35.0.json",
+      "upstream": "2.35.0",
+      "cases": 4,
+      "sha256": "8adf41f790b3175e44884f8a83703af4a2d55c979638bf3c49fbd6bf4e6754ea"
+    }
+  ],
+  "lambda_builds": [
+    {
+      "os": "linux",
+      "architecture": "amd64",
+      "CGO_ENABLED": "0",
+      "sha256": "2db7e777756d7512710a86004220e6d2dd27c8d681ac50b40dc540ad60c61b3e",
+      "bytes": 69239271,
+      "static_elf": true,
+      "lambda_runtime_execution": false
+    },
+    {
+      "os": "linux",
+      "architecture": "arm64",
+      "CGO_ENABLED": "0",
+      "sha256": "5615fef17d34f0576ea4b16307ba97fee72cef220ac91d18b442b78bdea479d2",
+      "bytes": 64464141,
+      "static_elf": true,
+      "lambda_runtime_execution": false
+    }
+  ],
+  "json_api_guard": {
+    "passed": true,
+    "scope": "Git-visible tracked and new Go sources, excluding ignored historical snapshots"
+  },
+  "documentation": {
+    "locked_dependencies": true,
+    "navigation": true,
+    "utility_guides": 18,
+    "strict_build": true,
+    "discovery_guides": 93,
+    "crawler_policies": 19
+  },
+  "fixes": [
+    {
+      "issue": 192,
+      "description": "Prevent extreme native times from wrapping into the JavaScript Date domain."
+    },
+    {
+      "issue": 193,
+      "description": "Report invalid UTF-8 body/key encoding without publishing partial JSON."
+    },
+    {
+      "issue": 194,
+      "description": "Bound cumulative Avro array/map expansion to 1048576 entries per datum."
+    },
+    {
+      "issue": 195,
+      "description": "Preserve top-level undefined markers and reject undefined whole plaintext before provider calls."
+    },
+    {
+      "issue": 195,
+      "description": "Use MPL opaque callback errors to avoid panic and restore original Go factory errors."
+    },
+    {
+      "issue": 196,
+      "description": "Canonicalize native headers before replacing authentication and selecting payload hashes."
+    },
+    {
+      "issue": 196,
+      "description": "Give transports/signers an owned request clone while preserving body closure."
+    }
+  ],
+  "limits": [
+    "Local WSL Linux executes the KMS/integration suites; Docker Desktop engine execution is not claimed.",
+    "Both Lambda architectures are cross-compiled; Lambda RIE/streaming execution is not part of this audit.",
+    "No AWS service, IAM, billing, browser or search-index acceptance.",
+    "Existing TypeScript corpora and historical reports retain their original identities; reverse cryptographic interoperability was not relabelled.",
+    "The Avro item cap intentionally rejects larger previously accepted collections; arbitrary native/parity/resource scopes remain in the plans.",
+    "GitHub issue comments/PRs/CI/closure remain pending under the user-requested local-only scope."
+  ]
+}

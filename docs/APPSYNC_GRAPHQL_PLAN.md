@@ -1,5 +1,21 @@
 # AppSync GraphQL implementation checklist
 
+## Finite boundary audit (#192)
+
+| Reviewed boundary | Evidence | Classification |
+| --- | --- | --- |
+| Resolver/Router, single/custom/Query/Mutation/batch registration, inclusion and exception exports | Existing 114 resolver cases and native context/error tests | Verified for decoded maps and `[]Event`; SDK structs require explicit JSON conversion |
+| ID/date/time/datetime/timestamp helpers | Existing 91 scalar cases, 45 new actual clock/offset cases and UUID shape/uniqueness | Verified finite formatting and offset contract |
+| Instants outside the Date domain, including Go UnixMilli overflow | `TestScalarNativeRangeCannotWrapIntoDateDomain` | Reproduced and fixed: validate seconds before conversion; invalid date helpers retain upstream NaN components |
+| Sub-millisecond Go inputs | `TestScalarNativeNanosecondsUseUnixMillisecondFloor` | Deliberate Unix millisecond floor, including negative instants; JavaScript Date cannot retain nanoseconds |
+| Native nil/scalar/map/empty slice/array/byte aggregate outputs | Eight `TestBatchNativeOutputBoundaries` rows | Non-nil slices/arrays become top-level arrays; invalid types preserve framework exceptions |
+
+GQL-COMPLETE/GQL-SERVICE retain exhaustive native/async/error forms, arbitrary
+serialization, service behavior and resource budgets. The finite audit adds no
+decorators and does not mutate caller events.
+
+## Implementation history
+
 Reference: installed Powertools TypeScript v2.35.0 public AppSync GraphQL exports.
 Keep full service, type and language compatibility gates separate from core work.
 

@@ -58,9 +58,9 @@ Raw Kafka producer envelopes are distinct from Lambda's transformed SOURCE/JSON 
 
 ## Compatibility audits for implemented utilities
 
-These issues track remaining contracts and verification, not absent utilities. Each audit must use a finite case/export matrix and classify outcomes as verified, intentional difference, reproduced defect or a separately tracked feature. No issue promises exhaustive JavaScript/Go equivalence.
+These issues identify finite audit scopes for implemented utilities, including already completed audits; the table is not a live open-issue list. Consult each issue and its plan's acceptance before scheduling repeat work. Each matrix classifies outcomes as verified, intentional difference, reproduced defect or a separately tracked feature. No issue promises exhaustive JavaScript/Go equivalence.
 
-| Implemented utility | Remaining audit | Issue |
+| Implemented utility | Finite audit scope | Issue |
 | --- | --- | --- |
 | `Commons`, `commons/awssdk`, `commons/dynamodb`, `commons/metadata` | Commons encoding and native-value | [#180](https://github.com/rambow-cloud/powertools-lambda-go/issues/180) |
 | `logger` | Logger configuration, serialization and buffering | [#181](https://github.com/rambow-cloud/powertools-lambda-go/issues/181) |

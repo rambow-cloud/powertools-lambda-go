@@ -1,5 +1,23 @@
 # Data Masking implementation plan
 
+## Finite boundary audit (#195)
+
+| Reviewed boundary | Evidence | Classification |
+| --- | --- | --- |
+| Masker/config/provider/rule/selection/options/error/undefined exports | Existing 240 exact masking cases, missing-rule and 64-invocation tests | Verified finite API and ordered erase mapping; missing-rule strictness is a documented Go contract |
+| Duplicate/overlapping selectors, captured plaintext and result ownership | Four additional actual reference observations; `TestDuplicateTransformSelectorsCaptureOriginalValues` and existing provider barriers | Duplicate transforms run independently against original values; completion order is not input order |
+| Top-level undefined through transforms | `TestUndefinedTransformBoundaries` | Reproduced and fixed: retain the marker for empty selections and reject whole undefined before a string-only provider, instead of encrypting an empty object |
+| Native clone errors before encryption | `TestStrictNativeCloneFailurePrecedesProviderCalls` | Strict JSON v2 rejects nonfinite/invalid Unicode/duplicate/cyclic/unsupported inputs before provider calls, preserving causes |
+| Regex composition and replacement precedence | Existing 30 masking/regex cases and shared regex corpus | Verified finite replacement scope; Unicode sets remain #167 |
+| KMS keys/committed suite/authenticated context and invocation ownership | Existing 39 TypeScript ciphertext cases, five failures and native concurrency/cancellation tests | Real ESDK cryptography with local synthetic KMS wrapping; historical reverse interoperability retains its original identity |
+| KMS factory/nil-client/cancellation and invalid-header errors | `TestClientSupplierFailuresReturnNoCiphertext`, `TestClientSupplierCancellationCrossesGeneratedBridge`, `TestInvalidMessageHeadersFailBeforeKMSRequests` | Reproduced and fixed: use the generated MPL opaque-error contract instead of panicking; preserve original factory errors. Invalid headers make no KMS requests. Linux execution is required |
+
+MASK-PARITY/MASK-KMS retain ancestor/descendant completion races, arbitrary
+structuredClone/prototype behavior, exhaustive algorithms/diagnostics, service
+acceptance and resource budgets. Caching stays #164; no ignored options are added.
+
+## Implementation history
+
 Issue #116's bounded-cache planning is recorded in [the KMS cache design](KMS_CACHE_DESIGN.md).
 It compares the pinned upstream APIs and defines isolation, limits and acceptance;
 the provider remains uncached and implementation/interoperability gates stay open.

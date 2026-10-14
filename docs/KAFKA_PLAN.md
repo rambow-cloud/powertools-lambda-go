@@ -1,5 +1,23 @@
 # Kafka implementation plan
 
+## Finite boundary audit (#194)
+
+| Reviewed boundary | Evidence | Classification |
+| --- | --- | --- |
+| Consumer/config/schema/record/parser/error/wrapper and lazy access exports | Existing Kafka and SOURCE/JSON corpora, context and captured-field tests | Verified finite mapping; reads are not cached and nested metadata remains application-owned |
+| Missing/null/empty key versus empty value | `TestNullAndMissingFieldsBypassCodecAndParser` | Missing/null bypass callbacks; an empty key is undefined, while an empty value is decoded |
+| Empty parser issues, operational errors, independent reads and repeated diagnostics | `TestParserRejectionAndErrorsRemainFieldLocal`, `TestStrictJSONFailureRetainsDecodedTextAndDiagnostics` | Verified error identity; strict JSON v2 failures retain text rather than adopting JavaScript duplicate-member/lone-surrogate behavior |
+| Avro schemas, wire types, truncation/trailing data and native causes | Existing 370 exact cases and ten new actual invalid-schema fixtures | New rejection/categories agree; native parser cause wording remains distinct |
+| Zero-byte collection expansion and multiple block counts | Zero-width and cumulative-budget regressions | Reproduced and fixed: at most 1,048,576 array/map entries across a datum, a deliberate Go resource bound; exact-limit and negative blocks remain supported |
+| Protobuf decoder/field/input/message/descriptor exports and adaptive prefixes | Existing 220 prefix and nine native cases | Verified pinned adapter behavior; raw producer framing remains #177-#179 |
+| Native int64 precision, unknown fields, fresh messages and descriptor failures | `TestNativeDescriptorPreservesInt64UnknownFieldsAndOwnership`, `TestNativeDescriptorFailureBoundaries` | Official Go proto.Message/protojson contracts, not protobufjs serialization |
+
+KAF-COMPLETE retains exhaustive schemas/native diagnostics, overlong wire forms,
+service behavior and resource measurements (#200/#202). The collection guard
+does not add a registry protocol or replace the existing SOURCE mode.
+
+## Implementation history
+
 Reference: Powertools TypeScript v2.35.0, commit `7bcc27b1574493f9452688673658f52b80c53847`. Keep the standalone consumer distinct from Parser's existing Kafka schemas and envelope.
 
 - [x] KAF-SOURCE: Inspect the published consumer, primitive/JSON/Avro/Protobuf decoders, error exports and type declarations. Confirm lazy getters, repeated parsing, key/value differences, JSON fallback diagnostics, light event guard and schema metadata handling. Record the CommonJS reference entry and ESM loader boundary.

@@ -52,7 +52,12 @@ func formattedTime(now time.Time, format string, offsets []float64) (string, err
 		postfix = sign + scalarNumber(math.Floor(absolute), 2) + ":" + scalarNumber(math.Floor((absolute-math.Floor(absolute))*60), 2) + ":00"
 	}
 	// JavaScript Date clips fractional milliseconds and has a finite range.
-	millis := float64(now.UnixMilli())
+	// Check seconds before converting: UnixMilli overflows for extreme Go times
+	// and can otherwise wrap an invalid instant back into the Date domain.
+	millis := math.NaN()
+	if seconds := now.Unix(); seconds >= -8_640_000_000_000 && seconds <= 8_640_000_000_000 {
+		millis = float64(now.UnixMilli())
+	}
 	adjusted := millis + offset*3600000
 	parts := []string{"%Y", "NaN", "%m", "NaN", "%d", "NaN", "%H", "NaN", "%M", "NaN", "%S", "NaN", ".%f", ".NaN"}
 	if math.Abs(millis) <= 8.64e15 && !math.IsNaN(adjusted) && math.Abs(adjusted) <= 8.64e15 {
