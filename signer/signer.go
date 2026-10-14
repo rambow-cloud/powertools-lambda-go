@@ -7,9 +7,11 @@ import (
 	"encoding/hex"
 	"fmt"
 	"io"
+	"maps"
 	"net/http"
 	"net/url"
 	"os"
+	"slices"
 	"strconv"
 	"strings"
 	"time"
@@ -114,10 +116,17 @@ func (s *SigV4Signer) Sign(request *http.Request) (*http.Request, error) {
 	if signed.Header == nil {
 		signed.Header = make(http.Header)
 	}
-	// Normalize repeated headers like the reference web Headers conversion.
-	for key, values := range signed.Header {
-		signed.Header[key] = []string{strings.Join(values, ", ")}
+	// A native Header map can contain noncanonical or case-colliding keys.
+	// Fold those before replacing authentication headers or reading payload hashes.
+	headers := make(http.Header, len(signed.Header))
+	for _, key := range slices.Sorted(maps.Keys(signed.Header)) {
+		canonical := http.CanonicalHeaderKey(key)
+		headers[canonical] = append(headers[canonical], signed.Header[key]...)
 	}
+	for key, values := range headers {
+		headers[key] = []string{strings.Join(values, ", ")}
+	}
+	signed.Header = headers
 	for _, key := range []string{"Authorization", "X-Amz-Date", "X-Amz-Security-Token"} {
 		signed.Header.Del(key)
 	}

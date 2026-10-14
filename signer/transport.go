@@ -23,6 +23,8 @@ func (t *Transport) RoundTrip(request *http.Request) (*http.Response, error) {
 	if request == nil {
 		return nil, &SigningError{fmt.Errorf("request is required")}
 	}
+	// Give signers an owned request while the base transport consumes the body.
+	request = request.Clone(request.Context())
 	// Signers may retain or wrap the input body. Share idempotent closure across
 	// those aliases without comparing application ReadClosers, which may not be comparable.
 	if request.Body != nil && request.Body != http.NoBody {

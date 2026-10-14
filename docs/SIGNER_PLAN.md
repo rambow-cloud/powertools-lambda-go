@@ -1,5 +1,22 @@
 # Signer assessment and implementation plan
 
+## Finite boundary audit (#196)
+
+| Reviewed boundary | Evidence | Classification |
+| --- | --- | --- |
+| Signer/config/SigV4Signer/New/Transport/HTTPClient and error exports | Existing 13 fixed-time cases, provider/cancellation and transport tests | Twelve exact signatures; duplicate-query signing deliberately retains all values |
+| Paths, query/host/header normalization and replay | Existing reference/body tests, `TestNativeHeaderNormalizationMatchesCanonicalRequest` | Native SDK URL/Host contracts; case-colliding map names join in sorted-name order |
+| Noncanonical/case-colliding authentication and payload-hash headers | `TestResigningRemovesEveryAuthenticationHeaderSpelling` and native normalization test | Reproduced and fixed: canonicalize owned headers before replacing auth/date/token or selecting hashes |
+| Caller request ownership and asynchronous body closure | `TestTransportPreservesCallerRequestFields` and existing handoff/alias/distinct-body tests | Reproduced and fixed: sign an owned clone; downstream closure still releases the incoming body once |
+| Relative/non-HTTP/userinfo/malformed query/semicolon URLs | Five `TestInvalidURLsFailBeforeCredentialRetrieval` rows | Typed rejection before credential retrieval |
+| Provider refresh/errors, trusted redirects and retries | Existing error identity, concurrent retrieval and redirect tests | No hidden retries or default cross-host redirects; application providers own I/O |
+
+S-06 retains exhaustive URL/service canonicalization, real IAM authorization
+and resource/body-memory budgets. This finite audit cannot certify arbitrary
+custom transports or every web Request conversion behavior.
+
+## Implementation history
+
 Assessment date: 2026-09-14. Reference: TypeScript v2.35.0, commit `7bcc27b1574493f9452688673658f52b80c53847`. Signer is now implemented as an independent Go module. The assessment below records its dependency rationale; the current API and explicit compatibility differences are in [SIGNER.md](SIGNER.md).
 
 ## Priority
