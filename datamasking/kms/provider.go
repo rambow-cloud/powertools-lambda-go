@@ -81,10 +81,18 @@ func New(ctx context.Context, options Config) (*Provider, error) {
 }
 
 func (p *Provider) keyring(ctx context.Context) (mpltypes.IKeyring, error) {
-	return p.materials.CreateAwsKmsMultiKeyring(ctx, mpltypes.CreateAwsKmsMultiKeyringInput{
+	keyring, err := p.materials.CreateAwsKmsMultiKeyring(ctx, mpltypes.CreateAwsKmsMultiKeyringInput{
 		Generator: &p.keys[0], KmsKeyIds: slices.Clone(p.keys[1:]),
 		ClientSupplier: clientSupplier{context: ctx, clients: p.clients},
 	})
+	// The generated MPL bridge accepts unmodelled callback failures only as
+	// OpaqueError values. Restore the original Go error after crossing it.
+	if opaque, ok := err.(mpltypes.OpaqueError); ok {
+		if cause, ok := opaque.ErrObject.(error); ok {
+			return nil, cause
+		}
+	}
+	return keyring, err
 }
 
 func (p *Provider) Encrypt(ctx context.Context, data string, encryptionContext map[string]string) (string, error) {

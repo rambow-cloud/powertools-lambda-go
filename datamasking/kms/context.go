@@ -18,15 +18,17 @@ type clientSupplier struct {
 }
 
 func (s clientSupplier) GetClient(input mpltypes.GetClientInput) (awskms.Client, error) {
+	// The pinned generated bridge panics on raw errors or OpaqueError pointers;
+	// callback failures must cross it as OpaqueError values.
 	if err := s.context.Err(); err != nil {
-		return awskms.Client{}, err
+		return awskms.Client{}, mpltypes.OpaqueError{ErrObject: err}
 	}
 	client, err := s.clients(s.context, input.Region)
 	if err != nil {
-		return awskms.Client{}, err
+		return awskms.Client{}, mpltypes.OpaqueError{ErrObject: err}
 	}
 	if client == nil {
-		return awskms.Client{}, fmt.Errorf("KMS client provider returned nil")
+		return awskms.Client{}, mpltypes.OpaqueError{ErrObject: fmt.Errorf("KMS client provider returned nil")}
 	}
 	options := client.Options()
 	options.APIOptions = append(slices.Clone(options.APIOptions), awssdk.UserAgent("data-masking"), func(stack *middleware.Stack) error {

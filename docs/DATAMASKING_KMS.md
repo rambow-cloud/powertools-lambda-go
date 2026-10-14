@@ -39,6 +39,13 @@ The provider reuses Commons permissive Buffer Base64 decoding, UTF-8 decoding, o
 
 ## Context and platform behavior
 
+On current source, client-factory errors, nil clients and supplier cancellation
+cross the pinned MPL bridge using its required opaque-error value. The adapter
+restores the original Go factory error afterward, preserving `errors.Is`/`As`
+instead of triggering the generated converter's panic. Invalid message headers
+and unsupported suite identifiers fail before any KMS request. These contracts
+have local Linux tests; they do not establish live KMS/IAM acceptance.
+
 The v0.4.0 generated ESDK/MPL bridge discards context.Context before calling KMS. The adapter constructs an operation-scoped client supplier and restores invocation cancellation, deadlines and values at the AWS SDK initialization boundary while retaining SDK stack metadata. This covers signing, retries and network I/O without global mutable invocation state. Calls check cancellation before and after SDK execution; pure cryptographic computation inside the upstream SDK is not interruptible.
 
 The upstream smithy-dafny-standard-library v0.4.0 calls syscall.Getrusage without Windows build constraints. Consequently, this provider cannot compile as a native Windows binary. Lambda's Linux amd64/arm64 target remains supported. Do not patch the module cache or substitute cryptography to hide this dependency limit.
