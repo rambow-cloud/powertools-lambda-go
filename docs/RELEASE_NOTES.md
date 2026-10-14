@@ -12,7 +12,7 @@ All 27 maintained modules share one version. [Browse all GitHub Releases](https:
 
 ### Features
 
-- **Validation:** Add opt-in [Draft 2020-12 and 2019-09 compilers](JSON_SCHEMA_VALIDATION.md#optional-draft-2020-12-compiler) with registered references, input snapshots and native diagnostics. Default Draft 7 behavior remains unchanged. ([#212](https://github.com/rambow-cloud/powertools-lambda-go/pull/212), [#213](https://github.com/rambow-cloud/powertools-lambda-go/pull/213))
+- **Validation:** Add opt-in [Draft 2020-12 and 2019-09 compilers](reference/JSON_SCHEMA_VALIDATION.md#optional-draft-2020-12-compiler) with registered references, input snapshots and native diagnostics. Default Draft 7 behavior remains unchanged. ([#212](https://github.com/rambow-cloud/powertools-lambda-go/pull/212), [#213](https://github.com/rambow-cloud/powertools-lambda-go/pull/213))
 
 ### Fixes
 
@@ -36,7 +36,7 @@ All 27 maintained modules share one version. [Browse all GitHub Releases](https:
 
 ### Features
 
-- **Logger:** Add opt-in [`WrapRawHandler`](LOGGER.md#event-logging-and-child-configuration) to log incoming JSON before typed decoding, retaining unknown members, empty/null values and exact numeric tokens. ([#149](https://github.com/rambow-cloud/powertools-lambda-go/pull/149))
+- **Logger:** Add opt-in [`WrapRawHandler`](reference/LOGGER.md#event-logging-and-child-configuration) to log incoming JSON before typed decoding, retaining unknown members, empty/null values and exact numeric tokens. ([#149](https://github.com/rambow-cloud/powertools-lambda-go/pull/149))
 
 ### Changes
 

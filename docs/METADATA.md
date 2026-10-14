@@ -1,26 +1,32 @@
 ---
-description: "Retrieve Lambda execution-environment metadata in Go with the optional Powertools Metadata client and explicit request contracts."
+description: "Retrieve Lambda execution-environment metadata in Go with the optional Powertools Metadata client."
 ---
 
 # Metadata
 
-Metadata retrieves Lambda execution-environment information from the Lambda Metadata Service (LMDS). Import `github.com/rambow-cloud/powertools-lambda-go/commons/metadata`, an independent optional module. It is distinct from EC2 instance metadata and is not fetched automatically by Logger or Tracer.
+Read Lambda execution-environment information from the Lambda Metadata Service (LMDS).
 
 ## Install
 
-Use Go 1.27 or newer and install the module in your own application:
+Use Go 1.27 or newer:
 
 ```sh
 CGO_ENABLED=0 go get github.com/rambow-cloud/powertools-lambda-go/commons/metadata@v1.2.0
 ```
 
-## Complete example
+## Read execution-environment metadata
 
-Save it as `main.go` in your application and run `CGO_ENABLED=0 go run .`.
-Outside Lambda it returns an empty object. In Lambda, pass the invocation context
-to retrieve metadata available in that execution environment.
+This program prints the returned metadata object. Outside Lambda, it prints `{}` without sending a request.
 
-~~~go
+**Input**
+
+```text
+Local process, outside Lambda
+```
+
+**Code**
+
+```go
 package main
 
 import (
@@ -45,36 +51,44 @@ func main() {
 	}
 	fmt.Println(string(encoded))
 }
-~~~
+```
 
-## Input and output
+**Output**
 
-Outside Lambda, the program prints `{}` without sending a request. In a supported Lambda environment, it returns the endpoint's object, which can contain `AvailabilityZoneID`, for example `{"AvailabilityZoneID":"example-az1"}`. That value is illustrative; availability depends on the execution environment. Unknown response properties are retained. This helper returns data; it does not automatically write a structured log.
+```json
+{}
+```
 
-The default client reads `AWS_LAMBDA_METADATA_API` and `AWS_LAMBDA_METADATA_TOKEN` and sends a bearer-authenticated request to `/2026-01-15/metadata/execution-environment`. Do not print the token. Status, timeout, cancellation and decoding failures return an error rather than a successful metadata object.
+## Read metadata in Lambda
 
-## Objects and lifecycle
+Use the invocation context so timeouts and cancellation apply:
 
-| Object | Responsibility |
-| --- | --- |
-| Default helper | One lazily used process client; a nonempty successful result is cached across warm calls |
-| `Client` | `metadata.New(Config)` creates an independent client with endpoint, token and optional HTTP client |
-| `Options` / `ctx` | Per-call timeout bounded by the caller's cancellation/deadline; default timeout is one second |
-| Returned map | Private snapshot; caller changes do not corrupt cached metadata |
+```go
+value, err := metadata.GetMetadata(ctx,
+    metadata.Options{Timeout: 500 * time.Millisecond})
+```
 
-Call `ClearMetadataCache()` to clear the default client, or `client.ClearCache()` for an explicit client. Failures and empty responses are not cached. Concurrent fetches on one client are coalesced; waiting callers can cancel, and a pre-clear request cannot refill the cleared cache. Explicit `Endpoint` enables local HTTP access outside Lambda. The client rejects redirects so authentication stays on the configured endpoint.
+**Example service result**
 
-## TypeScript feature coverage
+```json
+{
+  "AvailabilityZoneID": "example-az1"
+}
+```
 
-??? info "Compare with TypeScript v2.35.0"
+The available fields and values depend on the execution environment. Unknown response fields are retained.
 
-    Compared with the [official v2.35.0 Metadata guide](https://github.com/aws-powertools/powertools-lambda-typescript/blob/7bcc27b1574493f9452688673658f52b80c53847/docs/features/metadata.md).
+## Control caching
 
-    | TypeScript feature | Go API or approach | Compatibility scope |
-    | --- | --- | --- |
-    | Get execution-environment metadata | `GetMetadata(ctx, options...)` | Default environment endpoint/token and optional timeout |
-    | Available metadata | `map[string]any` | Retains `AvailabilityZoneID` and unknown fields; no assumed service availability |
-    | Local development | Empty default result outside Lambda | No automatic service request |
-    | Clear cache / testing | `ClearMetadataCache`, explicit `Client` and HTTP injection | Go adds isolated snapshots, coordinated fetches and redirect rejection |
+Successful nonempty results are cached across warm calls. Use `ClearMetadataCache()` to clear the default cache, or create an explicit client with `metadata.New(metadata.Config{...})` and call `ClearCache()` on that client.
 
-    [Metadata tests](https://github.com/rambow-cloud/powertools-lambda-go/blob/main/commons/metadata/metadata_test.go) cover reference/local/HTTP/error/cache/concurrency behavior. Local Docker explicitly retrieves metadata from its authenticated fixture. It does not establish real LMDS availability, authentication or execution-environment semantics. See [feature comparison](FEATURE_PARITY.md), [Commons](COMMONS.md) and [remaining progress](CHECKLIST.md#commons-and-metadata).
+## Things to know
+
+- This is Lambda metadata, not the EC2 Instance Metadata Service.
+- Logger and Tracer do not fetch it automatically.
+- The default client uses `AWS_LAMBDA_METADATA_API` and `AWS_LAMBDA_METADATA_TOKEN`; never log the token.
+- An unavailable service, timeout or malformed response returns an error.
+
+## Next steps
+
+See the [API and behavior notes](reference/METADATA.md) for advanced options, and [module installation](MODULES.md) for dependencies.

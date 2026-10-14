@@ -7,13 +7,13 @@ adds the opt-in `Draft202012Compiler` on `main`, with registered-only resource
 loading, owned native diagnostics and a pinned 56-case injected-Ajv2020 corpus.
 Two native result differences are measured explicitly. This implementation does
 not change the historical design acceptance or default Draft 7 behavior; see the
-[current compiler contract](JSON_SCHEMA_VALIDATION.md#optional-draft-2020-12-compiler).
+[current compiler contract](reference/JSON_SCHEMA_VALIDATION.md#optional-draft-2020-12-compiler).
 
 The next slice, [#169](https://github.com/rambow-cloud/powertools-lambda-go/issues/169),
 adds `Draft201909Compiler` with a separate 58-case injected-Ajv2019 corpus and three
 explicit native result differences. Shared private registration/diagnostics are
 reused, while each dialect retains its own metaschema and keyword checks. See
-[the 2019-09 contract](JSON_SCHEMA_VALIDATION.md#optional-draft-2019-09-compiler).
+[the 2019-09 contract](reference/JSON_SCHEMA_VALIDATION.md#optional-draft-2019-09-compiler).
 
 ## Support matrix
 

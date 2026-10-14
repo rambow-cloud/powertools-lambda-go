@@ -17,7 +17,6 @@ Use Go Powertools Lambda to add common production utilities to your Go AWS Lambd
 | Reuse utilities safely across invocations | [Usage patterns](../USAGE_PATTERNS.md) |
 | Configure service names, logging and metrics | [Environment variables](../ENVIRONMENT_VARIABLES.md) |
 | Check runtime and API boundaries | [Compatibility](../COMPATIBILITY.md) |
-| Compare the maintained TypeScript baseline | [TypeScript feature comparison](../FEATURE_PARITY.md) |
 
 Start with Logger for structured logs, then add Tracer or Metrics when you need them. The quickstart includes maintained code and explains how to build a static executable for Lambda's `provided.al2023` runtime with CGO disabled.
 

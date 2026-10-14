@@ -7,7 +7,7 @@ for issue #118. This completes planning only; the implementation gates below rem
 The first implementation slice, [#168](https://github.com/rambow-cloud/powertools-lambda-go/issues/168),
 adds `Draft202012Compiler` on `main`. Its native diagnostics, registered references
 and measured injected-engine differences are in the
-[optional compiler contract](JSON_SCHEMA_VALIDATION.md#optional-draft-2020-12-compiler).
+[optional compiler contract](reference/JSON_SCHEMA_VALIDATION.md#optional-draft-2020-12-compiler).
 Other dialects and transformations remain separately tracked work.
 
 [#169](https://github.com/rambow-cloud/powertools-lambda-go/issues/169) adds the

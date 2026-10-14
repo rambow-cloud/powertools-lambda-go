@@ -19,7 +19,7 @@ Choose the event handler that matches the AWS service invoking your Go Lambda fu
 
 ## Build an HTTP API
 
-Start with the [complete GET/POST example](../HTTP.md#complete-example). Register routes with `app.Get` and `app.Post`, read path parameters or JSON bodies, and return a Go value for a JSON response.
+Start with the [complete GET/POST example](../HTTP.md#return-an-order-as-json). Register routes with `app.Get` and `app.Post`, read path parameters or JSON bodies, and return a Go value for a JSON response.
 
 Add [middleware](../HTTP_MIDDLEWARE.md) for shared request behavior, then [observability](../HTTP_OBSERVABILITY.md) for logging, metrics and tracing. Read [response streaming](../HTTP_STREAMING.md) when your supported invocation path needs streamed output; check its adapter and runtime boundaries before deploying.
 
