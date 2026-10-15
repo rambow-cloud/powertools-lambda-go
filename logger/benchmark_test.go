@@ -1,6 +1,7 @@
 package logger
 
 import (
+	"errors"
 	"testing"
 	"time"
 )
@@ -10,6 +11,35 @@ type benchmarkWriter struct{ bytes int64 }
 func (w *benchmarkWriter) Write(p []byte) (int, error) {
 	w.bytes += int64(len(p))
 	return len(p), nil
+}
+
+func BenchmarkErrorStack(b *testing.B) {
+	for _, mode := range []string{"disabled", "logging", "attached", "capture-and-log", "filtered"} {
+		b.Run(mode, func(b *testing.B) {
+			b.Setenv("POWERTOOLS_DEV", "false")
+			var out benchmarkWriter
+			l := New(WithOutput(&out), WithLevel(InfoLevel), WithStackTrace(mode != "disabled"))
+			err := errors.New("payment declined")
+			if mode == "attached" {
+				err = WithStack(err)
+			}
+			level := ErrorLevel
+			if mode == "filtered" {
+				level = DebugLevel
+			}
+			b.ReportAllocs()
+			b.ResetTimer()
+			for b.Loop() {
+				item := err
+				if mode == "capture-and-log" {
+					item = WithStack(err)
+				}
+				if e := l.Log(level, "Payment failed", item); e != nil {
+					b.Fatal(e)
+				}
+			}
+		})
+	}
 }
 
 func BenchmarkLogger(b *testing.B) {

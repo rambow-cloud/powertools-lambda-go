@@ -19,6 +19,8 @@ func (s *scope) get(l *Logger) (*state, bool) {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 	if bound, ok := s.loggers[l.base]; ok {
+		// Retain the most recent binding, including a span started in the handler.
+		bound.ctx = l.ctx
 		return bound.current, false
 	}
 	l.base.mu.Lock()
@@ -36,19 +38,22 @@ func (s *scope) get(l *Logger) (*state, bool) {
 	return state, sampled
 }
 
-func (s *scope) finish(flush bool, handlerErr error) {
+func (s *scope) members() []*Logger {
 	s.mu.Lock()
-	s.closed = true
+	defer s.mu.Unlock()
 	loggers := make([]*Logger, 0, len(s.loggers))
 	for _, l := range s.loggers {
-		loggers = append(loggers, l)
+		copy := *l
+		loggers = append(loggers, &copy)
 	}
+	return loggers
+}
+
+func (s *scope) close() {
+	s.mu.Lock()
+	s.closed = true
 	s.mu.Unlock()
-	for _, l := range loggers {
-		if flush && handlerErr != nil {
-			l.report(l.flushBuffer(true))
-			l.report(l.Error("Uncaught error detected, flushing log buffer before exit", handlerErr))
-		}
+	for _, l := range s.members() {
 		l.current.mu.Lock()
 		l.current.closed = true
 		l.current.buffer = nil
@@ -57,6 +62,50 @@ func (s *scope) finish(flush bool, handlerErr error) {
 		l.current.bufferTrace = ""
 		l.current.mu.Unlock()
 	}
+}
+
+func (s *scope) finish(flush bool, handlerErr error) {
+	defer s.close()
+	loggers := s.members()
+	for _, l := range loggers {
+		if flush && handlerErr != nil {
+			l.report(l.flushBuffer(true))
+			l.report(l.Error("Uncaught error detected, flushing log buffer before exit", handlerErr))
+		}
+	}
+}
+
+// Panic diagnostics are best effort, including callbacks and user formatters.
+// Keep each operation isolated so one failed sink cannot suppress the main record.
+func panicDiagnostic(l *Logger, action func() error) {
+	defer func() { _ = recover() }()
+	l.report(action())
+}
+
+func (s *scope) logPanic(l *Logger, failure any, flush bool) {
+	defer s.close()
+	for _, member := range s.members() {
+		if member.base == l.base {
+			l = member
+		}
+		if flush || !member.cfg.buffer.DisableFlushOnError {
+			panicDiagnostic(member, func() error { return member.flushBuffer(true) })
+		}
+	}
+	panicDiagnostic(l, func() error {
+		cause, ok := failure.(error)
+		if !ok {
+			cause = &panicValueError{value: failure}
+		}
+		if l.cfg.stackTrace {
+			cause = &stackError{err: cause, stack: captureStack("panic")}
+		}
+		// Buffers have already been handled. Always attempt the terminal record,
+		// even if a buffer sink panicked or BufferAt includes ERROR.
+		diagnostic := *l
+		diagnostic.cfg.buffer = BufferOptions{}
+		return diagnostic.Error("Unhandled panic", cause)
+	})
 }
 
 // HandlerOptions controls wrapper behavior. Per-invocation attributes always reset.
@@ -93,15 +142,20 @@ func WrapHandler[T, R any](l *Logger, handler func(context.Context, T) (R, error
 		bound := l.WithContext(ctx)
 		defer func() {
 			failure := recover()
-			cleanupErr := err
 			if failure != nil {
-				cleanupErr = fmt.Errorf("handler panic: %v", failure)
+				// This deferred rethrow wins over any secondary diagnostic failure.
+				defer func() { panic(failure) }()
 			}
 			if !exists {
-				s.finish(opts.FlushBufferOnError, cleanupErr)
-			}
-			if failure != nil {
-				panic(failure)
+				if failure != nil && l.cfg.panicLogging {
+					s.logPanic(bound, failure, opts.FlushBufferOnError)
+				} else {
+					cleanupErr := err
+					if failure != nil {
+						cleanupErr = fmt.Errorf("handler panic: %v", failure)
+					}
+					s.finish(opts.FlushBufferOnError, cleanupErr)
+				}
 			}
 		}()
 		if opts.CorrelationID != nil {

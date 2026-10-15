@@ -315,7 +315,8 @@ func (l *Logger) Log(level Level, message string, extra ...any) error {
 	if !buffer && level < threshold {
 		return flushErr
 	}
-	data, err := encode(l.record(level, message, extra...), l.cfg)
+	n := normalizer{replacer: l.cfg.replacer, active: map[visit]bool{}, stacks: l.cfg.stackTrace}
+	data, err := n.encode(l.record(level, message, extra...), l.cfg)
 	if err != nil {
 		return errors.Join(flushErr, err)
 	}
@@ -351,7 +352,7 @@ func (l *Logger) Log(level Level, message string, extra ...any) error {
 	var warning []byte
 	if buffer {
 		var e error
-		warning, e = encode(l.record(WarnLevel, "Unable to buffer log: Item too big", errors.New("Item too big")), l.cfg)
+		warning, e = n.encode(l.record(WarnLevel, "Unable to buffer log: Item too big", errors.New("Item too big")), l.cfg)
 		flushErr = errors.Join(flushErr, e)
 	}
 	// Serialize output against invocation closure, including concurrent log writers.
@@ -395,15 +396,17 @@ func (l *Logger) flushBuffer(invocationOwned bool) error {
 		return nil
 	}
 	var result error
-	for _, item := range s.buffer {
-		result = errors.Join(result, item.sink.write(item.level, item.data))
-	}
 	evicted := s.evicted
-	s.buffer = nil
-	s.bytes = 0
-	s.evicted = false
-	s.bufferTrace = ""
-	s.mu.Unlock()
+	func() {
+		defer s.mu.Unlock()
+		for _, item := range s.buffer {
+			result = errors.Join(result, item.sink.write(item.level, item.data))
+		}
+		s.buffer = nil
+		s.bytes = 0
+		s.evicted = false
+		s.bufferTrace = ""
+	}()
 	if evicted {
 		data, err := encode(l.record(WarnLevel, "Some logs are not displayed because they were evicted from the buffer. Increase buffer size to store more logs in the buffer"), l.cfg)
 		if err == nil {

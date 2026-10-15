@@ -23,7 +23,8 @@ func TestHandlerStartedTraceBufferCleanup(t *testing.T) {
 						ctx = paritySpanContext("87654321123456789012345678901234", "8765432109876543", sampled)
 					}
 					var output bytes.Buffer
-					root := New(WithOutput(&output), WithBuffer(BufferOptions{}))
+					// Retain the legacy error-summary lifecycle as an opt-out regression.
+					root := New(WithOutput(&output), WithBuffer(BufferOptions{}), WithPanicLogging(false))
 					business := errors.New("business failure")
 					panicValue := &struct{}{}
 					var parent, child *Logger

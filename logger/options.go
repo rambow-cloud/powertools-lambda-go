@@ -76,6 +76,8 @@ type config struct {
 	zone           string
 	pretty         bool
 	logEvent       bool
+	stackTrace     bool
+	panicLogging   bool
 	persistent     Fields
 	formatter      Formatter
 	replacer       Replacer
@@ -93,6 +95,14 @@ type BufferOptions struct {
 }
 
 type Option func(*config)
+
+// WithStackTrace enables attached stacks and logging-site fallback stacks on errors.
+// It defaults to true. This Preview is available only from main and is not included in v1.2.0.
+func WithStackTrace(enabled bool) Option { return func(c *config) { c.stackTrace = enabled } }
+
+// WithPanicLogging enables the outermost handler wrapper's ERROR record before rethrowing a panic.
+// It defaults to true. This Preview is available only from main and is not included in v1.2.0.
+func WithPanicLogging(enabled bool) Option { return func(c *config) { c.panicLogging = enabled } }
 
 func WithServiceName(name string) Option {
 	return func(c *config) { c.service = commons.ResolveServiceName(name, "service_undefined") }
@@ -169,7 +179,7 @@ func defaults() config {
 	c := config{service: commons.ResolveServiceName("", "service_undefined"), level: InfoLevel, stdout: os.Stdout, stderr: os.Stderr,
 		clock: time.Now, random: func() int { return rand.IntN(100) }, location: time.UTC,
 		pretty: commons.IsDevMode(), logEvent: commons.BoolEnvOr("POWERTOOLS_LOGGER_LOG_EVENT", false, false),
-		onError: func(error) {}, persistent: Fields{}}
+		stackTrace: true, panicLogging: true, onError: func(error) {}, persistent: Fields{}}
 	value := os.Getenv("POWERTOOLS_LOG_LEVEL")
 	if value == "" {
 		value = os.Getenv("LOG_LEVEL")

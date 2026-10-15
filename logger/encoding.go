@@ -61,21 +61,29 @@ func asFields(value any) (Fields, bool) {
 	}
 }
 
+// A fresh normalizer shares one lazy fallback stack across the entire document.
+type normalizer struct {
+	replacer Replacer
+	active   map[visit]bool
+	stacks   bool
+	fallback *errorStack
+}
+
 type visit struct {
 	typ reflect.Type
 	ptr uintptr
 }
 
-func normalize(key string, value any, replacer Replacer, active map[visit]bool, depth int) (any, error) {
-	if replacer != nil {
-		value = replacer(key, value)
+func (n *normalizer) normalize(key string, value any, depth int) (any, error) {
+	if n.replacer != nil {
+		value = n.replacer(key, value)
 	}
-	return normalizeValue(key, value, replacer, active, depth)
+	return n.normalizeValue(key, value, depth)
 }
 
 // normalizeValue follows pointers without applying the same property's replacer twice.
 // Descendant properties still pass through normalize and receive the replacer.
-func normalizeValue(key string, value any, replacer Replacer, active map[visit]bool, depth int) (any, error) {
+func (n *normalizer) normalizeValue(key string, value any, depth int) (any, error) {
 	if value == nil {
 		return nil, nil
 	}
@@ -94,14 +102,48 @@ func normalizeValue(key string, value any, replacer Replacer, active map[visit]b
 		}
 		// The address is an opaque identity token; it is never converted to a pointer.
 		ref := visit{v.Type(), v.Pointer()}
-		if active[ref] {
+		if n.active[ref] {
 			return "[Circular]", nil
 		}
-		active[ref] = true
-		defer delete(active, ref)
+		n.active[ref] = true
+		defer delete(n.active, ref)
 	}
 	if err, ok := value.(error); ok {
-		result := Fields{"name": reflect.TypeOf(err).String(), "message": err.Error(), "location": ""}
+		var stack errorStack
+		var attached bool
+		if n.stacks {
+			stack, attached = attachedStack(err)
+			// A terminal panic already supplied the call's automatic snapshot.
+			// Reuse it for untraced causes rather than capturing a logging stack too.
+			if attached && stack.source == "panic" && n.fallback == nil {
+				n.fallback = &stack
+			}
+		}
+		err = unwrapStack(err)
+		result := Fields{"name": errorName(err), "message": err.Error(), "location": ""}
+		if n.stacks {
+			if !attached {
+				if n.fallback == nil {
+					captured := captureStack("logging")
+					n.fallback = &captured
+				}
+				stack = *n.fallback
+			}
+			for key, value := range (Fields{"location": stack.location, "stack": stack.text, "stack_source": stack.source}) {
+				encoded, e := n.normalize(key, value, depth+1)
+				if e != nil {
+					return nil, e
+				}
+				result[key] = encoded
+			}
+			if stack.truncated {
+				value, e := n.normalize("stack_truncated", true, depth+1)
+				if e != nil {
+					return nil, e
+				}
+				result["stack_truncated"] = value
+			}
+		}
 		var cause any
 		if wrapped, ok := err.(interface{ Unwrap() error }); ok && wrapped.Unwrap() != nil {
 			cause = wrapped.Unwrap()
@@ -110,7 +152,7 @@ func normalizeValue(key string, value any, replacer Replacer, active map[visit]b
 			cause = joined.Unwrap()
 		}
 		if cause != nil {
-			encoded, err := normalize("cause", cause, replacer, active, depth+1)
+			encoded, err := n.normalize("cause", cause, depth+1)
 			if err != nil {
 				return nil, err
 			}
@@ -119,10 +161,10 @@ func normalizeValue(key string, value any, replacer Replacer, active map[visit]b
 		return result, nil
 	}
 	if _, ok := value.(json.Marshaler); ok {
-		return normalizeJSON(key, value, replacer, active, depth)
+		return n.normalizeJSON(key, value, depth)
 	}
 	if _, ok := value.(json.MarshalerTo); ok {
-		return normalizeJSON(key, value, replacer, active, depth)
+		return n.normalizeJSON(key, value, depth)
 	}
 	// Text marshalers produce a scalar; traversing their underlying containers
 	// would discard the method and suppress its value or error.
@@ -131,13 +173,13 @@ func normalizeValue(key string, value any, replacer Replacer, active map[visit]b
 	}
 	switch v.Kind() {
 	case reflect.Struct:
-		return normalizeJSON(key, value, replacer, active, depth)
+		return n.normalizeJSON(key, value, depth)
 	case reflect.Float32, reflect.Float64:
 		if math.IsNaN(v.Float()) || math.IsInf(v.Float(), 0) {
 			return nil, nil
 		}
 	case reflect.Pointer, reflect.Interface:
-		return normalizeValue(key, v.Elem().Interface(), replacer, active, depth+1)
+		return n.normalizeValue(key, v.Elem().Interface(), depth+1)
 	case reflect.Map:
 		if v.Type().Key().Kind() != reflect.String {
 			return value, nil
@@ -146,7 +188,7 @@ func normalizeValue(key string, value any, replacer Replacer, active map[visit]b
 		iter := v.MapRange()
 		for iter.Next() {
 			k := iter.Key().String()
-			encoded, err := normalize(k, iter.Value().Interface(), replacer, active, depth+1)
+			encoded, err := n.normalize(k, iter.Value().Interface(), depth+1)
 			if err != nil {
 				return nil, err
 			}
@@ -159,7 +201,7 @@ func normalizeValue(key string, value any, replacer Replacer, active map[visit]b
 		}
 		result := make([]any, v.Len())
 		for i := range result {
-			encoded, err := normalize(fmt.Sprint(i), v.Index(i).Interface(), replacer, active, depth+1)
+			encoded, err := n.normalize(fmt.Sprint(i), v.Index(i).Interface(), depth+1)
 			if err != nil {
 				return nil, err
 			}
@@ -172,8 +214,8 @@ func normalizeValue(key string, value any, replacer Replacer, active map[visit]b
 
 // Apply descendant replacers to the JSON representation of structs/marshalers,
 // preserving field tags and exact numeric tokens without repeating the root callback.
-func normalizeJSON(key string, value any, replacer Replacer, active map[visit]bool, depth int) (any, error) {
-	if replacer == nil {
+func (n *normalizer) normalizeJSON(key string, value any, depth int) (any, error) {
+	if n.replacer == nil {
 		return value, nil
 	}
 	data, err := marshal(value)
@@ -184,7 +226,7 @@ func normalizeJSON(key string, value any, replacer Replacer, active map[visit]bo
 	if err = json.Unmarshal(data, &decoded, jsonvalue.Numbers); err != nil {
 		return nil, err
 	}
-	return normalizeValue(key, decoded, replacer, active, depth+1)
+	return n.normalizeValue(key, decoded, depth+1)
 }
 
 func marshal(value any) ([]byte, error) {
@@ -239,6 +281,11 @@ func prepareForPrint(value any) any {
 }
 
 func encode(fields Fields, c config) ([]byte, error) {
+	n := normalizer{replacer: c.replacer, active: map[visit]bool{}, stacks: c.stackTrace}
+	return n.encode(fields, c)
+}
+
+func (n *normalizer) encode(fields Fields, c config) ([]byte, error) {
 	var value any = fields
 	var err error
 	if c.formatter != nil {
@@ -247,7 +294,7 @@ func encode(fields Fields, c config) ([]byte, error) {
 			return nil, err
 		}
 	}
-	value, err = normalize("", prepareForPrint(value), c.replacer, map[visit]bool{}, 0)
+	value, err = n.normalize("", prepareForPrint(value), 0)
 	if err != nil {
 		return nil, err
 	}

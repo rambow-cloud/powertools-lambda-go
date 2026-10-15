@@ -26,7 +26,7 @@ if logErr := appLog.Error("Payment failed", paymentErr, logger.Fields{
 }
 ~~~
 
-With default configuration, this writes the following JSON line to **stderr**:
+With stable v1.2.0's default configuration, this writes the following JSON line to **stderr**:
 
 ~~~json
 {"level":"ERROR","message":"Payment failed","timestamp":"2026-10-01T00:00:00.000Z","service":"orders","sampling_rate":0,"error":{"location":"","message":"card declined","name":"*errors.errorString"},"order_id":"ORD-123"}
@@ -131,6 +131,76 @@ lambda.Start(tracer.WrapHandler(t, logger.WrapHandler(appLog, handler)))
 Levels are `TRACE`, `DEBUG`, `INFO`, `WARN`, `ERROR`, `CRITICAL`, and `SILENT`. Environment level names are case-sensitive. Lambda advanced logging controls participate in effective filtering; see the [compatibility mapping](../COMPATIBILITY.md).
 
 WARN and higher use stderr; lower levels use stdout. `WithOutput` replaces both sinks. `WithFormatter`, `WithReplacer`, and `WithRecordOrder` customize serialization. Custom callbacks must support concurrent use.
+
+## Stack and panic contract (Preview)
+
+> This Preview is available only from main and is not included in v1.2.0.
+
+See the [Preview guide](../LOGGER.md#error-stacks-and-panic-logging-preview) for
+installation, short examples and output. The preceding error JSON describes
+stable v1.2.0. Main enables these additional behaviors by default:
+
+| API | Default | Contract |
+| --- | --- | --- |
+| `WithStack(err)` | Explicit call | Returns nil for nil; attaches the caller's stack unless a single unwrap chain already carries one; retains `Error`, `Unwrap`, `errors.Is/As` |
+| `WithStackTrace(enabled)` | `true` | Emits attached stacks or lazily collects one fallback stack per log call; `false` omits all stack metadata and retains `location: ""` |
+| `WithPanicLogging(enabled)` | `true` | Outermost Logger handler wrapper attempts one ERROR record, closes the request scope and rethrows the original value; `false` retains previous cleanup behavior |
+
+`stack` is a string of function names and source file/line pairs. `location`
+is its first application frame, excluding leading Logger/runtime helpers.
+It contains no argument values or PC addresses. File paths can still reveal build
+paths; use `WithReplacer` to redact `stack` and `location` if needed. At most 64
+frames are retained; `stack_truncated: true` indicates omitted frames.
+Collection uses `runtime.Callers` and `runtime.CallersFrames`, without unsafe,
+CGO or an additional dependency.
+
+| `stack_source` | Meaning |
+| --- | --- |
+| `attached` | Captured by `WithStack`, usually where the error was created or observed |
+| `logging` | Captured when logging an error without a stack; does not imply the original failure site |
+| `panic` | Captured while recovering the handler panic, before its frames unwind |
+
+The internal stack wrapper never becomes an error `name` or a `cause` level.
+Normal `%w` wrappers retain their own names and causes. A single chain uses its
+first attached stack. `errors.Join` keeps branches independent: a stack in one
+branch does not become the aggregate's origin or another branch's origin.
+An unwrapped join uses the shared logging fallback for its aggregate and untraced
+branches; `WithStack(joined)` explicitly captures the aggregation site.
+Already attached branches retain their stacks. Error values nested in maps and
+slices use the same normalization. Custom JSON marshalers retain their existing
+encoding contract.
+
+Error enrichment applies to any emitted or buffered level with an error value,
+including INFO attributes. Filtered records and error-free records do not capture
+a stack. Attached-only errors do not trigger fallback collection. Child loggers
+inherit both settings and can override them independently. A formatter receives
+the raw record first; it can remove or reshape errors before normalization. The
+replacer can transform generated `stack`, `stack_source`, `stack_truncated`, and
+`location` values. Compact JSON escapes stack newlines; pretty printing, formatter
+output and the SDK's own records have no single-line guarantee.
+
+For a panic, the outermost Logger wrapper owns the diagnostic, even if nested
+wrappers use a different logger. It uses the outer logger's settings and request
+fields, including its most recent `WithContext` binding (for a span attached
+inside the handler). Error panic values keep their error name/message; other
+values use their dynamic Go type and printed value. Standard Go `panic(nil)`
+produces `*runtime.PanicNilError`, which is rethrown unchanged. Initialization,
+other goroutines and runtime fatal errors are outside this handler boundary.
+
+Panic cleanup flushes each participating buffer when `FlushBufferOnError` is set
+or that logger allows error-triggered flushing. Otherwise its buffered records
+are discarded. The terminal panic record bypasses buffering, including when
+`BufferAt` includes ERROR, while retaining the normal level threshold. It replaces
+the generic per-logger error summaries for this panic. A formatter, replacer,
+writer or error callback failure cannot replace the original panic or prevent
+scope closure. Returned diagnostic errors use `WithErrorHandler` best effort;
+panics in that callback are contained. Logger cannot promise delivery to a failing
+sink. The SDK may independently generate another error record.
+
+Normal handler return errors are not automatically logged by this Preview.
+Application logging remains explicit; the established `FlushBufferOnError`
+diagnostic opt-in for returned errors is unchanged. There are no new
+`Logger.Panic`/`Fatal` methods and no changes to `HandlerOptions`.
 
 
 ## Attributes and correlation
