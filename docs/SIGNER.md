@@ -12,11 +12,12 @@ Use Go 1.27 or newer:
 
 ```sh
 CGO_ENABLED=0 go get github.com/rambow-cloud/powertools-lambda-go/signer@v1.2.0
+CGO_ENABLED=0 go get github.com/rambow-cloud/powertools-lambda-go/logger@v1.2.0
 ```
 
 ## Sign a request without sending it
 
-The example uses synthetic credentials and checks that the signed copy contains an Authorization header. It sends no HTTP request and prints no credential or signature values.
+The example uses synthetic credentials and checks that the signed copy contains an Authorization header. It sends no HTTP request and logs no credential or signature values.
 
 **Input**
 
@@ -31,44 +32,66 @@ package main
 
 import (
 	"context"
-	"fmt"
-	"log"
 	"net/http"
+	"os"
 	"strings"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
+	"github.com/rambow-cloud/powertools-lambda-go/logger"
 	"github.com/rambow-cloud/powertools-lambda-go/signer"
 )
 
 func main() {
+	appLog := logger.New(logger.WithServiceName("orders"))
+	if err := run(appLog); err != nil {
+		if logErr := appLog.Error("Application failed", err); logErr != nil {
+			panic(logErr)
+		}
+		os.Exit(1)
+	}
+}
+
+func run(appLog *logger.Logger) error {
 	credentials := aws.CredentialsProviderFunc(func(context.Context) (aws.Credentials, error) {
 		return aws.Credentials{AccessKeyID: "EXAMPLE", SecretAccessKey: "example-only"}, nil
 	})
 	s, err := signer.New(signer.Config{Service: "execute-api", Region: "ap-east-1", Credentials: credentials})
 	if err != nil {
-		log.Fatal(err)
+		return err
 	}
 	request, err := http.NewRequest("GET", "https://example.execute-api.ap-east-1.amazonaws.com/orders", nil)
 	if err != nil {
-		log.Fatal(err)
+		return err
 	}
 	signed, err := s.Sign(request)
 	if err != nil {
-		log.Fatal(err)
+		return err
 	}
 	defer signed.Body.Close()
-	fmt.Println(signed.Method, signed.URL.RequestURI())
-	fmt.Println("Authorization:", strings.Split(signed.Header.Get("Authorization"), " ")[0])
-	fmt.Println("Signed date:", signed.Header.Get("X-Amz-Date") != "")
+	return appLog.Info("Request signed", logger.Fields{
+		"method": signed.Method, "path": signed.URL.RequestURI(),
+		"algorithm":           strings.Split(signed.Header.Get("Authorization"), " ")[0],
+		"signed_date_present": signed.Header.Get("X-Amz-Date") != "",
+	})
 }
 ```
 
+The Logger timestamp varies on each run.
+
 **Output**
 
-```text
-GET /orders
-Authorization: AWS4-HMAC-SHA256
-Signed date: true
+```json
+{
+  "level": "INFO",
+  "message": "Request signed",
+  "timestamp": "2026-10-15T00:00:00.000Z",
+  "service": "orders",
+  "sampling_rate": 0,
+  "method": "GET",
+  "path": "/orders",
+  "algorithm": "AWS4-HMAC-SHA256",
+  "signed_date_present": true
+}
 ```
 
 ## Send requests with a signing client

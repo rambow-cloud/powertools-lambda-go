@@ -8,7 +8,7 @@ Add route metrics and OpenTelemetry spans to an existing HTTP router. Each integ
 
 ## Count requests by route
 
-Install `eventhandler/http/metrics@v1.2.0`. Import it as `httpmetrics` and import the root Metrics module.
+Install `eventhandler/http/metrics@v1.2.0`. Import it as `httpmetrics` and import the root Metrics module. Run setup snippets inside a function returning `error`; the application logs a returned setup error through Logger.
 
 **Input**
 
@@ -21,7 +21,7 @@ GET /orders/ORD-123
 ```go
 metric, err := metrics.New(metrics.WithNamespace("Orders"))
 if err != nil {
-    log.Fatal(err)
+    return err
 }
 app.Use(httpmetrics.New(metric, httpmetrics.Options{CaptureRequestCount: true}))
 ```

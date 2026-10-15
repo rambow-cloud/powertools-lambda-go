@@ -8,7 +8,7 @@ Return a reader and send its content through the native Go Lambda streaming adap
 
 ## Return a server-sent event
 
-The fragment uses the router and Lambda imports from the [HTTP guide](HTTP.md), plus `io`, `net/http` and `strings`.
+The fragment runs in a setup function returning `error`, using the router and Lambda imports from the [HTTP guide](HTTP.md), plus `io`, `net/http` and `strings`. The application logs returned setup errors with Logger.
 
 **Input**
 
@@ -26,10 +26,11 @@ err := app.Get("/events", func(request *httpapi.RequestContext) (any, error) {
         Body: strings.NewReader("data: ready\n\n"),
     }, nil
 })
-if err != nil { log.Fatal(err) }
+if err != nil { return err }
 lambda.Start(httpapi.Streamify(func(ctx context.Context, event json.RawMessage, writer io.Writer) error {
     return app.ResolveStream(ctx, event, writer)
 }))
+return nil
 ```
 
 Import `encoding/json` as `json` for the callback's `RawMessage` type.

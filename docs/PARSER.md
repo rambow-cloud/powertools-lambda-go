@@ -12,6 +12,7 @@ Use Go 1.27 or newer:
 
 ```sh
 CGO_ENABLED=0 go get github.com/rambow-cloud/powertools-lambda-go/parser@v1.2.0
+CGO_ENABLED=0 go get github.com/rambow-cloud/powertools-lambda-go/logger@v1.2.0
 ```
 
 ## Parse an order
@@ -33,9 +34,9 @@ package main
 
 import (
 	"context"
-	"fmt"
-	"log"
+	"os"
 
+	"github.com/rambow-cloud/powertools-lambda-go/logger"
 	"github.com/rambow-cloud/powertools-lambda-go/parser"
 )
 
@@ -44,37 +45,67 @@ type Order struct {
 }
 
 func main() {
+	appLog := logger.New(logger.WithServiceName("orders"))
+	if err := run(appLog); err != nil {
+		if logErr := appLog.Error("Application failed", err); logErr != nil {
+			panic(logErr)
+		}
+		os.Exit(1)
+	}
+}
+
+func run(appLog *logger.Logger) error {
 	schema := parser.Typed[Order](parser.Object(
 		parser.Field{Name: "id", Schema: parser.String()},
 	))
 	order, err := parser.Parse(context.Background(), map[string]any{"id": "ORD-123"}, schema)
 	if err != nil {
-		log.Fatal(err)
+		return err
 	}
-	fmt.Println(order.ID)
+	return appLog.Info("Order parsed", logger.Fields{"order": order})
 }
 ```
 
+The Logger timestamp varies on each run.
+
 **Output**
 
-```text
-ORD-123
+```json
+{
+  "level": "INFO",
+  "message": "Order parsed",
+  "timestamp": "2026-10-15T00:00:00.000Z",
+  "service": "orders",
+  "sampling_rate": 0,
+  "order": {
+    "id": "ORD-123"
+  }
+}
 ```
 
 ## Handle invalid input without throwing
+
+Run this snippet in a function returning `error`, using `ctx`, `schema` and `appLog`.
 
 ```go
 result, err := parser.SafeParse(ctx, map[string]any{"id": 123}, schema)
 if err != nil {
     return err
 }
-fmt.Println(result.Success)
+return appLog.Info("Order checked", logger.Fields{"success": result.Success})
 ```
 
 **Output**
 
-```text
-false
+```json
+{
+  "level": "INFO",
+  "message": "Order checked",
+  "timestamp": "2026-10-15T00:00:00.000Z",
+  "service": "orders",
+  "sampling_rate": 0,
+  "success": false
+}
 ```
 
 `result.Error` contains the validation issues, including the `id` path. An operational failure still returns an error.

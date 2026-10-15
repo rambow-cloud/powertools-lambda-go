@@ -4,7 +4,7 @@ package main
 import (
 	"context"
 	jsonv1 "encoding/json"
-	"log"
+	"os"
 
 	"github.com/aws/aws-lambda-go/lambda"
 	httpapi "github.com/rambow-cloud/powertools-lambda-go/eventhandler/http"
@@ -16,15 +16,24 @@ import (
 )
 
 func main() {
-	requestLog := logger.New(logger.WithServiceName("orders"))
+	appLog := logger.New(logger.WithServiceName("orders"))
+	if err := run(appLog); err != nil {
+		if logErr := appLog.Error("Application failed", err); logErr != nil {
+			panic(logErr)
+		}
+		os.Exit(1)
+	}
+}
+
+func run(appLog *logger.Logger) error {
 	trace, err := tracer.New(tracer.WithServiceName("orders"))
 	if err != nil {
-		log.Fatal(err)
+		return err
 	}
 	app := httpapi.New(httpapi.Options{})
 	requestMetrics, err := metrics.New(metrics.WithNamespace("Orders"), metrics.WithServiceName("orders"))
 	if err != nil {
-		log.Fatal(err)
+		return err
 	}
 	// Disable body capture when tracing outside compression; compressed bytes
 	// cannot be parsed as JSON by the reference-compatible capture path.
@@ -32,13 +41,16 @@ func main() {
 	app.Use(httpapi.CORS(httpapi.CORSOptions{Origins: []string{"https://app.example.com"}}))
 	app.Use(httpapi.Compress(httpapi.CompressionOptions{}))
 	if err := app.Get("/orders/:id", func(request *httpapi.RequestContext) (any, error) {
-		_ = requestLog.WithContext(request.Context).Info("Get order", logger.Fields{"order_id": request.Params["id"]})
+		if err := appLog.WithContext(request.Context).Info("Get order", logger.Fields{"order_id": request.Params["id"]}); err != nil {
+			return nil, err
+		}
 		return map[string]any{"id": request.Params["id"]}, nil
 	}); err != nil {
-		log.Fatal(err)
+		return err
 	}
 	handler := func(ctx context.Context, event jsonv1.RawMessage) (httpapi.ProxyResponse, error) {
 		return app.Resolve(ctx, event)
 	}
-	lambda.Start(tracer.WrapHandler(trace, logger.WrapHandler(requestLog, handler)))
+	lambda.Start(tracer.WrapHandler(trace, logger.WrapHandler(appLog, handler)))
+	return nil
 }

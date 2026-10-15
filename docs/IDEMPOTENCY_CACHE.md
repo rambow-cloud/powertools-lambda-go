@@ -21,6 +21,7 @@ Install `idempotency/cache@v1.2.0` and import the adapter as `cache`, the Idempo
 **Code**
 
 ```go
+appLog := logger.New(logger.WithServiceName("orders"))
 client := redis.NewClient(&redis.Options{Addr: "localhost:6379", ContextTimeoutEnabled: true})
 defer client.Close()
 store, err := cache.New(client, cache.Options{})
@@ -32,22 +33,28 @@ if err != nil { return err }
 for range 2 {
     result, err := idempotency.Execute(ctx, manager, map[string]any{"id": "ORD-123"},
         func(context.Context) (string, error) {
-            fmt.Println("Running business operation")
+            if err := appLog.Info("Running business operation"); err != nil { return "", err }
             return "confirmed", nil
         })
     if err != nil { return err }
-    fmt.Println(result)
+    if err := appLog.Info("Operation completed", logger.Fields{"result": result}); err != nil { return err }
 }
 ```
 
-Run this inside a function returning `error`, with a context carrying the invocation deadline.
+Also install `logger@v1.2.0` and import it as `logger`. Run this inside a function returning `error`, with a context carrying the invocation deadline. The output below shows three log excerpts, omitting standard Logger fields.
 
 **Output**
 
-```text
-Running business operation
-confirmed
-confirmed
+```json
+{"message":"Running business operation"}
+```
+
+```json
+{"message":"Operation completed","result":"confirmed"}
+```
+
+```json
+{"message":"Operation completed","result":"confirmed"}
 ```
 
 The second call uses the stored result. Use a fresh example key, or remove its prior record, when trying this demonstration.

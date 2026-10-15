@@ -13,6 +13,7 @@ Use Go 1.27 or newer:
 
 ```sh
 CGO_ENABLED=0 go get github.com/rambow-cloud/powertools-lambda-go/tracer@v1.2.0
+CGO_ENABLED=0 go get github.com/rambow-cloud/powertools-lambda-go/logger@v1.2.0
 CGO_ENABLED=0 go get github.com/aws/aws-lambda-go@v1.55.0
 ```
 
@@ -33,15 +34,25 @@ package main
 
 import (
 	"context"
-	"fmt"
-	"log"
+	"os"
 
+	"github.com/rambow-cloud/powertools-lambda-go/logger"
 	"github.com/rambow-cloud/powertools-lambda-go/tracer"
 	sdktrace "go.opentelemetry.io/otel/sdk/trace"
 	"go.opentelemetry.io/otel/sdk/trace/tracetest"
 )
 
 func main() {
+	appLog := logger.New(logger.WithServiceName("orders"))
+	if err := run(appLog); err != nil {
+		if logErr := appLog.Error("Application failed", err); logErr != nil {
+			panic(logErr)
+		}
+		os.Exit(1)
+	}
+}
+
+func run(appLog *logger.Logger) error {
 	ctx := context.Background()
 	exporter := tracetest.NewInMemoryExporter()
 	provider := sdktrace.NewTracerProvider(sdktrace.WithSyncer(exporter))
@@ -49,27 +60,39 @@ func main() {
 	tr, err := tracer.New(tracer.WithLocalTracing(true),
 		tracer.WithBackend(tracer.NewOTelBackend(provider)))
 	if err != nil {
-		log.Fatal(err)
+		return err
 	}
 	handler := tracer.WrapHandler(tr, func(ctx context.Context, name string) (string, error) {
 		return "Hello, " + name, nil
 	})
 	result, err := handler(ctx, "Ada")
 	if err != nil {
-		log.Fatal(err)
+		return err
 	}
-	fmt.Println(result)
+	spans := make([]string, 0, len(exporter.GetSpans()))
 	for _, span := range exporter.GetSpans() {
-		fmt.Println("Span:", span.Name)
+		spans = append(spans, span.Name)
 	}
+	return appLog.Info("Local trace complete", logger.Fields{"greeting": result, "spans": spans})
 }
 ```
 
+The Logger timestamp varies on each run.
+
 **Output**
 
-```text
-Hello, Ada
-Span: ## bootstrap
+```json
+{
+  "level": "INFO",
+  "message": "Local trace complete",
+  "timestamp": "2026-10-15T00:00:00.000Z",
+  "service": "orders",
+  "sampling_rate": 0,
+  "greeting": "Hello, Ada",
+  "spans": [
+    "## bootstrap"
+  ]
+}
 ```
 
 ## Use it in Lambda

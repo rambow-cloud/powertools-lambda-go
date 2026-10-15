@@ -12,11 +12,12 @@ Use Go 1.27 or newer:
 
 ```sh
 CGO_ENABLED=0 go get github.com/rambow-cloud/powertools-lambda-go/jmespath@v1.2.0
+CGO_ENABLED=0 go get github.com/rambow-cloud/powertools-lambda-go/logger@v1.2.0
 ```
 
 ## Select paid order IDs
 
-This local program searches the `orders` array and returns only IDs whose status is `PAID`.
+This local program searches the `orders` array and logs only IDs whose status is `PAID`.
 
 **Input**
 
@@ -41,29 +42,50 @@ This local program searches the `orders` array and returns only IDs whose status
 package main
 
 import (
-	"fmt"
-	"log"
+	"os"
 
 	"github.com/rambow-cloud/powertools-lambda-go/jmespath"
+	"github.com/rambow-cloud/powertools-lambda-go/logger"
 )
 
 func main() {
+	appLog := logger.New(logger.WithServiceName("orders"))
+	if err := run(appLog); err != nil {
+		if logErr := appLog.Error("Application failed", err); logErr != nil {
+			panic(logErr)
+		}
+		os.Exit(1)
+	}
+}
+
+func run(appLog *logger.Logger) error {
 	data := map[string]any{"orders": []any{
 		map[string]any{"id": "ORD-123", "status": "PAID"},
 		map[string]any{"id": "ORD-456", "status": "PENDING"},
 	}}
 	value, err := jmespath.Search("orders[?status == 'PAID'].id", data)
 	if err != nil {
-		log.Fatal(err)
+		return err
 	}
-	fmt.Println(value)
+	return appLog.Info("Paid orders selected", logger.Fields{"order_ids": value})
 }
 ```
 
+The Logger timestamp varies on each run.
+
 **Output**
 
-```text
-[ORD-123]
+```json
+{
+  "level": "INFO",
+  "message": "Paid orders selected",
+  "timestamp": "2026-10-15T00:00:00.000Z",
+  "service": "orders",
+  "sampling_rate": 0,
+  "order_ids": [
+    "ORD-123"
+  ]
+}
 ```
 
 ## Reuse an expression

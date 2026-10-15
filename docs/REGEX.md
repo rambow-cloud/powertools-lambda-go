@@ -8,7 +8,7 @@ Match and replace text with ECMAScript-style captures and replacement tokens. Th
 
 ## Keep an account prefix
 
-Install `commons/regex@v1.2.0` and import it as `regex`.
+Install `commons/regex@v1.2.0` and `logger@v1.2.0`, importing them as `regex` and `logger`.
 
 **Input**
 
@@ -19,19 +19,27 @@ Install `commons/regex@v1.2.0` and import it as `regex`.
 **Code**
 
 ```go
+appLog := logger.New(logger.WithServiceName("orders"))
 expression, err := regex.Compile(`(?<prefix>\d{4})\d+`, "g", regex.Options{})
 if err != nil { return err }
 masked, err := expression.Replace("1234567890", "$<prefix>****")
 if err != nil { return err }
-fmt.Println(masked)
+return appLog.Info("Account masked", logger.Fields{"account": masked})
 ```
 
-Run this inside a function returning `error`.
+Run this inside a function returning `error`. The Logger timestamp varies on each run.
 
 **Output**
 
-```text
-1234****
+```json
+{
+  "level": "INFO",
+  "message": "Account masked",
+  "timestamp": "2026-10-15T00:00:00.000Z",
+  "service": "orders",
+  "sampling_rate": 0,
+  "account": "1234****"
+}
 ```
 
 ## Use a replacement in Data Masking

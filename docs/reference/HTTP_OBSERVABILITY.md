@@ -16,12 +16,12 @@ CGO_ENABLED=0 go get github.com/rambow-cloud/powertools-lambda-go/eventhandler/h
 ```
 
 This fragment assumes an initialized `app` and imports for `httpmetrics`, `metrics`
-and standard `log`. Create the root Metrics object once:
+and runs in a function returning `error`. Create the root Metrics object once:
 
 ```go
 requestMetrics, err := metrics.New(metrics.WithNamespace("Orders"))
 if err != nil {
-    log.Fatal(err)
+    return err
 }
 app.Use(httpmetrics.New(requestMetrics))
 ```
