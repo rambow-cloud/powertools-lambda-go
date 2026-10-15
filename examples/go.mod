@@ -57,7 +57,7 @@ require (
 	github.com/google/uuid v1.6.0 // indirect
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.30.0 // indirect
 	github.com/jmespath-community/go-jmespath v1.1.1 // indirect
-	github.com/rambow-cloud/powertools-lambda-go v1.2.0 // indirect
+	github.com/rambow-cloud/powertools-lambda-go v1.2.1-0.20261015225926-e300c9596f35 // indirect
 	github.com/rambow-cloud/powertools-lambda-go/commons/awssdk v1.2.0 // indirect
 	github.com/rambow-cloud/powertools-lambda-go/commons/regex v1.2.0 // indirect
 	github.com/santhosh-tekuri/jsonschema/v6 v6.0.3 // indirect

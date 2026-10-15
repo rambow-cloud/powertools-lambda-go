@@ -11,7 +11,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/kms v1.51.1
 	github.com/aws/aws-sdk-go-v2/service/secretsmanager v1.44.2
 	github.com/aws/aws-sdk-go-v2/service/ssm v1.78.0
-	github.com/rambow-cloud/powertools-lambda-go v1.2.0
+	github.com/rambow-cloud/powertools-lambda-go v1.2.1-0.20261015225926-e300c9596f35
 	github.com/rambow-cloud/powertools-lambda-go/batch v1.2.0
 	github.com/rambow-cloud/powertools-lambda-go/commons/metadata v1.2.0
 	github.com/rambow-cloud/powertools-lambda-go/commons/regex v1.2.0

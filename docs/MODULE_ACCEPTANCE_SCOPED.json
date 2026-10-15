@@ -9,7 +9,7 @@
       "directory": ".",
       "public": true,
       "version": "v1.2.0",
-      "archive_sha256": "5fe0865cac230095535a64921e85436ebdf56e0f74b340dc6f1aa1826b4930ff",
+      "archive_sha256": "2265b8b026deb458121cd47f3b84e3b44099265c7ceb995fee97e94ef4ac69b0",
       "tests": true,
       "vet": true,
       "tidy": true,
@@ -22,7 +22,7 @@
       "directory": "jmespath",
       "public": true,
       "version": "v1.2.0",
-      "archive_sha256": "6f9952a79b147fcdb1448769e5a8185b89535648f6dc6893b908320159a150ce",
+      "archive_sha256": "787c9fdc193b837e0e1f97a18732156ec10337c46c78a9fc9a2226419c1ccd3f",
       "tests": true,
       "vet": true,
       "tidy": true,
@@ -39,14 +39,14 @@
         "golang.org/x/tools",
         "gopkg.in/yaml.v3"
       ],
-      "binary_bytes": 3414016
+      "binary_bytes": 3414528
     },
     {
       "path": "github.com/rambow-cloud/powertools-lambda-go/logger",
       "directory": "logger",
       "public": true,
       "version": "v1.2.0",
-      "archive_sha256": "7b42be1b2cb926180b3064321073cb6c9e1811f9161be6d9dc640442c76e321e",
+      "archive_sha256": "c9d4151d2b2515991680fc953d5df18fad2d01a2c0d98eab48072913b1f6d302",
       "tests": true,
       "vet": true,
       "tidy": true,
@@ -74,7 +74,7 @@
       "directory": "validation",
       "public": true,
       "version": "v1.2.0",
-      "archive_sha256": "82bf747382a904c32416fb4f62c855cc6f542ddc3a81146c497a60a4a310d349",
+      "archive_sha256": "89b42d88162e26625cfa4b37d09f352688740b24148f1433fcd24a757f0b2335",
       "tests": true,
       "vet": true,
       "tidy": true,
@@ -95,7 +95,7 @@
         "golang.org/x/tools",
         "gopkg.in/yaml.v3"
       ],
-      "binary_bytes": 6433792
+      "binary_bytes": 6434816
     }
   ],
   "scope": "Selected modules only; this report does not replace full-workspace acceptance",

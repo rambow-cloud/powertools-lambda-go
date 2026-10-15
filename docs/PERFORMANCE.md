@@ -122,7 +122,11 @@ For a baseline checkout without the new benchmark files, copy only the matching
 `internal/jsonvalue` benchmark also compares the private copy with a JSON v2
 round-trip control in the same binary. These are descriptive local measurements,
 not a Lambda performance guarantee or permission to emit oversized cloud logs.
-No AWS tests, new codec/parser, dependencies, versions or releases are included.
+No AWS tests, new codec/parser, external dependencies or release versions are
+included. Logger and JMESPath pin the internal root module to commit
+`e300c9596f35` because the released root v1.2.0 lacks the new snapshot helper.
+The corresponding Go pseudo-version and workspace mapping keep independent
+branch consumers buildable without filesystem replacements in module files.
 
 ## Measurement boundaries
 

@@ -10,7 +10,7 @@ require (
 require (
 	github.com/cespare/xxhash/v2 v2.3.0 // indirect
 	github.com/jmespath-community/go-jmespath v1.1.1 // indirect
-	github.com/rambow-cloud/powertools-lambda-go v1.2.0 // indirect
+	github.com/rambow-cloud/powertools-lambda-go v1.2.1-0.20261015225926-e300c9596f35 // indirect
 	github.com/rambow-cloud/powertools-lambda-go/jmespath v1.2.0 // indirect
 	go.uber.org/atomic v1.11.0 // indirect
 	golang.org/x/exp v0.0.0-20230314191032-db074128a8ec // indirect
