@@ -35,7 +35,7 @@ func TestStackPreviewSDKAndTracer(t *testing.T) {
 	t.Setenv("OTEL_EXPORTER_OTLP_TRACES_ENDPOINT", server.URL+"/v1/traces")
 	t.Setenv("OTEL_EXPORTER_OTLP_TRACES_INSECURE", "true")
 	t.Setenv("OTEL_TRACES_SAMPLER", "always_on")
-	tr, err := tracer.New(tracer.WithLocalTracing(true))
+	tr, err := tracer.New(tracer.WithLocalTracing(true), tracer.WithErrorHandler(func(err error) { t.Error(err) }))
 	if err != nil {
 		t.Fatal(err)
 	}
