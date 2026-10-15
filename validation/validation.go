@@ -124,8 +124,14 @@ func jsonValue(value any) (any, error) {
 	if err != nil {
 		return nil, err
 	}
+	return decodeJSONValue(raw)
+}
+
+// decodeJSONValue consumes an existing private JSON snapshot without encoding it
+// a second time. Callers retain the bytes for diagnostics and object ordering.
+func decodeJSONValue(raw []byte) (any, error) {
 	var result any
-	if err = json.Unmarshal(raw, &result, jsonvalue.Numbers); err != nil {
+	if err := json.Unmarshal(raw, &result, jsonvalue.Numbers); err != nil {
 		return nil, err
 	}
 	return result, nil

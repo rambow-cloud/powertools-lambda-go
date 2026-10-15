@@ -206,6 +206,17 @@ func (n *normalizer) normalizeValue(key string, value any, depth int) (any, erro
 		}
 		return result, nil
 	}
+	if values, ok := value.([]any); ok {
+		result := make([]any, len(values))
+		for i, value := range values {
+			encoded, err := n.normalizeIndex(i, value, depth+1)
+			if err != nil {
+				return nil, err
+			}
+			result[i] = encoded
+		}
+		return result, nil
+	}
 	switch v.Kind() {
 	case reflect.Struct:
 		return n.normalizeJSON(key, value, depth)
@@ -236,7 +247,7 @@ func (n *normalizer) normalizeValue(key string, value any, depth int) (any, erro
 		}
 		result := make([]any, v.Len())
 		for i := range result {
-			encoded, err := n.normalize(fmt.Sprint(i), v.Index(i).Interface(), depth+1)
+			encoded, err := n.normalizeIndex(i, v.Index(i).Interface(), depth+1)
 			if err != nil {
 				return nil, err
 			}
@@ -245,6 +256,13 @@ func (n *normalizer) normalizeValue(key string, value any, depth int) (any, erro
 		return result, nil
 	}
 	return value, nil
+}
+
+func (n *normalizer) normalizeIndex(index int, value any, depth int) (any, error) {
+	if n.replacer == nil {
+		return n.normalizeValue("", value, depth)
+	}
+	return n.normalize(fmt.Sprint(index), value, depth)
 }
 
 // Apply descendant replacers to the JSON representation of structs/marshalers,
@@ -325,35 +343,53 @@ func prepareForPrint(value any) any {
 func prepareFields(fields Fields) Fields {
 	result := make(Fields, len(fields))
 	for key, value := range fields {
-		if value == nil {
-			continue
+		if keepPrintField(value) {
+			result[key] = value
 		}
-		if text, ok := value.(string); ok {
-			if text != "" {
-				result[key] = value
-			}
-			continue
-		}
-		// A named nil container can implement a marshaler; preserve its method.
-		_, jsonCustom := value.(json.Marshaler)
-		_, streamingCustom := value.(json.MarshalerTo)
-		_, textCustom := value.(encoding.TextMarshaler)
-		if !jsonCustom && !streamingCustom && !textCustom {
-			v := reflect.ValueOf(value)
-			switch v.Kind() {
-			case reflect.String:
-				if v.Len() == 0 {
-					continue
-				}
-			case reflect.Pointer, reflect.Map, reflect.Slice, reflect.Interface:
-				if v.IsNil() {
-					continue
-				}
-			}
-		}
-		result[key] = value
 	}
 	return result
+}
+
+func keepPrintField(value any) bool {
+	if value == nil {
+		return false
+	}
+	if text, ok := value.(string); ok {
+		return text != ""
+	}
+	// A named nil container can implement a marshaler; preserve its method.
+	_, jsonCustom := value.(json.Marshaler)
+	_, streamingCustom := value.(json.MarshalerTo)
+	_, textCustom := value.(encoding.TextMarshaler)
+	if !jsonCustom && !streamingCustom && !textCustom {
+		v := reflect.ValueOf(value)
+		switch v.Kind() {
+		case reflect.String:
+			return v.Len() != 0
+		case reflect.Pointer, reflect.Map, reflect.Slice, reflect.Interface:
+			return !v.IsNil()
+		}
+	}
+	return true
+}
+
+// normalizePrintFields fuses shallow root preparation with normalization when
+// callbacks cannot observe that prepared root. Descendants still get private
+// copies. Do not mark the original root active: the old shallow prepared copy
+// was distinct from caller-owned cycles that point back to the original root.
+func (n *normalizer) normalizePrintFields(fields Fields) (Fields, error) {
+	result := make(Fields, len(fields))
+	for key, value := range fields {
+		if !keepPrintField(value) {
+			continue
+		}
+		encoded, err := n.normalizeValue(key, value, 1)
+		if err != nil {
+			return nil, err
+		}
+		result[key] = encoded
+	}
+	return result, nil
 }
 
 func encode(fields Fields, c config) ([]byte, error) {
@@ -370,7 +406,11 @@ func (n *normalizer) encode(fields Fields, c config) ([]byte, error) {
 			return nil, err
 		}
 	}
-	value, err = n.normalize("", prepareForPrint(value), 0)
+	if c.formatter == nil && c.replacer == nil {
+		value, err = n.normalizePrintFields(fields)
+	} else {
+		value, err = n.normalize("", prepareForPrint(value), 0)
+	}
 	if err != nil {
 		return nil, err
 	}

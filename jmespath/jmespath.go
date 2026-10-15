@@ -1,7 +1,6 @@
 package jmespath
 
 import (
-	json "encoding/json/v2"
 	"errors"
 	"fmt"
 	"strings"
@@ -9,6 +8,7 @@ import (
 	"github.com/jmespath-community/go-jmespath/pkg/interpreter"
 	"github.com/jmespath-community/go-jmespath/pkg/parsing"
 	"github.com/rambow-cloud/powertools-lambda-go/commons"
+	"github.com/rambow-cloud/powertools-lambda-go/internal/jsonvalue"
 )
 
 // ErrorKind classifies failures without relying on engine error text.
@@ -98,12 +98,8 @@ func Search(source string, data any, options ...Option) (any, error) {
 // Search accepts JSON-shaped values and typed Go events with JSON field tags.
 // Data is normalized to a private JSON snapshot; numbers use float64 as in JS.
 func (e *Expression) Search(data any) (any, error) {
-	encoded, err := json.Marshal(data)
+	input, err := jsonvalue.Snapshot(data)
 	if err != nil {
-		return nil, &Error{Kind: InvalidValue, Expression: e.source, Err: err}
-	}
-	var input any
-	if err = json.Unmarshal(encoded, &input); err != nil {
 		return nil, &Error{Kind: InvalidValue, Expression: e.source, Err: err}
 	}
 	result, err := interpreter.NewInterpreter(input, e.functions, nil).Execute(e.node, input)
