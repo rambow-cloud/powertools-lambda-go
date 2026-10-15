@@ -77,6 +77,7 @@ type config struct {
 	pretty         bool
 	logEvent       bool
 	stackTrace     bool
+	stackSource    string
 	panicLogging   bool
 	persistent     Fields
 	formatter      Formatter

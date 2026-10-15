@@ -66,7 +66,20 @@ type normalizer struct {
 	replacer Replacer
 	active   map[visit]bool
 	stacks   bool
+	source   string
 	fallback *errorStack
+}
+
+func (n *normalizer) fallbackStack() errorStack {
+	if n.fallback == nil {
+		source := n.source
+		if source == "" {
+			source = "logging"
+		}
+		captured := captureStack(source)
+		n.fallback = &captured
+	}
+	return *n.fallback
 }
 
 type visit struct {
@@ -113,21 +126,17 @@ func (n *normalizer) normalizeValue(key string, value any, depth int) (any, erro
 		var attached bool
 		if n.stacks {
 			stack, attached = attachedStack(err)
-			// A terminal panic already supplied the call's automatic snapshot.
-			// Reuse it for untraced causes rather than capturing a logging stack too.
-			if attached && stack.source == "panic" && n.fallback == nil {
-				n.fallback = &stack
+			// Panic metadata is lazy too: filtering, formatters and replacers may
+			// remove the error before any snapshot is needed.
+			if attached && stack.source == "panic" && stack.text == "" {
+				stack = n.fallbackStack()
 			}
 		}
 		err = unwrapStack(err)
 		result := Fields{"name": errorName(err), "message": err.Error(), "location": ""}
 		if n.stacks {
 			if !attached {
-				if n.fallback == nil {
-					captured := captureStack("logging")
-					n.fallback = &captured
-				}
-				stack = *n.fallback
+				stack = n.fallbackStack()
 			}
 			for key, value := range (Fields{"location": stack.location, "stack": stack.text, "stack_source": stack.source}) {
 				encoded, e := n.normalize(key, value, depth+1)
@@ -281,7 +290,7 @@ func prepareForPrint(value any) any {
 }
 
 func encode(fields Fields, c config) ([]byte, error) {
-	n := normalizer{replacer: c.replacer, active: map[visit]bool{}, stacks: c.stackTrace}
+	n := normalizer{replacer: c.replacer, active: map[visit]bool{}, stacks: c.stackTrace, source: c.stackSource}
 	return n.encode(fields, c)
 }
 

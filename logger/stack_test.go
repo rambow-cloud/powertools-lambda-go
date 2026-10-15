@@ -291,6 +291,34 @@ func TestPanicChainReusesPanicSnapshot(t *testing.T) {
 	}
 }
 
+func TestPanicSnapshotIsLazyAcrossFormattedErrors(t *testing.T) {
+	cleanEnv(t)
+	placeholder := &stackError{err: errors.New("panic"), stack: errorStack{source: "panic"}}
+	n := normalizer{active: map[visit]bool{}, stacks: true, source: "panic"}
+	// A formatter may add another error ahead of the original panic error.
+	value, err := n.normalize("", []any{errors.New("formatter error"), placeholder, placeholder}, 0)
+	if err != nil {
+		t.Fatal(err)
+	}
+	items := value.([]any)
+	for _, item := range items {
+		doc := item.(Fields)
+		if doc["stack_source"] != "panic" || doc["stack"] != n.fallback.text {
+			t.Fatal(doc)
+		}
+	}
+	if placeholder.stack.text != "" {
+		t.Fatal("shared error mutated")
+	}
+	var out bytes.Buffer
+	l := New(WithOutput(&out), WithLevel(SilentLevel), WithFormatter(func(Fields) (any, error) { t.Fatal("filtered panic reached formatter"); return nil, nil }))
+	token := errors.New("original")
+	h := WrapHandler(l, func(context.Context, int) (int, error) { panic(token) })
+	if recoverValue(func() { _, _ = h(context.Background(), 0) }) != token || out.Len() != 0 {
+		t.Fatal("filtered panic changed")
+	}
+}
+
 type previewWriter struct{ panicOnWrite bool }
 
 func (w previewWriter) Write([]byte) (int, error) {

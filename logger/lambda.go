@@ -98,12 +98,13 @@ func (s *scope) logPanic(l *Logger, failure any, flush bool) {
 			cause = &panicValueError{value: failure}
 		}
 		if l.cfg.stackTrace {
-			cause = &stackError{err: cause, stack: captureStack("panic")}
+			cause = &stackError{err: cause, stack: errorStack{source: "panic"}}
 		}
 		// Buffers have already been handled. Always attempt the terminal record,
 		// even if a buffer sink panicked or BufferAt includes ERROR.
 		diagnostic := *l
 		diagnostic.cfg.buffer = BufferOptions{}
+		diagnostic.cfg.stackSource = "panic"
 		return diagnostic.Error("Unhandled panic", cause)
 	})
 }

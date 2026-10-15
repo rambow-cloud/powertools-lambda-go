@@ -315,7 +315,7 @@ func (l *Logger) Log(level Level, message string, extra ...any) error {
 	if !buffer && level < threshold {
 		return flushErr
 	}
-	n := normalizer{replacer: l.cfg.replacer, active: map[visit]bool{}, stacks: l.cfg.stackTrace}
+	n := normalizer{replacer: l.cfg.replacer, active: map[visit]bool{}, stacks: l.cfg.stackTrace, source: l.cfg.stackSource}
 	data, err := n.encode(l.record(level, message, extra...), l.cfg)
 	if err != nil {
 		return errors.Join(flushErr, err)
