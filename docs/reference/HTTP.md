@@ -13,7 +13,7 @@ Start with the [HTTP event handler guide](../HTTP.md) for examples and results. 
 
 ## Add middleware and observability
 
-Start with the routing example above, then add features as needed:
+Start with the [routing guide](../HTTP.md#return-an-order-as-json), then add features as needed:
 
 - [Middleware](../HTTP_MIDDLEWARE.md) shows `app.Use`, route middleware, CORS and compression.
 - [Observability](../HTTP_OBSERVABILITY.md) adds structured logs, per-request metrics and OpenTelemetry tracing.
@@ -39,15 +39,26 @@ The pinned router has no special string `*` syntax: use a regex such as `/files/
 
 All adapters discard GET/HEAD request bodies after method normalization and before Base64 decoding, including empty or encoded bodies. The request exposes `http.NoBody`, zero content length and no replay body; supplied headers and the original event snapshot remain intact. REST v1 also accepts an omitted body. POST/PATCH bodies retain their bytes and replay behavior.
 
+Save this as `request_id.go` beside the routing guide's `main.go`, then call
+`addRequestID(app)` during setup:
+
 ```go
-app.Use(func(request *httpapi.RequestContext, next httpapi.Next) error {
-    request.Store.Set("request_id", request.Request.Header.Get("X-Request-ID"))
-    if err := next(); err != nil {
-        return err
-    }
-    request.Response.Header.Set("X-Service", "orders")
-    return nil
-})
+package main
+
+import (
+	httpapi "github.com/rambow-cloud/powertools-lambda-go/eventhandler/http"
+)
+
+func addRequestID(app *httpapi.Router) {
+	app.Use(func(request *httpapi.RequestContext, next httpapi.Next) error {
+		request.Store.Set("request_id", request.Request.Header.Get("X-Request-ID"))
+		if err := next(); err != nil {
+			return err
+		}
+		request.Response.Header.Set("X-Service", "orders")
+		return nil
+	})
+}
 ```
 
 Global middleware runs before route middleware. Code after `next` runs in reverse order; use `defer` for error/panic cleanup. Call `request.Respond(value)` and return without `next` to short-circuit. Calling `next` twice is an error. Do not launch it in a goroutine or retain it after middleware returns; promise/await misuse detection is not a Go concurrency API.

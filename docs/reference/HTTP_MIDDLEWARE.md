@@ -9,14 +9,23 @@ then add the middleware you need before serving requests.
 
 ## Usage
 
-This fragment assumes an initialized `app` and the `httpapi` import from the routing guide:
+Save this as `middleware.go` in the routing application and call
+`addHTTPMiddleware(app)` after creating the router. The import is included:
 
 ```go
-app.Use(httpapi.CORS(httpapi.CORSOptions{
-    Origins: []string{"https://app.example.com"},
-    AllowMethods: []string{"GET", "POST"},
-}))
-app.Use(httpapi.Compress(httpapi.CompressionOptions{}))
+package main
+
+import (
+	httpapi "github.com/rambow-cloud/powertools-lambda-go/eventhandler/http"
+)
+
+func addHTTPMiddleware(app *httpapi.Router) {
+	app.Use(httpapi.CORS(httpapi.CORSOptions{
+		Origins:      []string{"https://app.example.com"},
+		AllowMethods: []string{"GET", "POST"},
+	}))
+	app.Use(httpapi.Compress(httpapi.CompressionOptions{}))
+}
 ```
 
 Put CORS before compression so preflight responses can bypass downstream processing.
@@ -24,19 +33,24 @@ The complete Lambda application is in [examples/http](https://github.com/rambow-
 
 ## Route-specific middleware
 
-Pass middleware after the route handler to apply it to one route. This fragment
-runs in a function returning `error`:
+Pass middleware after the route handler to apply it to one route. Save this as
+`large_route.go`, call `registerLargeRoute(app)` during setup and return its error:
 
 ```go
-threshold := float64(512)
-err := app.Get("/large", func(request *httpapi.RequestContext) (any, error) {
-    return map[string]any{"message": "response data"}, nil
-}, httpapi.Compress(httpapi.CompressionOptions{
-    Encoding: "deflate",
-    Threshold: &threshold,
-}))
-if err != nil {
-    return err
+package main
+
+import (
+	httpapi "github.com/rambow-cloud/powertools-lambda-go/eventhandler/http"
+)
+
+func registerLargeRoute(app *httpapi.Router) error {
+	threshold := float64(512)
+	return app.Get("/large", func(request *httpapi.RequestContext) (any, error) {
+		return map[string]any{"message": "response data"}, nil
+	}, httpapi.Compress(httpapi.CompressionOptions{
+		Encoding:  "deflate",
+		Threshold: &threshold,
+	}))
 }
 ```
 

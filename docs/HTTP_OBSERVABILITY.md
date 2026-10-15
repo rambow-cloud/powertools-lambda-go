@@ -8,7 +8,16 @@ Add route metrics and OpenTelemetry spans to an existing HTTP router. Each integ
 
 ## Count requests by route
 
-Install `eventhandler/http/metrics@v1.2.0`. Import it as `httpmetrics` and import the root Metrics module. Run setup snippets inside a function returning `error`; the application logs a returned setup error through Logger.
+Install the optional integration:
+
+```sh
+CGO_ENABLED=0 go get github.com/rambow-cloud/powertools-lambda-go/eventhandler/http/metrics@v1.2.0
+```
+
+Save the following as `http_metrics.go` in your HTTP application. In the routing
+guide's `run` function, call `addRequestMetrics(app)` after creating the router
+and return any setup error. `metrics` creates the root utility; `httpmetrics`
+adapts it to HTTP requests.
 
 **Input**
 
@@ -19,11 +28,22 @@ GET /orders/ORD-123
 **Code**
 
 ```go
-metric, err := metrics.New(metrics.WithNamespace("Orders"))
-if err != nil {
-    return err
+package main
+
+import (
+	httpapi "github.com/rambow-cloud/powertools-lambda-go/eventhandler/http"
+	httpmetrics "github.com/rambow-cloud/powertools-lambda-go/eventhandler/http/metrics"
+	"github.com/rambow-cloud/powertools-lambda-go/metrics"
+)
+
+func addRequestMetrics(app *httpapi.Router) error {
+	metric, err := metrics.New(metrics.WithNamespace("Orders"))
+	if err != nil {
+		return err
+	}
+	app.Use(httpmetrics.New(metric, httpmetrics.Options{CaptureRequestCount: true}))
+	return nil
 }
-app.Use(httpmetrics.New(metric, httpmetrics.Options{CaptureRequestCount: true}))
 ```
 
 **Output**
@@ -39,10 +59,28 @@ This is an excerpt of the emitted EMF document. It also contains the namespace, 
 
 ## Trace a route
 
-Install `eventhandler/http/tracer@v1.2.0` and import it as `httptracer`. Given `tr` from the [Tracer guide](TRACER.md):
+Install the optional integration:
+
+```sh
+CGO_ENABLED=0 go get github.com/rambow-cloud/powertools-lambda-go/eventhandler/http/tracer@v1.2.0
+```
+
+Save this as `http_tracing.go`. Create `tr` once as shown in the
+[Tracer guide](TRACER.md), then call `addRequestTracing(app, tr)` during setup.
+`tracer` is the root utility; `httptracer` adds route instrumentation.
 
 ```go
-app.Use(httptracer.New(tr, httptracer.Options{DisableCaptureResponse: true}))
+package main
+
+import (
+	httpapi "github.com/rambow-cloud/powertools-lambda-go/eventhandler/http"
+	httptracer "github.com/rambow-cloud/powertools-lambda-go/eventhandler/http/tracer"
+	"github.com/rambow-cloud/powertools-lambda-go/tracer"
+)
+
+func addRequestTracing(app *httpapi.Router, tr *tracer.Tracer) {
+	app.Use(httptracer.New(tr, httptracer.Options{DisableCaptureResponse: true}))
+}
 ```
 
 A request produces a route span under the invocation span. Keep the outer `tracer.WrapHandler` for invocation lifetime and exporter flushing. Configure your OpenTelemetry exporter/collector as described in the Tracer guide.
@@ -57,7 +95,32 @@ This is a span name, not a log line automatically written by the middleware. Tra
 
 ## Add application logs
 
-Inside a route, use your root logger's `WithContext(request.Context)` to include the active trace identity. Log only the request fields your application needs.
+Save this as `http_logging.go` and call `registerLoggedOrder(app, appLog)` instead
+of the routing guide's GET registration, returning any setup error. `appLog` is
+the root Logger created in `main`. The route binds it to the active request/trace:
+
+```go
+package main
+
+import (
+	httpapi "github.com/rambow-cloud/powertools-lambda-go/eventhandler/http"
+	"github.com/rambow-cloud/powertools-lambda-go/logger"
+)
+
+func registerLoggedOrder(app *httpapi.Router, appLog *logger.Logger) error {
+	return app.Get("/orders/:id", func(request *httpapi.RequestContext) (any, error) {
+		if err := appLog.WithContext(request.Context).Info("Get order", logger.Fields{
+			"order_id": request.Params["id"],
+		}); err != nil {
+			return nil, err
+		}
+		return map[string]string{"id": request.Params["id"]}, nil
+	})
+}
+```
+
+Log only the request fields your application needs. The application entry point
+uses Logger for returned setup errors, as shown in the routing guide.
 
 The [complete HTTP example](https://github.com/rambow-cloud/powertools-lambda-go/blob/main/examples/http/main.go) combines these integrations with CORS and compression.
 
