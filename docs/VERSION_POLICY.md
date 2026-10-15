@@ -22,6 +22,31 @@ and v1.1.0/v1.0.0/v0.2.0 stable cohorts remain available as historical versions.
 
 ## Test and acceptance identity
 
+### Logger stacks Preview on main
+
+> This Preview is available only from main and is not included in v1.2.0.
+
+| Source | Error stacks | Automatic handler panic record |
+| --- | --- | --- |
+| Logger `@v1.2.0` | No automatic stack collection; no `WithStack` or `WithStackTrace` API | Previous cleanup only; no `WithPanicLogging` API |
+| Logger `@main` | `WithStack` plus default logging-site fallback; configurable with `WithStackTrace` | Enabled by default; configurable with `WithPanicLogging` |
+
+```sh
+CGO_ENABLED=0 go get github.com/rambow-cloud/powertools-lambda-go/logger@main
+```
+
+An omitted version or `@latest` does not request `main`. Branch references resolve
+to pseudo-versions; use a commit SHA for repeatability. See
+[Go version queries](https://go.dev/ref/mod#version-queries).
+The [Preview example](https://github.com/rambow-cloud/powertools-lambda-go/tree/main/examples/logger-stack-preview)
+requires main source, whereas existing stable installation commands remain pinned
+to v1.2.0. Availability is determined by the code revision, without runtime branch
+detection or build tags. This work creates no version tag, prerelease or GitHub
+Release and does not change published release notes. Inclusion in a future stable
+cohort will be decided separately.
+
+### Evidence boundaries
+
 | Evidence | Identity and meaning |
 | --- | --- |
 | PR/main tests | Exact source SHA and workflow run; verifies changed source |

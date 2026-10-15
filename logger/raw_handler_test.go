@@ -270,7 +270,11 @@ func TestWrapRawHandlerCorrelationAndNestedLifetime(t *testing.T) {
 			if got[0]["correlation_id"] != "raw-id" {
 				t.Fatal(got)
 			}
-			if outcome != "success" && got[len(got)-1]["message"] != "Uncaught error detected, flushing log buffer before exit" {
+			want := "Uncaught error detected, flushing log buffer before exit"
+			if outcome == "panic" {
+				want = "Unhandled panic"
+			}
+			if outcome != "success" && got[len(got)-1]["message"] != want {
 				t.Fatal("failure did not flush", got)
 			}
 		})

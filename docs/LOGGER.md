@@ -89,6 +89,120 @@ if err := appLog.Error("Payment failed", paymentErr); err != nil {
 
 The record has `level: "ERROR"`, `message: "Payment failed"` and `error.message: "card declined"`. It is written to stderr. Logging it does not return the business error from your handler.
 
+This example targets stable **v1.2.0**, which does not automatically collect error stacks or log handler panics. The following Preview has different defaults.
+
+## Error stacks and panic logging (Preview)
+
+> This Preview is available only from main and is not included in v1.2.0.
+
+Install it explicitly in your application:
+
+```sh
+CGO_ENABLED=0 go get github.com/rambow-cloud/powertools-lambda-go/logger@main
+```
+
+Omitting a version does not select `main`. Go resolves a branch to a pseudo-version;
+use `@<commit-SHA>` instead of `@main` to pin a preview. See
+[Go version queries](https://go.dev/ref/mod#version-queries).
+The stable installation above and its examples continue to target v1.2.0.
+
+### Attach the error's source
+
+Use `WithStack` where an error is created or first observed. Ordinary errors do
+not need a panic to carry a stack.
+
+```go
+func loadOrder() error {
+    return logger.WithStack(errors.New("order not found"))
+}
+
+// appLog := logger.New(logger.WithServiceName("orders"))
+if logErr := appLog.Error("Cannot load order", loadOrder()); logErr != nil {
+    return logErr
+}
+```
+
+**Output** (error excerpt; example path and line numbers):
+
+```json
+{"error":{"name":"*errors.errorString","message":"order not found","location":"/app/main.go:10","stack":"main.loadOrder\n\t/app/main.go:10\nmain.main\n\t/app/main.go:15","stack_source":"attached"}}
+```
+
+The internal wrapper adds no error name or extra `cause` layer. `%w`,
+`errors.Is` and `errors.As` keep working. Repeated wrapping retains the existing
+stack along a single error chain; joined branches keep their own origins.
+
+### Get a stack at the log call
+
+With the Preview defaults, an error without an attached stack gets a fallback:
+
+```go
+paymentErr := errors.New("card declined")
+if logErr := appLog.Error("Payment failed", paymentErr); logErr != nil {
+    return logErr
+}
+```
+
+**Output** (error excerpt):
+
+```json
+{"error":{"name":"*errors.errorString","message":"card declined","location":"/app/main.go:22","stack":"main.main\n\t/app/main.go:22","stack_source":"logging"}}
+```
+
+This identifies **where the error was logged**, which may differ from where it
+occurred. `location` is the first application frame in the selected stack.
+Stacks contain at most 64 frames; a longer stack adds `stack_truncated: true`.
+Filtered records and records without errors do not collect a stack.
+
+### Record an unhandled handler panic
+
+The outermost Logger wrapper logs one ERROR before cleaning up the request scope,
+then rethrows the original panic value. Typed and raw handlers both support it.
+
+```go
+handler := func(ctx context.Context, event map[string]any) (string, error) {
+    appLog.WithContext(ctx).SetCorrelationID(event["order_id"])
+    panic("unexpected payment state")
+}
+lambda.Start(logger.WrapHandler(appLog, handler))
+```
+
+**Input**: `{"order_id":"ORD-123"}`
+
+**Output** (Logger record excerpt):
+
+```json
+{"level":"ERROR","message":"Unhandled panic","service":"orders","function_request_id":"request-123","correlation_id":"ORD-123","error":{"name":"string","message":"unexpected payment state","location":"/app/main.go:30","stack":"main.main.func1\n\t/app/main.go:30\n...","stack_source":"panic"}}
+```
+
+The `...` above abbreviates caller frames. Nested Logger wrappers do not repeat
+this record. The invocation still fails; the Lambda SDK can emit a separate error
+record. Ordinary returned handler errors are logged explicitly by your application;
+the existing `FlushBufferOnError` opt-in still applies.
+
+Compact JSON escapes stack newlines, so the Logger record occupies one physical
+line. Development pretty printing, custom formatters and SDK-generated records
+are outside that guarantee. Formatter/replacer hooks still apply. Initialization
+panics, other goroutines and runtime fatal errors are outside the wrapper's scope.
+
+### Turn the Preview behavior off
+
+```go
+appLog := logger.New(
+    logger.WithStackTrace(false),
+    logger.WithPanicLogging(false),
+)
+```
+
+Both options default to `true` on main and can be overridden on child loggers.
+`WithStackTrace(false)` suppresses attached, fallback and panic stack fields;
+`WithPanicLogging(false)` suppresses the new automatic panic record. Disable both
+to retain the previous logging behavior. These options do not exist in v1.2.0.
+
+Run the [complete Preview example](https://github.com/rambow-cloud/powertools-lambda-go/tree/main/examples/logger-stack-preview)
+for source and logging-site stacks; see the [detailed contract](reference/LOGGER.md#stack-and-panic-contract-preview)
+for joins, buffering and diagnostic failures.
+
 ## Add Lambda request context
 
 Create the logger once. Use the bound logger inside a wrapped handler:
