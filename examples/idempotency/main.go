@@ -3,7 +3,6 @@ package main
 
 import (
 	"context"
-	"log"
 	"os"
 
 	"github.com/aws/aws-lambda-go/lambda"
@@ -11,6 +10,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/dynamodb"
 	"github.com/rambow-cloud/powertools-lambda-go/idempotency"
 	persistence "github.com/rambow-cloud/powertools-lambda-go/idempotency/dynamodb"
+	"github.com/rambow-cloud/powertools-lambda-go/logger"
 )
 
 type Order struct {
@@ -22,17 +22,27 @@ type Result struct {
 }
 
 func main() {
+	appLog := logger.New(logger.WithServiceName("orders"))
+	if err := run(appLog); err != nil {
+		if logErr := appLog.Error("Application failed", err); logErr != nil {
+			panic(logErr)
+		}
+		os.Exit(1)
+	}
+}
+
+func run(appLog *logger.Logger) error {
 	cfg, err := config.LoadDefaultConfig(context.Background())
 	if err != nil {
-		log.Fatal(err)
+		return err
 	}
 	store, err := persistence.New(dynamodb.NewFromConfig(cfg), persistence.Options{TableName: os.Getenv("IDEMPOTENCY_TABLE")})
 	if err != nil {
-		log.Fatal(err)
+		return err
 	}
 	manager, err := idempotency.New(store, idempotency.Options{KeyPrefix: "process-order", EventKeyJMESPath: "id", PayloadValidationJMESPath: "amount", ThrowOnNoKey: true})
 	if err != nil {
-		log.Fatal(err)
+		return err
 	}
 	lambda.Start(idempotency.WrapHandler(manager, func(ctx context.Context, event Order) (Result, error) {
 		if err := ctx.Err(); err != nil {
@@ -40,4 +50,5 @@ func main() {
 		}
 		return Result{OrderID: event.ID}, nil
 	}))
+	return nil
 }

@@ -13,6 +13,7 @@ Use Go 1.27 or newer:
 
 ```sh
 CGO_ENABLED=0 go get github.com/rambow-cloud/powertools-lambda-go/metrics@v1.2.0
+CGO_ENABLED=0 go get github.com/rambow-cloud/powertools-lambda-go/logger@v1.2.0
 ```
 
 ## Record an order count
@@ -33,25 +34,37 @@ value: 1
 package main
 
 import (
-	stdlog "log"
+	"os"
 
+	"github.com/rambow-cloud/powertools-lambda-go/logger"
 	"github.com/rambow-cloud/powertools-lambda-go/metrics"
 )
 
 func main() {
+	appLog := logger.New(logger.WithServiceName("orders"))
+	if err := run(appLog); err != nil {
+		if logErr := appLog.Error("Application failed", err); logErr != nil {
+			panic(logErr)
+		}
+		os.Exit(1)
+	}
+}
+
+func run(appLog *logger.Logger) error {
 	appMetrics, err := metrics.New(
 		metrics.WithNamespace("Orders"),
 		metrics.WithServiceName("checkout"),
 	)
 	if err != nil {
-		stdlog.Fatal(err)
+		return err
 	}
 	if err := appMetrics.AddMetric("OrdersReceived", metrics.Count, 1); err != nil {
-		stdlog.Fatal(err)
+		return err
 	}
 	if err := appMetrics.Flush(); err != nil {
-		stdlog.Fatal(err)
+		return err
 	}
+	return nil
 }
 ```
 

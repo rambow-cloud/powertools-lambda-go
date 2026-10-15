@@ -12,6 +12,7 @@ Use Go 1.27 or newer:
 
 ```sh
 CGO_ENABLED=0 go get github.com/rambow-cloud/powertools-lambda-go@v1.2.0
+CGO_ENABLED=0 go get github.com/rambow-cloud/powertools-lambda-go/logger@v1.2.0
 ```
 
 ## Decode Base64 text
@@ -30,25 +31,44 @@ SGVsbG8=
 package main
 
 import (
-	"fmt"
-	stdlog "log"
+	"os"
 
 	"github.com/rambow-cloud/powertools-lambda-go/commons"
+	"github.com/rambow-cloud/powertools-lambda-go/logger"
 )
 
 func main() {
+	appLog := logger.New(logger.WithServiceName("orders"))
+	if err := run(appLog); err != nil {
+		if logErr := appLog.Error("Application failed", err); logErr != nil {
+			panic(logErr)
+		}
+		os.Exit(1)
+	}
+}
+
+func run(appLog *logger.Logger) error {
 	value, err := commons.FromBase64("SGVsbG8=", "base64")
 	if err != nil {
-		stdlog.Fatal(err)
+		return err
 	}
-	fmt.Println(string(value))
+	return appLog.Info("Text decoded", logger.Fields{"text": string(value)})
 }
 ```
 
+The Logger timestamp varies on each run.
+
 **Output**
 
-```text
-Hello
+```json
+{
+  "level": "INFO",
+  "message": "Text decoded",
+  "timestamp": "2026-10-15T00:00:00.000Z",
+  "service": "orders",
+  "sampling_rate": 0,
+  "text": "Hello"
+}
 ```
 
 ## Read application settings
@@ -65,7 +85,7 @@ Commons includes a generic LRU cache. Use it when an application needs bounded, 
 
 ## Decode AWS SDK DynamoDB attributes
 
-Use the optional `commons/dynamodb` module with AWS SDK attribute values. Import the SDK's DynamoDB `types` and the adapter as `dynamodb`. This snippet is the body of a helper returning `error`:
+Use the optional `commons/dynamodb` module with AWS SDK attribute values. Import the SDK's DynamoDB `types` and the adapter as `dynamodb`. These snippets run in a helper returning `error`, using the `appLog` created above:
 
 ```go
 item, err := dynamodb.UnmarshalItem(map[string]types.AttributeValue{
@@ -73,13 +93,23 @@ item, err := dynamodb.UnmarshalItem(map[string]types.AttributeValue{
     "count": &types.AttributeValueMemberN{Value: "3"},
 })
 if err != nil { return err }
-fmt.Println(item["name"], item["count"])
+return appLog.Info("Item decoded", logger.Fields{"item": item})
 ```
 
 **Output**
 
-```text
-orders 3
+```json
+{
+  "level": "INFO",
+  "message": "Item decoded",
+  "timestamp": "2026-10-15T00:00:00.000Z",
+  "service": "orders",
+  "sampling_rate": 0,
+  "item": {
+    "name": "orders",
+    "count": 3
+  }
+}
 ```
 
 For raw DynamoDB JSON without SDK types, use `commons.UnmarshallDynamoDB` instead.
@@ -90,15 +120,22 @@ The optional `commons/awssdk` module supplies a Smithy API stack option. Most ut
 
 ```go
 stack := middleware.NewStack("example", func() any { return nil })
-err := awssdk.UserAgent("parameters")(stack)
+if err := awssdk.UserAgent("parameters")(stack); err != nil { return err }
 _, installed := stack.Build.Get("PowertoolsUserAgent")
-fmt.Println(installed, err)
+return appLog.Info("SDK identity installed", logger.Fields{"installed": installed})
 ```
 
 **Output**
 
-```text
-true <nil>
+```json
+{
+  "level": "INFO",
+  "message": "SDK identity installed",
+  "timestamp": "2026-10-15T00:00:00.000Z",
+  "service": "orders",
+  "sampling_rate": 0,
+  "installed": true
+}
 ```
 
 Import `github.com/aws/smithy-go/middleware` and `commons/awssdk`. On SDK requests, the installed middleware adds the feature/version marker to `User-Agent`. This example installs the stack option without sending a request.

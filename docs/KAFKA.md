@@ -50,30 +50,40 @@ package main
 
 import (
 	"context"
-	stdlog "log"
+	"os"
 
 	"github.com/rambow-cloud/powertools-lambda-go/kafka"
 	"github.com/rambow-cloud/powertools-lambda-go/logger"
 )
 
 func main() {
-	ctx := context.Background()
 	appLog := logger.New(logger.WithServiceName("orders"))
+	if err := run(appLog); err != nil {
+		if logErr := appLog.Error("Application failed", err); logErr != nil {
+			panic(logErr)
+		}
+		os.Exit(1)
+	}
+}
+
+func run(appLog *logger.Logger) error {
+	ctx := context.Background()
 	consumer := kafka.New(kafka.Config{Value: &kafka.FieldConfig{Type: kafka.JSON}})
 	event := map[string]any{"records": map[string]any{"orders-0": []any{
 		map[string]any{"value": "eyJpZCI6Ik9SRC0xMjMifQ=="},
 	}}}
 	records, err := consumer.Deserialize(ctx, event)
 	if err != nil {
-		stdlog.Fatal(err)
+		return err
 	}
 	value, err := records.Records[0].Value(ctx)
 	if err != nil {
-		stdlog.Fatal(err)
+		return err
 	}
 	if err := appLog.Info("Order received", logger.Fields{"order": value}); err != nil {
-		stdlog.Fatal(err)
+		return err
 	}
+	return nil
 }
 ```
 

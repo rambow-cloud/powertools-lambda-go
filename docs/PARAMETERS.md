@@ -12,6 +12,7 @@ Use Go 1.27 or newer:
 
 ```sh
 CGO_ENABLED=0 go get github.com/rambow-cloud/powertools-lambda-go/parameters@v1.2.0
+CGO_ENABLED=0 go get github.com/rambow-cloud/powertools-lambda-go/logger@v1.2.0
 ```
 
 ## Read an SSM parameter
@@ -31,25 +32,44 @@ package main
 
 import (
 	"context"
-	"fmt"
-	"log"
+	"os"
 
+	"github.com/rambow-cloud/powertools-lambda-go/logger"
 	"github.com/rambow-cloud/powertools-lambda-go/parameters/ssm"
 )
 
 func main() {
+	appLog := logger.New(logger.WithServiceName("orders"))
+	if err := run(appLog); err != nil {
+		if logErr := appLog.Error("Application failed", err); logErr != nil {
+			panic(logErr)
+		}
+		os.Exit(1)
+	}
+}
+
+func run(appLog *logger.Logger) error {
 	value, err := ssm.GetParameter(context.Background(), "/orders/feature", ssm.GetOptions{})
 	if err != nil {
-		log.Fatal(err)
+		return err
 	}
-	fmt.Println(value)
+	return appLog.Info("Feature configuration loaded", logger.Fields{"feature": value})
 }
 ```
 
+The Logger timestamp varies on each run.
+
 **Output**
 
-```text
-enabled
+```json
+{
+  "level": "INFO",
+  "message": "Feature configuration loaded",
+  "timestamp": "2026-10-15T00:00:00.000Z",
+  "service": "orders",
+  "sampling_rate": 0,
+  "feature": "enabled"
+}
 ```
 
 ## Cache a value for longer

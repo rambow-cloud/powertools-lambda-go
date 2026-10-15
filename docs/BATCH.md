@@ -12,6 +12,7 @@ Use Go 1.27 or newer:
 
 ```sh
 CGO_ENABLED=0 go get github.com/rambow-cloud/powertools-lambda-go/batch@v1.2.0
+CGO_ENABLED=0 go get github.com/rambow-cloud/powertools-lambda-go/logger@v1.2.0
 CGO_ENABLED=0 go get github.com/aws/aws-lambda-go@v1.55.0
 ```
 
@@ -44,11 +45,12 @@ package main
 import (
 	"context"
 	json "encoding/json/v2"
-	"log"
+	"os"
 
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
 	"github.com/rambow-cloud/powertools-lambda-go/batch"
+	"github.com/rambow-cloud/powertools-lambda-go/logger"
 )
 
 type Order struct {
@@ -56,9 +58,19 @@ type Order struct {
 }
 
 func main() {
+	appLog := logger.New(logger.WithServiceName("orders"))
+	if err := run(appLog); err != nil {
+		if logErr := appLog.Error("Application failed", err); logErr != nil {
+			panic(logErr)
+		}
+		os.Exit(1)
+	}
+}
+
+func run(appLog *logger.Logger) error {
 	processor, err := batch.NewSQS[string](batch.Options{})
 	if err != nil {
-		log.Fatal(err)
+		return err
 	}
 	handler := func(_ context.Context, record events.SQSMessage) (string, error) {
 		var order Order
@@ -69,6 +81,7 @@ func main() {
 		return order.ID, nil
 	}
 	lambda.Start(batch.WrapSQS(processor, handler))
+	return nil
 }
 ```
 

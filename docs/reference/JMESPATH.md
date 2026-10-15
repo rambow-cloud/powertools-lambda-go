@@ -52,7 +52,7 @@ The maintained example decodes SQS bodies and extracts a Logger correlation ID:
 --8<-- "examples/query/main.go"
 ~~~
 
-It prints decoded payloads followed by a log with `correlation_id: "order-1"`.
+It writes a structured log containing the decoded payloads, followed by a request log with `correlation_id: "order-1"`.
 
 
 ## Objects and lifecycle

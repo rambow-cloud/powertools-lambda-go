@@ -12,6 +12,7 @@ Use Go 1.27 or newer:
 
 ```sh
 CGO_ENABLED=0 go get github.com/rambow-cloud/powertools-lambda-go/eventhandler/http@v1.2.0
+CGO_ENABLED=0 go get github.com/rambow-cloud/powertools-lambda-go/logger@v1.2.0
 CGO_ENABLED=0 go get github.com/aws/aws-lambda-go@v1.55.0
 ```
 
@@ -35,23 +36,35 @@ package main
 import (
 	"context"
 	"encoding/json/jsontext"
-	"log"
+	"os"
 
 	"github.com/aws/aws-lambda-go/lambda"
 	httpapi "github.com/rambow-cloud/powertools-lambda-go/eventhandler/http"
+	"github.com/rambow-cloud/powertools-lambda-go/logger"
 )
 
 func main() {
+	appLog := logger.New(logger.WithServiceName("orders"))
+	if err := run(appLog); err != nil {
+		if logErr := appLog.Error("Application failed", err); logErr != nil {
+			panic(logErr)
+		}
+		os.Exit(1)
+	}
+}
+
+func run(appLog *logger.Logger) error {
 	app := httpapi.New(httpapi.Options{})
 	err := app.Get("/orders/:id", func(request *httpapi.RequestContext) (any, error) {
 		return map[string]string{"id": request.Params["id"]}, nil
 	})
 	if err != nil {
-		log.Fatal(err)
+		return err
 	}
 	lambda.Start(func(ctx context.Context, event jsontext.Value) (httpapi.ProxyResponse, error) {
 		return app.Resolve(ctx, event)
 	})
+	return nil
 }
 ```
 

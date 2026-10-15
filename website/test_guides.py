@@ -4,7 +4,7 @@ from pathlib import Path
 import tempfile
 import unittest
 
-from check_guides import check_guide
+from check_guides import check_application_logging, check_guide, check_logging_surface
 
 
 GUIDE = '''# Example
@@ -92,6 +92,30 @@ class GuideTests(unittest.TestCase):
             with self.subTest(manual=manual):
                 failures = check_guide(text.replace('protojson.Marshal(value)', manual), "KAFKA_BINARY", self.root)
                 self.assertTrue(any("manually marshaling" in failure for failure in failures))
+
+    def test_standard_logging_imports_are_rejected_with_any_alias(self):
+        for code in ('import "log"', 'import stdlog "log"', 'import (\n applicationlog "log/slog"\n)', 'log.Fatal(err)', 'stdlog.Printf("failed: %v", err)'):
+            with self.subTest(code=code):
+                self.assertTrue(check_application_logging(code))
+
+    def test_application_printing_is_rejected_including_fmt_aliases(self):
+        for code in ('fmt.Println(value)', 'fmt.Fprintf(writer, "%s", value)', 'import output "fmt"\noutput.Print(value)'):
+            with self.subTest(code=code):
+                self.assertTrue(check_application_logging(code))
+
+    def test_wire_serialization_and_error_formatting_remain_allowed(self):
+        code = 'import "fmt"\nerr := fmt.Errorf("invalid %s", name)\nbody := fmt.Sprintf("Hello %s", name)\njson.Marshal(body)\nprotojson.Marshal(message)\nwriter.Write(body)'
+        self.assertEqual([], check_application_logging(code))
+
+    def test_logging_scan_covers_secondary_guides_references_readme_and_examples(self):
+        pages = ('docs/SECONDARY.md', 'docs/reference/NOTES.md', 'README.md', 'examples/new/main.go')
+        for name in pages:
+            path = self.root / name
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_text('```go\nfmt.Println(value)\n```' if name.endswith('.md') else 'package main\nimport "log"', encoding='utf-8')
+        failures = check_logging_surface(self.root)
+        for name in pages:
+            self.assertTrue(any(str(Path(name)) in failure for failure in failures), name)
 
 
 if __name__ == "__main__":

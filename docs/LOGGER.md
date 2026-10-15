@@ -34,8 +34,6 @@ This program writes an order ID and amount as JSON fields. The timestamp in the 
 package main
 
 import (
-	"log"
-
 	"github.com/rambow-cloud/powertools-lambda-go/logger"
 )
 
@@ -46,7 +44,7 @@ func main() {
 		"order_id": "ORD-123",
 		"amount":   42,
 	}); err != nil {
-		log.Printf("Logging failed: %v", err)
+		panic(err)
 	}
 }
 ```
@@ -72,7 +70,7 @@ Use `AppendKeys` for fields shared by several log calls. Per-call fields apply o
 ```go
 appLog.AppendKeys(logger.Fields{"order_id": "ORD-123"})
 if err := appLog.Info("Order accepted", logger.Fields{"items": 3}); err != nil {
-    log.Print(err)
+    panic(err)
 }
 ```
 
@@ -80,12 +78,12 @@ The next record contains `"order_id":"ORD-123"` and `"items":3`. Use `RemoveKeys
 
 ## Log an error
 
-Pass the business error after the message; handle a returned logging error separately.
+Pass the business error after the message; handle a returned logging error separately. These standalone snippets panic if Logger itself cannot serialize or write. In a handler, return that logging error to the caller rather than trying to report it through the same failed logger.
 
 ```go
 paymentErr := errors.New("card declined")
 if err := appLog.Error("Payment failed", paymentErr); err != nil {
-    log.Print(err)
+    panic(err)
 }
 ```
 

@@ -38,7 +38,7 @@ package main
 
 import (
 	"context"
-	stdlog "log"
+	"os"
 
 	"github.com/rambow-cloud/powertools-lambda-go/datamasking"
 	"github.com/rambow-cloud/powertools-lambda-go/logger"
@@ -46,6 +46,15 @@ import (
 
 func main() {
 	appLog := logger.New(logger.WithServiceName("orders"))
+	if err := run(appLog); err != nil {
+		if logErr := appLog.Error("Application failed", err); logErr != nil {
+			panic(logErr)
+		}
+		os.Exit(1)
+	}
+}
+
+func run(appLog *logger.Logger) error {
 	payload := map[string]any{
 		"customer": map[string]any{"name": "Ada", "ssn": "123-45-6789"},
 		"order_id": "ORD-123",
@@ -55,11 +64,12 @@ func main() {
 		Fields: []string{"customer.ssn"},
 	})
 	if err != nil {
-		stdlog.Fatal(err)
+		return err
 	}
 	if err := appLog.Info("Order received", logger.Fields{"order": masked}); err != nil {
-		stdlog.Fatal(err)
+		return err
 	}
+	return nil
 }
 ```
 

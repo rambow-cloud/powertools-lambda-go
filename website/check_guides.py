@@ -18,6 +18,36 @@ SOURCE_PREFIX = "https://github.com/rambow-cloud/powertools-lambda-go/blob/main/
 LOGGER_GUIDES = {"KAFKA", "KAFKA_BINARY", "KAFKA_MODES", "DATAMASKING"}
 
 
+def check_application_logging(code: str) -> list[str]:
+    failures = []
+    imports = re.findall(r'\bimport\s+(\([^)]*\)|(?:\w+\s+)?"[^"\n]+")', code, re.S)
+    if any(re.search(r'"log(?:/slog)?"', block) for block in imports) or re.search(r'\b(?:stdlog|log)\.(?:Print|Fatal|Panic)(?:ln|f)?\(', code):
+        failures.append("use Powertools Logger instead of the standard logging packages")
+    print_names = {"fmt"}
+    for block in imports:
+        print_names.update(re.findall(r'\b(\w+)\s+"fmt"', block))
+    for name in print_names:
+        if re.search(r'\b' + re.escape(name) + r'\.(?:Print|Fprint)(?:ln|f)?\(', code):
+            failures.append("use Powertools Logger for application output instead of fmt printing")
+            break
+    return failures
+
+
+def check_logging_surface(root: Path = ROOT) -> list[str]:
+    failures = []
+    pages = list((root / "docs").rglob("*.md")) + [root / "README.md"]
+    for path in pages:
+        if not path.is_file():
+            continue
+        for number, block in enumerate(FENCE.finditer(path.read_text(encoding="utf-8")), 1):
+            if block["language"] == "go":
+                failures.extend(f"{path.relative_to(root)} Go block {number}: {failure}" for failure in check_application_logging(block["code"]))
+    for path in (root / "examples").rglob("*.go"):
+        if not path.name.endswith("_test.go"):
+            failures.extend(f"{path.relative_to(root)}: {failure}" for failure in check_application_logging(path.read_text(encoding="utf-8")))
+    return failures
+
+
 def invalid_constant(value: str) -> None:
     raise ValueError(f"non-JSON number {value}")
 
@@ -64,13 +94,13 @@ def check_guide(content: str, name: str, root: Path = ROOT) -> list[str]:
 
 
 def main() -> None:
-    failures = []
+    failures = check_logging_surface()
     for name in GUIDES:
         content = (ROOT / "docs" / f"{name}.md").read_text(encoding="utf-8")
         failures.extend(f"{name}.md: {failure}" for failure in check_guide(content, name))
     if failures:
         raise SystemExit("\n".join(failures))
-    print(f"Verified {len(GUIDES)} utility guides: Go examples, fenced results and linked API notes.")
+    print(f"Verified {len(GUIDES)} utility guides and application logging across all documentation and runnable examples.")
 
 
 if __name__ == "__main__":

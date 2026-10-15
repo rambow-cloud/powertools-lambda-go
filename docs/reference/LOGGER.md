@@ -7,9 +7,9 @@ Start with the [Logger guide](../LOGGER.md) for examples and results. This page 
 Each logging method accepts a message followed by optional attributes or an error:
 
 ~~~go
-// Reuse appLog from the program above.
+// Reuse appLog from the main guide.
 if err := appLog.Info("Order accepted", logger.Fields{"order_id": "ORD-123"}); err != nil {
-    stdlog.Printf("Logging failed: %v", err)
+    panic(err)
 }
 ~~~
 
@@ -22,7 +22,7 @@ paymentErr := errors.New("card declined")
 if logErr := appLog.Error("Payment failed", paymentErr, logger.Fields{
     "order_id": "ORD-123",
 }); logErr != nil {
-    stdlog.Printf("Logging failed: %v", logErr)
+    panic(logErr)
 }
 ~~~
 
@@ -48,7 +48,6 @@ package main
 
 import (
 	"context"
-	stdlog "log"
 
 	"github.com/aws/aws-lambda-go/lambda"
 	"github.com/rambow-cloud/powertools-lambda-go/logger"
@@ -67,7 +66,7 @@ func main() {
 	appLog := logger.New(
 		logger.WithServiceName("orders"),
 		logger.WithErrorHandler(func(err error) {
-			stdlog.Printf("Logger wrapper failed: %v", err)
+			panic(err)
 		}),
 	)
 
@@ -76,12 +75,12 @@ func main() {
 		requestLog.AppendKeys(logger.Fields{"order_id": event.OrderID})
 
 		if err := requestLog.Info("Processing order"); err != nil {
-			stdlog.Printf("Logging failed: %v", err)
+			return Response{}, err
 		}
 		if err := requestLog.Info("Order accepted", logger.Fields{
 			"items": event.Items,
 		}); err != nil {
-			stdlog.Printf("Logging failed: %v", err)
+			return Response{}, err
 		}
 
 		return Response{Status: "accepted"}, nil
@@ -227,7 +226,6 @@ The API includes formatter/replacer hooks, timezones, event logging, child confi
 | --- | --- | --- |
 | `logger` | The imported Powertools package | Create a logger with `logger.New(...)`; construct fields with `logger.Fields{...}` |
 | `appLog` | A `*logger.Logger` object returned by `logger.New` | Write structured records with `appLog.Info(...)`, `appLog.Warn(...)`, or `appLog.Error(...)` |
-| `stdlog` | Go's standard `log` package, imported under an explicit alias | Print a plain-text fallback if structured logging fails |
 
 
 

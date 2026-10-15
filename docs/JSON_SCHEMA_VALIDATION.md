@@ -12,6 +12,7 @@ Use Go 1.27 or newer:
 
 ```sh
 CGO_ENABLED=0 go get github.com/rambow-cloud/powertools-lambda-go/validation@v1.2.0
+CGO_ENABLED=0 go get github.com/rambow-cloud/powertools-lambda-go/logger@v1.2.0
 ```
 
 ## Validate an order
@@ -33,13 +34,23 @@ package main
 
 import (
 	"context"
-	"fmt"
-	"log"
+	"os"
 
+	"github.com/rambow-cloud/powertools-lambda-go/logger"
 	"github.com/rambow-cloud/powertools-lambda-go/validation"
 )
 
 func main() {
+	appLog := logger.New(logger.WithServiceName("orders"))
+	if err := run(appLog); err != nil {
+		if logErr := appLog.Error("Application failed", err); logErr != nil {
+			panic(logErr)
+		}
+		os.Exit(1)
+	}
+}
+
+func run(appLog *logger.Logger) error {
 	schema := map[string]any{
 		"type":     "object",
 		"required": []string{"id"},
@@ -49,16 +60,27 @@ func main() {
 	}
 	payload := map[string]any{"id": "ORD-123"}
 	if _, err := validation.Validate(context.Background(), payload, schema, validation.Options{}); err != nil {
-		log.Fatal(err)
+		return err
 	}
-	fmt.Println("Valid order")
+	return appLog.Info("Order valid", logger.Fields{"order": payload})
 }
 ```
 
+The Logger timestamp varies on each run.
+
 **Output**
 
-```text
-Valid order
+```json
+{
+  "level": "INFO",
+  "message": "Order valid",
+  "timestamp": "2026-10-15T00:00:00.000Z",
+  "service": "orders",
+  "sampling_rate": 0,
+  "order": {
+    "id": "ORD-123"
+  }
+}
 ```
 
 ## Reuse a compiled schema

@@ -4,7 +4,7 @@ description: "Compose Powertools for Go utilities with correct object lifetimes,
 
 # Usage patterns
 
-Go exposes functions, functional options and small interfaces in place of TypeScript constructors, decorators, Middy middleware and subclassing. Start with [the complete Lambda quickstart](GETTING_STARTED.md), then use the feature guides for inputs and outputs. See [feature comparison](FEATURE_PARITY.md) for the pinned v2.35.0 scope.
+Go exposes functions, functional options and small interfaces in place of TypeScript constructors, decorators, Middy middleware and subclassing. Start with [the complete Lambda quickstart](GETTING_STARTED.md), then use the feature guides for inputs and outputs. See [feature comparison](FEATURE_PARITY.md) for implementation boundaries.
 
 ## Packages and objects
 
@@ -13,10 +13,9 @@ Go exposes functions, functional options and small interfaces in place of TypeSc
 | `logger`, `metrics`, `tracer` | Imported packages containing constructors and option types | Compile-time namespace |
 | `appLog`, `appMetrics`, `trace` | Objects created with `New(...)` | Usually initialized once before `lambda.Start` |
 | `requestLog`, `requestMetrics` | Objects obtained with `WithContext(ctx)` inside their wrapper | One invocation; writes after completion are rejected |
-| `stdlog` | Standard `log` package under an explicit alias | Plain-text fallback; separate from structured Logger |
 | Router/schema/provider | Reusable registered routes, compiled rules or caches | Created once; each call receives its own request context |
 
-Variable names are application choices. A variable called `log` can hide the standard library package of the same name. Use explicit names to make object methods and package functions distinguishable.
+Variable names are application choices. Use explicit names to distinguish objects from imported packages. Application messages and startup failures use Powertools Logger; return helper/handler errors to the boundary that owns reporting them.
 
 ## Wrapper composition
 

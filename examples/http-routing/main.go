@@ -5,12 +5,13 @@ import (
 	"context"
 	jsonv1 "encoding/json"
 	json "encoding/json/v2"
-	"log"
 	"net/http"
+	"os"
 	"strings"
 
 	"github.com/aws/aws-lambda-go/lambda"
 	httpapi "github.com/rambow-cloud/powertools-lambda-go/eventhandler/http"
+	"github.com/rambow-cloud/powertools-lambda-go/logger"
 )
 
 type Order struct {
@@ -44,12 +45,23 @@ func newRouter() (*httpapi.Router, error) {
 }
 
 func main() {
+	appLog := logger.New(logger.WithServiceName("orders"))
+	if err := run(appLog); err != nil {
+		if logErr := appLog.Error("Application failed", err); logErr != nil {
+			panic(logErr)
+		}
+		os.Exit(1)
+	}
+}
+
+func run(appLog *logger.Logger) error {
 	app, err := newRouter()
 	if err != nil {
-		log.Fatal(err)
+		return err
 	}
 	// RawMessage preserves the Lambda event before the router adapts it to HTTP.
 	lambda.Start(func(ctx context.Context, event jsonv1.RawMessage) (httpapi.ProxyResponse, error) {
 		return app.Resolve(ctx, event)
 	})
+	return nil
 }

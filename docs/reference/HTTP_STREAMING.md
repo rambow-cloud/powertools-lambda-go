@@ -11,7 +11,7 @@ streaming-capable Lambda integration.
 ## Lambda handler
 
 This fragment uses the `httpapi` and `lambda` imports from the routing guide,
-plus `context`, `encoding/json`, `io`, `log`, `net/http` and `strings`.
+plus `context`, `encoding/json`, `io`, `net/http` and `strings`. It runs in a setup function returning `error`; the application logs returned setup errors with Logger.
 
 ```go
 app := httpapi.New(httpapi.Options{})
@@ -23,11 +23,12 @@ err := app.Get("/events", func(request *httpapi.RequestContext) (any, error) {
     }, nil
 })
 if err != nil {
-    log.Fatal(err)
+    return err
 }
 lambda.Start(httpapi.Streamify(func(ctx context.Context, event json.RawMessage, writer io.Writer) error {
     return app.ResolveStream(ctx, event, writer)
 }))
+return nil
 ```
 
 Replace the sample reader with a context-aware incremental producer. Configure a streaming-capable Lambda integration when deploying; a buffered invocation does not prove client-side incremental delivery. The full [native streaming example](https://github.com/rambow-cloud/powertools-lambda-go/blob/main/examples/httpstream/main.go) includes Logger and OpenTelemetry. All builds use `CGO_ENABLED=0` and target `provided.al2023`.

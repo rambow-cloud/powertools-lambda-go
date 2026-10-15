@@ -12,11 +12,12 @@ Use Go 1.27 or newer:
 
 ```sh
 CGO_ENABLED=0 go get github.com/rambow-cloud/powertools-lambda-go/commons/metadata@v1.2.0
+CGO_ENABLED=0 go get github.com/rambow-cloud/powertools-lambda-go/logger@v1.2.0
 ```
 
 ## Read execution-environment metadata
 
-This program prints the returned metadata object. Outside Lambda, it prints `{}` without sending a request.
+This program logs the returned metadata object with Logger. Outside Lambda, metadata is empty and no request is sent.
 
 **Input**
 
@@ -31,32 +32,46 @@ package main
 
 import (
 	"context"
-	json "encoding/json/v2"
-	"fmt"
-	stdlog "log"
+	"os"
 	"time"
 
 	"github.com/rambow-cloud/powertools-lambda-go/commons/metadata"
+	"github.com/rambow-cloud/powertools-lambda-go/logger"
 )
 
 func main() {
+	appLog := logger.New(logger.WithServiceName("orders"))
+	if err := run(appLog); err != nil {
+		if logErr := appLog.Error("Application failed", err); logErr != nil {
+			panic(logErr)
+		}
+		os.Exit(1)
+	}
+}
+
+func run(appLog *logger.Logger) error {
 	value, err := metadata.GetMetadata(context.Background(),
 		metadata.Options{Timeout: 500 * time.Millisecond})
 	if err != nil {
-		stdlog.Fatal(err)
+		return err
 	}
-	encoded, err := json.Marshal(value)
-	if err != nil {
-		stdlog.Fatal(err)
-	}
-	fmt.Println(string(encoded))
+	return appLog.Info("Metadata retrieved", logger.Fields{"metadata": value})
 }
 ```
+
+The Logger timestamp varies on each run.
 
 **Output**
 
 ```json
-{}
+{
+  "level": "INFO",
+  "message": "Metadata retrieved",
+  "timestamp": "2026-10-15T00:00:00.000Z",
+  "service": "orders",
+  "sampling_rate": 0,
+  "metadata": {}
+}
 ```
 
 ## Read metadata in Lambda

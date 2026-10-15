@@ -2,7 +2,7 @@ package main
 
 import (
 	"context"
-	stdlog "log"
+	"os"
 
 	"github.com/aws/aws-lambda-go/lambda"
 	"github.com/rambow-cloud/powertools-lambda-go/logger"
@@ -20,23 +20,28 @@ func main() {
 	appLog := logger.New(
 		logger.WithServiceName("hello"),
 		logger.WithErrorHandler(func(err error) {
-			stdlog.Printf("logging failed: %v", err)
+			panic(err)
 		}),
 	)
 	tr, err := tracer.New(
 		tracer.WithServiceName("hello"),
 		tracer.WithCaptureResponse(false),
 		tracer.WithErrorHandler(func(err error) {
-			stdlog.Printf("tracing failed: %v", err)
+			if logErr := appLog.Error("Tracing failed", err); logErr != nil {
+				panic(logErr)
+			}
 		}),
 	)
 	if err != nil {
-		stdlog.Fatal(err)
+		if logErr := appLog.Error("Tracer initialization failed", err); logErr != nil {
+			panic(logErr)
+		}
+		os.Exit(1)
 	}
 	handler := func(ctx context.Context, event Event) (Response, error) {
 		requestLog := appLog.WithContext(ctx)
 		if err := requestLog.Info("Handling request", logger.Fields{"name": event.Name}); err != nil {
-			stdlog.Printf("logging failed: %v", err)
+			return Response{}, err
 		}
 		return tracer.Capture(ctx, tr, "greet", func(ctx context.Context) (Response, error) {
 			_ = tr.PutAnnotation(ctx, "Operation", "greet")

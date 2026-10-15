@@ -6,6 +6,8 @@ Usage belongs in the utility guides. [Feature comparison](FEATURE_PARITY.md) map
 
 ## Documentation and feature audit
 
+- [x] DOC-239: Audit application logging across every documentation Go block, README and runnable example; replace standard logging/printing with Logger and propagated errors. Verify 31 cases: 25 local executions (including three native Lambda SDK invocations) and six compile-only service/setup cases. Preserve safe Signer summaries, startup failure logging and HTTP/EMF/Protobuf contracts; packaged examples tests/vet/tidy/isolation, 13 guide regressions, navigation, strict build and discovery pass with CGO disabled. No AWS calls or Go release (2026-10-15).
+
 - [x] DOC-237: Compose Kafka/Avro/Protobuf/delivery-mode and Data Masking examples with Logger, show structured results, and bind the runnable Kafka handler to invocation logging. Verify default/custom masking are per-call options on the same masker, preserve original payloads and Protobuf JSON, and run the affected local examples plus guide/build checks with CGO disabled. No AWS calls (2026-10-15).
 
 - [x] DOC-235: Rework 26 primary/optional-module guides around short code and visible input/output, covering all 27 maintained modules. Move detailed contracts and existing audit matrices to Development references, centralize upstream provenance, and update the quickstart/module installation for the shared v1.2.0 release. Verify 36 example cases: 30 local executions (including seven native Lambda SDK invocations) and six compile-only cases/options, including Linux KMS. Validate guide guards, navigation, strict site build, discovery and workflow regressions. No AWS calls, live-site browser acceptance or release publication is included (2026-10-15).

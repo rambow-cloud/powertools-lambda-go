@@ -7,19 +7,20 @@ Start with the [Tracer guide](../TRACER.md) for examples and results. This page 
 Create a tracer before `lambda.Start`:
 
 ~~~go
+appLog := logger.New(logger.WithServiceName("orders"))
 t, err := tracer.New(
     tracer.WithServiceName("orders"),
     tracer.WithCaptureResponse(false),
     tracer.WithErrorHandler(func(err error) {
-        log.Printf("Tracing failed: %v", err)
+        if logErr := appLog.Error("Tracing failed", err); logErr != nil { panic(logErr) }
     }),
 )
 if err != nil {
-    log.Fatal(err)
+    return err
 }
 ~~~
 
-The fragment requires `log` and `tracer` imports. Wrap your typed handler with `tracer.WrapHandler(t, handler)`. When using Logger, put Tracer outside the Logger wrapper so logs can read the active span.
+The fragment runs in a function returning `error` and requires the Powertools `logger` and `tracer` imports. Wrap your typed handler with `tracer.WrapHandler(t, handler)`. When using Logger, put Tracer outside the Logger wrapper so logs can read the active span.
 
 Create a child operation with `tracer.Capture(ctx, t, name, operation)`, or use `StartSpan` and invoke the returned completion function exactly once. Pass the returned context into downstream operations.
 
@@ -86,8 +87,8 @@ CGO_ENABLED=0 go run ./examples/local
 --8<-- "examples/local/main.go"
 ~~~
 
-It prints a `Hello` log and a `Span: ## bootstrap, trace: ...` line. Use this
-combined example after the Tracer-only handler above.
+It writes a `Hello` log and a structured `Span recorded` log with the span name and trace ID. Use this
+combined example after the initialization fragment above.
 
 
 ## Objects and lifecycle

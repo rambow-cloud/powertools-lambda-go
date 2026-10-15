@@ -25,7 +25,7 @@ The complete Lambda application is in [examples/http](https://github.com/rambow-
 ## Route-specific middleware
 
 Pass middleware after the route handler to apply it to one route. This fragment
-also uses the standard `log` import:
+runs in a function returning `error`:
 
 ```go
 threshold := float64(512)
@@ -36,7 +36,7 @@ err := app.Get("/large", func(request *httpapi.RequestContext) (any, error) {
     Threshold: &threshold,
 }))
 if err != nil {
-    log.Fatal(err)
+    return err
 }
 ```
 
