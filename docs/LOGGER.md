@@ -104,6 +104,8 @@ CGO_ENABLED=0 go get github.com/rambow-cloud/powertools-lambda-go/logger@main
 Omitting a version does not select `main`. Go resolves a branch to a pseudo-version;
 use `@<commit-SHA>` instead of `@main` to pin a preview. See
 [Go version queries](https://go.dev/ref/mod#version-queries).
+If a module proxy still resolves `main` to an older commit, select the intended
+main commit SHA explicitly.
 The stable installation above and its examples continue to target v1.2.0.
 
 ### Attach the error's source
@@ -125,7 +127,7 @@ if logErr := appLog.Error("Cannot load order", loadOrder()); logErr != nil {
 **Output** (error excerpt; example path and line numbers):
 
 ```json
-{"error":{"name":"*errors.errorString","message":"order not found","location":"/app/main.go:10","stack":"main.loadOrder\n\t/app/main.go:10\nmain.main\n\t/app/main.go:15","stack_source":"attached"}}
+{"error":{"name":"*errors.errorString","message":"order not found","location":"/app/main.go:11","stack":"main.loadOrder\n\t/app/main.go:11\nmain.main\n\t/app/main.go:16","stack_source":"attached"}}
 ```
 
 The internal wrapper adds no error name or extra `cause` layer. `%w`,
@@ -146,7 +148,7 @@ if logErr := appLog.Error("Payment failed", paymentErr); logErr != nil {
 **Output** (error excerpt):
 
 ```json
-{"error":{"name":"*errors.errorString","message":"card declined","location":"/app/main.go:22","stack":"main.main\n\t/app/main.go:22","stack_source":"logging"}}
+{"error":{"name":"*errors.errorString","message":"card declined","location":"/app/main.go:19","stack":"main.main\n\t/app/main.go:19","stack_source":"logging"}}
 ```
 
 This identifies **where the error was logged**, which may differ from where it
