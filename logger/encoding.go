@@ -1,7 +1,6 @@
 package logger
 
 import (
-	"bytes"
 	"encoding"
 	jsonv1 "encoding/json"
 	"encoding/json/jsontext"
@@ -103,6 +102,22 @@ func (n *normalizer) normalizeValue(key string, value any, depth int) (any, erro
 	if depth > 100 {
 		return "[Truncated]", nil
 	}
+	// Plain scalars cannot have custom methods or contain circular references.
+	// Named types continue through the marshaler and reflection checks below.
+	switch value := value.(type) {
+	case string, bool, int, int8, int16, int32, int64, uint, uint8, uint16, uint32, uint64, uintptr:
+		return value, nil
+	case float32:
+		if math.IsNaN(float64(value)) || math.IsInf(float64(value), 0) {
+			return nil, nil
+		}
+		return value, nil
+	case float64:
+		if math.IsNaN(value) || math.IsInf(value, 0) {
+			return nil, nil
+		}
+		return value, nil
+	}
 	// Number implements MarshalJSONTo in Go 1.27. Its scalar representation
 	// must not re-enter the custom-marshaler traversal after decoding.
 	if _, ok := value.(jsonv1.Number); ok {
@@ -180,6 +195,17 @@ func (n *normalizer) normalizeValue(key string, value any, depth int) (any, erro
 	if _, ok := value.(encoding.TextMarshaler); ok {
 		return value, nil
 	}
+	if fields, ok := asFields(value); ok {
+		result := make(Fields, len(fields))
+		for key, value := range fields {
+			encoded, err := n.normalize(key, value, depth+1)
+			if err != nil {
+				return nil, err
+			}
+			result[key] = encoded
+		}
+		return result, nil
+	}
 	switch v.Kind() {
 	case reflect.Struct:
 		return n.normalizeJSON(key, value, depth)
@@ -255,6 +281,13 @@ func prepareForPrint(value any) any {
 	if _, ok := value.(encoding.TextMarshaler); ok {
 		return value
 	}
+	switch fields := value.(type) {
+	case Fields:
+		return prepareFields(fields)
+	case map[string]any:
+		// Preserve the root's concrete type for user replacers.
+		return map[string]any(prepareFields(Fields(fields)))
+	}
 	v := reflect.ValueOf(value)
 	if !v.IsValid() || v.Kind() != reflect.Map || v.Type().Key().Kind() != reflect.String {
 		return value
@@ -289,6 +322,40 @@ func prepareForPrint(value any) any {
 	return result.Interface()
 }
 
+func prepareFields(fields Fields) Fields {
+	result := make(Fields, len(fields))
+	for key, value := range fields {
+		if value == nil {
+			continue
+		}
+		if text, ok := value.(string); ok {
+			if text != "" {
+				result[key] = value
+			}
+			continue
+		}
+		// A named nil container can implement a marshaler; preserve its method.
+		_, jsonCustom := value.(json.Marshaler)
+		_, streamingCustom := value.(json.MarshalerTo)
+		_, textCustom := value.(encoding.TextMarshaler)
+		if !jsonCustom && !streamingCustom && !textCustom {
+			v := reflect.ValueOf(value)
+			switch v.Kind() {
+			case reflect.String:
+				if v.Len() == 0 {
+					continue
+				}
+			case reflect.Pointer, reflect.Map, reflect.Slice, reflect.Interface:
+				if v.IsNil() {
+					continue
+				}
+			}
+		}
+		result[key] = value
+	}
+	return result
+}
+
 func encode(fields Fields, c config) ([]byte, error) {
 	n := normalizer{replacer: c.replacer, active: map[visit]bool{}, stacks: c.stackTrace, source: c.stackSource}
 	return n.encode(fields, c)
@@ -309,44 +376,14 @@ func (n *normalizer) encode(fields Fields, c config) ([]byte, error) {
 	}
 	var data []byte
 	if object, ok := asFields(value); ok {
-		order := append(append([]string(nil), c.order...), standardOrder...)
-		remaining := make([]string, 0, len(object))
-		for k := range object {
-			remaining = append(remaining, k)
-		}
-		sort.Strings(remaining)
-		order = append(order, remaining...)
-		seen := map[string]bool{}
-		var out bytes.Buffer
-		out.WriteByte('{')
-		for _, key := range order {
-			v, exists := object[key]
-			if !exists || seen[key] {
-				continue
-			}
-			if len(seen) > 0 {
-				out.WriteByte(',')
-			}
-			seen[key] = true
-			k, e := marshal(key)
-			if e != nil {
-				return nil, e
-			}
-			b, e := marshal(v)
-			if e != nil {
-				return nil, e
-			}
-			out.Write(k)
-			out.WriteByte(':')
-			out.Write(b)
-		}
-		out.WriteByte('}')
-		data = out.Bytes()
+		// Normalization owns this root map. The encoder may consume its keys
+		// without changing formatter/replacer inputs or caller-owned maps.
+		data, err = marshal(&orderedFields{fields: object, order: c.order})
 	} else {
 		data, err = marshal(value)
-		if err != nil {
-			return nil, err
-		}
+	}
+	if err != nil {
+		return nil, err
 	}
 	if c.pretty {
 		pretty := jsontext.Value(data)
@@ -356,4 +393,50 @@ func (n *normalizer) encode(fields Fields, c config) ([]byte, error) {
 		data = pretty
 	}
 	return data, nil
+}
+
+// orderedFields writes one complete document through a single JSON v2 encoder.
+// Marshal retains private buffering, so failed values never reach the log sink.
+type orderedFields struct {
+	fields Fields
+	order  []string
+}
+
+func (o *orderedFields) MarshalJSONTo(enc *jsontext.Encoder) error {
+	if err := enc.WriteToken(jsontext.BeginObject); err != nil {
+		return err
+	}
+	for _, order := range [][]string{o.order, standardOrder} {
+		for _, key := range order {
+			if err := o.writeField(enc, key); err != nil {
+				return err
+			}
+		}
+	}
+	remaining := make([]string, 0, len(o.fields))
+	for key := range o.fields {
+		remaining = append(remaining, key)
+	}
+	sort.Strings(remaining)
+	for _, key := range remaining {
+		if err := o.writeField(enc, key); err != nil {
+			return err
+		}
+	}
+	return enc.WriteToken(jsontext.EndObject)
+}
+
+func (o *orderedFields) writeField(enc *jsontext.Encoder, key string) error {
+	value, exists := o.fields[key]
+	if !exists {
+		return nil
+	}
+	if err := enc.WriteToken(jsontext.String(key)); err != nil {
+		return err
+	}
+	if err := json.MarshalEncode(enc, value); err != nil {
+		return err
+	}
+	delete(o.fields, key)
+	return nil
 }

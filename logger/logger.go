@@ -32,7 +32,9 @@ func (o *output) write(level Level, data []byte) error {
 	if level >= WarnLevel {
 		w = o.stderr
 	}
-	line := append(append([]byte(nil), data...), '\n')
+	// Encoded records own their bytes; neither encoding nor buffered entries
+	// reuse them after delivery. Writers must obey io.Writer's ownership rule.
+	line := append(data, '\n')
 	n, err := w.Write(line)
 	if err == nil && n != len(line) {
 		err = io.ErrShortWrite
@@ -252,14 +254,14 @@ func (l *Logger) record(level Level, message string, extra ...any) Fields {
 			fields["tenant_id"] = lc.TenantID
 		}
 	}
-	if id := invocation.TraceID(l.ctx); id != "" {
-		fields["xray_trace_id"] = id
-	}
 	if span := trace.SpanContextFromContext(l.ctx); span.IsValid() {
-		fields["trace_id"] = span.TraceID().String()
+		id := span.TraceID().String()
+		fields["trace_id"] = id
 		fields["span_id"] = span.SpanID().String()
 		// Active OTel context takes precedence over stale runtime/process headers.
-		fields["xray_trace_id"] = commons.FormatXRayTraceID(span.TraceID().String())
+		fields["xray_trace_id"] = commons.FormatXRayTraceID(id)
+	} else if id := invocation.TraceID(l.ctx); id != "" {
+		fields["xray_trace_id"] = id
 	}
 	l.current.mu.Lock()
 	for k, v := range l.current.persistent {
@@ -310,8 +312,11 @@ func (l *Logger) Log(level Level, message string, extra ...any) error {
 	if l.cfg.buffer.MaxBytes > 0 && !l.cfg.buffer.DisableFlushOnError && level >= ErrorLevel {
 		flushErr = l.FlushBuffer()
 	}
-	traceID := l.bufferTraceID()
-	buffer := l.cfg.buffer.MaxBytes > 0 && traceID != "" && level <= l.cfg.buffer.BufferAt
+	var traceID string
+	if l.cfg.buffer.MaxBytes > 0 && level <= l.cfg.buffer.BufferAt {
+		traceID = l.bufferTraceID()
+	}
+	buffer := traceID != ""
 	if !buffer && level < threshold {
 		return flushErr
 	}
