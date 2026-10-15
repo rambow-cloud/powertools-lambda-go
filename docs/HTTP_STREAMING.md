@@ -6,9 +6,21 @@ description: "Stream Go Lambda HTTP responses using Powertools, with streaming l
 
 Return a reader and send its content through the native Go Lambda streaming adapter. Deploy through a Lambda integration that supports response streaming.
 
+## Install
+
+Use Go 1.27 or newer:
+
+```sh
+CGO_ENABLED=0 go get github.com/rambow-cloud/powertools-lambda-go/eventhandler/http@v1.2.0
+CGO_ENABLED=0 go get github.com/rambow-cloud/powertools-lambda-go/logger@v1.2.0
+CGO_ENABLED=0 go get github.com/aws/aws-lambda-go@v1.55.0
+```
+
 ## Return a server-sent event
 
-The fragment runs in a setup function returning `error`, using the router and Lambda imports from the [HTTP guide](HTTP.md), plus `io`, `net/http` and `strings`. The application logs returned setup errors with Logger.
+This complete `main.go` includes the Lambda entry point, imports and setup error
+logging. `httpapi` is the Powertools router; `http` is the standard `net/http`
+package used for response headers.
 
 **Input**
 
@@ -19,21 +31,50 @@ GET /events
 **Code**
 
 ```go
-err := app.Get("/events", func(request *httpapi.RequestContext) (any, error) {
-    return httpapi.Response{
-        StatusCode: 200,
-        Headers: http.Header{"Content-Type": []string{"text/event-stream"}},
-        Body: strings.NewReader("data: ready\n\n"),
-    }, nil
-})
-if err != nil { return err }
-lambda.Start(httpapi.Streamify(func(ctx context.Context, event json.RawMessage, writer io.Writer) error {
-    return app.ResolveStream(ctx, event, writer)
-}))
-return nil
+package main
+
+import (
+	"context"
+	"encoding/json"
+	"io"
+	"net/http"
+	"os"
+	"strings"
+
+	"github.com/aws/aws-lambda-go/lambda"
+	httpapi "github.com/rambow-cloud/powertools-lambda-go/eventhandler/http"
+	"github.com/rambow-cloud/powertools-lambda-go/logger"
+)
+
+func main() {
+	appLog := logger.New(logger.WithServiceName("streaming-orders"))
+	if err := runStream(); err != nil {
+		if logErr := appLog.Error("Application failed", err); logErr != nil {
+			panic(logErr)
+		}
+		os.Exit(1)
+	}
+}
+
+func runStream() error {
+	app := httpapi.New(httpapi.Options{})
+	if err := app.Get("/events", func(request *httpapi.RequestContext) (any, error) {
+		return httpapi.Response{
+			StatusCode: 200,
+			Headers:    http.Header{"Content-Type": []string{"text/event-stream"}},
+			Body:       strings.NewReader("data: ready\n\n"),
+		}, nil
+	}); err != nil {
+		return err
+	}
+	lambda.Start(httpapi.Streamify(func(ctx context.Context, event json.RawMessage, writer io.Writer) error {
+		return app.ResolveStream(ctx, event, writer)
+	}))
+	return nil
+}
 ```
 
-Import `encoding/json` as `json` for the callback's `RawMessage` type.
+The callback uses the Lambda SDK's `encoding/json.RawMessage` type.
 
 **Output**
 

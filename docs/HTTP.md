@@ -79,20 +79,36 @@ Content-Type: application/json
 
 ## Read JSON and return a status code
 
+Save this as `orders.go` beside the application above. In `run`, call
+`registerCreateOrder(app)` after creating the router and return any registration
+error before starting Lambda.
+
 ```go
-err := app.Post("/orders", func(request *httpapi.RequestContext) (any, error) {
-    var order struct { Name string `json:"name"` }
-    if err := json.UnmarshalRead(request.Request.Body, &order); err != nil {
-        return nil, httpapi.NewHTTPError(400, "Expected a JSON order")
-    }
-    if order.Name == "" {
-        return nil, httpapi.NewHTTPError(400, "name is required")
-    }
-    return httpapi.Response{StatusCode: 201, Body: order}, nil
-})
+package main
+
+import (
+	json "encoding/json/v2"
+
+	httpapi "github.com/rambow-cloud/powertools-lambda-go/eventhandler/http"
+)
+
+func registerCreateOrder(app *httpapi.Router) error {
+	return app.Post("/orders", func(request *httpapi.RequestContext) (any, error) {
+		var order struct {
+			Name string `json:"name"`
+		}
+		if err := json.UnmarshalRead(request.Request.Body, &order); err != nil {
+			return nil, httpapi.NewHTTPError(400, "Expected a JSON order")
+		}
+		if order.Name == "" {
+			return nil, httpapi.NewHTTPError(400, "name is required")
+		}
+		return httpapi.Response{StatusCode: 201, Body: order}, nil
+	})
+}
 ```
 
-Handle the registration error during initialization. This example uses `encoding/json/v2`.
+The JSON decoder is imported explicitly from `encoding/json/v2`.
 
 **Request → response**
 

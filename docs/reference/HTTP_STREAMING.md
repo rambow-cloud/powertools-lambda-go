@@ -10,25 +10,42 @@ streaming-capable Lambda integration.
 
 ## Lambda handler
 
-This fragment uses the `httpapi` and `lambda` imports from the routing guide,
-plus `context`, `encoding/json`, `io`, `net/http` and `strings`. It runs in a setup function returning `error`; the application logs returned setup errors with Logger.
+This setup function includes all imports. Put it in `stream.go` beside your
+application entry point; call `runStream()` from `main` and log its returned setup
+error through Logger, as shown in the [complete guide](../HTTP_STREAMING.md).
+`httpapi` names the Powertools router; `http` names the standard library package.
+The raw event type is the Lambda SDK's `encoding/json.RawMessage`.
 
 ```go
-app := httpapi.New(httpapi.Options{})
-err := app.Get("/events", func(request *httpapi.RequestContext) (any, error) {
-    return httpapi.Response{
-        StatusCode: 200,
-        Headers: http.Header{"Content-Type": []string{"text/event-stream"}},
-        Body: strings.NewReader("data: ready\n\n"),
-    }, nil
-})
-if err != nil {
-    return err
+package main
+
+import (
+	"context"
+	"encoding/json"
+	"io"
+	"net/http"
+	"strings"
+
+	"github.com/aws/aws-lambda-go/lambda"
+	httpapi "github.com/rambow-cloud/powertools-lambda-go/eventhandler/http"
+)
+
+func runStream() error {
+	app := httpapi.New(httpapi.Options{})
+	if err := app.Get("/events", func(request *httpapi.RequestContext) (any, error) {
+		return httpapi.Response{
+			StatusCode: 200,
+			Headers:    http.Header{"Content-Type": []string{"text/event-stream"}},
+			Body:       strings.NewReader("data: ready\n\n"),
+		}, nil
+	}); err != nil {
+		return err
+	}
+	lambda.Start(httpapi.Streamify(func(ctx context.Context, event json.RawMessage, writer io.Writer) error {
+		return app.ResolveStream(ctx, event, writer)
+	}))
+	return nil
 }
-lambda.Start(httpapi.Streamify(func(ctx context.Context, event json.RawMessage, writer io.Writer) error {
-    return app.ResolveStream(ctx, event, writer)
-}))
-return nil
 ```
 
 Replace the sample reader with a context-aware incremental producer. Configure a streaming-capable Lambda integration when deploying; a buffered invocation does not prove client-side incremental delivery. The full [native streaming example](https://github.com/rambow-cloud/powertools-lambda-go/blob/main/examples/httpstream/main.go) includes Logger and OpenTelemetry. All builds use `CGO_ENABLED=0` and target `provided.al2023`.

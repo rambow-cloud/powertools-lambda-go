@@ -6,9 +6,20 @@ description: "Configure CORS and response compression middleware for Powertools 
 
 Add cross-origin response headers and compress large HTTP responses. These middleware are included in the HTTP module.
 
+## Install
+
+```sh
+CGO_ENABLED=0 go get github.com/rambow-cloud/powertools-lambda-go/eventhandler/http@v1.2.0
+```
+
+Both examples include their imports and belong to the same `package main` as your
+[HTTP application](HTTP.md#return-an-order-as-json). The `httpapi` alias names this
+project's router; it is separate from the standard library's `net/http`.
+
 ## Allow a browser origin
 
-Add CORS before serving requests, using the router from the [HTTP guide](HTTP.md).
+Save this as `cors.go` and call `addCORS(app)` after creating the router, before
+`lambda.Start`.
 
 **Input**
 
@@ -22,11 +33,19 @@ Access-Control-Request-Headers: content-type
 **Code**
 
 ```go
-app.Use(httpapi.CORS(httpapi.CORSOptions{
-    Origins:      []string{"https://app.example.com"},
-    AllowMethods: []string{"GET", "POST"},
-    AllowHeaders: []string{"Content-Type"},
-}))
+package main
+
+import (
+	httpapi "github.com/rambow-cloud/powertools-lambda-go/eventhandler/http"
+)
+
+func addCORS(app *httpapi.Router) {
+	app.Use(httpapi.CORS(httpapi.CORSOptions{
+		Origins:      []string{"https://app.example.com"},
+		AllowMethods: []string{"GET", "POST"},
+		AllowHeaders: []string{"Content-Type"},
+	}))
+}
 ```
 
 **Output**
@@ -43,8 +62,19 @@ The response above shows the preflight status and CORS headers. An ordinary allo
 
 ## Compress a response
 
+Save this as `compression.go` and call `addCompression(app)` after `addCORS(app)`,
+before starting Lambda.
+
 ```go
-app.Use(httpapi.Compress(httpapi.CompressionOptions{}))
+package main
+
+import (
+	httpapi "github.com/rambow-cloud/powertools-lambda-go/eventhandler/http"
+)
+
+func addCompression(app *httpapi.Router) {
+	app.Use(httpapi.Compress(httpapi.CompressionOptions{}))
+}
 ```
 
 For a response larger than 1,024 bytes and an acceptable `Accept-Encoding: gzip`, the HTTP response gains `Content-Encoding: gzip`. The Lambda proxy envelope carries a Base64-encoded compressed body; the HTTP client receives compressed bytes.

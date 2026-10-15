@@ -15,15 +15,27 @@ Install the metrics middleware:
 CGO_ENABLED=0 go get github.com/rambow-cloud/powertools-lambda-go/eventhandler/http/metrics@v1.2.0
 ```
 
-This fragment assumes an initialized `app` and imports for `httpmetrics`, `metrics`
-and runs in a function returning `error`. Create the root Metrics object once:
+Save this as `http_metrics.go` beside your HTTP entry point. Call
+`addLatencyMetrics(app)` once during setup and handle the returned error. Imports
+for the router, root Metrics utility and HTTP adapter are included:
 
 ```go
-requestMetrics, err := metrics.New(metrics.WithNamespace("Orders"))
-if err != nil {
-    return err
+package main
+
+import (
+	httpapi "github.com/rambow-cloud/powertools-lambda-go/eventhandler/http"
+	httpmetrics "github.com/rambow-cloud/powertools-lambda-go/eventhandler/http/metrics"
+	"github.com/rambow-cloud/powertools-lambda-go/metrics"
+)
+
+func addLatencyMetrics(app *httpapi.Router) error {
+	metric, err := metrics.New(metrics.WithNamespace("Orders"))
+	if err != nil {
+		return err
+	}
+	app.Use(httpmetrics.New(metric))
+	return nil
 }
-app.Use(httpmetrics.New(requestMetrics))
 ```
 
 Each request emits latency and error/fault metrics. To also count requests, use
@@ -37,11 +49,22 @@ Install the tracer middleware:
 CGO_ENABLED=0 go get github.com/rambow-cloud/powertools-lambda-go/eventhandler/http/tracer@v1.2.0
 ```
 
-Given an initialized `trace` from the [Tracer guide](../TRACER.md#see-a-handler-span-locally),
-and the `httptracer` import:
+Save this as `http_tracing.go` and call `addRequestTracing(app, tr)` during setup.
+Create `tr` once as shown in the [Tracer guide](../TRACER.md#see-a-handler-span-locally).
+The root utility and HTTP adapter have separate imports:
 
 ```go
-app.Use(httptracer.New(trace, httptracer.Options{DisableCaptureResponse: true}))
+package main
+
+import (
+	httpapi "github.com/rambow-cloud/powertools-lambda-go/eventhandler/http"
+	httptracer "github.com/rambow-cloud/powertools-lambda-go/eventhandler/http/tracer"
+	"github.com/rambow-cloud/powertools-lambda-go/tracer"
+)
+
+func addRequestTracing(app *httpapi.Router, tr *tracer.Tracer) {
+	app.Use(httptracer.New(tr, httptracer.Options{DisableCaptureResponse: true}))
+}
 ```
 
 The middleware creates route spans. Keep the outer `tracer.WrapHandler` to own the
@@ -50,17 +73,11 @@ Lambda invocation span and exporter flush, and configure an OTLP collector.
 ## Complete application
 
 The maintained [HTTP application](https://github.com/rambow-cloud/powertools-lambda-go/blob/main/examples/http/main.go)
-combines logging, request metrics, tracing, CORS and compression. Its imports are:
+combines logging, request metrics, tracing, CORS and compression. The full source,
+including every import and the Lambda entry point, is included here:
 
 ```go
-import (
-    httpapi "github.com/rambow-cloud/powertools-lambda-go/eventhandler/http"
-    httpmetrics "github.com/rambow-cloud/powertools-lambda-go/eventhandler/http/metrics"
-    httptracer "github.com/rambow-cloud/powertools-lambda-go/eventhandler/http/tracer"
-    "github.com/rambow-cloud/powertools-lambda-go/metrics"
-    "github.com/rambow-cloud/powertools-lambda-go/tracer"
-)
-
+--8<-- "examples/http/main.go"
 ```
 
 The root objects below are called `metric` and `tr` in the contract discussion.
@@ -82,10 +99,22 @@ does not acquire these dependencies and the tracer adapter uses OpenTelemetry.
 ### Optional request count
 
 Enable an explicit request counter when application dashboards need request volume
-or a denominator for error/fault ratios:
+or a denominator for error/fault ratios. Save this as `request_count.go` and call
+`addRequestCount(app, metric)` instead of the metrics registration above. `metric`
+is a root `*metrics.Metrics` created during setup:
 
 ```go
-app.Use(httpmetrics.New(metric, httpmetrics.Options{CaptureRequestCount: true}))
+package main
+
+import (
+	httpapi "github.com/rambow-cloud/powertools-lambda-go/eventhandler/http"
+	httpmetrics "github.com/rambow-cloud/powertools-lambda-go/eventhandler/http/metrics"
+	"github.com/rambow-cloud/powertools-lambda-go/metrics"
+)
+
+func addRequestCount(app *httpapi.Router, metric *metrics.Metrics) {
+	app.Use(httpmetrics.New(metric, httpmetrics.Options{CaptureRequestCount: true}))
+}
 ```
 
 The middleware adds `request=1` with unit `Count` to its existing request scope at
