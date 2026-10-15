@@ -1,0 +1,128 @@
+{
+  "issue": 248,
+  "verified_at": "2026-10-15",
+  "baseline_commit": "35f9d088e9ca96d5718f4ca1a793332c756c2f2c",
+  "source_sha256": {
+    "logger/logger.go": "b4380ec8d13a43d0ca4c722cece19256db074d19ec6f10cd993008aeb98b61c3",
+    "logger/encoding.go": "f629d39a1068b0e97578082a225d4555e9f34bc40e9214677f10d9ac54dd9aee",
+    "logger/benchmark_test.go": "d6d07f03eaad83bf2ec7fa371d0d25b0a84fcdc1318139b1420156e760f773e1",
+    "logger/performance_regression_test.go": "145b1c348fa8ff5e4b477c2cc354924ba386b275c71e1ad105c1071e00d97dc8"
+  },
+  "environment": {
+    "go": "go1.27.1",
+    "os": "windows",
+    "architecture": "amd64",
+    "CGO_ENABLED": "0",
+    "GOMAXPROCS": "2",
+    "cpu": "12th Gen Intel Core i5-12500H"
+  },
+  "command": "go test -p 1 -run '^$' -bench '^BenchmarkLogger($|Invocation)' -benchmem -benchtime=300ms -count=1 .",
+  "scope": "Single local measurements of the same benchmark source before and after; counting writer, no AWS runtime or stdout I/O latency. DirectJSON shares enrichment and fields but omits Logger normalization, ordering and synchronization. This does not establish Lambda latency or statistical performance budgets.",
+  "results": [
+    {
+      "benchmark": "BenchmarkLoggerInvocation/DirectJSON-2",
+      "before": {
+        "ns_per_op": 5613.0,
+        "output_bytes_per_op": 404.0,
+        "bytes_per_op": 2773,
+        "allocations_per_op": 47
+      },
+      "after": {
+        "ns_per_op": 4984.0,
+        "output_bytes_per_op": 404.0,
+        "bytes_per_op": 2773,
+        "allocations_per_op": 47
+      }
+    },
+    {
+      "benchmark": "BenchmarkLoggerInvocation/BoundINFO-2",
+      "before": {
+        "ns_per_op": 14750.0,
+        "output_bytes_per_op": 404.0,
+        "bytes_per_op": 9417,
+        "allocations_per_op": 193
+      },
+      "after": {
+        "ns_per_op": 6939.0,
+        "output_bytes_per_op": 404.0,
+        "bytes_per_op": 4448,
+        "allocations_per_op": 53
+      }
+    },
+    {
+      "benchmark": "BenchmarkLoggerInvocation/BindAndINFO-2",
+      "before": {
+        "ns_per_op": 14812.0,
+        "output_bytes_per_op": 404.0,
+        "bytes_per_op": 9704,
+        "allocations_per_op": 194
+      },
+      "after": {
+        "ns_per_op": 7764.0,
+        "output_bytes_per_op": 404.0,
+        "bytes_per_op": 4737,
+        "allocations_per_op": 54
+      }
+    },
+    {
+      "benchmark": "BenchmarkLoggerInvocation/WrappedINFO-2",
+      "before": {
+        "ns_per_op": 15696.0,
+        "output_bytes_per_op": 404.0,
+        "bytes_per_op": 11377,
+        "allocations_per_op": 208
+      },
+      "after": {
+        "ns_per_op": 7715.0,
+        "output_bytes_per_op": 404.0,
+        "bytes_per_op": 6409,
+        "allocations_per_op": 68
+      }
+    },
+    {
+      "benchmark": "BenchmarkLoggerInvocation/Filtered-2",
+      "before": {
+        "ns_per_op": 285.3,
+        "output_bytes_per_op": 0.0,
+        "bytes_per_op": 432,
+        "allocations_per_op": 5
+      },
+      "after": {
+        "ns_per_op": 16.45,
+        "output_bytes_per_op": 0.0,
+        "bytes_per_op": 0,
+        "allocations_per_op": 0
+      }
+    },
+    {
+      "benchmark": "BenchmarkLogger/Emitted-2",
+      "before": {
+        "ns_per_op": 9771.0,
+        "output_bytes_per_op": 208.0,
+        "bytes_per_op": 5592,
+        "allocations_per_op": 118
+      },
+      "after": {
+        "ns_per_op": 5249.0,
+        "output_bytes_per_op": 208.0,
+        "bytes_per_op": 2752,
+        "allocations_per_op": 34
+      }
+    },
+    {
+      "benchmark": "BenchmarkLogger/Filtered-2",
+      "before": {
+        "ns_per_op": 544.2,
+        "output_bytes_per_op": 0.0,
+        "bytes_per_op": 528,
+        "allocations_per_op": 4
+      },
+      "after": {
+        "ns_per_op": 15.68,
+        "output_bytes_per_op": 0.0,
+        "bytes_per_op": 0,
+        "allocations_per_op": 0
+      }
+    }
+  ]
+}
