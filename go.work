@@ -36,6 +36,8 @@ use (
 
 replace github.com/rambow-cloud/powertools-lambda-go v1.2.0 => .
 
+replace github.com/rambow-cloud/powertools-lambda-go v1.2.1-0.20261015225926-e300c9596f35 => .
+
 replace github.com/rambow-cloud/powertools-lambda-go/batch v1.2.0 => ./batch
 
 replace github.com/rambow-cloud/powertools-lambda-go/commons/awssdk v1.2.0 => ./commons/awssdk

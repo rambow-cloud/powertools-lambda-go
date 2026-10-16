@@ -108,7 +108,7 @@ func (jsonCompiler) Compile(ctx context.Context, input any, options CompileOptio
 		if err != nil {
 			return nil, err
 		}
-		value, err := jsonValue(jsonv1.RawMessage(raw))
+		value, err := decodeJSONValue(raw)
 		if err != nil {
 			return nil, err
 		}
@@ -167,7 +167,7 @@ func (v *jsonValidator) Validate(ctx context.Context, input any) (result []Issue
 		return nil, err
 	}
 	snapshot := jsonv1.RawMessage(raw)
-	value, err := jsonValue(snapshot)
+	value, err := decodeJSONValue(raw)
 	if err != nil {
 		return nil, err
 	}

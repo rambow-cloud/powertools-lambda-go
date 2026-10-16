@@ -1,8 +1,9 @@
 package logger
 
 import (
-	json "encoding/json/v2"
 	"fmt"
+
+	"github.com/rambow-cloud/powertools-lambda-go/internal/jsonvalue"
 )
 
 // CorrelationSource selects a built-in event location, not a JMESPath expression.
@@ -38,12 +39,8 @@ func ExtractCorrelationID(source CorrelationSource, event any) (any, error) {
 	default:
 		return nil, fmt.Errorf("unknown correlation source %q", source)
 	}
-	data, err := json.Marshal(event)
+	value, err := jsonvalue.Snapshot(event)
 	if err != nil {
-		return nil, err
-	}
-	var value any
-	if err = json.Unmarshal(data, &value); err != nil {
 		return nil, err
 	}
 	for _, key := range path {

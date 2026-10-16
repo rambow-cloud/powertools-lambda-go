@@ -78,6 +78,56 @@ statistical regression budget or predict Linux Lambda latency. CloudWatch/stdout
 I/O, CPU quotas, GC under large-event workloads and cold starts require separate
 measurements. No AWS benchmark was run for this change.
 
+## JSON v2 snapshot and normalization comparison (#250–#252)
+
+These changes keep JSON v2 and reduce conversions around it. An internal private
+copy handles ordinary JSON-shaped inputs for correlation extraction and JMESPath.
+Unsupported types, custom marshalers, raw JSON, invalid values, and deep/cyclic
+inputs retain the JSON v2 round trip. The copy preserves float64 numbers and
+default empty-container behavior; it does not bypass errors in unrelated fields.
+Validation decodes an existing serialized snapshot directly with exact-number
+options. Logger combines root preparation/normalization without callbacks and
+avoids unused array-index strings while preserving the general callback path.
+
+The same new benchmark sources run against `d991b5af2d0e` and the candidate.
+Measurements use Go 1.27.1, Windows amd64, `CGO_ENABLED=0`, `GOMAXPROCS=2`, and
+one 500ms run per case. Large Logger/correlation/JMESPath cases use 2,048 records
+with 512-byte messages. The large Validation case contains a 2 MiB string body;
+it is a different workload from the earlier array-event experiments.
+
+| Operation | Before ns/op | After ns/op | Before B/op | After B/op | Before allocs/op | After allocs/op |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| Invocation-bound INFO, 404 output bytes | 7,623 | 6,937 | 4,448 | 3,496 | 53 | 48 |
+| Large event log, 1,141,832 output bytes | 5,078,787 | 4,314,234 | 3,963,179 | 3,590,002 | 26,406 | 22,569 |
+| Large event correlation snapshot | 4,405,535 | 748,599 | 5,933,979 | 868,712 | 30,765 | 8,196 |
+| Large event JMESPath lookup | 4,207,010 | 790,587 | 5,963,999 | 868,767 | 30,764 | 8,197 |
+| Compiled Validation, small valid input | 5,044 | 4,184 | 2,321 | 2,241 | 55 | 52 |
+| Compiled Validation, large string input | 4,763,843 | 2,955,717 | 6,512,209 | 4,484,167 | 39 | 33 |
+
+The identical direct-JSON invocation control retains 47 allocations, 2,773 bytes
+and 404 output bytes. Filtered Logger calls retain zero allocations. Full raw
+benchmark output and candidate production-source hashes are recorded in
+[PERFORMANCE_JSON_V2_250.json](PERFORMANCE_JSON_V2_250.json).
+
+Run the maintained benchmarks from their owning modules with CGO disabled:
+
+```sh
+CGO_ENABLED=0 GOMAXPROCS=2 go test -run '^$' -bench 'Benchmark(Logger|CorrelationSnapshot)' -benchmem -benchtime=500ms -count=1 .
+CGO_ENABLED=0 GOMAXPROCS=2 go test -run '^$' -bench '^BenchmarkSearchSnapshot$' -benchmem -benchtime=500ms -count=1 .
+CGO_ENABLED=0 GOMAXPROCS=2 go test -run '^$' -bench 'BenchmarkValidation(Compiled|LargeSnapshot)' -benchmem -benchtime=500ms -count=1 .
+```
+
+For a baseline checkout without the new benchmark files, copy only the matching
+`snapshot_benchmark_test.go` from the candidate before measuring. The root
+`internal/jsonvalue` benchmark also compares the private copy with a JSON v2
+round-trip control in the same binary. These are descriptive local measurements,
+not a Lambda performance guarantee or permission to emit oversized cloud logs.
+No AWS tests, new codec/parser, external dependencies or release versions are
+included. Logger and JMESPath pin the internal root module to commit
+`e300c9596f35` because the released root v1.2.0 lacks the new snapshot helper.
+The corresponding Go pseudo-version and workspace mapping keep independent
+branch consumers buildable without filesystem replacements in module files.
+
 ## Measurement boundaries
 
 Construction and schema compilation happen outside the timed operations. Clocks

@@ -3,10 +3,38 @@ package logger
 import (
 	"bytes"
 	"context"
+	"encoding/json/jsontext"
+	"math"
 	"testing"
 
 	"github.com/aws/aws-lambda-go/events"
 )
+
+func TestCorrelationSnapshotSemantics(t *testing.T) {
+	input := map[string]any{"id": map[string]any{"number": uint64(9007199254740993), "empty": []any(nil)}}
+	got, err := ExtractCorrelationID(EventBridge, input)
+	if err != nil {
+		t.Fatal(err)
+	}
+	object := got.(map[string]any)
+	if object["number"] != float64(9007199254740993) || object["empty"] == nil {
+		t.Fatal(object)
+	}
+	object["number"] = false
+	if input["id"].(map[string]any)["number"] != uint64(9007199254740993) {
+		t.Fatal("returned caller-owned object")
+	}
+	for _, event := range []any{
+		map[string]any{"id": "valid", "unused": math.Inf(1)},
+		map[string]any{"id": "valid", "unused": make(chan int)},
+		jsontext.Value(`{"id":"valid","unused":1e1000}`),
+		jsontext.Value(`{"id":"valid","unused":{"x":1,"x":2}}`),
+	} {
+		if _, err := ExtractCorrelationID(EventBridge, event); err == nil {
+			t.Fatalf("accepted invalid unrelated member: %T", event)
+		}
+	}
+}
 
 func TestBuiltInCorrelationSources(t *testing.T) {
 	for _, source := range []CorrelationSource{APIGatewayREST, APIGatewayHTTP, AppSyncAuthorizer, AppSyncResolver, ApplicationLoadBalancer, EventBridge, LambdaFunctionURL, S3ObjectLambda, VPCLattice} {

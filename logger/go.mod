@@ -4,7 +4,7 @@ go 1.27
 
 require (
 	github.com/aws/aws-lambda-go v1.55.0
-	github.com/rambow-cloud/powertools-lambda-go v1.2.0
+	github.com/rambow-cloud/powertools-lambda-go v1.2.1-0.20261015225926-e300c9596f35
 	go.opentelemetry.io/otel/trace v1.46.0
 )
 
