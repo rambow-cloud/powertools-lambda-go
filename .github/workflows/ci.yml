@@ -81,6 +81,8 @@ jobs:
         run: uv run --no-project python tools/licenses.py --check
       - name: Enforce first-party JSON v2 APIs
         run: go run ./tools/jsonapi
+      - name: Install pinned Go vulnerability scanner
+        run: go install golang.org/x/vuln/cmd/govulncheck@v1.9.0
       - name: Test, vet, tidy-check, and verify independent consumers
         env:
           CI_MODULES: ${{ needs.changes.outputs.modules }}
@@ -99,7 +101,7 @@ jobs:
           full = os.environ['CI_FULL']
           if full not in ('true', 'false'):
               raise ValueError('Missing or invalid full-regression selection')
-          command = ['uv', 'run', '--no-project', 'python', 'tools/modules.py', 'check']
+          command = ['uv', 'run', '--no-project', 'python', 'tools/modules.py', 'check', '--vulncheck', 'govulncheck']
           if full == 'false':
               for directory in modules:
                   command.extend(['--only', directory])
@@ -134,7 +136,9 @@ jobs:
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: module-verification-${{ github.sha }}
-          path: dist/modules/check-*/progress.json
+          path: |
+            dist/modules/check-*/progress.json
+            dist/modules/check-*/sources/**/govulncheck-linux-*.txt
           if-no-files-found: ignore
           retention-days: 7
 

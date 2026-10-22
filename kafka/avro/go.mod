@@ -1,6 +1,6 @@
 module github.com/rambow-cloud/powertools-lambda-go/kafka/avro
 
-go 1.27
+go 1.27.3
 
 require (
 	github.com/hamba/avro/v2 v2.31.0

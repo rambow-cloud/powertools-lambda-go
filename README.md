@@ -15,7 +15,7 @@ AWS distribution.
 
 ## Install
 
-Use Go 1.27 or newer for the current source. Lambda binaries target
+Use Go 1.27.3 or newer for the current source. Lambda binaries target
 `provided.al2023`, with Linux `amd64` (`x86_64`) or `arm64`. Keep CGO disabled.
 
 The latest stable version is [v1.2.0](https://github.com/rambow-cloud/powertools-lambda-go/releases/tag/v1.2.0).

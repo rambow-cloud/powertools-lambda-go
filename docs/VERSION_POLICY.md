@@ -8,6 +8,11 @@ and v1.1.0/v1.0.0/v0.2.0 stable cohorts remain available as historical versions.
 
 ## Examples and installation
 
+Current `main` source requires Go 1.27.3 or newer, including the standard-library
+security fixes released in October 2026. Published v1.2.0 keeps its original
+Go 1.27 directive; rebuild applications with a patched toolchain rather than
+assuming a dependency update patches an existing Lambda binary.
+
 - Installation commands identify the applicable published version. Avoid
   `@latest` when reproducing a specific behavior.
 - Runnable examples record dependencies in `go.mod`/`go.sum`. Development modules

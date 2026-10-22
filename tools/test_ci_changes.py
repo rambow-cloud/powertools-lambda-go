@@ -122,7 +122,7 @@ class RoutingTests(unittest.TestCase):
     def test_modules_job_uses_structured_scoped_arguments_and_full_mode(self):
         step = next(item for item in WORKFLOW["jobs"]["test"]["steps"] if item.get("name") == "Test, vet, tidy-check, and verify independent consumers")
         script = step["run"].split("\n", 1)[1].rstrip().removesuffix("\nPY")
-        base = ["uv", "run", "--no-project", "python", "tools/modules.py", "check"]
+        base = ["uv", "run", "--no-project", "python", "tools/modules.py", "check", "--vulncheck", "govulncheck"]
         for full, expected in (("true", base), ("false", base + ["--only", "parameters", "--only", "logger"])):
             with patch.dict(os.environ, CI_MODULES='["parameters", "logger"]', CI_FULL=full), patch.object(subprocess, "run") as run:
                 exec(script, {})

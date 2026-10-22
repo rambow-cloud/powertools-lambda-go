@@ -144,9 +144,18 @@ remaining v1 audit are tracked in [v1 readiness](V1_READINESS.md).
 ## 3. Implement and verify
 
 Read [AGENTS.md](https://github.com/rambow-cloud/powertools-lambda-go/blob/main/AGENTS.md)
-and [module development](MODULES.md). Use Go 1.27 or newer, uv, and Python 3.14
+and [module development](MODULES.md). Use Go 1.27.3 or newer, uv, and Python 3.14
 for documentation. Always set `CGO_ENABLED=0`; do not run the race detector.
 Root `go test ./...` does **not** cover nested modules.
+
+CI installs `govulncheck` v1.9.0 and scans the same isolated module archives used
+for packaged acceptance, with `GOWORK=off` and `CGO_ENABLED=0`, for Linux amd64
+and arm64. Reachable vulnerable symbols fail the check; verbose scan logs also
+identify affected imported packages and module versions that are not called.
+To include the same scans locally, install that scanner and pass
+`--vulncheck govulncheck` to `tools/modules.py check`. The scanner queries the
+current Go vulnerability database; a clean result is dated evidence rather
+than a guarantee against future advisories.
 
 Use `encoding/json/v2` for JSON serialization and `encoding/json/jsontext` for
 tokens, streams and new raw JSON values. Do not use v1 operations or legacy

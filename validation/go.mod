@@ -1,6 +1,6 @@
 module github.com/rambow-cloud/powertools-lambda-go/validation
 
-go 1.27
+go 1.27.3
 
 require (
 	github.com/dlclark/regexp2/v2 v2.8.0
@@ -8,7 +8,7 @@ require (
 	github.com/rambow-cloud/powertools-lambda-go/commons/regex v1.2.0
 	github.com/rambow-cloud/powertools-lambda-go/jmespath v1.2.0
 	github.com/santhosh-tekuri/jsonschema/v6 v6.0.3
-	golang.org/x/text v0.14.0
+	golang.org/x/text v0.43.0
 )
 
 require (

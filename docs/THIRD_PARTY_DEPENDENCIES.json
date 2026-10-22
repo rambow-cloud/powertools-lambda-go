@@ -1,5 +1,5 @@
 {
-  "date": "2026-09-26",
+  "date": "2026-10-23",
   "scope": "Direct declared Go requirements and direct npm reference tools; not a transitive binary SBOM.",
   "go": [
     {
@@ -439,7 +439,7 @@
     },
     {
       "module": "golang.org/x/text",
-      "version": "v0.14.0",
+      "version": "v0.43.0",
       "license": "BSD-3-Clause",
       "used_by": [
         "validation"
@@ -447,7 +447,7 @@
       "license_files": [
         {
           "name": "LICENSE",
-          "sha256": "2d36597f7117c38b006835ae7f537487207d8ec407aa9d9980794b2030cbc067"
+          "sha256": "911f8f5782931320f5b8d1160a76365b83aea6447ee6c04fa6d5591467db9dad"
         }
       ]
     },

@@ -48,7 +48,7 @@ def environment():
     # outside the root module's package walk, including pre-module dependencies.
     boundary = ROOT / "dist/go.mod"
     if not boundary.exists():
-        boundary.write_text("module example.com/powertools-build-artifacts\n\ngo 1.27\n", encoding="utf-8")
+        boundary.write_text("module example.com/powertools-build-artifacts\n\ngo 1.27.3\n", encoding="utf-8")
     env.update(GOCACHE=str(cache), GOTMPDIR=str(temporary))
     return env
 
@@ -177,7 +177,10 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("command", choices=("list", "tidy", "check"))
     parser.add_argument("--only", action="append", default=[], metavar="DIRECTORY", help="Check selected module directories; save a separate scoped report")
+    parser.add_argument("--vulncheck", metavar="EXECUTABLE", help="Scan each packaged module for reachable vulnerabilities on Linux amd64 and arm64")
     args = parser.parse_args()
+    if args.vulncheck and args.command != "check":
+        parser.error("--vulncheck requires check")
     selected = set(args.only)
     if selected and (args.command != "check" or not selected <= {m["directory"] for m in MODULES}):
         parser.error("--only requires check and known module directories")
@@ -240,7 +243,7 @@ def main():
         # Test the extracted release-shaped archive, including its own test fixtures.
         consumer = session / "consumers" / module["directory"]
         consumer.mkdir(parents=True, exist_ok=True)
-        consumer.joinpath("go.mod").write_text(f"module example.com/consumer\n\ngo 1.27\n\nrequire {name} {module['version']}\n", encoding="utf-8")
+        consumer.joinpath("go.mod").write_text(f"module example.com/consumer\n\ngo 1.27.3\n\nrequire {name} {module['version']}\n", encoding="utf-8")
         consumer.joinpath("go.sum").write_text(pinned_sums, encoding="utf-8")
         downloaded = json.loads(run("go", "mod", "download", "-json", name, cwd=consumer, env=env))
         extracted = session / "sources" / module["directory"]
@@ -258,6 +261,12 @@ def main():
         run("go", "test", "-mod=readonly", *test_executor, "./...", cwd=extracted, env=module_env)
         run("go", "vet", "-mod=readonly", "./...", cwd=extracted, env=module_env)
         item = {"path": name, "directory": module["directory"], "public": module["public"], "version": module["version"], "archive_sha256": digest, "tests": True, "vet": True, "tidy": True}
+        if args.vulncheck:
+            for architecture in ("amd64", "arm64"):
+                scan_env = dict(env, GOOS="linux", GOARCH=architecture, GOMEMLIMIT="1GiB", GOGC="100")
+                scan = run(args.vulncheck, "-show=verbose,version", "./...", cwd=extracted, env=scan_env)
+                (extracted / f"govulncheck-linux-{architecture}.txt").write_text(scan, encoding="utf-8")
+            item["vulnerability_scan"] = {"level": "symbol", "os": "linux", "architectures": ["amd64", "arm64"], "reachable_findings": 0}
         if module.get("test_os") == "linux":
             item.update(binary_os="linux", binary_architecture="amd64", tests_runtime="docker-linux-amd64" if test_executor else "native-linux")
         if module["public"]:
