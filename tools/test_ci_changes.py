@@ -24,6 +24,14 @@ exec(compile(SCRIPT.removeprefix("python3 - <<'PY'\n").rstrip().removesuffix("\n
 
 
 class SecurityEvidenceTests(unittest.TestCase):
+    def test_upstream_tool_graph_does_not_relax_runtime_or_core_isolation(self):
+        protobuf = "google.golang.org/protobuf"
+        module_tools.check_isolation({"directory": "kafka/avro"}, [protobuf], {"github.com/iskorotkov/avro/v2"})
+        with self.assertRaisesRegex(RuntimeError, "Optional dependency leaked"):
+            module_tools.check_isolation({"directory": "kafka/avro"}, [protobuf], {protobuf})
+        with self.assertRaisesRegex(RuntimeError, "core must remain free"):
+            module_tools.check_isolation({"directory": "."}, [protobuf], set())
+
     def test_failed_scanner_preserves_evidence_and_blocks_acceptance(self):
         with tempfile.TemporaryDirectory() as directory:
             log = Path(directory) / "scan.txt"

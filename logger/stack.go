@@ -26,7 +26,7 @@ func (e *stackError) Unwrap() error { return e.err }
 // WithStack attaches the current call stack without changing the error's message or identity chain.
 // Nil remains nil; an existing stack along a single unwrap chain is retained.
 // Joined branches keep their own stacks; wrapping a join captures its aggregation site.
-// This Preview is available only from main and is not included in v1.2.0.
+// This Preview is not included in v1.2.0.
 func WithStack(err error) error {
 	if err == nil {
 		return nil

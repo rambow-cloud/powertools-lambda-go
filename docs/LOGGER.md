@@ -93,7 +93,7 @@ This example targets stable **v1.2.0**, which does not automatically collect err
 
 ## Error stacks and panic logging (Preview)
 
-> This Preview is available only from main and is not included in v1.2.0.
+> This Preview is not included in v1.2.0.
 
 Install it explicitly in your application:
 

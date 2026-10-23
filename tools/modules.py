@@ -142,7 +142,7 @@ def external_sums(path):
     return "".join(line + "\n" for line in path.read_text(encoding="utf-8").splitlines() if line.split()[0] != BASE and not line.startswith(BASE + "/"))
 
 
-def check_isolation(module, dependencies):
+def check_isolation(module, dependencies, runtime_dependencies=None):
     directory = module["directory"]
     if directory in {".", "eventhandler/http", "eventhandler/appsyncevents", "eventhandler/appsyncgraphql", "eventhandler/bedrock", "kafka", "datamasking"} and dependencies:
         raise RuntimeError("The core must remain free of external module dependencies")
@@ -171,7 +171,8 @@ def check_isolation(module, dependencies):
         forbidden += ["github.com/jmespath-community/"]
     if directory == "batch":
         forbidden += ["github.com/aws/aws-sdk-go", "github.com/aws/aws-xray-sdk-go", "go.opentelemetry.io", "github.com/jmespath-community/"]
-    if any(name.startswith(prefix) for name in dependencies for prefix in forbidden):
+    checked = dependencies if runtime_dependencies is None else runtime_dependencies
+    if any(name.startswith(prefix) for name in checked for prefix in forbidden):
         raise RuntimeError(f"Optional dependency leaked into {directory}: {dependencies}")
 
 
@@ -277,7 +278,18 @@ def main():
             run("go", "mod", "tidy", cwd=consumer, env=env)
             dependencies = run("go", "list", "-m", "-f", "{{.Path}}", "all", cwd=consumer, env=env).splitlines()[1:]
             external = [dependency for dependency in dependencies if dependency != BASE and not dependency.startswith(BASE + "/")]
-            check_isolation(module, external)
+            runtime_dependencies = None
+            if module["directory"] == "kafka/avro":
+                # The maintained codec declares upstream lint tools that depend on
+                # Protobuf. Keep the full graph inventory, but verify that these
+                # optional packages never enter either Lambda runtime closure.
+                runtime_dependencies = set()
+                for architecture in ("amd64", "arm64"):
+                    runtime_env = dict(env, GOOS="linux", GOARCH=architecture)
+                    runtime_dependencies.update(run("go", "list", "-deps", "-f", "{{with .Module}}{{.Path}}{{end}}", "./...", cwd=consumer, env=runtime_env).splitlines())
+                item["runtime_external_modules"] = sorted(dependency for dependency in runtime_dependencies
+                                                          if dependency not in {"example.com/consumer", BASE} and not dependency.startswith(BASE + "/"))
+            check_isolation(module, external, runtime_dependencies)
             binary = consumer / ("consumer.exe" if os.name == "nt" and module.get("test_os") != "linux" else "consumer")
             run("go", "build", "-mod=readonly", "-o", str(binary), ".", cwd=consumer, env=module_env)
             item.update(consumer_build=True, external_modules=external, binary_bytes=binary.stat().st_size)

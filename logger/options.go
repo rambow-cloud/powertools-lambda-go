@@ -98,11 +98,11 @@ type BufferOptions struct {
 type Option func(*config)
 
 // WithStackTrace enables attached stacks and logging-site fallback stacks on errors.
-// It defaults to true. This Preview is available only from main and is not included in v1.2.0.
+// It defaults to true. This Preview is not included in v1.2.0.
 func WithStackTrace(enabled bool) Option { return func(c *config) { c.stackTrace = enabled } }
 
 // WithPanicLogging enables the outermost handler wrapper's ERROR record before rethrowing a panic.
-// It defaults to true. This Preview is available only from main and is not included in v1.2.0.
+// It defaults to true. This Preview is not included in v1.2.0.
 func WithPanicLogging(enabled bool) Option { return func(c *config) { c.panicLogging = enabled } }
 
 func WithServiceName(name string) Option {
