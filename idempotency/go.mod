@@ -6,9 +6,9 @@ require (
 	github.com/aws/aws-sdk-go-v2 v1.47.0
 	github.com/aws/aws-sdk-go-v2/feature/dynamodb/attributevalue v1.21.4
 	github.com/aws/aws-sdk-go-v2/service/dynamodb v1.68.0
-	github.com/rambow-cloud/powertools-lambda-go v1.2.1-0.20261015225926-e300c9596f35
-	github.com/rambow-cloud/powertools-lambda-go/commons/awssdk v1.2.0
-	github.com/rambow-cloud/powertools-lambda-go/jmespath v1.2.0
+	github.com/rambow-cloud/powertools-lambda-go v1.3.0
+	github.com/rambow-cloud/powertools-lambda-go/commons/awssdk v1.3.0
+	github.com/rambow-cloud/powertools-lambda-go/jmespath v1.3.0
 )
 
 require (
