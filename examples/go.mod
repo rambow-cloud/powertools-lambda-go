@@ -7,22 +7,22 @@ require (
 	github.com/aws/aws-sdk-go-v2 v1.47.0
 	github.com/aws/aws-sdk-go-v2/config v1.33.4
 	github.com/aws/aws-sdk-go-v2/service/dynamodb v1.68.0
-	github.com/rambow-cloud/powertools-lambda-go/batch v1.2.0
-	github.com/rambow-cloud/powertools-lambda-go/eventhandler/appsyncevents v1.2.0
-	github.com/rambow-cloud/powertools-lambda-go/eventhandler/appsyncgraphql v1.2.0
-	github.com/rambow-cloud/powertools-lambda-go/eventhandler/bedrock v1.2.0
-	github.com/rambow-cloud/powertools-lambda-go/eventhandler/http v1.2.0
-	github.com/rambow-cloud/powertools-lambda-go/eventhandler/http/metrics v1.2.0
-	github.com/rambow-cloud/powertools-lambda-go/eventhandler/http/tracer v1.2.0
-	github.com/rambow-cloud/powertools-lambda-go/idempotency v1.2.0
-	github.com/rambow-cloud/powertools-lambda-go/jmespath v1.2.0
-	github.com/rambow-cloud/powertools-lambda-go/kafka v1.2.0
-	github.com/rambow-cloud/powertools-lambda-go/logger v1.2.0
-	github.com/rambow-cloud/powertools-lambda-go/metrics v1.2.0
-	github.com/rambow-cloud/powertools-lambda-go/parser v1.2.0
-	github.com/rambow-cloud/powertools-lambda-go/signer v1.2.0
-	github.com/rambow-cloud/powertools-lambda-go/tracer v1.2.0
-	github.com/rambow-cloud/powertools-lambda-go/validation v1.2.0
+	github.com/rambow-cloud/powertools-lambda-go/batch v1.3.0
+	github.com/rambow-cloud/powertools-lambda-go/eventhandler/appsyncevents v1.3.0
+	github.com/rambow-cloud/powertools-lambda-go/eventhandler/appsyncgraphql v1.3.0
+	github.com/rambow-cloud/powertools-lambda-go/eventhandler/bedrock v1.3.0
+	github.com/rambow-cloud/powertools-lambda-go/eventhandler/http v1.3.0
+	github.com/rambow-cloud/powertools-lambda-go/eventhandler/http/metrics v1.3.0
+	github.com/rambow-cloud/powertools-lambda-go/eventhandler/http/tracer v1.3.0
+	github.com/rambow-cloud/powertools-lambda-go/idempotency v1.3.0
+	github.com/rambow-cloud/powertools-lambda-go/jmespath v1.3.0
+	github.com/rambow-cloud/powertools-lambda-go/kafka v1.3.0
+	github.com/rambow-cloud/powertools-lambda-go/logger v1.3.0
+	github.com/rambow-cloud/powertools-lambda-go/metrics v1.3.0
+	github.com/rambow-cloud/powertools-lambda-go/parser v1.3.0
+	github.com/rambow-cloud/powertools-lambda-go/signer v1.3.0
+	github.com/rambow-cloud/powertools-lambda-go/tracer v1.3.0
+	github.com/rambow-cloud/powertools-lambda-go/validation v1.3.0
 	go.opentelemetry.io/otel/sdk v1.46.0
 )
 
@@ -57,9 +57,9 @@ require (
 	github.com/google/uuid v1.6.0 // indirect
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.30.0 // indirect
 	github.com/jmespath-community/go-jmespath v1.1.1 // indirect
-	github.com/rambow-cloud/powertools-lambda-go v1.2.1-0.20261015225926-e300c9596f35 // indirect
-	github.com/rambow-cloud/powertools-lambda-go/commons/awssdk v1.2.0 // indirect
-	github.com/rambow-cloud/powertools-lambda-go/commons/regex v1.2.0 // indirect
+	github.com/rambow-cloud/powertools-lambda-go v1.3.0 // indirect
+	github.com/rambow-cloud/powertools-lambda-go/commons/awssdk v1.3.0 // indirect
+	github.com/rambow-cloud/powertools-lambda-go/commons/regex v1.3.0 // indirect
 	github.com/santhosh-tekuri/jsonschema/v6 v6.0.3 // indirect
 	go.opentelemetry.io/auto/sdk v1.2.1 // indirect
 	go.opentelemetry.io/contrib/instrumentation/github.com/aws/aws-sdk-go-v2/otelaws v0.71.0 // indirect

@@ -4,9 +4,9 @@ go 1.27.3
 
 require (
 	github.com/dlclark/regexp2/v2 v2.8.0
-	github.com/rambow-cloud/powertools-lambda-go v1.2.1-0.20261015225926-e300c9596f35
-	github.com/rambow-cloud/powertools-lambda-go/commons/regex v1.2.0
-	github.com/rambow-cloud/powertools-lambda-go/jmespath v1.2.0
+	github.com/rambow-cloud/powertools-lambda-go v1.3.0
+	github.com/rambow-cloud/powertools-lambda-go/commons/regex v1.3.0
+	github.com/rambow-cloud/powertools-lambda-go/jmespath v1.3.0
 	github.com/santhosh-tekuri/jsonschema/v6 v6.0.3
 	golang.org/x/text v0.43.0
 )
