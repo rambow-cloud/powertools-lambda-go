@@ -9,10 +9,10 @@ Write JSON logs with searchable fields, service names and Lambda request context
 
 ## Install
 
-Use Go 1.27 or newer:
+Use Go 1.27.3 or newer:
 
 ```sh
-CGO_ENABLED=0 go get github.com/rambow-cloud/powertools-lambda-go/logger@v1.2.0
+CGO_ENABLED=0 go get github.com/rambow-cloud/powertools-lambda-go/logger@v1.3.0
 ```
 
 ## Write your first log
@@ -89,24 +89,25 @@ if err := appLog.Error("Payment failed", paymentErr); err != nil {
 
 The record has `level: "ERROR"`, `message: "Payment failed"` and `error.message: "card declined"`. It is written to stderr. Logging it does not return the business error from your handler.
 
-This example targets stable **v1.2.0**, which does not automatically collect error stacks or log handler panics. The following Preview has different defaults.
+In **v1.3.0**, error logs also include a stack by default, as shown in the Preview below. Historical v1.2.0 does not automatically collect error stacks or log handler panics.
 
 ## Error stacks and panic logging (Preview)
 
-> This Preview is not included in v1.2.0.
+> This Preview is included in v1.3.0 and main. It is not included in v1.2.0.
 
-Install it explicitly in your application:
+Install the published Preview in your application:
 
 ```sh
-CGO_ENABLED=0 go get github.com/rambow-cloud/powertools-lambda-go/logger@main
+CGO_ENABLED=0 go get github.com/rambow-cloud/powertools-lambda-go/logger@v1.3.0
 ```
 
-Omitting a version does not select `main`. Go resolves a branch to a pseudo-version;
+To use development source instead, select `logger@main`. Omitting a version does
+not select `main`. Go resolves a branch to a pseudo-version;
 use `@<commit-SHA>` instead of `@main` to pin a preview. See
 [Go version queries](https://go.dev/ref/mod#version-queries).
 If a module proxy still resolves `main` to an older commit, select the intended
 main commit SHA explicitly.
-The stable installation above and its examples continue to target v1.2.0.
+The installation above targets v1.3.0, including these Preview defaults.
 
 ### Attach the error's source
 
@@ -196,7 +197,7 @@ appLog := logger.New(
 )
 ```
 
-Both options default to `true` on main and can be overridden on child loggers.
+Both options default to `true` in v1.3.0 and on main. Child loggers can override them.
 `WithStackTrace(false)` suppresses attached, fallback and panic stack fields;
 `WithPanicLogging(false)` suppresses the new automatic panic record. Disable both
 to retain the previous logging behavior. These options do not exist in v1.2.0.

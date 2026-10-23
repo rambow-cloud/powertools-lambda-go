@@ -8,7 +8,7 @@ Match and replace text with ECMAScript-style captures and replacement tokens. Th
 
 ## Keep an account prefix
 
-Install `commons/regex@v1.2.0` and `logger@v1.2.0`, importing them as `regex` and `logger`.
+Install `commons/regex@v1.3.0` and `logger@v1.3.0`, importing them as `regex` and `logger`.
 
 **Input**
 

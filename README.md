@@ -18,7 +18,7 @@ AWS distribution.
 Use Go 1.27.3 or newer for the current source. Lambda binaries target
 `provided.al2023`, with Linux `amd64` (`x86_64`) or `arm64`. Keep CGO disabled.
 
-The latest stable version is [v1.2.0](https://github.com/rambow-cloud/powertools-lambda-go/releases/tag/v1.2.0).
+The latest stable version is [v1.3.0](https://github.com/rambow-cloud/powertools-lambda-go/releases/tag/v1.3.0).
 This README follows `main`; the installation and minimal example below use that
 published version. See [version policy](docs/VERSION_POLICY.md) for released APIs
 versus development changes.
@@ -28,7 +28,7 @@ From a new application directory in PowerShell:
 ```powershell
 $env:CGO_ENABLED = '0'
 go mod init example.com/hello
-go get github.com/rambow-cloud/powertools-lambda-go/logger@v1.2.0 github.com/aws/aws-lambda-go@v1.55.0
+go get github.com/rambow-cloud/powertools-lambda-go/logger@v1.3.0 github.com/aws/aws-lambda-go@v1.55.0
 ```
 
 Each utility has its own module. Install the modules you use; see
@@ -112,7 +112,7 @@ The [quickstart](docs/GETTING_STARTED.md) shows repository packaging and
 ## Documentation
 
 Read the [documentation site](https://powertools-lambda-go.rambow.cloud/) or
-[Go package documentation](https://pkg.go.dev/github.com/rambow-cloud/powertools-lambda-go/logger@v1.2.0).
+[Go package documentation](https://pkg.go.dev/github.com/rambow-cloud/powertools-lambda-go/logger@v1.3.0).
 
 | Area | Guides |
 | --- | --- |

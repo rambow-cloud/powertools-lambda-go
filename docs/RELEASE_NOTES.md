@@ -6,6 +6,26 @@ description: "Read published Powertools for Go release notes, stable and prerele
 
 All 27 maintained modules share one version. [Browse all GitHub Releases](https://github.com/rambow-cloud/powertools-lambda-go/releases) for full changelogs.
 
+## v1.3.0
+
+2026-10-23 · [GitHub Release](https://github.com/rambow-cloud/powertools-lambda-go/releases/tag/v1.3.0)
+
+### Features
+
+- **Logger (Preview):** Attach source stacks with `WithStack`, add a logging-site stack to ordinary errors by default, and record handler panics before rethrowing the original value. `WithStackTrace(false)` and `WithPanicLogging(false)` disable these defaults. The Preview is included in v1.3.0 and main; v1.2.0 does not provide these APIs. ([#242](https://github.com/rambow-cloud/powertools-lambda-go/pull/242))
+
+### Security and fixes
+
+- Require **Go 1.27.3 or newer** for the patched standard library. Update tracing dependencies to `golang.org/x/net v0.61.0`, `golang.org/x/crypto v0.58.0` in the selected graph and gRPC v1.83.2; update Unicode text handling to v0.43.0. Rebuild deployed Lambda binaries with the patched toolchain. ([#256](https://github.com/rambow-cloud/powertools-lambda-go/pull/256))
+- **Avro:** Replace the archived codec with the maintained `github.com/iskorotkov/avro/v2 v2.34.0`, retaining cumulative collection bounds and adding explicit codec allocation limits. ([#256](https://github.com/rambow-cloud/powertools-lambda-go/pull/256))
+- **Protobuf:** Align truncated short-prefix diagnostics with patched protobufjs v7.6.6. Audit the pinned reference tooling against the official npm registry during CI. ([#260](https://github.com/rambow-cloud/powertools-lambda-go/pull/260))
+- Preserve native boundary behavior in Signer, Data Masking/KMS, Avro, AppSync GraphQL and Bedrock error cases. See the consolidated Release for individual fixes. ([#233](https://github.com/rambow-cloud/powertools-lambda-go/pull/233))
+
+### Performance and verification
+
+- Reduce Logger filtering, correlation and normalization allocations; reuse bounded private snapshots for ordinary JSON-shaped data in Commons/JMESPath and decode Validation snapshots directly. JSON v2 remains the fallback for custom and other unsupported fast paths. ([#249](https://github.com/rambow-cloud/powertools-lambda-go/pull/249), [#253](https://github.com/rambow-cloud/powertools-lambda-go/pull/253))
+- Publish one Release and 27 matching module tags. The deprecated X-Ray SDK adapter remains excluded. See [public publication acceptance](RELEASE_ACCEPTANCE_V1_3_0.json) and [scoped security acceptance](SECURITY_ACCEPTANCE_V1_3_0.json) for source identity, checks and evidence boundaries.
+
 ## v1.2.0
 
 2026-10-13 · [GitHub Release](https://github.com/rambow-cloud/powertools-lambda-go/releases/tag/v1.2.0)

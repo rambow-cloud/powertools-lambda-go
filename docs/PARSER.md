@@ -8,11 +8,11 @@ Validate incoming data and convert it into typed Go values. Use built-in event s
 
 ## Install
 
-Use Go 1.27 or newer:
+Use Go 1.27.3 or newer:
 
 ```sh
-CGO_ENABLED=0 go get github.com/rambow-cloud/powertools-lambda-go/parser@v1.2.0
-CGO_ENABLED=0 go get github.com/rambow-cloud/powertools-lambda-go/logger@v1.2.0
+CGO_ENABLED=0 go get github.com/rambow-cloud/powertools-lambda-go/parser@v1.3.0
+CGO_ENABLED=0 go get github.com/rambow-cloud/powertools-lambda-go/logger@v1.3.0
 ```
 
 ## Parse an order

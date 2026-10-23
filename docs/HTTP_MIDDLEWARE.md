@@ -9,7 +9,7 @@ Add cross-origin response headers and compress large HTTP responses. These middl
 ## Install
 
 ```sh
-CGO_ENABLED=0 go get github.com/rambow-cloud/powertools-lambda-go/eventhandler/http@v1.2.0
+CGO_ENABLED=0 go get github.com/rambow-cloud/powertools-lambda-go/eventhandler/http@v1.3.0
 ```
 
 Both examples include their imports and belong to the same `package main` as your

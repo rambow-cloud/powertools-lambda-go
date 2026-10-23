@@ -1,6 +1,6 @@
 # Logger stacks (Preview)
 
-This Preview is not included in v1.2.0.
+This Preview is included in v1.3.0 and main. It is not included in v1.2.0.
 
 Record an error with its call stack using the Powertools Logger. This example
 shows two ways to capture a stack:
@@ -28,19 +28,18 @@ go run ./examples/logger-stack-preview
 ```
 
 The repository workspace selects the local Preview code. Running this example
-with `GOWORK=off` uses the dependencies declared in `examples/go.mod`; they must
-select a revision containing these APIs. The v1.2.0 cohort does not provide
-`logger.WithStack`.
+with `GOWORK=off` selects the v1.3.0 dependencies declared in `examples/go.mod`,
+which also include the Preview. The v1.2.0 cohort does not provide `logger.WithStack`.
 
 ## Run in your own application
 
-Create a module and explicitly select `main`:
+Create a module and select the published v1.3.0 Preview:
 
 ```sh
 mkdir logger-stack-demo
 cd logger-stack-demo
 CGO_ENABLED=0 go mod init example.com/logger-stack-demo
-CGO_ENABLED=0 go get github.com/rambow-cloud/powertools-lambda-go/logger@main
+CGO_ENABLED=0 go get github.com/rambow-cloud/powertools-lambda-go/logger@v1.3.0
 ```
 
 In PowerShell, use:
@@ -50,7 +49,7 @@ $env:CGO_ENABLED = "0"
 mkdir logger-stack-demo
 cd logger-stack-demo
 go mod init example.com/logger-stack-demo
-go get github.com/rambow-cloud/powertools-lambda-go/logger@main
+go get github.com/rambow-cloud/powertools-lambda-go/logger@v1.3.0
 ```
 
 Save the following complete program as `main.go`. It is the same code as
@@ -89,7 +88,8 @@ CGO_ENABLED=0 go run .
 
 In PowerShell, after setting `CGO_ENABLED` above, run `go run .`.
 
-An omitted version query does not select `main`. The `@main` query resolves to a
+To select development source instead, use `logger@main`. An omitted version query
+does not select `main`. The `@main` query resolves to a
 Go pseudo-version. To pin a repeatable Preview, replace `main` with the full SHA
 of a commit on `main` that includes the feature. This also lets you select the
 desired commit if a module proxy still resolves `main` to an older revision.

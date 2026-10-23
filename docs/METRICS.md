@@ -9,11 +9,11 @@ Publish custom CloudWatch metrics by writing Embedded Metric Format (EMF) JSON t
 
 ## Install
 
-Use Go 1.27 or newer:
+Use Go 1.27.3 or newer:
 
 ```sh
-CGO_ENABLED=0 go get github.com/rambow-cloud/powertools-lambda-go/metrics@v1.2.0
-CGO_ENABLED=0 go get github.com/rambow-cloud/powertools-lambda-go/logger@v1.2.0
+CGO_ENABLED=0 go get github.com/rambow-cloud/powertools-lambda-go/metrics@v1.3.0
+CGO_ENABLED=0 go get github.com/rambow-cloud/powertools-lambda-go/logger@v1.3.0
 ```
 
 ## Record an order count

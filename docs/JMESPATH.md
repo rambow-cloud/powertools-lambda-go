@@ -8,11 +8,11 @@ Select and transform values in JSON documents, including JSON/Base64 data inside
 
 ## Install
 
-Use Go 1.27 or newer:
+Use Go 1.27.3 or newer:
 
 ```sh
-CGO_ENABLED=0 go get github.com/rambow-cloud/powertools-lambda-go/jmespath@v1.2.0
-CGO_ENABLED=0 go get github.com/rambow-cloud/powertools-lambda-go/logger@v1.2.0
+CGO_ENABLED=0 go get github.com/rambow-cloud/powertools-lambda-go/jmespath@v1.3.0
+CGO_ENABLED=0 go get github.com/rambow-cloud/powertools-lambda-go/logger@v1.3.0
 ```
 
 ## Select paid order IDs
