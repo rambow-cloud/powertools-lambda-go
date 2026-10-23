@@ -11262,7 +11262,7 @@
             "value": null,
             "error": {
               "name": "KafkaConsumerDeserializationError",
-              "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 0 + 10 > 0, message: , messageType: {\"edition\":\"proto2\",\"fields\":{\"id\":{\"type\":\"string\",\"id\":1},\"count\":{\"type\":\"int32\",\"id\":2},\"raw\":{\"type\":\"bytes\",\"id\":3}}}"
+              "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 0 + 1 > 0, message: , messageType: {\"edition\":\"proto2\",\"fields\":{\"id\":{\"type\":\"string\",\"id\":1},\"count\":{\"type\":\"int32\",\"id\":2},\"raw\":{\"type\":\"bytes\",\"id\":3}}}"
             }
           },
           {
@@ -11293,7 +11293,7 @@
             "value": null,
             "error": {
               "name": "KafkaConsumerDeserializationError",
-              "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 0 + 10 > 0, message: , messageType: {\"edition\":\"proto2\",\"fields\":{\"id\":{\"type\":\"string\",\"id\":1},\"count\":{\"type\":\"int32\",\"id\":2},\"raw\":{\"type\":\"bytes\",\"id\":3}}}"
+              "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 0 + 1 > 0, message: , messageType: {\"edition\":\"proto2\",\"fields\":{\"id\":{\"type\":\"string\",\"id\":1},\"count\":{\"type\":\"int32\",\"id\":2},\"raw\":{\"type\":\"bytes\",\"id\":3}}}"
             }
           }
         ],
@@ -22635,7 +22635,7 @@
             "value": null,
             "error": {
               "name": "KafkaConsumerDeserializationError",
-              "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 0 + 10 > 0, message: , messageType: {\"edition\":\"proto2\",\"fields\":{\"id\":{\"type\":\"string\",\"id\":1},\"count\":{\"type\":\"int32\",\"id\":2},\"raw\":{\"type\":\"bytes\",\"id\":3}}}"
+              "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 0 + 1 > 0, message: , messageType: {\"edition\":\"proto2\",\"fields\":{\"id\":{\"type\":\"string\",\"id\":1},\"count\":{\"type\":\"int32\",\"id\":2},\"raw\":{\"type\":\"bytes\",\"id\":3}}}"
             }
           },
           {
@@ -22666,7 +22666,7 @@
             "value": null,
             "error": {
               "name": "KafkaConsumerDeserializationError",
-              "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 0 + 10 > 0, message: , messageType: {\"edition\":\"proto2\",\"fields\":{\"id\":{\"type\":\"string\",\"id\":1},\"count\":{\"type\":\"int32\",\"id\":2},\"raw\":{\"type\":\"bytes\",\"id\":3}}}"
+              "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 0 + 1 > 0, message: , messageType: {\"edition\":\"proto2\",\"fields\":{\"id\":{\"type\":\"string\",\"id\":1},\"count\":{\"type\":\"int32\",\"id\":2},\"raw\":{\"type\":\"bytes\",\"id\":3}}}"
             }
           }
         ],
