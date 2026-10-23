@@ -27,6 +27,28 @@ func bytesValue(data []byte) []any {
 	return out
 }
 
+func TestPatchedPrefixReadBounds(t *testing.T) {
+	for length := 0; length < 10; length++ {
+		buffer := make([]byte, length)
+		for i := range buffer {
+			buffer[i] = 0x80
+		}
+		_, position, err := uint32Prefix(buffer)
+		readSize := 1
+		if length >= 5 {
+			readSize = 10
+		}
+		expected := fmt.Sprintf("index out of range: %d + %d > %d", length, readSize, length)
+		if position != length || err == nil || err.Error() != expected {
+			t.Fatalf("length %d: position=%d error=%v; want %s", length, position, err, expected)
+		}
+	}
+	value, position, err := uint32Prefix([]byte{0xac, 0x02})
+	if err != nil || value != 300 || position != 2 {
+		t.Fatalf("valid near-end varint changed: %d, %d, %v", value, position, err)
+	}
+}
+
 func TestTypeScriptReference(t *testing.T) {
 	data, err := os.ReadFile("testdata/typescript-v2.35.0.json")
 	if err != nil {

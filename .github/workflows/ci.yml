@@ -173,6 +173,8 @@ jobs:
         run: uv run --no-project python tools/test_runtime_ci.py
       - name: Install pinned TypeScript reference dependencies
         run: npm ci --prefix tools/reference
+      - name: Audit pinned reference dependencies against the official registry
+        run: npm audit --prefix tools/reference --registry=https://registry.npmjs.org --audit-level=low
       - name: Build both architectures and run Lambda, streaming, and Valkey simulations
         run: uv run --no-project python integration/local/run.py --skip-module-checks
       - name: Verify Batch logs and spans from this run

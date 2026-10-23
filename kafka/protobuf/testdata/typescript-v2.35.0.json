@@ -1,6 +1,6 @@
 {
   "version": "2.35.0",
-  "protobufVersion": "7.5.4",
+  "protobufVersion": "7.6.6",
   "cases": [
     {
       "name": "prefix-0",
@@ -773,7 +773,7 @@
       "value": null,
       "error": {
         "name": "KafkaConsumerDeserializationError",
-        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 0 + 10 > 0, message: , messageType: {}"
+        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 0 + 1 > 0, message: , messageType: {}"
       }
     },
     {
@@ -896,7 +896,7 @@
       "value": null,
       "error": {
         "name": "KafkaConsumerDeserializationError",
-        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 1 + 10 > 1, message: gA==, messageType: {}"
+        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 1 + 1 > 1, message: gA==, messageType: {}"
       }
     },
     {
@@ -981,7 +981,7 @@
       "value": null,
       "error": {
         "name": "KafkaConsumerDeserializationError",
-        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 0 + 10 > 0, message: , messageType: {}"
+        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 0 + 1 > 0, message: , messageType: {}"
       }
     },
     {
@@ -1104,7 +1104,7 @@
       "value": null,
       "error": {
         "name": "KafkaConsumerDeserializationError",
-        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 1 + 10 > 1, message: gA==, messageType: {}"
+        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 1 + 1 > 1, message: gA==, messageType: {}"
       }
     },
     {
@@ -1189,7 +1189,7 @@
       "value": null,
       "error": {
         "name": "KafkaConsumerDeserializationError",
-        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 0 + 10 > 0, message: , messageType: {}"
+        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 0 + 1 > 0, message: , messageType: {}"
       }
     },
     {
@@ -1316,7 +1316,7 @@
       "value": null,
       "error": {
         "name": "KafkaConsumerDeserializationError",
-        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 1 + 10 > 1, message: gA==, messageType: {}"
+        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 1 + 1 > 1, message: gA==, messageType: {}"
       }
     },
     {
@@ -1399,7 +1399,7 @@
       "value": null,
       "error": {
         "name": "KafkaConsumerDeserializationError",
-        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 0 + 10 > 0, message: , messageType: {}"
+        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 0 + 1 > 0, message: , messageType: {}"
       }
     },
     {
@@ -1526,7 +1526,7 @@
       "value": null,
       "error": {
         "name": "KafkaConsumerDeserializationError",
-        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 1 + 10 > 1, message: gA==, messageType: {}"
+        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 1 + 1 > 1, message: gA==, messageType: {}"
       }
     },
     {
@@ -1609,7 +1609,7 @@
       "value": null,
       "error": {
         "name": "KafkaConsumerDeserializationError",
-        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 0 + 10 > 0, message: , messageType: {}"
+        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 0 + 1 > 0, message: , messageType: {}"
       }
     },
     {
@@ -1732,7 +1732,7 @@
       "value": null,
       "error": {
         "name": "KafkaConsumerDeserializationError",
-        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 1 + 10 > 1, message: gA==, messageType: {}"
+        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 1 + 1 > 1, message: gA==, messageType: {}"
       }
     },
     {
@@ -1817,7 +1817,7 @@
       "value": null,
       "error": {
         "name": "KafkaConsumerDeserializationError",
-        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 0 + 10 > 0, message: , messageType: {}"
+        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 0 + 1 > 0, message: , messageType: {}"
       }
     },
     {
@@ -1940,7 +1940,7 @@
       "value": null,
       "error": {
         "name": "KafkaConsumerDeserializationError",
-        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 1 + 10 > 1, message: gA==, messageType: {}"
+        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 1 + 1 > 1, message: gA==, messageType: {}"
       }
     },
     {
@@ -2025,7 +2025,7 @@
       "value": null,
       "error": {
         "name": "KafkaConsumerDeserializationError",
-        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 0 + 10 > 0, message: , messageType: {}"
+        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 0 + 1 > 0, message: , messageType: {}"
       }
     },
     {
@@ -2148,7 +2148,7 @@
       "value": null,
       "error": {
         "name": "KafkaConsumerDeserializationError",
-        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 1 + 10 > 1, message: gA==, messageType: {}"
+        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 1 + 1 > 1, message: gA==, messageType: {}"
       }
     },
     {
@@ -2233,7 +2233,7 @@
       "value": null,
       "error": {
         "name": "KafkaConsumerDeserializationError",
-        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 0 + 10 > 0, message: , messageType: {}"
+        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 0 + 1 > 0, message: , messageType: {}"
       }
     },
     {
@@ -2360,7 +2360,7 @@
       "value": null,
       "error": {
         "name": "KafkaConsumerDeserializationError",
-        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 1 + 10 > 1, message: gA==, messageType: {}"
+        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 1 + 1 > 1, message: gA==, messageType: {}"
       }
     },
     {
@@ -2763,7 +2763,7 @@
       "value": null,
       "error": {
         "name": "KafkaConsumerDeserializationError",
-        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 0 + 10 > 0, message: , messageType: {}"
+        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 0 + 1 > 0, message: , messageType: {}"
       }
     },
     {
@@ -2777,7 +2777,7 @@
       "value": null,
       "error": {
         "name": "KafkaConsumerDeserializationError",
-        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 1 + 10 > 1, message: gA==, messageType: {}"
+        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 1 + 1 > 1, message: gA==, messageType: {}"
       }
     },
     {
@@ -3039,7 +3039,7 @@
       "value": null,
       "error": {
         "name": "KafkaConsumerDeserializationError",
-        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 1 + 10 > 1, message: gA==, messageType: {}"
+        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 1 + 1 > 1, message: gA==, messageType: {}"
       }
     },
     {
@@ -3055,7 +3055,7 @@
       "value": null,
       "error": {
         "name": "KafkaConsumerDeserializationError",
-        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 0 + 10 > 0, message: , messageType: {}"
+        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 0 + 1 > 0, message: , messageType: {}"
       }
     },
     {
@@ -3132,7 +3132,7 @@
       "value": null,
       "error": {
         "name": "KafkaConsumerDeserializationError",
-        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 1 + 10 > 1, message: gA==, messageType: {}"
+        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 1 + 1 > 1, message: gA==, messageType: {}"
       }
     },
     {
@@ -3148,7 +3148,7 @@
       "value": null,
       "error": {
         "name": "KafkaConsumerDeserializationError",
-        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 0 + 10 > 0, message: , messageType: {}"
+        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 0 + 1 > 0, message: , messageType: {}"
       }
     },
     {
@@ -3225,7 +3225,7 @@
       "value": null,
       "error": {
         "name": "KafkaConsumerDeserializationError",
-        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 1 + 10 > 1, message: gA==, messageType: {}"
+        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 1 + 1 > 1, message: gA==, messageType: {}"
       }
     },
     {
@@ -3241,7 +3241,7 @@
       "value": null,
       "error": {
         "name": "KafkaConsumerDeserializationError",
-        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 0 + 10 > 0, message: , messageType: {}"
+        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 0 + 1 > 0, message: , messageType: {}"
       }
     },
     {
@@ -3318,7 +3318,7 @@
       "value": null,
       "error": {
         "name": "KafkaConsumerDeserializationError",
-        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 1 + 10 > 1, message: gA==, messageType: {}"
+        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 1 + 1 > 1, message: gA==, messageType: {}"
       }
     },
     {
@@ -3334,7 +3334,7 @@
       "value": null,
       "error": {
         "name": "KafkaConsumerDeserializationError",
-        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 0 + 10 > 0, message: , messageType: {}"
+        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 0 + 1 > 0, message: , messageType: {}"
       }
     },
     {
@@ -3411,7 +3411,7 @@
       "value": null,
       "error": {
         "name": "KafkaConsumerDeserializationError",
-        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 1 + 10 > 1, message: gA==, messageType: {}"
+        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 1 + 1 > 1, message: gA==, messageType: {}"
       }
     },
     {
@@ -3427,7 +3427,7 @@
       "value": null,
       "error": {
         "name": "KafkaConsumerDeserializationError",
-        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 0 + 10 > 0, message: , messageType: {}"
+        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 0 + 1 > 0, message: , messageType: {}"
       }
     },
     {
@@ -3503,7 +3503,7 @@
       "value": null,
       "error": {
         "name": "KafkaConsumerDeserializationError",
-        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 1 + 10 > 1, message: gA==, messageType: {}"
+        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 1 + 1 > 1, message: gA==, messageType: {}"
       }
     },
     {
@@ -3519,7 +3519,7 @@
       "value": null,
       "error": {
         "name": "KafkaConsumerDeserializationError",
-        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 0 + 10 > 0, message: , messageType: {}"
+        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 0 + 1 > 0, message: , messageType: {}"
       }
     },
     {
@@ -3595,7 +3595,7 @@
       "value": null,
       "error": {
         "name": "KafkaConsumerDeserializationError",
-        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 1 + 10 > 1, message: gA==, messageType: {}"
+        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 1 + 1 > 1, message: gA==, messageType: {}"
       }
     },
     {
@@ -3611,7 +3611,7 @@
       "value": null,
       "error": {
         "name": "KafkaConsumerDeserializationError",
-        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 0 + 10 > 0, message: , messageType: {}"
+        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 0 + 1 > 0, message: , messageType: {}"
       }
     },
     {
@@ -3688,7 +3688,7 @@
       "value": null,
       "error": {
         "name": "KafkaConsumerDeserializationError",
-        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 1 + 10 > 1, message: gA==, messageType: {}"
+        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 1 + 1 > 1, message: gA==, messageType: {}"
       }
     },
     {
@@ -3704,7 +3704,7 @@
       "value": null,
       "error": {
         "name": "KafkaConsumerDeserializationError",
-        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 0 + 10 > 0, message: , messageType: {}"
+        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 0 + 1 > 0, message: , messageType: {}"
       }
     },
     {
@@ -3781,7 +3781,7 @@
       "value": null,
       "error": {
         "name": "KafkaConsumerDeserializationError",
-        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 1 + 10 > 1, message: gA==, messageType: {}"
+        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 1 + 1 > 1, message: gA==, messageType: {}"
       }
     },
     {
@@ -3797,7 +3797,7 @@
       "value": null,
       "error": {
         "name": "KafkaConsumerDeserializationError",
-        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 0 + 10 > 0, message: , messageType: {}"
+        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 0 + 1 > 0, message: , messageType: {}"
       }
     },
     {
@@ -3873,7 +3873,7 @@
       "value": null,
       "error": {
         "name": "KafkaConsumerDeserializationError",
-        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 1 + 10 > 1, message: gA==, messageType: {}"
+        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 1 + 1 > 1, message: gA==, messageType: {}"
       }
     },
     {
@@ -3889,7 +3889,7 @@
       "value": null,
       "error": {
         "name": "KafkaConsumerDeserializationError",
-        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 0 + 10 > 0, message: , messageType: {}"
+        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 0 + 1 > 0, message: , messageType: {}"
       }
     },
     {
@@ -3965,7 +3965,7 @@
       "value": null,
       "error": {
         "name": "KafkaConsumerDeserializationError",
-        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 1 + 10 > 1, message: gA==, messageType: {}"
+        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 1 + 1 > 1, message: gA==, messageType: {}"
       }
     },
     {
@@ -3981,7 +3981,7 @@
       "value": null,
       "error": {
         "name": "KafkaConsumerDeserializationError",
-        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 0 + 10 > 0, message: , messageType: {}"
+        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 0 + 1 > 0, message: , messageType: {}"
       }
     },
     {
@@ -4057,7 +4057,7 @@
       "value": null,
       "error": {
         "name": "KafkaConsumerDeserializationError",
-        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 1 + 10 > 1, message: gA==, messageType: {}"
+        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 1 + 1 > 1, message: gA==, messageType: {}"
       }
     },
     {
@@ -4073,7 +4073,7 @@
       "value": null,
       "error": {
         "name": "KafkaConsumerDeserializationError",
-        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 0 + 10 > 0, message: , messageType: {}"
+        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 0 + 1 > 0, message: , messageType: {}"
       }
     },
     {
@@ -4149,7 +4149,7 @@
       "value": null,
       "error": {
         "name": "KafkaConsumerDeserializationError",
-        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 1 + 10 > 1, message: gA==, messageType: {}"
+        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 1 + 1 > 1, message: gA==, messageType: {}"
       }
     },
     {
@@ -4165,7 +4165,7 @@
       "value": null,
       "error": {
         "name": "KafkaConsumerDeserializationError",
-        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 0 + 10 > 0, message: , messageType: {}"
+        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 0 + 1 > 0, message: , messageType: {}"
       }
     },
     {
@@ -4241,7 +4241,7 @@
       "value": null,
       "error": {
         "name": "KafkaConsumerDeserializationError",
-        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 1 + 10 > 1, message: gA==, messageType: {}"
+        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 1 + 1 > 1, message: gA==, messageType: {}"
       }
     },
     {
@@ -4257,7 +4257,7 @@
       "value": null,
       "error": {
         "name": "KafkaConsumerDeserializationError",
-        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 0 + 10 > 0, message: , messageType: {}"
+        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 0 + 1 > 0, message: , messageType: {}"
       }
     },
     {
@@ -4334,7 +4334,7 @@
       "value": null,
       "error": {
         "name": "KafkaConsumerDeserializationError",
-        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 1 + 10 > 1, message: gA==, messageType: {}"
+        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 1 + 1 > 1, message: gA==, messageType: {}"
       }
     },
     {
@@ -4350,7 +4350,7 @@
       "value": null,
       "error": {
         "name": "KafkaConsumerDeserializationError",
-        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 0 + 10 > 0, message: , messageType: {}"
+        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 0 + 1 > 0, message: , messageType: {}"
       }
     },
     {
@@ -4427,7 +4427,7 @@
       "value": null,
       "error": {
         "name": "KafkaConsumerDeserializationError",
-        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 1 + 10 > 1, message: gA==, messageType: {}"
+        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 1 + 1 > 1, message: gA==, messageType: {}"
       }
     },
     {
@@ -4443,7 +4443,7 @@
       "value": null,
       "error": {
         "name": "KafkaConsumerDeserializationError",
-        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 0 + 10 > 0, message: , messageType: {}"
+        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 0 + 1 > 0, message: , messageType: {}"
       }
     },
     {
@@ -4525,7 +4525,7 @@
       "value": null,
       "error": {
         "name": "KafkaConsumerDeserializationError",
-        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 1 + 10 > 1, message: gA==, messageType: {}"
+        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 1 + 1 > 1, message: gA==, messageType: {}"
       }
     },
     {
@@ -4543,7 +4543,7 @@
       "value": null,
       "error": {
         "name": "KafkaConsumerDeserializationError",
-        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 0 + 10 > 0, message: , messageType: {}"
+        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 0 + 1 > 0, message: , messageType: {}"
       }
     },
     {
@@ -4625,7 +4625,7 @@
       "value": null,
       "error": {
         "name": "KafkaConsumerDeserializationError",
-        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 1 + 10 > 1, message: gA==, messageType: {}"
+        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 1 + 1 > 1, message: gA==, messageType: {}"
       }
     },
     {
@@ -4643,7 +4643,7 @@
       "value": null,
       "error": {
         "name": "KafkaConsumerDeserializationError",
-        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 0 + 10 > 0, message: , messageType: {}"
+        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 0 + 1 > 0, message: , messageType: {}"
       }
     },
     {
@@ -4731,7 +4731,7 @@
       "value": null,
       "error": {
         "name": "KafkaConsumerDeserializationError",
-        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 1 + 10 > 1, message: gA==, messageType: {}"
+        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 1 + 1 > 1, message: gA==, messageType: {}"
       }
     },
     {
@@ -4751,7 +4751,7 @@
       "value": null,
       "error": {
         "name": "KafkaConsumerDeserializationError",
-        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 0 + 10 > 0, message: , messageType: {}"
+        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 0 + 1 > 0, message: , messageType: {}"
       }
     },
     {
@@ -4837,7 +4837,7 @@
       "value": null,
       "error": {
         "name": "KafkaConsumerDeserializationError",
-        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 1 + 10 > 1, message: gA==, messageType: {}"
+        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 1 + 1 > 1, message: gA==, messageType: {}"
       }
     },
     {
@@ -4856,7 +4856,7 @@
       "value": null,
       "error": {
         "name": "KafkaConsumerDeserializationError",
-        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 0 + 10 > 0, message: , messageType: {}"
+        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 0 + 1 > 0, message: , messageType: {}"
       }
     },
     {
@@ -4933,7 +4933,7 @@
       "value": null,
       "error": {
         "name": "KafkaConsumerDeserializationError",
-        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 1 + 10 > 1, message: gA==, messageType: {}"
+        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 1 + 1 > 1, message: gA==, messageType: {}"
       }
     },
     {
@@ -4949,7 +4949,7 @@
       "value": null,
       "error": {
         "name": "KafkaConsumerDeserializationError",
-        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 0 + 10 > 0, message: , messageType: {}"
+        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 0 + 1 > 0, message: , messageType: {}"
       }
     },
     {
@@ -5032,7 +5032,7 @@
       "value": null,
       "error": {
         "name": "KafkaConsumerDeserializationError",
-        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 1 + 10 > 1, message: gA==, messageType: {}"
+        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 1 + 1 > 1, message: gA==, messageType: {}"
       }
     },
     {
@@ -5050,7 +5050,7 @@
       "value": null,
       "error": {
         "name": "KafkaConsumerDeserializationError",
-        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 0 + 10 > 0, message: , messageType: {}"
+        "message": "Failed to deserialize Protobuf message: RangeError: index out of range: 0 + 1 > 0, message: , messageType: {}"
       }
     },
     {

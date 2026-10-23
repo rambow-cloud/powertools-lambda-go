@@ -644,7 +644,7 @@
     },
     {
       "package": "protobufjs",
-      "version": "7.5.4",
+      "version": "7.6.6",
       "license": "BSD-3-Clause",
       "source": "protobufjs/protobuf.js",
       "scope": "Development reference generator only"
