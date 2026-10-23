@@ -1,6 +1,6 @@
 # Protobuf differential scenarios
 
-Generate with `node generate-kafka-protobuf.mjs` in tools/reference. The fixtures execute the actual CommonJS Kafka v2.35.0 consumer with protobufjs 7.5.4. The ESM import issue is recorded in the parent Kafka fixture README.
+Generate with `node generate-kafka-protobuf.mjs` in tools/reference. The fixtures execute the actual CommonJS Kafka v2.35.0 consumer with protobufjs 7.6.6. The security update from 7.5.4 records the patched tool version and its one-byte bounds diagnostic for truncated prefixes shorter than five bytes. Successful values, callback positions, error categories, the schema and nine native-message results remain unchanged. The ESM import issue is recorded in the parent Kafka fixture README.
 
 The 220 prefix scenarios use an application-supplied message decoder, as supported by the public messageType contract. They compare original buffers, reader positions, explicit length arguments, both decoding attempts, results and complete errors. Preference state persists across scenarios. Cases cover absent/null metadata, missing/null/numeric/Unicode schema IDs, Glue uint32 consumption, Confluent byte skips, negative positions, truncation, permissive Base64, successful preference reversals and first-error retention when both attempts fail. The additional 97 scenarios cover object length coercion, array IDs and primitive metadata. These cases prove wrapper behavior, not protobufjs's internal wire decoder.
 

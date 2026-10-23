@@ -1,6 +1,6 @@
 # Kafka event mode reference corpus
 
-Generate from tools/reference with `node generate-kafka-modes.mjs`. The generator executes the installed CommonJS export of Powertools TypeScript v2.35.0 with avro-js 1.12.1 and protobufjs 7.5.4. No upstream implementation is patched.
+Generate from tools/reference with `node generate-kafka-modes.mjs`. The generator executes the installed CommonJS export of Powertools TypeScript v2.35.0 with avro-js 1.12.1 and protobufjs 7.6.6. No upstream implementation is patched. The protobufjs security update changes four short-prefix error strings in two events; all remaining event fields, decoded values, callback positions and error categories are unchanged.
 
 The 172 constructed events cover MSK and self-managed sources, SOURCE and JSON delivery, Glue/Confluent schema metadata, missing registry metadata, every key/value pair of text/JSON/Avro/Protobuf, parser transformations, repeated lazy reads, byte headers, retained original values and metadata, unknown fields, nulls, empty strings and missing fields. A FileDescriptorSet supplies the same proto2 schema to the official Go Protobuf runtime. Successful native messages compare protojson with protobufjs JSON; Avro bytes retain explicit byte tags. Errors compare complete names and messages, including the supplied Protobuf schema description.
 

@@ -182,20 +182,21 @@ func longSchemaID(id any) bool {
 	return false
 }
 
-// uint32Prefix matches protobufjs's five-byte low-word read and ten-byte skip,
-// including its reported position on truncated input. It is not a uint64 parser.
+// uint32Prefix matches patched protobufjs's five-byte low-word read and ten-byte
+// skip, including its one-byte near-end diagnostic. It is not a uint64 parser.
 func uint32Prefix(buffer []byte) (uint32, int, error) {
 	var value uint32
 	for i := 0; i < 5; i++ {
-		if i < len(buffer) {
-			mask := byte(127)
-			if i == 4 {
-				mask = 15
-			}
-			value |= uint32(buffer[i]&mask) << uint(7*i)
-			if buffer[i] < 128 {
-				return value, i + 1, nil
-			}
+		if i >= len(buffer) {
+			return 0, len(buffer), rangeError(len(buffer), 1, len(buffer))
+		}
+		mask := byte(127)
+		if i == 4 {
+			mask = 15
+		}
+		value |= uint32(buffer[i]&mask) << uint(7*i)
+		if buffer[i] < 128 {
+			return value, i + 1, nil
 		}
 	}
 	if len(buffer) < 10 {
