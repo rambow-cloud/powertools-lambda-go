@@ -4,7 +4,7 @@ This project is an independent community **Go port of Powertools for AWS Lambda 
 
 ## Supported applications
 
-- Go 1.27 or newer, with `CGO_ENABLED=0`.
+- Go 1.27.3 or newer, with `CGO_ENABLED=0`.
 - Native Lambda binaries for `provided.al2023` on Linux amd64 or arm64.
 - Independent modules: install only the utilities your application needs.
 - A unified release version for maintained modules; see [module installation](MODULES.md).

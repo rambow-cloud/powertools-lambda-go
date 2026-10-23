@@ -5,15 +5,15 @@ description: "Install Go Powertools modules for AWS Lambda. Choose utility impor
 
 # Install modules
 
-Install only the utilities your application uses. Maintained modules share **one release version**; each has its own dependency graph and import path. The latest stable release is [v1.2.0](https://github.com/rambow-cloud/powertools-lambda-go/releases/tag/v1.2.0).
+Install only the utilities your application uses. Maintained modules share **one release version**; each has its own dependency graph and import path. The latest stable release is [v1.3.0](https://github.com/rambow-cloud/powertools-lambda-go/releases/tag/v1.3.0).
 
 ## Add a utility
 
 Use Go 1.27.3 or newer:
 
 ```sh
-CGO_ENABLED=0 go get github.com/rambow-cloud/powertools-lambda-go/logger@v1.2.0
-CGO_ENABLED=0 go get github.com/rambow-cloud/powertools-lambda-go/metrics@v1.2.0
+CGO_ENABLED=0 go get github.com/rambow-cloud/powertools-lambda-go/logger@v1.3.0
+CGO_ENABLED=0 go get github.com/rambow-cloud/powertools-lambda-go/metrics@v1.3.0
 ```
 
 Import the packages normally:
@@ -61,7 +61,7 @@ Prefix each suffix below with `github.com/rambow-cloud/powertools-lambda-go`.
 | `/eventhandler/http/tracer` | Trace routes with OpenTelemetry |
 | `/tracer` | OpenTelemetry tracing and instrumentation |
 
-Commons is a package in the root module: install `github.com/rambow-cloud/powertools-lambda-go@v1.2.0`, then import `/commons`. Other utilities use the matching module suffix in their `go get` command. Parameters providers and the Idempotency DynamoDB adapter are subpackages of their parent module.
+Commons is a package in the root module: install `github.com/rambow-cloud/powertools-lambda-go@v1.3.0`, then import `/commons`. Other utilities use the matching module suffix in their `go get` command. Parameters providers and the Idempotency DynamoDB adapter are subpackages of their parent module.
 
 ## One version, separate dependencies
 

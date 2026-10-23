@@ -26,13 +26,13 @@ if logErr := appLog.Error("Payment failed", paymentErr, logger.Fields{
 }
 ~~~
 
-With stable v1.2.0's default configuration, this writes the following JSON line to **stderr**:
+With v1.3.0's defaults, this writes a JSON line to **stderr** with a logging-site stack (example path and line):
 
 ~~~json
-{"level":"ERROR","message":"Payment failed","timestamp":"2026-10-01T00:00:00.000Z","service":"orders","sampling_rate":0,"error":{"location":"","message":"card declined","name":"*errors.errorString"},"order_id":"ORD-123"}
+{"level":"ERROR","message":"Payment failed","timestamp":"2026-10-01T00:00:00.000Z","service":"orders","sampling_rate":0,"error":{"location":"/app/main.go:19","message":"card declined","name":"*errors.errorString","stack":"main.main\n\t/app/main.go:19","stack_source":"logging"},"order_id":"ORD-123"}
 ~~~
 
-The `error` object describes the supplied `paymentErr`: `name` is its concrete Go type, `message` comes from `Error()`, and `location` is empty for this ordinary Go error. Wrapped errors can also include a `cause`.
+The `error` object describes the supplied `paymentErr`: `name` is its concrete Go type, `message` comes from `Error()`, and `location` identifies the logging call when the error has no attached stack. With `WithStackTrace(false)`, `location` is empty and stack metadata is omitted, matching the historical v1.2.0 behavior. Wrapped errors can also include a `cause`.
 
 `logErr` has a different role: it reports a failure to serialize or write the log record. A successfully written `ERROR` record normally returns `nil`. Writing an error-level record does not return the business error from your handler, stop the program, or retry an operation; your application controls those decisions.
 
@@ -134,11 +134,11 @@ WARN and higher use stderr; lower levels use stdout. `WithOutput` replaces both 
 
 ## Stack and panic contract (Preview)
 
-> This Preview is not included in v1.2.0.
+> This Preview is included in v1.3.0 and main. It is not included in v1.2.0.
 
 See the [Preview guide](../LOGGER.md#error-stacks-and-panic-logging-preview) for
-installation, short examples and output. The preceding error JSON describes
-stable v1.2.0. Main enables these additional behaviors by default:
+installation, short examples and output. The v1.3.0 release and main enable
+these behaviors by default; historical v1.2.0 does not provide these APIs:
 
 | API | Default | Contract |
 | --- | --- | --- |

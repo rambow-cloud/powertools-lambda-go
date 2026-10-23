@@ -8,11 +8,11 @@ Add AWS Signature Version 4 authentication to HTTP requests, or use a client tha
 
 ## Install
 
-Use Go 1.27 or newer:
+Use Go 1.27.3 or newer:
 
 ```sh
-CGO_ENABLED=0 go get github.com/rambow-cloud/powertools-lambda-go/signer@v1.2.0
-CGO_ENABLED=0 go get github.com/rambow-cloud/powertools-lambda-go/logger@v1.2.0
+CGO_ENABLED=0 go get github.com/rambow-cloud/powertools-lambda-go/signer@v1.3.0
+CGO_ENABLED=0 go get github.com/rambow-cloud/powertools-lambda-go/logger@v1.3.0
 ```
 
 ## Sign a request without sending it

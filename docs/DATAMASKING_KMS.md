@@ -8,7 +8,7 @@ Use the optional KMS provider to encrypt and decrypt fields with the AWS Encrypt
 
 ## Encrypt and restore a customer secret
 
-Install `datamasking/kms@v1.2.0`. The fragment assumes `ctx`, a payload, and imports for `datamasking`, `os` and `maskkms` (`datamasking/kms`). It calls KMS: set `KMS_KEY_ARN` to a full key ARN, configure the AWS SDK, and grant the required data-key/decrypt permissions.
+Install `datamasking/kms@v1.3.0`. The fragment assumes `ctx`, a payload, and imports for `datamasking`, `os` and `maskkms` (`datamasking/kms`). It calls KMS: set `KMS_KEY_ARN` to a full key ARN, configure the AWS SDK, and grant the required data-key/decrypt permissions.
 
 **Input**
 

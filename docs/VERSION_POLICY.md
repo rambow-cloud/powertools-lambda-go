@@ -1,10 +1,10 @@
 # Documentation and verification versions
 
 Documentation on `main` and the site describes the current source and can include
-unreleased APIs. The latest stable cohort is [v1.2.0](RELEASE_NOTES.md#v120).
-It requires Go 1.27 and uses JSON v2 directly. The earlier v1.0.0-rc.1 candidate
-and v1.1.0/v1.0.0/v0.2.0 stable cohorts remain available as historical versions. Select
-`@v1.2.0` explicitly to reproduce the latest stable release.
+unreleased APIs. The latest stable cohort is [v1.3.0](RELEASE_NOTES.md#v130).
+It requires Go 1.27.3 and uses JSON v2 directly. The earlier v1.0.0-rc.1 candidate
+and v1.2.0/v1.1.0/v1.0.0/v0.2.0 stable cohorts remain available as historical versions. Select
+`@v1.3.0` explicitly to reproduce the latest stable release.
 
 ## Examples and installation
 
@@ -19,7 +19,7 @@ assuming a dependency update patches an existing Lambda binary.
   such as `examples` are not independently published.
 - Checkout snippets describe their source revision. Identify a new API as
   unreleased until its module version is published.
-- The README example targets v1.2.0. Verify it in an isolated application using
+- The README example targets v1.3.0. Verify it in an isolated application using
   its pinned installation command rather than the repository workspace.
 - Import paths contain no `@version`; selection belongs to `go get` and `go.mod`.
 - For release-specific documentation, use the matching Git tag's docs/examples.
@@ -29,15 +29,15 @@ assuming a dependency update patches an existing Lambda binary.
 
 ### Logger stacks Preview by source version
 
-> This Preview is not included in v1.2.0.
+> This Preview is included in v1.3.0 and main. It is not included in v1.2.0.
 
 | Source | Error stacks | Automatic handler panic record |
 | --- | --- | --- |
 | Logger `@v1.2.0` | No automatic stack collection; no `WithStack` or `WithStackTrace` API | Previous cleanup only; no `WithPanicLogging` API |
-| Logger `@main` | `WithStack` plus default logging-site fallback; configurable with `WithStackTrace` | Enabled by default; configurable with `WithPanicLogging` |
+| Logger `@v1.3.0` / `@main` | `WithStack` plus default logging-site fallback; configurable with `WithStackTrace` | Enabled by default; configurable with `WithPanicLogging` |
 
 ```sh
-CGO_ENABLED=0 go get github.com/rambow-cloud/powertools-lambda-go/logger@main
+CGO_ENABLED=0 go get github.com/rambow-cloud/powertools-lambda-go/logger@v1.3.0
 ```
 
 An omitted version or `@latest` does not request `main`. Branch references resolve
@@ -45,8 +45,8 @@ to pseudo-versions; use a commit SHA for repeatability. See
 [Go version queries](https://go.dev/ref/mod#version-queries).
 The [Preview example](https://github.com/rambow-cloud/powertools-lambda-go/tree/main/examples/logger-stack-preview)
 requires a revision containing these APIs; the historical v1.2.0 installation
-commands do not provide them. The next unified stable cohort includes these APIs
-with their Preview status. Availability follows the selected source revision,
+commands do not provide them. The v1.3.0 unified stable cohort includes these
+APIs with their Preview status. Availability follows the selected source revision,
 without runtime branch detection or build tags. Published v1.2.0 remains unchanged.
 
 ### Evidence boundaries

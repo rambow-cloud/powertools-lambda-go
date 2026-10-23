@@ -11,7 +11,7 @@ Add route metrics and OpenTelemetry spans to an existing HTTP router. Each integ
 Install the optional integration:
 
 ```sh
-CGO_ENABLED=0 go get github.com/rambow-cloud/powertools-lambda-go/eventhandler/http/metrics@v1.2.0
+CGO_ENABLED=0 go get github.com/rambow-cloud/powertools-lambda-go/eventhandler/http/metrics@v1.3.0
 ```
 
 Save the following as `http_metrics.go` in your HTTP application. In the routing
@@ -62,7 +62,7 @@ This is an excerpt of the emitted EMF document. It also contains the namespace, 
 Install the optional integration:
 
 ```sh
-CGO_ENABLED=0 go get github.com/rambow-cloud/powertools-lambda-go/eventhandler/http/tracer@v1.2.0
+CGO_ENABLED=0 go get github.com/rambow-cloud/powertools-lambda-go/eventhandler/http/tracer@v1.3.0
 ```
 
 Save this as `http_tracing.go`. Create `tr` once as shown in the

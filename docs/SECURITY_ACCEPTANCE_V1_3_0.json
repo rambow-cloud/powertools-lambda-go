@@ -1,0 +1,44 @@
+{
+  "verified_at": "2026-10-23",
+  "issue": 255,
+  "reviewed_source_prs": [
+    256,
+    260
+  ],
+  "release_version": "v1.3.0",
+  "source_sha": "2df7e85986d5bc2f6c201c673a7dbeb12a325a0e",
+  "final_main_ci": 39888492575,
+  "go": "1.27.3",
+  "scanner": "govulncheck v1.9.0",
+  "database_updated_observed": [
+    "2026-10-21 00:27:29 +0000 UTC"
+  ],
+  "CGO_ENABLED": "0",
+  "GOWORK": "off",
+  "packaged_modules": 31,
+  "standalone_consumers": 28,
+  "scan_logs": 62,
+  "findings_in_scanned_closures": 0,
+  "scope": "Per-module production package closures; not a vulnerability assessment of unused upstream tool packages.",
+  "npm": {
+    "registry": "https://registry.npmjs.org",
+    "dependencies_reported": 103,
+    "known_vulnerabilities": 0,
+    "protobufjs": "7.6.6",
+    "lockfile_sha256": "91a911830a31e222391405062b68d6d5f64a741ee389f30c6528221fe00c0632",
+    "runtime_ci": 39888492575
+  },
+  "python": {
+    "scanner": "pip-audit 2.10.1",
+    "packages": 11,
+    "known_vulnerabilities": 0,
+    "lockfile_sha256": "0a9283475daa94d8aa088f555c4bdc3bb3ac71d4e315493ee0aecfb619a72a51"
+  },
+  "runtime_execution_architecture": "amd64",
+  "cross_build_and_scan_architectures": [
+    "amd64",
+    "arm64"
+  ],
+  "aws_cloud_tests": false,
+  "race_detector": false
+}
