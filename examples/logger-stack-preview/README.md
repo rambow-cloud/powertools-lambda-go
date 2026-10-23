@@ -1,6 +1,6 @@
 # Logger stacks (Preview)
 
-This Preview is available only from main and is not included in v1.2.0.
+This Preview is not included in v1.2.0.
 
 Record an error with its call stack using the Powertools Logger. This example
 shows two ways to capture a stack:
@@ -9,7 +9,7 @@ shows two ways to capture a stack:
 - **When logging:** Logger adds a stack at the `Error` call if the error has no
   attached stack.
 
-The program uses two local errors as input. It needs Go 1.27 or later, no AWS
+The program uses two local errors as input. It needs Go 1.27.3 or later, no AWS
 credentials, and no running Lambda function.
 
 ## Run from this repository
@@ -28,8 +28,9 @@ go run ./examples/logger-stack-preview
 ```
 
 The repository workspace selects the local Preview code. Running this example
-with `GOWORK=off` uses the published dependencies in `examples/go.mod`; v1.2.0
-does not provide `logger.WithStack`.
+with `GOWORK=off` uses the dependencies declared in `examples/go.mod`; they must
+select a revision containing these APIs. The v1.2.0 cohort does not provide
+`logger.WithStack`.
 
 ## Run in your own application
 
@@ -56,7 +57,7 @@ Save the following complete program as `main.go`. It is the same code as
 [`main.go`](main.go) in this directory.
 
 ```go
-// This Preview is available only from main and is not included in v1.2.0.
+// This Preview is not included in v1.2.0.
 package main
 
 import (

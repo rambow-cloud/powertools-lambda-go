@@ -22,8 +22,10 @@ def module_path(module):
     return BASE if module["directory"] == "." else BASE + "/" + module["directory"]
 
 
-def run(*args, cwd=ROOT, env=None):
+def run(*args, cwd=ROOT, env=None, log_path=None):
     result = subprocess.run(args, cwd=cwd, env=env, text=True, encoding="utf-8", capture_output=True)
+    if log_path is not None:
+        log_path.write_text(result.stdout + result.stderr, encoding="utf-8")
     if result.returncode:
         raise RuntimeError(f"{cwd}: {' '.join(args)}\n{result.stdout}\n{result.stderr}")
     return result.stdout
@@ -48,7 +50,7 @@ def environment():
     # outside the root module's package walk, including pre-module dependencies.
     boundary = ROOT / "dist/go.mod"
     if not boundary.exists():
-        boundary.write_text("module example.com/powertools-build-artifacts\n\ngo 1.27\n", encoding="utf-8")
+        boundary.write_text("module example.com/powertools-build-artifacts\n\ngo 1.27.3\n", encoding="utf-8")
     env.update(GOCACHE=str(cache), GOTMPDIR=str(temporary))
     return env
 
@@ -140,7 +142,7 @@ def external_sums(path):
     return "".join(line + "\n" for line in path.read_text(encoding="utf-8").splitlines() if line.split()[0] != BASE and not line.startswith(BASE + "/"))
 
 
-def check_isolation(module, dependencies):
+def check_isolation(module, dependencies, runtime_dependencies=None):
     directory = module["directory"]
     if directory in {".", "eventhandler/http", "eventhandler/appsyncevents", "eventhandler/appsyncgraphql", "eventhandler/bedrock", "kafka", "datamasking"} and dependencies:
         raise RuntimeError("The core must remain free of external module dependencies")
@@ -156,7 +158,7 @@ def check_isolation(module, dependencies):
     if directory == "kafka/avro":
         forbidden += ["google.golang.org/protobuf"]
     if directory == "kafka/protobuf":
-        forbidden += ["github.com/hamba/avro", "github.com/linkedin/goavro"]
+        forbidden += ["github.com/hamba/avro", "github.com/iskorotkov/avro", "github.com/linkedin/goavro"]
     if directory == "datamasking/kms":
         forbidden += ["github.com/aws/aws-xray-sdk-go", "go.opentelemetry.io", "github.com/redis/"]
     if directory == "commons/regex":
@@ -169,7 +171,8 @@ def check_isolation(module, dependencies):
         forbidden += ["github.com/jmespath-community/"]
     if directory == "batch":
         forbidden += ["github.com/aws/aws-sdk-go", "github.com/aws/aws-xray-sdk-go", "go.opentelemetry.io", "github.com/jmespath-community/"]
-    if any(name.startswith(prefix) for name in dependencies for prefix in forbidden):
+    checked = dependencies if runtime_dependencies is None else runtime_dependencies
+    if any(name.startswith(prefix) for name in checked for prefix in forbidden):
         raise RuntimeError(f"Optional dependency leaked into {directory}: {dependencies}")
 
 
@@ -177,7 +180,10 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("command", choices=("list", "tidy", "check"))
     parser.add_argument("--only", action="append", default=[], metavar="DIRECTORY", help="Check selected module directories; save a separate scoped report")
+    parser.add_argument("--vulncheck", metavar="EXECUTABLE", help="Scan each packaged module for reachable vulnerabilities on Linux amd64 and arm64")
     args = parser.parse_args()
+    if args.vulncheck and args.command != "check":
+        parser.error("--vulncheck requires check")
     selected = set(args.only)
     if selected and (args.command != "check" or not selected <= {m["directory"] for m in MODULES}):
         parser.error("--only requires check and known module directories")
@@ -240,7 +246,7 @@ def main():
         # Test the extracted release-shaped archive, including its own test fixtures.
         consumer = session / "consumers" / module["directory"]
         consumer.mkdir(parents=True, exist_ok=True)
-        consumer.joinpath("go.mod").write_text(f"module example.com/consumer\n\ngo 1.27\n\nrequire {name} {module['version']}\n", encoding="utf-8")
+        consumer.joinpath("go.mod").write_text(f"module example.com/consumer\n\ngo 1.27.3\n\nrequire {name} {module['version']}\n", encoding="utf-8")
         consumer.joinpath("go.sum").write_text(pinned_sums, encoding="utf-8")
         downloaded = json.loads(run("go", "mod", "download", "-json", name, cwd=consumer, env=env))
         extracted = session / "sources" / module["directory"]
@@ -258,6 +264,12 @@ def main():
         run("go", "test", "-mod=readonly", *test_executor, "./...", cwd=extracted, env=module_env)
         run("go", "vet", "-mod=readonly", "./...", cwd=extracted, env=module_env)
         item = {"path": name, "directory": module["directory"], "public": module["public"], "version": module["version"], "archive_sha256": digest, "tests": True, "vet": True, "tidy": True}
+        if args.vulncheck:
+            for architecture in ("amd64", "arm64"):
+                scan_env = dict(env, GOOS="linux", GOARCH=architecture, GOMEMLIMIT="1GiB", GOGC="100")
+                run(args.vulncheck, "-show=verbose,version", "./...", cwd=extracted, env=scan_env,
+                    log_path=extracted / f"govulncheck-linux-{architecture}.txt")
+            item["vulnerability_scan"] = {"level": "symbol", "os": "linux", "architectures": ["amd64", "arm64"], "reachable_findings": 0}
         if module.get("test_os") == "linux":
             item.update(binary_os="linux", binary_architecture="amd64", tests_runtime="docker-linux-amd64" if test_executor else "native-linux")
         if module["public"]:
@@ -266,7 +278,18 @@ def main():
             run("go", "mod", "tidy", cwd=consumer, env=env)
             dependencies = run("go", "list", "-m", "-f", "{{.Path}}", "all", cwd=consumer, env=env).splitlines()[1:]
             external = [dependency for dependency in dependencies if dependency != BASE and not dependency.startswith(BASE + "/")]
-            check_isolation(module, external)
+            runtime_dependencies = None
+            if module["directory"] == "kafka/avro":
+                # The maintained codec declares upstream lint tools that depend on
+                # Protobuf. Keep the full graph inventory, but verify that these
+                # optional packages never enter either Lambda runtime closure.
+                runtime_dependencies = set()
+                for architecture in ("amd64", "arm64"):
+                    runtime_env = dict(env, GOOS="linux", GOARCH=architecture)
+                    runtime_dependencies.update(run("go", "list", "-deps", "-f", "{{with .Module}}{{.Path}}{{end}}", "./...", cwd=consumer, env=runtime_env).splitlines())
+                item["runtime_external_modules"] = sorted(dependency for dependency in runtime_dependencies
+                                                          if dependency not in {"example.com/consumer", BASE} and not dependency.startswith(BASE + "/"))
+            check_isolation(module, external, runtime_dependencies)
             binary = consumer / ("consumer.exe" if os.name == "nt" and module.get("test_os") != "linux" else "consumer")
             run("go", "build", "-mod=readonly", "-o", str(binary), ".", cwd=consumer, env=module_env)
             item.update(consumer_build=True, external_modules=external, binary_bytes=binary.stat().st_size)

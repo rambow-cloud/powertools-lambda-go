@@ -1,4 +1,4 @@
-// This Preview is available only from main and is not included in v1.2.0.
+// This Preview is not included in v1.2.0.
 package main
 
 import (

@@ -6,12 +6,49 @@ import (
 	"encoding/binary"
 	json "encoding/json/v2"
 	"errors"
+	"math"
 	"os"
 	"strings"
 	"testing"
+	"time"
 
 	"github.com/rambow-cloud/powertools-lambda-go/kafka"
 )
+
+func TestMalformedWireSizesFailWithoutPanicking(t *testing.T) {
+	for _, test := range []struct {
+		name   string
+		schema string
+		values []int64
+	}{
+		{"huge array count", `{"type":"array","items":"null"}`, []int64{math.MaxInt64}},
+		{"huge map count", `{"type":"map","values":"null"}`, []int64{math.MaxInt64}},
+		{"minimum array count", `{"type":"array","items":"null"}`, []int64{math.MinInt64, 0}},
+		{"minimum map count", `{"type":"map","values":"null"}`, []int64{math.MinInt64, 0}},
+		{"negative array block size", `{"type":"array","items":"null"}`, []int64{-1, -1, 0}},
+		{"negative map block size", `{"type":"map","values":"null"}`, []int64{-1, -1, 0}},
+		{"huge bytes length", `"bytes"`, []int64{math.MaxInt64}},
+		{"negative bytes length", `"bytes"`, []int64{-1}},
+		{"huge union index", `["null","string"]`, []int64{math.MaxInt64}},
+	} {
+		t.Run(test.name, func(t *testing.T) {
+			var wire []byte
+			for _, value := range test.values {
+				wire = binary.AppendVarint(wire, value)
+			}
+			ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+			defer cancel()
+			value, err := Deserialize(ctx, base64.StdEncoding.EncodeToString(wire), test.schema, nil)
+			var failure *kafka.DeserializationError
+			if value != nil || !errors.As(err, &failure) || failure.Unwrap() == nil {
+				t.Fatalf("malformed datum did not return a deserialization error: %v, %v", value, err)
+			}
+			if ctx.Err() != nil {
+				t.Fatal("malformed datum exhausted its deadline")
+			}
+		})
+	}
+}
 
 func TestSchemaBoundaryReference(t *testing.T) {
 	data, err := os.ReadFile("testdata/boundaries-v2.35.0.json")

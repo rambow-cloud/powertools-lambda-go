@@ -5,6 +5,7 @@ import json
 import os
 from pathlib import Path
 import subprocess
+import sys
 import tempfile
 import unittest
 from unittest.mock import patch
@@ -12,6 +13,7 @@ from unittest.mock import patch
 import yaml
 
 import ci_changes
+import modules as module_tools
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -19,6 +21,25 @@ WORKFLOW = yaml.safe_load((ROOT / ".github/workflows/ci.yml").read_text())
 SCRIPT = WORKFLOW["jobs"]["gate"]["steps"][0]["run"]
 NAMESPACE = {"__name__": "ci_gate"}
 exec(compile(SCRIPT.removeprefix("python3 - <<'PY'\n").rstrip().removesuffix("\nPY"), "ci.yml", "exec"), NAMESPACE)
+
+
+class SecurityEvidenceTests(unittest.TestCase):
+    def test_upstream_tool_graph_does_not_relax_runtime_or_core_isolation(self):
+        protobuf = "google.golang.org/protobuf"
+        module_tools.check_isolation({"directory": "kafka/avro"}, [protobuf], {"github.com/iskorotkov/avro/v2"})
+        with self.assertRaisesRegex(RuntimeError, "Optional dependency leaked"):
+            module_tools.check_isolation({"directory": "kafka/avro"}, [protobuf], {protobuf})
+        with self.assertRaisesRegex(RuntimeError, "core must remain free"):
+            module_tools.check_isolation({"directory": "."}, [protobuf], set())
+
+    def test_failed_scanner_preserves_evidence_and_blocks_acceptance(self):
+        with tempfile.TemporaryDirectory() as directory:
+            log = Path(directory) / "scan.txt"
+            with self.assertRaisesRegex(RuntimeError, "reachable vulnerability"):
+                module_tools.run(sys.executable, "-c",
+                                 "import sys; print('reachable vulnerability'); print('scan failed', file=sys.stderr); sys.exit(3)",
+                                 log_path=log)
+            self.assertEqual(log.read_text(encoding="utf-8"), "reachable vulnerability\nscan failed\n")
 
 
 class RoutingTests(unittest.TestCase):
@@ -122,7 +143,7 @@ class RoutingTests(unittest.TestCase):
     def test_modules_job_uses_structured_scoped_arguments_and_full_mode(self):
         step = next(item for item in WORKFLOW["jobs"]["test"]["steps"] if item.get("name") == "Test, vet, tidy-check, and verify independent consumers")
         script = step["run"].split("\n", 1)[1].rstrip().removesuffix("\nPY")
-        base = ["uv", "run", "--no-project", "python", "tools/modules.py", "check"]
+        base = ["uv", "run", "--no-project", "python", "tools/modules.py", "check", "--vulncheck", "govulncheck"]
         for full, expected in (("true", base), ("false", base + ["--only", "parameters", "--only", "logger"])):
             with patch.dict(os.environ, CI_MODULES='["parameters", "logger"]', CI_FULL=full), patch.object(subprocess, "run") as run:
                 exec(script, {})

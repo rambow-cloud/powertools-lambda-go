@@ -8,6 +8,11 @@ and v1.1.0/v1.0.0/v0.2.0 stable cohorts remain available as historical versions.
 
 ## Examples and installation
 
+Current `main` source requires Go 1.27.3 or newer, including the standard-library
+security fixes released in October 2026. Published v1.2.0 keeps its original
+Go 1.27 directive; rebuild applications with a patched toolchain rather than
+assuming a dependency update patches an existing Lambda binary.
+
 - Installation commands identify the applicable published version. Avoid
   `@latest` when reproducing a specific behavior.
 - Runnable examples record dependencies in `go.mod`/`go.sum`. Development modules
@@ -22,9 +27,9 @@ and v1.1.0/v1.0.0/v0.2.0 stable cohorts remain available as historical versions.
 
 ## Test and acceptance identity
 
-### Logger stacks Preview on main
+### Logger stacks Preview by source version
 
-> This Preview is available only from main and is not included in v1.2.0.
+> This Preview is not included in v1.2.0.
 
 | Source | Error stacks | Automatic handler panic record |
 | --- | --- | --- |
@@ -39,11 +44,10 @@ An omitted version or `@latest` does not request `main`. Branch references resol
 to pseudo-versions; use a commit SHA for repeatability. See
 [Go version queries](https://go.dev/ref/mod#version-queries).
 The [Preview example](https://github.com/rambow-cloud/powertools-lambda-go/tree/main/examples/logger-stack-preview)
-requires main source, whereas existing stable installation commands remain pinned
-to v1.2.0. Availability is determined by the code revision, without runtime branch
-detection or build tags. This work creates no version tag, prerelease or GitHub
-Release and does not change published release notes. Inclusion in a future stable
-cohort will be decided separately.
+requires a revision containing these APIs; the historical v1.2.0 installation
+commands do not provide them. The next unified stable cohort includes these APIs
+with their Preview status. Availability follows the selected source revision,
+without runtime branch detection or build tags. Published v1.2.0 remains unchanged.
 
 ### Evidence boundaries
 

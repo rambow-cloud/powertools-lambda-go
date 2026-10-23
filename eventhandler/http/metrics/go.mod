@@ -1,6 +1,6 @@
 module github.com/rambow-cloud/powertools-lambda-go/eventhandler/http/metrics
 
-go 1.27
+go 1.27.3
 
 require (
 	github.com/rambow-cloud/powertools-lambda-go/eventhandler/http v1.2.0
