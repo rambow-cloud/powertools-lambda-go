@@ -22,8 +22,10 @@ def module_path(module):
     return BASE if module["directory"] == "." else BASE + "/" + module["directory"]
 
 
-def run(*args, cwd=ROOT, env=None):
+def run(*args, cwd=ROOT, env=None, log_path=None):
     result = subprocess.run(args, cwd=cwd, env=env, text=True, encoding="utf-8", capture_output=True)
+    if log_path is not None:
+        log_path.write_text(result.stdout + result.stderr, encoding="utf-8")
     if result.returncode:
         raise RuntimeError(f"{cwd}: {' '.join(args)}\n{result.stdout}\n{result.stderr}")
     return result.stdout
@@ -156,7 +158,7 @@ def check_isolation(module, dependencies):
     if directory == "kafka/avro":
         forbidden += ["google.golang.org/protobuf"]
     if directory == "kafka/protobuf":
-        forbidden += ["github.com/hamba/avro", "github.com/linkedin/goavro"]
+        forbidden += ["github.com/hamba/avro", "github.com/iskorotkov/avro", "github.com/linkedin/goavro"]
     if directory == "datamasking/kms":
         forbidden += ["github.com/aws/aws-xray-sdk-go", "go.opentelemetry.io", "github.com/redis/"]
     if directory == "commons/regex":
@@ -264,8 +266,8 @@ def main():
         if args.vulncheck:
             for architecture in ("amd64", "arm64"):
                 scan_env = dict(env, GOOS="linux", GOARCH=architecture, GOMEMLIMIT="1GiB", GOGC="100")
-                scan = run(args.vulncheck, "-show=verbose,version", "./...", cwd=extracted, env=scan_env)
-                (extracted / f"govulncheck-linux-{architecture}.txt").write_text(scan, encoding="utf-8")
+                run(args.vulncheck, "-show=verbose,version", "./...", cwd=extracted, env=scan_env,
+                    log_path=extracted / f"govulncheck-linux-{architecture}.txt")
             item["vulnerability_scan"] = {"level": "symbol", "os": "linux", "architectures": ["amd64", "arm64"], "reachable_findings": 0}
         if module.get("test_os") == "linux":
             item.update(binary_os="linux", binary_architecture="amd64", tests_runtime="docker-linux-amd64" if test_executor else "native-linux")

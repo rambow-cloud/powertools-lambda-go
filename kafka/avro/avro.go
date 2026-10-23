@@ -9,7 +9,7 @@ import (
 	"math"
 	"strings"
 
-	codec "github.com/hamba/avro/v2"
+	codec "github.com/iskorotkov/avro/v2"
 	"github.com/rambow-cloud/powertools-lambda-go/commons"
 	"github.com/rambow-cloud/powertools-lambda-go/kafka"
 )
@@ -41,7 +41,12 @@ func Deserialize(ctx context.Context, data string, schema, _ any) (any, error) {
 	if limit == 0 {
 		limit = 1
 	}
-	r := codec.NewReader(nil, 0, codec.WithReaderConfig(codec.Config{MaxByteSliceSize: limit}.Freeze())).Reset(buffer)
+	config := codec.Config{
+		MaxByteSliceSize:  limit,
+		MaxSliceAllocSize: maxCollectionItems,
+		MaxMapAllocSize:   maxCollectionItems,
+	}.Freeze()
+	r := codec.NewReader(nil, 0, codec.WithReaderConfig(config)).Reset(buffer)
 	d := decoder{ctx: ctx, reader: r, inputSize: len(buffer)}
 	value, err := d.read(parsed, 0)
 	if err == nil && r.Error != nil {
@@ -230,10 +235,10 @@ func (d *decoder) read(schema codec.Schema, depth int) (any, error) {
 			if count < 0 {
 				return nil, errors.New("invalid block count")
 			}
-			if count > maxCollectionItems-d.items {
+			if int64(count) > maxCollectionItems-d.items {
 				return nil, errors.New("Avro collections exceed 1048576 items")
 			}
-			d.items += count
+			d.items += int64(count)
 			for range count {
 				key := ""
 				if schema.Type() == codec.Map {

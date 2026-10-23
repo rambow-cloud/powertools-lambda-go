@@ -5,6 +5,7 @@ import json
 import os
 from pathlib import Path
 import subprocess
+import sys
 import tempfile
 import unittest
 from unittest.mock import patch
@@ -12,6 +13,7 @@ from unittest.mock import patch
 import yaml
 
 import ci_changes
+import modules as module_tools
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -19,6 +21,17 @@ WORKFLOW = yaml.safe_load((ROOT / ".github/workflows/ci.yml").read_text())
 SCRIPT = WORKFLOW["jobs"]["gate"]["steps"][0]["run"]
 NAMESPACE = {"__name__": "ci_gate"}
 exec(compile(SCRIPT.removeprefix("python3 - <<'PY'\n").rstrip().removesuffix("\nPY"), "ci.yml", "exec"), NAMESPACE)
+
+
+class SecurityEvidenceTests(unittest.TestCase):
+    def test_failed_scanner_preserves_evidence_and_blocks_acceptance(self):
+        with tempfile.TemporaryDirectory() as directory:
+            log = Path(directory) / "scan.txt"
+            with self.assertRaisesRegex(RuntimeError, "reachable vulnerability"):
+                module_tools.run(sys.executable, "-c",
+                                 "import sys; print('reachable vulnerability'); print('scan failed', file=sys.stderr); sys.exit(3)",
+                                 log_path=log)
+            self.assertEqual(log.read_text(encoding="utf-8"), "reachable vulnerability\nscan failed\n")
 
 
 class RoutingTests(unittest.TestCase):

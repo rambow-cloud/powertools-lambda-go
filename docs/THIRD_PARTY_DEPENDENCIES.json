@@ -260,8 +260,8 @@
       ]
     },
     {
-      "module": "github.com/hamba/avro/v2",
-      "version": "v2.31.0",
+      "module": "github.com/iskorotkov/avro/v2",
+      "version": "v2.34.0",
       "license": "MIT",
       "used_by": [
         "kafka/avro"
@@ -269,7 +269,7 @@
       "license_files": [
         {
           "name": "LICENCE",
-          "sha256": "d9403e727669174d3d1a2fbd48ccd5f6f808233f06908d9a35e794ffaab87b47"
+          "sha256": "624cb79ad8b19d883131a90baf6ab3003e01cece97287452a438b8670963022d"
         }
       ]
     },

@@ -79,7 +79,7 @@ require (
 	github.com/go-viper/mapstructure/v2 v2.5.0 // indirect
 	github.com/google/uuid v1.6.0 // indirect
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.30.0 // indirect
-	github.com/hamba/avro/v2 v2.31.0 // indirect
+	github.com/iskorotkov/avro/v2 v2.34.0 // indirect
 	github.com/jmespath-community/go-jmespath v1.1.1 // indirect
 	github.com/json-iterator/go v1.1.12 // indirect
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
