@@ -1,5 +1,5 @@
 // Execute stream/notification schemas and envelopes from the pinned distribution.
-import { writeFileSync } from 'node:fs';
+import { readFileSync, writeFileSync } from 'node:fs';
 import { gzipSync } from 'node:zlib';
 import { z } from 'zod';
 import { parse } from '@aws-lambda-powertools/parser';
@@ -93,5 +93,5 @@ add('ddb-helper','marshalled',image);
 add('ddb-helper-invalid','marshalled',{id:{INVALID:true}});
 add('ddb-helper-invalid-output','marshalled',{id:{N:'1'},amount:{N:'-1'}});
 add('ddb-helper-bigint','rawMarshalled',{large:{N:'9007199254740993'},raw:{B:'YQ=='},set:{SS:['a','a','b']},nested:{M:{x:{NULL:true}}}});
-writeFileSync('../../parser/testdata/streams-v2.35.0.json',JSON.stringify({version:'2.35.0',zodVersion:'4.1.12',cases},null,2)+'\n');
+writeFileSync('../../parser/testdata/streams-v2.35.0.json',JSON.stringify({version:'2.35.0',zodVersion:JSON.parse(readFileSync('node_modules/zod/package.json','utf8')).version,cases},null,2)+'\n');
 console.log(`${cases.length} stream Parser cases; ${Object.keys(samples).length} schema exports`);

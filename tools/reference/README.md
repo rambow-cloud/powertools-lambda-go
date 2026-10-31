@@ -17,6 +17,12 @@ the explicit native type, numeric, Unicode and metadata contracts.
 
 These `.mjs` files are JavaScript ES modules used only during development. Node.js runs the exact pinned TypeScript Powertools distributions and saves their observable output as JSON. Go tests consume those checked-in JSON files without invoking Node.js.
 
+The reference runner uses Zod 4.6.7 for its security fixes. The historical Parser
+corpora were captured with Zod 4.1.12. Regenerating them with the current runner
+changes required unknown fields, datetime validation and union diagnostics; review
+those behavior changes before replacing the checked-in compatibility baseline.
+The dependency refresh does not change the Go Parser contract.
+
 From this directory:
 
 ```text
@@ -58,7 +64,7 @@ npm run fixtures
 
 Powertools distributions are pinned to `2.35.0` in `package.json` and `package-lock.json`; the JavaScript SSM SDK peer dependency has its own exact version. Fixtures record the reference version. The sampling generator temporarily replaces Node's random integer function and restores it before exit. The Parameters generator replaces the injected SDK client's send method with deterministic responses, making no AWS requests. Neither generator changes the installed package.
 
-The Parser generator (`node generate-parser.mjs`) executes Parser v2.35.0 with Zod v4.1.12. It writes forty parsing/schema/envelope cases to `parser/testdata/typescript-v2.35.0.json` and inventories exports in `docs/PARSER_EXPORTS.json`. The Go test compares code/message/path/expected issue fields; only JSON syntax diagnostic suffixes are normalized across runtimes. Full Zod error trees and other schema families remain open.
+The Parser generator (`node generate-parser.mjs`) executes Parser v2.35.0 with the currently installed Zod version and records that version in its output. It writes forty parsing/schema/envelope cases to `parser/testdata/typescript-v2.35.0.json` and inventories exports in `docs/PARSER_EXPORTS.json`. The Go test compares code/message/path/expected issue fields; only JSON syntax diagnostic suffixes are normalized across runtimes. Full Zod error trees and other schema families remain open.
 
 `node generate-parser-streams.mjs` adds 106 cases covering all 22 runtime exports in SNS, DynamoDB, Kinesis, Firehose and CloudWatch schema families, six envelopes, and the DynamoDB helper. Fixtures retain a shared BigInt/non-finite-number representation and compare JavaScript Sets with Go slices. See `docs/PARSER_STREAMS.md` for the scope and remaining error/format boundaries. These reference generators make no AWS requests.
 

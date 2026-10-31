@@ -1,5 +1,5 @@
 {
-  "date": "2026-10-23",
+  "date": "2026-10-31",
   "scope": "Direct declared Go requirements and direct npm reference tools; not a transitive binary SBOM.",
   "go": [
     {
@@ -32,7 +32,7 @@
     },
     {
       "module": "github.com/aws/aws-lambda-go",
-      "version": "v1.55.0",
+      "version": "v1.55.1",
       "license": "Apache-2.0 (Lambda sample code: MIT-0)",
       "used_by": [
         "logger",
@@ -58,7 +58,7 @@
     },
     {
       "module": "github.com/aws/aws-sdk-go-v2",
-      "version": "v1.47.0",
+      "version": "v1.47.5",
       "license": "Apache-2.0",
       "used_by": [
         "commons/awssdk",
@@ -82,7 +82,7 @@
     },
     {
       "module": "github.com/aws/aws-sdk-go-v2/config",
-      "version": "v1.33.4",
+      "version": "v1.33.13",
       "license": "Apache-2.0",
       "used_by": [
         "parameters",
@@ -98,7 +98,7 @@
     },
     {
       "module": "github.com/aws/aws-sdk-go-v2/credentials",
-      "version": "v1.20.4",
+      "version": "v1.20.13",
       "license": "Apache-2.0",
       "used_by": [
         "integration"
@@ -112,7 +112,7 @@
     },
     {
       "module": "github.com/aws/aws-sdk-go-v2/feature/dynamodb/attributevalue",
-      "version": "v1.21.4",
+      "version": "v1.21.17",
       "license": "Apache-2.0",
       "used_by": [
         "commons/dynamodb",
@@ -127,7 +127,7 @@
     },
     {
       "module": "github.com/aws/aws-sdk-go-v2/service/appconfigdata",
-      "version": "v1.31.0",
+      "version": "v1.32.7",
       "license": "Apache-2.0",
       "used_by": [
         "parameters",
@@ -142,7 +142,7 @@
     },
     {
       "module": "github.com/aws/aws-sdk-go-v2/service/dynamodb",
-      "version": "v1.68.0",
+      "version": "v1.72.3",
       "license": "Apache-2.0",
       "used_by": [
         "commons/dynamodb",
@@ -161,7 +161,7 @@
     },
     {
       "module": "github.com/aws/aws-sdk-go-v2/service/kms",
-      "version": "v1.51.1",
+      "version": "v1.62.2",
       "license": "Apache-2.0",
       "used_by": [
         "datamasking/kms",
@@ -176,7 +176,7 @@
     },
     {
       "module": "github.com/aws/aws-sdk-go-v2/service/secretsmanager",
-      "version": "v1.44.2",
+      "version": "v1.50.8",
       "license": "Apache-2.0",
       "used_by": [
         "parameters",
@@ -191,7 +191,7 @@
     },
     {
       "module": "github.com/aws/aws-sdk-go-v2/service/ssm",
-      "version": "v1.78.0",
+      "version": "v1.81.2",
       "license": "Apache-2.0",
       "used_by": [
         "commons/awssdk",
@@ -225,10 +225,11 @@
     },
     {
       "module": "github.com/aws/smithy-go",
-      "version": "v1.28.1",
+      "version": "v1.28.7",
       "license": "Apache-2.0",
       "used_by": [
         "commons/awssdk",
+        "parameters",
         "datamasking/kms",
         "tracer",
         "tracer/xray"
@@ -246,7 +247,7 @@
     },
     {
       "module": "github.com/dlclark/regexp2/v2",
-      "version": "v2.8.0",
+      "version": "v2.12.0",
       "license": "MIT",
       "used_by": [
         "commons/regex",
@@ -261,7 +262,7 @@
     },
     {
       "module": "github.com/iskorotkov/avro/v2",
-      "version": "v2.34.0",
+      "version": "v2.35.0",
       "license": "MIT",
       "used_by": [
         "kafka/avro"
@@ -293,7 +294,7 @@
     },
     {
       "module": "github.com/redis/go-redis/v9",
-      "version": "v9.21.0",
+      "version": "v9.23.0",
       "license": "BSD-2-Clause",
       "used_by": [
         "idempotency/cache",
@@ -322,7 +323,7 @@
     },
     {
       "module": "go.opentelemetry.io/contrib/instrumentation/github.com/aws/aws-sdk-go-v2/otelaws",
-      "version": "v0.71.0",
+      "version": "v0.72.0",
       "license": "Apache-2.0",
       "used_by": [
         "tracer"
@@ -336,7 +337,7 @@
     },
     {
       "module": "go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp",
-      "version": "v0.71.0",
+      "version": "v0.72.0",
       "license": "Apache-2.0",
       "used_by": [
         "tracer"
@@ -350,7 +351,7 @@
     },
     {
       "module": "go.opentelemetry.io/contrib/propagators/aws",
-      "version": "v1.46.0",
+      "version": "v1.47.0",
       "license": "Apache-2.0",
       "used_by": [
         "tracer"
@@ -364,7 +365,7 @@
     },
     {
       "module": "go.opentelemetry.io/otel",
-      "version": "v1.46.0",
+      "version": "v1.47.0",
       "license": "Apache-2.0",
       "used_by": [
         "eventhandler/http/tracer",
@@ -379,7 +380,7 @@
     },
     {
       "module": "go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracehttp",
-      "version": "v1.46.0",
+      "version": "v1.47.0",
       "license": "Apache-2.0",
       "used_by": [
         "tracer"
@@ -393,7 +394,7 @@
     },
     {
       "module": "go.opentelemetry.io/otel/sdk",
-      "version": "v1.46.0",
+      "version": "v1.47.0",
       "license": "Apache-2.0",
       "used_by": [
         "eventhandler/http/tracer",
@@ -409,7 +410,7 @@
     },
     {
       "module": "go.opentelemetry.io/otel/trace",
-      "version": "v1.46.0",
+      "version": "v1.47.0",
       "license": "Apache-2.0",
       "used_by": [
         "logger",
@@ -425,7 +426,7 @@
     },
     {
       "module": "go.opentelemetry.io/proto/otlp",
-      "version": "v1.11.0",
+      "version": "v1.11.1",
       "license": "Apache-2.0",
       "used_by": [
         "integration"
@@ -651,7 +652,7 @@
     },
     {
       "package": "zod",
-      "version": "4.1.12",
+      "version": "4.6.7",
       "license": "MIT",
       "source": {
         "type": "git",

@@ -1,0 +1,236 @@
+{
+  "verified_at": "2026-10-31",
+  "CGO_ENABLED": "0",
+  "GOWORK": "off for packaged module checks; workspace enabled for composed Lambda builds",
+  "go": {
+    "version": "1.27.3",
+    "scanner": "govulncheck v1.9.0",
+    "database": "https://vuln.go.dev",
+    "database_updated_observed": [
+      "2026-10-27 21:16:18 +0000 UTC"
+    ],
+    "scope": "Production package closures and the standard library on Linux amd64 and arm64: 18 modules use source symbol analysis and 13 use conservative package-level analysis. Four composed Lambda binaries additionally pass binary symbol scans. Unused upstream tool packages and test-only packages are excluded.",
+    "scanned_modules": 31,
+    "source_scan_logs": 62,
+    "symbol_scan_modules": [
+      ".",
+      "commons/regex",
+      "signer",
+      "tools",
+      "batch",
+      "commons/awssdk",
+      "commons/dynamodb",
+      "commons/metadata",
+      "datamasking",
+      "eventhandler/appsyncevents",
+      "eventhandler/appsyncgraphql",
+      "eventhandler/bedrock",
+      "eventhandler/http",
+      "jmespath",
+      "kafka",
+      "logger",
+      "metrics",
+      "parser"
+    ],
+    "package_scan_modules": [
+      "eventhandler/http/metrics",
+      "idempotency",
+      "kafka/avro",
+      "kafka/protobuf",
+      "parameters",
+      "tracer",
+      "validation",
+      "eventhandler/http/tracer",
+      "idempotency/cache",
+      "tracer/xray",
+      "examples",
+      "datamasking/kms",
+      "integration"
+    ],
+    "binary_scans": [
+      {
+        "architecture": "amd64",
+        "binary": "bootstrap",
+        "exit_code": 0
+      },
+      {
+        "architecture": "amd64",
+        "binary": "stream-bootstrap",
+        "exit_code": 0
+      },
+      {
+        "architecture": "arm64",
+        "binary": "bootstrap",
+        "exit_code": 0
+      },
+      {
+        "architecture": "arm64",
+        "binary": "stream-bootstrap",
+        "exit_code": 0
+      }
+    ],
+    "findings_in_scanned_closures": 0,
+    "advisory_ids_observed": [],
+    "packaged_module_tests_passed": 30,
+    "standalone_consumers_passed": 28,
+    "module_vet_passed": 31,
+    "module_tidy_passed": 31,
+    "dependency_isolation_passed": 30,
+    "full_packaged_acceptance_completed": false,
+    "local_limitations": "Windows source symbol analysis exhausted system virtual memory after 18 modules. Remaining modules were scanned at package level without SSA construction; actual Lambda binaries were scanned separately. Passed checks were preserved.",
+    "verified_module_directories": [
+      ".",
+      "commons/regex",
+      "signer",
+      "tools",
+      "batch",
+      "commons/awssdk",
+      "commons/dynamodb",
+      "commons/metadata",
+      "datamasking",
+      "eventhandler/appsyncevents",
+      "eventhandler/appsyncgraphql",
+      "eventhandler/bedrock",
+      "eventhandler/http",
+      "jmespath",
+      "kafka",
+      "logger",
+      "metrics",
+      "parser",
+      "eventhandler/http/metrics",
+      "idempotency",
+      "kafka/avro",
+      "kafka/protobuf",
+      "parameters",
+      "tracer",
+      "validation",
+      "eventhandler/http/tracer",
+      "idempotency/cache",
+      "tracer/xray",
+      "examples",
+      "datamasking/kms"
+    ],
+    "module_dependency_metadata_sha256": "ec668d76be4f90246fc99e2ee3911088bccf7afac2981bab5d8d129a613275da"
+  },
+  "npm": {
+    "registry": "https://registry.npmjs.org",
+    "dependencies_reported": 103,
+    "vulnerable_packages_before": 2,
+    "advisories_before": 5,
+    "known_vulnerabilities_after": 0,
+    "updates": [
+      {
+        "package": "zod",
+        "from": "4.1.12",
+        "to": "4.6.7",
+        "advisories": [
+          {
+            "cve": "CVE-2023-54404",
+            "url": "https://github.com/advisories/GHSA-mrhx-c7xc-m3w5"
+          }
+        ]
+      },
+      {
+        "package": "fast-uri",
+        "from": "3.1.8",
+        "to": "3.1.9",
+        "advisories": [
+          {
+            "cve": "CVE-2026-110306",
+            "url": "https://github.com/advisories/GHSA-w74x-v6f9-j3xg"
+          },
+          {
+            "cve": "CVE-2026-110095",
+            "url": "https://github.com/advisories/GHSA-xhq7-xmqj-769h"
+          },
+          {
+            "cve": "CVE-2026-110180",
+            "url": "https://github.com/advisories/GHSA-wjr9-j795-jxcr"
+          },
+          {
+            "cve": "CVE-2026-110725",
+            "url": "https://github.com/advisories/GHSA-333x-w4r6-6crp"
+          }
+        ]
+      }
+    ],
+    "lockfile_sha256": "b83918e1dde1503e13bad52c1f4ad33929a1e9899a09e246bcbefb25d65db02c"
+  },
+  "python": {
+    "scanner": "pip-audit 2.10.1",
+    "packages": 11,
+    "known_vulnerabilities": 0,
+    "scope": "Frozen website/uv.lock documentation dependencies",
+    "lockfile_sha256": "0a9283475daa94d8aa088f555c4bdc3bb3ac71d4e315493ee0aecfb619a72a51"
+  },
+  "references": {
+    "powertools": "2.35.0",
+    "zod": "4.6.7",
+    "generators_passed": 11,
+    "generated_cases": 6510,
+    "parser_cases_changed_from_historical_baseline": 80,
+    "checked_in_baseline_changed": false,
+    "scope": "Generators ran in an ignored isolated output tree. Existing Parser corpora retain the Zod 4.1.12 behavior baseline. Current generators report the installed Zod version. Validation, UTF-8 and export inventories match their checked-in baselines."
+  },
+  "frozen_xray_sdk": "github.com/aws/aws-xray-sdk-go/v2 v2.0.3; shared dependencies refreshed; adapter API and SDK requirement remain frozen, with migration warning and passing regression coverage.",
+  "aws_cloud_tests": false,
+  "race_detector": false,
+  "published": false,
+  "source": {
+    "base_commit": "381a65c379c05086d194a4441778694ba093f8e6",
+    "scope": "Local working-tree dependency refresh; not a published release."
+  },
+  "dependency_updates": {
+    "external_go_paths": 52,
+    "go_modules": 18
+  },
+  "local_runtime": {
+    "image": "public.ecr.aws/lambda/provided@sha256:0b17e5c778aef6ed7f61cbfa5dd416e17540e127846250646fceb712e0e7be5f",
+    "lambda_binaries": [
+      {
+        "file": "dist/local/amd64/bootstrap",
+        "os": "linux",
+        "architecture": "amd64",
+        "static_elf": true,
+        "bytes": 70692586,
+        "sha256": "b4a9bbb3845d5489f2892dd576836d94ce0aac5ec5ba07043a4c82b9591d9698"
+      },
+      {
+        "file": "dist/local/amd64/stream-bootstrap",
+        "os": "linux",
+        "architecture": "amd64",
+        "static_elf": true,
+        "bytes": 24671854,
+        "sha256": "6391905b8ad609b8ae89633741055bb783bd5c43133094e5aff7b91c9aae374b"
+      },
+      {
+        "file": "dist/local/arm64/bootstrap",
+        "os": "linux",
+        "architecture": "arm64",
+        "static_elf": true,
+        "bytes": 66492829,
+        "sha256": "678eef881af19ee7ed2a2c84c60e02b24e26e7d2dc933e093cfb5eeceb7a23cb"
+      },
+      {
+        "file": "dist/local/arm64/stream-bootstrap",
+        "os": "linux",
+        "architecture": "arm64",
+        "static_elf": true,
+        "bytes": 23179250,
+        "sha256": "6d4f17c304f067d5b7e904414f70d4f7ee90c35b92927bdafbd740585f7e97d4"
+      }
+    ],
+    "kms_linux_module_tests": "passed in Docker",
+    "integration_linux_module_tests": "blocked",
+    "integration_linux_vet": "passed",
+    "integration_logger_composition_regression": {
+      "os": "windows",
+      "TZ": "UTC",
+      "passed": true
+    },
+    "rie_acceptance": "blocked",
+    "streaming_acceptance": "blocked",
+    "blocker": "Docker Desktop repeatedly returned HTTP 500 for engine ping/container creation after recovery attempts. Full integration and RIE/streaming runtime acceptance remain open; no fresh runtime acceptance is claimed.",
+    "test_executor_fix": "Pin TZ=UTC for Linux unit-test containers, matching the existing local Lambda fixture and preventing constructor timezone diagnostics from contaminating expected log records."
+  }
+}

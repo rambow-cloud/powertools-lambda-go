@@ -25,11 +25,13 @@ def main():
     for argument in sys.argv[2:]:
         key, separator, value = argument.partition("=")
         args.append(key + separator + mapped(value) if separator else mapped(argument))
+    # Match the UTC environment used by the local Lambda integration fixtures.
     command = ["docker", "run", "--rm", "--interactive", "--network", "none",
                "--platform", "linux/amd64", "--workdir", mapped(str(Path.cwd())),
                "--mount", f"type=bind,source={ROOT},target=/workspace,readonly",
                "--mount", f"type=bind,source={TEMPORARY},target=/go-tmp",
                "--env", "CGO_ENABLED=0", "--env", "AWS_EC2_METADATA_DISABLED=true",
+               "--env", "TZ=UTC",
                "--entrypoint", binary, IMAGE, *args]
     raise SystemExit(subprocess.run(command).returncode)
 

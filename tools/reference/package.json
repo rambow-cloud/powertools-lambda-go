@@ -38,7 +38,7 @@
     "@aws-sdk/util-dynamodb": "3.996.9",
     "avro-js": "1.12.1",
     "protobufjs": "7.6.6",
-    "zod": "4.1.12"
+    "zod": "4.6.7"
   },
   "license": "MIT"
 }

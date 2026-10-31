@@ -85,7 +85,7 @@ for(const challengeName of ['CUSTOM_CHALLENGE','SRP_A','PASSWORD_VERIFIER','SMS_
 for(const field of ['autoConfirmUser','autoVerifyEmail','autoVerifyPhone'])add('signup-true-'+field,'PreSignupTriggerSchema',{...samples.PreSignupTriggerSchema,response:{...samples.PreSignupTriggerSchema.response,[field]:true}});
 for(const [schema,triggerSource] of [['PreSignupTriggerSchema','PreSignUp_AdminCreateUser'],['PostConfirmationTriggerSchema','PostConfirmation_ConfirmForgotPassword'],['CustomEmailSenderTriggerSchema','CustomEmailSender_Authentication'],['CustomSMSSenderTriggerSchema','CustomSMSSender_Authentication']])add(schema+'-other-trigger',schema,{...samples[schema],triggerSource});
 for(const input of [null,{},0,'null',false,[]])add('null-'+cases.length,'null',input);
-writeFileSync('../../parser/testdata/identity-v2.35.0.json',JSON.stringify({version:'2.35.0',zodVersion:'4.1.12',exports,cases},null,2)+'\n');
+writeFileSync('../../parser/testdata/identity-v2.35.0.json',JSON.stringify({version:'2.35.0',zodVersion:JSON.parse(readFileSync('node_modules/zod/package.json','utf8')).version,exports,cases},null,2)+'\n');
 // Map every public runtime schema export, including wildcard paths and re-exports.
 // This inventories named Go definitions; behavior and inferred types have separate gates.
 const definitions=new Map();

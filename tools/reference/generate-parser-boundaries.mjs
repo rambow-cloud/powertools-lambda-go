@@ -1,4 +1,4 @@
-import { writeFileSync } from 'node:fs';
+import { readFileSync, writeFileSync } from 'node:fs';
 import { parse } from '@aws-lambda-powertools/parser';
 import * as envelopes from '@aws-lambda-powertools/parser/envelopes';
 import { z } from 'zod';
@@ -27,5 +27,5 @@ for(const [name,exportName]of Object.entries(names)) {
     }
   }
 }
-writeFileSync(new URL('../../parser/testdata/boundaries-v2.35.0.json',import.meta.url),JSON.stringify({version:'2.35.0',zodVersion:'4.1.12',cases},null,2)+'\n');
+writeFileSync(new URL('../../parser/testdata/boundaries-v2.35.0.json',import.meta.url),JSON.stringify({version:'2.35.0',zodVersion:JSON.parse(readFileSync(new URL('./node_modules/zod/package.json',import.meta.url),'utf8')).version,cases},null,2)+'\n');
 console.log(`${cases.length} invalid-input observations across ${Object.keys(names).length} envelopes`);
