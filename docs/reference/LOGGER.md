@@ -134,7 +134,7 @@ WARN and higher use stderr; lower levels use stdout. `WithOutput` replaces both 
 
 ## Stack and panic contract (Preview)
 
-> This Preview is included in v1.3.0 and main. It is not included in v1.2.0.
+> This Preview is included in v1.3.0 and later stable releases, and main. It is not included in v1.2.0.
 
 See the [Preview guide](../LOGGER.md#error-stacks-and-panic-logging-preview) for
 installation, short examples and output. The v1.3.0 release and main enable

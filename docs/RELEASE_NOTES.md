@@ -6,6 +6,23 @@ description: "Read published Powertools for Go release notes, stable and prerele
 
 All 27 maintained modules share one version. [Browse all GitHub Releases](https://github.com/rambow-cloud/powertools-lambda-go/releases) for full changelogs.
 
+## v1.3.1
+
+2026-11-01 · [GitHub Release](https://github.com/rambow-cloud/powertools-lambda-go/releases/tag/v1.3.1)
+
+**Upgrade recommended.** We encourage all users to update their maintained Powertools modules to v1.3.1, rebuild with Go 1.27.3 or newer, and redeploy their Lambda binaries. This compatible maintenance release refreshes Go dependencies without changing public Go APIs. Updating a module requirement alone does not update an already deployed binary.
+
+### Dependencies and security
+
+- Refresh dependencies in 15 maintained public modules, including AWS SDK for Go v2, OpenTelemetry 1.47.0, gRPC 1.85.0, Redis 9.23.0, regexp2 2.12.0 and Avro 2.35.0. Other maintained modules receive the same version and aligned internal requirements. ([#266](https://github.com/rambow-cloud/powertools-lambda-go/pull/266))
+- Patch five Zod/fast-uri advisories in the repository's development reference tooling. These Node dependencies are not shipped as Go runtime libraries. Keep the historical Parser compatibility corpus and document behavior differences in the patched runner. ([#266](https://github.com/rambow-cloud/powertools-lambda-go/pull/266))
+- Keep the deprecated X-Ray SDK adapter frozen and excluded from publication. Use the OpenTelemetry Tracer for maintained tracing integrations.
+
+### Verification
+
+- Publish one stable Release with 27 matching module tags. See [publication acceptance](RELEASE_ACCEPTANCE_V1_3_1.json) for the exact source, full PR/main checks and fresh public Go consumer results. The [earlier local security audit](SECURITY_ACCEPTANCE_2026_10_31.json) retains its original scope; hosted full regression supplies the complete module and container acceptance.
+- Lambda runtime execution covers Linux amd64; arm64 is built and scanned. CGO remains disabled, and no AWS cloud tests are performed.
+
 ## v1.3.0
 
 2026-10-23 · [GitHub Release](https://github.com/rambow-cloud/powertools-lambda-go/releases/tag/v1.3.0)

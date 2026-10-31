@@ -11,7 +11,7 @@ Return a stored result for repeated requests, so a retried Lambda invocation doe
 Use Go 1.27.3 or newer:
 
 ```sh
-CGO_ENABLED=0 go get github.com/rambow-cloud/powertools-lambda-go/idempotency@v1.3.0
+CGO_ENABLED=0 go get github.com/rambow-cloud/powertools-lambda-go/idempotency@v1.3.1
 CGO_ENABLED=0 go get github.com/aws/aws-lambda-go@v1.55.0
 CGO_ENABLED=0 go get github.com/aws/aws-sdk-go-v2/config@v1.33.4
 ```

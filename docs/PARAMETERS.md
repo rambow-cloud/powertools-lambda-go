@@ -11,8 +11,8 @@ Read and cache configuration from SSM Parameter Store, Secrets Manager, DynamoDB
 Use Go 1.27.3 or newer:
 
 ```sh
-CGO_ENABLED=0 go get github.com/rambow-cloud/powertools-lambda-go/parameters@v1.3.0
-CGO_ENABLED=0 go get github.com/rambow-cloud/powertools-lambda-go/logger@v1.3.0
+CGO_ENABLED=0 go get github.com/rambow-cloud/powertools-lambda-go/parameters@v1.3.1
+CGO_ENABLED=0 go get github.com/rambow-cloud/powertools-lambda-go/logger@v1.3.1
 ```
 
 ## Read an SSM parameter
