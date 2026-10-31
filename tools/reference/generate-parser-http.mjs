@@ -1,5 +1,5 @@
 // Execute HTTP schemas and envelopes from the pinned Parser distribution.
-import { writeFileSync } from 'node:fs';
+import { readFileSync, writeFileSync } from 'node:fs';
 import { z } from 'zod';
 import { parse } from '@aws-lambda-powertools/parser';
 import { JSONStringified } from '@aws-lambda-powertools/parser/helpers';
@@ -70,5 +70,5 @@ add('rest-null-authorizer','APIGatewayEventRequestContextSchema',{...context,aut
 add('rest-minimal-identity','APIGatewayEventRequestContextSchema',{...context,identity:{}});
 add('vpc-time-is-string','VpcLatticeV2Schema',{...vpcV2,requestContext:{...vpcV2.requestContext,timeEpoch:1}});
 add('websocket-direction','APIGatewayProxyWebsocketEventSchema',{...ws,requestContext:{...ws.requestContext,messageDirection:'OTHER'}});
-writeFileSync('../../parser/testdata/http-v2.35.0.json',JSON.stringify({version:'2.35.0',zodVersion:'4.1.12',cases},null,2)+'\n');
+writeFileSync('../../parser/testdata/http-v2.35.0.json',JSON.stringify({version:'2.35.0',zodVersion:JSON.parse(readFileSync('node_modules/zod/package.json','utf8')).version,cases},null,2)+'\n');
 console.log(`${cases.length} HTTP Parser cases; ${Object.keys(samples).length} schema exports`);

@@ -3,7 +3,7 @@ module github.com/rambow-cloud/powertools-lambda-go/validation
 go 1.27.3
 
 require (
-	github.com/dlclark/regexp2/v2 v2.8.0
+	github.com/dlclark/regexp2/v2 v2.12.0
 	github.com/rambow-cloud/powertools-lambda-go v1.3.0
 	github.com/rambow-cloud/powertools-lambda-go/commons/regex v1.3.0
 	github.com/rambow-cloud/powertools-lambda-go/jmespath v1.3.0
@@ -13,5 +13,5 @@ require (
 
 require (
 	github.com/jmespath-community/go-jmespath v1.1.1 // indirect
-	golang.org/x/exp v0.0.0-20230314191032-db074128a8ec // indirect
+	golang.org/x/exp v0.0.0-20261014143641-f0251eb4aa3e // indirect
 )

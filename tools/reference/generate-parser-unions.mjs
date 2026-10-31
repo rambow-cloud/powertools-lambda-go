@@ -1,5 +1,5 @@
 // Execute pinned union branch selection, nested diagnostics and refinement behavior.
-import { writeFileSync } from 'node:fs';
+import { readFileSync, writeFileSync } from 'node:fs';
 import { z } from 'zod';
 import { parse } from '@aws-lambda-powertools/parser';
 import { JSONStringified } from '@aws-lambda-powertools/parser/helpers';
@@ -35,5 +35,5 @@ for(const [schema,validator] of Object.entries(schemas))for(const input of input
  catch(error){item.expected={success:false,thrown:true,error:error.name,issues:issues(error)};}
  cases.push(item);
 }
-writeFileSync('../../parser/testdata/unions-v2.35.0.json',JSON.stringify({version:'2.35.0',zodVersion:'4.1.12',cases},null,2)+'\n');
+writeFileSync('../../parser/testdata/unions-v2.35.0.json',JSON.stringify({version:'2.35.0',zodVersion:JSON.parse(readFileSync('node_modules/zod/package.json','utf8')).version,cases},null,2)+'\n');
 console.log(`${cases.length} union and refinement cases`);

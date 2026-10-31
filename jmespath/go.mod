@@ -7,4 +7,4 @@ require (
 	github.com/rambow-cloud/powertools-lambda-go v1.3.0
 )
 
-require golang.org/x/exp v0.0.0-20230314191032-db074128a8ec // indirect
+require golang.org/x/exp v0.0.0-20261014143641-f0251eb4aa3e // indirect
