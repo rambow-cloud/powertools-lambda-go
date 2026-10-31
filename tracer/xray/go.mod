@@ -6,8 +6,8 @@ go 1.27.3
 require (
 	github.com/aws/aws-xray-sdk-go/v2 v2.0.3
 	github.com/aws/smithy-go v1.28.7
-	github.com/rambow-cloud/powertools-lambda-go v1.3.0
-	github.com/rambow-cloud/powertools-lambda-go/tracer v1.3.0
+	github.com/rambow-cloud/powertools-lambda-go v1.3.1
+	github.com/rambow-cloud/powertools-lambda-go/tracer v1.3.1
 )
 
 require (
@@ -36,7 +36,7 @@ require (
 	github.com/klauspost/compress v1.20.3 // indirect
 	github.com/molecule-man/go-brrr v1.3.0 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
-	github.com/rambow-cloud/powertools-lambda-go/commons/awssdk v1.3.0 // indirect
+	github.com/rambow-cloud/powertools-lambda-go/commons/awssdk v1.3.1 // indirect
 	github.com/valyala/bytebufferpool v1.0.0 // indirect
 	github.com/valyala/fasthttp v1.77.0 // indirect
 	go.opentelemetry.io/auto/sdk v1.2.1 // indirect

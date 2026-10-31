@@ -11,31 +11,31 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/kms v1.62.2
 	github.com/aws/aws-sdk-go-v2/service/secretsmanager v1.50.8
 	github.com/aws/aws-sdk-go-v2/service/ssm v1.81.2
-	github.com/rambow-cloud/powertools-lambda-go v1.3.0
-	github.com/rambow-cloud/powertools-lambda-go/batch v1.3.0
-	github.com/rambow-cloud/powertools-lambda-go/commons/metadata v1.3.0
-	github.com/rambow-cloud/powertools-lambda-go/commons/regex v1.3.0
-	github.com/rambow-cloud/powertools-lambda-go/datamasking v1.3.0
-	github.com/rambow-cloud/powertools-lambda-go/datamasking/kms v1.3.0
-	github.com/rambow-cloud/powertools-lambda-go/eventhandler/appsyncevents v1.3.0
-	github.com/rambow-cloud/powertools-lambda-go/eventhandler/appsyncgraphql v1.3.0
-	github.com/rambow-cloud/powertools-lambda-go/eventhandler/bedrock v1.3.0
-	github.com/rambow-cloud/powertools-lambda-go/eventhandler/http v1.3.0
-	github.com/rambow-cloud/powertools-lambda-go/eventhandler/http/metrics v1.3.0
-	github.com/rambow-cloud/powertools-lambda-go/eventhandler/http/tracer v1.3.0
-	github.com/rambow-cloud/powertools-lambda-go/idempotency v1.3.0
-	github.com/rambow-cloud/powertools-lambda-go/idempotency/cache v1.3.0
-	github.com/rambow-cloud/powertools-lambda-go/jmespath v1.3.0
-	github.com/rambow-cloud/powertools-lambda-go/kafka v1.3.0
-	github.com/rambow-cloud/powertools-lambda-go/kafka/avro v1.3.0
-	github.com/rambow-cloud/powertools-lambda-go/kafka/protobuf v1.3.0
-	github.com/rambow-cloud/powertools-lambda-go/logger v1.3.0
-	github.com/rambow-cloud/powertools-lambda-go/metrics v1.3.0
-	github.com/rambow-cloud/powertools-lambda-go/parameters v1.3.0
-	github.com/rambow-cloud/powertools-lambda-go/parser v1.3.0
-	github.com/rambow-cloud/powertools-lambda-go/signer v1.3.0
-	github.com/rambow-cloud/powertools-lambda-go/tracer v1.3.0
-	github.com/rambow-cloud/powertools-lambda-go/validation v1.3.0
+	github.com/rambow-cloud/powertools-lambda-go v1.3.1
+	github.com/rambow-cloud/powertools-lambda-go/batch v1.3.1
+	github.com/rambow-cloud/powertools-lambda-go/commons/metadata v1.3.1
+	github.com/rambow-cloud/powertools-lambda-go/commons/regex v1.3.1
+	github.com/rambow-cloud/powertools-lambda-go/datamasking v1.3.1
+	github.com/rambow-cloud/powertools-lambda-go/datamasking/kms v1.3.1
+	github.com/rambow-cloud/powertools-lambda-go/eventhandler/appsyncevents v1.3.1
+	github.com/rambow-cloud/powertools-lambda-go/eventhandler/appsyncgraphql v1.3.1
+	github.com/rambow-cloud/powertools-lambda-go/eventhandler/bedrock v1.3.1
+	github.com/rambow-cloud/powertools-lambda-go/eventhandler/http v1.3.1
+	github.com/rambow-cloud/powertools-lambda-go/eventhandler/http/metrics v1.3.1
+	github.com/rambow-cloud/powertools-lambda-go/eventhandler/http/tracer v1.3.1
+	github.com/rambow-cloud/powertools-lambda-go/idempotency v1.3.1
+	github.com/rambow-cloud/powertools-lambda-go/idempotency/cache v1.3.1
+	github.com/rambow-cloud/powertools-lambda-go/jmespath v1.3.1
+	github.com/rambow-cloud/powertools-lambda-go/kafka v1.3.1
+	github.com/rambow-cloud/powertools-lambda-go/kafka/avro v1.3.1
+	github.com/rambow-cloud/powertools-lambda-go/kafka/protobuf v1.3.1
+	github.com/rambow-cloud/powertools-lambda-go/logger v1.3.1
+	github.com/rambow-cloud/powertools-lambda-go/metrics v1.3.1
+	github.com/rambow-cloud/powertools-lambda-go/parameters v1.3.1
+	github.com/rambow-cloud/powertools-lambda-go/parser v1.3.1
+	github.com/rambow-cloud/powertools-lambda-go/signer v1.3.1
+	github.com/rambow-cloud/powertools-lambda-go/tracer v1.3.1
+	github.com/rambow-cloud/powertools-lambda-go/validation v1.3.1
 	github.com/redis/go-redis/v9 v9.23.0
 	go.opentelemetry.io/proto/otlp v1.11.1
 	google.golang.org/protobuf v1.36.12
@@ -82,8 +82,8 @@ require (
 	github.com/iskorotkov/avro/v2 v2.35.0 // indirect
 	github.com/jmespath-community/go-jmespath v1.1.1 // indirect
 	github.com/modern-go/reflect2 v1.0.2 // indirect
-	github.com/rambow-cloud/powertools-lambda-go/commons/awssdk v1.3.0 // indirect
-	github.com/rambow-cloud/powertools-lambda-go/commons/dynamodb v1.3.0 // indirect
+	github.com/rambow-cloud/powertools-lambda-go/commons/awssdk v1.3.1 // indirect
+	github.com/rambow-cloud/powertools-lambda-go/commons/dynamodb v1.3.1 // indirect
 	github.com/santhosh-tekuri/jsonschema/v6 v6.0.3 // indirect
 	go.opentelemetry.io/auto/sdk v1.2.1 // indirect
 	go.opentelemetry.io/contrib/instrumentation/github.com/aws/aws-sdk-go-v2/otelaws v0.72.0 // indirect
