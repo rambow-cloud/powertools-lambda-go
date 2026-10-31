@@ -11,8 +11,8 @@ Route API Gateway, ALB and Lambda Function URL requests with path parameters, JS
 Use Go 1.27.3 or newer:
 
 ```sh
-CGO_ENABLED=0 go get github.com/rambow-cloud/powertools-lambda-go/eventhandler/http@v1.3.0
-CGO_ENABLED=0 go get github.com/rambow-cloud/powertools-lambda-go/logger@v1.3.0
+CGO_ENABLED=0 go get github.com/rambow-cloud/powertools-lambda-go/eventhandler/http@v1.3.1
+CGO_ENABLED=0 go get github.com/rambow-cloud/powertools-lambda-go/logger@v1.3.1
 CGO_ENABLED=0 go get github.com/aws/aws-lambda-go@v1.55.0
 ```
 

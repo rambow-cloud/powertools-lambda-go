@@ -8,7 +8,7 @@ Use an existing Redis or Valkey deployment as the persistence store for [Idempot
 
 ## Replay a completed operation
 
-Install `idempotency/cache@v1.3.0` and import the adapter as `cache`, the Idempotency core, and `github.com/redis/go-redis/v9` as `redis`. This example requires a reachable Redis-compatible server; configure its TLS and credentials for your deployment.
+Install `idempotency/cache@v1.3.1` and import the adapter as `cache`, the Idempotency core, and `github.com/redis/go-redis/v9` as `redis`. This example requires a reachable Redis-compatible server; configure its TLS and credentials for your deployment.
 
 **Input**
 
@@ -41,7 +41,7 @@ for range 2 {
 }
 ```
 
-Also install `logger@v1.3.0` and import it as `logger`. Run this inside a function returning `error`, with a context carrying the invocation deadline. The output below shows three log excerpts, omitting standard Logger fields.
+Also install `logger@v1.3.1` and import it as `logger`. Run this inside a function returning `error`, with a context carrying the invocation deadline. The output below shows three log excerpts, omitting standard Logger fields.
 
 **Output**
 

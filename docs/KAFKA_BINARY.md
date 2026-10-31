@@ -8,7 +8,7 @@ Decode binary values with optional adapters. Your application supplies the schem
 
 ## Decode an Avro order
 
-Install `kafka/avro@v1.3.0` and `logger@v1.3.0`. Import the adapter as `kafkaavro` and Powertools Logger as `logger`. The Base64 value below encodes a record with one string field. Each snippet runs independently in a function returning `error`, with `ctx` available.
+Install `kafka/avro@v1.3.1` and `logger@v1.3.1`. Import the adapter as `kafkaavro` and Powertools Logger as `logger`. The Base64 value below encodes a record with one string field. Each snippet runs independently in a function returning `error`, with `ctx` available.
 
 **Input**
 
@@ -47,7 +47,7 @@ consumer := kafka.New(kafka.Config{Value: kafkaavro.New(schema)})
 
 ## Decode a Protobuf message
 
-Install `kafka/protobuf@v1.3.0` and import it as `kafkaproto`. This example uses the well-known `StringValue` descriptor from `wrapperspb` and `protojson` from the official Go Protobuf library. Import `encoding/json/jsontext` to attach the Protobuf JSON value to a structured log.
+Install `kafka/protobuf@v1.3.1` and import it as `kafkaproto`. This example uses the well-known `StringValue` descriptor from `wrapperspb` and `protojson` from the official Go Protobuf library. Import `encoding/json/jsontext` to attach the Protobuf JSON value to a structured log.
 
 ```go
 appLog := logger.New(logger.WithServiceName("orders"))

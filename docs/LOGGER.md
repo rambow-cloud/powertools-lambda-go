@@ -12,7 +12,7 @@ Write JSON logs with searchable fields, service names and Lambda request context
 Use Go 1.27.3 or newer:
 
 ```sh
-CGO_ENABLED=0 go get github.com/rambow-cloud/powertools-lambda-go/logger@v1.3.0
+CGO_ENABLED=0 go get github.com/rambow-cloud/powertools-lambda-go/logger@v1.3.1
 ```
 
 ## Write your first log
@@ -93,12 +93,12 @@ In **v1.3.0**, error logs also include a stack by default, as shown in the Previ
 
 ## Error stacks and panic logging (Preview)
 
-> This Preview is included in v1.3.0 and main. It is not included in v1.2.0.
+> This Preview is included in v1.3.0 and later stable releases, and main. It is not included in v1.2.0.
 
 Install the published Preview in your application:
 
 ```sh
-CGO_ENABLED=0 go get github.com/rambow-cloud/powertools-lambda-go/logger@v1.3.0
+CGO_ENABLED=0 go get github.com/rambow-cloud/powertools-lambda-go/logger@v1.3.1
 ```
 
 To use development source instead, select `logger@main`. Omitting a version does
@@ -107,7 +107,7 @@ use `@<commit-SHA>` instead of `@main` to pin a preview. See
 [Go version queries](https://go.dev/ref/mod#version-queries).
 If a module proxy still resolves `main` to an older commit, select the intended
 main commit SHA explicitly.
-The installation above targets v1.3.0, including these Preview defaults.
+The installation above targets v1.3.1, including these Preview defaults.
 
 ### Attach the error's source
 

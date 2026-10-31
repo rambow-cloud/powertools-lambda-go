@@ -12,8 +12,8 @@ Trace Lambda handlers, child operations, HTTP requests and AWS SDK calls with Op
 Use Go 1.27.3 or newer:
 
 ```sh
-CGO_ENABLED=0 go get github.com/rambow-cloud/powertools-lambda-go/tracer@v1.3.0
-CGO_ENABLED=0 go get github.com/rambow-cloud/powertools-lambda-go/logger@v1.3.0
+CGO_ENABLED=0 go get github.com/rambow-cloud/powertools-lambda-go/tracer@v1.3.1
+CGO_ENABLED=0 go get github.com/rambow-cloud/powertools-lambda-go/logger@v1.3.1
 CGO_ENABLED=0 go get github.com/aws/aws-lambda-go@v1.55.0
 ```
 

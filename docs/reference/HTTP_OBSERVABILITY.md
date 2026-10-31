@@ -12,7 +12,7 @@ and choose the middleware your application needs.
 Install the metrics middleware:
 
 ```sh
-CGO_ENABLED=0 go get github.com/rambow-cloud/powertools-lambda-go/eventhandler/http/metrics@v1.3.0
+CGO_ENABLED=0 go get github.com/rambow-cloud/powertools-lambda-go/eventhandler/http/metrics@v1.3.1
 ```
 
 Save this as `http_metrics.go` beside your HTTP entry point. Call
@@ -46,7 +46,7 @@ Each request emits latency and error/fault metrics. To also count requests, use
 Install the tracer middleware:
 
 ```sh
-CGO_ENABLED=0 go get github.com/rambow-cloud/powertools-lambda-go/eventhandler/http/tracer@v1.3.0
+CGO_ENABLED=0 go get github.com/rambow-cloud/powertools-lambda-go/eventhandler/http/tracer@v1.3.1
 ```
 
 Save this as `http_tracing.go` and call `addRequestTracing(app, tr)` during setup.

@@ -7,7 +7,7 @@ Start with [your first Lambda](../../GETTING_STARTED.md) for the short path.
 When you need traces, install the Tracer module and configure an OTLP collector:
 
 ```sh
-CGO_ENABLED=0 go get github.com/rambow-cloud/powertools-lambda-go/tracer@v1.3.0
+CGO_ENABLED=0 go get github.com/rambow-cloud/powertools-lambda-go/tracer@v1.3.1
 ```
 
 The maintained repository example composes Tracer and Logger:
