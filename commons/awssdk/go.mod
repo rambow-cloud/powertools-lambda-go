@@ -6,7 +6,7 @@ require (
 	github.com/aws/aws-sdk-go-v2 v1.47.5
 	github.com/aws/aws-sdk-go-v2/service/ssm v1.81.2
 	github.com/aws/smithy-go v1.28.7
-	github.com/rambow-cloud/powertools-lambda-go v1.3.0
+	github.com/rambow-cloud/powertools-lambda-go v1.3.1
 )
 
 require (
